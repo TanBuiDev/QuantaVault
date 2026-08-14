@@ -1,0 +1,12 @@
+Divide & Conquer
+108. Convert Sorted Array to Binary Search Tree
+Easy
+
+148. Sort List
+Medium
+
+427. Construct Quad Tree
+Medium
+
+23. Merge k Sorted Lists
+Hard

@@ -1,0 +1,27 @@
+Hashmap
+383. Ransom Note
+Easy
+
+205. Isomorphic Strings
+Easy
+
+290. Word Pattern
+Easy
+
+242. Valid Anagram
+Easy
+
+49. Group Anagrams
+Medium
+
+1. Two Sum
+Easy
+
+202. Happy Number
+Easy
+
+219. Contains Duplicate II
+Easy
+
+128. Longest Consecutive Sequence
+Medium

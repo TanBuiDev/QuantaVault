@@ -1,0 +1,42 @@
+Binary Tree General
+104. Maximum Depth of Binary Tree
+Easy
+
+100. Same Tree
+Easy
+
+226. Invert Binary Tree
+Easy
+
+101. Symmetric Tree
+Easy
+
+105. Construct Binary Tree from Preorder and Inorder Traversal
+Medium
+
+106. Construct Binary Tree from Inorder and Postorder Traversal
+Medium
+
+117. Populating Next Right Pointers in Each Node II
+Medium
+
+114. Flatten Binary Tree to Linked List
+Medium
+
+112. Path Sum
+Easy
+
+129. Sum Root to Leaf Numbers
+Medium
+
+124. Binary Tree Maximum Path Sum
+Hard
+
+173. Binary Search Tree Iterator
+Medium
+
+222. Count Complete Tree Nodes
+Medium
+
+236. Lowest Common Ancestor of a Binary Tree
+Medium
