@@ -91,6 +91,31 @@ jobs:
                   path.write_text(text, encoding="utf-8")
           PY
 
+      - name: Refresh 121 source provenance
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import re
+          from pathlib import Path
+
+          raw_path = Path("raw/top-interview-150/Array  String.txt")
+          data = raw_path.read_bytes()
+          blob_sha = hashlib.sha1(f"blob {len(data)}\0".encode("utf-8") + data).hexdigest()
+
+          meta_path = Path("problems/array-string/0121-best-time-to-buy-and-sell-stock/meta.yaml")
+          text = meta_path.read_text(encoding="utf-8")
+          updated, count = re.subn(
+              r"(?m)^(\s*raw_blob_sha:\s*)[0-9a-f]{40}\s*$",
+              rf"\g<1>{blob_sha}",
+              text,
+              count=1,
+          )
+          if count != 1:
+              raise SystemExit("Could not update 121 source.raw_blob_sha")
+          meta_path.write_text(updated, encoding="utf-8")
+          print("121 raw_blob_sha:", blob_sha)
+          PY
+
       - name: Run inventory tests
         run: python3 -m unittest tests.test_inventory -v
 
@@ -140,7 +165,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add "Array  String.txt" "raw/top-interview-150/Array  String.txt" "Stack.txt" "raw/top-interview-150/Stack.txt" data/migration-inventory.json
+          git add "Array  String.txt" "raw/top-interview-150/Array  String.txt" "Stack.txt" "raw/top-interview-150/Stack.txt" data/migration-inventory.json problems/array-string/0121-best-time-to-buy-and-sell-stock/meta.yaml
           git rm .github/workflows/tmp-source-sync-validation.yml
           git commit -m "chore: complete Top Interview 150 problem sources"
           git push origin HEAD:feat/leetcode-content-migration
