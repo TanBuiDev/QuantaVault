@@ -39,11 +39,6 @@ SECTION_ORDER = [
 ]
 SECTION_RANK = {slug: index for index, slug in enumerate(SECTION_ORDER)}
 
-# These six Array / String problems were already worked on in the user's prior
-# study conversation before the current raw Array/String file was assembled.
-# Their identities/order are known, but a complete verbatim source block is not
-# present in the current raw repository, so they remain source-missing until the
-# user supplies those exact statements in a raw source file.
 KNOWN_PRIOR_PROBLEMS = [
     {"id": 88, "title": "Merge Sorted Array", "difficulty": "Easy"},
     {"id": 27, "title": "Remove Element", "difficulty": "Easy"},
@@ -53,10 +48,6 @@ KNOWN_PRIOR_PROBLEMS = [
     {"id": 189, "title": "Rotate Array", "difficulty": "Medium"},
 ]
 
-# The study-plan identity is known, but the current user-supplied Stack source
-# accidentally contains a second 155. Min Stack block in this slot. Keep the
-# official problem in the canonical inventory as source-missing rather than
-# silently dropping ID 150 or inventing its statement.
 KNOWN_PENDING_PROBLEMS = [
     {
         "id": 150,
@@ -131,7 +122,6 @@ def parse_problem_blocks(text: str) -> list[dict]:
 
 
 def parse_problem_headers(text: str) -> list[dict]:
-    """Compatibility helper used by the deterministic self-test."""
     return [
         {"id": item["id"], "title": item["title"]}
         for item in parse_problem_blocks(text)
@@ -176,7 +166,6 @@ def build_inventory(root: Path) -> dict:
     canonical_by_id: dict[int, dict] = {}
     raw_occurrences: dict[int, list[dict]] = {}
 
-    # Start with known identities that do not yet have verbatim raw statements.
     for order, item in enumerate(KNOWN_PRIOR_PROBLEMS, start=1):
         canonical_by_id[item["id"]] = _placeholder_record(
             problem_id=item["id"],
@@ -187,10 +176,19 @@ def build_inventory(root: Path) -> dict:
             source_order=order,
         )
 
+    known_prior_ids = [item["id"] for item in KNOWN_PRIOR_PROBLEMS]
+
     for path in sorted(raw_dir.glob("*.txt"), key=lambda p: p.name.lower()):
         text = path.read_text(encoding="utf-8")
         parsed = parse_problem_blocks(text)
-        offset = len(KNOWN_PRIOR_PROBLEMS) if path.name == "Array  String.txt" else 0
+
+        offset = 0
+        if path.name == "Array  String.txt":
+            parsed_ids = [item["id"] for item in parsed]
+            has_prior_source = parsed_ids[: len(known_prior_ids)] == known_prior_ids
+            if not has_prior_source:
+                offset = len(KNOWN_PRIOR_PROBLEMS)
+
         for order, item in enumerate(parsed, start=1 + offset):
             problem_id = item["id"]
             record = {
@@ -209,7 +207,6 @@ def build_inventory(root: Path) -> dict:
                 "canonical_path": None,
             }
 
-            # Diagnostics track every raw occurrence, including duplicates.
             raw_occurrences.setdefault(problem_id, []).append(record)
 
             existing = canonical_by_id.get(problem_id)
@@ -217,17 +214,11 @@ def build_inventory(root: Path) -> dict:
                 canonical_by_id[problem_id] = record
                 continue
 
-            # If a future user-supplied raw block fills one of our known
-            # placeholders, replace the placeholder with the real source.
             if existing.get("source_status") == "source-missing" and existing.get(
                 "raw_source_file"
             ) is None:
                 canonical_by_id[problem_id] = record
-            # Otherwise this is a duplicate raw ID. Keep the first canonical
-            # record; raw_occurrences above preserves the duplicate evidence.
 
-    # Preserve official study-plan identities even when the raw source is
-    # malformed or missing. Never fabricate statement text.
     for item in KNOWN_PENDING_PROBLEMS:
         if item["id"] not in canonical_by_id:
             canonical_by_id[item["id"]] = _placeholder_record(
