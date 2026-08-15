@@ -1,0 +1,43 @@
+schema_version: 1
+problem_id: 30
+contract_type: method
+language_contract:
+  class: Solution
+  method: findSubstring
+  parameters:
+    - name: s
+      type: String
+    - name: words
+      type: String[]
+  return_type: List<Integer>
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      s: "barfoothefoobarman"
+      words: ["foo", "bar"]
+    expected: [0, 9]
+  - name: example-2
+    source: problem-example
+    input:
+      s: "wordgoodgoodgoodbestword"
+      words: ["word", "good", "best", "word"]
+    expected: []
+  - name: example-3
+    source: problem-example
+    input:
+      s: "barfoofoobarthefoobarman"
+      words: ["bar", "foo", "the"]
+    expected: [6, 9, 12]
+  - name: duplicate-word-quota
+    source: derived-edge-case
+    input:
+      s: "wordgoodgoodgoodbestword"
+      words: ["word", "good", "best", "good"]
+    expected: [8]
+  - name: overlapping-starts
+    source: derived-edge-case
+    input:
+      s: "aaaaaa"
+      words: ["aa", "aa"]
+    expected: [0, 1, 2]
