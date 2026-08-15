@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 48
-Last completed problem: 228. Summary Ranges
-Last completed commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
+Last completed global position: 49
+Last completed problem: 56. Merge Intervals
+Last completed commit: `268db6c4478c53e54bd6aa0d905fa12421b14e81`
 
 Next assignment:
-- global position: 49
-- problem: 56. Merge Intervals
+- global position: 50
+- problem: 57. Insert Interval
 
 Stop boundary: after global position 99
 
