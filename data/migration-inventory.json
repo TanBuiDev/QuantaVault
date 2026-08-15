@@ -254,9 +254,9 @@
       "section": "array-string",
       "raw_source_file": "Array  String.txt",
       "source_order": 23,
-      "source_status": "available",
-      "solution_status": "none",
-      "canonical_path": null
+      "source_status": "full-source",
+      "solution_status": "migrated-v2",
+      "canonical_path": "problems/array-string/0028-find-the-index-of-the-first-occurrence-in-a-string"
     },
     {
       "id": 68,
