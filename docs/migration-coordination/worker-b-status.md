@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 148
-Last completed problem: 123. Best Time to Buy and Sell Stock III
-Last completed problem commit: `2f2946cabb825d162aba5c0ae186f34cc712ce2c`
+Last completed global position: 147
+Last completed problem: 72. Edit Distance
+Last completed problem commit: `ee0e569db77a5152203798a6e9d68675d902c501`
 
 Next assignment:
-- global position: 147
-- problem: 72. Edit Distance
+- global position: 146
+- problem: 97. Interleaving String
 
 Stop boundary: after global position 100
 
