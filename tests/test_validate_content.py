@@ -119,6 +119,11 @@ def run_validator(root: Path) -> subprocess.CompletedProcess[str]:
 
 
 class ValidateContentV2Tests(unittest.TestCase):
+    def assert_validation_failure(self, root: Path, message: str) -> None:
+        result = run_validator(root)
+        self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+        self.assertIn(message, result.stdout)
+
     def test_complete_v2_problem_passes(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -126,6 +131,77 @@ class ValidateContentV2Tests(unittest.TestCase):
             result = run_validator(root)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             self.assertIn("PASS", result.stdout)
+
+    def test_complete_translation_requires_bilingual_problem(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            problem_dir = write_valid_problem(root)
+            (problem_dir / "problem.md").write_text(
+                "# Problem\n\n## Problem\nEnglish only.\n",
+                encoding="utf-8",
+            )
+            self.assert_validation_failure(root, "translation marked complete but problem.md is not bilingual")
+
+    def test_complete_interview_requires_bilingual_qa(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            problem_dir = write_valid_problem(root)
+            (problem_dir / "interview.md").write_text(
+                "# Interview\n\nQ (EN): Explain it.\n\nShort answer (EN): One pass.\n",
+                encoding="utf-8",
+            )
+            self.assert_validation_failure(root, "interview marked complete but bilingual Q&A markers are missing")
+
+    def test_complete_cases_requires_cases_yaml(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            problem_dir = write_valid_problem(root)
+            (problem_dir / "cases.yaml").unlink()
+            self.assert_validation_failure(root, "cases marked complete but cases.yaml is missing")
+
+    def test_full_source_requires_provenance(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            problem_dir = write_valid_problem(root)
+            meta = VALID_META.replace(
+                '  raw_blob_sha: "193928590a8e65c3882a54482bcec77f2b17e470"\n',
+                "",
+            )
+            (problem_dir / "meta.yaml").write_text(meta, encoding="utf-8")
+            self.assert_validation_failure(root, "full-source metadata requires source.raw_file and source.raw_blob_sha")
+
+    def test_media_scope_must_match_path(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            problem_dir = write_valid_problem(root)
+            asset = problem_dir / "assets" / "solution" / "example-1.png"
+            asset.parent.mkdir(parents=True)
+            asset.write_bytes(b"not-a-real-image-but-path-exists")
+            meta = VALID_META + """media:
+  - id: example-1
+    path: assets/solution/example-1.png
+    scope: problem
+    role: example
+    origin: project-created
+    alt_en: Example visual
+    alt_vi: Hình minh họa ví dụ
+"""
+            (problem_dir / "meta.yaml").write_text(meta, encoding="utf-8")
+            self.assert_validation_failure(root, "media scope/path mismatch")
+
+    def test_solution_complete_requires_solution_and_java(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            problem_dir = write_valid_problem(root)
+            (problem_dir / "solution.md").unlink()
+            self.assert_validation_failure(root, "solution marked complete but solution.md is missing")
+
+    def test_hints_complete_requires_hints_file(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            problem_dir = write_valid_problem(root)
+            (problem_dir / "hints.md").unlink()
+            self.assert_validation_failure(root, "hints marked complete but hints.md is missing")
 
 
 if __name__ == "__main__":
