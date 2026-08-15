@@ -1,0 +1,43 @@
+schema_version: 1
+problem_id: 205
+contract_type: method
+language_contract:
+  class: Solution
+  method: isIsomorphic
+  parameters:
+    - name: s
+      type: String
+    - name: t
+      type: String
+  return_type: boolean
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      s: "egg"
+      t: "add"
+    expected: true
+  - name: example-2
+    source: problem-example
+    input:
+      s: "f11"
+      t: "b23"
+    expected: false
+  - name: example-3
+    source: problem-example
+    input:
+      s: "paper"
+      t: "title"
+    expected: true
+  - name: reverse-collision
+    source: derived-edge-case
+    input:
+      s: "ab"
+      t: "aa"
+    expected: false
+  - name: repeated-pattern-mismatch
+    source: derived-edge-case
+    input:
+      s: "badc"
+      t: "baba"
+    expected: false
