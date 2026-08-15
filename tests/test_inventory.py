@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import tempfile
 import unittest
+from pathlib import Path
 
-from tools.inventory import parse_problem_blocks
+from tools.inventory import build_inventory, parse_problem_blocks
 
 
 class InventoryParserTests(unittest.TestCase):
@@ -53,6 +55,53 @@ Constraints:
         self.assertEqual(len(parsed), 1)
         self.assertEqual(parsed[0]["id"], 211)
         self.assertEqual(parsed[0]["source_status"], "available")
+
+    def test_duplicate_stack_source_keeps_unique_155_and_placeholder_150(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            raw = root / "raw" / "top-interview-150"
+            raw.mkdir(parents=True)
+            (raw / "Stack.txt").write_text(
+                """Stack
+155. Min Stack
+Medium
+Design stack.
+Example 1:
+Input: []
+Output: []
+Constraints:
+1 <= calls <= 10
+
+155. Min Stack
+Medium
+Design stack duplicated.
+Example 1:
+Input: []
+Output: []
+Constraints:
+1 <= calls <= 10
+
+224. Basic Calculator
+Hard
+Calculate expression.
+Example 1:
+Input: s = \"1+1\"
+Output: 2
+Constraints:
+1 <= s.length <= 10
+""",
+                encoding="utf-8",
+            )
+
+            inventory = build_inventory(root)
+            ids = [item["id"] for item in inventory["problems"]]
+            self.assertEqual(ids.count(155), 1)
+            self.assertIn(150, ids)
+            pending = next(item for item in inventory["problems"] if item["id"] == 150)
+            self.assertEqual(pending["source_status"], "source-missing")
+            self.assertEqual(pending["raw_source_file"], "Stack.txt")
+            self.assertEqual(pending["source_order"], 4)
+            self.assertEqual([item["id"] for item in inventory["duplicates"]], [155])
 
 
 if __name__ == "__main__":
