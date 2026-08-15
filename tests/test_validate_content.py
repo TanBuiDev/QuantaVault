@@ -152,6 +152,38 @@ class ValidateContentV2Tests(unittest.TestCase):
             )
             self.assert_validation_failure(root, "interview marked complete but bilingual Q&A markers are missing")
 
+    def test_interview_accepts_markdown_heading_answer_labels(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            problem_dir = write_valid_problem(root)
+            (problem_dir / "interview.md").write_text(
+                """# Interview Preparation / Chuẩn bị phỏng vấn
+
+**Q (EN):** Can you explain your approach?
+
+**Q (VI):** Bạn có thể giải thích cách tiếp cận không?
+
+### Short answer (EN)
+
+One pass.
+
+### Trả lời ngắn (VI)
+
+Duyệt một lần.
+
+### Standard answer (EN)
+
+I keep the minimum price seen so far.
+
+### Trả lời chuẩn (VI)
+
+Tôi giữ giá nhỏ nhất đã thấy.
+""",
+                encoding="utf-8",
+            )
+            result = run_validator(root)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
     def test_complete_cases_requires_cases_yaml(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
