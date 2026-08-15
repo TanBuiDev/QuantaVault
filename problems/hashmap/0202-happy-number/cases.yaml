@@ -1,0 +1,31 @@
+schema_version: 1
+problem_id: 202
+contract_type: method
+language_contract:
+  class: Solution
+  method: isHappy
+  parameters:
+    - name: n
+      type: int
+  return_type: boolean
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      n: 19
+    expected: true
+  - name: example-2
+    source: problem-example
+    input:
+      n: 2
+    expected: false
+  - name: fixed-point
+    source: derived-edge-case
+    input:
+      n: 1
+    expected: true
+  - name: another-happy
+    source: derived-edge-case
+    input:
+      n: 7
+    expected: true
