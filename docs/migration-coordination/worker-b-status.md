@@ -4,7 +4,7 @@ Worker: B
 Branch: `worker-b/reverse-migration`
 Assignment: global positions 150 -> 100
 Direction: reverse
-State: READY_NOT_STARTED
+State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
