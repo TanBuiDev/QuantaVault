@@ -1,0 +1,35 @@
+schema_version: 2
+id: 380
+slug: insert-delete-getrandom-o1
+title: Insert Delete GetRandom O(1)
+difficulty: Medium
+primary_section: array-string
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Array  String.txt"
+  raw_blob_sha: "b1c7a453f152629ce35040af85f2b1f4c22f589e"
+study_plans:
+  - top-interview-150
+topics:
+  - Array
+  - Hash Table
+  - Math
+  - Design
+  - Randomized
+patterns:
+  - HashMap Plus Dynamic Array
+  - Swap With Last Removal
+solution_languages:
+  - java
+time_complexity: average O(1) per operation
+space_complexity: O(n)
+leetcode_url: https://leetcode.com/problems/insert-delete-getrandom-o1/
