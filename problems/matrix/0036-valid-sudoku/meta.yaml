@@ -1,0 +1,33 @@
+schema_version: 2
+id: 36
+slug: valid-sudoku
+title: Valid Sudoku
+difficulty: Medium
+primary_section: matrix
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Matrix.txt"
+  raw_blob_sha: "55ea154b7c8a5877a1262dbe14b4de5fe5502273"
+study_plans:
+  - top-interview-150
+topics:
+  - Array
+  - Hash Table
+  - Matrix
+patterns:
+  - Constraint Tracking
+  - Row Column Box Indexing
+solution_languages:
+  - java
+time_complexity: O(1) because the board is fixed at 9x9
+space_complexity: O(1) because the tracking tables are fixed size
+leetcode_url: https://leetcode.com/problems/valid-sudoku/
