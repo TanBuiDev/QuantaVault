@@ -103,6 +103,47 @@ Constraints:
             self.assertEqual(pending["source_order"], 4)
             self.assertEqual([item["id"] for item in inventory["duplicates"]], [155])
 
+    def test_array_string_source_with_prior_problems_uses_real_source_order(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            raw = root / "raw" / "top-interview-150"
+            raw.mkdir(parents=True)
+            (raw / "Array  String.txt").write_text(
+                """Array / String
+88. Merge Sorted Array
+Easy
+27. Remove Element
+Easy
+26. Remove Duplicates from Sorted Array
+Easy
+80. Remove Duplicates from Sorted Array II
+Medium
+169. Majority Element
+Easy
+189. Rotate Array
+Medium
+121. Best Time to Buy and Sell Stock
+Easy
+""",
+                encoding="utf-8",
+            )
+
+            inventory = build_inventory(root)
+            array_items = [
+                item for item in inventory["problems"] if item["section"] == "array-string"
+            ]
+            self.assertEqual(
+                [item["id"] for item in array_items[:7]],
+                [88, 27, 26, 80, 169, 189, 121],
+            )
+            self.assertEqual(
+                [item["source_order"] for item in array_items[:7]],
+                [1, 2, 3, 4, 5, 6, 7],
+            )
+            self.assertTrue(
+                all(item["raw_source_file"] == "Array  String.txt" for item in array_items[:7])
+            )
+
 
 if __name__ == "__main__":
     unittest.main()
