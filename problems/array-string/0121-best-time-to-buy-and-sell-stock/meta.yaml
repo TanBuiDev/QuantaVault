@@ -1,0 +1,20 @@
+id: 121
+slug: best-time-to-buy-and-sell-stock
+title: Best Time to Buy and Sell Stock
+difficulty: Easy
+primary_section: array-string
+topics:
+  - Array
+  - Dynamic Programming
+patterns:
+  - Running Minimum
+  - One Pass
+study_plans:
+  - top-interview-150
+status: solved
+source_status: available
+solution_languages:
+  - java
+time_complexity: O(n)
+space_complexity: O(1)
+leetcode_url: https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
