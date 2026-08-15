@@ -2,17 +2,17 @@
   "source_root": "raw/top-interview-150",
   "problem_count_detected": 150,
   "unique_problem_count": 150,
-  "full_source_count": 143,
-  "source_missing_count": 7,
+  "full_source_count": 150,
+  "source_missing_count": 0,
   "problems": [
     {
       "id": 88,
       "title": "Merge Sorted Array",
       "difficulty": "Easy",
       "section": "array-string",
-      "raw_source_file": null,
+      "raw_source_file": "Array  String.txt",
       "source_order": 1,
-      "source_status": "source-missing",
+      "source_status": "available",
       "solution_status": "candidate-existing",
       "canonical_path": null
     },
@@ -21,9 +21,9 @@
       "title": "Remove Element",
       "difficulty": "Easy",
       "section": "array-string",
-      "raw_source_file": null,
+      "raw_source_file": "Array  String.txt",
       "source_order": 2,
-      "source_status": "source-missing",
+      "source_status": "available",
       "solution_status": "candidate-existing",
       "canonical_path": null
     },
@@ -32,9 +32,9 @@
       "title": "Remove Duplicates from Sorted Array",
       "difficulty": "Easy",
       "section": "array-string",
-      "raw_source_file": null,
+      "raw_source_file": "Array  String.txt",
       "source_order": 3,
-      "source_status": "source-missing",
+      "source_status": "available",
       "solution_status": "candidate-existing",
       "canonical_path": null
     },
@@ -43,9 +43,9 @@
       "title": "Remove Duplicates from Sorted Array II",
       "difficulty": "Medium",
       "section": "array-string",
-      "raw_source_file": null,
+      "raw_source_file": "Array  String.txt",
       "source_order": 4,
-      "source_status": "source-missing",
+      "source_status": "available",
       "solution_status": "candidate-existing",
       "canonical_path": null
     },
@@ -54,9 +54,9 @@
       "title": "Majority Element",
       "difficulty": "Easy",
       "section": "array-string",
-      "raw_source_file": null,
+      "raw_source_file": "Array  String.txt",
       "source_order": 5,
-      "source_status": "source-missing",
+      "source_status": "available",
       "solution_status": "candidate-existing",
       "canonical_path": null
     },
@@ -65,9 +65,9 @@
       "title": "Rotate Array",
       "difficulty": "Medium",
       "section": "array-string",
-      "raw_source_file": null,
+      "raw_source_file": "Array  String.txt",
       "source_order": 6,
-      "source_status": "source-missing",
+      "source_status": "available",
       "solution_status": "candidate-existing",
       "canonical_path": null
     },
@@ -606,7 +606,7 @@
       "section": "stack",
       "raw_source_file": "Stack.txt",
       "source_order": 4,
-      "source_status": "source-missing",
+      "source_status": "available",
       "solution_status": "none",
       "canonical_path": null
     },
@@ -1656,21 +1656,5 @@
       "canonical_path": null
     }
   ],
-  "duplicates": [
-    {
-      "id": 155,
-      "occurrences": [
-        {
-          "raw_source_file": "Stack.txt",
-          "source_order": 3,
-          "title": "Min Stack"
-        },
-        {
-          "raw_source_file": "Stack.txt",
-          "source_order": 4,
-          "title": "Min Stack"
-        }
-      ]
-    }
-  ]
+  "duplicates": []
 }
