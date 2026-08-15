@@ -408,9 +408,9 @@
       "section": "matrix",
       "raw_source_file": "Matrix.txt",
       "source_order": 4,
-      "source_status": "available",
-      "solution_status": "none",
-      "canonical_path": null
+      "source_status": "full-source",
+      "solution_status": "migrated-v2",
+      "canonical_path": "problems/matrix/0073-set-matrix-zeroes"
     },
     {
       "id": 289,
