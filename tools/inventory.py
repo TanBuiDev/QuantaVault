@@ -10,6 +10,7 @@ from pathlib import Path
 
 HEADER_RE = re.compile(r"^\s*(\d{1,5})\.\s+([^\r\n]+?)\s*$")
 DIFFICULTIES = {"Easy", "Medium", "Hard"}
+UI_STATUSES = {"Solved", "Attempted"}
 CANDIDATE_EXISTING_SOLUTIONS = {88, 27, 26, 80, 169, 189, 121}
 
 SECTION_ORDER = [
@@ -76,12 +77,15 @@ def find_problem_headers(text: str) -> list[dict]:
             continue
 
         difficulty = None
-        for following in lines[index + 1 : index + 5]:
+        for following in lines[index + 1 : index + 6]:
             stripped = following.strip()
             if not stripped:
                 continue
             if stripped in DIFFICULTIES:
                 difficulty = stripped
+                break
+            if stripped in UI_STATUSES:
+                continue
             break
 
         if difficulty is None:
