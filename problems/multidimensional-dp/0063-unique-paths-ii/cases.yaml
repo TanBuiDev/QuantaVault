@@ -1,0 +1,31 @@
+schema_version: 1
+problem_id: 63
+contract_type: method
+language_contract:
+  class: Solution
+  method: uniquePathsWithObstacles
+  parameters:
+    - name: obstacleGrid
+      type: int[][]
+  return_type: int
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      obstacleGrid: [[0, 0, 0], [0, 1, 0], [0, 0, 0]]
+    expected: 2
+  - name: example-2
+    source: problem-example
+    input:
+      obstacleGrid: [[0, 1], [0, 0]]
+    expected: 1
+  - name: blocked-start
+    source: derived-edge-case
+    input:
+      obstacleGrid: [[1]]
+    expected: 0
+  - name: open-single-cell
+    source: derived-edge-case
+    input:
+      obstacleGrid: [[0]]
+    expected: 1
