@@ -8,7 +8,7 @@ import json
 import re
 from pathlib import Path
 
-HEADER_RE = re.compile(r"(?m)^\s*(\d{1,5})\.\s+([^\r\n]+?)\s*$")
+HEADER_RE = re.compile(r"^\s*(\d{1,5})\.\s+([^\r\n]+?)\s*$")
 DIFFICULTIES = {"Easy", "Medium", "Hard"}
 CANDIDATE_EXISTING_SOLUTIONS = {88, 27, 26, 80, 169, 189, 121}
 
@@ -26,21 +26,60 @@ KNOWN_PRIOR_PROBLEMS = [
 ]
 
 
-def parse_problem_blocks(text: str) -> list[dict]:
-    """Return ordered problem records and their exact raw block text."""
-    matches = list(HEADER_RE.finditer(text))
-    records: list[dict] = []
-    for index, match in enumerate(matches):
-        end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
-        block = text[match.start():end]
-        lines = block.splitlines()
-        difficulty = next((line.strip() for line in lines[1:5] if line.strip() in DIFFICULTIES), None)
-        has_full_statement = "Constraints:" in block and re.search(r"(?m)^Example\s+\d+:?", block) is not None
-        records.append(
+def find_problem_headers(text: str) -> list[dict]:
+    """Find real problem headers while ignoring numbered explanation/list items."""
+    lines = text.splitlines(keepends=True)
+    offsets: list[int] = []
+    position = 0
+    for line in lines:
+        offsets.append(position)
+        position += len(line)
+
+    headers: list[dict] = []
+    for index, line in enumerate(lines):
+        match = HEADER_RE.match(line.rstrip("\r\n"))
+        if not match:
+            continue
+
+        difficulty = None
+        for following in lines[index + 1 : index + 5]:
+            stripped = following.strip()
+            if not stripped:
+                continue
+            if stripped in DIFFICULTIES:
+                difficulty = stripped
+            break
+
+        if difficulty is None:
+            continue
+
+        headers.append(
             {
                 "id": int(match.group(1)),
                 "title": match.group(2).strip(),
                 "difficulty": difficulty,
+                "start": offsets[index],
+            }
+        )
+    return headers
+
+
+def parse_problem_blocks(text: str) -> list[dict]:
+    """Return ordered problem records and their exact raw block text."""
+    headers = find_problem_headers(text)
+    records: list[dict] = []
+    for index, header in enumerate(headers):
+        end = headers[index + 1]["start"] if index + 1 < len(headers) else len(text)
+        block = text[header["start"]:end]
+        has_full_statement = (
+            "Constraints:" in block
+            and re.search(r"(?m)^Example(?:\s+\d+)?:\s*$", block) is not None
+        )
+        records.append(
+            {
+                "id": header["id"],
+                "title": header["title"],
+                "difficulty": header["difficulty"],
                 "source_status": "available" if has_full_statement else "source-missing",
                 "raw_block": block,
             }
