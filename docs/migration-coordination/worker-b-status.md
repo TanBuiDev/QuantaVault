@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 149
-Last completed problem: 188. Best Time to Buy and Sell Stock IV
-Last completed problem commit: `16df33080e1900b5de220c16db9b365984bfcddd`
+Last completed global position: 148
+Last completed problem: 123. Best Time to Buy and Sell Stock III
+Last completed problem commit: `2f2946cabb825d162aba5c0ae186f34cc712ce2c`
 
 Next assignment:
-- global position: 148
-- problem: 123. Best Time to Buy and Sell Stock III
+- global position: 147
+- problem: 72. Edit Distance
 
 Stop boundary: after global position 100
 
