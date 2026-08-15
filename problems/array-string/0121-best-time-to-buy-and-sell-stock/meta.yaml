@@ -1,18 +1,30 @@
+schema_version: 2
 id: 121
 slug: best-time-to-buy-and-sell-stock
 title: Best Time to Buy and Sell Stock
 difficulty: Easy
 primary_section: array-string
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Array  String.txt"
+  raw_blob_sha: "193928590a8e65c3882a54482bcec77f2b17e470"
+study_plans:
+  - top-interview-150
 topics:
   - Array
   - Dynamic Programming
 patterns:
   - Running Minimum
   - One Pass
-study_plans:
-  - top-interview-150
-status: solved
-source_status: available
 solution_languages:
   - java
 time_complexity: O(n)
