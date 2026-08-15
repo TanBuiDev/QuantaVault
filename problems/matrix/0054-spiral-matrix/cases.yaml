@@ -1,0 +1,41 @@
+schema_version: 1
+problem_id: 54
+contract_type: method
+language_contract:
+  class: Solution
+  method: spiralOrder
+  parameters:
+    - name: matrix
+      type: int[][]
+  return_type: List<Integer>
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      matrix:
+        - [1, 2, 3]
+        - [4, 5, 6]
+        - [7, 8, 9]
+    expected: [1, 2, 3, 6, 9, 8, 7, 4, 5]
+  - name: example-2
+    source: problem-example
+    input:
+      matrix:
+        - [1, 2, 3, 4]
+        - [5, 6, 7, 8]
+        - [9, 10, 11, 12]
+    expected: [1, 2, 3, 4, 8, 12, 11, 10, 9, 5, 6, 7]
+  - name: single-row
+    source: derived-edge-case
+    input:
+      matrix:
+        - [1, 2, 3, 4]
+    expected: [1, 2, 3, 4]
+  - name: single-column
+    source: derived-edge-case
+    input:
+      matrix:
+        - [1]
+        - [2]
+        - [3]
+    expected: [1, 2, 3]
