@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 142
-Last completed problem: 120. Triangle
-Last completed problem commit: `2f159b6dc67d416388046135862397b6f258f879`
+Last completed global position: 141
+Last completed problem: 300. Longest Increasing Subsequence
+Last completed problem commit: `d1df302e155af5ebc572a0f757533cdbb6e848eb`
 
 Next assignment:
-- global position: 141
-- problem: 300. Longest Increasing Subsequence
+- global position: 140
+- problem: 322. Coin Change
 
 Stop boundary: after global position 100
 
