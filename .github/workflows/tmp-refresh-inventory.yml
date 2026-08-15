@@ -15,6 +15,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Run inventory parser tests
+        run: python3 -m unittest tests.test_inventory -v
+
       - name: Diagnose regenerated inventory
         run: |
           python3 tools/inventory.py --root . --output /tmp/generated-inventory.json
