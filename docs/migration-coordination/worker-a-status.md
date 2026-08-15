@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 50
-Last completed problem: 57. Insert Interval
-Last completed commit: `932155b808df364fcdbc611842c47a631ca563d3`
+Last completed global position: 51
+Last completed problem: 452. Minimum Number of Arrows to Burst Balloons
+Last completed commit: `9dcfede6a59f96bfd2b954e21b9c6264427d9687`
 
 Next assignment:
-- global position: 51
-- problem: 452. Minimum Number of Arrows to Burst Balloons
+- global position: 52
+- problem: 20. Valid Parentheses
 
 Stop boundary: after global position 99
 
