@@ -12,10 +12,38 @@ HEADER_RE = re.compile(r"^\s*(\d{1,5})\.\s+([^\r\n]+?)\s*$")
 DIFFICULTIES = {"Easy", "Medium", "Hard"}
 CANDIDATE_EXISTING_SOLUTIONS = {88, 27, 26, 80, 169, 189, 121}
 
+SECTION_ORDER = [
+    "array-string",
+    "two-pointers",
+    "sliding-window",
+    "matrix",
+    "hashmap",
+    "intervals",
+    "stack",
+    "linked-list",
+    "binary-tree-general",
+    "binary-tree-bfs",
+    "binary-search-tree",
+    "graph-general",
+    "graph-bfs",
+    "trie",
+    "backtracking",
+    "divide-and-conquer",
+    "kadanes-algorithm",
+    "binary-search",
+    "heap",
+    "bit-manipulation",
+    "math",
+    "1d-dp",
+    "multidimensional-dp",
+]
+SECTION_RANK = {slug: index for index, slug in enumerate(SECTION_ORDER)}
+
 # These six Array / String problems were already worked on in the user's prior
 # study conversation before the current raw Array/String file was assembled.
 # Their identities/order are known, but a complete verbatim source block is not
-# present in the current raw repository, so they remain source-missing.
+# present in the current raw repository, so they remain source-missing until the
+# user supplies those exact statements in a raw source file.
 KNOWN_PRIOR_PROBLEMS = [
     {"id": 88, "title": "Merge Sorted Array", "difficulty": "Easy"},
     {"id": 27, "title": "Remove Element", "difficulty": "Easy"},
@@ -23,6 +51,21 @@ KNOWN_PRIOR_PROBLEMS = [
     {"id": 80, "title": "Remove Duplicates from Sorted Array II", "difficulty": "Medium"},
     {"id": 169, "title": "Majority Element", "difficulty": "Easy"},
     {"id": 189, "title": "Rotate Array", "difficulty": "Medium"},
+]
+
+# The study-plan identity is known, but the current user-supplied Stack source
+# accidentally contains a second 155. Min Stack block in this slot. Keep the
+# official problem in the canonical inventory as source-missing rather than
+# silently dropping ID 150 or inventing its statement.
+KNOWN_PENDING_PROBLEMS = [
+    {
+        "id": 150,
+        "title": "Evaluate Reverse Polish Notation",
+        "difficulty": "Medium",
+        "section": "stack",
+        "raw_source_file": "Stack.txt",
+        "source_order": 4,
+    }
 ]
 
 
@@ -102,27 +145,47 @@ def section_slug(filename: str) -> str:
     return stem
 
 
+def _placeholder_record(
+    *,
+    problem_id: int,
+    title: str,
+    difficulty: str,
+    section: str,
+    raw_source_file: str | None,
+    source_order: int,
+) -> dict:
+    return {
+        "id": problem_id,
+        "title": title,
+        "difficulty": difficulty,
+        "section": section,
+        "raw_source_file": raw_source_file,
+        "source_order": source_order,
+        "source_status": "source-missing",
+        "solution_status": (
+            "candidate-existing"
+            if problem_id in CANDIDATE_EXISTING_SOLUTIONS
+            else "none"
+        ),
+        "canonical_path": None,
+    }
+
+
 def build_inventory(root: Path) -> dict:
     raw_dir = root / "raw" / "top-interview-150"
-    problems: list[dict] = []
-    seen: dict[int, list[dict]] = {}
+    canonical_by_id: dict[int, dict] = {}
+    raw_occurrences: dict[int, list[dict]] = {}
 
-    # Preserve the official Array / String order known from the user's prior
-    # study work before appending the records that exist in Array  String.txt.
+    # Start with known identities that do not yet have verbatim raw statements.
     for order, item in enumerate(KNOWN_PRIOR_PROBLEMS, start=1):
-        record = {
-            "id": item["id"],
-            "title": item["title"],
-            "difficulty": item["difficulty"],
-            "section": "array-string",
-            "raw_source_file": None,
-            "source_order": order,
-            "source_status": "source-missing",
-            "solution_status": "candidate-existing",
-            "canonical_path": None,
-        }
-        problems.append(record)
-        seen.setdefault(item["id"], []).append(record)
+        canonical_by_id[item["id"]] = _placeholder_record(
+            problem_id=item["id"],
+            title=item["title"],
+            difficulty=item["difficulty"],
+            section="array-string",
+            raw_source_file=None,
+            source_order=order,
+        )
 
     for path in sorted(raw_dir.glob("*.txt"), key=lambda p: p.name.lower()):
         text = path.read_text(encoding="utf-8")
@@ -145,8 +208,45 @@ def build_inventory(root: Path) -> dict:
                 ),
                 "canonical_path": None,
             }
-            problems.append(record)
-            seen.setdefault(problem_id, []).append(record)
+
+            # Diagnostics track every raw occurrence, including duplicates.
+            raw_occurrences.setdefault(problem_id, []).append(record)
+
+            existing = canonical_by_id.get(problem_id)
+            if existing is None:
+                canonical_by_id[problem_id] = record
+                continue
+
+            # If a future user-supplied raw block fills one of our known
+            # placeholders, replace the placeholder with the real source.
+            if existing.get("source_status") == "source-missing" and existing.get(
+                "raw_source_file"
+            ) is None:
+                canonical_by_id[problem_id] = record
+            # Otherwise this is a duplicate raw ID. Keep the first canonical
+            # record; raw_occurrences above preserves the duplicate evidence.
+
+    # Preserve official study-plan identities even when the raw source is
+    # malformed or missing. Never fabricate statement text.
+    for item in KNOWN_PENDING_PROBLEMS:
+        if item["id"] not in canonical_by_id:
+            canonical_by_id[item["id"]] = _placeholder_record(
+                problem_id=item["id"],
+                title=item["title"],
+                difficulty=item["difficulty"],
+                section=item["section"],
+                raw_source_file=item["raw_source_file"],
+                source_order=item["source_order"],
+            )
+
+    problems = sorted(
+        canonical_by_id.values(),
+        key=lambda record: (
+            SECTION_RANK.get(record["section"], len(SECTION_RANK)),
+            record["source_order"],
+            record["id"],
+        ),
+    )
 
     duplicates = [
         {
@@ -160,16 +260,19 @@ def build_inventory(root: Path) -> dict:
                 for record in records
             ],
         }
-        for problem_id, records in sorted(seen.items())
+        for problem_id, records in sorted(raw_occurrences.items())
         if len(records) > 1
     ]
 
+    unique_ids = {record["id"] for record in problems}
     return {
         "source_root": "raw/top-interview-150",
         "problem_count_detected": len(problems),
-        "unique_problem_count": len(seen),
+        "unique_problem_count": len(unique_ids),
         "full_source_count": sum(p["source_status"] == "available" for p in problems),
-        "source_missing_count": sum(p["source_status"] == "source-missing" for p in problems),
+        "source_missing_count": sum(
+            p["source_status"] == "source-missing" for p in problems
+        ),
         "problems": problems,
         "duplicates": duplicates,
     }
