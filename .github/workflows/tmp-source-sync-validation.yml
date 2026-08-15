@@ -52,8 +52,15 @@ jobs:
           import re
           from pathlib import Path
 
-          array_six = Path("/tmp/array-six.txt").read_text(encoding="utf-8").rstrip()
-          rpn = Path("/tmp/rpn-150.txt").read_text(encoding="utf-8").rstrip()
+          def clean_trailing_whitespace(value: str) -> str:
+              return "\n".join(line.rstrip() for line in value.splitlines()).rstrip()
+
+          array_six = clean_trailing_whitespace(
+              Path("/tmp/array-six.txt").read_text(encoding="utf-8")
+          )
+          rpn = clean_trailing_whitespace(
+              Path("/tmp/rpn-150.txt").read_text(encoding="utf-8")
+          )
 
           for filename in ("Array  String.txt", "raw/top-interview-150/Array  String.txt"):
               path = Path(filename)
