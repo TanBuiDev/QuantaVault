@@ -203,6 +203,17 @@ class ValidateContentV2Tests(unittest.TestCase):
             (problem_dir / "hints.md").unlink()
             self.assert_validation_failure(root, "hints marked complete but hints.md is missing")
 
+    def test_extract_study_plan_ids_supports_inline_problem_lists(self) -> None:
+        from tools.validate_content import extract_study_plan_ids
+
+        text = """sections:
+  - name: A
+    problems: [88, 27, 121]
+  - name: B
+    problems: [122, 55]
+"""
+        self.assertEqual(extract_study_plan_ids(text), [88, 27, 121, 122, 55])
+
 
 if __name__ == "__main__":
     unittest.main()
