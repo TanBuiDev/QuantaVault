@@ -342,10 +342,10 @@ def validate_interview(problem_dir: Path, meta: dict) -> list[str]:
     required = (
         "Q (EN):",
         "Q (VI):",
-        "Short answer (EN):",
-        "Trả lời ngắn (VI):",
-        "Standard answer (EN):",
-        "Trả lời chuẩn (VI):",
+        "Short answer (EN)",
+        "Trả lời ngắn (VI)",
+        "Standard answer (EN)",
+        "Trả lời chuẩn (VI)",
     )
     if any(marker not in text for marker in required):
         return [
