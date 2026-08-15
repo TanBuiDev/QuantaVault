@@ -1,0 +1,31 @@
+schema_version: 1
+problem_id: 149
+contract_type: method
+language_contract:
+  class: Solution
+  method: maxPoints
+  parameters:
+    - name: points
+      type: int[][]
+  return_type: int
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      points: [[1, 1], [2, 2], [3, 3]]
+    expected: 3
+  - name: example-2
+    source: problem-example
+    input:
+      points: [[1, 1], [3, 2], [5, 3], [4, 1], [2, 3], [1, 4]]
+    expected: 4
+  - name: vertical
+    source: derived-edge-case
+    input:
+      points: [[2, 1], [2, 3], [2, 5], [4, 5]]
+    expected: 3
+  - name: negative-slope
+    source: derived-regression
+    input:
+      points: [[0, 0], [1, -1], [2, -2], [2, 0]]
+    expected: 3
