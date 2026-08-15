@@ -56,6 +56,33 @@ Constraints:
         self.assertEqual(parsed[0]["id"], 211)
         self.assertEqual(parsed[0]["source_status"], "available")
 
+    def test_problem_header_accepts_status_line_before_difficulty(self) -> None:
+        text = """Array / String
+88. Merge Sorted Array
+Solved
+Easy
+Given arrays.
+Example 1:
+Input: nums1 = [1], nums2 = []
+Output: [1]
+Constraints:
+1 <= nums1.length <= 200
+
+189. Rotate Array
+Attempted
+Medium
+Rotate the array.
+Example 1:
+Input: nums = [1], k = 0
+Output: [1]
+Constraints:
+1 <= nums.length <= 100000
+"""
+        parsed = parse_problem_blocks(text)
+        self.assertEqual([item["id"] for item in parsed], [88, 189])
+        self.assertEqual([item["difficulty"] for item in parsed], ["Easy", "Medium"])
+        self.assertTrue(all(item["source_status"] == "available" for item in parsed))
+
     def test_duplicate_stack_source_keeps_unique_155_and_placeholder_150(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
