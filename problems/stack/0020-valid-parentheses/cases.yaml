@@ -1,0 +1,51 @@
+schema_version: 1
+problem_id: 20
+contract_type: method
+language_contract:
+  class: Solution
+  method: isValid
+  parameters:
+    - name: s
+      type: String
+  return_type: boolean
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      s: "()"
+    expected: true
+  - name: example-2
+    source: problem-example
+    input:
+      s: "()[]{}"
+    expected: true
+  - name: example-3-wrong-type
+    source: problem-example
+    input:
+      s: "(]"
+    expected: false
+  - name: example-4-nested
+    source: problem-example
+    input:
+      s: "([])"
+    expected: true
+  - name: example-5-wrong-order
+    source: problem-example
+    input:
+      s: "([)]"
+    expected: false
+  - name: unmatched-closing
+    source: derived-edge-case
+    input:
+      s: "]"
+    expected: false
+  - name: unmatched-opening
+    source: derived-edge-case
+    input:
+      s: "((("
+    expected: false
+  - name: deep-mixed-nesting
+    source: derived-regression
+    input:
+      s: "{[()()]}"
+    expected: true
