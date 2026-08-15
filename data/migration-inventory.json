@@ -452,9 +452,9 @@
       "section": "hashmap",
       "raw_source_file": "Hashmap.txt",
       "source_order": 3,
-      "source_status": "available",
-      "solution_status": "none",
-      "canonical_path": null
+      "source_status": "full-source",
+      "solution_status": "migrated-v2",
+      "canonical_path": "problems/hashmap/0290-word-pattern"
     },
     {
       "id": 242,
