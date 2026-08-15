@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "problem.schema.json",
+  "title": "Canonical LeetCode Problem Metadata",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "slug",
+    "title",
+    "difficulty",
+    "primary_section",
+    "topics",
+    "patterns",
+    "study_plans",
+    "status",
+    "source_status",
+    "solution_languages",
+    "leetcode_url"
+  ],
+  "properties": {
+    "id": {"type": "integer", "minimum": 1},
+    "slug": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "title": {"type": "string", "minLength": 1},
+    "difficulty": {"enum": ["Easy", "Medium", "Hard"]},
+    "primary_section": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "topics": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "patterns": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "study_plans": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "status": {"enum": ["unsolved", "in-progress", "solved"]},
+    "source_status": {"enum": ["available", "source-missing"]},
+    "solution_languages": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "time_complexity": {"type": "string"},
+    "space_complexity": {"type": "string"},
+    "leetcode_url": {"type": "string", "pattern": "^https://leetcode\\.com/problems/"}
+  },
+  "description": "Filesystem validation additionally requires solved problems to contain solution.md and Solution.java, and source_status=available canonical problems to contain problem.md."
+}
