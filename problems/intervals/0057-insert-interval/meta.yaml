@@ -1,0 +1,31 @@
+schema_version: 2
+id: 57
+slug: insert-interval
+title: Insert Interval
+difficulty: Medium
+primary_section: intervals
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Intervals.txt"
+  raw_blob_sha: "113c3211b5e02ebaa87bbba24f74f41109da627d"
+study_plans:
+  - top-interview-150
+topics:
+  - Array
+patterns:
+  - Three-Phase Interval Scan
+  - Interval Merging
+solution_languages:
+  - java
+time_complexity: O(n)
+space_complexity: O(n) including output
+leetcode_url: https://leetcode.com/problems/insert-interval/
