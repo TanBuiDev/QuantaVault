@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 140
-Last completed problem: 322. Coin Change
-Last completed problem commit: `9bfab850dcf7fe82f152bebadc6305f4eb49503a`
+Last completed global position: 139
+Last completed problem: 139. Word Break
+Last completed problem commit: `e5800a20085c212564095e676c085ba4253d3b5c`
 
 Next assignment:
-- global position: 139
-- problem: 139. Word Break
+- global position: 138
+- problem: 198. House Robber
 
 Stop boundary: after global position 100
 
