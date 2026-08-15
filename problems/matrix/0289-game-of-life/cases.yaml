@@ -1,0 +1,43 @@
+schema_version: 1
+problem_id: 289
+contract_type: method
+language_contract:
+  class: Solution
+  method: gameOfLife
+  parameters:
+    - name: board
+      type: int[][]
+  return_type: void
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      board:
+        - [0, 1, 0]
+        - [0, 0, 1]
+        - [1, 1, 1]
+        - [0, 0, 0]
+    expected_mutation:
+      board:
+        - [0, 0, 0]
+        - [1, 0, 1]
+        - [0, 1, 1]
+        - [0, 1, 0]
+  - name: example-2
+    source: problem-example
+    input:
+      board:
+        - [1, 1]
+        - [1, 0]
+    expected_mutation:
+      board:
+        - [1, 1]
+        - [1, 1]
+  - name: isolated-live-cell
+    source: derived-edge-case
+    input:
+      board:
+        - [1]
+    expected_mutation:
+      board:
+        - [0]
