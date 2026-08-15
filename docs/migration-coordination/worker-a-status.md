@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 52
-Last completed problem: 20. Valid Parentheses
-Last completed commit: `574810420755709abce7bd9e40c7876dd34155ed`
+Last completed global position: 53
+Last completed problem: 71. Simplify Path
+Last completed commit: `05db8bd0a44e1495d1895f376901072210f8a0b9`
 
 Next assignment:
-- global position: 53
-- problem: 71. Simplify Path
+- global position: 54
+- problem: 155. Min Stack
 
 Stop boundary: after global position 99
 
