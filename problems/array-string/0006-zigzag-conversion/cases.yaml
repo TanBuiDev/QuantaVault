@@ -1,0 +1,43 @@
+schema_version: 1
+problem_id: 6
+contract_type: method
+language_contract:
+  class: Solution
+  method: convert
+  parameters:
+    - name: s
+      type: String
+    - name: numRows
+      type: int
+  return_type: String
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      s: "PAYPALISHIRING"
+      numRows: 3
+    expected: "PAHNAPLSIIGYIR"
+  - name: example-2
+    source: problem-example
+    input:
+      s: "PAYPALISHIRING"
+      numRows: 4
+    expected: "PINALSIGYAHRPI"
+  - name: example-3
+    source: problem-example
+    input:
+      s: "A"
+      numRows: 1
+    expected: "A"
+  - name: rows-greater-than-length
+    source: derived-edge-case
+    input:
+      s: "ABC"
+      numRows: 5
+    expected: "ABC"
+  - name: two-rows
+    source: derived-edge-case
+    input:
+      s: "ABCDE"
+      numRows: 2
+    expected: "ACEBD"
