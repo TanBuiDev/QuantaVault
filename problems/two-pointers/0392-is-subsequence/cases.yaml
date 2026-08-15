@@ -1,0 +1,49 @@
+schema_version: 1
+problem_id: 392
+contract_type: method
+language_contract:
+  class: Solution
+  method: isSubsequence
+  parameters:
+    - name: s
+      type: String
+    - name: t
+      type: String
+  return_type: boolean
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      s: "abc"
+      t: "ahbgdc"
+    expected: true
+  - name: example-2
+    source: problem-example
+    input:
+      s: "axc"
+      t: "ahbgdc"
+    expected: false
+  - name: empty-subsequence
+    source: derived-edge-case
+    input:
+      s: ""
+      t: "ahbgdc"
+    expected: true
+  - name: empty-target
+    source: derived-edge-case
+    input:
+      s: "abc"
+      t: ""
+    expected: false
+  - name: insufficient-repeated-characters
+    source: derived-edge-case
+    input:
+      s: "aaaa"
+      t: "aaa"
+    expected: false
+  - name: sparse-match
+    source: derived-edge-case
+    input:
+      s: "ace"
+      t: "abcde"
+    expected: true
