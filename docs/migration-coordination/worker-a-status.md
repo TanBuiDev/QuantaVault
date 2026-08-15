@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 51
-Last completed problem: 452. Minimum Number of Arrows to Burst Balloons
-Last completed commit: `9dcfede6a59f96bfd2b954e21b9c6264427d9687`
+Last completed global position: 52
+Last completed problem: 20. Valid Parentheses
+Last completed commit: `574810420755709abce7bd9e40c7876dd34155ed`
 
 Next assignment:
-- global position: 52
-- problem: 20. Valid Parentheses
+- global position: 53
+- problem: 71. Simplify Path
 
 Stop boundary: after global position 99
 
