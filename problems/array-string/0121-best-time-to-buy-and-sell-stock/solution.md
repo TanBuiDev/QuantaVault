@@ -1,12 +1,12 @@
 # 121. Best Time to Buy and Sell Stock — Solution
 
-## 1. Core idea / intuition
+## 1. Core idea / Intuition
 
-Bài này nhìn giống một bài toán chứng khoán, nhưng cốt lõi là một bài **one-pass array** rất điển hình.
+Bài này nhìn giống bài toán chứng khoán, nhưng về mặt thuật toán nó là một bài **one-pass array** rất điển hình.
 
-Khi đang đứng ở ngày hiện tại và giả sử hôm nay là ngày bán, ta chỉ cần biết:
+Khi đang đứng ở ngày hiện tại và giả sử hôm nay là **ngày bán**, ta chỉ cần biết:
 
-> Giá mua thấp nhất đã xuất hiện **trước hoặc tại ngày hiện tại** là bao nhiêu?
+> Giá mua thấp nhất đã xuất hiện trước hoặc tại thời điểm hiện tại là bao nhiêu?
 
 Nếu giá hôm nay là `price` và giá thấp nhất đã thấy là `minPrice`, lợi nhuận nếu bán hôm nay là:
 
@@ -14,14 +14,14 @@ Nếu giá hôm nay là `price` và giá thấp nhất đã thấy là `minPrice
 profit = price - minPrice
 ```
 
-Trong lúc quét mảng từ trái sang phải, ta duy trì hai giá trị:
+Trong lúc quét mảng từ trái sang phải, ta duy trì:
 
 ```text
-minPrice  = giá thấp nhất đã gặp
-maxProfit = lợi nhuận lớn nhất đã tìm được
+minPrice  = minimum price seen so far
+maxProfit = best profit seen so far
 ```
 
-Nhờ vậy không cần thử tất cả cặp ngày mua/bán.
+Mỗi phần tử chỉ cần xử lý một lần.
 
 ```text
 Time:  O(n)
@@ -30,77 +30,17 @@ Space: O(1)
 
 ---
 
-## 2. Bilingual problem walkthrough
+## 2. Requirement recap / Tóm tắt yêu cầu
 
-> **You are given an array prices where prices[i] is the price of a given stock on the ith day.**
->
-> Bạn được cho mảng `prices`, trong đó `prices[i]` là giá cổ phiếu tại ngày thứ `i`.
+Ta có một mảng `prices` theo thứ tự thời gian.
 
-Ví dụ:
-
-```text
-prices = [7, 1, 5, 3, 6, 4]
-```
-
-Có thể hình dung:
-
-```text
-Ngày:      1  2  3  4  5  6
-Giá:       7  1  5  3  6  4
-```
-
-Trong Java, index vẫn là:
-
-```text
-index:     0  1  2  3  4  5
-```
-
-> **You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.**
->
-> Bạn muốn tối đa hóa lợi nhuận bằng cách chọn **một ngày để mua** và một **ngày ở tương lai để bán**.
-
-Điểm quan trọng là:
+Cần chọn đúng theo thứ tự:
 
 ```text
 buy day < sell day
 ```
 
-Ta không được nhìn thấy giá thấp ở tương lai rồi giả sử đã mua ở đó để bán ở quá khứ.
-
-> **Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.**
->
-> Trả về lợi nhuận lớn nhất có thể đạt được. Nếu không thể có lợi nhuận dương thì trả về `0`.
-
-Ví dụ mảng giảm liên tục:
-
-```text
-[7, 6, 4, 3, 1]
-```
-
-Không có ngày bán nào sau ngày mua mà giá cao hơn, nên:
-
-```text
-answer = 0
-```
-
----
-
-## 3. Requirement analysis
-
-Ta chỉ được thực hiện **một transaction**:
-
-```text
-buy once
-sell once
-```
-
-Không phải bài 122, nơi có thể mua bán nhiều lần.
-
-Điều kiện hợp lệ:
-
-```text
-buy index < sell index
-```
+và chỉ thực hiện tối đa **một giao dịch mua–bán**.
 
 Mục tiêu:
 
@@ -108,39 +48,86 @@ Mục tiêu:
 maximize prices[sell] - prices[buy]
 ```
 
-với:
+Nếu không có giao dịch nào tạo lợi nhuận dương thì trả về `0`.
 
-```text
-buy < sell
-```
-
-Nếu viết trực tiếp theo định nghĩa, ta có thể thử mọi cặp `(buy, sell)`. Nhưng điều đó tạo ra rất nhiều phép so sánh không cần thiết.
+Đề song ngữ đầy đủ nằm trong [`problem.md`](problem.md), nên file solution không lặp lại toàn bộ statement.
 
 ---
 
-## 4. Naive approach — thử mọi cặp ngày
+## 3. Key observations / Nhận xét quan trọng
 
-Ta có thể làm:
+### Observation 1 — Thứ tự thời gian quan trọng
+
+Không thể chỉ lấy:
 
 ```text
-Buy day 0 → thử sell day 1, 2, 3, ...
-Buy day 1 → thử sell day 2, 3, 4, ...
-...
+max(prices) - min(prices)
 ```
 
-Java minh họa:
+vì giá lớn nhất có thể xuất hiện **trước** giá nhỏ nhất.
 
-```java
-int maxProfit = 0;
+Ví dụ:
 
-for (int buy = 0; buy < prices.length; buy++) {
-    for (int sell = buy + 1; sell < prices.length; sell++) {
-        maxProfit = Math.max(
-            maxProfit,
-            prices[sell] - prices[buy]
-        );
-    }
-}
+```text
+prices = [10, 1]
+```
+
+Ta không được mua ở giá `1` vào ngày 2 rồi quay ngược thời gian bán ở giá `10` vào ngày 1.
+
+Kết quả đúng là:
+
+```text
+0
+```
+
+### Observation 2 — Khi xét ngày bán hiện tại, chỉ cần giá mua tốt nhất trong quá khứ
+
+Giả sử đang ở vị trí `i`.
+
+Nếu `prices[i]` là giá bán thì giá mua tốt nhất phải là:
+
+```text
+min(prices[0 ... i])
+```
+
+Do đó không cần nhớ toàn bộ quá khứ; chỉ cần một biến `minPrice`.
+
+### Observation 3 — Ta chỉ cần best-so-far
+
+Sau khi tính lợi nhuận khi bán ở ngày hiện tại, ta chỉ cần so sánh với lợi nhuận tốt nhất trước đó:
+
+```text
+maxProfit = max(maxProfit, currentProfit)
+```
+
+Hai biến `minPrice` và `maxProfit` là đủ để tóm tắt toàn bộ trạng thái cần thiết.
+
+---
+
+## 4. Alternative approaches / Các hướng khác
+
+### Approach A — Brute force
+
+Thử mọi cặp ngày:
+
+```text
+buy = i
+sell = j, với j > i
+```
+
+và tính:
+
+```text
+prices[j] - prices[i]
+```
+
+Pseudo-code:
+
+```text
+maxProfit = 0
+for i = 0 .. n-1
+    for j = i+1 .. n-1
+        maxProfit = max(maxProfit, prices[j] - prices[i])
 ```
 
 Độ phức tạp:
@@ -150,54 +137,63 @@ Time:  O(n²)
 Space: O(1)
 ```
 
-Cách này đúng nhưng không tối ưu.
+Cách này đúng nhưng không tận dụng thông tin rằng ta chỉ cần **giá thấp nhất trong quá khứ**.
 
-Vấn đề là khi đang xét một ngày bán, ta không thật sự cần nhớ **mọi ngày mua** trước đó. Ta chỉ cần ngày có **giá thấp nhất**.
+### Approach B — DP array
+
+Có thể tạo một mảng lưu giá nhỏ nhất tới từng vị trí hoặc lợi nhuận tốt nhất tới từng ngày.
+
+Cách này vẫn có thể đạt:
+
+```text
+Time:  O(n)
+Space: O(n)
+```
+
+nhưng mảng phụ là không cần thiết vì trạng thái của ngày hiện tại chỉ phụ thuộc vào hai giá trị best-so-far.
+
+### Approach C — One pass với running minimum
+
+Đây là hướng tối ưu:
+
+```text
+Time:  O(n)
+Space: O(1)
+```
 
 ---
 
-## 5. Optimal approach — Running Minimum
+## 5. Optimal approach / Hướng tối ưu
 
-Giả sử đang đứng tại một ngày có giá:
-
-```text
-price
-```
-
-Nếu phải bán vào hôm nay thì ngày mua tốt nhất chắc chắn là ngày trước đó có giá nhỏ nhất.
-
-Do đó ta duy trì:
+Khởi tạo:
 
 ```java
 int minPrice = Integer.MAX_VALUE;
 int maxProfit = 0;
 ```
 
-Với mỗi `price`:
+Sau đó duyệt từng `price` từ trái sang phải.
 
-### Bước 1 — cập nhật giá thấp nhất
+Ở mỗi bước:
 
 ```java
 minPrice = Math.min(minPrice, price);
-```
-
-### Bước 2 — tính lợi nhuận nếu bán hôm nay
-
-```java
-price - minPrice
-```
-
-### Bước 3 — cập nhật lợi nhuận tốt nhất
-
-```java
 maxProfit = Math.max(maxProfit, price - minPrice);
 ```
 
-Vì ta quét từ trái sang phải, `minPrice` chỉ đến từ ngày hiện tại hoặc quá khứ. Vì vậy không thể xảy ra chuyện mua sau khi bán.
+Ý nghĩa:
+
+1. `minPrice` luôn là giá nhỏ nhất đã xuất hiện trong đoạn đã duyệt.
+2. `price - minPrice` là lợi nhuận tốt nhất nếu **bán tại ngày hiện tại**.
+3. `maxProfit` giữ lợi nhuận lớn nhất trong mọi ngày bán đã xét.
+
+Vì `minPrice` chỉ được xây dựng từ ngày hiện tại hoặc các ngày trước đó, thuật toán không thể vô tình dùng một ngày mua nằm trong tương lai.
 
 ---
 
-## 6. Java solution
+## 6. Java solution overview
+
+Canonical implementation:
 
 ```java
 class Solution {
@@ -215,9 +211,11 @@ class Solution {
 }
 ```
 
+Code trên phải luôn khớp về mặt thuật toán với [`Solution.java`](Solution.java).
+
 ---
 
-## 7. Code explanation
+## 7. Code explanation / Giải thích code
 
 ### `minPrice`
 
@@ -225,12 +223,21 @@ class Solution {
 int minPrice = Integer.MAX_VALUE;
 ```
 
-Ban đầu chưa nhìn thấy giá nào, nên đặt `minPrice` thành một giá trị cực lớn. Giá đầu tiên chắc chắn sẽ nhỏ hơn nó.
+Ta muốn biến này trở thành giá nhỏ nhất đã thấy.
 
-Sau mỗi vòng lặp:
+Khởi tạo bằng giá trị rất lớn để giá đầu tiên chắc chắn thay thế nó.
+
+Sau mỗi ngày:
+
+```java
+minPrice = Math.min(minPrice, price);
+```
+
+Invariant:
 
 ```text
-minPrice = giá nhỏ nhất trong phần mảng đã duyệt
+sau khi xử lý ngày i,
+minPrice = min(prices[0 ... i])
 ```
 
 ### `maxProfit`
@@ -239,37 +246,47 @@ minPrice = giá nhỏ nhất trong phần mảng đã duyệt
 int maxProfit = 0;
 ```
 
-Đáp án tối thiểu là `0`, bởi vì nếu mọi giao dịch đều lỗ thì ta không thực hiện giao dịch.
+Khởi tạo bằng `0` vì nếu không tồn tại giao dịch có lời, đáp án phải là `0`.
 
-### Enhanced for loop
-
-```java
-for (int price : prices)
-```
-
-Ở bài này ta chỉ cần giá trị của từng ngày, không cần trực tiếp dùng index.
-
-### Cập nhật minimum
+Ở mỗi ngày:
 
 ```java
-minPrice = Math.min(minPrice, price);
+price - minPrice
 ```
 
-Sau dòng này, `minPrice` luôn là giá mua tốt nhất đã xuất hiện tính đến hôm nay.
+là lợi nhuận nếu bán ở ngày hiện tại với giá mua tốt nhất đã biết.
 
-### Kiểm tra bán hôm nay
+Sau đó:
 
 ```java
 maxProfit = Math.max(maxProfit, price - minPrice);
 ```
 
-Ta giả sử bán ở giá `price`, rồi so sánh transaction đó với transaction tốt nhất trước đây.
+Invariant:
+
+```text
+sau khi xử lý ngày i,
+maxProfit = lợi nhuận tốt nhất của mọi giao dịch hợp lệ
+            có ngày bán không vượt quá i
+```
+
+### Vì sao cập nhật `minPrice` trước vẫn đúng?
+
+Ở ngày hiện tại, nếu chính `price` trở thành `minPrice` thì:
+
+```text
+price - minPrice = 0
+```
+
+Điều này tương đương chưa tạo lợi nhuận ở ngày đó.
+
+Ta không tạo ra lợi nhuận giả và cũng không làm mất giao dịch tốt hơn từ các ngày trước.
 
 ---
 
 ## 8. Dry run
 
-Input:
+Với:
 
 ```text
 prices = [7, 1, 5, 3, 6, 4]
@@ -278,59 +295,18 @@ prices = [7, 1, 5, 3, 6, 4]
 Ban đầu:
 
 ```text
-minPrice  = ∞
+minPrice  = +∞
 maxProfit = 0
 ```
 
-### Day 1 — price = 7
-
-```text
-minPrice  = min(∞, 7) = 7
-profit    = 7 - 7 = 0
-maxProfit = 0
-```
-
-### Day 2 — price = 1
-
-```text
-minPrice  = min(7, 1) = 1
-profit    = 1 - 1 = 0
-maxProfit = 0
-```
-
-Đây trở thành ngày mua tốt nhất hiện tại.
-
-### Day 3 — price = 5
-
-```text
-minPrice  = 1
-profit    = 5 - 1 = 4
-maxProfit = 4
-```
-
-### Day 4 — price = 3
-
-```text
-minPrice  = 1
-profit    = 3 - 1 = 2
-maxProfit = 4
-```
-
-### Day 5 — price = 6
-
-```text
-minPrice  = 1
-profit    = 6 - 1 = 5
-maxProfit = 5
-```
-
-### Day 6 — price = 4
-
-```text
-minPrice  = 1
-profit    = 4 - 1 = 3
-maxProfit = 5
-```
+| Day | price | minPrice sau cập nhật | price - minPrice | maxProfit |
+|---:|---:|---:|---:|---:|
+| 1 | 7 | 7 | 0 | 0 |
+| 2 | 1 | 1 | 0 | 0 |
+| 3 | 5 | 1 | 4 | 4 |
+| 4 | 3 | 1 | 2 | 4 |
+| 5 | 6 | 1 | 5 | 5 |
+| 6 | 4 | 1 | 3 | 5 |
 
 Kết quả:
 
@@ -338,99 +314,124 @@ Kết quả:
 5
 ```
 
-Tương ứng:
+Giao dịch tương ứng:
 
 ```text
-Buy  = 1
-Sell = 6
-Profit = 6 - 1 = 5
+buy  at 1
+sell at 6
+profit = 5
 ```
 
 ---
 
 ## 9. Time and space complexity
 
-### Time
+### Time complexity
 
-Ta duyệt `prices` đúng một lần:
+Ta duyệt mỗi phần tử đúng một lần:
 
 ```text
 O(n)
 ```
 
-### Space
+### Space complexity
 
-Chỉ dùng hai biến chính:
-
-```text
-minPrice
-maxProfit
-```
-
-Do đó:
+Chỉ dùng một số biến scalar, không dùng mảng phụ phụ thuộc vào `n`:
 
 ```text
 O(1)
 ```
 
+Đây là **constant extra space**.
+
 ---
 
-## 10. Why the algorithm is correct
+## 10. Why the algorithm is correct / Vì sao thuật toán đúng
 
-Tại mỗi ngày `i`, `minPrice` là giá nhỏ nhất trong tất cả các ngày từ đầu mảng đến ngày `i`.
+Ta có thể chứng minh bằng hai invariant.
 
-Nếu chọn ngày `i` làm ngày bán, không có ngày mua hợp lệ nào trước đó tốt hơn việc mua ở `minPrice`, vì mọi giá mua khác đều lớn hơn hoặc bằng `minPrice`.
+### Invariant 1
 
-Do đó:
+Sau khi xử lý `prices[i]`:
+
+```text
+minPrice = giá nhỏ nhất trong prices[0 ... i]
+```
+
+Điều này đúng vì ở mỗi bước ta gán:
+
+```text
+min(oldMinPrice, prices[i])
+```
+
+### Invariant 2
+
+Sau khi xử lý `prices[i]`:
+
+```text
+maxProfit = lợi nhuận lớn nhất của mọi giao dịch hợp lệ
+            có ngày bán trong đoạn [0 ... i]
+```
+
+Tại ngày `i`, giao dịch tốt nhất kết thúc ở ngày này phải mua ở giá thấp nhất trong quá khứ, chính là `minPrice`.
+
+Do đó lợi nhuận tốt nhất kết thúc tại `i` là:
 
 ```text
 prices[i] - minPrice
 ```
 
-là lợi nhuận lớn nhất của mọi transaction kết thúc ở ngày `i`.
+Ta so sánh giá trị đó với `maxProfit` cũ, nên sau bước này `maxProfit` bao phủ cả:
 
-`maxProfit` giữ giá trị lớn nhất của các lợi nhuận này sau khi xét từng ngày. Khi vòng lặp kết thúc, nó chính là lợi nhuận lớn nhất của mọi transaction hợp lệ trong toàn bộ mảng.
+- mọi giao dịch tốt nhất trước ngày `i`;
+- giao dịch tốt nhất có ngày bán là `i`.
 
-Nếu không transaction nào có lợi nhuận dương, `maxProfit` vẫn là `0`, đúng yêu cầu đề bài.
+Khi vòng lặp kết thúc, mọi ngày đã từng được xét làm ngày bán, nên `maxProfit` là đáp án toàn cục.
 
 ---
 
-## 11. Edge cases
+## 11. Edge cases / Trường hợp biên
 
-### Chỉ giảm
+### Chỉ có một ngày
+
+```text
+[5]
+```
+
+Không thể mua rồi bán ở một ngày tương lai.
+
+Kết quả:
+
+```text
+0
+```
+
+### Giá giảm liên tục
 
 ```text
 [7, 6, 4, 3, 1]
 ```
 
+Mọi giao dịch đều không có lợi nhuận dương.
+
 Kết quả:
 
 ```text
 0
 ```
 
-### Chỉ tăng
+### Giá tăng liên tục
 
 ```text
 [1, 2, 3, 4, 5]
 ```
 
-Mua ngày đầu, bán ngày cuối:
-
-```text
-4
-```
-
-### Giá giống nhau
-
-```text
-[5, 5, 5, 5]
-```
+Tốt nhất là mua ở `1`, bán ở `5`.
 
 Kết quả:
 
 ```text
-0
+4
 ```
 
 ### Giá nhỏ nhất nằm gần cuối
@@ -439,82 +440,105 @@ Kết quả:
 [5, 4, 3, 1, 2]
 ```
 
-Không được dùng `1` để bán cho giá `5` ở quá khứ. Thuật toán không mắc lỗi này vì quét theo thứ tự thời gian.
+Không được dùng giá `1` để bán cho `5` ở quá khứ.
+
+Thuật toán chỉ có thể dùng `1` cho các ngày hiện tại hoặc tương lai, nên kết quả đúng là:
+
+```text
+1
+```
+
+### Nhiều giá bằng nhau
+
+```text
+[3, 3, 3, 3]
+```
+
+Không có lợi nhuận dương:
+
+```text
+0
+```
 
 ---
 
-## 12. Common mistakes
+## 12. Common mistakes / Lỗi thường gặp
 
-### Mistake 1 — lấy `max(prices) - min(prices)`
+### Mistake 1 — `max(prices) - min(prices)`
 
-Sai vì `max` có thể xuất hiện trước `min`.
+Sai vì không đảm bảo ngày mua đứng trước ngày bán.
 
-Ví dụ:
+### Mistake 2 — Dùng hai vòng lặp dù không cần
 
-```text
-[10, 1]
-```
-
-Nếu tính:
-
-```text
-10 - 1 = 9
-```
-
-thì vô tình giả sử mua ngày 2 rồi bán ngày 1.
-
-### Mistake 2 — dùng hai vòng lặp dù không cần
-
-Brute force đúng nhưng là:
+Brute force đúng nhưng tốn:
 
 ```text
 O(n²)
 ```
 
-Trong interview nên nhận ra invariant `minimum so far` để đưa về `O(n)`.
+Dấu hiệu để tối ưu là bài chỉ cần **best previous value** cho mỗi vị trí hiện tại.
 
-### Mistake 3 — nhầm với Best Time to Buy and Sell Stock II
+### Mistake 3 — Nhầm với bài 122
 
-Bài 121 chỉ có:
+Bài 121 cho phép tối đa:
 
 ```text
 1 buy + 1 sell
 ```
 
-Không được cộng nhiều đoạn tăng giá.
+Không được cộng lợi nhuận của nhiều đoạn tăng giá.
 
-### Mistake 4 — cho `maxProfit` bắt đầu bằng số âm
+### Mistake 4 — Khởi tạo `maxProfit` bằng số âm
 
-Đề yêu cầu trả `0` nếu không thể có lợi nhuận, nên khởi tạo:
+Đề yêu cầu trả `0` khi không có lợi nhuận, nên:
 
 ```java
 int maxProfit = 0;
 ```
 
-là tự nhiên nhất.
+là phù hợp nhất.
 
----
+### Mistake 5 — Theo dõi quá nhiều trạng thái
 
-## 13. How to explain it in an English interview
+Không cần mảng prefix minimum hay DP array nếu chỉ cần đáp án cuối cùng.
 
-Một phiên bản ngắn, dễ nói:
-
-> I scan the prices from left to right and keep track of the minimum price seen so far. For each day, I treat the current price as the selling price and compute the profit using that minimum buying price. Then I update the maximum profit. This guarantees that the buying day comes before the selling day because the minimum price only comes from the current or previous days. The algorithm runs in O(n) time and O(1) extra space.
-
-Các ý quan trọng nên nói được:
+Hai biến là đủ:
 
 ```text
-minimum price seen so far
-current price as the selling price
-maximum profit
-scan from left to right
-O(n) time
-O(1) extra space
+minPrice
+maxProfit
 ```
 
 ---
 
-## 14. Vocabulary
+## 13. Pattern recognition / Khi nào tái sử dụng tư duy này
+
+Pattern tổng quát của bài là:
+
+```text
+maximize currentValue - bestPreviousValue
+```
+
+Trong đó `bestPreviousValue` có thể cập nhật online khi quét dữ liệu.
+
+Ở bài này:
+
+```text
+currentValue      = current stock price
+bestPreviousValue = minimum price seen so far
+```
+
+Khi gặp bài có cấu trúc:
+
+- dữ liệu có thứ tự thời gian;
+- quyết định hiện tại phụ thuộc vào một giá trị tốt nhất trong quá khứ;
+- chỉ cần best-so-far chứ không cần toàn bộ lịch sử;
+
+hãy nghĩ tới **running minimum / running maximum + one pass**.
+
+---
+
+## 14. Vocabulary and algorithmic terminology
 
 | English | Nghĩa trong bài |
 |---|---|
@@ -523,28 +547,18 @@ O(1) extra space
 | buy | mua |
 | sell | bán |
 | profit | lợi nhuận |
-| transaction | giao dịch mua-bán |
+| transaction | giao dịch mua–bán |
 | maximize | tối đa hóa |
-| minimum price seen so far | giá thấp nhất đã thấy cho đến hiện tại |
+| minimum price seen so far | giá nhỏ nhất đã thấy cho đến hiện tại |
+| best profit so far | lợi nhuận tốt nhất đã tìm được cho đến hiện tại |
 | current price | giá hiện tại |
-| future day | ngày ở tương lai |
+| selling price | giá bán |
 | one pass | duyệt một lần |
-| running minimum | giá trị nhỏ nhất được cập nhật trong lúc duyệt |
+| running minimum | giá trị nhỏ nhất được duy trì trong lúc duyệt |
+| invariant | bất biến |
+| brute force | vét cạn |
 | time complexity | độ phức tạp thời gian |
-| extra space | bộ nhớ phụ |
+| space complexity | độ phức tạp bộ nhớ |
+| constant extra space | bộ nhớ phụ hằng số |
 
-## Interview pattern to remember
-
-Khi gặp dạng:
-
-```text
-maximize currentValue - bestPreviousValue
-```
-
-hãy nghĩ tới việc duy trì:
-
-```text
-best previous value seen so far
-```
-
-Trong bài này, `bestPreviousValue` chính là **minimum price seen so far**.
+Phần luyện nói và câu hỏi interview được tách riêng trong [`interview.md`](interview.md) để solution tập trung hoàn toàn vào tư duy thuật toán.
