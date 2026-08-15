@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 144
-Last completed problem: 63. Unique Paths II
-Last completed problem commit: `cbda4da89de24264310b787c421d7470765dab51`
+Last completed global position: 143
+Last completed problem: 64. Minimum Path Sum
+Last completed problem commit: `f72f7a0c427bc1a68dd2f65f5721207891d3b83b`
 
 Next assignment:
-- global position: 143
-- problem: 64. Minimum Path Sum
+- global position: 142
+- problem: 120. Triangle
 
 Stop boundary: after global position 100
 
