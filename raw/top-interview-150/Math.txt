@@ -1,0 +1,18 @@
+Math
+9. Palindrome Number
+Easy
+
+66. Plus One
+Easy
+
+172. Factorial Trailing Zeroes
+Medium
+
+69. Sqrt(x)
+Easy
+
+50. Pow(x, n)
+Medium
+
+149. Max Points on a Line
+Hard

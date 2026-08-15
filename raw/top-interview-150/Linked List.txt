@@ -1,0 +1,33 @@
+Linked List
+141. Linked List Cycle
+Easy
+
+2. Add Two Numbers
+Medium
+
+21. Merge Two Sorted Lists
+Easy
+
+138. Copy List with Random Pointer
+Medium
+
+92. Reverse Linked List II
+Medium
+
+25. Reverse Nodes in k-Group
+Hard
+
+19. Remove Nth Node From End of List
+Medium
+
+82. Remove Duplicates from Sorted List II
+Medium
+
+61. Rotate List
+Medium
+
+86. Partition List
+Medium
+
+146. LRU Cache
+Medium
