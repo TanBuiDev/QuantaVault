@@ -95,7 +95,6 @@ jobs:
         run: |
           python3 - <<'PY'
           import hashlib
-          import re
           from pathlib import Path
 
           raw_path = Path("raw/top-interview-150/Array  String.txt")
@@ -103,16 +102,16 @@ jobs:
           blob_sha = hashlib.sha1(f"blob {len(data)}\0".encode("utf-8") + data).hexdigest()
 
           meta_path = Path("problems/array-string/0121-best-time-to-buy-and-sell-stock/meta.yaml")
-          text = meta_path.read_text(encoding="utf-8")
-          updated, count = re.subn(
-              r"(?m)^(\s*raw_blob_sha:\s*)[0-9a-f]{40}\s*$",
-              rf"\g<1>{blob_sha}",
-              text,
-              count=1,
-          )
-          if count != 1:
-              raise SystemExit("Could not update 121 source.raw_blob_sha")
-          meta_path.write_text(updated, encoding="utf-8")
+          lines = meta_path.read_text(encoding="utf-8").splitlines()
+          replaced = 0
+          for index, line in enumerate(lines):
+              if line.lstrip().startswith("raw_blob_sha:"):
+                  indent = line[: len(line) - len(line.lstrip())]
+                  lines[index] = f'{indent}raw_blob_sha: "{blob_sha}"'
+                  replaced += 1
+          if replaced != 1:
+              raise SystemExit(f"Expected one raw_blob_sha line, found {replaced}")
+          meta_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
           print("121 raw_blob_sha:", blob_sha)
           PY
 
