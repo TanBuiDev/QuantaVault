@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 147
-Last completed problem: 72. Edit Distance
-Last completed problem commit: `ee0e569db77a5152203798a6e9d68675d902c501`
+Last completed global position: 146
+Last completed problem: 97. Interleaving String
+Last completed problem commit: `ecdde796a2e0deb6081348ad561f206debf294f9`
 
 Next assignment:
-- global position: 146
-- problem: 97. Interleaving String
+- global position: 145
+- problem: 5. Longest Palindromic Substring
 
 Stop boundary: after global position 100
 
