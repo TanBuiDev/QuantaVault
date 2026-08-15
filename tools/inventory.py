@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Inventory user-supplied LeetCode problem statements from raw topic files."""
+"""Inventory user-supplied Top Interview 150 source material."""
 
 from __future__ import annotations
 
@@ -9,14 +9,50 @@ import re
 from pathlib import Path
 
 HEADER_RE = re.compile(r"(?m)^\s*(\d{1,5})\.\s+([^\r\n]+?)\s*$")
+DIFFICULTIES = {"Easy", "Medium", "Hard"}
 CANDIDATE_EXISTING_SOLUTIONS = {88, 27, 26, 80, 169, 189, 121}
+
+# These six Array / String problems were already worked on in the user's prior
+# study conversation before the current raw Array/String file was assembled.
+# Their identities/order are known, but a complete verbatim source block is not
+# present in the current raw repository, so they remain source-missing.
+KNOWN_PRIOR_PROBLEMS = [
+    {"id": 88, "title": "Merge Sorted Array", "difficulty": "Easy"},
+    {"id": 27, "title": "Remove Element", "difficulty": "Easy"},
+    {"id": 26, "title": "Remove Duplicates from Sorted Array", "difficulty": "Easy"},
+    {"id": 80, "title": "Remove Duplicates from Sorted Array II", "difficulty": "Medium"},
+    {"id": 169, "title": "Majority Element", "difficulty": "Easy"},
+    {"id": 189, "title": "Rotate Array", "difficulty": "Medium"},
+]
+
+
+def parse_problem_blocks(text: str) -> list[dict]:
+    """Return ordered problem records and their exact raw block text."""
+    matches = list(HEADER_RE.finditer(text))
+    records: list[dict] = []
+    for index, match in enumerate(matches):
+        end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
+        block = text[match.start():end]
+        lines = block.splitlines()
+        difficulty = next((line.strip() for line in lines[1:5] if line.strip() in DIFFICULTIES), None)
+        has_full_statement = "Constraints:" in block and re.search(r"(?m)^Example\s+\d+:?", block) is not None
+        records.append(
+            {
+                "id": int(match.group(1)),
+                "title": match.group(2).strip(),
+                "difficulty": difficulty,
+                "source_status": "available" if has_full_statement else "source-missing",
+                "raw_block": block,
+            }
+        )
+    return records
 
 
 def parse_problem_headers(text: str) -> list[dict]:
-    """Return ordered records with integer id and title from raw topic text."""
+    """Compatibility helper used by the deterministic self-test."""
     return [
-        {"id": int(match.group(1)), "title": match.group(2).strip()}
-        for match in HEADER_RE.finditer(text)
+        {"id": item["id"], "title": item["title"]}
+        for item in parse_problem_blocks(text)
     ]
 
 
@@ -32,17 +68,37 @@ def build_inventory(root: Path) -> dict:
     problems: list[dict] = []
     seen: dict[int, list[dict]] = {}
 
+    # Preserve the official Array / String order known from the user's prior
+    # study work before appending the records that exist in Array  String.txt.
+    for order, item in enumerate(KNOWN_PRIOR_PROBLEMS, start=1):
+        record = {
+            "id": item["id"],
+            "title": item["title"],
+            "difficulty": item["difficulty"],
+            "section": "array-string",
+            "raw_source_file": None,
+            "source_order": order,
+            "source_status": "source-missing",
+            "solution_status": "candidate-existing",
+            "canonical_path": None,
+        }
+        problems.append(record)
+        seen.setdefault(item["id"], []).append(record)
+
     for path in sorted(raw_dir.glob("*.txt"), key=lambda p: p.name.lower()):
         text = path.read_text(encoding="utf-8")
-        for order, item in enumerate(parse_problem_headers(text), start=1):
+        parsed = parse_problem_blocks(text)
+        offset = len(KNOWN_PRIOR_PROBLEMS) if path.name == "Array  String.txt" else 0
+        for order, item in enumerate(parsed, start=1 + offset):
             problem_id = item["id"]
             record = {
                 "id": problem_id,
                 "title": item["title"],
+                "difficulty": item["difficulty"],
                 "section": section_slug(path.name),
                 "raw_source_file": path.name,
                 "source_order": order,
-                "source_status": "available",
+                "source_status": item["source_status"],
                 "solution_status": (
                     "candidate-existing"
                     if problem_id in CANDIDATE_EXISTING_SOLUTIONS
@@ -73,6 +129,8 @@ def build_inventory(root: Path) -> dict:
         "source_root": "raw/top-interview-150",
         "problem_count_detected": len(problems),
         "unique_problem_count": len(seen),
+        "full_source_count": sum(p["source_status"] == "available" for p in problems),
+        "source_missing_count": sum(p["source_status"] == "source-missing" for p in problems),
         "problems": problems,
         "duplicates": duplicates,
     }
@@ -82,18 +140,28 @@ def self_test() -> None:
     sample = """Array / String
 121. Best Time to Buy and Sell Stock
 Easy
-...
+You are given prices.
+Example 1:
+Input: prices = [1,2]
+Output: 1
+Constraints:
+1 <= prices.length <= 10
 122. Best Time to Buy and Sell Stock II
 Medium
 """
-    expected = [
+    parsed = parse_problem_blocks(sample)
+    expected_headers = [
         {"id": 121, "title": "Best Time to Buy and Sell Stock"},
         {"id": 122, "title": "Best Time to Buy and Sell Stock II"},
     ]
-    actual = parse_problem_headers(sample)
-    if actual != expected:
-        raise SystemExit(f"FAIL parse_problem_headers: {actual!r}")
-    print("PASS parse_problem_headers")
+    actual_headers = [{"id": p["id"], "title": p["title"]} for p in parsed]
+    if actual_headers != expected_headers:
+        raise SystemExit(f"FAIL parse_problem_headers: {actual_headers!r}")
+    if parsed[0]["source_status"] != "available":
+        raise SystemExit("FAIL full-source classification")
+    if parsed[1]["source_status"] != "source-missing":
+        raise SystemExit("FAIL identity-only classification")
+    print("PASS parse_problem_blocks")
 
 
 def main() -> None:
@@ -118,6 +186,8 @@ def main() -> None:
     print(
         f"Wrote {output}: "
         f"{inventory['unique_problem_count']} unique problems, "
+        f"{inventory['full_source_count']} with full source, "
+        f"{inventory['source_missing_count']} source-missing, "
         f"{len(inventory['duplicates'])} duplicate IDs"
     )
 
