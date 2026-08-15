@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 150
-Last completed problem: 221. Maximal Square
-Last completed problem commit: `4fc5a5862dc47d6e98a0d15858983e95dfdeef4f`
+Last completed global position: 149
+Last completed problem: 188. Best Time to Buy and Sell Stock IV
+Last completed problem commit: `16df33080e1900b5de220c16db9b365984bfcddd`
 
 Next assignment:
-- global position: 149
-- problem: 188. Best Time to Buy and Sell Stock IV
+- global position: 148
+- problem: 123. Best Time to Buy and Sell Stock III
 
 Stop boundary: after global position 100
 
