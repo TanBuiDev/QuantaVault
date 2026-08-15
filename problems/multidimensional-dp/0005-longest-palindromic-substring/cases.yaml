@@ -1,0 +1,31 @@
+schema_version: 1
+problem_id: 5
+contract_type: method
+language_contract:
+  class: Solution
+  method: longestPalindrome
+  parameters:
+    - name: s
+      type: String
+  return_type: String
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      s: babad
+    expected: bab
+  - name: example-2
+    source: problem-example
+    input:
+      s: cbbd
+    expected: bb
+  - name: single-character
+    source: derived-edge-case
+    input:
+      s: a
+    expected: a
+  - name: all-same
+    source: derived-edge-case
+    input:
+      s: aaaa
+    expected: aaaa
