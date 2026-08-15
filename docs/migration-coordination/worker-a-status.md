@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 55
-Last completed problem: 150. Evaluate Reverse Polish Notation
-Last completed commit: `a8143b94ba8686b752243d20a19d0a4b53a3dd21`
+Last completed global position: 56
+Last completed problem: 224. Basic Calculator
+Last completed commit: `fe3c7f1da054917d6a6b2707ae393a67c5fd24c9`
 
 Next assignment:
-- global position: 56
-- problem: 224. Basic Calculator
+- global position: 57
+- problem: 141. Linked List Cycle
 
 Stop boundary: after global position 99
 
