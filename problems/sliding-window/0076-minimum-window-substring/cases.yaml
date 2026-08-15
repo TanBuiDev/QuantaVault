@@ -1,0 +1,43 @@
+schema_version: 1
+problem_id: 76
+contract_type: method
+language_contract:
+  class: Solution
+  method: minWindow
+  parameters:
+    - name: s
+      type: String
+    - name: t
+      type: String
+  return_type: String
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      s: "ADOBECODEBANC"
+      t: "ABC"
+    expected: "BANC"
+  - name: example-2
+    source: problem-example
+    input:
+      s: "a"
+      t: "a"
+    expected: "a"
+  - name: example-3
+    source: problem-example
+    input:
+      s: "a"
+      t: "aa"
+    expected: ""
+  - name: duplicate-requirement
+    source: derived-edge-case
+    input:
+      s: "AAABBC"
+      t: "AABC"
+    expected: "AABBC"
+  - name: shrink-to-tail
+    source: derived-edge-case
+    input:
+      s: "bba"
+      t: "ab"
+    expected: "ba"
