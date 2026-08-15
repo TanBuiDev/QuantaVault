@@ -199,9 +199,9 @@
       "section": "array-string",
       "raw_source_file": "Array  String.txt",
       "source_order": 18,
-      "source_status": "available",
-      "solution_status": "none",
-      "canonical_path": null
+      "source_status": "full-source",
+      "solution_status": "migrated-v2",
+      "canonical_path": "problems/array-string/0012-integer-to-roman"
     },
     {
       "id": 58,
