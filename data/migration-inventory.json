@@ -23,9 +23,9 @@
       "section": "array-string",
       "raw_source_file": "Array  String.txt",
       "source_order": 2,
-      "source_status": "available",
-      "solution_status": "candidate-existing",
-      "canonical_path": null
+      "source_status": "full-source",
+      "solution_status": "migrated-v2",
+      "canonical_path": "problems/array-string/0027-remove-element"
     },
     {
       "id": 26,
