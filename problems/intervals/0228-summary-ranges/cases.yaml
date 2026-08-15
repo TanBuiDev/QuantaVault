@@ -1,0 +1,31 @@
+schema_version: 1
+problem_id: 228
+contract_type: method
+language_contract:
+  class: Solution
+  method: summaryRanges
+  parameters:
+    - name: nums
+      type: int[]
+  return_type: List<String>
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      nums: [0, 1, 2, 4, 5, 7]
+    expected: ["0->2", "4->5", "7"]
+  - name: example-2
+    source: problem-example
+    input:
+      nums: [0, 2, 3, 4, 6, 8, 9]
+    expected: ["0", "2->4", "6", "8->9"]
+  - name: empty
+    source: derived-edge-case
+    input:
+      nums: []
+    expected: []
+  - name: integer-max-boundary
+    source: derived-edge-case
+    input:
+      nums: [2147483646, 2147483647]
+    expected: ["2147483646->2147483647"]
