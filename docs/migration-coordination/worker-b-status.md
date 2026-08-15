@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 138
-Last completed problem: 198. House Robber
-Last completed problem commit: `a3d065b2d4c82fb2bd485242e6cae57120603443`
+Last completed global position: 137
+Last completed problem: 70. Climbing Stairs
+Last completed problem commit: `3003a50363c8ca7e27041092b5b2f4b939f1eb3e`
 
 Next assignment:
-- global position: 137
-- problem: 70. Climbing Stairs
+- global position: 136
+- problem: 149. Max Points on a Line
 
 Stop boundary: after global position 100
 
