@@ -173,6 +173,12 @@ English answers should be suitable for a fresher Java interview:
 - easy to say aloud;
 - direct explanation of invariant, complexity, and trade-offs.
 
+### 6.5 Evidence labeling for interview questions
+
+Generated interview questions are practice questions derived from the algorithm, common interview follow-up patterns, and the problem's constraints. They must not be presented as statistically verified "frequently asked" questions unless an explicit source supports that claim.
+
+When an interview question is backed by a specific external interview report or source, the source may be recorded under that question. Otherwise the wording should use labels such as `Core practice question`, `Likely follow-up`, or `Common reasoning check` rather than claiming measured frequency.
+
 ## 7. `Solution.java`: canonical executable reference
 
 `Solution.java` remains the canonical Java implementation.
@@ -188,16 +194,18 @@ Requirements:
 
 `cases.yaml` prepares content for future code-runner and website ingestion.
 
-Version 1 shape:
+### 8.1 Standard method-contract example
 
 ```yaml
 schema_version: 1
 problem_id: 121
+contract_type: method
 language_contract:
   class: Solution
   method: maxProfit
   parameters:
-    - type: int[]
+    - name: prices
+      type: int[]
   return_type: int
 
 cases:
@@ -223,6 +231,60 @@ derived-regression
 ```
 
 Cases copied from supplied problem text are marked `problem-example`. Additional cases created for learning or regression are marked `derived-*`.
+
+### 8.2 Contract types
+
+Version 1 supports two contract types:
+
+```text
+method
+operation-sequence
+```
+
+`method` is used for normal LeetCode methods. `operation-sequence` is used for design problems such as `RandomizedSet`, `MinStack`, or `LRUCache` where the input is a constructor plus a sequence of method calls.
+
+Operation-sequence example:
+
+```yaml
+schema_version: 1
+problem_id: 380
+contract_type: operation-sequence
+language_contract:
+  class: RandomizedSet
+
+cases:
+  - name: example-1
+    source: problem-example
+    operations: [RandomizedSet, insert, remove, insert, getRandom]
+    arguments: [[], [1], [2], [2], []]
+    expected: [null, true, false, true, one-of-current-values]
+```
+
+A nondeterministic return value must use an explicit expectation token such as `one-of-current-values` rather than inventing one fixed result.
+
+### 8.3 Common serialization conventions
+
+Machine-readable cases use deterministic repository-wide representations:
+
+```text
+primitive / String   -> YAML scalar
+array                 -> YAML sequence
+matrix                -> nested YAML sequences
+linked list           -> list-values sequence, e.g. [1, 2, 3]
+binary tree           -> level-order nullable sequence, e.g. [3, 9, 20, null, null, 15, 7]
+graph                 -> adjacency-list representation keyed by node id or index
+```
+
+When a problem's structure cannot be represented unambiguously by these conventions, `cases.yaml` must include a `serialization` block describing the representation instead of relying on implicit parser behavior.
+
+For in-place or `void` methods, a case may use `expected_mutation` to describe the canonical post-call state rather than a return value.
+
+Example:
+
+```yaml
+expected_mutation:
+  nums1: [1, 2, 2, 3, 5, 6]
+```
 
 ## 9. Media design
 
@@ -252,7 +314,41 @@ Do not automatically mirror third-party proprietary images merely because the re
 
 Every referenced image must have meaningful Markdown alt text.
 
-External or supplied media metadata records origin and attribution when known. Project-created solution illustrations should be visually consistent across the repository where practical.
+Project-created solution illustrations should be visually consistent across the repository where practical.
+
+### 9.4 Media metadata contract
+
+When media exists, `meta.yaml` contains a `media` list. Each item uses:
+
+```yaml
+media:
+  - id: example-1
+    path: assets/problem/example-1.png
+    scope: problem
+    role: example
+    origin: project-created
+    alt_en: Elevation bars and trapped water for example 1
+    alt_vi: Các cột độ cao và phần nước bị giữ lại trong ví dụ 1
+```
+
+Allowed `scope` values:
+
+```text
+problem
+solution
+```
+
+Allowed `origin` values:
+
+```text
+user-supplied
+external
+project-created
+```
+
+For `external` media, include `source_url` and `license` when known and required by the license. For `user-supplied` media, `source_url` is optional. For `project-created` media, no external source URL is required.
+
+The metadata `scope` must match the asset directory. A `problem` item must live under `assets/problem/`; a `solution` item must live under `assets/solution/`.
 
 ## 10. Source coverage states
 
@@ -321,6 +417,8 @@ space_complexity: O(1)
 
 leetcode_url: https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
 ```
+
+When media exists, add the `media` list defined in section 9.4.
 
 ### 11.1 Content-status enums
 
@@ -423,12 +521,13 @@ At minimum:
 4. `translation: complete` requires bilingual markers/content in `problem.md`;
 5. `solution: complete` requires `solution.md` and `Solution.java`;
 6. `interview: complete` requires `interview.md` with bilingual Q&A structure;
-7. `cases: complete` requires `cases.yaml`;
+7. `cases: complete` requires `cases.yaml` with a valid contract type and deterministic serialization rules;
 8. all Markdown-referenced local media paths exist;
-9. media under `assets/problem/` is never required to understand a solution-specific concept;
-10. Java reference code and documented optimal solution remain semantically aligned;
-11. raw provenance fields exist for raw-backed `full-source` problems;
-12. Top Interview 150 inventory contains exactly 150 unique problem IDs.
+9. every media metadata item resolves to an existing file and has matching scope/path;
+10. media under `assets/problem/` is never required to understand a solution-specific concept;
+11. Java reference code and documented optimal solution remain semantically aligned;
+12. raw provenance fields exist for raw-backed `full-source` problems;
+13. Top Interview 150 inventory contains exactly 150 unique problem IDs.
 
 ## 16. V2 migration order
 
