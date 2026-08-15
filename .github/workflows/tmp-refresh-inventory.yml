@@ -1,0 +1,67 @@
+name: Temporary Refresh Inventory
+
+on:
+  push:
+    branches:
+      - feat/leetcode-content-migration
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Regenerate inventory
+        run: |
+          python3 tools/inventory.py --root . --output /tmp/generated-inventory.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          generated_path = Path('/tmp/generated-inventory.json')
+          current_path = Path('data/migration-inventory.json')
+          generated = json.loads(generated_path.read_text(encoding='utf-8'))
+          current = json.loads(current_path.read_text(encoding='utf-8'))
+          prior = {item['id']: item for item in current['problems']}
+
+          for item in generated['problems']:
+              old = prior.get(item['id'], {})
+              if old.get('canonical_path'):
+                  item['canonical_path'] = old['canonical_path']
+              if old.get('solution_status') == 'migrated-v2':
+                  item['solution_status'] = 'migrated-v2'
+              if old.get('source_status') == 'full-source' and item['source_status'] == 'available':
+                  item['source_status'] = 'full-source'
+
+          assert generated['problem_count_detected'] == 150, generated['problem_count_detected']
+          assert generated['unique_problem_count'] == 150, generated['unique_problem_count']
+          assert generated['full_source_count'] == 144, generated['full_source_count']
+          assert generated['source_missing_count'] == 6, generated['source_missing_count']
+          assert generated['duplicates'] == [], generated['duplicates']
+
+          missing = [item['id'] for item in generated['problems'] if item['source_status'] == 'source-missing']
+          assert missing == [88, 27, 26, 80, 169, 189], missing
+
+          current_path.write_text(json.dumps(generated, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          print('CONFIRMED: 150 unique, 144 full-source, 6 source-missing, 0 duplicates')
+          print('MISSING_IDS:', ','.join(map(str, missing)))
+          PY
+
+      - name: Validate repository
+        run: |
+          python3 tools/inventory.py --self-test
+          python3 tools/validate_content.py --root .
+          git diff --check
+
+      - name: Commit refreshed inventory and remove temporary workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/migration-inventory.json
+          git rm .github/workflows/tmp-refresh-inventory.yml
+          git commit -m "chore: refresh inventory after source sync"
+          git push origin HEAD:feat/leetcode-content-migration
