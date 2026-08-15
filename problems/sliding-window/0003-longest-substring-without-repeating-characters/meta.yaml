@@ -1,0 +1,33 @@
+schema_version: 2
+id: 3
+slug: longest-substring-without-repeating-characters
+title: Longest Substring Without Repeating Characters
+difficulty: Medium
+primary_section: sliding-window
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Sliding Window.txt"
+  raw_blob_sha: "bb49634444716591f3f66b2bbff18e581b5e106c"
+study_plans:
+  - top-interview-150
+topics:
+  - Hash Table
+  - String
+  - Sliding Window
+patterns:
+  - Variable-Size Sliding Window
+  - Last Seen Index
+solution_languages:
+  - java
+time_complexity: O(n)
+space_complexity: O(min(n, alphabet))
+leetcode_url: https://leetcode.com/problems/longest-substring-without-repeating-characters/
