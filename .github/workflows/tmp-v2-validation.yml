@@ -1,0 +1,53 @@
+name: Temporary V2 Validation
+
+on:
+  push:
+    branches:
+      - feat/leetcode-content-migration
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate JSON files
+        run: |
+          python3 -m json.tool schemas/problem.schema.json > /dev/null
+          python3 -m json.tool schemas/cases.schema.json > /dev/null
+          python3 -m json.tool data/migration-inventory.json > /dev/null
+
+      - name: Run validator unit tests
+        run: python3 -m unittest tests.test_validate_content -v
+
+      - name: Run repository validator
+        run: python3 tools/validate_content.py --root .
+
+      - name: Compile and run problem 121 Java cases
+        run: |
+          tmpdir="$(mktemp -d)"
+          cp problems/array-string/0121-best-time-to-buy-and-sell-stock/Solution.java "$tmpdir/Solution.java"
+          cat > "$tmpdir/Main.java" <<'EOF'
+          public class Main {
+              public static void main(String[] args) {
+                  Solution s = new Solution();
+                  int[][] cases = {
+                      {7,1,5,3,6,4},
+                      {7,6,4,3,1},
+                      {1,2,3,4,5},
+                      {5},
+                      {5,4,3,1,2}
+                  };
+                  for (int[] prices : cases) {
+                      System.out.println(s.maxProfit(prices));
+                  }
+              }
+          }
+          EOF
+          cd "$tmpdir"
+          javac Solution.java Main.java
+          actual="$(java Main)"
+          expected="$(printf '5\n0\n4\n0\n1')"
+          printf '%s\n' "$actual"
+          test "$actual" = "$expected"
