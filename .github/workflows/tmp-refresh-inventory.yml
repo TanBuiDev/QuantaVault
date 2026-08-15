@@ -30,8 +30,6 @@ jobs:
           generated = json.loads(generated_path.read_text(encoding='utf-8'))
           current = json.loads(current_path.read_text(encoding='utf-8'))
           prior = {item['id']: item for item in current['problems']}
-          expected_ids = set(prior)
-          generated_ids = {item['id'] for item in generated['problems']}
 
           for item in generated['problems']:
               old = prior.get(item['id'], {})
@@ -43,20 +41,22 @@ jobs:
                   item['source_status'] = 'full-source'
 
           assert generated['problem_count_detected'] == 150, generated['problem_count_detected']
-          assert generated['unique_problem_count'] == 149, generated['unique_problem_count']
-          assert generated['full_source_count'] == 144, generated['full_source_count']
-          assert generated['source_missing_count'] == 6, generated['source_missing_count']
-          assert sorted(expected_ids - generated_ids) == [150], sorted(expected_ids - generated_ids)
+          assert generated['unique_problem_count'] == 150, generated['unique_problem_count']
+          assert generated['full_source_count'] == 143, generated['full_source_count']
+          assert generated['source_missing_count'] == 7, generated['source_missing_count']
           assert len(generated['duplicates']) == 1, generated['duplicates']
           assert generated['duplicates'][0]['id'] == 155, generated['duplicates']
 
           missing = [item['id'] for item in generated['problems'] if item['source_status'] == 'source-missing']
-          assert missing == [88, 27, 26, 80, 169, 189], missing
+          assert missing == [88, 27, 26, 80, 169, 189, 150], missing
+
+          pending_150 = next(item for item in generated['problems'] if item['id'] == 150)
+          assert pending_150['raw_source_file'] == 'Stack.txt', pending_150
+          assert pending_150['source_order'] == 4, pending_150
 
           current_path.write_text(json.dumps(generated, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-          print('CONFIRMED: 150 detected records, 149 unique IDs, 144 full-source, 6 source-missing')
-          print('MISSING_EXPECTED_ID: 150')
-          print('DUPLICATE_ID: 155')
+          print('CONFIRMED: 150 unique IDs, 143 full-source, 7 source-missing')
+          print('DUPLICATE_RAW_ID: 155')
           print('SOURCE_MISSING_IDS:', ','.join(map(str, missing)))
           PY
 
