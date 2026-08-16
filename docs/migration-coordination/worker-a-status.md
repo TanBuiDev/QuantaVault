@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 61
-Last completed problem: 92. Reverse Linked List II
-Last completed commit: `4a888c3024da6c6db3e7ae4877dc6b1b683bc22c`
+Last completed global position: 62
+Last completed problem: 25. Reverse Nodes in k-Group
+Last completed commit: `e714c8e82d08152417b2ef5e243d578f0c1464f0`
 
 Next assignment:
-- global position: 62
-- problem: 25. Reverse Nodes in k-Group
+- global position: 63
+- problem: 19. Remove Nth Node From End of List
 
 Stop boundary: after global position 99
 
