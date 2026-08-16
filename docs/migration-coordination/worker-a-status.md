@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 86
-Last completed problem: 530. Minimum Absolute Difference in BST
-Last completed commit: `f81e3625b5683cb787acb7bf2edb485a91cce93a`
+Last completed global position: 87
+Last completed problem: 230. Kth Smallest Element in a BST
+Last completed commit: `16c70c8d89f321c38e3b73cf15ccad336d75e65c`
 
 Next assignment:
-- global position: 87
-- problem: 230. Kth Smallest Element in a BST
+- global position: 88
+- problem: 98. Validate Binary Search Tree
 
 Stop boundary: after global position 99
 
