@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 120
-Last completed problem: 4. Median of Two Sorted Arrays
-Last completed problem commit: `4a52ee88ddb8aff09bc6dc4e7cfa1d47d4c8b250`
+Last completed global position: 119
+Last completed problem: 153. Find Minimum in Rotated Sorted Array
+Last completed problem commit: `39478dd52c006992895c31fe3f5e45ada7f66a9e`
 
 Next assignment:
-- global position: 119
-- problem: 153. Find Minimum in Rotated Sorted Array
+- global position: 118
+- problem: 34. Find First and Last Position of Element in Sorted Array
 
 Stop boundary: after global position 100
 
