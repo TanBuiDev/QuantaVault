@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 97
-Last completed problem: 127. Word Ladder
-Last completed commit: `093e611da4e9ea00b9e80e441813041ff2d31525`
+Last completed global position: 98
+Last completed problem: 208. Implement Trie (Prefix Tree)
+Last completed commit: `d6e26029ee6f5b4ac3c59a8aca48d423362f52ba`
 
 Next assignment:
-- global position: 98
-- problem: 208. Implement Trie (Prefix Tree)
+- global position: 99
+- problem: 211. Design Add and Search Words Data Structure
 
 Stop boundary: after global position 99
 
