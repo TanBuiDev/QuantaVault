@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 72
-Last completed problem: 105. Construct Binary Tree from Preorder and Inorder Traversal
-Last completed commit: `d5020135be05d6c3e1bfc5cf849544b1efb6165e`
+Last completed global position: 73
+Last completed problem: 106. Construct Binary Tree from Inorder and Postorder Traversal
+Last completed commit: `3822fec69e47fabd5dab2a2950cebbd5244c623d`
 
 Next assignment:
-- global position: 73
-- problem: 106. Construct Binary Tree from Inorder and Postorder Traversal
+- global position: 74
+- problem: 117. Populating Next Right Pointers in Each Node II
 
 Stop boundary: after global position 99
 
