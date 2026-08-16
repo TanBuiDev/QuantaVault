@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 111
-Last completed problem: 23. Merge k Sorted Lists
-Last completed problem commit: `12c2692864d90f77eed6db46cbd29c6a18fbf0ae`
+Last completed global position: 110
+Last completed problem: 427. Construct Quad Tree
+Last completed problem commit: `8e557589634a0b17f876939b01b5ebf42ca5a056`
 
 Next assignment:
-- global position: 110
-- problem: 427. Construct Quad Tree
+- global position: 109
+- problem: 148. Sort List
 
 Stop boundary: after global position 100
 
