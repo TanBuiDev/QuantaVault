@@ -1,0 +1,36 @@
+schema_version: 1
+problem_id: 101
+contract_type: method
+language_contract:
+  class: Solution
+  method: isSymmetric
+  parameters:
+    - name: root
+      type: TreeNode
+  return_type: boolean
+cases:
+  - name: example-1-symmetric
+    source: problem-example
+    input:
+      root: [1, 2, 2, 3, 4, 4, 3]
+    expected: true
+  - name: example-2-asymmetric
+    source: problem-example
+    input:
+      root: [1, 2, 2, null, 3, null, 3]
+    expected: false
+  - name: single-node
+    source: derived-edge-case
+    input:
+      root: [1]
+    expected: true
+  - name: same-values-different-structure
+    source: derived-regression
+    input:
+      root: [1, 2, 2, 3, null, 3, null]
+    expected: false
+  - name: deeper-symmetric
+    source: derived-regression
+    input:
+      root: [1, 2, 2, 3, 4, 4, 3, 5, null, null, 6, 6, null, null, 5]
+    expected: true
