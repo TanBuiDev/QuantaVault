@@ -1,0 +1,34 @@
+schema_version: 2
+id: 79
+slug: word-search
+title: Word Search
+difficulty: Medium
+primary_section: backtracking
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Backtracking.txt"
+  raw_blob_sha: "7f95978509c050faa1cfe1181871c15bf3b09c0e"
+study_plans:
+  - top-interview-150
+topics:
+  - Array
+  - String
+  - Backtracking
+  - Depth-First Search
+  - Matrix
+patterns:
+  - DFS Backtracking
+solution_languages:
+  - java
+time_complexity: O(m*n*3^L)
+space_complexity: O(L) recursion
+leetcode_url: https://leetcode.com/problems/word-search/
