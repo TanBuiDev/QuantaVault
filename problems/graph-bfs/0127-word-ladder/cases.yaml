@@ -1,0 +1,43 @@
+schema_version: 1
+problem_id: 127
+contract_type: method
+language_contract:
+  class: Solution
+  method: ladderLength
+  parameters:
+    - name: beginWord
+      type: String
+    - name: endWord
+      type: String
+    - name: wordList
+      type: List<String>
+  return_type: int
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      beginWord: hit
+      endWord: cog
+      wordList: [hot, dot, dog, lot, log, cog]
+    expected: 5
+  - name: example-2
+    source: problem-example
+    input:
+      beginWord: hit
+      endWord: cog
+      wordList: [hot, dot, dog, lot, log]
+    expected: 0
+  - name: one-step
+    source: derived-edge-case
+    input:
+      beginWord: a
+      endWord: c
+      wordList: [a, b, c]
+    expected: 2
+  - name: branching-shortest-path
+    source: derived-regression
+    input:
+      beginWord: red
+      endWord: tax
+      wordList: [ted, tex, red, tax, tad, den, rex, pee]
+    expected: 4
