@@ -1,0 +1,37 @@
+schema_version: 2
+id: 399
+slug: evaluate-division
+title: Evaluate Division
+difficulty: Medium
+primary_section: graph-general
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Graph General.txt"
+  raw_blob_sha: "17bdb083b5c628079da7c7553fefe2e356774020"
+study_plans:
+  - top-interview-150
+topics:
+  - Array
+  - String
+  - Depth-First Search
+  - Breadth-First Search
+  - Union-Find
+  - Graph
+  - Shortest Path
+patterns:
+  - Weighted Graph
+  - Path Product
+solution_languages:
+  - java
+time_complexity: O(Q * (V + E))
+space_complexity: O(V + E)
+leetcode_url: https://leetcode.com/problems/evaluate-division/
