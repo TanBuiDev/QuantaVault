@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 85
-Last completed problem: 103. Binary Tree Zigzag Level Order Traversal
-Last completed commit: `f31394a85b291fb82bf93b55f0f94434dd4bcc1b`
+Last completed global position: 86
+Last completed problem: 530. Minimum Absolute Difference in BST
+Last completed commit: `f81e3625b5683cb787acb7bf2edb485a91cce93a`
 
 Next assignment:
-- global position: 86
-- problem: 530. Minimum Absolute Difference in BST
+- global position: 87
+- problem: 230. Kth Smallest Element in a BST
 
 Stop boundary: after global position 99
 
