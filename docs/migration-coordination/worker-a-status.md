@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 56
-Last completed problem: 224. Basic Calculator
-Last completed commit: `fe3c7f1da054917d6a6b2707ae393a67c5fd24c9`
+Last completed global position: 57
+Last completed problem: 141. Linked List Cycle
+Last completed commit: `1b44d63f480b8bdf9a9dfc4e1b3cb7e373a0d270`
 
 Next assignment:
-- global position: 57
-- problem: 141. Linked List Cycle
+- global position: 58
+- problem: 2. Add Two Numbers
 
 Stop boundary: after global position 99
 
