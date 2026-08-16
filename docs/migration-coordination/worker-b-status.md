@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 124
-Last completed problem: 295. Find Median from Data Stream
-Last completed problem commit: `9f26664bec0c8b2a9d4b96e51178f5b824c87417`
+Last completed global position: 123
+Last completed problem: 373. Find K Pairs with Smallest Sums
+Last completed problem commit: `c5f0805c73e4daef3abf8bb0edb33138687070af`
 
 Next assignment:
-- global position: 123
-- problem: 373. Find K Pairs with Smallest Sums
+- global position: 122
+- problem: 502. IPO
 
 Stop boundary: after global position 100
 
