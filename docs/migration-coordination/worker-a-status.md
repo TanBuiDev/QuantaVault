@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 94
-Last completed problem: 210. Course Schedule II
-Last completed commit: `2588c901d19e01cc873324abff7d0fd6f4920bb9`
+Last completed global position: 95
+Last completed problem: 909. Snakes and Ladders
+Last completed commit: `f0c13709a68279c1c29f92397a5208df9158d052`
 
 Next assignment:
-- global position: 95
-- problem: 909. Snakes and Ladders
+- global position: 96
+- problem: 433. Minimum Genetic Mutation
 
 Stop boundary: after global position 99
 
