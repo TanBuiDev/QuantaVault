@@ -1,0 +1,31 @@
+schema_version: 1
+problem_id: 52
+contract_type: method
+language_contract:
+  class: Solution
+  method: totalNQueens
+  parameters:
+    - name: n
+      type: int
+  return_type: int
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      n: 4
+    expected: 2
+  - name: example-2
+    source: problem-example
+    input:
+      n: 1
+    expected: 1
+  - name: n-two
+    source: derived-edge-case
+    input:
+      n: 2
+    expected: 0
+  - name: n-three
+    source: derived-edge-case
+    input:
+      n: 3
+    expected: 0

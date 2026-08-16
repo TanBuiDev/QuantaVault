@@ -1,0 +1,21 @@
+schema_version: 1
+problem_id: 427
+contract_type: method
+language_contract:
+  class: Solution
+  method: construct
+  parameters:
+    - name: grid
+      type: int[][]
+  return_type: Node
+cases:
+  - name: four-cells
+    source: problem-example
+    input:
+      grid: [[0,1],[1,0]]
+    expected: internal-four-leaves
+  - name: uniform
+    source: derived-edge-case
+    input:
+      grid: [[1,1],[1,1]]
+    expected: leaf-true

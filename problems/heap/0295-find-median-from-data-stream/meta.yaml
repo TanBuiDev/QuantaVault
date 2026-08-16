@@ -1,0 +1,34 @@
+schema_version: 2
+id: 295
+slug: find-median-from-data-stream
+title: Find Median from Data Stream
+difficulty: Hard
+primary_section: heap
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Heap.txt"
+  raw_blob_sha: "fbb1dbdac09eda7a70bdcda5a956eee1c308b031"
+study_plans:
+  - top-interview-150
+topics:
+  - Two Pointers
+  - Design
+  - Sorting
+  - Heap (Priority Queue)
+  - Data Stream
+patterns:
+  - Two Heaps
+solution_languages:
+  - java
+time_complexity: O(log n) add, O(1) median
+space_complexity: O(n)
+leetcode_url: https://leetcode.com/problems/find-median-from-data-stream/

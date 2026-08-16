@@ -1,0 +1,31 @@
+schema_version: 2
+id: 52
+slug: n-queens-ii
+title: N-Queens II
+difficulty: Hard
+primary_section: backtracking
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Backtracking.txt"
+  raw_blob_sha: "7f95978509c050faa1cfe1181871c15bf3b09c0e"
+study_plans:
+  - top-interview-150
+topics:
+  - Backtracking
+  - Algorithm X
+patterns:
+  - Constraint Backtracking
+solution_languages:
+  - java
+time_complexity: O(n!)
+space_complexity: O(n)
+leetcode_url: https://leetcode.com/problems/n-queens-ii/

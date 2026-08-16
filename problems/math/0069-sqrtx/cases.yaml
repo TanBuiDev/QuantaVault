@@ -1,0 +1,31 @@
+schema_version: 1
+problem_id: 69
+contract_type: method
+language_contract:
+  class: Solution
+  method: mySqrt
+  parameters:
+    - name: x
+      type: int
+  return_type: int
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      x: 4
+    expected: 2
+  - name: example-2
+    source: problem-example
+    input:
+      x: 8
+    expected: 2
+  - name: zero
+    source: derived-edge-case
+    input:
+      x: 0
+    expected: 0
+  - name: max-int
+    source: derived-regression
+    input:
+      x: 2147483647
+    expected: 46340

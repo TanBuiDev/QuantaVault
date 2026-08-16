@@ -1,0 +1,33 @@
+schema_version: 2
+id: 300
+slug: longest-increasing-subsequence
+title: Longest Increasing Subsequence
+difficulty: Medium
+primary_section: 1d-dp
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "1D DP.txt"
+  raw_blob_sha: "df3dd4badad938a311d58828af8e8062866c43fe"
+study_plans:
+  - top-interview-150
+topics:
+  - Array
+  - Binary Search
+  - Dynamic Programming
+patterns:
+  - Patience Sorting
+  - Tails Array
+solution_languages:
+  - java
+time_complexity: O(n log n)
+space_complexity: O(n)
+leetcode_url: https://leetcode.com/problems/longest-increasing-subsequence/

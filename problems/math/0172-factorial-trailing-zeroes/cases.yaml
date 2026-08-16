@@ -1,0 +1,31 @@
+schema_version: 1
+problem_id: 172
+contract_type: method
+language_contract:
+  class: Solution
+  method: trailingZeroes
+  parameters:
+    - name: n
+      type: int
+  return_type: int
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      n: 3
+    expected: 0
+  - name: example-2
+    source: problem-example
+    input:
+      n: 5
+    expected: 1
+  - name: example-3
+    source: problem-example
+    input:
+      n: 0
+    expected: 0
+  - name: power-of-five
+    source: derived-regression
+    input:
+      n: 25
+    expected: 6

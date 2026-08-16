@@ -1,0 +1,31 @@
+schema_version: 1
+problem_id: 66
+contract_type: method
+language_contract:
+  class: Solution
+  method: plusOne
+  parameters:
+    - name: digits
+      type: int[]
+  return_type: int[]
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      digits: [1, 2, 3]
+    expected: [1, 2, 4]
+  - name: example-2
+    source: problem-example
+    input:
+      digits: [4, 3, 2, 1]
+    expected: [4, 3, 2, 2]
+  - name: example-3
+    source: problem-example
+    input:
+      digits: [9]
+    expected: [1, 0]
+  - name: carry-chain
+    source: derived-regression
+    input:
+      digits: [1, 9, 9]
+    expected: [2, 0, 0]

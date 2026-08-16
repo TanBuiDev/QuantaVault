@@ -1,0 +1,33 @@
+schema_version: 2
+id: 427
+slug: construct-quad-tree
+title: Construct Quad Tree
+difficulty: Medium
+primary_section: divide-conquer
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Divide & Conquer.txt"
+  raw_blob_sha: "bf5f0f59fe418d1671dd7e201ff87d31fe64df59"
+study_plans:
+  - top-interview-150
+topics:
+  - Array
+  - Divide and Conquer
+  - Tree
+  - Matrix
+patterns:
+  - Recursive Spatial Partition
+solution_languages:
+  - java
+time_complexity: O(n^2)
+space_complexity: O(n^2)
+leetcode_url: https://leetcode.com/problems/construct-quad-tree/

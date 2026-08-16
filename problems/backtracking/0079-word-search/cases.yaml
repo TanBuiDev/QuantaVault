@@ -1,0 +1,43 @@
+schema_version: 1
+problem_id: 79
+contract_type: method
+language_contract:
+  class: Solution
+  method: exist
+  parameters:
+    - name: board
+      type: char[][]
+    - name: word
+      type: String
+  return_type: boolean
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      board: [[A,B,C,E],[S,F,C,S],[A,D,E,E]]
+      word: ABCCED
+    expected: true
+  - name: example-2
+    source: problem-example
+    input:
+      board: [[A,B,C,E],[S,F,C,S],[A,D,E,E]]
+      word: SEE
+    expected: true
+  - name: example-3
+    source: problem-example
+    input:
+      board: [[A,B,C,E],[S,F,C,S],[A,D,E,E]]
+      word: ABCB
+    expected: false
+  - name: single-cell-true
+    source: derived-edge-case
+    input:
+      board: [[a]]
+      word: a
+    expected: true
+  - name: cannot-reuse-cell
+    source: derived-edge-case
+    input:
+      board: [[a,a]]
+      word: aaa
+    expected: false

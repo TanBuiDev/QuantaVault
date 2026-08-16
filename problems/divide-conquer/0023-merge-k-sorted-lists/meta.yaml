@@ -1,0 +1,33 @@
+schema_version: 2
+id: 23
+slug: merge-k-sorted-lists
+title: Merge k Sorted Lists
+difficulty: Hard
+primary_section: divide-conquer
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Divide & Conquer.txt"
+  raw_blob_sha: "bf5f0f59fe418d1671dd7e201ff87d31fe64df59"
+study_plans:
+  - top-interview-150
+topics:
+  - Linked List
+  - Divide and Conquer
+  - Heap (Priority Queue)
+  - Merge Sort
+patterns:
+  - K-way Merge
+solution_languages:
+  - java
+time_complexity: O(N log k)
+space_complexity: O(k)
+leetcode_url: https://leetcode.com/problems/merge-k-sorted-lists/

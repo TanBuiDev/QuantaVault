@@ -1,0 +1,36 @@
+schema_version: 1
+problem_id: 221
+contract_type: method
+language_contract:
+  class: Solution
+  method: maximalSquare
+  parameters:
+    - name: matrix
+      type: char[][]
+  return_type: int
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      matrix: [["1", "0", "1", "0", "0"], ["1", "0", "1", "1", "1"], ["1", "1", "1", "1", "1"], ["1", "0", "0", "1", "0"]]
+    expected: 4
+  - name: example-2
+    source: problem-example
+    input:
+      matrix: [["0", "1"], ["1", "0"]]
+    expected: 1
+  - name: example-3
+    source: problem-example
+    input:
+      matrix: [["0"]]
+    expected: 0
+  - name: all-ones-3x3
+    source: derived-edge-case
+    input:
+      matrix: [["1", "1", "1"], ["1", "1", "1"], ["1", "1", "1"]]
+    expected: 9
+  - name: rectangle-with-2x2-square
+    source: derived-regression
+    input:
+      matrix: [["1", "1", "1", "0"], ["1", "1", "1", "0"]]
+    expected: 4
