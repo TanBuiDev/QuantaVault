@@ -4,17 +4,16 @@ Worker: B
 Branch: `worker-b/reverse-migration`
 Assignment: global positions 150 -> 100
 Direction: reverse
-State: STARTED
+State: COMPLETED_REVISED_ASSIGNMENT
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 103
-Last completed problem: 46. Permutations
-Last completed problem commit: `645a03094b5823f7fc816a7e2cc45d17994e7fab`
+Last completed global position: 102
+Last completed problem: 77. Combinations
+Last completed problem commit: `e0f5dd1fe2831899987f9f7e58c5f6b282994800`
 
 Next assignment:
-- global position: 102
-- problem: 77. Combinations
+- none for Worker B
 
 Delegated final positions (per user coordination):
 - global position 101: 17. Letter Combinations of a Phone Number -> Worker A
@@ -23,12 +22,12 @@ Delegated final positions (per user coordination):
 Worker B stop boundary for this handoff: after global position 102
 
 Worker A / integration handoff:
-- Worker B has completed global positions 150 down through 103 inclusive (48 problems).
-- The durable Worker B branch contains validated work through position 103.
-- Worker B will complete global position 102, problem 77. Combinations, then stop.
-- Positions 101 and 100 have been delegated to Worker A by user instruction; Worker B will not create or modify their problem packages.
-- Worker B will continue using `worker-b/staging/migrate-NNNN`, wait for the Worker B validation gate to turn GREEN, verify promotion to `worker-b/reverse-migration`, and update this status file separately.
-- Worker B will not edit `data/migration-inventory.json`, will not write `worker-a-status.md` or `integration-status.md`, and will not merge/rebase/cherry-pick into `feat/leetcode-content-migration`.
+- Worker B completed global positions 150 down through 102 inclusive (49 problems).
+- The durable Worker B branch contains validated work through position 102.
+- Global position 102, problem 77. Combinations, passed the Worker B staged validation gate and was promoted as commit `e0f5dd1fe2831899987f9f7e58c5f6b282994800`.
+- Positions 101 and 100 were delegated to Worker A by explicit user instruction; Worker B did not create or modify their problem packages.
+- Worker B is stopped at the revised boundary and must not continue into positions 101 or 100.
+- Worker B did not edit `data/migration-inventory.json`, did not write `worker-a-status.md` or `integration-status.md`, and did not merge/rebase/cherry-pick into `feat/leetcode-content-migration`.
 
 Notes:
 - Do not edit `data/migration-inventory.json` in Worker B problem commits.
