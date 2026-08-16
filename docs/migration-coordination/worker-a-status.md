@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 81
-Last completed problem: 236. Lowest Common Ancestor of a Binary Tree
-Last completed commit: `701460d1749d1efbfa0398fcb52de784a9f4c9ce`
+Last completed global position: 82
+Last completed problem: 199. Binary Tree Right Side View
+Last completed commit: `2d3f825f89f82764b148f3b35049040e7fba9622`
 
 Next assignment:
-- global position: 82
-- problem: 199. Binary Tree Right Side View
+- global position: 83
+- problem: 637. Average of Levels in Binary Tree
 
 Stop boundary: after global position 99
 
