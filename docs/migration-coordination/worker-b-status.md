@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 113
-Last completed problem: 918. Maximum Sum Circular Subarray
-Last completed problem commit: `694ed1fb4abcbb52b362f14976b3e051b535f3db`
+Last completed global position: 112
+Last completed problem: 53. Maximum Subarray
+Last completed problem commit: `a9ad82800c9c0747fb819490cd4aad3084381622`
 
 Next assignment:
-- global position: 112
-- problem: 53. Maximum Subarray
+- global position: 111
+- problem: 23. Merge k Sorted Lists
 
 Stop boundary: after global position 100
 
