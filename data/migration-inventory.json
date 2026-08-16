@@ -650,9 +650,9 @@
       "section": "linked-list",
       "raw_source_file": "Linked List.txt",
       "source_order": 3,
-      "source_status": "available",
-      "solution_status": "none",
-      "canonical_path": null
+      "source_status": "full-source",
+      "solution_status": "migrated-v2",
+      "canonical_path": "problems/linked-list/0021-merge-two-sorted-lists"
     },
     {
       "id": 138,

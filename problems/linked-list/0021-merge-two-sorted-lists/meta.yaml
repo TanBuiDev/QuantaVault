@@ -1,0 +1,32 @@
+schema_version: 2
+id: 21
+slug: merge-two-sorted-lists
+title: Merge Two Sorted Lists
+difficulty: Easy
+primary_section: linked-list
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Linked List.txt"
+  raw_blob_sha: "830f75f5ef67c4868a67d08873997af9ea8b6eaf"
+study_plans:
+  - top-interview-150
+topics:
+  - Linked List
+  - Recursion
+patterns:
+  - Two-List Merge
+  - Dummy Head
+solution_languages:
+  - java
+time_complexity: O(m + n)
+space_complexity: O(1)
+leetcode_url: https://leetcode.com/problems/merge-two-sorted-lists/
