@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 68
-Last completed problem: 104. Maximum Depth of Binary Tree
-Last completed commit: `4bb805edd78d0695a17a0a958ce814aac80285fc`
+Last completed global position: 69
+Last completed problem: 100. Same Tree
+Last completed commit: `7d501fa11c15c872bfbdd797f72c878c3bee68b6`
 
 Next assignment:
-- global position: 69
-- problem: 100. Same Tree
+- global position: 70
+- problem: 226. Invert Binary Tree
 
 Stop boundary: after global position 99
 
