@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 95
-Last completed problem: 909. Snakes and Ladders
-Last completed commit: `f0c13709a68279c1c29f92397a5208df9158d052`
+Last completed global position: 96
+Last completed problem: 433. Minimum Genetic Mutation
+Last completed commit: `a375e27284684665f9c97d9c7e838e643503cd53`
 
 Next assignment:
-- global position: 96
-- problem: 433. Minimum Genetic Mutation
+- global position: 97
+- problem: 127. Word Ladder
 
 Stop boundary: after global position 99
 
