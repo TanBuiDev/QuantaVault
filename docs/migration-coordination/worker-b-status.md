@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 133
-Last completed problem: 172. Factorial Trailing Zeroes
-Last completed problem commit: `8cf57dec886d75bfeb259cc102cf851ef00419d9`
+Last completed global position: 132
+Last completed problem: 66. Plus One
+Last completed problem commit: `81dc8d21d1cebf2fea95e376c75c4d05b47f4a76`
 
 Next assignment:
-- global position: 132
-- problem: 66. Plus One
+- global position: 131
+- problem: 9. Palindrome Number
 
 Stop boundary: after global position 100
 
