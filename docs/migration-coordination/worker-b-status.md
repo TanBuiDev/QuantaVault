@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 115
-Last completed problem: 74. Search a 2D Matrix
-Last completed problem commit: `5ce4352da6564d10640be3b16377ef3384ff8732`
+Last completed global position: 114
+Last completed problem: 35. Search Insert Position
+Last completed problem commit: `423930c4cb3343f12ec41b6cf1344544cb460999`
 
 Next assignment:
-- global position: 114
-- problem: 35. Search Insert Position
+- global position: 113
+- problem: 918. Maximum Sum Circular Subarray
 
 Stop boundary: after global position 100
 
