@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 118
-Last completed problem: 34. Find First and Last Position of Element in Sorted Array
-Last completed problem commit: `4de211214ab65dc8e7ee5290598a5856775649e7`
+Last completed global position: 117
+Last completed problem: 33. Search in Rotated Sorted Array
+Last completed problem commit: `9330f8d44db0bc4c648f10386c4673d851e31a18`
 
 Next assignment:
-- global position: 117
-- problem: 33. Search in Rotated Sorted Array
+- global position: 116
+- problem: 162. Find Peak Element
 
 Stop boundary: after global position 100
 
