@@ -1,0 +1,31 @@
+schema_version: 1
+problem_id: 129
+contract_type: method
+language_contract:
+  class: Solution
+  method: sumNumbers
+  parameters:
+    - name: root
+      type: TreeNode
+  return_type: int
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      root: [1, 2, 3]
+    expected: 25
+  - name: example-2
+    source: problem-example
+    input:
+      root: [4, 9, 0, 5, 1]
+    expected: 1026
+  - name: single-zero
+    source: derived-edge-case
+    input:
+      root: [0]
+    expected: 0
+  - name: zero-digit-branches
+    source: derived-regression
+    input:
+      root: [1, 0, 1]
+    expected: 21
