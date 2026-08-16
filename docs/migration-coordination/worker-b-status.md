@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 116
-Last completed problem: 162. Find Peak Element
-Last completed problem commit: `6c8e22c3c17cd332941b27bd60b0779ccd97a489`
+Last completed global position: 115
+Last completed problem: 74. Search a 2D Matrix
+Last completed problem commit: `5ce4352da6564d10640be3b16377ef3384ff8732`
 
 Next assignment:
-- global position: 115
-- problem: 74. Search a 2D Matrix
+- global position: 114
+- problem: 35. Search Insert Position
 
 Stop boundary: after global position 100
 
