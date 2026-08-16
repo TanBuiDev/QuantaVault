@@ -1,0 +1,31 @@
+schema_version: 1
+problem_id: 34
+contract_type: method
+language_contract:
+  class: Solution
+  method: searchRange
+  parameters:
+    - name: nums
+      type: int[]
+    - name: target
+      type: int
+  return_type: int[]
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      nums: [5, 7, 7, 8, 8, 10]
+      target: 8
+    expected: [3, 4]
+  - name: example-2
+    source: problem-example
+    input:
+      nums: [5, 7, 7, 8, 8, 10]
+      target: 6
+    expected: [-1, -1]
+  - name: empty
+    source: problem-example
+    input:
+      nums: []
+      target: 0
+    expected: [-1, -1]
