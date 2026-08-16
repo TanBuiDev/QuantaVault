@@ -1,0 +1,32 @@
+schema_version: 2
+id: 1
+slug: two-sum
+title: Two Sum
+difficulty: Easy
+primary_section: hashmap
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Hashmap.txt"
+  raw_blob_sha: "27a5727700e86d5e4e15f746cd2ae51f3d8c2e01"
+study_plans:
+  - top-interview-150
+topics:
+  - Array
+  - Hash Table
+patterns:
+  - Complement Lookup
+  - One-Pass Hash Map
+solution_languages:
+  - java
+time_complexity: O(n)
+space_complexity: O(n)
+leetcode_url: https://leetcode.com/problems/two-sum/

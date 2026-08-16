@@ -1,0 +1,31 @@
+schema_version: 1
+problem_id: 137
+contract_type: method
+language_contract:
+  class: Solution
+  method: singleNumber
+  parameters:
+    - name: nums
+      type: int[]
+  return_type: int
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      nums: [2, 2, 3, 2]
+    expected: 3
+  - name: example-2
+    source: problem-example
+    input:
+      nums: [0, 1, 0, 1, 0, 1, 99]
+    expected: 99
+  - name: single-element
+    source: derived-edge-case
+    input:
+      nums: [-7]
+    expected: -7
+  - name: negative-unique
+    source: derived-regression
+    input:
+      nums: [-2, -2, -2, -7]
+    expected: -7

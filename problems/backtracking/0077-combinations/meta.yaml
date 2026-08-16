@@ -1,0 +1,30 @@
+schema_version: 2
+id: 77
+slug: combinations
+title: Combinations
+difficulty: Medium
+primary_section: backtracking
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Backtracking.txt"
+  raw_blob_sha: "7f95978509c050faa1cfe1181871c15bf3b09c0e"
+study_plans:
+  - top-interview-150
+topics:
+  - Backtracking
+patterns:
+  - Combination Backtracking
+solution_languages:
+  - java
+time_complexity: O(k * C(n,k))
+space_complexity: O(k) recursion excluding output
+leetcode_url: https://leetcode.com/problems/combinations/

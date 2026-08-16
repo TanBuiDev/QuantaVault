@@ -1,0 +1,46 @@
+schema_version: 1
+problem_id: 224
+contract_type: method
+language_contract:
+  class: Solution
+  method: calculate
+  parameters:
+    - name: s
+      type: String
+  return_type: int
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      s: "1 + 1"
+    expected: 2
+  - name: example-2
+    source: problem-example
+    input:
+      s: " 2-1 + 2 "
+    expected: 3
+  - name: example-3
+    source: problem-example
+    input:
+      s: "(1+(4+5+2)-3)+(6+8)"
+    expected: 23
+  - name: unary-minus-number
+    source: derived-edge-case
+    input:
+      s: "-1 + 2"
+    expected: 1
+  - name: unary-minus-parentheses
+    source: derived-edge-case
+    input:
+      s: "-(2 + 3) + 10"
+    expected: 5
+  - name: nested-subtraction
+    source: derived-regression
+    input:
+      s: "1-(2-(3-(4-5)))"
+    expected: 3
+  - name: multi-digit
+    source: derived-regression
+    input:
+      s: "123 + (45 - 6)"
+    expected: 162

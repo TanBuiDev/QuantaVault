@@ -1,0 +1,41 @@
+schema_version: 1
+problem_id: 169
+contract_type: method
+language_contract:
+  class: Solution
+  method: majorityElement
+  parameters:
+    - name: nums
+      type: int[]
+  return_type: int
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      nums: [3, 2, 3]
+    expected: 3
+  - name: example-2
+    source: problem-example
+    input:
+      nums: [2, 2, 1, 1, 1, 2, 2]
+    expected: 2
+  - name: single-element
+    source: derived-edge-case
+    input:
+      nums: [7]
+    expected: 7
+  - name: negative-majority
+    source: derived-edge-case
+    input:
+      nums: [-1, -1, 2, -1, 3, -1, -1]
+    expected: -1
+  - name: majority-barely-over-half
+    source: derived-edge-case
+    input:
+      nums: [4, 1, 4, 2, 4, 3, 4]
+    expected: 4
+  - name: interleaved-majority
+    source: derived-edge-case
+    input:
+      nums: [5, 1, 5, 2, 5, 3, 5, 5, 4]
+    expected: 5

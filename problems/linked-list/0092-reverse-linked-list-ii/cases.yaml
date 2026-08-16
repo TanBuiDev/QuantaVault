@@ -1,0 +1,57 @@
+schema_version: 1
+problem_id: 92
+contract_type: method
+language_contract:
+  class: Solution
+  method: reverseBetween
+  parameters:
+    - name: head
+      type: ListNode
+    - name: left
+      type: int
+    - name: right
+      type: int
+  return_type: ListNode
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      head: [1, 2, 3, 4, 5]
+      left: 2
+      right: 4
+    expected: [1, 4, 3, 2, 5]
+  - name: example-2-single-node
+    source: problem-example
+    input:
+      head: [5]
+      left: 1
+      right: 1
+    expected: [5]
+  - name: reverse-from-head
+    source: derived-edge-case
+    input:
+      head: [1, 2, 3, 4]
+      left: 1
+      right: 3
+    expected: [3, 2, 1, 4]
+  - name: reverse-to-tail
+    source: derived-edge-case
+    input:
+      head: [1, 2, 3, 4]
+      left: 2
+      right: 4
+    expected: [1, 4, 3, 2]
+  - name: reverse-whole-list
+    source: derived-regression
+    input:
+      head: [1, 2, 3]
+      left: 1
+      right: 3
+    expected: [3, 2, 1]
+  - name: no-op-middle
+    source: derived-edge-case
+    input:
+      head: [1, 2, 3]
+      left: 2
+      right: 2
+    expected: [1, 2, 3]

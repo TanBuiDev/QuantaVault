@@ -1,0 +1,33 @@
+schema_version: 2
+id: 502
+slug: ipo
+title: IPO
+difficulty: Hard
+primary_section: heap
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Heap.txt"
+  raw_blob_sha: "fbb1dbdac09eda7a70bdcda5a956eee1c308b031"
+study_plans:
+  - top-interview-150
+topics:
+  - Array
+  - Greedy
+  - Sorting
+  - Heap (Priority Queue)
+patterns:
+  - Eligibility Heap + Greedy Max Heap
+solution_languages:
+  - java
+time_complexity: O((n+k) log n)
+space_complexity: O(n)
+leetcode_url: https://leetcode.com/problems/ipo/

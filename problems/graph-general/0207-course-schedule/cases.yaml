@@ -1,0 +1,31 @@
+schema_version: 1
+problem_id: 207
+contract_type: method
+language_contract:
+  class: Solution
+  method: canFinish
+  parameters:
+    - name: numCourses
+      type: int
+    - name: prerequisites
+      type: int[][]
+  return_type: boolean
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      numCourses: 2
+      prerequisites: [[1, 0]]
+    expected: true
+  - name: example-2-cycle
+    source: problem-example
+    input:
+      numCourses: 2
+      prerequisites: [[1, 0], [0, 1]]
+    expected: false
+  - name: no-prerequisites
+    source: derived-edge-case
+    input:
+      numCourses: 3
+      prerequisites: []
+    expected: true

@@ -1,0 +1,31 @@
+schema_version: 2
+id: 373
+slug: find-k-pairs-with-smallest-sums
+title: Find K Pairs with Smallest Sums
+difficulty: Medium
+primary_section: heap
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Heap.txt"
+  raw_blob_sha: "fbb1dbdac09eda7a70bdcda5a956eee1c308b031"
+study_plans:
+  - top-interview-150
+topics:
+  - Array
+  - Heap (Priority Queue)
+patterns:
+  - K-way Merge
+solution_languages:
+  - java
+time_complexity: O(k log min(k,m))
+space_complexity: O(min(k,m)) excluding output
+leetcode_url: https://leetcode.com/problems/find-k-pairs-with-smallest-sums/

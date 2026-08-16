@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "problem.schema.json",
+  "title": "Canonical LeetCode Problem Metadata V2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "slug",
+    "title",
+    "difficulty",
+    "primary_section",
+    "content_status",
+    "source",
+    "study_plans",
+    "topics",
+    "patterns",
+    "solution_languages",
+    "leetcode_url"
+  ],
+  "properties": {
+    "schema_version": {"const": 2},
+    "id": {"type": "integer", "minimum": 1},
+    "slug": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "title": {"type": "string", "minLength": 1},
+    "difficulty": {"enum": ["Easy", "Medium", "Hard"]},
+    "primary_section": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "content_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "translation", "hints", "solution", "interview", "cases", "problem_media", "solution_media"],
+      "properties": {
+        "source": {"enum": ["full-source", "list-only", "source-missing"]},
+        "translation": {"enum": ["none", "partial", "complete"]},
+        "hints": {"enum": ["none", "partial", "complete"]},
+        "solution": {"enum": ["none", "partial", "complete"]},
+        "interview": {"enum": ["none", "partial", "complete"]},
+        "cases": {"enum": ["none", "partial", "complete"]},
+        "problem_media": {"enum": ["none", "available", "media-missing"]},
+        "solution_media": {"enum": ["none", "available", "media-missing"]}
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider"],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1},
+        "raw_file": {"type": "string", "minLength": 1},
+        "raw_blob_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+      }
+    },
+    "study_plans": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "topics": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "patterns": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "solution_languages": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "time_complexity": {"type": "string"},
+    "space_complexity": {"type": "string"},
+    "leetcode_url": {"type": "string", "pattern": "^https://leetcode\\.com/problems/"},
+    "media": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "path", "scope", "role", "origin", "alt_en", "alt_vi"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "path": {"type": "string", "minLength": 1},
+          "scope": {"enum": ["problem", "solution"]},
+          "role": {"type": "string", "minLength": 1},
+          "origin": {"enum": ["user-supplied", "external", "project-created"]},
+          "alt_en": {"type": "string", "minLength": 1},
+          "alt_vi": {"type": "string", "minLength": 1},
+          "source_url": {"type": "string", "minLength": 1},
+          "license": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "content_status": {
+            "properties": {"source": {"const": "full-source"}},
+            "required": ["source"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "source": {"required": ["provider", "raw_file", "raw_blob_sha"]}
+        }
+      }
+    }
+  ],
+  "description": "Filesystem validation additionally enforces bilingual problem/interview content, component files, media path/scope consistency, and provenance rules."
+}

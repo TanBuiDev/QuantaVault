@@ -1,0 +1,55 @@
+schema_version: 1
+problem_id: 189
+contract_type: method
+language_contract:
+  class: Solution
+  method: rotate
+  parameters:
+    - name: nums
+      type: int[]
+    - name: k
+      type: int
+  return_type: void
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      nums: [1, 2, 3, 4, 5, 6, 7]
+      k: 3
+    expected_mutation:
+      nums: [5, 6, 7, 1, 2, 3, 4]
+  - name: example-2
+    source: problem-example
+    input:
+      nums: [-1, -100, 3, 99]
+      k: 2
+    expected_mutation:
+      nums: [3, 99, -1, -100]
+  - name: zero-rotation
+    source: derived-edge-case
+    input:
+      nums: [1, 2, 3]
+      k: 0
+    expected_mutation:
+      nums: [1, 2, 3]
+  - name: k-equals-length
+    source: derived-edge-case
+    input:
+      nums: [1, 2, 3, 4]
+      k: 4
+    expected_mutation:
+      nums: [1, 2, 3, 4]
+  - name: k-greater-than-length
+    source: derived-edge-case
+    input:
+      nums: [1, 2, 3, 4, 5]
+      k: 7
+    expected_mutation:
+      nums: [4, 5, 1, 2, 3]
+  - name: single-element
+    source: derived-edge-case
+    input:
+      nums: [9]
+      k: 100
+    expected_mutation:
+      nums: [9]

@@ -1,0 +1,33 @@
+schema_version: 2
+id: 26
+slug: remove-duplicates-from-sorted-array
+title: Remove Duplicates from Sorted Array
+difficulty: Easy
+primary_section: array-string
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Array  String.txt"
+  raw_blob_sha: "b1c7a453f152629ce35040af85f2b1f4c22f589e"
+study_plans:
+  - top-interview-150
+topics:
+  - Array
+  - Two Pointers
+patterns:
+  - Two Pointers
+  - Write Pointer
+  - In-place Deduplication
+solution_languages:
+  - java
+time_complexity: O(n)
+space_complexity: O(1)
+leetcode_url: https://leetcode.com/problems/remove-duplicates-from-sorted-array/

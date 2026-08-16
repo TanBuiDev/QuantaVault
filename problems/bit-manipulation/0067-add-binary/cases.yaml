@@ -1,0 +1,37 @@
+schema_version: 1
+problem_id: 67
+contract_type: method
+language_contract:
+  class: Solution
+  method: addBinary
+  parameters:
+    - name: a
+      type: String
+    - name: b
+      type: String
+  return_type: String
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      a: "11"
+      b: "1"
+    expected: "100"
+  - name: example-2
+    source: problem-example
+    input:
+      a: "1010"
+      b: "1011"
+    expected: "10101"
+  - name: zeros
+    source: derived-edge-case
+    input:
+      a: "0"
+      b: "0"
+    expected: "0"
+  - name: carry-chain
+    source: derived-regression
+    input:
+      a: "1111"
+      b: "1"
+    expected: "10000"

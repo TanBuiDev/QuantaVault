@@ -1,0 +1,26 @@
+schema_version: 1
+problem_id: 211
+contract_type: operation-sequence
+language_contract:
+  class: WordDictionary
+cases:
+  - name: example
+    source: problem-example
+    operations: [WordDictionary, addWord, addWord, addWord, search, search, search, search]
+    arguments: [[], [bad], [dad], [mad], [pad], [bad], [.ad], [b..]]
+    expected: [null, null, null, null, false, true, true, true]
+  - name: wildcard-positions
+    source: derived-regression
+    operations: [WordDictionary, addWord, addWord, search, search, search, search]
+    arguments: [[], [code], [cope], [.ode], [c.de], [co.e], [....]]
+    expected: [null, null, null, true, true, true, true]
+  - name: prefix-is-not-word
+    source: derived-edge-case
+    operations: [WordDictionary, addWord, search, search, search]
+    arguments: [[], [apple], [app], [a....], [.....]]
+    expected: [null, null, false, true, true]
+  - name: wrong-length
+    source: derived-edge-case
+    operations: [WordDictionary, addWord, search, search]
+    arguments: [[], [cat], [..], [....]]
+    expected: [null, null, false, false]

@@ -1,0 +1,36 @@
+schema_version: 1
+problem_id: 58
+contract_type: method
+language_contract:
+  class: Solution
+  method: lengthOfLastWord
+  parameters:
+    - name: s
+      type: String
+  return_type: int
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      s: "Hello World"
+    expected: 5
+  - name: example-2
+    source: problem-example
+    input:
+      s: "   fly me   to   the moon  "
+    expected: 4
+  - name: example-3
+    source: problem-example
+    input:
+      s: "luffy is still joyboy"
+    expected: 6
+  - name: one-word
+    source: derived-edge-case
+    input:
+      s: "Java"
+    expected: 4
+  - name: trailing-spaces
+    source: derived-edge-case
+    input:
+      s: "a   "
+    expected: 1

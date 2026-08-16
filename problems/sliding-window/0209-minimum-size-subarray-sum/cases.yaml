@@ -1,0 +1,43 @@
+schema_version: 1
+problem_id: 209
+contract_type: method
+language_contract:
+  class: Solution
+  method: minSubArrayLen
+  parameters:
+    - name: target
+      type: int
+    - name: nums
+      type: int[]
+  return_type: int
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      target: 7
+      nums: [2, 3, 1, 2, 4, 3]
+    expected: 2
+  - name: example-2
+    source: problem-example
+    input:
+      target: 4
+      nums: [1, 4, 4]
+    expected: 1
+  - name: example-3
+    source: problem-example
+    input:
+      target: 11
+      nums: [1, 1, 1, 1, 1, 1, 1, 1]
+    expected: 0
+  - name: exact-single
+    source: derived-edge-case
+    input:
+      target: 8
+      nums: [8]
+    expected: 1
+  - name: whole-array
+    source: derived-edge-case
+    input:
+      target: 15
+      nums: [1, 2, 3, 4, 5]
+    expected: 5

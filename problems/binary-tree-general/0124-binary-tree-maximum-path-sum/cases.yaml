@@ -1,0 +1,31 @@
+schema_version: 1
+problem_id: 124
+contract_type: method
+language_contract:
+  class: Solution
+  method: maxPathSum
+  parameters:
+    - name: root
+      type: TreeNode
+  return_type: int
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      root: [1, 2, 3]
+    expected: 6
+  - name: example-2
+    source: problem-example
+    input:
+      root: [-10, 9, 20, null, null, 15, 7]
+    expected: 42
+  - name: single-negative
+    source: derived-edge-case
+    input:
+      root: [-3]
+    expected: -3
+  - name: best-path-does-not-use-root
+    source: derived-regression
+    input:
+      root: [-2, -1]
+    expected: -1

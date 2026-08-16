@@ -1,0 +1,36 @@
+schema_version: 1
+problem_id: 433
+contract_type: method
+language_contract:
+  class: Solution
+  method: minMutation
+  parameters:
+    - name: startGene
+      type: String
+    - name: endGene
+      type: String
+    - name: bank
+      type: String[]
+  return_type: int
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      startGene: AACCGGTT
+      endGene: AACCGGTA
+      bank: [AACCGGTA]
+    expected: 1
+  - name: example-2
+    source: problem-example
+    input:
+      startGene: AACCGGTT
+      endGene: AAACGGTA
+      bank: [AACCGGTA, AACCGCTA, AAACGGTA]
+    expected: 2
+  - name: end-not-in-bank
+    source: derived-regression
+    input:
+      startGene: AACCGGTT
+      endGene: AACCGGTA
+      bank: []
+    expected: -1

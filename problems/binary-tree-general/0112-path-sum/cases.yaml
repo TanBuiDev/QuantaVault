@@ -1,0 +1,43 @@
+schema_version: 1
+problem_id: 112
+contract_type: method
+language_contract:
+  class: Solution
+  method: hasPathSum
+  parameters:
+    - name: root
+      type: TreeNode
+    - name: targetSum
+      type: int
+  return_type: boolean
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      root: [5, 4, 8, 11, null, 13, 4, 7, 2, null, null, null, 1]
+      targetSum: 22
+    expected: true
+  - name: example-2
+    source: problem-example
+    input:
+      root: [1, 2, 3]
+      targetSum: 5
+    expected: false
+  - name: example-3-empty
+    source: problem-example
+    input:
+      root: []
+      targetSum: 0
+    expected: false
+  - name: internal-node-is-not-leaf
+    source: derived-regression
+    input:
+      root: [1, 2]
+      targetSum: 1
+    expected: false
+  - name: negative-values
+    source: derived-edge-case
+    input:
+      root: [-2, null, -3]
+      targetSum: -5
+    expected: true

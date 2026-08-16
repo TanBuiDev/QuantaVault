@@ -1,0 +1,31 @@
+schema_version: 2
+id: 190
+slug: reverse-bits
+title: Reverse Bits
+difficulty: Easy
+primary_section: bit-manipulation
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Bit Manipulation.txt"
+  raw_blob_sha: "f830a5d6c97e848fd7dbb66703601652e69a2db4"
+study_plans:
+  - top-interview-150
+topics:
+  - Divide and Conquer
+  - Bit Manipulation
+patterns:
+  - Fixed Width Bit Reversal
+solution_languages:
+  - java
+time_complexity: O(1)
+space_complexity: O(1)
+leetcode_url: https://leetcode.com/problems/reverse-bits/

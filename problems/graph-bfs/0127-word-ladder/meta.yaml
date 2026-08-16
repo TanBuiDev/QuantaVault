@@ -1,0 +1,34 @@
+schema_version: 2
+id: 127
+slug: word-ladder
+title: Word Ladder
+difficulty: Hard
+primary_section: graph-bfs
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Graph BFS.txt"
+  raw_blob_sha: "9eca86e57c1fadb2e22fe85524edd686ff35b23a"
+study_plans:
+  - top-interview-150
+topics:
+  - Hash Table
+  - String
+  - Breadth-First Search
+  - Bidirectional Search
+patterns:
+  - Shortest Path BFS
+  - Implicit Graph
+solution_languages:
+  - java
+time_complexity: O(N * L * 26)
+space_complexity: O(N * L)
+leetcode_url: https://leetcode.com/problems/word-ladder/

@@ -1,0 +1,37 @@
+schema_version: 1
+problem_id: 72
+contract_type: method
+language_contract:
+  class: Solution
+  method: minDistance
+  parameters:
+    - name: word1
+      type: String
+    - name: word2
+      type: String
+  return_type: int
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      word1: horse
+      word2: ros
+    expected: 3
+  - name: example-2
+    source: problem-example
+    input:
+      word1: intention
+      word2: execution
+    expected: 5
+  - name: both-empty
+    source: derived-edge-case
+    input:
+      word1: ""
+      word2: ""
+    expected: 0
+  - name: insert-all
+    source: derived-edge-case
+    input:
+      word1: ""
+      word2: abc
+    expected: 3

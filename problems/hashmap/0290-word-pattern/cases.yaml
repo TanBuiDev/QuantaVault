@@ -1,0 +1,43 @@
+schema_version: 1
+problem_id: 290
+contract_type: method
+language_contract:
+  class: Solution
+  method: wordPattern
+  parameters:
+    - name: pattern
+      type: String
+    - name: s
+      type: String
+  return_type: boolean
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      pattern: "abba"
+      s: "dog cat cat dog"
+    expected: true
+  - name: example-2
+    source: problem-example
+    input:
+      pattern: "abba"
+      s: "dog cat cat fish"
+    expected: false
+  - name: example-3
+    source: problem-example
+    input:
+      pattern: "aaaa"
+      s: "dog cat cat dog"
+    expected: false
+  - name: reverse-collision
+    source: derived-edge-case
+    input:
+      pattern: "ab"
+      s: "dog dog"
+    expected: false
+  - name: count-mismatch
+    source: derived-edge-case
+    input:
+      pattern: "aaa"
+      s: "dog dog"
+    expected: false

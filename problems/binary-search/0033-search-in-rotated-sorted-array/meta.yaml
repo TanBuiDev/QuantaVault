@@ -1,0 +1,31 @@
+schema_version: 2
+id: 33
+slug: search-in-rotated-sorted-array
+title: Search in Rotated Sorted Array
+difficulty: Medium
+primary_section: binary-search
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Binary Search.txt"
+  raw_blob_sha: "2d446f1a9dafbceb9c18cb7f8e7afcddb516a115"
+study_plans:
+  - top-interview-150
+topics:
+  - Array
+  - Binary Search
+patterns:
+  - Rotated Array Binary Search
+solution_languages:
+  - java
+time_complexity: O(log n)
+space_complexity: O(1)
+leetcode_url: https://leetcode.com/problems/search-in-rotated-sorted-array/

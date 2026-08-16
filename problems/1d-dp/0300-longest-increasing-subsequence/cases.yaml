@@ -1,0 +1,31 @@
+schema_version: 1
+problem_id: 300
+contract_type: method
+language_contract:
+  class: Solution
+  method: lengthOfLIS
+  parameters:
+    - name: nums
+      type: int[]
+  return_type: int
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      nums: [10, 9, 2, 5, 3, 7, 101, 18]
+    expected: 4
+  - name: example-2
+    source: problem-example
+    input:
+      nums: [0, 1, 0, 3, 2, 3]
+    expected: 4
+  - name: example-3
+    source: problem-example
+    input:
+      nums: [7, 7, 7, 7, 7, 7, 7]
+    expected: 1
+  - name: decreasing
+    source: derived-edge-case
+    input:
+      nums: [5, 4, 3, 2, 1]
+    expected: 1

@@ -1,0 +1,43 @@
+schema_version: 1
+problem_id: 97
+contract_type: method
+language_contract:
+  class: Solution
+  method: isInterleave
+  parameters:
+    - name: s1
+      type: String
+    - name: s2
+      type: String
+    - name: s3
+      type: String
+  return_type: boolean
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      s1: aabcc
+      s2: dbbca
+      s3: aadbbcbcac
+    expected: true
+  - name: example-2
+    source: problem-example
+    input:
+      s1: aabcc
+      s2: dbbca
+      s3: aadbbbaccc
+    expected: false
+  - name: example-3
+    source: problem-example
+    input:
+      s1: ""
+      s2: ""
+      s3: ""
+    expected: true
+  - name: length-mismatch
+    source: derived-edge-case
+    input:
+      s1: a
+      s2: b
+      s3: a
+    expected: false

@@ -1,0 +1,36 @@
+schema_version: 1
+problem_id: 151
+contract_type: method
+language_contract:
+  class: Solution
+  method: reverseWords
+  parameters:
+    - name: s
+      type: String
+  return_type: String
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      s: "the sky is blue"
+    expected: "blue is sky the"
+  - name: example-2
+    source: problem-example
+    input:
+      s: "  hello world  "
+    expected: "world hello"
+  - name: example-3
+    source: problem-example
+    input:
+      s: "a good   example"
+    expected: "example good a"
+  - name: one-word-with-spaces
+    source: derived-edge-case
+    input:
+      s: "   Java   "
+    expected: "Java"
+  - name: mixed-word-types
+    source: derived-edge-case
+    input:
+      s: "  a1   B2 c3 "
+    expected: "c3 B2 a1"

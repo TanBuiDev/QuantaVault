@@ -1,0 +1,26 @@
+schema_version: 1
+problem_id: 102
+contract_type: method
+language_contract:
+  class: Solution
+  method: levelOrder
+  parameters:
+    - name: root
+      type: TreeNode
+  return_type: List<List<Integer>>
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      root: [3, 9, 20, null, null, 15, 7]
+    expected: [[3], [9, 20], [15, 7]]
+  - name: example-2-single
+    source: problem-example
+    input:
+      root: [1]
+    expected: [[1]]
+  - name: example-3-empty
+    source: problem-example
+    input:
+      root: []
+    expected: []

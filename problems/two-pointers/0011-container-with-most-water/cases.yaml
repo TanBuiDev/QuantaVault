@@ -1,0 +1,36 @@
+schema_version: 1
+problem_id: 11
+contract_type: method
+language_contract:
+  class: Solution
+  method: maxArea
+  parameters:
+    - name: height
+      type: int[]
+  return_type: int
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      height: [1, 8, 6, 2, 5, 4, 8, 3, 7]
+    expected: 49
+  - name: example-2
+    source: problem-example
+    input:
+      height: [1, 1]
+    expected: 1
+  - name: equal-heights
+    source: derived-edge-case
+    input:
+      height: [5, 5, 5, 5]
+    expected: 15
+  - name: increasing
+    source: derived-edge-case
+    input:
+      height: [1, 2, 3, 4, 5]
+    expected: 6
+  - name: includes-zero
+    source: derived-edge-case
+    input:
+      height: [0, 2, 0, 4, 0]
+    expected: 4

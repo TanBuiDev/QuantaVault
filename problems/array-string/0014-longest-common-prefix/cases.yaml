@@ -1,0 +1,36 @@
+schema_version: 1
+problem_id: 14
+contract_type: method
+language_contract:
+  class: Solution
+  method: longestCommonPrefix
+  parameters:
+    - name: strs
+      type: String[]
+  return_type: String
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      strs: ["flower", "flow", "flight"]
+    expected: "fl"
+  - name: example-2
+    source: problem-example
+    input:
+      strs: ["dog", "racecar", "car"]
+    expected: ""
+  - name: one-string
+    source: derived-edge-case
+    input:
+      strs: ["alone"]
+    expected: "alone"
+  - name: empty-string-present
+    source: derived-edge-case
+    input:
+      strs: ["abc", "", "ab"]
+    expected: ""
+  - name: shortest-is-prefix
+    source: derived-edge-case
+    input:
+      strs: ["interview", "inter", "internet"]
+    expected: "inter"

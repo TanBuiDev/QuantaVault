@@ -1,0 +1,167 @@
+# 30. Substring with Concatenation of All Words — Solution
+
+## 1. Core idea / Ý tưởng cốt lõi
+
+Ta không trượt theo từng character bên trong một alignment; ta trượt theo **token** có kích thước cố định `wordLength`.
+
+Vì valid concatenation có thể bắt đầu ở bất kỳ index nào, ta chia search thành `wordLength` alignment:
+
+```text
+offset = 0 .. wordLength-1
+```
+
+Trong mỗi alignment, mọi bước của `right` và `left` đều nhảy đúng `wordLength`.
+
+---
+
+## 2. Frequency model
+
+Tạo map:
+
+```text
+need[word] = số lần word phải xuất hiện
+```
+
+Current window duy trì:
+
+```text
+seen[word] = số lần word đang xuất hiện
+count = tổng số token trong window
+```
+
+Ba trường hợp cho token mới:
+
+1. Không thuộc `need` → reset toàn bộ window.
+2. Thuộc `need` nhưng vượt quota → shrink từ trái tới khi quota hợp lệ.
+3. Window có đúng `words.length` token → current `left` là answer.
+
+---
+
+## 3. Algorithm
+
+```java
+for (int offset = 0; offset < wordLength; offset++) {
+    int left = offset;
+    int count = 0;
+    Map<String, Integer> seen = new HashMap<>();
+
+    for (int right = offset; right + wordLength <= s.length(); right += wordLength) {
+        String word = s.substring(right, right + wordLength);
+
+        if (!need.containsKey(word)) {
+            seen.clear();
+            count = 0;
+            left = right + wordLength;
+            continue;
+        }
+
+        seen.put(word, seen.getOrDefault(word, 0) + 1);
+        count++;
+
+        while (seen.get(word) > need.get(word)) {
+            String leftWord = s.substring(left, left + wordLength);
+            seen.put(leftWord, seen.get(leftWord) - 1);
+            left += wordLength;
+            count--;
+        }
+
+        if (count == words.length) {
+            answer.add(left);
+            String leftWord = s.substring(left, left + wordLength);
+            seen.put(leftWord, seen.get(leftWord) - 1);
+            left += wordLength;
+            count--;
+        }
+    }
+}
+```
+
+---
+
+## 4. Why offsets are necessary
+
+Nếu `wordLength = 3`, token boundaries của một candidate start tại index `1` là:
+
+```text
+1,4,7,10,...
+```
+
+Window bắt đầu ở offset `0` chỉ thấy boundaries:
+
+```text
+0,3,6,9,...
+```
+
+Nên cần chạy tất cả offsets `0..wordLength-1` để phủ mọi possible start index.
+
+---
+
+## 5. Why shrinking on excess is correct
+
+Giả sử token `foo` vừa làm:
+
+```text
+seen[foo] > need[foo]
+```
+
+Bất kỳ valid window kết thúc tại current `right` phải loại ít nhất một occurrence `foo` cũ. Shrink từ trái từng token cho tới khi occurrence thừa bị loại sẽ tạo left nhỏ nhất còn hợp lệ cho suffix hiện tại.
+
+---
+
+## 6. Dry run
+
+```text
+s = "barfoothefoobarman"
+words = ["foo","bar"]
+wordLength = 3
+```
+
+Offset `0` đọc token:
+
+```text
+bar -> foo
+```
+
+`count=2`, frequencies khớp → add `0`.
+
+Sau khi advance một token, gặp `the` → reset.
+
+Tiếp theo:
+
+```text
+foo -> bar
+```
+
+window bắt đầu tại `9` → add `9`.
+
+---
+
+## 7. Correctness / Vì sao đúng
+
+Mỗi valid concatenation có một start index với một offset duy nhất modulo `wordLength`, nên nó được xét trong đúng một alignment. Trong alignment đó, window boundaries luôn nằm trên token boundaries.
+
+`seen` luôn được shrink để không word nào vượt `need`. Khi `count == words.length`, window chứa đúng số token cần thiết; vì mọi token đều thuộc `need` và không frequency nào vượt quota, tổng số token bằng tổng quota nên mọi frequency phải khớp chính xác. Do đó `left` là valid answer.
+
+Ngược lại, mọi valid answer sẽ đạt trạng thái frequency khớp khi `right` đi tới token cuối của nó, nên không bị bỏ sót.
+
+---
+
+## 8. Complexity
+
+Theo số token operations, mỗi alignment là tuyến tính theo số token của alignment. Trong Java, `substring` tạo/copy chuỗi dài `wordLength`, nên một bound thực tế rõ ràng là:
+
+```text
+Time: O(n * wordLength)
+Space: O(number of distinct words)
+```
+
+Với `wordLength <= 30`, đây là cách chuẩn và đủ nhanh.
+
+---
+
+## 9. Common mistakes
+
+1. Chỉ chạy offset `0` và bỏ sót start không chia hết cho word length.
+2. So sánh set thay vì frequency, sai khi `words` có duplicate.
+3. Khi gặp invalid token không reset `left`/`seen`/`count` đồng bộ.
+4. Sau match không advance một token, dễ báo lại cùng window hoặc làm count vượt kích thước.

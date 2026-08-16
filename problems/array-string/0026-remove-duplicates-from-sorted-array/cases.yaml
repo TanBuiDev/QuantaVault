@@ -1,0 +1,46 @@
+schema_version: 1
+problem_id: 26
+contract_type: method
+language_contract:
+  class: Solution
+  method: removeDuplicates
+  parameters:
+    - name: nums
+      type: int[]
+  return_type: int
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      nums: [1, 1, 2]
+    expected_mutation:
+      return: 2
+      nums_prefix: [1, 2]
+  - name: example-2
+    source: problem-example
+    input:
+      nums: [0, 0, 1, 1, 1, 2, 2, 3, 3, 4]
+    expected_mutation:
+      return: 5
+      nums_prefix: [0, 1, 2, 3, 4]
+  - name: single-element
+    source: derived-edge-case
+    input:
+      nums: [7]
+    expected_mutation:
+      return: 1
+      nums_prefix: [7]
+  - name: all-same
+    source: derived-edge-case
+    input:
+      nums: [2, 2, 2, 2]
+    expected_mutation:
+      return: 1
+      nums_prefix: [2]
+  - name: already-unique
+    source: derived-edge-case
+    input:
+      nums: [-3, -1, 0, 4]
+    expected_mutation:
+      return: 4
+      nums_prefix: [-3, -1, 0, 4]

@@ -1,0 +1,35 @@
+schema_version: 2
+id: 200
+slug: number-of-islands
+title: Number of Islands
+difficulty: Medium
+primary_section: graph-general
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Graph General.txt"
+  raw_blob_sha: "17bdb083b5c628079da7c7553fefe2e356774020"
+study_plans:
+  - top-interview-150
+topics:
+  - Array
+  - Depth-First Search
+  - Breadth-First Search
+  - Union-Find
+  - Matrix
+patterns:
+  - Connected Components
+  - Flood Fill
+solution_languages:
+  - java
+time_complexity: O(m*n)
+space_complexity: O(m*n)
+leetcode_url: https://leetcode.com/problems/number-of-islands/

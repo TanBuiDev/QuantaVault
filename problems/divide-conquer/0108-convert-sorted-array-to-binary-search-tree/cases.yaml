@@ -1,0 +1,21 @@
+schema_version: 1
+problem_id: 108
+contract_type: method
+language_contract:
+  class: Solution
+  method: sortedArrayToBST
+  parameters:
+    - name: nums
+      type: int[]
+  return_type: TreeNode
+cases:
+  - name: example
+    source: problem-example
+    input:
+      nums: [-10,-3,0,5,9]
+    expected: height-balanced-bst
+  - name: single
+    source: derived-edge-case
+    input:
+      nums: [1]
+    expected: node-1

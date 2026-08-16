@@ -1,0 +1,41 @@
+schema_version: 1
+problem_id: 55
+contract_type: method
+language_contract:
+  class: Solution
+  method: canJump
+  parameters:
+    - name: nums
+      type: int[]
+  return_type: boolean
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      nums: [2, 3, 1, 1, 4]
+    expected: true
+  - name: example-2
+    source: problem-example
+    input:
+      nums: [3, 2, 1, 0, 4]
+    expected: false
+  - name: single-element
+    source: derived-edge-case
+    input:
+      nums: [0]
+    expected: true
+  - name: exact-jumps
+    source: derived-edge-case
+    input:
+      nums: [1, 1, 1, 1]
+    expected: true
+  - name: early-large-jump
+    source: derived-edge-case
+    input:
+      nums: [5, 0, 0, 0, 0]
+    expected: true
+  - name: blocked-after-progress
+    source: derived-edge-case
+    input:
+      nums: [2, 0, 0, 1]
+    expected: false

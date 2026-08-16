@@ -1,0 +1,35 @@
+schema_version: 2
+id: 117
+slug: populating-next-right-pointers-in-each-node-ii
+title: Populating Next Right Pointers in Each Node II
+difficulty: Medium
+primary_section: binary-tree-general
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Binary Tree General.txt"
+  raw_blob_sha: "67ddc468f37324188e476da748c186df497ee5a0"
+study_plans:
+  - top-interview-150
+topics:
+  - Linked List
+  - Tree
+  - Depth-First Search
+  - Breadth-First Search
+  - Binary Tree
+patterns:
+  - Level Linking
+  - Existing Next-Pointer Traversal
+solution_languages:
+  - java
+time_complexity: O(n)
+space_complexity: O(1)
+leetcode_url: https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/

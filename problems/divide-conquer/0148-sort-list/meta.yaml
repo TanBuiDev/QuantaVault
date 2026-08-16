@@ -1,0 +1,34 @@
+schema_version: 2
+id: 148
+slug: sort-list
+title: Sort List
+difficulty: Medium
+primary_section: divide-conquer
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Divide & Conquer.txt"
+  raw_blob_sha: "bf5f0f59fe418d1671dd7e201ff87d31fe64df59"
+study_plans:
+  - top-interview-150
+topics:
+  - Linked List
+  - Two Pointers
+  - Divide and Conquer
+  - Sorting
+  - Merge Sort
+patterns:
+  - Bottom-Up Merge Sort
+solution_languages:
+  - java
+time_complexity: O(n log n)
+space_complexity: O(1)
+leetcode_url: https://leetcode.com/problems/sort-list/

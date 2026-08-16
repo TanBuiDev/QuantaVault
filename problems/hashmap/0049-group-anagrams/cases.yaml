@@ -1,0 +1,37 @@
+schema_version: 1
+problem_id: 49
+contract_type: method
+language_contract:
+  class: Solution
+  method: groupAnagrams
+  parameters:
+    - name: strs
+      type: String[]
+  return_type: List<List<String>>
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      strs: ["eat", "tea", "tan", "ate", "nat", "bat"]
+    expected:
+      - ["bat"]
+      - ["nat", "tan"]
+      - ["ate", "eat", "tea"]
+  - name: example-2
+    source: problem-example
+    input:
+      strs: [""]
+    expected:
+      - [""]
+  - name: example-3
+    source: problem-example
+    input:
+      strs: ["a"]
+    expected:
+      - ["a"]
+  - name: duplicate-inputs
+    source: derived-edge-case
+    input:
+      strs: ["ab", "ba", "ab"]
+    expected:
+      - ["ab", "ab", "ba"]

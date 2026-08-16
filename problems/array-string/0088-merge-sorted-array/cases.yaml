@@ -1,0 +1,62 @@
+schema_version: 1
+problem_id: 88
+contract_type: method
+language_contract:
+  class: Solution
+  method: merge
+  parameters:
+    - name: nums1
+      type: int[]
+    - name: m
+      type: int
+    - name: nums2
+      type: int[]
+    - name: n
+      type: int
+  return_type: void
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      nums1: [1, 2, 3, 0, 0, 0]
+      m: 3
+      nums2: [2, 5, 6]
+      n: 3
+    expected_mutation:
+      nums1: [1, 2, 2, 3, 5, 6]
+  - name: example-2
+    source: problem-example
+    input:
+      nums1: [1]
+      m: 1
+      nums2: []
+      n: 0
+    expected_mutation:
+      nums1: [1]
+  - name: example-3
+    source: problem-example
+    input:
+      nums1: [0]
+      m: 0
+      nums2: [1]
+      n: 1
+    expected_mutation:
+      nums1: [1]
+  - name: nums2-values-come-first
+    source: derived-edge-case
+    input:
+      nums1: [4, 5, 6, 0, 0, 0]
+      m: 3
+      nums2: [1, 2, 3]
+      n: 3
+    expected_mutation:
+      nums1: [1, 2, 3, 4, 5, 6]
+  - name: interleaved-duplicates
+    source: derived-edge-case
+    input:
+      nums1: [1, 2, 2, 0, 0, 0]
+      m: 3
+      nums2: [2, 2, 3]
+      n: 3
+    expected_mutation:
+      nums1: [1, 2, 2, 2, 2, 3]

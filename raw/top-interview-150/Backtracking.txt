@@ -1,0 +1,302 @@
+Backtracking
+17. Letter Combinations of a Phone Number
+Medium
+Topics
+premium lock icon
+Companies
+Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. Return the answer in any order.
+
+A mapping of digits to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
+
+
+ 
+
+Example 1:
+
+Input: digits = "23"
+Output: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
+Example 2:
+
+Input: digits = "2"
+Output: ["a","b","c"]
+ 
+
+Constraints:
+
+1 <= digits.length <= 4
+digits[i] is a digit in the range ['2', '9'].
+ 
+Seen this question in a real interview before?
+1/6
+Yes
+No
+Accepted
+3.166.493/4.8M
+Acceptance Rate
+66.6%
+Topics
+Hash Table
+String
+Backtracking
+
+77. Combinations
+Medium
+Topics
+premium lock icon
+Companies
+Given two integers n and k, return all possible combinations of k numbers chosen from the range [1, n].
+
+You may return the answer in any order.
+
+ 
+
+Example 1:
+
+Input: n = 4, k = 2
+Output: [[1,2],[1,3],[1,4],[2,3],[2,4],[3,4]]
+Explanation: There are 4 choose 2 = 6 total combinations.
+Note that combinations are unordered, i.e., [1,2] and [2,1] are considered to be the same combination.
+Example 2:
+
+Input: n = 1, k = 1
+Output: [[1]]
+Explanation: There is 1 choose 1 = 1 total combination.
+ 
+
+Constraints:
+
+1 <= n <= 20
+1 <= k <= n
+ 
+Seen this question in a real interview before?
+1/6
+Yes
+No
+Accepted
+1.401.763/1.9M
+Acceptance Rate
+75.0%
+Topics
+Backtracking
+
+46. Permutations
+Medium
+Topics
+premium lock icon
+Companies
+Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,3]
+Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+Example 2:
+
+Input: nums = [0,1]
+Output: [[0,1],[1,0]]
+Example 3:
+
+Input: nums = [1]
+Output: [[1]]
+ 
+
+Constraints:
+
+1 <= nums.length <= 6
+-10 <= nums[i] <= 10
+All the integers of nums are unique.
+ 
+Seen this question in a real interview before?
+1/6
+Yes
+No
+Accepted
+3.241.727/3.9M
+Acceptance Rate
+82.3%
+Topics
+Array
+Backtracking
+
+39. Combination Sum
+Medium
+Topics
+premium lock icon
+Companies
+Given an array of distinct integers candidates and a target integer target, return a list of all unique combinations of candidates where the chosen numbers sum to target. You may return the combinations in any order.
+
+The same number may be chosen from candidates an unlimited number of times. Two combinations are unique if the frequency of at least one of the chosen numbers is different.
+
+The test cases are generated such that the number of unique combinations that sum up to target is less than 150 combinations for the given input.
+
+ 
+
+Example 1:
+
+Input: candidates = [2,3,6,7], target = 7
+Output: [[2,2,3],[7]]
+Explanation:
+2 and 3 are candidates, and 2 + 2 + 3 = 7. Note that 2 can be used multiple times.
+7 is a candidate, and 7 = 7.
+These are the only two combinations.
+Example 2:
+
+Input: candidates = [2,3,5], target = 8
+Output: [[2,2,2,2],[2,3,3],[3,5]]
+Example 3:
+
+Input: candidates = [2], target = 1
+Output: []
+ 
+
+Constraints:
+
+1 <= candidates.length <= 30
+2 <= candidates[i] <= 40
+All elements of candidates are distinct.
+1 <= target <= 40
+ 
+Seen this question in a real interview before?
+1/6
+Yes
+No
+Accepted
+3.328.685/4.3M
+Acceptance Rate
+77.0%
+Topics
+Array
+Backtracking
+
+52. N-Queens II
+Hard
+Topics
+premium lock icon
+Companies
+The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
+
+Given an integer n, return the number of distinct solutions to the n-queens puzzle.
+
+ 
+
+Example 1:
+
+
+Input: n = 4
+Output: 2
+Explanation: There are two distinct solutions to the 4-queens puzzle as shown.
+Example 2:
+
+Input: n = 1
+Output: 1
+ 
+
+Constraints:
+
+1 <= n <= 9
+ 
+Seen this question in a real interview before?
+1/6
+Yes
+No
+Accepted
+640.104/808.4K
+Acceptance Rate
+79.2%
+Topics
+Backtracking
+Algorithm X
+
+22. Generate Parentheses
+Medium
+Topics
+premium lock icon
+Companies
+Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+
+ 
+
+Example 1:
+
+Input: n = 3
+Output: ["((()))","(()())","(())()","()(())","()()()"]
+Example 2:
+
+Input: n = 1
+Output: ["()"]
+ 
+
+Constraints:
+
+1 <= n <= 8
+ 
+Seen this question in a real interview before?
+1/6
+Yes
+No
+Accepted
+3.049.056/3.9M
+Acceptance Rate
+79.1%
+Topics
+String
+Dynamic Programming
+Backtracking
+Bracket Sequences
+
+79. Word Search
+Medium
+Topics
+premium lock icon
+Companies
+Given an m x n grid of characters board and a string word, return true if word exists in the grid.
+
+The word can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.
+
+ 
+
+Example 1:
+
+
+Input: board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCCED"
+Output: true
+Example 2:
+
+
+Input: board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "SEE"
+Output: true
+Example 3:
+
+
+Input: board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCB"
+Output: false
+ 
+
+Constraints:
+
+m == board.length
+n = board[i].length
+1 <= m, n <= 6
+1 <= word.length <= 15
+board and word consists of only lowercase and uppercase English letters.
+ 
+
+Follow up: Could you use search pruning to make your solution faster with a larger board?
+
+ 
+Seen this question in a real interview before?
+1/6
+Yes
+No
+Accepted
+2.620.677/5.5M
+Acceptance Rate
+47.9%
+Topics
+Array
+String
+Backtracking
+Depth-First Search
+Matrix

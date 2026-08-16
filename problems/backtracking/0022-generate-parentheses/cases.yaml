@@ -1,0 +1,26 @@
+schema_version: 1
+problem_id: 22
+contract_type: method
+language_contract:
+  class: Solution
+  method: generateParenthesis
+  parameters:
+    - name: n
+      type: int
+  return_type: List<String>
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      n: 3
+    expected: ["((()))", "(()())", "(())()", "()(())", "()()()"]
+  - name: example-2
+    source: problem-example
+    input:
+      n: 1
+    expected: ["()"]
+  - name: two-pairs
+    source: derived-edge-case
+    input:
+      n: 2
+    expected: ["(())", "()()"]

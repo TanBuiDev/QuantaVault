@@ -1,0 +1,41 @@
+schema_version: 1
+problem_id: 82
+contract_type: method
+language_contract:
+  class: Solution
+  method: deleteDuplicates
+  parameters:
+    - name: head
+      type: ListNode
+  return_type: ListNode
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      head: [1, 2, 3, 3, 4, 4, 5]
+    expected: [1, 2, 5]
+  - name: example-2
+    source: problem-example
+    input:
+      head: [1, 1, 1, 2, 3]
+    expected: [2, 3]
+  - name: empty-list
+    source: derived-edge-case
+    input:
+      head: []
+    expected: []
+  - name: all-duplicates
+    source: derived-edge-case
+    input:
+      head: [1, 1, 2, 2]
+    expected: []
+  - name: duplicates-at-tail
+    source: derived-regression
+    input:
+      head: [1, 2, 3, 4, 4]
+    expected: [1, 2, 3]
+  - name: all-distinct
+    source: derived-edge-case
+    input:
+      head: [-2, -1, 0, 1]
+    expected: [-2, -1, 0, 1]

@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cases.schema.json",
+  "title": "LeetCode Canonical Test Cases",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "problem_id", "contract_type", "language_contract", "cases"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "problem_id": {"type": "integer", "minimum": 1},
+    "contract_type": {"enum": ["method", "operation-sequence"]},
+    "language_contract": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "serialization": {
+      "type": "object"
+    },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "source"],
+        "properties": {
+          "name": {"type": "string", "minLength": 1},
+          "source": {"enum": ["problem-example", "derived-edge-case", "derived-regression"]},
+          "input": {"type": "object"},
+          "operations": {"type": "array"},
+          "arguments": {"type": "array"},
+          "expected": {},
+          "expected_mutation": {"type": "object"}
+        },
+        "allOf": [
+          {
+            "oneOf": [
+              {"required": ["expected"]},
+              {"required": ["expected_mutation"]}
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"contract_type": {"const": "method"}}},
+      "then": {
+        "properties": {
+          "language_contract": {
+            "type": "object",
+            "required": ["class", "method", "parameters", "return_type"],
+            "properties": {
+              "class": {"type": "string", "minLength": 1},
+              "method": {"type": "string", "minLength": 1},
+              "parameters": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["name", "type"],
+                  "properties": {
+                    "name": {"type": "string", "minLength": 1},
+                    "type": {"type": "string", "minLength": 1}
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "return_type": {"type": "string", "minLength": 1}
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"contract_type": {"const": "operation-sequence"}}},
+      "then": {
+        "properties": {
+          "language_contract": {
+            "type": "object",
+            "required": ["class"],
+            "properties": {
+              "class": {"type": "string", "minLength": 1}
+            },
+            "additionalProperties": true
+          },
+          "cases": {
+            "items": {
+              "required": ["operations", "arguments", "expected"]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

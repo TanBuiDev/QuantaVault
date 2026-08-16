@@ -1,0 +1,112 @@
+name: Staged problem validation
+
+on:
+  push:
+    branches:
+      - 'staging/migrate-*'
+
+permissions:
+  contents: write
+
+jobs:
+  validate-and-promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout staged commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Resolve problem and refresh inventory
+        env:
+          STAGING_BRANCH: ${{ github.ref_name }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          from pathlib import Path
+
+          branch = os.environ['STAGING_BRANCH']
+          match = re.fullmatch(r'staging/migrate-(\d{4})', branch)
+          if not match:
+              raise SystemExit(f'Unexpected staging branch: {branch}')
+          problem_id = int(match.group(1))
+
+          matches = sorted(Path('problems').glob(f'*/{problem_id:04d}-*'))
+          if len(matches) != 1:
+              raise SystemExit(f'Expected one canonical folder for {problem_id}, got {matches}')
+          problem_dir = matches[0]
+
+          inventory_path = Path('data/migration-inventory.json')
+          inventory = json.loads(inventory_path.read_text(encoding='utf-8'))
+          records = [item for item in inventory['problems'] if item['id'] == problem_id]
+          if len(records) != 1:
+              raise SystemExit(f'Expected one inventory record for {problem_id}')
+          record = records[0]
+          record['source_status'] = 'full-source'
+          record['solution_status'] = 'migrated-v2'
+          record['canonical_path'] = problem_dir.as_posix()
+          inventory_path.write_text(
+              json.dumps(inventory, ensure_ascii=False, indent=2) + '\n',
+              encoding='utf-8',
+          )
+          print(f'Prepared inventory for {problem_id}: {problem_dir}')
+          PY
+
+      - name: Run Python validation
+        run: |
+          python3 -m unittest tests.test_inventory tests.test_validate_content -v
+          python3 tools/inventory.py --self-test
+          python3 tools/validate_content.py --root .
+          git diff --check
+
+      - name: Compile and run Java reference tests
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          tests=(tests/java/*/TestSolution.java)
+          for test_file in "${tests[@]}"; do
+            test_dir="$(dirname "$test_file")"
+            package_name="$(basename "$test_dir")"
+            solution_file="$(find problems -path "*/${package_name}/Solution.java" -print -quit)"
+            if [ -z "$solution_file" ]; then
+              echo "Missing Solution.java for ${package_name}" >&2
+              exit 1
+            fi
+            work="$(mktemp -d)"
+            cp "$solution_file" "$work/Solution.java"
+            cp "$test_file" "$work/TestSolution.java"
+            (
+              cd "$work"
+              javac Solution.java TestSolution.java
+              java TestSolution
+            )
+            rm -rf "$work"
+          done
+
+      - name: Amend inventory into the problem commit and promote
+        env:
+          TARGET_BRANCH: feat/leetcode-content-migration
+          STAGING_BRANCH: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          parent_sha="$(git rev-parse HEAD^)"
+          git fetch origin "$TARGET_BRANCH"
+          remote_target="$(git rev-parse "origin/$TARGET_BRANCH")"
+          if [ "$parent_sha" != "$remote_target" ]; then
+            echo "Target branch advanced while validation was running." >&2
+            echo "parent=$parent_sha target=$remote_target" >&2
+            exit 1
+          fi
+
+          git add data/migration-inventory.json
+          git commit --amend --no-edit
+          new_sha="$(git rev-parse HEAD)"
+
+          git push --force-with-lease origin "HEAD:refs/heads/$STAGING_BRANCH"
+          git push origin "HEAD:refs/heads/$TARGET_BRANCH"
+          echo "PROMOTED_COMMIT=$new_sha"

@@ -1,0 +1,46 @@
+schema_version: 1
+problem_id: 71
+contract_type: method
+language_contract:
+  class: Solution
+  method: simplifyPath
+  parameters:
+    - name: path
+      type: String
+  return_type: String
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      path: "/home/"
+    expected: "/home"
+  - name: example-2
+    source: problem-example
+    input:
+      path: "/home//foo/"
+    expected: "/home/foo"
+  - name: example-3
+    source: problem-example
+    input:
+      path: "/home/user/Documents/../Pictures"
+    expected: "/home/user/Pictures"
+  - name: example-4-root-parent
+    source: problem-example
+    input:
+      path: "/../"
+    expected: "/"
+  - name: example-5-triple-dot-name
+    source: problem-example
+    input:
+      path: "/.../a/../b/c/../d/./"
+    expected: "/.../b/d"
+  - name: repeated-parent-above-root
+    source: derived-edge-case
+    input:
+      path: "/../../a"
+    expected: "/a"
+  - name: repeated-slashes-and-dot
+    source: derived-regression
+    input:
+      path: "///a//./b///"
+    expected: "/a/b"

@@ -1,0 +1,31 @@
+schema_version: 1
+problem_id: 9
+contract_type: method
+language_contract:
+  class: Solution
+  method: isPalindrome
+  parameters:
+    - name: x
+      type: int
+  return_type: boolean
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      x: 121
+    expected: true
+  - name: example-2
+    source: problem-example
+    input:
+      x: -121
+    expected: false
+  - name: example-3
+    source: problem-example
+    input:
+      x: 10
+    expected: false
+  - name: zero
+    source: derived-edge-case
+    input:
+      x: 0
+    expected: true

@@ -1,0 +1,30 @@
+schema_version: 2
+id: 9
+slug: palindrome-number
+title: Palindrome Number
+difficulty: Easy
+primary_section: math
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Math.txt"
+  raw_blob_sha: "acbbece61493a6901c8c6e4974b6103cfb12b086"
+study_plans:
+  - top-interview-150
+topics:
+  - Math
+patterns:
+  - Reverse Half Digits
+solution_languages:
+  - java
+time_complexity: O(log x)
+space_complexity: O(1)
+leetcode_url: https://leetcode.com/problems/palindrome-number/

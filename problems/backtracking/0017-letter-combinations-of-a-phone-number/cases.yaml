@@ -1,0 +1,31 @@
+schema_version: 1
+problem_id: 17
+contract_type: method
+language_contract:
+  class: Solution
+  method: letterCombinations
+  parameters:
+    - name: digits
+      type: String
+  return_type: List<String>
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      digits: "23"
+    expected: [ad, ae, af, bd, be, bf, cd, ce, cf]
+  - name: example-2
+    source: problem-example
+    input:
+      digits: "2"
+    expected: [a, b, c]
+  - name: four-letter-digit
+    source: derived-edge-case
+    input:
+      digits: "7"
+    expected: [p, q, r, s]
+  - name: two-four-letter-digits
+    source: derived-regression
+    input:
+      digits: "79"
+    expected: [pw, px, py, pz, qw, qx, qy, qz, rw, rx, ry, rz, sw, sx, sy, sz]

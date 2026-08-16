@@ -1,0 +1,35 @@
+schema_version: 1
+problem_id: 114
+contract_type: method
+language_contract:
+  class: Solution
+  method: flatten
+  parameters:
+    - name: root
+      type: TreeNode
+  return_type: void
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      root: [1, 2, 5, 3, 4, null, 6]
+    expected_mutation:
+      root: [1, null, 2, null, 3, null, 4, null, 5, null, 6]
+  - name: example-2-empty
+    source: problem-example
+    input:
+      root: []
+    expected_mutation:
+      root: []
+  - name: example-3-single
+    source: problem-example
+    input:
+      root: [0]
+    expected_mutation:
+      root: [0]
+  - name: left-skewed
+    source: derived-regression
+    input:
+      root: [1, 2, null, 3]
+    expected_mutation:
+      root: [1, null, 2, null, 3]

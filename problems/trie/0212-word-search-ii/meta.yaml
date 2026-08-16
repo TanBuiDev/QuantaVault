@@ -1,0 +1,35 @@
+schema_version: 2
+id: 212
+slug: word-search-ii
+title: Word Search II
+difficulty: Hard
+primary_section: trie
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Trie.txt"
+  raw_blob_sha: "c758d0dd8565d28423d05652b9a060cb5844743d"
+study_plans:
+  - top-interview-150
+topics:
+  - Array
+  - String
+  - Backtracking
+  - Trie
+  - Matrix
+patterns:
+  - Trie Prefix Pruning
+  - DFS Backtracking
+solution_languages:
+  - java
+time_complexity: O(W + m*n*4^L)
+space_complexity: O(W + L) excluding output
+leetcode_url: https://leetcode.com/problems/word-search-ii/

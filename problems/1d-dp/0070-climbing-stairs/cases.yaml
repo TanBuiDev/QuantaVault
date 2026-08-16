@@ -1,0 +1,31 @@
+schema_version: 1
+problem_id: 70
+contract_type: method
+language_contract:
+  class: Solution
+  method: climbStairs
+  parameters:
+    - name: n
+      type: int
+  return_type: int
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      n: 2
+    expected: 2
+  - name: example-2
+    source: problem-example
+    input:
+      n: 3
+    expected: 3
+  - name: one-step
+    source: derived-edge-case
+    input:
+      n: 1
+    expected: 1
+  - name: five-steps
+    source: derived-regression
+    input:
+      n: 5
+    expected: 8

@@ -1,0 +1,32 @@
+schema_version: 2
+id: 155
+slug: min-stack
+title: Min Stack
+difficulty: Medium
+primary_section: stack
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Stack.txt"
+  raw_blob_sha: "942ddfc40cd307f8605930897a04d012549bfe32"
+study_plans:
+  - top-interview-150
+topics:
+  - Stack
+  - Design
+patterns:
+  - Auxiliary Min Stack
+  - Synchronized Stacks
+solution_languages:
+  - java
+time_complexity: O(1) per operation
+space_complexity: O(n)
+leetcode_url: https://leetcode.com/problems/min-stack/

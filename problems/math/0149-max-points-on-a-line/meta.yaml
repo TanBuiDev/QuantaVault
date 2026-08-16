@@ -1,0 +1,35 @@
+schema_version: 2
+id: 149
+slug: max-points-on-a-line
+title: Max Points on a Line
+difficulty: Hard
+primary_section: math
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Math.txt"
+  raw_blob_sha: "acbbece61493a6901c8c6e4974b6103cfb12b086"
+study_plans:
+  - top-interview-150
+topics:
+  - Array
+  - Hash Table
+  - Math
+  - Geometry
+patterns:
+  - Anchor And Count
+  - Normalized Slope
+  - Greatest Common Divisor
+solution_languages:
+  - java
+time_complexity: O(n^2)
+space_complexity: O(n)
+leetcode_url: https://leetcode.com/problems/max-points-on-a-line/

@@ -1,0 +1,53 @@
+schema_version: 1
+problem_id: 141
+contract_type: method
+language_contract:
+  class: Solution
+  method: hasCycle
+  parameters:
+    - name: head
+      type: ListNode
+  return_type: boolean
+cases:
+  - name: example-1-cycle-at-index-1
+    source: problem-example
+    input:
+      values: [3, 2, 0, -4]
+      pos: 1
+    expected: true
+  - name: example-2-cycle-at-head
+    source: problem-example
+    input:
+      values: [1, 2]
+      pos: 0
+    expected: true
+  - name: example-3-single-no-cycle
+    source: problem-example
+    input:
+      values: [1]
+      pos: -1
+    expected: false
+  - name: empty-list
+    source: derived-edge-case
+    input:
+      values: []
+      pos: -1
+    expected: false
+  - name: self-cycle
+    source: derived-edge-case
+    input:
+      values: [7]
+      pos: 0
+    expected: true
+  - name: duplicate-values-no-cycle
+    source: derived-regression
+    input:
+      values: [1, 1, 1, 1]
+      pos: -1
+    expected: false
+  - name: cycle-near-tail
+    source: derived-regression
+    input:
+      values: [1, 2, 3, 4, 5, 6]
+      pos: 4
+    expected: true

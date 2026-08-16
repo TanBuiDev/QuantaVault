@@ -1,0 +1,33 @@
+schema_version: 2
+id: 28
+slug: find-the-index-of-the-first-occurrence-in-a-string
+title: Find the Index of the First Occurrence in a String
+difficulty: Easy
+primary_section: array-string
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Array  String.txt"
+  raw_blob_sha: "b1c7a453f152629ce35040af85f2b1f4c22f589e"
+study_plans:
+  - top-interview-150
+topics:
+  - Two Pointers
+  - String
+  - String Matching
+patterns:
+  - KMP
+  - Prefix Function
+solution_languages:
+  - java
+time_complexity: O(n + m)
+space_complexity: O(m)
+leetcode_url: https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/

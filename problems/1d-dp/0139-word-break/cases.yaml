@@ -1,0 +1,37 @@
+schema_version: 1
+problem_id: 139
+contract_type: method
+language_contract:
+  class: Solution
+  method: wordBreak
+  parameters:
+    - name: s
+      type: String
+    - name: wordDict
+      type: List<String>
+  return_type: boolean
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      s: leetcode
+      wordDict: [leet, code]
+    expected: true
+  - name: example-2
+    source: problem-example
+    input:
+      s: applepenapple
+      wordDict: [apple, pen]
+    expected: true
+  - name: example-3
+    source: problem-example
+    input:
+      s: catsandog
+      wordDict: [cats, dog, sand, and, cat]
+    expected: false
+  - name: reuse-word
+    source: derived-edge-case
+    input:
+      s: aaaa
+      wordDict: [a]
+    expected: true

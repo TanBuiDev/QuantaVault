@@ -1,0 +1,43 @@
+schema_version: 1
+problem_id: 383
+contract_type: method
+language_contract:
+  class: Solution
+  method: canConstruct
+  parameters:
+    - name: ransomNote
+      type: String
+    - name: magazine
+      type: String
+  return_type: boolean
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      ransomNote: "a"
+      magazine: "b"
+    expected: false
+  - name: example-2
+    source: problem-example
+    input:
+      ransomNote: "aa"
+      magazine: "ab"
+    expected: false
+  - name: example-3
+    source: problem-example
+    input:
+      ransomNote: "aa"
+      magazine: "aab"
+    expected: true
+  - name: exact-inventory
+    source: derived-edge-case
+    input:
+      ransomNote: "abc"
+      magazine: "cba"
+    expected: true
+  - name: one-character-short
+    source: derived-edge-case
+    input:
+      ransomNote: "aabbcc"
+      magazine: "aabbc"
+    expected: false

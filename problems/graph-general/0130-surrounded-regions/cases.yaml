@@ -1,0 +1,29 @@
+schema_version: 1
+problem_id: 130
+contract_type: method
+language_contract:
+  class: Solution
+  method: solve
+  parameters:
+    - name: board
+      type: char[][]
+  return_type: void
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      board: ["XXXX", "XOOX", "XXOX", "XOXX"]
+    expected_mutation:
+      board: ["XXXX", "XXXX", "XXXX", "XOXX"]
+  - name: example-2-single
+    source: problem-example
+    input:
+      board: ["X"]
+    expected_mutation:
+      board: ["X"]
+  - name: all-border-connected
+    source: derived-regression
+    input:
+      board: ["OO", "OO"]
+    expected_mutation:
+      board: ["OO", "OO"]

@@ -1,0 +1,34 @@
+schema_version: 2
+id: 211
+slug: design-add-and-search-words-data-structure
+title: Design Add and Search Words Data Structure
+difficulty: Medium
+primary_section: trie
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Trie.txt"
+  raw_blob_sha: "c758d0dd8565d28423d05652b9a060cb5844743d"
+study_plans:
+  - top-interview-150
+topics:
+  - String
+  - Depth-First Search
+  - Design
+  - Trie
+patterns:
+  - Trie
+  - DFS with Wildcards
+solution_languages:
+  - java
+time_complexity: O(L) add; O(26^D * L) search worst case
+space_complexity: O(total inserted characters)
+leetcode_url: https://leetcode.com/problems/design-add-and-search-words-data-structure/

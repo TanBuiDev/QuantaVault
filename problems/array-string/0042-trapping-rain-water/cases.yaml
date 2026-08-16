@@ -1,0 +1,36 @@
+schema_version: 1
+problem_id: 42
+contract_type: method
+language_contract:
+  class: Solution
+  method: trap
+  parameters:
+    - name: height
+      type: int[]
+  return_type: int
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      height: [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]
+    expected: 6
+  - name: example-2
+    source: problem-example
+    input:
+      height: [4, 2, 0, 3, 2, 5]
+    expected: 9
+  - name: no-basin-increasing
+    source: derived-edge-case
+    input:
+      height: [0, 1, 2, 3]
+    expected: 0
+  - name: simple-basin
+    source: derived-edge-case
+    input:
+      height: [3, 0, 3]
+    expected: 3
+  - name: nested-basins
+    source: derived-regression
+    input:
+      height: [5, 2, 1, 2, 1, 5]
+    expected: 14

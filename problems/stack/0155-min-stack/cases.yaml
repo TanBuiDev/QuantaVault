@@ -1,0 +1,26 @@
+schema_version: 1
+problem_id: 155
+contract_type: operation-sequence
+language_contract:
+  class: MinStack
+cases:
+  - name: example-1
+    source: problem-example
+    operations: [MinStack, push, push, push, getMin, pop, top, getMin]
+    arguments: [[], [-2], [0], [-3], [], [], [], []]
+    expected: [null, null, null, null, -3, null, 0, -2]
+  - name: duplicate-minimum
+    source: derived-edge-case
+    operations: [MinStack, push, push, push, getMin, pop, getMin, pop, getMin]
+    arguments: [[], [2], [1], [1], [], [], [], [], []]
+    expected: [null, null, null, null, 1, null, 1, null, 2]
+  - name: decreasing-values
+    source: derived-regression
+    operations: [MinStack, push, push, push, getMin, top, pop, getMin]
+    arguments: [[], [3], [2], [1], [], [], [], []]
+    expected: [null, null, null, null, 1, 1, null, 2]
+  - name: integer-boundaries
+    source: derived-edge-case
+    operations: [MinStack, push, push, getMin, top, pop, getMin]
+    arguments: [[], [-2147483648], [2147483647], [], [], [], []]
+    expected: [null, null, null, -2147483648, 2147483647, null, -2147483648]

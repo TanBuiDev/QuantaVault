@@ -1,0 +1,31 @@
+schema_version: 1
+problem_id: 117
+contract_type: method
+language_contract:
+  class: Solution
+  method: connect
+  parameters:
+    - name: root
+      type: Node
+  return_type: Node
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      root: [1, 2, 3, 4, 5, null, 7]
+    expected: "[1,#,2,3,#,4,5,7,#]"
+  - name: example-2-empty
+    source: problem-example
+    input:
+      root: []
+    expected: "[]"
+  - name: sparse-cross-parent
+    source: derived-regression
+    input:
+      root: [1, 2, 3, null, 5, null, 7]
+    expected: "[1,#,2,3,#,5,7,#]"
+  - name: single-node
+    source: derived-regression
+    input:
+      root: [42]
+    expected: "[42,#]"

@@ -1,0 +1,33 @@
+schema_version: 2
+id: 452
+slug: minimum-number-of-arrows-to-burst-balloons
+title: Minimum Number of Arrows to Burst Balloons
+difficulty: Medium
+primary_section: intervals
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Intervals.txt"
+  raw_blob_sha: "113c3211b5e02ebaa87bbba24f74f41109da627d"
+study_plans:
+  - top-interview-150
+topics:
+  - Array
+  - Greedy
+  - Sorting
+patterns:
+  - Sort by End
+  - Interval Greedy
+solution_languages:
+  - java
+time_complexity: O(n log n)
+space_complexity: O(n) worst-case Java sort workspace
+leetcode_url: https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/

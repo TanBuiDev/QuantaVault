@@ -1,0 +1,46 @@
+schema_version: 1
+problem_id: 452
+contract_type: method
+language_contract:
+  class: Solution
+  method: findMinArrowShots
+  parameters:
+    - name: points
+      type: int[][]
+  return_type: int
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      points: [[10, 16], [2, 8], [1, 6], [7, 12]]
+    expected: 2
+  - name: example-2-disjoint
+    source: problem-example
+    input:
+      points: [[1, 2], [3, 4], [5, 6], [7, 8]]
+    expected: 4
+  - name: example-3-touching
+    source: problem-example
+    input:
+      points: [[1, 2], [2, 3], [3, 4], [4, 5]]
+    expected: 2
+  - name: all-overlap
+    source: derived-edge-case
+    input:
+      points: [[1, 10], [2, 9], [3, 8], [4, 7]]
+    expected: 1
+  - name: single-balloon
+    source: derived-edge-case
+    input:
+      points: [[5, 6]]
+    expected: 1
+  - name: negative-endpoints
+    source: derived-regression
+    input:
+      points: [[-10, -5], [-6, -1], [0, 2]]
+    expected: 2
+  - name: comparator-overflow-regression
+    source: derived-regression
+    input:
+      points: [[-2147483648, -2147483647], [2147483646, 2147483647]]
+    expected: 2

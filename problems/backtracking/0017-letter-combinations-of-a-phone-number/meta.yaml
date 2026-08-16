@@ -1,0 +1,33 @@
+schema_version: 2
+id: 17
+slug: letter-combinations-of-a-phone-number
+title: Letter Combinations of a Phone Number
+difficulty: Medium
+primary_section: backtracking
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: media-missing
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Backtracking.txt"
+  raw_blob_sha: "7f95978509c050faa1cfe1181871c15bf3b09c0e"
+study_plans:
+  - top-interview-150
+topics:
+  - Hash Table
+  - String
+  - Backtracking
+patterns:
+  - Backtracking
+  - Cartesian Product
+solution_languages:
+  - java
+time_complexity: O(4^n * n)
+space_complexity: O(n) recursion excluding output
+leetcode_url: https://leetcode.com/problems/letter-combinations-of-a-phone-number/

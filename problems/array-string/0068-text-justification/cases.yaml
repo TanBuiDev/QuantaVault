@@ -1,0 +1,43 @@
+schema_version: 1
+problem_id: 68
+contract_type: method
+language_contract:
+  class: Solution
+  method: fullJustify
+  parameters:
+    - name: words
+      type: String[]
+    - name: maxWidth
+      type: int
+  return_type: List<String>
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      words: ["This", "is", "an", "example", "of", "text", "justification."]
+      maxWidth: 16
+    expected: ["This    is    an", "example  of text", "justification.  "]
+  - name: example-2
+    source: problem-example
+    input:
+      words: ["What", "must", "be", "acknowledgment", "shall", "be"]
+      maxWidth: 16
+    expected: ["What   must   be", "acknowledgment  ", "shall be        "]
+  - name: single-word-line
+    source: derived-edge-case
+    input:
+      words: ["longword", "a", "b"]
+      maxWidth: 8
+    expected: ["longword", "a b     "]
+  - name: uneven-left-extra
+    source: derived-regression
+    input:
+      words: ["a", "b", "c", "dddd"]
+      maxWidth: 6
+    expected: ["a  b c", "dddd  "]
+  - name: one-word-only
+    source: derived-edge-case
+    input:
+      words: ["hello"]
+      maxWidth: 8
+    expected: ["hello   "]
