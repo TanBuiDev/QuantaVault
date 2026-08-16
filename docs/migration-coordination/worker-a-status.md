@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 67
-Last completed problem: 146. LRU Cache
-Last completed commit: `5d70505c56e9c229d269cfb90a47f1d86513e4fa`
+Last completed global position: 68
+Last completed problem: 104. Maximum Depth of Binary Tree
+Last completed commit: `4bb805edd78d0695a17a0a958ce814aac80285fc`
 
 Next assignment:
-- global position: 68
-- problem: 104. Maximum Depth of Binary Tree
+- global position: 69
+- problem: 100. Same Tree
 
 Stop boundary: after global position 99
 
