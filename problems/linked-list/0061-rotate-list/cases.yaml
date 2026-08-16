@@ -1,0 +1,49 @@
+schema_version: 1
+problem_id: 61
+contract_type: method
+language_contract:
+  class: Solution
+  method: rotateRight
+  parameters:
+    - name: head
+      type: ListNode
+    - name: k
+      type: int
+  return_type: ListNode
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      head: [1, 2, 3, 4, 5]
+      k: 2
+    expected: [4, 5, 1, 2, 3]
+  - name: example-2-large-k
+    source: problem-example
+    input:
+      head: [0, 1, 2]
+      k: 4
+    expected: [2, 0, 1]
+  - name: empty-list
+    source: derived-edge-case
+    input:
+      head: []
+      k: 5
+    expected: []
+  - name: one-node
+    source: derived-edge-case
+    input:
+      head: [7]
+      k: 100
+    expected: [7]
+  - name: multiple-of-length
+    source: derived-regression
+    input:
+      head: [1, 2, 3]
+      k: 6
+    expected: [1, 2, 3]
+  - name: rotate-one
+    source: derived-regression
+    input:
+      head: [1, 2, 3, 4]
+      k: 1
+    expected: [4, 1, 2, 3]
