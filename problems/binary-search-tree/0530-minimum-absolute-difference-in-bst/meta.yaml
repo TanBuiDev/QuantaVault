@@ -1,0 +1,35 @@
+schema_version: 2
+id: 530
+slug: minimum-absolute-difference-in-bst
+title: Minimum Absolute Difference in BST
+difficulty: Easy
+primary_section: binary-search-tree
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Binary Search Tree.txt"
+  raw_blob_sha: "34c3c1fd4b55556ae34c7a48aba752c6c7f46d19"
+study_plans:
+  - top-interview-150
+topics:
+  - Tree
+  - Depth-First Search
+  - Breadth-First Search
+  - Binary Search Tree
+  - Binary Tree
+patterns:
+  - Inorder Traversal
+  - Adjacent Sorted Values
+solution_languages:
+  - java
+time_complexity: O(n)
+space_complexity: O(h)
+leetcode_url: https://leetcode.com/problems/minimum-absolute-difference-in-bst/
