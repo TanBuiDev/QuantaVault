@@ -683,9 +683,9 @@
       "section": "linked-list",
       "raw_source_file": "Linked List.txt",
       "source_order": 6,
-      "source_status": "available",
-      "solution_status": "none",
-      "canonical_path": null
+      "source_status": "full-source",
+      "solution_status": "migrated-v2",
+      "canonical_path": "problems/linked-list/0025-reverse-nodes-in-k-group"
     },
     {
       "id": 19,
