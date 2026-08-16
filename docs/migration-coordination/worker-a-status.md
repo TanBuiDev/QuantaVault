@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 82
-Last completed problem: 199. Binary Tree Right Side View
-Last completed commit: `2d3f825f89f82764b148f3b35049040e7fba9622`
+Last completed global position: 83
+Last completed problem: 637. Average of Levels in Binary Tree
+Last completed commit: `f67e788f2bc575e684285c091135083f713932b4`
 
 Next assignment:
-- global position: 83
-- problem: 637. Average of Levels in Binary Tree
+- global position: 84
+- problem: 102. Binary Tree Level Order Traversal
 
 Stop boundary: after global position 99
 
