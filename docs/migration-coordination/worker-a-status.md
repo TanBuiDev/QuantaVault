@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 89
-Last completed problem: 200. Number of Islands
-Last completed commit: `63d062d333017a55ea0b0dc6afedd8debb0345cc`
+Last completed global position: 90
+Last completed problem: 130. Surrounded Regions
+Last completed commit: `d9ed5bb29dc9ef9e3db974bd22c1904805d20608`
 
 Next assignment:
-- global position: 90
-- problem: 130. Surrounded Regions
+- global position: 91
+- problem: 133. Clone Graph
 
 Stop boundary: after global position 99
 
