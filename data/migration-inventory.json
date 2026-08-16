@@ -914,9 +914,9 @@
       "section": "binary-tree-bfs",
       "raw_source_file": "Binary Tree BFS.txt",
       "source_order": 2,
-      "source_status": "available",
-      "solution_status": "none",
-      "canonical_path": null
+      "source_status": "full-source",
+      "solution_status": "migrated-v2",
+      "canonical_path": "problems/binary-tree-bfs/0637-average-of-levels-in-binary-tree"
     },
     {
       "id": 102,

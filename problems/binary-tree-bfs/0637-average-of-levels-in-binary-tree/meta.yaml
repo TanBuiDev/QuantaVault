@@ -1,0 +1,34 @@
+schema_version: 2
+id: 637
+slug: average-of-levels-in-binary-tree
+title: Average of Levels in Binary Tree
+difficulty: Easy
+primary_section: binary-tree-bfs
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Binary Tree BFS.txt"
+  raw_blob_sha: "20ce0899e516b4822ae7954e35b781e840be2b73"
+study_plans:
+  - top-interview-150
+topics:
+  - Tree
+  - Depth-First Search
+  - Breadth-First Search
+  - Binary Tree
+patterns:
+  - Level Order Traversal
+  - Level Aggregation
+solution_languages:
+  - java
+time_complexity: O(n)
+space_complexity: O(w)
+leetcode_url: https://leetcode.com/problems/average-of-levels-in-binary-tree/
