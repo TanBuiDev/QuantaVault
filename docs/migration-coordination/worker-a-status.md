@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 62
-Last completed problem: 25. Reverse Nodes in k-Group
-Last completed commit: `e714c8e82d08152417b2ef5e243d578f0c1464f0`
+Last completed global position: 63
+Last completed problem: 19. Remove Nth Node From End of List
+Last completed commit: `dde34f760db8eaffbfbb016db6ac278f6c87f629`
 
 Next assignment:
-- global position: 63
-- problem: 19. Remove Nth Node From End of List
+- global position: 64
+- problem: 82. Remove Duplicates from Sorted List II
 
 Stop boundary: after global position 99
 
