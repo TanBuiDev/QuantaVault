@@ -1,0 +1,21 @@
+schema_version: 1
+problem_id: 208
+contract_type: operation-sequence
+language_contract:
+  class: Trie
+cases:
+  - name: example-1
+    source: problem-example
+    operations: [Trie, insert, search, search, startsWith, insert, search]
+    arguments: [[], [apple], [apple], [app], [app], [app], [app]]
+    expected: [null, null, true, false, true, null, true]
+  - name: shared-prefix
+    source: derived-regression
+    operations: [Trie, insert, insert, insert, search, search, startsWith, startsWith]
+    arguments: [[], [app], [apple], [apex], [app], [appl], [ap], [aq]]
+    expected: [null, null, null, null, true, false, true, false]
+  - name: duplicate-insert
+    source: derived-edge-case
+    operations: [Trie, insert, insert, search, startsWith]
+    arguments: [[], [cat], [cat], [cat], [ca]]
+    expected: [null, null, null, true, true]

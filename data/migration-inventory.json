@@ -1079,9 +1079,9 @@
       "section": "trie",
       "raw_source_file": "Trie.txt",
       "source_order": 1,
-      "source_status": "available",
-      "solution_status": "none",
-      "canonical_path": null
+      "source_status": "full-source",
+      "solution_status": "migrated-v2",
+      "canonical_path": "problems/trie/0208-implement-trie-prefix-tree"
     },
     {
       "id": 211,
