@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 75
-Last completed problem: 114. Flatten Binary Tree to Linked List
-Last completed commit: `312819548d7cbedd7e762c44eb4e4b0882b48397`
+Last completed global position: 76
+Last completed problem: 112. Path Sum
+Last completed commit: `0bd188401d0bf20a95a968897174cd0d1fb4c9c5`
 
 Next assignment:
-- global position: 76
-- problem: 112. Path Sum
+- global position: 77
+- problem: 129. Sum Root to Leaf Numbers
 
 Stop boundary: after global position 99
 
