@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 122
-Last completed problem: 502. IPO
-Last completed problem commit: `6c95961b7c45b51e9ab0ea852790297e1520ea6c`
+Last completed global position: 121
+Last completed problem: 215. Kth Largest Element in an Array
+Last completed problem commit: `9e8e29960e460ba84bf8752bee116f2875d9ba2f`
 
 Next assignment:
-- global position: 121
-- problem: 215. Kth Largest Element in an Array
+- global position: 120
+- problem: 4. Median of Two Sorted Arrays
 
 Stop boundary: after global position 100
 
