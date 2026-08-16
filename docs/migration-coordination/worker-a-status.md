@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 65
-Last completed problem: 61. Rotate List
-Last completed commit: `e5d7749e75415c02a3308aca5f2f2ba13d730b98`
+Last completed global position: 66
+Last completed problem: 86. Partition List
+Last completed commit: `d13f491ca2995d0db0b56e7a8b7a64c666ae9201`
 
 Next assignment:
-- global position: 66
-- problem: 86. Partition List
+- global position: 67
+- problem: 146. LRU Cache
 
 Stop boundary: after global position 99
 
