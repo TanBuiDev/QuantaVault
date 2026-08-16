@@ -1,0 +1,36 @@
+schema_version: 2
+id: 124
+slug: binary-tree-maximum-path-sum
+title: Binary Tree Maximum Path Sum
+difficulty: Hard
+primary_section: binary-tree-general
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Binary Tree General.txt"
+  raw_blob_sha: "67ddc468f37324188e476da748c186df497ee5a0"
+study_plans:
+  - top-interview-150
+topics:
+  - Dynamic Programming
+  - Tree
+  - Depth-First Search
+  - Binary Tree
+  - DP on Trees
+patterns:
+  - Tree DP
+  - Downward Gain
+  - Global Optimum
+solution_languages:
+  - java
+time_complexity: O(n)
+space_complexity: O(h)
+leetcode_url: https://leetcode.com/problems/binary-tree-maximum-path-sum/
