@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 123
-Last completed problem: 373. Find K Pairs with Smallest Sums
-Last completed problem commit: `c5f0805c73e4daef3abf8bb0edb33138687070af`
+Last completed global position: 122
+Last completed problem: 502. IPO
+Last completed problem commit: `6c95961b7c45b51e9ab0ea852790297e1520ea6c`
 
 Next assignment:
-- global position: 122
-- problem: 502. IPO
+- global position: 121
+- problem: 215. Kth Largest Element in an Array
 
 Stop boundary: after global position 100
 
