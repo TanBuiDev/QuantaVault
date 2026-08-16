@@ -1,0 +1,21 @@
+schema_version: 1
+problem_id: 173
+contract_type: operation-sequence
+language_contract:
+  class: BSTIterator
+cases:
+  - name: example-1
+    source: problem-example
+    operations: [BSTIterator, next, next, hasNext, next, hasNext, next, hasNext, next, hasNext]
+    arguments: [[[7, 3, 15, null, null, 9, 20]], [], [], [], [], [], [], [], [], []]
+    expected: [null, 3, 7, true, 9, true, 15, true, 20, false]
+  - name: single-node
+    source: derived-edge-case
+    operations: [BSTIterator, hasNext, next, hasNext]
+    arguments: [[[5]], [], [], []]
+    expected: [null, true, 5, false]
+  - name: right-skewed
+    source: derived-regression
+    operations: [BSTIterator, next, next, next, hasNext]
+    arguments: [[[1, null, 2, null, 3]], [], [], [], []]
+    expected: [null, 1, 2, 3, false]
