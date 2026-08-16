@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 63
-Last completed problem: 19. Remove Nth Node From End of List
-Last completed commit: `dde34f760db8eaffbfbb016db6ac278f6c87f629`
+Last completed global position: 64
+Last completed problem: 82. Remove Duplicates from Sorted List II
+Last completed commit: `ef07e3a4cab9b21ac959d9d7eaae3f99934d2386`
 
 Next assignment:
-- global position: 64
-- problem: 82. Remove Duplicates from Sorted List II
+- global position: 65
+- problem: 61. Rotate List
 
 Stop boundary: after global position 99
 
