@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 110
-Last completed problem: 427. Construct Quad Tree
-Last completed problem commit: `8e557589634a0b17f876939b01b5ebf42ca5a056`
+Last completed global position: 109
+Last completed problem: 148. Sort List
+Last completed problem commit: `feb43035822a40b46ade2e9eddb99c8a861c303d`
 
 Next assignment:
-- global position: 109
-- problem: 148. Sort List
+- global position: 108
+- problem: 108. Convert Sorted Array to Binary Search Tree
 
 Stop boundary: after global position 100
 
