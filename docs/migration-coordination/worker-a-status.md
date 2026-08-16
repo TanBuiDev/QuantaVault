@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 93
-Last completed problem: 207. Course Schedule
-Last completed commit: `d5be92bb92f1f6ef2214fc2009ef6d26b1274ba3`
+Last completed global position: 94
+Last completed problem: 210. Course Schedule II
+Last completed commit: `2588c901d19e01cc873324abff7d0fd6f4920bb9`
 
 Next assignment:
-- global position: 94
-- problem: 210. Course Schedule II
+- global position: 95
+- problem: 909. Snakes and Ladders
 
 Stop boundary: after global position 99
 
