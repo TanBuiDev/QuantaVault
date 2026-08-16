@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 109
-Last completed problem: 148. Sort List
-Last completed problem commit: `feb43035822a40b46ade2e9eddb99c8a861c303d`
+Last completed global position: 108
+Last completed problem: 108. Convert Sorted Array to Binary Search Tree
+Last completed problem commit: `6967588c9f5b233ef4e5a98d4c4c3dde626bb497`
 
 Next assignment:
-- global position: 108
-- problem: 108. Convert Sorted Array to Binary Search Tree
+- global position: 107
+- problem: 79. Word Search
 
 Stop boundary: after global position 100
 
