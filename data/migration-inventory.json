@@ -936,9 +936,9 @@
       "section": "binary-tree-bfs",
       "raw_source_file": "Binary Tree BFS.txt",
       "source_order": 4,
-      "source_status": "available",
-      "solution_status": "none",
-      "canonical_path": null
+      "source_status": "full-source",
+      "solution_status": "migrated-v2",
+      "canonical_path": "problems/binary-tree-bfs/0103-binary-tree-zigzag-level-order-traversal"
     },
     {
       "id": 530,
