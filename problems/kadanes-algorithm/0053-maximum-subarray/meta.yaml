@@ -1,0 +1,32 @@
+schema_version: 2
+id: 53
+slug: maximum-subarray
+title: Maximum Subarray
+difficulty: Medium
+primary_section: kadanes-algorithm
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Kadane's Algorithm.txt"
+  raw_blob_sha: "725b4cb6566d3787042a66e6dd989324e03bcbf7"
+study_plans:
+  - top-interview-150
+topics:
+  - Array
+  - Divide and Conquer
+  - Dynamic Programming
+patterns:
+  - Kadane
+solution_languages:
+  - java
+time_complexity: O(n)
+space_complexity: O(1)
+leetcode_url: https://leetcode.com/problems/maximum-subarray/
