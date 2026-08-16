@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 131
-Last completed problem: 9. Palindrome Number
-Last completed problem commit: `66dfcb8cea9e2e23e38b61a5e297ee6154046f27`
+Last completed global position: 130
+Last completed problem: 201. Bitwise AND of Numbers Range
+Last completed problem commit: `c3881d91592fe6e5225321addde2e96fe8f03eea`
 
 Next assignment:
-- global position: 130
-- problem: 201. Bitwise AND of Numbers Range
+- global position: 129
+- problem: 137. Single Number II
 
 Stop boundary: after global position 100
 
