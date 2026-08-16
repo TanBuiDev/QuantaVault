@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 127
-Last completed problem: 191. Number of 1 Bits
-Last completed problem commit: `d6042abc120b1d3c8afa7c1a7b079d8e992ebed5`
+Last completed global position: 126
+Last completed problem: 190. Reverse Bits
+Last completed problem commit: `79b0e2f97d98d36f880c9dab667c0fdd68f389f7`
 
 Next assignment:
-- global position: 126
-- problem: 190. Reverse Bits
+- global position: 125
+- problem: 67. Add Binary
 
 Stop boundary: after global position 100
 
