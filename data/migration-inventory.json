@@ -1046,9 +1046,9 @@
       "section": "graph-bfs",
       "raw_source_file": "Graph BFS.txt",
       "source_order": 1,
-      "source_status": "available",
-      "solution_status": "none",
-      "canonical_path": null
+      "source_status": "full-source",
+      "solution_status": "migrated-v2",
+      "canonical_path": "problems/graph-bfs/0909-snakes-and-ladders"
     },
     {
       "id": 433,
