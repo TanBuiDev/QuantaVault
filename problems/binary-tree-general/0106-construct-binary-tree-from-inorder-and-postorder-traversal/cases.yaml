@@ -1,0 +1,37 @@
+schema_version: 1
+problem_id: 106
+contract_type: method
+language_contract:
+  class: Solution
+  method: buildTree
+  parameters:
+    - name: inorder
+      type: int[]
+    - name: postorder
+      type: int[]
+  return_type: TreeNode
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      inorder: [9, 3, 15, 20, 7]
+      postorder: [9, 15, 7, 20, 3]
+    expected: [3, 9, 20, null, null, 15, 7]
+  - name: example-2-single
+    source: problem-example
+    input:
+      inorder: [-1]
+      postorder: [-1]
+    expected: [-1]
+  - name: left-skewed
+    source: derived-regression
+    input:
+      inorder: [1, 2, 3, 4]
+      postorder: [1, 2, 3, 4]
+    expected: [4, 3, null, 2, null, 1]
+  - name: right-skewed
+    source: derived-regression
+    input:
+      inorder: [1, 2, 3, 4]
+      postorder: [4, 3, 2, 1]
+    expected: [1, null, 2, null, 3, null, 4]
