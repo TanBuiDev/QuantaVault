@@ -1,0 +1,41 @@
+schema_version: 1
+problem_id: 138
+contract_type: method
+language_contract:
+  class: Solution
+  method: copyRandomList
+  parameters:
+    - name: head
+      type: Node
+  return_type: Node
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      nodes: [[7, null], [13, 0], [11, 4], [10, 2], [1, 0]]
+    expected: [[7, null], [13, 0], [11, 4], [10, 2], [1, 0]]
+  - name: example-2-self-random-target
+    source: problem-example
+    input:
+      nodes: [[1, 1], [2, 1]]
+    expected: [[1, 1], [2, 1]]
+  - name: example-3-duplicate-values
+    source: problem-example
+    input:
+      nodes: [[3, null], [3, 0], [3, null]]
+    expected: [[3, null], [3, 0], [3, null]]
+  - name: empty-list
+    source: derived-edge-case
+    input:
+      nodes: []
+    expected: []
+  - name: single-self-random
+    source: derived-edge-case
+    input:
+      nodes: [[5, 0]]
+    expected: [[5, 0]]
+  - name: all-random-null
+    source: derived-regression
+    input:
+      nodes: [[1, null], [2, null], [3, null]]
+    expected: [[1, null], [2, null], [3, null]]
