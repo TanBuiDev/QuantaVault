@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 59
-Last completed problem: 21. Merge Two Sorted Lists
-Last completed commit: `abf0d4c62562e2a3113be1f9ecb1790ef49825cd`
+Last completed global position: 60
+Last completed problem: 138. Copy List with Random Pointer
+Last completed commit: `7c1cb807e18dcc30162d4ffba5a88849f95e5a77`
 
 Next assignment:
-- global position: 60
-- problem: 138. Copy List with Random Pointer
+- global position: 61
+- problem: 92. Reverse Linked List II
 
 Stop boundary: after global position 99
 
