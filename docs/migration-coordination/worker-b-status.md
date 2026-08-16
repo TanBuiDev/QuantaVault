@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 114
-Last completed problem: 35. Search Insert Position
-Last completed problem commit: `423930c4cb3343f12ec41b6cf1344544cb460999`
+Last completed global position: 113
+Last completed problem: 918. Maximum Sum Circular Subarray
+Last completed problem commit: `694ed1fb4abcbb52b362f14976b3e051b535f3db`
 
 Next assignment:
-- global position: 113
-- problem: 918. Maximum Sum Circular Subarray
+- global position: 112
+- problem: 53. Maximum Subarray
 
 Stop boundary: after global position 100
 
