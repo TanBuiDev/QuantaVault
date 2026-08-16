@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 119
-Last completed problem: 153. Find Minimum in Rotated Sorted Array
-Last completed problem commit: `39478dd52c006992895c31fe3f5e45ada7f66a9e`
+Last completed global position: 118
+Last completed problem: 34. Find First and Last Position of Element in Sorted Array
+Last completed problem commit: `4de211214ab65dc8e7ee5290598a5856775649e7`
 
 Next assignment:
-- global position: 118
-- problem: 34. Find First and Last Position of Element in Sorted Array
+- global position: 117
+- problem: 33. Search in Rotated Sorted Array
 
 Stop boundary: after global position 100
 
