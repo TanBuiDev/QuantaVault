@@ -8,13 +8,13 @@ State: STARTED
 
 Base integration commit: `403bdbbda68f0851f0cbd0e6a5ef1d43c2ed80a2`
 
-Last completed global position: 121
-Last completed problem: 215. Kth Largest Element in an Array
-Last completed problem commit: `9e8e29960e460ba84bf8752bee116f2875d9ba2f`
+Last completed global position: 120
+Last completed problem: 4. Median of Two Sorted Arrays
+Last completed problem commit: `4a52ee88ddb8aff09bc6dc4e7cfa1d47d4c8b250`
 
 Next assignment:
-- global position: 120
-- problem: 4. Median of Two Sorted Arrays
+- global position: 119
+- problem: 153. Find Minimum in Rotated Sorted Array
 
 Stop boundary: after global position 100
 
