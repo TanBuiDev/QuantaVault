@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 92
-Last completed problem: 399. Evaluate Division
-Last completed commit: `22cef011cd9eb0c4ce1cf7e5a459abd8a240a0c3`
+Last completed global position: 93
+Last completed problem: 207. Course Schedule
+Last completed commit: `d5be92bb92f1f6ef2214fc2009ef6d26b1274ba3`
 
 Next assignment:
-- global position: 93
-- problem: 207. Course Schedule
+- global position: 94
+- problem: 210. Course Schedule II
 
 Stop boundary: after global position 99
 
