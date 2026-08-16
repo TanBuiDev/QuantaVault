@@ -1,0 +1,79 @@
+name: Temporary main post-merge validation
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  validate-main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+
+      - name: Verify authoritative inventory and package coverage
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path('.')
+          inventory = json.loads((root / 'data' / 'migration-inventory.json').read_text(encoding='utf-8'))
+          records = inventory.get('problems', [])
+          if len(records) != 150:
+              raise SystemExit(f'Expected 150 inventory records, got {len(records)}')
+          migrated = [r for r in records if r.get('solution_status') == 'migrated-v2' and r.get('canonical_path')]
+          if len(migrated) != 150:
+              raise SystemExit(f'Expected 150 migrated-v2 records with canonical paths, got {len(migrated)}')
+          required = {'meta.yaml','problem.md','hints.md','solution.md','interview.md','Solution.java','cases.yaml'}
+          for record in records:
+              p = root / record['canonical_path']
+              missing = sorted(name for name in required if not (p / name).is_file())
+              if missing:
+                  raise SystemExit(f"Problem {record['id']}: missing {missing}")
+              test_file = root / 'tests' / 'java' / p.name / 'TestSolution.java'
+              if not test_file.is_file():
+                  raise SystemExit(f"Problem {record['id']}: missing Java regression harness")
+          print('PASS: inventory/package coverage 150/150')
+          PY
+
+      - name: Run Python repository validation
+        run: |
+          python3 -m unittest tests.test_inventory tests.test_validate_content -v
+          python3 tools/inventory.py --self-test
+          python3 tools/validate_content.py --root .
+          git diff --check
+
+      - name: Compile and run all Java reference regressions
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          tests=(tests/java/*/TestSolution.java)
+          if [ ${#tests[@]} -ne 150 ]; then
+            echo "Expected 150 Java regression tests, found ${#tests[@]}" >&2
+            exit 1
+          fi
+          count=0
+          for test_file in "${tests[@]}"; do
+            package_name="$(basename "$(dirname "$test_file")")"
+            solution_file="$(find problems -path "*/${package_name}/Solution.java" -print -quit)"
+            if [ -z "$solution_file" ]; then
+              echo "Missing Solution.java for ${package_name}" >&2
+              exit 1
+            fi
+            work="$(mktemp -d)"
+            cp "$solution_file" "$work/Solution.java"
+            cp "$test_file" "$work/TestSolution.java"
+            (
+              cd "$work"
+              javac Solution.java TestSolution.java
+              java TestSolution
+            )
+            rm -rf "$work"
+            count=$((count + 1))
+          done
+          echo "PASS: ${count}/150 Java regression tests on main"
