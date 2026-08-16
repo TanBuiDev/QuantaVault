@@ -1,0 +1,37 @@
+schema_version: 1
+problem_id: 212
+contract_type: method
+language_contract:
+  class: Solution
+  method: findWords
+  parameters:
+    - name: board
+      type: char[][]
+    - name: words
+      type: String[]
+  return_type: List<String>
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      board: [[o,a,a,n],[e,t,a,e],[i,h,k,r],[i,f,l,v]]
+      words: [oath, pea, eat, rain]
+    expected: [eat, oath]
+  - name: example-2
+    source: problem-example
+    input:
+      board: [[a,b],[c,d]]
+      words: [abcb]
+    expected: []
+  - name: shared-prefixes
+    source: derived-regression
+    input:
+      board: [[a,b],[c,d]]
+      words: [ab, abd, abdc, ac, acdb]
+    expected: [ab, abd, abdc, ac, acdb]
+  - name: same-word-multiple-paths-return-once
+    source: derived-edge-case
+    input:
+      board: [[a,a],[a,a]]
+      words: [aa, aaa, aaaa]
+    expected: [aa, aaa, aaaa]
