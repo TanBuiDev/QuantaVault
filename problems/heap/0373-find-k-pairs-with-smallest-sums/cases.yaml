@@ -1,0 +1,29 @@
+schema_version: 1
+problem_id: 373
+contract_type: method
+language_contract:
+  class: Solution
+  method: kSmallestPairs
+  parameters:
+    - name: nums1
+      type: int[]
+    - name: nums2
+      type: int[]
+    - name: k
+      type: int
+  return_type: List<List<Integer>>
+cases:
+  - name: example-1
+    source: problem-example
+    input:
+      nums1: [1, 7, 11]
+      nums2: [2, 4, 6]
+      k: 3
+    expected: [[1,2],[1,4],[1,6]]
+  - name: example-2
+    source: problem-example
+    input:
+      nums1: [1, 1, 2]
+      nums2: [1, 2, 3]
+      k: 2
+    expected: [[1,1],[1,1]]
