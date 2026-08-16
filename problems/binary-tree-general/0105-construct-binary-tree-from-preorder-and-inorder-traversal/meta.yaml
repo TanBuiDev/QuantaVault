@@ -1,0 +1,35 @@
+schema_version: 2
+id: 105
+slug: construct-binary-tree-from-preorder-and-inorder-traversal
+title: Construct Binary Tree from Preorder and Inorder Traversal
+difficulty: Medium
+primary_section: binary-tree-general
+content_status:
+  source: full-source
+  translation: complete
+  hints: complete
+  solution: complete
+  interview: complete
+  cases: complete
+  problem_media: none
+  solution_media: none
+source:
+  provider: leetcode
+  raw_file: "Binary Tree General.txt"
+  raw_blob_sha: "67ddc468f37324188e476da748c186df497ee5a0"
+study_plans:
+  - top-interview-150
+topics:
+  - Array
+  - Hash Table
+  - Divide and Conquer
+  - Tree
+  - Binary Tree
+patterns:
+  - Traversal Reconstruction
+  - Inorder Index Map
+solution_languages:
+  - java
+time_complexity: O(n)
+space_complexity: O(n)
+leetcode_url: https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
