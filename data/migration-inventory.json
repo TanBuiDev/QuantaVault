@@ -958,9 +958,9 @@
       "section": "binary-search-tree",
       "raw_source_file": "Binary Search Tree.txt",
       "source_order": 2,
-      "source_status": "available",
-      "solution_status": "none",
-      "canonical_path": null
+      "source_status": "full-source",
+      "solution_status": "migrated-v2",
+      "canonical_path": "problems/binary-search-tree/0230-kth-smallest-element-in-a-bst"
     },
     {
       "id": 98,
