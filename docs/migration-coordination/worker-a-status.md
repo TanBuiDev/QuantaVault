@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 77
-Last completed problem: 129. Sum Root to Leaf Numbers
-Last completed commit: `8567deb0d927f891613e0dce42498d59a6e111b0`
+Last completed global position: 78
+Last completed problem: 124. Binary Tree Maximum Path Sum
+Last completed commit: `7afb9b27bbd55d6c7c2e699abf450107ee484927`
 
 Next assignment:
-- global position: 78
-- problem: 124. Binary Tree Maximum Path Sum
+- global position: 79
+- problem: 173. Binary Search Tree Iterator
 
 Stop boundary: after global position 99
 
