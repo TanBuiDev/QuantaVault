@@ -7,13 +7,13 @@ Direction: forward
 State: ACTIVE
 
 Baseline completed before parallel split: 48/150
-Last completed global position: 60
-Last completed problem: 138. Copy List with Random Pointer
-Last completed commit: `7c1cb807e18dcc30162d4ffba5a88849f95e5a77`
+Last completed global position: 61
+Last completed problem: 92. Reverse Linked List II
+Last completed commit: `4a888c3024da6c6db3e7ae4877dc6b1b683bc22c`
 
 Next assignment:
-- global position: 61
-- problem: 92. Reverse Linked List II
+- global position: 62
+- problem: 25. Reverse Nodes in k-Group
 
 Stop boundary: after global position 99
 
