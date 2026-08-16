@@ -6,153 +6,50 @@ on:
       - feat/leetcode-content-migration
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  finalize:
+  diagnose-missing-tests:
     if: ${{ github.actor != 'github-actions[bot]' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout integrated branch
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
 
-      - name: Refresh authoritative inventory and final status
+      - name: List all missing Java regression harnesses
         run: |
           python3 - <<'PY'
           import json
-          import os
           from pathlib import Path
 
           root = Path('.')
-          inventory_path = root / 'data' / 'migration-inventory.json'
-          inventory = json.loads(inventory_path.read_text(encoding='utf-8'))
+          inventory = json.loads((root / 'data' / 'migration-inventory.json').read_text(encoding='utf-8'))
           records = inventory.get('problems', [])
           if len(records) != 150:
               raise SystemExit(f'Expected 150 inventory records, got {len(records)}')
 
-          required = {
-              'meta.yaml', 'problem.md', 'hints.md', 'solution.md',
-              'interview.md', 'Solution.java', 'cases.yaml',
-          }
-
-          canonical_paths = set()
+          missing_tests = []
+          missing_packages = []
           for record in records:
               problem_id = int(record['id'])
               matches = sorted(root.glob(f'problems/*/{problem_id:04d}-*'))
               if len(matches) != 1:
-                  raise SystemExit(
-                      f'Problem {problem_id}: expected exactly one canonical folder, got {matches}'
-                  )
+                  missing_packages.append((problem_id, len(matches)))
+                  continue
               problem_dir = matches[0]
-              missing = sorted(name for name in required if not (problem_dir / name).is_file())
-              if missing:
-                  raise SystemExit(f'Problem {problem_id}: missing V2 files: {missing}')
-
               test_file = root / 'tests' / 'java' / problem_dir.name / 'TestSolution.java'
               if not test_file.is_file():
-                  raise SystemExit(f'Problem {problem_id}: missing Java test {test_file}')
+                  missing_tests.append((problem_id, problem_dir.name, test_file.as_posix()))
 
-              canonical = problem_dir.as_posix()
-              if canonical in canonical_paths:
-                  raise SystemExit(f'Duplicate canonical path: {canonical}')
-              canonical_paths.add(canonical)
+          print(f'CANONICAL_RECORDS={len(records)}')
+          print(f'MISSING_PACKAGES={len(missing_packages)}')
+          for problem_id, count in missing_packages:
+              print(f'MISSING_PACKAGE {problem_id}: matches={count}')
+          print(f'MISSING_JAVA_TESTS={len(missing_tests)}')
+          for problem_id, package, path in missing_tests:
+              print(f'MISSING_TEST {problem_id} {package} {path}')
 
-              record['source_status'] = 'full-source'
-              record['solution_status'] = 'migrated-v2'
-              record['canonical_path'] = canonical
-
-          if len(canonical_paths) != 150:
-              raise SystemExit(f'Expected 150 unique canonical paths, got {len(canonical_paths)}')
-
-          inventory['full_source_count'] = 150
-          inventory['source_missing_count'] = 0
-          inventory_path.write_text(
-              json.dumps(inventory, ensure_ascii=False, indent=2) + '\n',
-              encoding='utf-8',
-          )
-
-          merged_parent = os.popen('git rev-parse HEAD^').read().strip()
-          status_lines = [
-              '# Integration Status',
-              '',
-              'Integration branch: `feat/leetcode-content-migration`',
-              'Integration owner: Worker A / integration side',
-              'State: MIGRATION_150_OF_150_VALIDATED',
-              '',
-              '## Completion summary',
-              '',
-              '- Baseline completed before parallel split: global positions 1 -> 48.',
-              '- Worker A completed global positions 49 -> 99 inclusive.',
-              '- Worker B directly completed global positions 150 -> 102 inclusive.',
-              '- Integration-side helper completed delegated global positions 101 and 100.',
-              '- Worker B validated history was integrated through PR #1 without squashing problem commits.',
-              '- Authoritative inventory now contains 150/150 records with `solution_status: migrated-v2` and canonical paths.',
-              '',
-              '## Final validation',
-              '',
-              f'- Finalizer trigger commit parent: `{merged_parent}`',
-              '- Required V2 package files checked for all 150 problems.',
-              '- Java regression harness presence checked for all 150 problems.',
-              '- Python repository validation and full Java regression passed before this status file was committed.',
-              '',
-              '## Next phase',
-              '',
-              '- Do not create additional Top Interview 150 migration problem packages.',
-              '- Review the completed integration branch and prepare the final branch completion / merge-to-main decision.',
-          ]
-          (root / 'docs' / 'migration-coordination' / 'integration-status.md').write_text(
-              '\n'.join(status_lines) + '\n', encoding='utf-8'
-          )
-
-          print('Prepared authoritative inventory: 150/150 migrated-v2')
-          print('Verified required V2 files and Java tests for all 150 problems')
+          if missing_packages or missing_tests:
+              raise SystemExit('Legacy regression harness backfill required')
+          print('PASS: all 150 canonical problems have Java regression harnesses')
           PY
-
-      - name: Run Python repository validation
-        run: |
-          python3 -m unittest tests.test_inventory tests.test_validate_content -v
-          python3 tools/inventory.py --self-test
-          python3 tools/validate_content.py --root .
-          git diff --check
-
-      - name: Compile and run all Java reference regressions
-        run: |
-          set -euo pipefail
-          shopt -s nullglob
-          tests=(tests/java/*/TestSolution.java)
-          if [ ${#tests[@]} -ne 150 ]; then
-            echo "Expected 150 Java regression tests, found ${#tests[@]}" >&2
-            exit 1
-          fi
-          count=0
-          for test_file in "${tests[@]}"; do
-            test_dir="$(dirname "$test_file")"
-            package_name="$(basename "$test_dir")"
-            solution_file="$(find problems -path "*/${package_name}/Solution.java" -print -quit)"
-            if [ -z "$solution_file" ]; then
-              echo "Missing Solution.java for ${package_name}" >&2
-              exit 1
-            fi
-            work="$(mktemp -d)"
-            cp "$solution_file" "$work/Solution.java"
-            cp "$test_file" "$work/TestSolution.java"
-            (
-              cd "$work"
-              javac Solution.java TestSolution.java
-              java TestSolution
-            )
-            rm -rf "$work"
-            count=$((count + 1))
-          done
-          echo "PASS: ${count}/150 Java regression tests"
-
-      - name: Commit validated authoritative state
-        run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/migration-inventory.json docs/migration-coordination/integration-status.md
-          git commit -m "chore(integration): finalize validated 150-problem migration"
-          git push origin HEAD:feat/leetcode-content-migration
