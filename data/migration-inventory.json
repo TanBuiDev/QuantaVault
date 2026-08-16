@@ -980,9 +980,9 @@
       "section": "graph-general",
       "raw_source_file": "Graph General.txt",
       "source_order": 1,
-      "source_status": "available",
-      "solution_status": "none",
-      "canonical_path": null
+      "source_status": "full-source",
+      "solution_status": "migrated-v2",
+      "canonical_path": "problems/graph-general/0200-number-of-islands"
     },
     {
       "id": 130,
