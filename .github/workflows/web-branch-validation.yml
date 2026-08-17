@@ -32,6 +32,10 @@ jobs:
         working-directory: web
         run: npm ci
 
+      - name: Report production dependency audit
+        working-directory: web
+        run: npm audit --omit=dev --audit-level=high || true
+
       - name: Lint
         working-directory: web
         run: npm run lint
@@ -43,3 +47,11 @@ jobs:
       - name: Build
         working-directory: web
         run: npm run build
+
+      - name: Install Playwright Chromium
+        working-directory: web
+        run: npx playwright install --with-deps chromium
+
+      - name: End-to-end tests
+        working-directory: web
+        run: npx playwright test
