@@ -104,6 +104,7 @@ describe("PracticeView", () => {
     fireEvent.click(screen.getByRole("button", { name: /Reveal solution/i }));
     expect(screen.getByText("SECRET SOLUTION")).toBeInTheDocument();
     expect(screen.getByText(/SECRET JAVA/)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Java solution" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Copy Java solution/i })).toBeInTheDocument();
 
     const stored = JSON.parse(localStorage.getItem(PROGRESS_STORAGE_KEY) ?? "null");
