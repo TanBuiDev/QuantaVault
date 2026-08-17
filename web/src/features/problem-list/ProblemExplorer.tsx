@@ -208,12 +208,7 @@ export function ProblemExplorer({ summaries, sections }: ProblemExplorerProps) {
       {filteredProblems.length === 0 ? (
         <EmptyState
           title="No problems match these filters"
-          description="Change the search or filter combination, or clear all filters to restore the canonical list."
-          action={
-            <Button variant="secondary" onClick={() => setFilters(INITIAL_FILTERS)}>
-              Clear all filters
-            </Button>
-          }
+          description="Change the search or filter combination, then use the clear filters control above to restore the canonical list."
         />
       ) : (
         <ul className="grid gap-3" aria-label="Top Interview 150 problems">
