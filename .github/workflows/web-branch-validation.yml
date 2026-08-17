@@ -9,7 +9,7 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   web:
@@ -23,9 +23,27 @@ jobs:
         with:
           node-version: 22
 
+      - name: Normalize lockfile
+        if: github.event_name == 'push'
+        working-directory: web
+        run: |
+          rm -f package-lock.json
+          npm install --package-lock-only
+
+      - name: Commit normalized lockfile when needed
+        if: github.event_name == 'push'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add web/package-lock.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(web): normalize npm lockfile"
+            git push
+          fi
+
       - name: Install dependencies
         working-directory: web
-        run: npm install
+        run: npm ci
 
       - name: Lint
         working-directory: web
