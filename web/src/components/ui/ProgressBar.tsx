@@ -14,9 +14,7 @@ export function ProgressBar({
   className,
 }: ProgressBarProps) {
   const safeMax = Number.isFinite(max) && max > 0 ? max : 100;
-  const safeValue = Number.isFinite(value)
-    ? Math.min(Math.max(value, 0), safeMax)
-    : 0;
+  const safeValue = Number.isFinite(value) ? Math.min(Math.max(value, 0), safeMax) : 0;
   const percent = (safeValue / safeMax) * 100;
 
   return (
@@ -27,12 +25,12 @@ export function ProgressBar({
       aria-valuemax={safeMax}
       aria-valuenow={safeValue}
       className={classNames(
-        "h-2.5 overflow-hidden rounded-full bg-slate-200",
+        "h-2.5 overflow-hidden rounded-full bg-[var(--surface-hover)] ring-1 ring-inset ring-[var(--border)]",
         className,
       )}
     >
       <div
-        className="h-full rounded-full bg-slate-950 transition-[width]"
+        className="h-full rounded-full bg-[var(--primary)] transition-[width]"
         style={{ width: `${percent}%` }}
       />
     </div>
