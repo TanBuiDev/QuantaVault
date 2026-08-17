@@ -1,4 +1,4 @@
-name: UI Polish Verification Report
+name: UI Polish Verification Status
 
 on:
   push:
@@ -9,17 +9,15 @@ on:
       - ".github/workflows/ui-polish-verification.yml"
 
 permissions:
-  contents: write
+  contents: read
+  statuses: write
 
 jobs:
   verify:
-    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -78,9 +76,10 @@ jobs:
         working-directory: web
         run: npx playwright test
 
-      - name: Write verification report
+      - name: Publish verification statuses
         if: always()
         env:
+          GH_TOKEN: ${{ github.token }}
           CANONICAL: ${{ steps.canonical.outcome }}
           INSTALL: ${{ steps.install.outcome }}
           AUDIT: ${{ steps.audit.outcome }}
@@ -90,20 +89,32 @@ jobs:
           PLAYWRIGHT_INSTALL: ${{ steps.playwright_install.outcome }}
           E2E: ${{ steps.e2e.outcome }}
         run: |
-          mkdir -p docs/superpowers/verification
-          cat > docs/superpowers/verification/ui-polish-latest.txt <<EOF
-          source_sha=${GITHUB_SHA}
-          canonical=${CANONICAL}
-          npm_ci=${INSTALL}
-          audit=${AUDIT}
-          lint=${LINT}
-          unit=${UNIT}
-          build=${BUILD}
-          playwright_install=${PLAYWRIGHT_INSTALL}
-          e2e=${E2E}
-          EOF
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/superpowers/verification/ui-polish-latest.txt
-          git commit -m "chore(web): record UI polish verification [skip ci]"
-          git push
+          post_status() {
+            outcome="$1"
+            context="$2"
+            description="$3"
+            state="failure"
+            if [ "$outcome" = "success" ]; then state="success"; fi
+            gh api --method POST "repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}" \
+              -f state="$state" \
+              -f context="$context" \
+              -f description="$description"
+          }
+
+          post_status "$CANONICAL" "ui-polish/canonical" "Canonical content validation: $CANONICAL"
+          post_status "$INSTALL" "ui-polish/npm-ci" "Clean dependency install: $INSTALL"
+          post_status "$AUDIT" "ui-polish/audit" "Production dependency audit: $AUDIT"
+          post_status "$LINT" "ui-polish/lint" "ESLint: $LINT"
+          post_status "$UNIT" "ui-polish/unit" "Vitest unit suite: $UNIT"
+          post_status "$BUILD" "ui-polish/build" "Next.js production build: $BUILD"
+          post_status "$PLAYWRIGHT_INSTALL" "ui-polish/playwright-install" "Playwright Chromium install: $PLAYWRIGHT_INSTALL"
+          post_status "$E2E" "ui-polish/e2e" "Playwright end-to-end suite: $E2E"
+
+          overall="success"
+          for outcome in "$CANONICAL" "$INSTALL" "$AUDIT" "$LINT" "$UNIT" "$BUILD" "$PLAYWRIGHT_INSTALL" "$E2E"; do
+            if [ "$outcome" != "success" ]; then overall="failure"; fi
+          done
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}" \
+            -f state="$overall" \
+            -f context="ui-polish/release-gate" \
+            -f description="UI polish release gate: $overall"
