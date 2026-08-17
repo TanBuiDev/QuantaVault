@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 import { AppShell } from "@/components/layout/AppShell";
+import { ProgressProvider } from "@/lib/progress/provider";
 
 import "./globals.css";
 
@@ -17,7 +18,9 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
   return (
     <html lang="en">
       <body>
-        <AppShell>{children}</AppShell>
+        <ProgressProvider>
+          <AppShell>{children}</AppShell>
+        </ProgressProvider>
       </body>
     </html>
   );
