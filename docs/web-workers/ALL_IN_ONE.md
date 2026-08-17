@@ -4,7 +4,7 @@
 
 The user explicitly replaced the original multi-worker execution model with a single implementer model during the 2026-08-17 session.
 
-This file records that execution override so future repository readers do not interpret the original W1 → W2/W5 → W3/W4 → W6 worker handoff sequence as still operational for this implementation branch.
+This file records that execution override so future repository readers do not interpret the original W1 → W2/W5 → W3/W4 → W6 worker handoff sequence as still operational for this implementation.
 
 ## Integration branch
 
@@ -19,7 +19,8 @@ The branch was created from the existing W1 foundation work and then used to imp
 - Versioned local learner-progress persistence and provider.
 - Dashboard and Top Interview 150 problem explorer.
 - Problem practice experience with progressive hints and spoiler controls.
-- Playwright end-to-end coverage and branch validation workflow.
+- Playwright end-to-end coverage.
+- Permanent GitHub Actions web CI.
 
 ## Canonical-content protection
 
@@ -34,7 +35,7 @@ Those paths remain authoritative inputs to the web application.
 
 ## Validation gate
 
-Before integration into `main`, the branch must pass a fresh run of:
+Before integration into `main`, and again on `main` after integration, the project must pass:
 
 ```bash
 python tools/validate_content.py
@@ -47,8 +48,8 @@ npm run build
 npx playwright test
 ```
 
-The GitHub Actions workflow `.github/workflows/web-branch-validation.yml` reproduces this gate on the integration branch.
+The permanent GitHub Actions workflow `.github/workflows/web-ci.yml` reproduces this gate for the integration branch, pull requests to `main`, and pushes to `main`.
 
-## Status
+## Release candidate status
 
-Implementation is in final integration verification. Do not treat this record as proof of completion by itself; the current branch HEAD must have fresh passing validation evidence before merge.
+The implementation is in final integration verification. The branch may be integrated only when the current branch HEAD has a fresh successful `Web CI` run and the diff from `main` contains no canonical-content changes. After integration, `main` must receive its own fresh successful `Web CI` run before the work is considered complete.
