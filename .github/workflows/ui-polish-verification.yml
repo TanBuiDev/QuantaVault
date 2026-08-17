@@ -79,7 +79,7 @@ jobs:
       - name: Publish verification statuses
         if: always()
         env:
-          GH_TOKEN: ${{ github.token }}
+          TOKEN: ${{ github.token }}
           CANONICAL: ${{ steps.canonical.outcome }}
           INSTALL: ${{ steps.install.outcome }}
           AUDIT: ${{ steps.audit.outcome }}
@@ -95,10 +95,12 @@ jobs:
             description="$3"
             state="failure"
             if [ "$outcome" = "success" ]; then state="success"; fi
-            gh api --method POST "repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}" \
-              -f state="$state" \
-              -f context="$context" \
-              -f description="$description"
+            curl --fail --silent --show-error --request POST \
+              --header "Authorization: Bearer ${TOKEN}" \
+              --header "Accept: application/vnd.github+json" \
+              --header "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}" \
+              --data "{\"state\":\"${state}\",\"context\":\"${context}\",\"description\":\"${description}\"}"
           }
 
           post_status "$CANONICAL" "ui-polish/canonical" "Canonical content validation: $CANONICAL"
@@ -114,7 +116,9 @@ jobs:
           for outcome in "$CANONICAL" "$INSTALL" "$AUDIT" "$LINT" "$UNIT" "$BUILD" "$PLAYWRIGHT_INSTALL" "$E2E"; do
             if [ "$outcome" != "success" ]; then overall="failure"; fi
           done
-          gh api --method POST "repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}" \
-            -f state="$overall" \
-            -f context="ui-polish/release-gate" \
-            -f description="UI polish release gate: $overall"
+          curl --fail --silent --show-error --request POST \
+            --header "Authorization: Bearer ${TOKEN}" \
+            --header "Accept: application/vnd.github+json" \
+            --header "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}" \
+            --data "{\"state\":\"${overall}\",\"context\":\"ui-polish/release-gate\",\"description\":\"UI polish release gate: ${overall}\"}"
