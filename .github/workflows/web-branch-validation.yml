@@ -23,6 +23,9 @@ jobs:
         with:
           node-version: 22
 
+      - name: Use current stable npm
+        run: npm install --global npm@11
+
       - name: Normalize lockfile
         if: github.event_name == 'push'
         working-directory: web
