@@ -1,0 +1,59 @@
+name: Web CI
+
+on:
+  push:
+    branches:
+      - main
+      - agent/web-all-in-one
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate canonical content
+        run: python tools/validate_content.py
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Use npm 11
+        run: npm install --global npm@11
+
+      - name: Install dependencies
+        working-directory: web
+        run: npm ci
+
+      - name: Audit production dependencies
+        working-directory: web
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: Lint
+        working-directory: web
+        run: npm run lint
+
+      - name: Test
+        working-directory: web
+        run: npm test
+
+      - name: Build
+        working-directory: web
+        run: npm run build
+
+      - name: Install Playwright Chromium
+        working-directory: web
+        run: npx playwright install --with-deps chromium
+
+      - name: End-to-end tests
+        working-directory: web
+        run: npx playwright test
