@@ -86,17 +86,20 @@ describe("ProblemExplorer", () => {
     );
 
     await waitFor(() =>
-      expect(
-        screen.getByRole("link", { name: /Best Time to Buy and Sell Stock/i }),
-      ).toBeInTheDocument(),
+      expect(screen.getByRole("link", { name: /Best Time to Buy and Sell Stock/i })).toBeInTheDocument(),
     );
+
+    expect(screen.getByRole("list", { name: "Problem study list" })).toBeInTheDocument();
+    expect(screen.getByLabelText("Bookmarked problem 121")).toBeInTheDocument();
+
     fireEvent.change(screen.getByLabelText("Search problems"), {
       target: { value: "buy and sell" },
     });
 
-    expect(
-      screen.getByRole("link", { name: /Best Time to Buy and Sell Stock/i }),
-    ).toHaveAttribute("href", "/problems/121");
+    expect(screen.getByRole("link", { name: /Best Time to Buy and Sell Stock/i })).toHaveAttribute(
+      "href",
+      "/problems/121",
+    );
     expect(screen.queryByRole("link", { name: /3Sum/i })).not.toBeInTheDocument();
   });
 
@@ -108,9 +111,7 @@ describe("ProblemExplorer", () => {
     );
 
     await waitFor(() =>
-      expect(
-        screen.getByRole("link", { name: /Best Time to Buy and Sell Stock/i }),
-      ).toBeInTheDocument(),
+      expect(screen.getByRole("link", { name: /Best Time to Buy and Sell Stock/i })).toBeInTheDocument(),
     );
     fireEvent.change(screen.getByLabelText("Learning status"), {
       target: { value: "solved" },
@@ -122,9 +123,7 @@ describe("ProblemExplorer", () => {
     expect(screen.getByText(/No problems match/i)).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /Clear all filters/i }));
 
-    expect(
-      screen.getByRole("link", { name: /Best Time to Buy and Sell Stock/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Best Time to Buy and Sell Stock/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /3Sum/i })).toBeInTheDocument();
   });
 });
