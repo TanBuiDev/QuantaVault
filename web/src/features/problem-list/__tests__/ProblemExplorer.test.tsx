@@ -85,14 +85,19 @@ describe("ProblemExplorer", () => {
       </ProgressProvider>,
     );
 
-    await waitFor(() => expect(screen.getByText("Best Time to Buy and Sell Stock")).toBeInTheDocument());
-    fireEvent.change(screen.getByLabelText("Search problems"), { target: { value: "buy and sell" } });
-
-    expect(screen.getByRole("link", { name: /Best Time to Buy and Sell Stock/i })).toHaveAttribute(
-      "href",
-      "/problems/121",
+    await waitFor(() =>
+      expect(
+        screen.getByRole("link", { name: /Best Time to Buy and Sell Stock/i }),
+      ).toBeInTheDocument(),
     );
-    expect(screen.queryByText("3Sum")).not.toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText("Search problems"), {
+      target: { value: "buy and sell" },
+    });
+
+    expect(
+      screen.getByRole("link", { name: /Best Time to Buy and Sell Stock/i }),
+    ).toHaveAttribute("href", "/problems/121");
+    expect(screen.queryByRole("link", { name: /3Sum/i })).not.toBeInTheDocument();
   });
 
   it("composes status and difficulty filters and provides a recoverable empty state", async () => {
@@ -102,14 +107,24 @@ describe("ProblemExplorer", () => {
       </ProgressProvider>,
     );
 
-    await waitFor(() => expect(screen.getByText("Best Time to Buy and Sell Stock")).toBeInTheDocument());
-    fireEvent.change(screen.getByLabelText("Learning status"), { target: { value: "solved" } });
-    fireEvent.change(screen.getByLabelText("Difficulty"), { target: { value: "Medium" } });
+    await waitFor(() =>
+      expect(
+        screen.getByRole("link", { name: /Best Time to Buy and Sell Stock/i }),
+      ).toBeInTheDocument(),
+    );
+    fireEvent.change(screen.getByLabelText("Learning status"), {
+      target: { value: "solved" },
+    });
+    fireEvent.change(screen.getByLabelText("Difficulty"), {
+      target: { value: "Medium" },
+    });
 
     expect(screen.getByText(/No problems match/i)).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /Clear all filters/i }));
 
-    expect(screen.getByText("Best Time to Buy and Sell Stock")).toBeInTheDocument();
-    expect(screen.getByText("3Sum")).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /Best Time to Buy and Sell Stock/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /3Sum/i })).toBeInTheDocument();
   });
 });
