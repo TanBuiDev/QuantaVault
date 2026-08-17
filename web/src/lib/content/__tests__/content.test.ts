@@ -21,8 +21,16 @@ describe("canonical Top Interview 150 content", () => {
     expect(plan.sections[0]).toMatchObject({
       name: "Array / String",
       slug: "array-string",
-      problemIds: [88, 27, 26, 80, 169, 189, 121],
     });
+    expect(plan.sections[0]?.problemIds.slice(0, 7)).toEqual([
+      88,
+      27,
+      26,
+      80,
+      169,
+      189,
+      121,
+    ]);
     expect(ids).toHaveLength(150);
     expect(new Set(ids).size).toBe(150);
     expect(ids.slice(0, 8)).toEqual([88, 27, 26, 80, 169, 189, 121, 122]);
