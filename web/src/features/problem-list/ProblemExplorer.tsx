@@ -50,6 +50,9 @@ function difficultyVariant(difficulty: Difficulty) {
   return "neutral" as const;
 }
 
+const controlClass =
+  "h-10 w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] px-3 text-sm text-[var(--foreground)] outline-none transition focus:border-[var(--focus)] focus:ring-2 focus:ring-indigo-500/15";
+
 export interface ProblemExplorerProps {
   summaries: ProblemSummary[];
   sections: StudyPlanSection[];
@@ -84,124 +87,94 @@ export function ProblemExplorer({ summaries, sections }: ProblemExplorerProps) {
   };
 
   return (
-    <div className="space-y-6">
-      <header className="space-y-2">
-        <p className="text-sm font-semibold uppercase tracking-[0.16em] text-slate-500">
-          Canonical study plan
-        </p>
-        <h1 className="text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
-          Problems
-        </h1>
-        <p className="max-w-3xl text-sm leading-6 text-slate-600 sm:text-base">
-          Search and filter the Top Interview 150 without duplicating its canonical ordering or content.
-        </p>
+    <div className="space-y-6 lg:space-y-8">
+      <header className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+        <div className="space-y-2">
+          <Badge variant="info">Canonical study plan</Badge>
+          <h1 className="text-3xl font-black tracking-[-0.035em] text-[var(--foreground)] sm:text-4xl">Problems</h1>
+          <p className="max-w-3xl text-sm leading-6 text-[var(--muted)] sm:text-base">
+            Find the next problem quickly. Filter the canonical Top Interview 150 without changing its source order.
+          </p>
+        </div>
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-sm">
+          <span className="font-bold text-[var(--foreground)]">{filteredProblems.length}</span>
+          <span className="text-[var(--muted)]"> / {summaries.length} shown{!hydrated ? " · loading progress" : ""}</span>
+        </div>
       </header>
 
-      <Card>
-        <CardContent className="pt-6">
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-            <label className="space-y-1.5 xl:col-span-2">
-              <span className="text-sm font-medium text-slate-700">Search problems</span>
+      <Card className="sticky top-20 z-20 shadow-sm lg:top-4">
+        <CardContent className="p-4 sm:p-5">
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-12">
+            <label className="space-y-1.5 xl:col-span-4">
+              <span className="text-xs font-bold uppercase tracking-wide text-[var(--muted)]">Search problems</span>
               <input
                 type="search"
                 value={filters.query}
                 onChange={(event) => updateFilter("query", event.target.value)}
                 placeholder="ID or title"
-                className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-slate-950 outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+                className={controlClass}
               />
             </label>
 
-            <label className="space-y-1.5">
-              <span className="text-sm font-medium text-slate-700">Difficulty</span>
+            <label className="space-y-1.5 xl:col-span-2">
+              <span className="text-xs font-bold uppercase tracking-wide text-[var(--muted)]">Difficulty</span>
               <select
                 value={filters.difficulty}
-                onChange={(event) =>
-                  updateFilter("difficulty", event.target.value as ProblemFilters["difficulty"])
-                }
-                className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm"
+                onChange={(event) => updateFilter("difficulty", event.target.value as ProblemFilters["difficulty"])}
+                className={controlClass}
               >
                 {difficultyOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {option === "all" ? "All difficulties" : option}
-                  </option>
+                  <option key={option} value={option}>{option === "all" ? "All difficulties" : option}</option>
                 ))}
               </select>
             </label>
 
-            <label className="space-y-1.5">
-              <span className="text-sm font-medium text-slate-700">Section</span>
+            <label className="space-y-1.5 xl:col-span-2">
+              <span className="text-xs font-bold uppercase tracking-wide text-[var(--muted)]">Section</span>
               <select
                 value={filters.section}
                 onChange={(event) => updateFilter("section", event.target.value)}
-                className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm"
+                className={controlClass}
               >
                 <option value="all">All sections</option>
                 {sections.map((section) => (
-                  <option key={section.slug} value={section.slug}>
-                    {section.name}
-                  </option>
+                  <option key={section.slug} value={section.slug}>{section.name}</option>
                 ))}
               </select>
             </label>
 
-            <label className="space-y-1.5">
-              <span className="text-sm font-medium text-slate-700">Topic</span>
-              <select
-                value={filters.topic}
-                onChange={(event) => updateFilter("topic", event.target.value)}
-                className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm"
-              >
+            <label className="space-y-1.5 xl:col-span-2">
+              <span className="text-xs font-bold uppercase tracking-wide text-[var(--muted)]">Topic</span>
+              <select value={filters.topic} onChange={(event) => updateFilter("topic", event.target.value)} className={controlClass}>
                 <option value="all">All topics</option>
-                {topics.map((topic) => (
-                  <option key={topic} value={topic}>
-                    {topic}
-                  </option>
-                ))}
+                {topics.map((topic) => <option key={topic} value={topic}>{topic}</option>)}
               </select>
             </label>
-          </div>
 
-          <div className="mt-4 flex flex-wrap items-end gap-3">
-            <label className="min-w-48 space-y-1.5">
-              <span className="text-sm font-medium text-slate-700">Learning status</span>
+            <label className="space-y-1.5 xl:col-span-2">
+              <span className="text-xs font-bold uppercase tracking-wide text-[var(--muted)]">Learning status</span>
               <select
                 value={filters.status}
-                onChange={(event) =>
-                  updateFilter("status", event.target.value as ProblemStatusFilter)
-                }
-                className="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 text-sm"
+                onChange={(event) => updateFilter("status", event.target.value as ProblemStatusFilter)}
+                className={controlClass}
               >
-                {statusOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
+                {statusOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
               </select>
             </label>
-
-            {hasActiveFilters ? (
-              <Button variant="secondary" onClick={() => setFilters(INITIAL_FILTERS)}>
-                Clear all filters
-              </Button>
-            ) : null}
-
-            <p className="ml-auto text-sm text-slate-500" aria-live="polite">
-              {filteredProblems.length} of {summaries.length} problems
-              {!hydrated ? " · loading saved progress" : ""}
-            </p>
           </div>
 
-          {hasActiveFilters ? (
-            <div className="mt-4 flex flex-wrap gap-2" aria-label="Active filters">
-              {filters.query.trim() ? <Badge>Search: {filters.query.trim()}</Badge> : null}
-              {filters.difficulty !== "all" ? <Badge>{filters.difficulty}</Badge> : null}
-              {filters.section !== "all" ? (
-                <Badge>{sectionNames.get(filters.section) ?? filters.section}</Badge>
-              ) : null}
-              {filters.topic !== "all" ? <Badge>{filters.topic}</Badge> : null}
-              {filters.status !== "all" ? <Badge>{statusLabel(filters.status)}</Badge> : null}
-            </div>
-          ) : null}
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            {hasActiveFilters ? (
+              <Button variant="secondary" size="sm" onClick={() => setFilters(INITIAL_FILTERS)}>Clear all filters</Button>
+            ) : (
+              <span className="text-xs text-[var(--muted)]">Use filters to narrow the 150-problem study plan.</span>
+            )}
+            {filters.query.trim() ? <Badge>Search: {filters.query.trim()}</Badge> : null}
+            {filters.difficulty !== "all" ? <Badge>{filters.difficulty}</Badge> : null}
+            {filters.section !== "all" ? <Badge>{sectionNames.get(filters.section) ?? filters.section}</Badge> : null}
+            {filters.topic !== "all" ? <Badge>{filters.topic}</Badge> : null}
+            {filters.status !== "all" ? <Badge>{statusLabel(filters.status)}</Badge> : null}
+          </div>
         </CardContent>
       </Card>
 
@@ -211,46 +184,63 @@ export function ProblemExplorer({ summaries, sections }: ProblemExplorerProps) {
           description="Change the search or filter combination, then use the clear filters control above to restore the canonical list."
         />
       ) : (
-        <ul className="grid gap-3" aria-label="Top Interview 150 problems">
-          {filteredProblems.map((problem) => {
-            const record = getProblemProgress(state, problem.id);
-            const learnerStatus = record?.status ?? "not-started";
-            const hasFullProblem = problem.contentStatus.source === "full-source";
+        <div className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-sm">
+          <div className="hidden grid-cols-[minmax(0,1fr)_auto] gap-4 border-b border-[var(--border)] bg-[var(--surface-hover)] px-5 py-3 text-xs font-bold uppercase tracking-[0.12em] text-[var(--muted)] md:grid">
+            <span>Problem</span>
+            <span>Status</span>
+          </div>
+          <ul aria-label="Problem study list" className="divide-y divide-[var(--border)]">
+            {filteredProblems.map((problem) => {
+              const record = getProblemProgress(state, problem.id);
+              const learnerStatus = record?.status ?? "not-started";
+              const hasFullProblem = problem.contentStatus.source === "full-source";
 
-            return (
-              <li key={problem.id}>
-                <Card className="transition-shadow hover:shadow-md">
-                  <CardContent className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="min-w-0 space-y-2">
-                      <Link
-                        href={`/problems/${problem.id}`}
-                        className="inline-flex text-base font-semibold text-slate-950 hover:underline focus-visible:rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-slate-500"
-                      >
-                        {problem.id}. {problem.title}
-                      </Link>
-                      <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
-                        <span>{sectionNames.get(problem.primarySection) ?? problem.primarySection}</span>
-                        <span aria-hidden="true">•</span>
-                        <span>{problem.topics.slice(0, 3).join(" · ") || "No topics"}</span>
+              return (
+                <li key={problem.id} className="group transition-colors hover:bg-[var(--surface-hover)]">
+                  <div className="flex flex-col gap-4 px-4 py-4 sm:px-5 md:flex-row md:items-center md:justify-between">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-start gap-3">
+                        <span className="mt-0.5 min-w-12 text-sm font-black tabular-nums text-[var(--muted)]">#{problem.id}</span>
+                        <div className="min-w-0">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <Link
+                              href={`/problems/${problem.id}`}
+                              className="font-bold text-[var(--foreground)] transition group-hover:text-[var(--primary-strong)] hover:underline focus-visible:rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus)]"
+                            >
+                              {problem.title}
+                            </Link>
+                            {record?.bookmarked ? (
+                              <span aria-label={`Bookmarked problem ${problem.id}`} title="Bookmarked" className="text-amber-500">★</span>
+                            ) : null}
+                          </div>
+                          <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-[var(--muted)]">
+                            <span>{sectionNames.get(problem.primarySection) ?? problem.primarySection}</span>
+                            <span aria-hidden="true">•</span>
+                            <span>{problem.topics.slice(0, 3).join(" · ") || "No topics"}</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-2 sm:justify-end">
+                    <div className="flex flex-wrap items-center gap-2 pl-0 md:max-w-[42%] md:justify-end md:pl-4">
                       <Badge variant={difficultyVariant(problem.difficulty)}>{problem.difficulty}</Badge>
                       <Badge variant={statusVariant(learnerStatus)}>{statusLabel(learnerStatus)}</Badge>
-                      <Badge variant={hasFullProblem ? "info" : "neutral"}>
-                        {hasFullProblem ? "Problem ready" : "Source limited"}
-                      </Badge>
-                      {problem.contentStatus.solution === "complete" ? (
-                        <Badge variant="neutral">Solution</Badge>
-                      ) : null}
+                      <span className="text-xs font-medium text-[var(--muted)]">{hasFullProblem ? "Problem ready" : "Source limited"}</span>
+                      {problem.contentStatus.solution === "complete" ? <span className="text-xs font-medium text-[var(--muted)]">• Solution</span> : null}
+                      <Link
+                        href={`/problems/${problem.id}`}
+                        aria-label={`Study ${problem.title}`}
+                        className="grid size-9 place-items-center rounded-lg border border-[var(--border)] text-[var(--muted)] transition hover:border-[var(--border-strong)] hover:bg-[var(--surface)] hover:text-[var(--foreground)]"
+                      >
+                        <span aria-hidden="true">→</span>
+                      </Link>
                     </div>
-                  </CardContent>
-                </Card>
-              </li>
-            );
-          })}
-        </ul>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       )}
     </div>
   );
