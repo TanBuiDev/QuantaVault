@@ -7,11 +7,11 @@ type ButtonSize = "sm" | "md";
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    "bg-slate-950 text-white hover:bg-slate-800 focus-visible:outline-slate-950 disabled:bg-slate-300",
+    "bg-[var(--primary)] text-white hover:brightness-95 focus-visible:outline-[var(--focus)] disabled:opacity-45",
   secondary:
-    "border border-slate-300 bg-white text-slate-800 hover:bg-slate-50 focus-visible:outline-slate-500 disabled:text-slate-400",
+    "border border-[var(--border-strong)] bg-[var(--surface)] text-[var(--foreground)] hover:bg-[var(--surface-hover)] focus-visible:outline-[var(--focus)] disabled:text-[var(--muted)]",
   ghost:
-    "text-slate-700 hover:bg-slate-100 focus-visible:outline-slate-500 disabled:text-slate-400",
+    "text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)] focus-visible:outline-[var(--focus)] disabled:text-[var(--muted)]",
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
@@ -35,7 +35,7 @@ export function Button({
     <button
       type={type}
       className={classNames(
-        "inline-flex items-center justify-center rounded-lg font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed",
+        "inline-flex items-center justify-center rounded-xl font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed",
         variantClasses[variant],
         sizeClasses[size],
         className,
