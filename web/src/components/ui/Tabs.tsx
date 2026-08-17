@@ -19,21 +19,13 @@ export interface TabsProps {
   className?: string;
 }
 
-export function Tabs({
-  items,
-  value,
-  onValueChange,
-  ariaLabel = "Sections",
-  className,
-}: TabsProps) {
+export function Tabs({ items, value, onValueChange, ariaLabel = "Sections", className }: TabsProps) {
   const refs = useRef<Array<HTMLButtonElement | null>>([]);
 
   function focusRelativeTab(currentIndex: number, direction: 1 | -1) {
     if (items.length === 0) return;
-
     for (let offset = 1; offset <= items.length; offset += 1) {
-      const nextIndex =
-        (currentIndex + direction * offset + items.length) % items.length;
+      const nextIndex = (currentIndex + direction * offset + items.length) % items.length;
       if (!items[nextIndex]?.disabled) {
         refs.current[nextIndex]?.focus();
         onValueChange(items[nextIndex].id);
@@ -54,10 +46,7 @@ export function Tabs({
       const enabledIndexes = items
         .map((item, itemIndex) => (item.disabled ? -1 : itemIndex))
         .filter((itemIndex) => itemIndex >= 0);
-      const nextIndex =
-        event.key === "Home"
-          ? enabledIndexes[0]
-          : enabledIndexes[enabledIndexes.length - 1];
+      const nextIndex = event.key === "Home" ? enabledIndexes[0] : enabledIndexes[enabledIndexes.length - 1];
       if (nextIndex !== undefined) {
         refs.current[nextIndex]?.focus();
         onValueChange(items[nextIndex].id);
@@ -70,7 +59,7 @@ export function Tabs({
       role="tablist"
       aria-label={ariaLabel}
       className={classNames(
-        "inline-flex max-w-full gap-1 overflow-x-auto rounded-xl bg-slate-100 p-1",
+        "inline-flex max-w-full gap-1 overflow-x-auto rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-1",
         className,
       )}
     >
@@ -90,10 +79,10 @@ export function Tabs({
             onClick={() => onValueChange(item.id)}
             onKeyDown={(event) => handleKeyDown(event, index)}
             className={classNames(
-              "whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-500 disabled:cursor-not-allowed disabled:opacity-50",
+              "whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)] disabled:cursor-not-allowed disabled:opacity-45",
               isActive
-                ? "bg-white text-slate-950 shadow-sm"
-                : "text-slate-600 hover:text-slate-950",
+                ? "bg-[var(--surface)] text-[var(--foreground)] shadow-sm"
+                : "text-[var(--muted)] hover:text-[var(--foreground)]",
             )}
           >
             {item.label}
