@@ -9,40 +9,24 @@ on:
       - main
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  web:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Validate canonical content
+        run: python tools/validate_content.py
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
-
-      - name: Use current stable npm
-        run: npm install --global npm@11
-
-      - name: Normalize lockfile
-        if: github.event_name == 'push'
-        working-directory: web
-        run: |
-          rm -f package-lock.json
-          npm install --package-lock-only
-
-      - name: Commit normalized lockfile when needed
-        if: github.event_name == 'push'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add web/package-lock.json
-          if ! git diff --cached --quiet; then
-            git commit -m "chore(web): normalize npm lockfile"
-            git push
-          fi
+          cache: npm
+          cache-dependency-path: web/package-lock.json
 
       - name: Install dependencies
         working-directory: web
@@ -55,3 +39,7 @@ jobs:
       - name: Test
         working-directory: web
         run: npm test
+
+      - name: Build
+        working-directory: web
+        run: npm run build
