@@ -19,15 +19,15 @@ media:
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Remove duplicates from sorted list II"
-    alt_vi: "Minh họa remove duplicates from sorted list ii"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "linkedlist2-jpg"
     path: assets/problem/linkedlist2.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Remove duplicates from sorted list II"
-    alt_vi: "Minh họa remove duplicates from sorted list ii"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
 
 source:
   provider: leetcode

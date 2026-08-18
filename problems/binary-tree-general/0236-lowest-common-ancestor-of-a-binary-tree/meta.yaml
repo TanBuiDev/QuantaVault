@@ -19,15 +19,15 @@ media:
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Lowest common ancestor tree"
-    alt_vi: "Minh họa lowest common ancestor tree"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "binarytree-png"
     path: assets/problem/binarytree.png
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Lowest common ancestor tree"
-    alt_vi: "Minh họa lowest common ancestor tree"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
 
 source:
   provider: leetcode

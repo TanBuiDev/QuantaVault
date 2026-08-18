@@ -19,29 +19,29 @@ media:
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Search a 2D matrix"
-    alt_vi: "Minh họa search a 2d matrix"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "mat2--2--jpg"
     path: assets/problem/mat2 (2).jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Search a 2D matrix"
-    alt_vi: "Minh họa search a 2d matrix"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "search1-jpg"
     path: assets/problem/search1.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Search a 2D matrix"
-    alt_vi: "Minh họa search a 2d matrix"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "search2-jpg"
     path: assets/problem/search2.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Search a 2D matrix"
-    alt_vi: "Minh họa search a 2d matrix"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
 
 source:
   provider: leetcode

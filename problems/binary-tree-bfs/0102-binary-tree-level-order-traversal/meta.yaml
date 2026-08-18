@@ -14,6 +14,13 @@ content_status:
   problem_media: available
   solution_media: none
 media:
+  - id: "tmp-tree-jpg"
+    path: assets/problem/tmp-tree.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Binary tree level order traversal"
+    alt_vi: "Minh họa binary tree level order traversal"
   - id: "tree--1--jpg"
     path: assets/problem/tree (1).jpg
     scope: problem

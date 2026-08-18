@@ -19,15 +19,15 @@ media:
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Set matrix zeroes"
-    alt_vi: "Minh họa set matrix zeroes"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "mat2--1--jpg"
     path: assets/problem/mat2 (1).jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Set matrix zeroes"
-    alt_vi: "Minh họa set matrix zeroes"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
 
 source:
   provider: leetcode

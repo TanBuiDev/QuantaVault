@@ -19,36 +19,36 @@ media:
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Validate binary search tree"
-    alt_vi: "Minh họa validate binary search tree"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "bst1-jpg"
     path: assets/problem/bst1.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Validate binary search tree"
-    alt_vi: "Minh họa validate binary search tree"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "bst2-jpg"
     path: assets/problem/bst2.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Validate binary search tree"
-    alt_vi: "Minh họa validate binary search tree"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "tree1--2--jpg"
     path: assets/problem/tree1 (2).jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Validate binary search tree"
-    alt_vi: "Minh họa validate binary search tree"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "tree2-jpg"
     path: assets/problem/tree2.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Validate binary search tree"
-    alt_vi: "Minh họa validate binary search tree"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
 
 source:
   provider: leetcode

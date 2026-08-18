@@ -28,6 +28,13 @@ media:
     origin: user-supplied
     alt_en: "Construct quad tree"
     alt_vi: "Minh họa construct quad tree"
+  - id: "grid1-png"
+    path: assets/problem/grid1.png
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Construct quad tree"
+    alt_vi: "Minh họa construct quad tree"
   - id: "new_top-png"
     path: assets/problem/new_top.png
     scope: problem

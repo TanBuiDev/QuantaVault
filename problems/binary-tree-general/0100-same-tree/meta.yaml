@@ -19,22 +19,22 @@ media:
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Same tree"
-    alt_vi: "Minh họa same tree"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "ex2-jpg"
     path: assets/problem/ex2.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Same tree"
-    alt_vi: "Minh họa same tree"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "ex3-jpg"
     path: assets/problem/ex3.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Same tree"
-    alt_vi: "Minh họa same tree"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
 
 source:
   provider: leetcode

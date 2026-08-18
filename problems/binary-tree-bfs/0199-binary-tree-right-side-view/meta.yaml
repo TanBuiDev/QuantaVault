@@ -11,8 +11,24 @@ content_status:
   solution: complete
   interview: complete
   cases: complete
-  problem_media: none
+  problem_media: available
   solution_media: none
+media:
+  - id: "tmpd5jn43fs-1-png"
+    path: assets/problem/tmpd5jn43fs-1.png
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Binary tree right side view"
+    alt_vi: "Minh họa binary tree right side view"
+  - id: "tmpkpe40xeh-1-png"
+    path: assets/problem/tmpkpe40xeh-1.png
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Binary tree right side view"
+    alt_vi: "Minh họa binary tree right side view"
+
 source:
   provider: leetcode
   raw_file: "Binary Tree BFS.txt"

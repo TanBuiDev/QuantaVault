@@ -19,22 +19,22 @@ media:
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Maximal square"
-    alt_vi: "Minh họa maximal square"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "max1grid-jpg"
     path: assets/problem/max1grid.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Maximal square"
-    alt_vi: "Minh họa maximal square"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "max2grid-jpg"
     path: assets/problem/max2grid.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Maximal square"
-    alt_vi: "Minh họa maximal square"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
 
 source:
   provider: leetcode

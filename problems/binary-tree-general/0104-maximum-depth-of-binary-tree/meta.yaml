@@ -19,15 +19,15 @@ media:
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Maximum depth tree"
-    alt_vi: "Minh họa maximum depth tree"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "exx2-jpg"
     path: assets/problem/exx2.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Maximum depth tree"
-    alt_vi: "Minh họa maximum depth tree"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
 
 source:
   provider: leetcode
