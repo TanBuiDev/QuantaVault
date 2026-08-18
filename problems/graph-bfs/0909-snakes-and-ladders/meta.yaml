@@ -19,8 +19,8 @@ media:
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Snakes and ladders"
-    alt_vi: "Minh họa snakes and ladders"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
 
 source:
   provider: leetcode

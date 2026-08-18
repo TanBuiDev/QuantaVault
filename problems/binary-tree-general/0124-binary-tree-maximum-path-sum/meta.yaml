@@ -19,15 +19,15 @@ media:
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Binary tree path sum"
-    alt_vi: "Minh họa binary tree path sum"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "num2tree-jpg"
     path: assets/problem/num2tree.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Binary tree path sum"
-    alt_vi: "Minh họa binary tree path sum"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
 
 source:
   provider: leetcode

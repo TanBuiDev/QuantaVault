@@ -19,15 +19,15 @@ media:
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Kth smallest BST"
-    alt_vi: "Minh họa kth smallest bst"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "kthtree2-jpg"
     path: assets/problem/kthtree2.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Kth smallest BST"
-    alt_vi: "Minh họa kth smallest bst"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
 
 source:
   provider: leetcode

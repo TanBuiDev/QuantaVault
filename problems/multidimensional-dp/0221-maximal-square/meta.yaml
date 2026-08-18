@@ -14,20 +14,27 @@ content_status:
   problem_media: available
   solution_media: none
 media:
+  - id: "e2mat-png"
+    path: assets/problem/e2mat.png
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Maximal square"
+    alt_vi: "Minh họa maximal square"
   - id: "max1grid-jpg"
     path: assets/problem/max1grid.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Maximal square grid"
-    alt_vi: "Minh họa maximal square grid"
+    alt_en: "Maximal square"
+    alt_vi: "Minh họa maximal square"
   - id: "max2grid-jpg"
     path: assets/problem/max2grid.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Maximal square grid"
-    alt_vi: "Minh họa maximal square grid"
+    alt_en: "Maximal square"
+    alt_vi: "Minh họa maximal square"
 
 source:
   provider: leetcode

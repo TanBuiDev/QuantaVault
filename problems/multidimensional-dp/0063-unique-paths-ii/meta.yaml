@@ -19,15 +19,15 @@ media:
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Unique paths grid"
-    alt_vi: "Minh họa unique paths grid"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "robot2-jpg"
     path: assets/problem/robot2.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Unique paths grid"
-    alt_vi: "Minh họa unique paths grid"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
 
 source:
   provider: leetcode

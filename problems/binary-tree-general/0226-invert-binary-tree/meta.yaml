@@ -19,15 +19,15 @@ media:
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Invert binary tree"
-    alt_vi: "Minh họa invert binary tree"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "invert2-tree-jpg"
     path: assets/problem/invert2-tree.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Invert binary tree"
-    alt_vi: "Minh họa invert binary tree"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
 
 source:
   provider: leetcode

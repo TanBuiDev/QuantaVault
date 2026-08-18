@@ -11,8 +11,38 @@ content_status:
   solution: complete
   interview: complete
   cases: complete
-  problem_media: none
+  problem_media: available
   solution_media: none
+media:
+  - id: "tree--1--jpg"
+    path: assets/problem/tree (1).jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Binary tree level order traversal"
+    alt_vi: "Minh họa binary tree level order traversal"
+  - id: "tree-jpg"
+    path: assets/problem/tree.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Binary tree level order traversal"
+    alt_vi: "Minh họa binary tree level order traversal"
+  - id: "tree1--1--jpg"
+    path: assets/problem/tree1 (1).jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Binary tree level order traversal"
+    alt_vi: "Minh họa binary tree level order traversal"
+  - id: "tree1-jpg"
+    path: assets/problem/tree1.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Binary tree level order traversal"
+    alt_vi: "Minh họa binary tree level order traversal"
+
 source:
   provider: leetcode
   raw_file: "Binary Tree BFS.txt"

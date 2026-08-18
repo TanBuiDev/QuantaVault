@@ -19,15 +19,15 @@ media:
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Sort list"
-    alt_vi: "Minh họa sort list"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "sort_list_2-jpg"
     path: assets/problem/sort_list_2.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Sort list"
-    alt_vi: "Minh họa sort list"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
 
 source:
   provider: leetcode

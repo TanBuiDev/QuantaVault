@@ -11,8 +11,24 @@ content_status:
   solution: complete
   interview: complete
   cases: complete
-  problem_media: none
+  problem_media: available
   solution_media: none
+media:
+  - id: "linkedlist1-jpg"
+    path: assets/problem/linkedlist1.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Remove duplicates from sorted list II"
+    alt_vi: "Minh họa remove duplicates from sorted list ii"
+  - id: "linkedlist2-jpg"
+    path: assets/problem/linkedlist2.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Remove duplicates from sorted list II"
+    alt_vi: "Minh họa remove duplicates from sorted list ii"
+
 source:
   provider: leetcode
   raw_file: "Linked List.txt"

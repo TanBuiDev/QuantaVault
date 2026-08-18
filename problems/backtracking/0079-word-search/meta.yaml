@@ -19,22 +19,22 @@ media:
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Word search"
-    alt_vi: "Minh họa word search"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "word2-jpg"
     path: assets/problem/word2.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Word search"
-    alt_vi: "Minh họa word search"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "word3-jpg"
     path: assets/problem/word3.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Word search"
-    alt_vi: "Minh họa word search"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
 
 source:
   provider: leetcode

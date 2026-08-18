@@ -21,6 +21,20 @@ media:
     origin: user-supplied
     alt_en: "Reverse linked list II"
     alt_vi: "Minh họa reverse linked list ii"
+  - id: "reverse_ex1-jpg"
+    path: assets/problem/reverse_ex1.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Reverse linked list II"
+    alt_vi: "Minh họa reverse linked list ii"
+  - id: "reverse_ex2-jpg"
+    path: assets/problem/reverse_ex2.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Reverse linked list II"
+    alt_vi: "Minh họa reverse linked list ii"
 
 source:
   provider: leetcode

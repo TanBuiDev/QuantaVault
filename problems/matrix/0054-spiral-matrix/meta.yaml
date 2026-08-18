@@ -19,15 +19,15 @@ media:
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Spiral matrix"
-    alt_vi: "Minh họa spiral matrix"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "spiral1-jpg"
     path: assets/problem/spiral1.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Spiral matrix"
-    alt_vi: "Minh họa spiral matrix"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
 
 source:
   provider: leetcode

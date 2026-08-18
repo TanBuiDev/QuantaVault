@@ -11,8 +11,31 @@ content_status:
   solution: complete
   interview: complete
   cases: complete
-  problem_media: none
+  problem_media: available
   solution_media: none
+media:
+  - id: "e1tree-png"
+    path: assets/problem/e1tree.png
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Construct quad tree"
+    alt_vi: "Minh họa construct quad tree"
+  - id: "e2tree-png"
+    path: assets/problem/e2tree.png
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Construct quad tree"
+    alt_vi: "Minh họa construct quad tree"
+  - id: "new_top-png"
+    path: assets/problem/new_top.png
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Construct quad tree"
+    alt_vi: "Minh họa construct quad tree"
+
 source:
   provider: leetcode
   raw_file: "Divide & Conquer.txt"

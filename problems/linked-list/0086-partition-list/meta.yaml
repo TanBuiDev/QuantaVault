@@ -19,8 +19,8 @@ media:
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Partition list"
-    alt_vi: "Minh họa partition list"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
 
 source:
   provider: leetcode

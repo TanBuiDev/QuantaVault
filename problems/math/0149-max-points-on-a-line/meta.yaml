@@ -19,15 +19,15 @@ media:
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Max points on a line"
-    alt_vi: "Minh họa max points on a line"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "plane2-jpg"
     path: assets/problem/plane2.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Max points on a line"
-    alt_vi: "Minh họa max points on a line"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
 
 source:
   provider: leetcode

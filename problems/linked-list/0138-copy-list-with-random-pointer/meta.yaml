@@ -19,22 +19,43 @@ media:
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Random pointer linked list"
-    alt_vi: "Minh họa random pointer linked list"
+    alt_en: "Copy list with random pointer"
+    alt_vi: "Minh họa copy list with random pointer"
   - id: "btree1-jpg"
     path: assets/problem/btree1.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Random pointer linked list"
-    alt_vi: "Minh họa random pointer linked list"
+    alt_en: "Copy list with random pointer"
+    alt_vi: "Minh họa copy list with random pointer"
   - id: "btree2-jpg"
     path: assets/problem/btree2.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Random pointer linked list"
-    alt_vi: "Minh họa random pointer linked list"
+    alt_en: "Copy list with random pointer"
+    alt_vi: "Minh họa copy list with random pointer"
+  - id: "e1-png"
+    path: assets/problem/e1.png
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Copy list with random pointer"
+    alt_vi: "Minh họa copy list with random pointer"
+  - id: "e2-png"
+    path: assets/problem/e2.png
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Copy list with random pointer"
+    alt_vi: "Minh họa copy list with random pointer"
+  - id: "e3-png"
+    path: assets/problem/e3.png
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Copy list with random pointer"
+    alt_vi: "Minh họa copy list with random pointer"
 
 source:
   provider: leetcode

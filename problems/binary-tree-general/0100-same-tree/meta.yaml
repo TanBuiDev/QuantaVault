@@ -11,8 +11,31 @@ content_status:
   solution: complete
   interview: complete
   cases: complete
-  problem_media: none
+  problem_media: available
   solution_media: none
+media:
+  - id: "ex1-jpg"
+    path: assets/problem/ex1.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Same tree"
+    alt_vi: "Minh họa same tree"
+  - id: "ex2-jpg"
+    path: assets/problem/ex2.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Same tree"
+    alt_vi: "Minh họa same tree"
+  - id: "ex3-jpg"
+    path: assets/problem/ex3.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Same tree"
+    alt_vi: "Minh họa same tree"
+
 source:
   provider: leetcode
   raw_file: "Binary Tree General.txt"

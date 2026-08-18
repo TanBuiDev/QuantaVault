@@ -11,8 +11,24 @@ content_status:
   solution: complete
   interview: complete
   cases: complete
-  problem_media: none
+  problem_media: available
   solution_media: none
+media:
+  - id: "mat1-jpg"
+    path: assets/problem/mat1.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Rotate image"
+    alt_vi: "Minh họa rotate image"
+  - id: "mat2-jpg"
+    path: assets/problem/mat2.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Rotate image"
+    alt_vi: "Minh họa rotate image"
+
 source:
   provider: leetcode
   raw_file: "Matrix.txt"

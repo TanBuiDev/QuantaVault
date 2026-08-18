@@ -19,22 +19,22 @@ media:
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Linked list cycle"
-    alt_vi: "Minh họa linked list cycle"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "circularlinkedlist_test3-png"
     path: assets/problem/circularlinkedlist_test3.png
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Linked list cycle"
-    alt_vi: "Minh họa linked list cycle"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "circularlinkedlist-png"
     path: assets/problem/circularlinkedlist.png
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Linked list cycle"
-    alt_vi: "Minh họa linked list cycle"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
 
 source:
   provider: leetcode

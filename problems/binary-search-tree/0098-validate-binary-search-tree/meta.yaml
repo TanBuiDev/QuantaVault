@@ -21,6 +21,34 @@ media:
     origin: user-supplied
     alt_en: "Validate binary search tree"
     alt_vi: "Minh họa validate binary search tree"
+  - id: "bst1-jpg"
+    path: assets/problem/bst1.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Validate binary search tree"
+    alt_vi: "Minh họa validate binary search tree"
+  - id: "bst2-jpg"
+    path: assets/problem/bst2.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Validate binary search tree"
+    alt_vi: "Minh họa validate binary search tree"
+  - id: "tree1--2--jpg"
+    path: assets/problem/tree1 (2).jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Validate binary search tree"
+    alt_vi: "Minh họa validate binary search tree"
+  - id: "tree2-jpg"
+    path: assets/problem/tree2.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Validate binary search tree"
+    alt_vi: "Minh họa validate binary search tree"
 
 source:
   provider: leetcode

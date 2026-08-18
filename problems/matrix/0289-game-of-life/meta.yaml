@@ -19,8 +19,8 @@ media:
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Game of life grid"
-    alt_vi: "Minh họa game of life grid"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
 
 source:
   provider: leetcode

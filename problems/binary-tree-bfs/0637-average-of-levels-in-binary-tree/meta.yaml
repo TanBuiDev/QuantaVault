@@ -19,15 +19,15 @@ media:
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Average levels of a binary tree"
-    alt_vi: "Minh họa average levels of a binary tree"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "avg2-tree-jpg"
     path: assets/problem/avg2-tree.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Average levels of a binary tree"
-    alt_vi: "Minh họa average levels of a binary tree"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
 
 source:
   provider: leetcode

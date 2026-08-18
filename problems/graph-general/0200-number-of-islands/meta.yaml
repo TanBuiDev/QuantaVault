@@ -19,15 +19,15 @@ media:
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Number of islands grid"
-    alt_vi: "Minh họa number of islands grid"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
   - id: "grid2-jpg"
     path: assets/problem/grid2.jpg
     scope: problem
     role: example-illustration
     origin: user-supplied
-    alt_en: "Number of islands grid"
-    alt_vi: "Minh họa number of islands grid"
+    alt_en: "Problem illustration"
+    alt_vi: "Minh họa problem illustration"
 
 source:
   provider: leetcode
