@@ -25,7 +25,7 @@ test("Top Interview 150 study workflow persists progress without exposing spoile
   await expect(page.getByRole("complementary", { name: "Study progress" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Open on LeetCode" })).toBeVisible();
   await expect(page.getByText("Solution hidden")).toHaveCount(0);
-  await expect(page.getByRole("heading", { name: "Java solution" })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Java solution", exact: true })).toHaveCount(0);
 
   const problemTab = page.getByRole("tab", { name: "Problem" });
   await problemTab.focus();
@@ -37,9 +37,9 @@ test("Top Interview 150 study workflow persists progress without exposing spoile
 
   await page.getByRole("tab", { name: "Solution" }).click();
   await expect(page.getByText("Solution hidden")).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Java solution" })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Java solution", exact: true })).toHaveCount(0);
   await page.getByRole("button", { name: "Reveal solution" }).click();
-  await expect(page.getByRole("heading", { name: "Java solution" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Java solution", exact: true })).toBeVisible();
 
   await page.getByRole("button", { name: "Solved", exact: true }).click();
   await page.getByLabel("Personal notes").fill("Review running minimum before interview.");

@@ -34,7 +34,7 @@ export function AppSidebar() {
         <p className="px-3 text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--muted)]">Study</p>
         <ul className="mt-2 space-y-1">
           {navigation.map((item) => {
-            const active = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+            const active = item.href === "/" ? pathname === "/" : pathname?.startsWith(item.href) === true;
             return (
               <li key={item.href}>
                 <Link

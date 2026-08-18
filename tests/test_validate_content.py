@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import subprocess
 import sys
 import tempfile
@@ -201,6 +202,27 @@ Tôi giữ giá nhỏ nhất đã thấy.
             )
             (problem_dir / "meta.yaml").write_text(meta, encoding="utf-8")
             self.assert_validation_failure(root, "full-source metadata requires source.raw_file and source.raw_blob_sha")
+
+    def test_full_source_provenance_accepts_crlf_checkout(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            problem_dir = write_valid_problem(root)
+            raw_bytes = b"first line\r\nsecond line\r\n"
+            raw_path = root / "raw" / "top-interview-150" / "Array  String.txt"
+            raw_path.parent.mkdir(parents=True)
+            raw_path.write_bytes(raw_bytes)
+            canonical_bytes = raw_bytes.replace(b"\r\n", b"\n")
+            raw_blob_sha = hashlib.sha1(
+                f"blob {len(canonical_bytes)}\0".encode("utf-8") + canonical_bytes
+            ).hexdigest()
+            meta = VALID_META.replace(
+                "193928590a8e65c3882a54482bcec77f2b17e470", raw_blob_sha
+            )
+            (problem_dir / "meta.yaml").write_text(meta, encoding="utf-8")
+
+            result = run_validator(root)
+
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_media_scope_must_match_path(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

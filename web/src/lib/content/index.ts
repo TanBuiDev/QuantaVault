@@ -111,7 +111,7 @@ function assertEnum<T extends string>(
 function findRepositoryRoot(): string {
   if (repositoryRootCache) return repositoryRootCache;
 
-  let current = path.resolve(process.cwd());
+  let current = path.resolve(/* turbopackIgnore: true */ process.cwd());
   for (;;) {
     const studyPlanPath = path.join(
       current,

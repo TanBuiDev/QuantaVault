@@ -27,8 +27,8 @@ export function MobileHeader() {
           </Link>
           <Link
             href="/problems"
-            aria-current={pathname.startsWith("/problems") ? "page" : undefined}
-            className={`rounded-lg px-3 py-2 text-sm font-semibold ${pathname.startsWith("/problems") ? "text-[var(--foreground)]" : "text-[var(--muted)]"}`}
+            aria-current={pathname?.startsWith("/problems") ? "page" : undefined}
+            className={`rounded-lg px-3 py-2 text-sm font-semibold ${pathname?.startsWith("/problems") ? "text-[var(--foreground)]" : "text-[var(--muted)]"}`}
           >
             Problems
           </Link>

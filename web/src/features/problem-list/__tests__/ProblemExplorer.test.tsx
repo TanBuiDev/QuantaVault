@@ -86,7 +86,7 @@ describe("ProblemExplorer", () => {
     );
 
     await waitFor(() =>
-      expect(screen.getByRole("link", { name: /Best Time to Buy and Sell Stock/i })).toBeInTheDocument(),
+      expect(screen.getByRole("link", { name: "Best Time to Buy and Sell Stock" })).toBeInTheDocument(),
     );
 
     expect(screen.getByRole("list", { name: "Problem study list" })).toBeInTheDocument();
@@ -96,11 +96,11 @@ describe("ProblemExplorer", () => {
       target: { value: "buy and sell" },
     });
 
-    expect(screen.getByRole("link", { name: /Best Time to Buy and Sell Stock/i })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Best Time to Buy and Sell Stock" })).toHaveAttribute(
       "href",
       "/problems/121",
     );
-    expect(screen.queryByRole("link", { name: /3Sum/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "3Sum" })).not.toBeInTheDocument();
   });
 
   it("composes status and difficulty filters and provides a recoverable empty state", async () => {
@@ -111,7 +111,7 @@ describe("ProblemExplorer", () => {
     );
 
     await waitFor(() =>
-      expect(screen.getByRole("link", { name: /Best Time to Buy and Sell Stock/i })).toBeInTheDocument(),
+      expect(screen.getByRole("link", { name: "Best Time to Buy and Sell Stock" })).toBeInTheDocument(),
     );
     fireEvent.change(screen.getByLabelText("Learning status"), {
       target: { value: "solved" },
@@ -123,7 +123,7 @@ describe("ProblemExplorer", () => {
     expect(screen.getByText(/No problems match/i)).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: /Clear all filters/i }));
 
-    expect(screen.getByRole("link", { name: /Best Time to Buy and Sell Stock/i })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /3Sum/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Best Time to Buy and Sell Stock" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "3Sum" })).toBeInTheDocument();
   });
 });

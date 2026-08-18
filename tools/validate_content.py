@@ -427,7 +427,7 @@ def validate_cases(problem_dir: Path, meta: dict) -> list[str]:
 
 
 def _git_blob_sha(path: Path) -> str:
-    data = path.read_bytes()
+    data = path.read_bytes().replace(b"\r\n", b"\n").replace(b"\r", b"\n")
     return hashlib.sha1(f"blob {len(data)}\0".encode("utf-8") + data).hexdigest()
 
 

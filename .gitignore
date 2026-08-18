@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+
+web/.next/
+web/node_modules/
+web/next-env.d.ts
+web/test-results/
+web/playwright-report/
