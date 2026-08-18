@@ -147,14 +147,13 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
                 {activeTab === "problem" ? (
                   <div className="space-y-6">
                     {content.problemMarkdown ? (
-                      <MarkdownContent markdown={content.problemMarkdown} />
+                      <ProblemStatement markdown={content.problemMarkdown} media={problemMedia} problemId={content.id} />
                     ) : (
                       <EmptyState
                         title="Full problem source is not available yet"
                         description="This canonical package currently has only limited source metadata. The web app will not fabricate a problem statement."
                       />
                     )}
-                    <MediaGallery items={problemMedia} problemId={content.id} />
                   </div>
                 ) : null}
 
@@ -282,6 +281,21 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
         </aside>
       </div>
     </div>
+  );
+}
+
+function ProblemStatement({ markdown, media, problemId }: { markdown: string; media: NonNullable<ProblemContent["media"]>; problemId: number }) {
+  if (media.length === 0) return <MarkdownContent markdown={markdown} />;
+  const insertion = markdown.search(/^##\s+(?:Constraints|Ràng buộc|Source|Nguồn)\b/im);
+  if (insertion < 0) {
+    return <><MarkdownContent markdown={markdown} /><MediaGallery items={media} problemId={problemId} /></>;
+  }
+  return (
+    <>
+      <MarkdownContent markdown={markdown.slice(0, insertion).trimEnd()} />
+      <MediaGallery items={media} problemId={problemId} />
+      <MarkdownContent markdown={markdown.slice(insertion).trimStart()} />
+    </>
   );
 }
 
