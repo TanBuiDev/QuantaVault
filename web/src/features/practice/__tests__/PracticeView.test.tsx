@@ -64,44 +64,30 @@ describe("PracticeView", () => {
     localStorage.clear();
   });
 
-  it("shows the problem first without solution, Java, interview, or later-hint spoilers", async () => {
+  it("shows the problem tab first without rendering inactive tab content", async () => {
     renderPractice();
 
     await waitFor(() => expect(screen.getByText("VISIBLE PROBLEM")).toBeInTheDocument());
     expect(screen.queryByText("SECRET SOLUTION")).not.toBeInTheDocument();
     expect(screen.queryByText(/SECRET JAVA/)).not.toBeInTheDocument();
     expect(screen.queryByText("INTERVIEW ANSWER")).not.toBeInTheDocument();
-    expect(screen.queryByText("Hint two body.")).not.toBeInTheDocument();
     expect(screen.getByRole("tab", { name: "Problem" })).toHaveAttribute("aria-selected", "true");
   });
 
-  it("reveals hints progressively and persists the revealed count", async () => {
+  it("shows all hints immediately when the Hints tab is selected", async () => {
     renderPractice();
     await waitFor(() => expect(screen.getByText("VISIBLE PROBLEM")).toBeInTheDocument());
 
     fireEvent.click(screen.getByRole("tab", { name: "Hints" }));
-    expect(screen.queryByText("Hint one body.")).not.toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole("button", { name: /Reveal next hint/i }));
     expect(screen.getByText("Hint one body.")).toBeInTheDocument();
-    expect(screen.queryByText("Hint two body.")).not.toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole("button", { name: /Reveal next hint/i }));
     expect(screen.getByText("Hint two body.")).toBeInTheDocument();
-
-    const stored = JSON.parse(localStorage.getItem(PROGRESS_STORAGE_KEY) ?? "null");
-    expect(stored.problems["121"].revealedHints).toBe(2);
   });
 
-  it("requires an explicit reveal before showing solution markdown or Java source", async () => {
+  it("shows solution markdown and Java source immediately when selected", async () => {
     renderPractice();
     await waitFor(() => expect(screen.getByText("VISIBLE PROBLEM")).toBeInTheDocument());
 
     fireEvent.click(screen.getByRole("tab", { name: "Solution" }));
-    expect(screen.queryByText("SECRET SOLUTION")).not.toBeInTheDocument();
-    expect(screen.queryByText(/SECRET JAVA/)).not.toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole("button", { name: /Reveal solution/i }));
     expect(screen.getByText("SECRET SOLUTION")).toBeInTheDocument();
     expect(screen.getByText(/SECRET JAVA/)).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Java solution" })).toBeInTheDocument();

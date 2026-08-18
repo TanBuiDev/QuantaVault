@@ -38,10 +38,8 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
   const { getProgress, updateProblem } = useProgress();
   const progress = getProgress(content.id);
   const [activeTab, setActiveTab] = useState<PracticeTab>("problem");
-  const [solutionRevealed, setSolutionRevealed] = useState(false);
   const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
 
-  const revealedHints = Math.min(progress?.revealedHints ?? 0, hints.length);
   const hasHints = content.contentStatus.hints !== "none" && hints.length > 0;
   const hasSolution =
     content.contentStatus.solution !== "none" && Boolean(content.solutionMarkdown || content.javaSource);
@@ -61,16 +59,9 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
     if (tab === "interview" && hasInterview) {
       updateProblem(content.id, { interviewViewed: true });
     }
-  }
-
-  function revealNextHint() {
-    if (revealedHints >= hints.length) return;
-    updateProblem(content.id, { revealedHints: revealedHints + 1 });
-  }
-
-  function revealSolution() {
-    setSolutionRevealed(true);
-    updateProblem(content.id, { solutionViewed: true });
+    if (tab === "solution" && hasSolution) {
+      updateProblem(content.id, { solutionViewed: true });
+    }
   }
 
   async function copyJavaSource() {
@@ -163,10 +154,7 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
 
                 {activeTab === "hints" ? (
                   <div className="space-y-5">
-                    <div className="rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm text-blue-800 dark:border-blue-900 dark:bg-blue-950/40 dark:text-blue-200">
-                      Hints stay hidden until you request them. Reveal only what you need.
-                    </div>
-                    {hints.slice(0, revealedHints).map((hint, index) => (
+                    {hints.map((hint, index) => (
                       <section
                         key={`${content.id}-hint-${index + 1}`}
                         className="rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)] p-4 sm:p-5"
@@ -177,47 +165,31 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
                         <MarkdownContent markdown={hint} />
                       </section>
                     ))}
-                    {revealedHints < hints.length ? (
-                      <Button onClick={revealNextHint}>Reveal next hint</Button>
-                    ) : (
-                      <p className="text-sm font-semibold text-[var(--muted)]">All hints revealed.</p>
-                    )}
                   </div>
                 ) : null}
 
                 {activeTab === "solution" ? (
-                  solutionRevealed ? (
-                    <div className="space-y-8">
-                      {content.solutionMarkdown ? <MarkdownContent markdown={content.solutionMarkdown} /> : null}
-                      {content.javaSource ? (
-                        <section className="space-y-3" aria-labelledby="java-solution-heading">
-                          <div className="flex flex-wrap items-center justify-between gap-3">
-                            <div>
-                              <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--primary-strong)]">Reference code</p>
-                              <h2 id="java-solution-heading" className="mt-1 text-lg font-bold text-[var(--foreground)]">
-                                Java solution
-                              </h2>
-                            </div>
-                            <Button size="sm" variant="secondary" onClick={copyJavaSource}>
-                              {copyState === "copied" ? "Copied" : copyState === "failed" ? "Copy unavailable" : "Copy Java solution"}
-                            </Button>
+                  <div className="space-y-8">
+                    {content.solutionMarkdown ? <MarkdownContent markdown={content.solutionMarkdown} /> : null}
+                    {content.javaSource ? (
+                      <section className="space-y-3" aria-labelledby="java-solution-heading">
+                        <div className="flex flex-wrap items-center justify-between gap-3">
+                          <div>
+                            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--primary-strong)]">Reference code</p>
+                            <h2 id="java-solution-heading" className="mt-1 text-lg font-bold text-[var(--foreground)]">
+                              Java solution
+                            </h2>
                           </div>
-                          <pre className="max-w-full overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--code-surface)] p-4 text-sm leading-6 text-[var(--code-foreground)]">
-                            <code>{content.javaSource}</code>
-                          </pre>
-                        </section>
-                      ) : null}
-                    </div>
-                  ) : (
-                    <div className="mx-auto max-w-xl py-8 text-center sm:py-14">
-                      <div className="mx-auto grid size-12 place-items-center rounded-2xl bg-amber-100 text-xl dark:bg-amber-950/60">🔒</div>
-                      <h2 className="mt-4 text-xl font-bold text-[var(--foreground)]">Solution hidden</h2>
-                      <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
-                        Reveal it only after you have attempted the problem or intentionally want to study the reference approach.
-                      </p>
-                      <Button className="mt-5" onClick={revealSolution}>Reveal solution</Button>
-                    </div>
-                  )
+                          <Button size="sm" variant="secondary" onClick={copyJavaSource}>
+                            {copyState === "copied" ? "Copied" : copyState === "failed" ? "Copy unavailable" : "Copy Java solution"}
+                          </Button>
+                        </div>
+                        <pre className="max-w-full overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--code-surface)] p-4 text-sm leading-6 text-[var(--code-foreground)]">
+                          <code>{content.javaSource}</code>
+                        </pre>
+                      </section>
+                    ) : null}
+                  </div>
                 ) : null}
 
                 {activeTab === "interview" && content.interviewMarkdown ? (

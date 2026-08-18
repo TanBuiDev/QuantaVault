@@ -74,6 +74,15 @@ export function ProblemExplorer({ summaries, sections }: ProblemExplorerProps) {
     () => filterProblems(summaries, state, filters),
     [summaries, state, filters],
   );
+  const visibleSections = useMemo(
+    () => sections
+      .map((section) => ({
+        ...section,
+        problems: filteredProblems.filter((problem) => problem.primarySection === section.slug),
+      }))
+      .filter((section) => section.problems.length > 0),
+    [sections, filteredProblems],
+  );
 
   const hasActiveFilters =
     filters.query.trim() !== "" ||
@@ -184,13 +193,18 @@ export function ProblemExplorer({ summaries, sections }: ProblemExplorerProps) {
           description="Change the search or filter combination, then use the clear filters control above to restore the canonical list."
         />
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-sm">
-          <div className="hidden grid-cols-[minmax(0,1fr)_auto] gap-4 border-b border-[var(--border)] bg-[var(--surface-hover)] px-5 py-3 text-xs font-bold uppercase tracking-[0.12em] text-[var(--muted)] md:grid">
-            <span>Problem</span>
-            <span>Status</span>
-          </div>
-          <ul aria-label="Problem study list" className="divide-y divide-[var(--border)]">
-            {filteredProblems.map((problem) => {
+        <div className="space-y-5">
+          {visibleSections.map((section) => (
+            <section key={section.slug} aria-labelledby={`section-${section.slug}`} className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-sm">
+              <h2 id={`section-${section.slug}`} className="border-b border-[var(--border)] bg-[var(--surface-hover)] px-5 py-3 text-sm font-bold tracking-tight text-[var(--foreground)]">
+                {section.name}
+              </h2>
+              <div className="hidden grid-cols-[minmax(0,1fr)_auto] gap-4 border-b border-[var(--border)] bg-[var(--surface-hover)] px-5 py-3 text-xs font-bold uppercase tracking-[0.12em] text-[var(--muted)] md:grid">
+                <span>Problem</span>
+                <span>Status</span>
+              </div>
+              <ul aria-label={`Problems in ${section.name}`} className="divide-y divide-[var(--border)]">
+                {section.problems.map((problem) => {
               const record = getProblemProgress(state, problem.id);
               const learnerStatus = record?.status ?? "not-started";
               const hasFullProblem = problem.contentStatus.source === "full-source";
@@ -238,8 +252,10 @@ export function ProblemExplorer({ summaries, sections }: ProblemExplorerProps) {
                   </div>
                 </li>
               );
-            })}
-          </ul>
+                })}
+              </ul>
+            </section>
+          ))}
         </div>
       )}
     </div>

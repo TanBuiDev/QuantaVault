@@ -89,7 +89,7 @@ describe("ProblemExplorer", () => {
       expect(screen.getByRole("link", { name: "Best Time to Buy and Sell Stock" })).toBeInTheDocument(),
     );
 
-    expect(screen.getByRole("list", { name: "Problem study list" })).toBeInTheDocument();
+    expect(screen.getByRole("list", { name: "Problems in Array / String" })).toBeInTheDocument();
     expect(screen.getByLabelText("Bookmarked problem 121")).toBeInTheDocument();
 
     fireEvent.change(screen.getByLabelText("Search problems"), {
@@ -125,5 +125,23 @@ describe("ProblemExplorer", () => {
 
     expect(screen.getByRole("link", { name: "Best Time to Buy and Sell Stock" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "3Sum" })).toBeInTheDocument();
+  });
+
+  it("groups visible problems by section and hides empty sections", async () => {
+    render(
+      <ProgressProvider>
+        <ProblemExplorer summaries={summaries} sections={sections} />
+      </ProgressProvider>,
+    );
+
+    expect(screen.getByRole("heading", { name: "Array / String", level: 2 })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Two Pointers", level: 2 })).toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText("Search problems"), {
+      target: { value: "buy and sell" },
+    });
+
+    expect(screen.getByRole("heading", { name: "Array / String", level: 2 })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Two Pointers", level: 2 })).not.toBeInTheDocument();
   });
 });
