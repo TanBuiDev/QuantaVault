@@ -11,8 +11,24 @@ content_status:
   solution: complete
   interview: complete
   cases: complete
-  problem_media: none
+  problem_media: available
   solution_media: none
+media:
+  - id: "search1-jpg"
+    path: assets/problem/search1.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Search a 2D matrix"
+    alt_vi: "Minh họa search a 2d matrix"
+  - id: "search2-jpg"
+    path: assets/problem/search2.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Search a 2D matrix"
+    alt_vi: "Minh họa search a 2d matrix"
+
 source:
   provider: leetcode
   raw_file: "Binary Search.txt"

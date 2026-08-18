@@ -13,6 +13,15 @@ content_status:
   cases: complete
   problem_media: media-missing
   solution_media: none
+media:
+  - id: "1200px-telephone-keypad2svg-png"
+    path: assets/problem/1200px-telephone-keypad2svg.png
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Phone keypad mapping"
+    alt_vi: "Minh họa phone keypad mapping"
+
 source:
   provider: leetcode
   raw_file: "Backtracking.txt"

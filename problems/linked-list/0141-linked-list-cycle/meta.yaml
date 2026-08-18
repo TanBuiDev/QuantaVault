@@ -11,8 +11,31 @@ content_status:
   solution: complete
   interview: complete
   cases: complete
-  problem_media: none
+  problem_media: available
   solution_media: none
+media:
+  - id: "circularlinkedlist_test2-png"
+    path: assets/problem/circularlinkedlist_test2.png
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Linked list cycle"
+    alt_vi: "Minh họa linked list cycle"
+  - id: "circularlinkedlist_test3-png"
+    path: assets/problem/circularlinkedlist_test3.png
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Linked list cycle"
+    alt_vi: "Minh họa linked list cycle"
+  - id: "circularlinkedlist-png"
+    path: assets/problem/circularlinkedlist.png
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Linked list cycle"
+    alt_vi: "Minh họa linked list cycle"
+
 source:
   provider: leetcode
   raw_file: "Linked List.txt"

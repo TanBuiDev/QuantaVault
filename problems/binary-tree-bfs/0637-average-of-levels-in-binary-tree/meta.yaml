@@ -11,8 +11,24 @@ content_status:
   solution: complete
   interview: complete
   cases: complete
-  problem_media: none
+  problem_media: available
   solution_media: none
+media:
+  - id: "avg1-tree-jpg"
+    path: assets/problem/avg1-tree.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Average levels of a binary tree"
+    alt_vi: "Minh họa average levels of a binary tree"
+  - id: "avg2-tree-jpg"
+    path: assets/problem/avg2-tree.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Average levels of a binary tree"
+    alt_vi: "Minh họa average levels of a binary tree"
+
 source:
   provider: leetcode
   raw_file: "Binary Tree BFS.txt"

@@ -11,8 +11,31 @@ content_status:
   solution: complete
   interview: complete
   cases: complete
-  problem_media: none
+  problem_media: available
   solution_media: none
+media:
+  - id: "btree-jpg"
+    path: assets/problem/btree.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Random pointer linked list"
+    alt_vi: "Minh họa random pointer linked list"
+  - id: "btree1-jpg"
+    path: assets/problem/btree1.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Random pointer linked list"
+    alt_vi: "Minh họa random pointer linked list"
+  - id: "btree2-jpg"
+    path: assets/problem/btree2.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Random pointer linked list"
+    alt_vi: "Minh họa random pointer linked list"
+
 source:
   provider: leetcode
   raw_file: "Linked List.txt"

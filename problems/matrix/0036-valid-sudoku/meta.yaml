@@ -11,8 +11,17 @@ content_status:
   solution: complete
   interview: complete
   cases: complete
-  problem_media: none
+  problem_media: available
   solution_media: none
+media:
+  - id: "Sudoku-by-L2G-20050714-svg-webp"
+    path: assets/problem/Sudoku-by-L2G-20050714.svg.webp
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Valid sudoku"
+    alt_vi: "Minh họa valid sudoku"
+
 source:
   provider: leetcode
   raw_file: "Matrix.txt"

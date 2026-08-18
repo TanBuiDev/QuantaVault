@@ -11,8 +11,17 @@ content_status:
   solution: complete
   interview: complete
   cases: complete
-  problem_media: none
+  problem_media: available
   solution_media: none
+media:
+  - id: "bst-tree-png"
+    path: assets/problem/bst-tree.png
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Validate binary search tree"
+    alt_vi: "Minh họa validate binary search tree"
+
 source:
   provider: leetcode
   raw_file: "Binary Search Tree.txt"

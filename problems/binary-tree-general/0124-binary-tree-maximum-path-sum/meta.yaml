@@ -11,8 +11,24 @@ content_status:
   solution: complete
   interview: complete
   cases: complete
-  problem_media: none
+  problem_media: available
   solution_media: none
+media:
+  - id: "num1tree-jpg"
+    path: assets/problem/num1tree.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Binary tree path sum"
+    alt_vi: "Minh họa binary tree path sum"
+  - id: "num2tree-jpg"
+    path: assets/problem/num2tree.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Binary tree path sum"
+    alt_vi: "Minh họa binary tree path sum"
+
 source:
   provider: leetcode
   raw_file: "Binary Tree General.txt"

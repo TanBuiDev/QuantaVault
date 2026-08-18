@@ -11,8 +11,24 @@ content_status:
   solution: complete
   interview: complete
   cases: complete
-  problem_media: none
+  problem_media: available
   solution_media: none
+media:
+  - id: "invert1-tree-jpg"
+    path: assets/problem/invert1-tree.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Invert binary tree"
+    alt_vi: "Minh họa invert binary tree"
+  - id: "invert2-tree-jpg"
+    path: assets/problem/invert2-tree.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Invert binary tree"
+    alt_vi: "Minh họa invert binary tree"
+
 source:
   provider: leetcode
   raw_file: "Binary Tree General.txt"

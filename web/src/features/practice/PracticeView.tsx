@@ -45,6 +45,9 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
     content.contentStatus.solution !== "none" && Boolean(content.solutionMarkdown || content.javaSource);
   const hasInterview =
     content.contentStatus.interview !== "none" && Boolean(content.interviewMarkdown);
+  const media = content.media ?? [];
+  const problemMedia = media.filter((item) => item.scope === "problem");
+  const solutionMedia = media.filter((item) => item.scope === "solution");
 
   const tabs = [
     { id: "problem", label: "Problem" },
@@ -142,14 +145,17 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
             <CardContent className="p-5 sm:p-7 lg:p-8">
               <div role="tabpanel" aria-label={`${activeTab} content`}>
                 {activeTab === "problem" ? (
-                  content.problemMarkdown ? (
-                    <MarkdownContent markdown={content.problemMarkdown} />
-                  ) : (
-                    <EmptyState
-                      title="Full problem source is not available yet"
-                      description="This canonical package currently has only limited source metadata. The web app will not fabricate a problem statement."
-                    />
-                  )
+                  <div className="space-y-6">
+                    {content.problemMarkdown ? (
+                      <MarkdownContent markdown={content.problemMarkdown} />
+                    ) : (
+                      <EmptyState
+                        title="Full problem source is not available yet"
+                        description="This canonical package currently has only limited source metadata. The web app will not fabricate a problem statement."
+                      />
+                    )}
+                    <MediaGallery items={problemMedia} problemId={content.id} />
+                  </div>
                 ) : null}
 
                 {activeTab === "hints" ? (
@@ -171,6 +177,7 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
                 {activeTab === "solution" ? (
                   <div className="space-y-8">
                     {content.solutionMarkdown ? <MarkdownContent markdown={content.solutionMarkdown} /> : null}
+                    <MediaGallery items={solutionMedia} problemId={content.id} />
                     {content.javaSource ? (
                       <section className="space-y-3" aria-labelledby="java-solution-heading">
                         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -274,6 +281,20 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
           </nav>
         </aside>
       </div>
+    </div>
+  );
+}
+
+function MediaGallery({ items, problemId }: { items: NonNullable<ProblemContent["media"]>; problemId: number }) {
+  if (items.length === 0) return null;
+  return (
+    <div className="space-y-4" aria-label="Illustrations">
+      {items.map((item) => (
+        <figure key={item.id} className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)]">
+          <img src={`/media/${problemId}/${encodeURIComponent(item.path.split("/").pop() ?? "")}`} alt={item.altEn} loading="lazy" className="mx-auto max-h-[32rem] w-auto max-w-full object-contain" />
+          <figcaption className="border-t border-[var(--border)] px-4 py-2 text-xs text-[var(--muted)]">{item.altVi}</figcaption>
+        </figure>
+      ))}
     </div>
   );
 }

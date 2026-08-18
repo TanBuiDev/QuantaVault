@@ -7,6 +7,15 @@ import { parse } from "yaml";
 export type Difficulty = "Easy" | "Medium" | "Hard";
 export type ContentAvailability = "none" | "partial" | "complete";
 
+export interface ProblemMedia {
+  id: string;
+  path: string;
+  scope: "problem" | "solution";
+  role: string;
+  altEn: string;
+  altVi: string;
+}
+
 export interface ProblemSummary {
   id: number;
   slug: string;
@@ -47,6 +56,7 @@ export interface ProblemContent extends ProblemSummary {
   interviewMarkdown: string | null;
   javaSource: string | null;
   casesYaml: string | null;
+  media?: ProblemMedia[];
 }
 
 interface RawMeta {
@@ -60,6 +70,7 @@ interface RawMeta {
   patterns?: unknown;
   leetcode_url?: unknown;
   content_status?: Record<string, unknown>;
+  media?: unknown;
 }
 
 interface RawStudyPlan {
@@ -75,6 +86,7 @@ interface RawStudyPlan {
 interface ProblemRecord {
   summary: ProblemSummary;
   directory: string;
+  media: ProblemMedia[];
 }
 
 let repositoryRootCache: string | null = null;
@@ -136,11 +148,28 @@ function findRepositoryRoot(): string {
   );
 }
 
+function parseMedia(value: unknown, metaPath: string): ProblemMedia[] {
+  if (value === undefined) return [];
+  if (!Array.isArray(value)) throw new Error(`Invalid canonical content: ${metaPath}: media must be an array.`);
+  return value.map((entry, index) => {
+    if (!entry || typeof entry !== "object") throw new Error(`Invalid canonical content: ${metaPath}: media[${index}] must be an object.`);
+    const item = entry as Record<string, unknown>;
+    return {
+      id: assertString(item.id, `${metaPath}: media[${index}].id`),
+      path: assertString(item.path, `${metaPath}: media[${index}].path`),
+      scope: assertEnum(item.scope, ["problem", "solution"] as const, `${metaPath}: media[${index}].scope`),
+      role: assertString(item.role, `${metaPath}: media[${index}].role`),
+      altEn: assertString(item.alt_en, `${metaPath}: media[${index}].alt_en`),
+      altVi: assertString(item.alt_vi, `${metaPath}: media[${index}].alt_vi`),
+    };
+  });
+}
+
 function readTextIfExists(filePath: string): string | null {
   return fs.existsSync(filePath) ? fs.readFileSync(filePath, "utf8") : null;
 }
 
-function parseProblemMeta(metaPath: string): ProblemSummary {
+function parseProblemMeta(metaPath: string): { summary: ProblemSummary; media: ProblemMedia[] } {
   const raw = parse(fs.readFileSync(metaPath, "utf8")) as RawMeta;
 
   if (raw.schema_version !== 2) {
@@ -155,7 +184,7 @@ function parseProblemMeta(metaPath: string): ProblemSummary {
     throw new Error(`Invalid canonical content: ${metaPath} is missing content_status.`);
   }
 
-  return {
+  const summary = {
     id: raw.id as number,
     slug: assertString(raw.slug, `${metaPath}: slug`),
     title: assertString(raw.title, `${metaPath}: title`),
@@ -207,6 +236,7 @@ function parseProblemMeta(metaPath: string): ProblemSummary {
       ),
     },
   };
+  return { summary, media: parseMedia(raw.media, metaPath) };
 }
 
 function validateRequiredFiles(record: ProblemRecord): void {
@@ -260,7 +290,8 @@ function loadProblemRecords(): ProblemRecord[] {
       const metaPath = path.join(directory, "meta.yaml");
       if (!fs.existsSync(metaPath)) continue;
 
-      const record = { summary: parseProblemMeta(metaPath), directory };
+      const parsed = parseProblemMeta(metaPath);
+      const record = { ...parsed, directory };
       validateRequiredFiles(record);
       records.push(record);
     }
@@ -366,6 +397,7 @@ export function getProblemContent(id: number): ProblemContent | null {
     interviewMarkdown: readTextIfExists(path.join(directory, "interview.md")),
     javaSource: readTextIfExists(path.join(directory, "Solution.java")),
     casesYaml: readTextIfExists(path.join(directory, "cases.yaml")),
+    media: record.media.map((item) => ({ ...item })),
   };
 }
 

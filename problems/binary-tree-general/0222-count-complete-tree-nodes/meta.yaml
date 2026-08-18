@@ -11,8 +11,17 @@ content_status:
   solution: complete
   interview: complete
   cases: complete
-  problem_media: none
+  problem_media: available
   solution_media: none
+media:
+  - id: "complete-jpg"
+    path: assets/problem/complete.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Complete binary tree"
+    alt_vi: "Minh họa complete binary tree"
+
 source:
   provider: leetcode
   raw_file: "Binary Tree General.txt"

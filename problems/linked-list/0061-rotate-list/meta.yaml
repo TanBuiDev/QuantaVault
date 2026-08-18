@@ -11,8 +11,17 @@ content_status:
   solution: complete
   interview: complete
   cases: complete
-  problem_media: none
+  problem_media: available
   solution_media: none
+media:
+  - id: "roate2-jpg"
+    path: assets/problem/roate2.jpg
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Rotate list"
+    alt_vi: "Minh họa rotate list"
+
 source:
   provider: leetcode
   raw_file: "Linked List.txt"

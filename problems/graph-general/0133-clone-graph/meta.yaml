@@ -11,8 +11,17 @@ content_status:
   solution: complete
   interview: complete
   cases: complete
-  problem_media: none
+  problem_media: available
   solution_media: none
+media:
+  - id: "133_clone_graph_question-png"
+    path: assets/problem/133_clone_graph_question.png
+    scope: problem
+    role: example-illustration
+    origin: user-supplied
+    alt_en: "Clone graph example"
+    alt_vi: "Minh họa clone graph example"
+
 source:
   provider: leetcode
   raw_file: "Graph General.txt"
