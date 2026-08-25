@@ -16,7 +16,7 @@
 ```
 
 ## Constraints / Ràng buộc
-> **EN:** `1 <= nums.length <= 10^5`; `-10^4 <= nums[i] <= 10^4`.
+> **EN:** `1 <= `nums`.length <= 10^5`; `-10^4 <= `nums[i]` <= 10^4`.
 >
 > **VI:** Mảng không rỗng và giá trị nằm trong phạm vi đề bài.
 

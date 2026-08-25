@@ -6,11 +6,11 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given a triangle array, return the minimum path sum from top to bottom.
+> **EN:** Given a `triangle` array, return the minimum path sum from top to bottom.
 >
 > **VI:** Cho một mảng dạng tam giác, hãy trả về tổng đường đi nhỏ nhất từ đỉnh xuống đáy.
 
-> **EN:** For each step, you may move to an adjacent number of the row below. More formally, if you are on index i on the current row, you may move to either index i or index i + 1 on the next row.
+> **EN:** For each step, you may move to an adjacent number of the row below. More formally, if you are on index i on the current row, you may move to either index i or index i + 1 on the `next` row.
 >
 > **VI:** Ở mỗi bước, bạn chỉ được đi tới một số kề ở hàng dưới. Cụ thể, từ index `i` ở hàng hiện tại, có thể đi tới index `i` hoặc `i + 1` ở hàng kế tiếp.
 
@@ -23,7 +23,7 @@ Input: triangle = [[2],[3,4],[6,5,7],[4,1,8,3]]
 Output: 11
 ```
 
-> **EN:** Explanation: The triangle looks like:
+> **EN:** Explanation: The `triangle` looks like:
 >    2
 >   3 4
 >  6 5 7
@@ -41,7 +41,7 @@ Output: -10
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= triangle.length <= 200`
+> **EN:** `1 <= `triangle`.length <= 200`
 >
 > **VI:** Số hàng từ `1` đến `200`.
 
@@ -49,15 +49,15 @@ Output: -10
 >
 > **VI:** Hàng đầu có đúng một phần tử.
 
-> **EN:** `triangle[i].length == triangle[i - 1].length + 1`
+> **EN:** `triangle[i].length == `triangle`[i - 1].length + 1`
 >
 > **VI:** Mỗi hàng dài hơn hàng trước đúng một phần tử.
 
-> **EN:** `-104 <= triangle[i][j] <= 104`
+> **EN:** `-10^4 <= `triangle[i]` <= 10^4`
 >
 > **VI:** Mỗi giá trị nằm trong khoảng `-10^4` đến `10^4`.
 
-> **EN:** Follow up: Could you do this using only O(n) extra space, where n is the total number of rows in the triangle?
+> **EN:** Follow up: Could you do this using only O(n) extra space, where n is the total number of rows in the `triangle`?
 >
 > **VI:** Follow-up: Có thể giải bằng `O(n)` bộ nhớ phụ với `n` là số hàng không?
 

@@ -6,11 +6,11 @@
 
 ## Problem / Đề bài
 
-> **EN:** You are given a large integer represented as an integer array digits, where each digits[i] is the ith digit of the integer. The digits are ordered from most significant to least significant in left-to-right order. The large integer does not contain any leading 0's.
+> **EN:** You are given a large integer represented as an integer array `digits`, where each `digits[i]` is the `i`th digit of the integer. The `digits` are ordered from most significant to least significant in `left`-to-`right` order. The large integer does not contain any leading 0's.
 >
 > **VI:** Bạn được cho một số nguyên lớn dưới dạng mảng `digits`, mỗi phần tử là một chữ số. Các chữ số được sắp từ hàng cao nhất đến thấp nhất từ trái sang phải và không có số 0 ở đầu.
 
-> **EN:** Increment the large integer by one and return the resulting array of digits.
+> **EN:** Increment the large integer by one and return the resulting array of `digits`.
 >
 > **VI:** Hãy tăng số nguyên đó lên 1 và trả về mảng chữ số kết quả.
 
@@ -36,11 +36,11 @@ Output: [1,0]
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= digits.length <= 100`
+> **EN:** `1 <= `digits`.length <= 100`
 >
 > **VI:** Mảng có từ 1 đến 100 chữ số.
 
-> **EN:** `0 <= digits[i] <= 9`
+> **EN:** `0 <= `digits[i]` <= 9`
 >
 > **VI:** Mỗi phần tử là một chữ số từ 0 đến 9.
 

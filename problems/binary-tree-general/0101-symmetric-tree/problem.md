@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given the root of a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center).
+> **EN:** Given the `root` of a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center).
 >
 > **VI:** Cho `root` của một binary tree. Hãy kiểm tra cây có phải là ảnh gương của chính nó, tức đối xứng qua tâm, hay không.
 
@@ -32,7 +32,7 @@ Output: false
 >
 > **VI:** Số node trong tree nằm trong `[1, 1000]`.
 
-> **EN:** -100 <= Node.val <= 100
+> **EN:** -100 <= `Node`.val <= 100
 >
 > **VI:** `Node.val` nằm trong `[-100, 100]`.
 

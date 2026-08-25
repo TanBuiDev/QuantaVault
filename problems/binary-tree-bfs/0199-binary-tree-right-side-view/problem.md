@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given the root of a binary tree, imagine standing on its right side. Return the values of the visible nodes from top to bottom.
+> **EN:** Given the `root` of a binary tree, imagine standing on its `right` side. Return the values of the visible nodes from top to bottom.
 >
 > **VI:** Cho root của một binary tree. Hãy tưởng tượng đứng ở phía bên phải và trả về value của các node nhìn thấy từ trên xuống dưới.
 
@@ -38,7 +38,7 @@ Output: []
 
 ## Constraints / Ràng buộc
 
-> **EN:** The number of nodes is in `[0, 100]`; `-100 <= Node.val <= 100`.
+> **EN:** The number of nodes is in `[0, 100]`; `-100 <= `Node`.val <= 100`.
 >
 > **VI:** Số node nằm trong `[0, 100]`; `-100 <= Node.val <= 100`.
 

@@ -6,11 +6,11 @@
 
 ## Problem / Đề bài
 
-> **EN:** You are given equations such as `a / b = value` and queries such as `x / y`. Return the result of every query, or `-1.0` when it cannot be determined from the given equations.
+> **EN:** You are given `equations` such as `a / b = value` and `queries` such as `x / y`. Return the result of every query, or `-1.0` when it cannot be determined from the given `equations`.
 >
 > **VI:** Bạn được cho các equation dạng `a / b = value` và các query dạng `x / y`. Hãy trả về kết quả của từng query, hoặc `-1.0` nếu không thể suy ra từ dữ liệu đã cho.
 
-> **EN:** The input is guaranteed to be valid and contains no contradictory equations.
+> **EN:** The input is guaranteed to be valid and contains no contradictory `equations`.
 >
 > **VI:** Input được đảm bảo hợp lệ và không có equation mâu thuẫn.
 
@@ -38,7 +38,7 @@ Output: [3.75,0.4,5.0,0.2]
 
 ## Constraints / Ràng buộc
 
-> **EN:** Equation and query variables are strings; values are positive doubles. A variable that never appears in any equation is unknown.
+> **EN:** Equation and query variables are strings; `values` are positive doubles. A variable that never appears in any equation is unknown.
 >
 > **VI:** Variable của equation/query là string; value là số thực dương. Variable chưa từng xuất hiện trong equation được xem là unknown.
 

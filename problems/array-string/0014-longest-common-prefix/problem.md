@@ -10,7 +10,7 @@
 >
 > **VI:** Hãy viết một hàm tìm chuỗi tiền tố chung dài nhất trong một mảng các chuỗi.
 
-> **EN:** If there is no common prefix, return an empty string "".
+> **EN:** If there is no common prefix, return an `empty` string "".
 >
 > **VI:** Nếu không có tiền tố chung, hãy trả về chuỗi rỗng `""`.
 
@@ -36,15 +36,15 @@ Output: ""
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= strs.length <= 200`
+> **EN:** `1 <= `strs`.length <= 200`
 >
 > **VI:** Số lượng chuỗi từ `1` đến `200`.
 
-> **EN:** `0 <= strs[i].length <= 200`
+> **EN:** `0 <= `strs[i]`.length <= 200`
 >
 > **VI:** Độ dài mỗi chuỗi từ `0` đến `200`.
 
-> **EN:** strs[i] consists of only lowercase English letters if it is non-empty.
+> **EN:** `strs[i]` consists of only lowercase English letters if it is non-`empty`.
 >
 > **VI:** Nếu không rỗng, mỗi `strs[i]` chỉ gồm chữ cái tiếng Anh viết thường.
 

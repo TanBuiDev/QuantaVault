@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given two integers left and right that represent the range [left, right], return the bitwise AND of all numbers in this range, inclusive.
+> **EN:** Given two integers `left` and `right` that represent the range [`left`, `right`], return the bitwise AND of all numbers in this range, inclusive.
 >
 > **VI:** Cho hai số nguyên `left` và `right` biểu diễn đoạn `[left, right]`, hãy trả về phép AND bit của tất cả các số trong đoạn, tính cả hai đầu mút.
 
@@ -32,7 +32,7 @@ Output: 0
 
 ## Constraints / Ràng buộc
 
-> **EN:** `0 <= left <= right <= 2^31 - 1`
+> **EN:** `0 <= `left` <= `right` <= 2^31 - 1`
 >
 > **VI:** `left` và `right` không âm, `left <= right`, và đều nằm trong miền int dương 32-bit.
 

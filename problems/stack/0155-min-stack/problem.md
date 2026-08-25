@@ -65,7 +65,7 @@ Output
 
 ## Constraints / Ràng buộc
 
-> **EN:** `-231 <= val <= 231 - 1`
+> **EN:** `-2^31 <= `val` <= 2^31 - 1`
 >
 > **VI:** Giá trị nằm trong miền signed 32-bit theo source.
 
@@ -73,7 +73,7 @@ Output
 >
 > **VI:** `pop`, `top`, `getMin` chỉ được gọi khi stack không rỗng.
 
-> **EN:** At most 3 * 104 calls will be made to push, pop, top, and getMin.
+> **EN:** At most 3 * 10^4 calls will be made to push, pop, top, and getMin.
 >
 > **VI:** Tổng số lời gọi operation tối đa theo constraint là `3 * 10^4`.
 

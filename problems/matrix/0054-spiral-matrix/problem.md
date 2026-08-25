@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given an m x n matrix, return all elements of the matrix in spiral order.
+> **EN:** Given an m x n `matrix`, return all elements of the `matrix` in spiral order.
 >
 > **VI:** Cho ma trận `m x n`, hãy trả về tất cả phần tử theo thứ tự xoắn ốc.
 
@@ -28,11 +28,11 @@ Output: [1,2,3,4,8,12,11,10,9,5,6,7]
 
 ## Constraints / Ràng buộc
 
-> **EN:** `m == matrix.length`
+> **EN:** `m == `matrix`.length`
 >
 > **VI:** `m` là số hàng.
 
-> **EN:** `n == matrix[i].length`
+> **EN:** `n == `matrix[i]`.length`
 >
 > **VI:** `n` là số cột.
 
@@ -40,7 +40,7 @@ Output: [1,2,3,4,8,12,11,10,9,5,6,7]
 >
 > **VI:** `1 <= m, n <= 10`.
 
-> **EN:** `-100 <= matrix[i][j] <= 100`
+> **EN:** `-100 <= `matrix[i]` <= 100`
 >
 > **VI:** Mỗi giá trị nằm trong `[-100,100]`.
 

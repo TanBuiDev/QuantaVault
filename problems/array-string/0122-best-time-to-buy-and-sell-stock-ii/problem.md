@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** You are given an integer array prices where prices[i] is the price of a given stock on the ith day.
+> **EN:** You are given an integer array `prices` where `prices[i]` is the price of a given stock on the `i`th day.
 >
 > **VI:** Bạn được cho mảng số nguyên `prices`, trong đó `prices[i]` là giá cổ phiếu vào ngày thứ `i`.
 
@@ -55,11 +55,11 @@ Output: 0
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= prices.length <= 3 * 104`
+> **EN:** `1 <= `prices`.length <= 3 * 10^4`
 >
 > **VI:** Độ dài `prices` từ `1` đến `3 * 10^4`.
 
-> **EN:** `0 <= prices[i] <= 104`
+> **EN:** `0 <= `prices[i]` <= 10^4`
 >
 > **VI:** Mỗi `prices[i]` nằm trong khoảng `0` đến `10^4`.
 

@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given an array of positive integers nums and a positive integer target, return the minimal length of a subarray whose sum is greater than or equal to target. If there is no such subarray, return 0 instead.
+> **EN:** Given an array of positive integers `nums` and a positive integer `target`, return the minimal length of a subarray whose sum is greater than or equal to `target`. If there is no such subarray, return 0 instead.
 >
 > **VI:** Cho mảng số nguyên dương `nums` và số nguyên dương `target`, hãy trả về độ dài nhỏ nhất của một subarray có tổng lớn hơn hoặc bằng `target`. Nếu không tồn tại subarray như vậy, trả về `0`.
 
@@ -39,15 +39,15 @@ Output: 0
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= target <= 109`
+> **EN:** `1 <= `target` <= 10^9`
 >
 > **VI:** `1 <= target <= 10^9`.
 
-> **EN:** `1 <= nums.length <= 105`
+> **EN:** `1 <= `nums`.length <= 10^5`
 >
 > **VI:** `1 <= nums.length <= 10^5`.
 
-> **EN:** `1 <= nums[i] <= 104`
+> **EN:** `1 <= `nums[i]` <= 10^4`
 >
 > **VI:** `1 <= nums[i] <= 10^4`.
 

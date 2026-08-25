@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given two binary strings a and b, return their sum as a binary string.
+> **EN:** Given two binary strings a and `b`, return their sum as a binary string.
 >
 > **VI:** Cho hai chuỗi nhị phân `a` và `b`, hãy trả về tổng của chúng dưới dạng chuỗi nhị phân.
 
@@ -24,7 +24,7 @@ Output: "10101"
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= a.length, b.length <= 10^4`
+> **EN:** `1 <= a.length, `b`.length <= 10^4`
 >
 > **VI:** Độ dài mỗi chuỗi từ 1 đến `10^4`.
 
@@ -32,7 +32,7 @@ Output: "10101"
 >
 > **VI:** Hai chuỗi chỉ chứa ký tự `0` hoặc `1`.
 
-> **EN:** Each string does not contain leading zeros except for the zero itself.
+> **EN:** Each string does not contain leading `zeros` except for the zero itself.
 >
 > **VI:** Không có leading zero ngoại trừ chính chuỗi `"0"`.
 

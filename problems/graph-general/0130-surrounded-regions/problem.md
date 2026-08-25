@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given an `m x n` board containing `X` and `O`, capture every region of connected `O` cells that is completely surrounded by `X`. A region touching the board edge is not surrounded. Replace captured `O` cells with `X` in-place.
+> **EN:** Given an `m x n` `board` containing `X` and `O`, capture every region of connected `O` cells that is completely surrounded by `X`. A region touching the `board` edge is not surrounded. Replace captured `O` cells with `X` in-place.
 >
 > **VI:** Cho board `m x n` chứa `X` và `O`. Hãy capture mọi region gồm các `O` nối 4 hướng và bị `X` bao quanh hoàn toàn. Region chạm biên không bị capture. Thay các `O` bị capture thành `X` ngay trên board.
 

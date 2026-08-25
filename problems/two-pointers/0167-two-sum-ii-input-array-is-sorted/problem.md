@@ -6,15 +6,15 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given a 1-indexed array of integers numbers that is already sorted in non-decreasing order, find two numbers such that they add up to a specific target number.
+> **EN:** Given a 1-indexed array of integers `numbers` that is already sorted in non-decreasing order, find two `numbers` such that they add up to a specific `target` number.
 >
 > **VI:** Cho mảng số nguyên `numbers` được đánh index từ `1` và đã sắp xếp theo thứ tự không giảm, hãy tìm hai số có tổng bằng `target`.
 
-> **EN:** Let these two numbers be numbers[index1] and numbers[index2] where 1 <= index1 < index2 <= numbers.length.
+> **EN:** Let these two `numbers` be `numbers[index1]` and `numbers[index2]` where 1 <= index1 < index2 <= `numbers`.length.
 >
 > **VI:** Gọi hai số là `numbers[index1]` và `numbers[index2]`, với `1 <= index1 < index2 <= numbers.length`.
 
-> **EN:** Return the indices of the two numbers, index1 and index2, added by one as an integer array [index1, index2] of length 2.
+> **EN:** Return the indices of the two `numbers`, index1 and index2, added by one as an integer array [index1, index2] of length 2.
 >
 > **VI:** Trả về hai index theo chuẩn 1-based dưới dạng mảng `[index1, index2]` có độ dài `2`.
 
@@ -51,19 +51,19 @@ Output: [1,2]
 
 ## Constraints / Ràng buộc
 
-> **EN:** `2 <= numbers.length <= 3 * 104`
+> **EN:** `2 <= `numbers`.length <= 3 * 10^4`
 >
 > **VI:** Độ dài `numbers` từ `2` đến `3 * 10^4`.
 
-> **EN:** `-1000 <= numbers[i] <= 1000`
+> **EN:** `-1000 <= `numbers[i]` <= 1000`
 >
 > **VI:** Mỗi `numbers[i]` nằm trong khoảng `-1000` đến `1000`.
 
-> **EN:** numbers is sorted in non-decreasing order.
+> **EN:** `numbers` is sorted in non-decreasing order.
 >
 > **VI:** `numbers` được sắp xếp theo thứ tự không giảm.
 
-> **EN:** `-1000 <= target <= 1000`
+> **EN:** `-1000 <= `target` <= 1000`
 >
 > **VI:** `target` nằm trong khoảng `-1000` đến `1000`.
 

@@ -4,7 +4,7 @@
 **Medium / Trung bình**
 
 ## Problem / Đề bài
-> **EN:** Given an `m x n` integer matrix where each row is sorted in non-decreasing order and the first integer of each row is greater than the last integer of the previous row, return whether `target` exists. Solve in `O(log(m*n))`.
+> **EN:** Given an `m x n` integer `matrix` where each row is sorted in non-decreasing order and the first integer of each row is greater than the last integer of the previous row, return whether `target` exists. Solve in `O(log(m*n))`.
 >
 > **VI:** Cho ma trận `m x n`, mỗi hàng tăng không giảm và phần tử đầu mỗi hàng lớn hơn phần tử cuối hàng trước. Hãy kiểm tra `target` trong `O(log(m*n))`.
 
@@ -15,7 +15,7 @@ same matrix, target = 13 -> false
 ```
 
 ## Constraints / Ràng buộc
-> **EN:** Matrix dimensions are positive; matrix values follow the ordering rules above.
+> **EN:** Matrix dimensions are positive; `matrix` values follow the ordering rules above.
 >
 > **VI:** Ma trận không rỗng và tuân thủ thứ tự toàn cục đã nêu.
 

@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given an integer array nums and an integer k, return true if there are two distinct indices i and j in the array such that nums[i] == nums[j] and abs(i - j) <= k.
+> **EN:** Given an integer array `nums` and an integer `k`, return `true` if there are two distinct indices i and j in the array such that `nums[i]` == `nums[j]` and abs(i - j) <= `k`.
 >
 > **VI:** Cho mảng số nguyên `nums` và số nguyên `k`, trả về `true` nếu tồn tại hai index khác nhau `i`, `j` sao cho `nums[i] == nums[j]` và `abs(i-j) <= k`.
 
@@ -35,15 +35,15 @@ Output: false
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= nums.length <= 105`
+> **EN:** `1 <= `nums`.length <= 10^5`
 >
 > **VI:** `1 <= nums.length <= 10^5`.
 
-> **EN:** `-109 <= nums[i] <= 109`
+> **EN:** `-10^9 <= `nums[i]` <= 10^9`
 >
 > **VI:** `-10^9 <= nums[i] <= 10^9`.
 
-> **EN:** `0 <= k <= 105`
+> **EN:** `0 <= `k` <= 10^5`
 >
 > **VI:** `0 <= k <= 10^5`.
 

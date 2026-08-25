@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given two strings s and t, return true if t is an anagram of s, and false otherwise.
+> **EN:** Given two strings `s` and `t`, return `true` if `t` is an anagram of `s`, and `false` otherwise.
 >
 > **VI:** Cho hai chuỗi `s` và `t`, trả về `true` nếu `t` là anagram của `s`, ngược lại trả về `false`.
 
@@ -28,11 +28,11 @@ Output: false
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= s.length, t.length <= 5 * 104`
+> **EN:** `1 <= `s`.length, `t`.length <= 5 * 10^4`
 >
 > **VI:** Độ dài hai chuỗi nằm trong khoảng `1..5*10^4`.
 
-> **EN:** s and t consist of lowercase English letters.
+> **EN:** `s` and `t` consist of lowercase English letters.
 >
 > **VI:** `s` và `t` chỉ gồm chữ cái tiếng Anh viết thường.
 

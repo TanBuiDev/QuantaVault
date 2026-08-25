@@ -6,11 +6,11 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given two strings ransomNote and magazine, return true if ransomNote can be constructed by using the letters from magazine and false otherwise.
+> **EN:** Given two strings `ransomNote` and `magazine`, return `true` if `ransomNote` can be constructed by using the letters from `magazine` and `false` otherwise.
 >
 > **VI:** Cho hai chuỗi `ransomNote` và `magazine`, hãy trả về `true` nếu có thể tạo `ransomNote` bằng các ký tự lấy từ `magazine`; nếu không thì trả về `false`.
 
-> **EN:** Each letter in magazine can only be used once in ransomNote.
+> **EN:** Each letter in `magazine` can only be used once in `ransomNote`.
 >
 > **VI:** Mỗi ký tự trong `magazine` chỉ được sử dụng tối đa một lần để tạo `ransomNote`.
 
@@ -39,11 +39,11 @@ Output: true
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= ransomNote.length, magazine.length <= 105`
+> **EN:** `1 <= `ransomNote`.length, `magazine`.length <= 10^5`
 >
 > **VI:** Độ dài của `ransomNote` và `magazine` nằm trong khoảng từ `1` đến `10^5`.
 
-> **EN:** ransomNote and magazine consist of lowercase English letters.
+> **EN:** `ransomNote` and `magazine` consist of lowercase English letters.
 >
 > **VI:** Hai chuỗi chỉ gồm chữ cái tiếng Anh viết thường.
 

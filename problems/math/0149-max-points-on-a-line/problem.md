@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given an array of points where points[i] = [xi, yi] represents a point on the X-Y plane, return the maximum number of points that lie on the same straight line.
+> **EN:** Given an array of `points` where `points[i]` = [xi, yi] represents a point on the X-Y plane, return the maximum number of `points` that lie on the same straight line.
 >
 > **VI:** Cho mảng `points`, trong đó `points[i] = [xi, yi]` biểu diễn một điểm trên mặt phẳng X-Y, hãy trả về số điểm lớn nhất cùng nằm trên một đường thẳng.
 
@@ -28,7 +28,7 @@ Output: 4
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= points.length <= 300`
+> **EN:** `1 <= `points`.length <= 300`
 >
 > **VI:** Có từ `1` đến `300` điểm.
 
@@ -36,11 +36,11 @@ Output: 4
 >
 > **VI:** Mỗi điểm có đúng hai tọa độ.
 
-> **EN:** `-104 <= xi, yi <= 104`
+> **EN:** `-10^4 <= xi, yi <= 10^4`
 >
 > **VI:** Mỗi tọa độ nằm trong khoảng `-10^4` đến `10^4`.
 
-> **EN:** `All the points are unique.`
+> **EN:** `All the `points` are unique.`
 >
 > **VI:** Tất cả các điểm là duy nhất.
 

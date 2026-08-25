@@ -34,19 +34,24 @@ const problem121: ProblemContent = {
   casesYaml: "problem_id: 121",
 };
 
+import { ToastProvider } from "@/components/ui/Toast";
+
 function renderPractice(content: ProblemContent = problem121) {
   return render(
-    <ProgressProvider>
-      <PracticeView
-        content={content}
-        hints={["## Hint 1\nHint one body.", "## Hint 2\nHint two body.", "## Hint 3\nHint three body."]}
-        previous={{ id: 189, title: "Rotate Array" }}
-        next={{ id: 122, title: "Best Time to Buy and Sell Stock II" }}
-        sectionName="Array / String"
-      />
-    </ProgressProvider>,
+    <ToastProvider>
+      <ProgressProvider>
+        <PracticeView
+          content={content}
+          hints={["## Hint 1\nHint one body.", "## Hint 2\nHint two body.", "## Hint 3\nHint three body."]}
+          previous={{ id: 189, title: "Rotate Array" }}
+          next={{ id: 122, title: "Best Time to Buy and Sell Stock II" }}
+          sectionName="Array / String"
+        />
+      </ProgressProvider>
+    </ToastProvider>,
   );
 }
+
 
 describe("practice route parsing", () => {
   it("accepts positive integer IDs and rejects malformed routes", () => {
@@ -62,7 +67,9 @@ describe("practice route parsing", () => {
 describe("PracticeView", () => {
   beforeEach(() => {
     localStorage.clear();
+    sessionStorage.clear();
   });
+
 
   it("shows the problem tab first without rendering inactive tab content", async () => {
     renderPractice();

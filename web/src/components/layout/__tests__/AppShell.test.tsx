@@ -7,7 +7,13 @@ import { ThemeProvider } from "@/components/theme/ThemeProvider";
 
 vi.mock("next/navigation", () => ({
   usePathname: () => null,
+  useRouter: () => ({
+    push: vi.fn(),
+    replace: vi.fn(),
+    prefetch: vi.fn(),
+  }),
 }));
+
 
 describe("AppShell", () => {
   it("renders the primary navigation and wraps child content", () => {

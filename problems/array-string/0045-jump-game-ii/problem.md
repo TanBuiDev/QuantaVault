@@ -6,15 +6,15 @@
 
 ## Problem / Đề bài
 
-> **EN:** You are given a 0-indexed array of integers nums of length n. You are initially positioned at index 0.
+> **EN:** You are given a 0-indexed array of integers `nums` of length n. You are initially positioned at index 0.
 >
 > **VI:** Bạn được cho mảng số nguyên `nums` có độ dài `n`, đánh index từ `0`. Ban đầu bạn đứng tại index `0`.
 
-> **EN:** Each element nums[i] represents the maximum length of a forward jump from index i. In other words, if you are at index i, you can jump to any index (i + j) where:
+> **EN:** Each element `nums[i]` represents the maximum length of a forward jump from index i. In other words, if you are at index i, you can jump to any index (i + j) where:
 >
 > **VI:** Mỗi `nums[i]` biểu diễn độ dài tối đa của một bước nhảy về phía trước từ index `i`. Nói cách khác, nếu đang ở `i`, bạn có thể nhảy đến `i + j` khi:
 
-> **EN:** `0 <= j <= nums[i]` and `i + j < n`
+> **EN:** `0 <= j <= `nums`[i]` and `i + j < n`
 >
 > **VI:** `0 <= j <= nums[i]` và `i + j < n`.
 
@@ -44,15 +44,15 @@ Output: 2
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= nums.length <= 104`
+> **EN:** `1 <= `nums`.length <= 10^4`
 >
 > **VI:** Độ dài `nums` từ `1` đến `10^4`.
 
-> **EN:** `0 <= nums[i] <= 1000`
+> **EN:** `0 <= `nums[i]` <= 1000`
 >
 > **VI:** Mỗi `nums[i]` nằm trong khoảng `0` đến `1000`.
 
-> **EN:** It's guaranteed that you can reach nums[n - 1].
+> **EN:** It's guaranteed that you can reach `nums`[n - 1].
 >
 > **VI:** Đề đảm bảo luôn có thể tới `nums[n - 1]`.
 

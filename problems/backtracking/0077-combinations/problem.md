@@ -4,7 +4,7 @@
 **Medium / Trung bình**
 
 ## Problem / Đề bài
-> **EN:** Given two integers n and k, return all possible combinations of k numbers chosen from the range [1, n].
+> **EN:** Given two integers `n` and `k`, return all possible combinations of `k` numbers chosen from the range [1, `n`].
 >
 > **VI:** Cho hai số nguyên `n` và `k`, hãy trả về tất cả các tổ hợp gồm `k` số được chọn từ đoạn `[1, n]`.
 
@@ -31,11 +31,11 @@ Explanation: There is 1 choose 1 = 1 total combination.
 ```
 
 ## Constraints / Ràng buộc
-> **EN:** `1 <= n <= 20`
+> **EN:** `1 <= `n` <= 20`
 >
 > **VI:** `n` từ 1 đến 20.
 
-> **EN:** `1 <= k <= n`
+> **EN:** `1 <= `k` <= n`
 >
 > **VI:** `k` từ 1 đến `n`.
 

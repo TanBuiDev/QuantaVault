@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Write an algorithm to determine if a number n is happy.
+> **EN:** Write an algorithm to determine if a number `n` is happy.
 >
 > **VI:** Viết thuật toán xác định số nguyên `n` có phải happy number hay không.
 
@@ -26,7 +26,7 @@
 >
 > **VI:** Những số cuối cùng đi tới `1` là happy number.
 
-> **EN:** Return true if n is a happy number, and false if not.
+> **EN:** Return `true` if `n` is a happy number, and `false` if not.
 >
 > **VI:** Trả `true` nếu `n` là happy number, ngược lại `false`.
 
@@ -56,7 +56,7 @@ Output: false
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= n <= 231 - 1`
+> **EN:** `1 <= `n` <= 2^31 - 1`
 >
 > **VI:** `1 <= n <= 2^31 - 1`.
 

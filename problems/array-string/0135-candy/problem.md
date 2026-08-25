@@ -10,7 +10,7 @@
 >
 > **VI:** Có `n` đứa trẻ đứng thành một hàng.
 
-> **EN:** Each child is assigned a rating value given in the integer array ratings.
+> **EN:** Each child is assigned a rating value given in the integer array `ratings`.
 >
 > **VI:** Mỗi đứa trẻ có một rating được cho trong mảng số nguyên `ratings`.
 
@@ -56,11 +56,11 @@ Output: 4
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= n == ratings.length <= 5 * 104`
+> **EN:** `1 <= n == `ratings`.length <= 5 * 10^4`
 >
 > **VI:** `ratings.length` từ `1` đến `5 * 10^4`.
 
-> **EN:** `0 <= ratings[i] <= 5 * 104`
+> **EN:** `0 <= `ratings[i]` <= 5 * 10^4`
 >
 > **VI:** Mỗi `ratings[i]` nằm trong khoảng `0` đến `5 * 10^4`.
 

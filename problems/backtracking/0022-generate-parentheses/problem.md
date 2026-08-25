@@ -4,7 +4,7 @@
 **Medium / Trung bình**
 
 ## Problem / Đề bài
-> **EN:** Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+> **EN:** Given `n` pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
 >
 > **VI:** Cho `n` cặp dấu ngoặc, hãy viết hàm sinh tất cả các tổ hợp dấu ngoặc hợp lệ.
 
@@ -22,7 +22,7 @@ Output: ["()"]
 ```
 
 ## Constraints / Ràng buộc
-> **EN:** `1 <= n <= 8`
+> **EN:** `1 <= `n` <= 8`
 >
 > **VI:** `n` nằm trong khoảng từ 1 đến 8.
 

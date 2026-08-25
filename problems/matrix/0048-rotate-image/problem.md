@@ -6,11 +6,11 @@
 
 ## Problem / Đề bài
 
-> **EN:** You are given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise).
+> **EN:** You are given an n x n 2D `matrix` representing an image, rotate the image by 90 degrees (clockwise).
 >
 > **VI:** Cho ma trận vuông `n x n` biểu diễn một ảnh, hãy xoay ảnh `90` độ theo chiều kim đồng hồ.
 
-> **EN:** You have to rotate the image in-place, which means you have to modify the input 2D matrix directly. DO NOT allocate another 2D matrix and do the rotation.
+> **EN:** You have to rotate the image in-place, which means you have to modify the input 2D `matrix` directly. DO NOT allocate another 2D `matrix` and do the rotation.
 >
 > **VI:** Phải xoay **in-place**, tức sửa trực tiếp ma trận đầu vào. Không được cấp phát một ma trận 2D khác để thực hiện phép xoay.
 
@@ -32,7 +32,7 @@ Output: [[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]
 
 ## Constraints / Ràng buộc
 
-> **EN:** `n == matrix.length == matrix[i].length`
+> **EN:** `n == `matrix`.length == `matrix[i]`.length`
 >
 > **VI:** Ma trận là hình vuông `n x n`.
 
@@ -40,7 +40,7 @@ Output: [[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]
 >
 > **VI:** `1 <= n <= 20`.
 
-> **EN:** `-1000 <= matrix[i][j] <= 1000`
+> **EN:** `-1000 <= `matrix[i]` <= 1000`
 >
 > **VI:** Mỗi phần tử nằm trong `[-1000,1000]`.
 

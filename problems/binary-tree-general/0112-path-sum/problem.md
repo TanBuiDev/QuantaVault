@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given the root of a binary tree and an integer `targetSum`, return `true` if the tree has a root-to-leaf path such that adding up all the values along the path equals `targetSum`.
+> **EN:** Given the `root` of a binary tree and an integer `targetSum`, return `true` if the tree has a `root`-to-leaf path such that adding up all the values along the path equals `targetSum`.
 >
 > **VI:** Cho root của một binary tree và số nguyên `targetSum`. Trả về `true` nếu tồn tại một path từ root tới leaf sao cho tổng value trên path bằng `targetSum`.
 
@@ -45,11 +45,11 @@ Output: false
 >
 > **VI:** Số node của tree nằm trong khoảng `[0, 5000]`.
 
-> **EN:** `-1000 <= Node.val <= 1000`
+> **EN:** `-1000 <= `Node`.val <= 1000`
 >
 > **VI:** `-1000 <= Node.val <= 1000`.
 
-> **EN:** `-1000 <= targetSum <= 1000`
+> **EN:** `-1000 <= `targetSum` <= 1000`
 >
 > **VI:** `-1000 <= targetSum <= 1000`.
 

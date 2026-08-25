@@ -4,11 +4,11 @@
 **Medium / Trung bình**
 
 ## Problem / Đề bài
-> **EN:** Given an `m x n` grid of characters `board` and a string `word`, return `true` if `word` exists in the grid.
+> **EN:** Given an `m x n` `grid` of characters `board` and a string `word`, return `true` if `word` exists in the `grid`.
 >
 > **VI:** Cho lưới ký tự `board` kích thước `m x n` và chuỗi `word`, hãy trả về `true` nếu `word` tồn tại trong lưới.
 
-> **EN:** The word can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.
+> **EN:** The `word` can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.
 >
 > **VI:** Từ được tạo bởi các ô kề nhau theo chiều ngang hoặc dọc. Mỗi ô chỉ được sử dụng tối đa một lần trong một đường tìm kiếm.
 
@@ -25,12 +25,12 @@ Output: false
 ```
 
 ## Constraints / Ràng buộc
-> **EN:** `m == board.length`, `n = board[i].length`, `1 <= m, n <= 6`, `1 <= word.length <= 15`, and `board` and `word` consist only of lowercase and uppercase English letters.
+> **EN:** `m == `board`.length`, `n = `board[i]`.length`, `1 <= m, n <= 6`, `1 <= `word`.length <= 15`, and `board` and `word` consist only of lowercase and uppercase English letters.
 >
 > **VI:** Kích thước mỗi chiều từ 1 đến 6, độ dài `word` từ 1 đến 15, và dữ liệu chỉ gồm chữ cái tiếng Anh viết hoa hoặc viết thường.
 
 ## Follow-up / Mở rộng
-> **EN:** Could you use search pruning to make your solution faster with a larger board?
+> **EN:** Could you use search pruning to make your solution faster with a larger `board`?
 >
 > **VI:** Có thể cắt tỉa không gian tìm kiếm để tăng tốc khi bảng lớn hơn không?
 

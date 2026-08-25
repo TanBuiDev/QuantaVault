@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given a positive integer n, write a function that returns the number of set bits in its binary representation (also known as the Hamming weight).
+> **EN:** Given a positive integer `n`, write a function that returns the number of set bits in its binary representation (also known as the Hamming weight).
 >
 > **VI:** Cho số nguyên dương `n`, hãy trả về số bit 1 trong biểu diễn nhị phân của nó, còn gọi là Hamming weight.
 
@@ -29,7 +29,7 @@ Output: 30
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= n <= 2^31 - 1`
+> **EN:** `1 <= `n` <= 2^31 - 1`
 >
 > **VI:** `n` là số nguyên dương không vượt quá `2^31 - 1`.
 

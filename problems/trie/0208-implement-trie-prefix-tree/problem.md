@@ -37,7 +37,7 @@ Output
 [null, null, true, false, true, null, true]
 ```
 
-> **EN:** After inserting `"apple"`, searching `"apple"` succeeds, searching `"app"` fails because `"app"` is only a prefix, and `startsWith("app")` succeeds. After inserting `"app"`, `search("app")` becomes true.
+> **EN:** After inserting `"apple"`, searching `"apple"` succeeds, searching `"app"` fails because `"app"` is only a prefix, and `startsWith("app")` succeeds. After inserting `"app"`, `search("app")` becomes `true`.
 >
 > **VI:** Sau khi insert `"apple"`, `search("apple")` là true; `search("app")` vẫn false vì `"app"` mới chỉ là prefix; `startsWith("app")` là true. Khi insert thêm `"app"`, `search("app")` trở thành true.
 

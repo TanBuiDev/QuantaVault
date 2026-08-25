@@ -6,11 +6,11 @@
 
 ## Problem / Đề bài
 
-> **EN:** You are given an array prices where prices[i] is the price of a given stock on the ith day.
+> **EN:** You are given an array `prices` where `prices[i]` is the price of a given stock on the `i`th day.
 >
 > **VI:** Bạn được cho mảng `prices`, trong đó `prices[i]` là giá cổ phiếu ở ngày thứ `i`.
 
-> **EN:** Find the maximum profit you can achieve. You may complete at most two transactions.
+> **EN:** Find the maximum profit you can achieve. You may complete at most `two` transactions.
 >
 > **VI:** Hãy tìm lợi nhuận lớn nhất có thể đạt được. Bạn được hoàn thành nhiều nhất hai giao dịch.
 
@@ -57,11 +57,11 @@ Output: 0
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= prices.length <= 105`
+> **EN:** `1 <= `prices`.length <= 10^5`
 >
 > **VI:** Độ dài `prices` từ `1` đến `10^5`.
 
-> **EN:** `0 <= prices[i] <= 105`
+> **EN:** `0 <= `prices[i]` <= 10^5`
 >
 > **VI:** Mỗi giá nằm trong khoảng từ `0` đến `10^5`.
 

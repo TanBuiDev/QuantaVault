@@ -49,6 +49,26 @@ export interface StudyPlan {
   sections: StudyPlanSection[];
 }
 
+export interface SolutionApproach {
+  id: string;
+  name: string;
+  tag?: string;
+  timeComplexity?: string;
+  spaceComplexity?: string;
+  isDefault?: boolean;
+  solutionMarkdown: string | null;
+  javaSource: string | null;
+}
+
+export interface CodeVersionItem {
+  id: string;
+  name: string;
+  source: string;
+  isCanonical?: boolean;
+  isDefault?: boolean;
+}
+
+
 export interface ProblemContent extends ProblemSummary {
   problemMarkdown: string | null;
   hintsMarkdown: string | null;
@@ -57,7 +77,11 @@ export interface ProblemContent extends ProblemSummary {
   javaSource: string | null;
   casesYaml: string | null;
   media?: ProblemMedia[];
+  approaches?: SolutionApproach[];
+  codeVersions?: CodeVersionItem[];
 }
+
+
 
 interface RawMeta {
   schema_version?: unknown;
@@ -387,6 +411,74 @@ export function getProblemContent(id: number): ProblemContent | null {
   if (!record) return null;
 
   const { summary, directory } = record;
+  const metaPath = path.join(directory, "meta.yaml");
+  let approaches: SolutionApproach[] | undefined;
+  let codeVersions: CodeVersionItem[] | undefined;
+
+  try {
+    const raw = parse(fs.readFileSync(metaPath, "utf8")) as Record<string, unknown>;
+    
+    // Load code_versions
+    if (Array.isArray(raw.code_versions) && raw.code_versions.length > 0) {
+      const versionsList = raw.code_versions as Array<Record<string, unknown>>;
+      const hasAnyDefault = versionsList.some((x) => Boolean(x?.is_default || x?.default));
+
+      codeVersions = versionsList.map((v, idx) => {
+        const vId = assertString(v.id || `v${idx + 1}`, `${metaPath}: code_versions[${idx}].id`);
+        const vFile = String(v.file || "Solution.java");
+        const isDef = Boolean(v.is_default || v.default || (idx === 0 && !hasAnyDefault));
+        return {
+          id: vId,
+          name: typeof v.name === "string" ? v.name : `Version ${idx + 1}`,
+          source: readTextIfExists(path.join(directory, vFile)) || "",
+          isCanonical: Boolean(v.is_canonical || vFile === "Solution.java"),
+          isDefault: isDef,
+        };
+      });
+    }
+
+
+
+    if (Array.isArray(raw.solutions)) {
+      approaches = raw.solutions.map((item, idx) => {
+        const sol = item as Record<string, unknown>;
+        const approachId = assertString(sol.id || `approach-${idx + 1}`, `${metaPath}: solutions[${idx}].id`);
+        const subDir = sol.dir ? path.join(directory, String(sol.dir)) : null;
+
+        return {
+          id: approachId,
+          name: assertString(sol.name, `${metaPath}: solutions[${idx}].name`),
+          tag: typeof sol.tag === "string" ? sol.tag : undefined,
+          timeComplexity: typeof sol.time === "string" ? sol.time : undefined,
+          spaceComplexity: typeof sol.space === "string" ? sol.space : undefined,
+          isDefault: Boolean(sol.default || sol.canonical),
+          solutionMarkdown: subDir
+            ? readTextIfExists(path.join(subDir, "solution.md"))
+            : readTextIfExists(path.join(directory, "solution.md")),
+          javaSource: subDir
+            ? readTextIfExists(path.join(subDir, "Solution.java"))
+            : readTextIfExists(path.join(directory, "Solution.java")),
+        };
+      });
+    }
+  } catch {
+    // Fallback if parsing custom solutions fails
+  }
+
+  const defaultJava = readTextIfExists(path.join(directory, "Solution.java"));
+
+  // Nếu chưa có codeVersions trong meta.yaml nhưng có Solution.java -> Khởi tạo version 1 mặc định
+  if (!codeVersions && defaultJava) {
+    codeVersions = [
+      {
+        id: "v1",
+        name: "Version 1",
+        source: defaultJava,
+        isCanonical: true,
+      },
+    ];
+  }
+
   return {
     ...summary,
     topics: [...summary.topics],
@@ -395,11 +487,15 @@ export function getProblemContent(id: number): ProblemContent | null {
     hintsMarkdown: readTextIfExists(path.join(directory, "hints.md")),
     solutionMarkdown: readTextIfExists(path.join(directory, "solution.md")),
     interviewMarkdown: readTextIfExists(path.join(directory, "interview.md")),
-    javaSource: readTextIfExists(path.join(directory, "Solution.java")),
+    javaSource: defaultJava,
     casesYaml: readTextIfExists(path.join(directory, "cases.yaml")),
     media: record.media.map((item) => ({ ...item })),
+    approaches,
+    codeVersions,
   };
 }
+
+
 
 export function getOrderedProblemIds(): number[] {
   return getTopInterview150().sections.flatMap((section) => section.problemIds);

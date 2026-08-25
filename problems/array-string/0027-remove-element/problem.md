@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given an integer array `nums` and an integer `val`, remove all occurrences of `val` in `nums` in-place. The order of the elements may be changed. Then return the number of elements in `nums` which are not equal to `val`.
+> **EN:** Given an integer array `nums` and an integer `val`, `remove` all occurrences of `val` in `nums` in-place. The order of the elements may be changed. Then return the number of elements in `nums` which are not equal to `val`.
 >
 > **VI:** Cho mảng số nguyên `nums` và số nguyên `val`, hãy xóa mọi lần xuất hiện của `val` khỏi `nums` **tại chỗ (in-place)**. Thứ tự các phần tử có thể thay đổi. Sau đó trả về số lượng phần tử trong `nums` không bằng `val`.
 
@@ -87,15 +87,15 @@ nums = [0,1,2,2,3,0,4,2], val = 2
 
 ## Constraints / Ràng buộc
 
-> **EN:** `0 <= nums.length <= 100`
+> **EN:** `0 <= `nums`.length <= 100`
 >
 > **VI:** Độ dài `nums` từ `0` đến `100`.
 
-> **EN:** `0 <= nums[i] <= 50`
+> **EN:** `0 <= `nums[i]` <= 50`
 >
 > **VI:** Mỗi `nums[i]` nằm từ `0` đến `50`.
 
-> **EN:** `0 <= val <= 100`
+> **EN:** `0 <= `val` <= 100`
 >
 > **VI:** `val` nằm từ `0` đến `100`.
 

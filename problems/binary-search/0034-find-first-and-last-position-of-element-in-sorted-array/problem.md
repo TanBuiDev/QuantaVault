@@ -6,11 +6,11 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given an array of integers nums sorted in non-decreasing order, find the starting and ending position of a given target value.
+> **EN:** Given an array of integers `nums` sorted in non-decreasing order, find the starting and ending position of a given `target` value.
 >
 > **VI:** Cho mảng số nguyên `nums` đã sắp xếp không giảm, hãy tìm vị trí bắt đầu và kết thúc của giá trị `target`.
 
-> **EN:** If target is not found in the array, return `[-1, -1]`. You must write an algorithm with `O(log n)` runtime complexity.
+> **EN:** If `target` is not found in the array, return `[-1, -1]`. You must write an algorithm with `O(log n)` runtime complexity.
 >
 > **VI:** Nếu không tìm thấy `target`, trả về `[-1,-1]`. Thuật toán phải chạy trong `O(log n)`.
 
@@ -33,7 +33,7 @@ Output: [-1,-1]
 
 ## Constraints / Ràng buộc
 
-> **EN:** `0 <= nums.length <= 10^5`; nums is non-decreasing; values and target are in `[-10^9,10^9]`.
+> **EN:** `0 <= `nums`.length <= 10^5`; `nums` is non-decreasing; values and `target` are in `[-10^9,10^9]`.
 >
 > **VI:** Mảng có thể rỗng, đã sort không giảm, và các giá trị nằm trong phạm vi đề bài.
 

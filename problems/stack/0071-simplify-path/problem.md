@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** You are given an absolute path for a Unix-style file system, which always begins with a slash '/'. Your task is to transform this absolute path into its simplified canonical path.
+> **EN:** You are given an absolute `path` for a Unix-style file system, which always begins with a slash '/'. Your task is to transform this absolute `path` into its simplified canonical `path`.
 >
 > **VI:** Bạn được cho một absolute path của hệ thống file kiểu Unix, luôn bắt đầu bằng dấu `/`. Nhiệm vụ là chuyển path đó thành canonical path đã được rút gọn.
 
@@ -26,31 +26,31 @@
 >
 > **VI:** Nhiều dấu slash liên tiếp như `//` hoặc `///` được xem như một slash `/`.
 
-> **EN:** Any sequence of periods that does not match the rules above should be treated as a valid directory or file name. For example, '...' and '....' are valid directory or file names.
+> **EN:** Any sequence of periods that does not match the rules above should be treated as a valid directory or file name. For `example`, '...' and '....' are valid directory or file names.
 >
 > **VI:** Chuỗi dấu chấm không đúng chính xác `.` hoặc `..` phải được xem là tên thư mục/file hợp lệ. Ví dụ `...` và `....` là tên hợp lệ.
 
-> **EN:** The simplified canonical path should follow these rules:
+> **EN:** The simplified canonical `path` should follow these rules:
 >
 > **VI:** Canonical path sau khi rút gọn phải tuân theo các quy tắc sau:
 
-> **EN:** The path must start with a single slash '/'.
+> **EN:** The `path` must start with a single slash '/'.
 >
 > **VI:** Path phải bắt đầu bằng đúng một slash `/`.
 
-> **EN:** Directories within the path must be separated by exactly one slash '/'.
+> **EN:** Directories within the `path` must be separated by exactly one slash '/'.
 >
 > **VI:** Các directory phải cách nhau bằng đúng một slash `/`.
 
-> **EN:** The path must not end with a slash '/', unless it is the root directory.
+> **EN:** The `path` must not end with a slash '/', unless it is the `root` directory.
 >
 > **VI:** Path không được kết thúc bằng `/`, trừ root directory.
 
-> **EN:** The path must not have any single or double periods ('.' and '..') used to denote current or parent directories.
+> **EN:** The `path` must not have any single or double periods ('.' and '..') used to denote current or parent directories.
 >
 > **VI:** Canonical path không được còn token `.` hoặc `..` mang nghĩa current/parent directory.
 
-> **EN:** Return the simplified canonical path.
+> **EN:** Return the simplified canonical `path`.
 >
 > **VI:** Trả về canonical path đã được rút gọn.
 
@@ -96,7 +96,7 @@ Input: path = "/../"
 Output: "/"
 ```
 
-> **EN:** Explanation: Going one level up from the root directory is not possible.
+> **EN:** Explanation: Going one level up from the `root` directory is not possible.
 >
 > **VI:** Không thể đi lên cao hơn root nên kết quả vẫn là `/`.
 
@@ -113,7 +113,7 @@ Output: "/.../b/d"
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= path.length <= 3000`
+> **EN:** `1 <= `path`.length <= 3000`
 >
 > **VI:** Độ dài path tối đa theo constraint là `3000`.
 
@@ -121,7 +121,7 @@ Output: "/.../b/d"
 >
 > **VI:** Path chỉ gồm chữ cái tiếng Anh, chữ số, `.`, `/`, `_`.
 
-> **EN:** `path is a valid absolute Unix path.`
+> **EN:** `path is a valid absolute Unix `path`.`
 >
 > **VI:** Input là một absolute Unix path hợp lệ.
 

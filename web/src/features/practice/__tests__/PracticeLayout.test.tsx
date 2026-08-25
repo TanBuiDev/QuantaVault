@@ -32,19 +32,24 @@ const content: ProblemContent = {
   casesYaml: null,
 };
 
+import { ToastProvider } from "@/components/ui/Toast";
+
 describe("Practice workspace layout", () => {
   it("separates study content from the personal progress panel", () => {
     render(
-      <ProgressProvider>
-        <PracticeView
-          content={content}
-          hints={["## Hint 1\nThink first."]}
-          previous={{ id: 189, title: "Rotate Array" }}
-          next={{ id: 122, title: "Best Time to Buy and Sell Stock II" }}
-          sectionName="Array / String"
-        />
-      </ProgressProvider>,
+      <ToastProvider>
+        <ProgressProvider>
+          <PracticeView
+            content={content}
+            hints={["## Hint 1\nThink first."]}
+            previous={{ id: 189, title: "Rotate Array" }}
+            next={{ id: 122, title: "Best Time to Buy and Sell Stock II" }}
+            sectionName="Array / String"
+          />
+        </ProgressProvider>
+      </ToastProvider>,
     );
+
 
     expect(screen.getByRole("region", { name: "Study content" })).toBeInTheDocument();
     expect(screen.getByRole("complementary", { name: "Study progress" })).toBeInTheDocument();

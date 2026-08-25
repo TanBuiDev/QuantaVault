@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given the root of a binary tree, return the level-order traversal of its nodes' values, from left to right and level by level.
+> **EN:** Given the `root` of a binary tree, return the level-order traversal of its nodes' values, from `left` to `right` and level by level.
 >
 > **VI:** Cho root của một binary tree, hãy trả về level-order traversal của các value: từ trái sang phải và theo từng level.
 
@@ -35,7 +35,7 @@ Output: []
 
 ## Constraints / Ràng buộc
 
-> **EN:** The number of nodes is in `[0, 2000]` and `-1000 <= Node.val <= 1000`.
+> **EN:** The number of nodes is in `[0, 2000]` and `-1000 <= `Node`.val <= 1000`.
 >
 > **VI:** Số node nằm trong `[0, 2000]` và `-1000 <= Node.val <= 1000`.
 

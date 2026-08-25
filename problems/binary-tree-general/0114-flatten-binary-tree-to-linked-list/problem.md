@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given the root of a binary tree, flatten the tree into a "linked list". The linked list must use the same `TreeNode` class: every left pointer is `null`, each right pointer points to the next node, and the order must match preorder traversal.
+> **EN:** Given the `root` of a binary tree, flatten the tree into a "linked list". The linked list must use the same `TreeNode` class: every `left` pointer is `null`, each `right` pointer `points` to the `next` node, and the order must match preorder traversal.
 >
 > **VI:** Cho root của một binary tree, hãy làm phẳng tree thành một "linked list" ngay trên chính các `TreeNode`: mọi `left` phải bằng `null`, `right` trỏ tới node kế tiếp, và thứ tự phải giống preorder traversal.
 
@@ -39,7 +39,7 @@ Output: [0]
 >
 > **VI:** Số node của tree nằm trong khoảng `[0, 2000]`.
 
-> **EN:** `-100 <= Node.val <= 100`
+> **EN:** `-100 <= `Node`.val <= 100`
 >
 > **VI:** `-100 <= Node.val <= 100`.
 

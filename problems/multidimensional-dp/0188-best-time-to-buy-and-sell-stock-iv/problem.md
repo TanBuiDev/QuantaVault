@@ -6,11 +6,11 @@
 
 ## Problem / Đề bài
 
-> **EN:** You are given an integer array prices where prices[i] is the price of a given stock on the ith day, and an integer k.
+> **EN:** You are given an integer array `prices` where `prices[i]` is the price of a given stock on the `i`th day, and an integer `k`.
 >
 > **VI:** Bạn được cho mảng số nguyên `prices`, trong đó `prices[i]` là giá cổ phiếu ở ngày thứ `i`, cùng một số nguyên `k`.
 
-> **EN:** Find the maximum profit you can achieve. You may complete at most k transactions: i.e. you may buy at most k times and sell at most k times.
+> **EN:** Find the maximum profit you can achieve. You may complete at most `k` transactions: i.e. you may buy at most `k` times and sell at most `k` times.
 >
 > **VI:** Hãy tìm lợi nhuận lớn nhất có thể đạt được. Bạn được hoàn thành nhiều nhất `k` giao dịch, tức mua nhiều nhất `k` lần và bán nhiều nhất `k` lần.
 
@@ -44,15 +44,15 @@ Output: 7
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= k <= 100`
+> **EN:** `1 <= `k` <= 100`
 >
 > **VI:** `k` nằm trong khoảng từ `1` đến `100`.
 
-> **EN:** `1 <= prices.length <= 1000`
+> **EN:** `1 <= `prices`.length <= 1000`
 >
 > **VI:** Độ dài `prices` từ `1` đến `1000`.
 
-> **EN:** `0 <= prices[i] <= 1000`
+> **EN:** `0 <= `prices[i]` <= 1000`
 >
 > **VI:** Mỗi giá nằm trong khoảng từ `0` đến `1000`.
 

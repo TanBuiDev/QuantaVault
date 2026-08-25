@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given a non-negative integer x, return the square root of x rounded down to the nearest integer. The returned integer should be non-negative as well.
+> **EN:** Given a non-negative integer `x`, return the square `root` of `x` rounded down to the nearest integer. The returned integer should be non-negative as well.
 >
 > **VI:** Cho số nguyên không âm `x`, hãy trả về căn bậc hai của `x` sau khi làm tròn xuống số nguyên gần nhất. Kết quả cũng phải không âm.
 
@@ -32,7 +32,7 @@ Output: 2
 
 ## Constraints / Ràng buộc
 
-> **EN:** `0 <= x <= 2^31 - 1`
+> **EN:** `0 <= `x` <= 2^31 - 1`
 >
 > **VI:** `x` nằm trong miền số nguyên không âm 32-bit có dấu.
 

@@ -6,11 +6,11 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given the head of a linked list, reverse the nodes of the list k at a time, and return the modified list.
+> **EN:** Given the `head` of a linked list, `reverse` the nodes of the list `k` at a time, and return the modified list.
 >
 > **VI:** Cho `head` của một linked list. Hãy đảo các node theo từng nhóm `k` node và trả về list sau khi thay đổi.
 
-> **EN:** k is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of k then left-out nodes, in the end, should remain as it is.
+> **EN:** `k` is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a `multiple` of `k` then `left`-out nodes, in the end, should remain as it is.
 >
 > **VI:** `k` là số nguyên dương và không lớn hơn độ dài list. Nếu số node không chia hết cho `k`, nhóm node còn dư ở cuối phải giữ nguyên thứ tự.
 
@@ -40,11 +40,11 @@ Output: [3,2,1,4,5]
 >
 > **VI:** Gọi `n` là số node trong list.
 
-> **EN:** 1 <= k <= n <= 5000
+> **EN:** 1 <= `k` <= n <= 5000
 >
 > **VI:** `1 <= k <= n <= 5000`.
 
-> **EN:** 0 <= Node.val <= 1000
+> **EN:** 0 <= `Node`.val <= 1000
 >
 > **VI:** `Node.val` nằm trong `[0, 1000]`.
 

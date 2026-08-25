@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given the head of a singly linked list and two integers left and right where left <= right, reverse the nodes of the list from position left to position right, and return the reversed list.
+> **EN:** Given the `head` of a singly linked list and two integers `left` and `right` where `left` <= `right`, `reverse` the nodes of the list from position `left` to position `right`, and return the reversed list.
 >
 > **VI:** Cho `head` của một singly linked list cùng hai số nguyên `left` và `right` với `left <= right`. Hãy đảo ngược các node từ vị trí `left` tới `right` và trả về linked list sau khi thay đổi.
 
@@ -36,11 +36,11 @@ Output: [5]
 >
 > **VI:** `1 <= n <= 500`.
 
-> **EN:** -500 <= Node.val <= 500
+> **EN:** -500 <= `Node`.val <= 500
 >
 > **VI:** `Node.val` nằm trong `[-500, 500]`.
 
-> **EN:** 1 <= left <= right <= n
+> **EN:** 1 <= `left` <= `right` <= n
 >
 > **VI:** `1 <= left <= right <= n`.
 

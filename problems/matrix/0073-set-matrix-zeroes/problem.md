@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given an m x n integer matrix matrix, if an element is 0, set its entire row and column to 0's.
+> **EN:** Given an m x n integer `matrix` `matrix`, if an element is 0, set its entire row and column to 0's.
 >
 > **VI:** Cho ma trận số nguyên `m x n`, nếu một phần tử bằng `0`, hãy đặt toàn bộ hàng và cột chứa nó thành `0`.
 
@@ -32,11 +32,11 @@ Output: [[0,0,0,0],[0,4,5,0],[0,3,1,0]]
 
 ## Constraints / Ràng buộc
 
-> **EN:** `m == matrix.length`
+> **EN:** `m == `matrix`.length`
 >
 > **VI:** `m` là số hàng.
 
-> **EN:** `n == matrix[0].length`
+> **EN:** `n == `matrix[0]`.length`
 >
 > **VI:** `n` là số cột.
 
@@ -44,7 +44,7 @@ Output: [[0,0,0,0],[0,4,5,0],[0,3,1,0]]
 >
 > **VI:** `1 <= m,n <= 200`.
 
-> **EN:** `-231 <= matrix[i][j] <= 231 - 1`
+> **EN:** `-2^31 <= `matrix[i]` <= 2^31 - 1`
 >
 > **VI:** Giá trị nằm trong giới hạn số nguyên đề cho.
 

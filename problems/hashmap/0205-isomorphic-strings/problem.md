@@ -6,11 +6,11 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given two strings s and t, determine if they are isomorphic.
+> **EN:** Given two strings `s` and `t`, determine if they are isomorphic.
 >
 > **VI:** Cho hai chuỗi `s` và `t`, hãy xác định chúng có isomorphic hay không.
 
-> **EN:** Two strings s and t are isomorphic if the characters in s can be replaced to get t.
+> **EN:** Two strings `s` and `t` are isomorphic if the characters in `s` can be replaced to get `t`.
 >
 > **VI:** Hai chuỗi isomorphic nếu có thể thay thế các ký tự trong `s` để thu được `t`.
 
@@ -27,7 +27,7 @@ Input: s = "egg", t = "add"
 Output: true
 ```
 
-> **EN:** Explanation: The strings s and t can be made identical by: Mapping 'e' to 'a'. Mapping 'g' to 'd'.
+> **EN:** Explanation: The strings `s` and `t` can be made identical by: Mapping 'e' to 'a'. Mapping 'g' to 'd'.
 >
 > **VI:** Có thể map `e -> a` và `g -> d` một cách nhất quán.
 
@@ -38,7 +38,7 @@ Input: s = "f11", t = "b23"
 Output: false
 ```
 
-> **EN:** Explanation: The strings s and t can not be made identical as '1' needs to be mapped to both '2' and '3'.
+> **EN:** Explanation: The strings `s` and `t` can not be made identical as '1' needs to be mapped to both '2' and '3'.
 >
 > **VI:** Không hợp lệ vì `1` sẽ phải map đồng thời vào cả `2` và `3`.
 
@@ -51,15 +51,15 @@ Output: true
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= s.length <= 5 * 104`
+> **EN:** `1 <= `s`.length <= 5 * 10^4`
 >
 > **VI:** `1 <= s.length <= 5 * 10^4`.
 
-> **EN:** `t.length == s.length`
+> **EN:** `t.length == `s`.length`
 >
 > **VI:** Hai chuỗi có cùng độ dài.
 
-> **EN:** s and t consist of any valid ascii character.
+> **EN:** `s` and `t` consist of any valid ascii character.
 >
 > **VI:** `s` và `t` gồm các ký tự ASCII hợp lệ.
 

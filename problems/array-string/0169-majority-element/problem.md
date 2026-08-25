@@ -6,11 +6,11 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given an array `nums` of size `n`, return the majority element.
+> **EN:** Given an array `nums` of size `n`, return the `majority` element.
 >
 > **VI:** Cho một mảng `nums` có kích thước `n`, hãy trả về **phần tử chiếm đa số**.
 
-> **EN:** The majority element is the element that appears more than `⌊n / 2⌋` times. You may assume that the majority element always exists in the array.
+> **EN:** The `majority` element is the element that appears more than `⌊n / 2⌋` times. You may assume that the `majority` element always exists in the array.
 >
 > **VI:** Phần tử chiếm đa số là phần tử xuất hiện **nhiều hơn `⌊n / 2⌋` lần**. Bạn có thể giả định rằng phần tử chiếm đa số luôn tồn tại trong mảng.
 
@@ -46,19 +46,19 @@ nums = [2,2,1,1,1,2,2]
 
 ## Constraints / Ràng buộc
 
-> **EN:** `n == nums.length`
+> **EN:** `n == `nums`.length`
 >
 > **VI:** `n` bằng độ dài của `nums`.
 
-> **EN:** `1 <= n <= 5 * 104`
+> **EN:** `1 <= n <= 5 * 10^4`
 >
 > **VI:** `n` nằm trong giới hạn được nêu trong đề nguồn.
 
-> **EN:** `-109 <= nums[i] <= 109`
+> **EN:** `-10^9 <= `nums[i]` <= 10^9`
 >
 > **VI:** Giá trị `nums[i]` nằm trong miền số nguyên được nêu trong đề nguồn.
 
-> **EN:** The input is generated such that a majority element will exist in the array.
+> **EN:** The input is generated such that a `majority` element will exist in the array.
 >
 > **VI:** Dữ liệu đầu vào được tạo sao cho luôn tồn tại một phần tử chiếm đa số.
 

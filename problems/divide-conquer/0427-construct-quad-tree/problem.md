@@ -4,7 +4,7 @@
 **Medium / Trung bình**
 
 ## Problem / Đề bài
-> **EN:** Given an `n x n` binary matrix `grid`, construct a Quad-Tree. A uniform region becomes a leaf whose `val` is that region's bit; otherwise create an internal node and recursively split the region into top-left, top-right, bottom-left, and bottom-right quadrants.
+> **EN:** Given an `n x n` binary `matrix` `grid`, construct a Quad-Tree. A `uniform` region becomes a leaf whose `val` is that region's bit; otherwise create an internal node and recursively split the region into top-`left`, top-`right`, bottom-`left`, and bottom-`right` quadrants.
 >
 > **VI:** Cho ma trận nhị phân vuông `grid`, hãy dựng Quad-Tree. Vùng đồng nhất trở thành leaf với `val` bằng bit của vùng; vùng không đồng nhất được chia thành bốn quadrant và xử lý đệ quy.
 
@@ -15,7 +15,7 @@ a uniform all-1 grid -> one leaf node with val=true
 ```
 
 ## Constraints / Ràng buộc
-> **EN:** `n == 2^x` for `0 <= x <= 6`; grid contains only 0 and 1.
+> **EN:** `n == 2^x` for `0 <= x <= 6`; `grid` contains only 0 and 1.
 >
 > **VI:** Kích thước là lũy thừa của 2 tối đa 64; grid chỉ chứa 0/1.
 

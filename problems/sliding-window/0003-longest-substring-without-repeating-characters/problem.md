@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given a string s, find the length of the longest substring without duplicate characters.
+> **EN:** Given a string `s`, find the length of the longest substring without duplicate characters.
 >
 > **VI:** Cho chuỗi `s`, hãy tìm độ dài của substring dài nhất không chứa ký tự lặp.
 
@@ -48,11 +48,11 @@ Output: 3
 
 ## Constraints / Ràng buộc
 
-> **EN:** `0 <= s.length <= 105`
+> **EN:** `0 <= `s`.length <= 10^5`
 >
 > **VI:** `0 <= s.length <= 10^5`.
 
-> **EN:** s consists of English letters, digits, symbols and spaces.
+> **EN:** `s` consists of English letters, digits, symbols and spaces.
 >
 > **VI:** `s` gồm chữ cái tiếng Anh, chữ số, ký hiệu và khoảng trắng.
 

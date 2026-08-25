@@ -32,15 +32,15 @@ Output: 9
 
 ## Constraints / Ràng buộc
 
-> **EN:** `n == height.length`
+> **EN:** `n == `height`.length`
 >
 > **VI:** `n` bằng độ dài `height`.
 
-> **EN:** `1 <= n <= 2 * 104`
+> **EN:** `1 <= n <= 2 * 10^4`
 >
 > **VI:** `n` từ `1` đến `2 * 10^4`.
 
-> **EN:** `0 <= height[i] <= 105`
+> **EN:** `0 <= `height[i]` <= 10^5`
 >
 > **VI:** Mỗi `height[i]` nằm trong khoảng `0` đến `10^5`.
 

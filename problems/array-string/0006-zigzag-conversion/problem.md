@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better legibility)
+> **EN:** The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of `rows` like this: (you may want to display this pattern in a fixed font for better legibility)
 >
 > **VI:** Chuỗi `"PAYPALISHIRING"` được viết theo dạng zigzag trên một số hàng cho trước như sau (font cố định sẽ dễ nhìn hơn):
 
@@ -20,7 +20,7 @@ Y   I   R
 >
 > **VI:** Sau đó đọc lần lượt theo từng hàng ta được `"PAHNAPLSIIGYIR"`.
 
-> **EN:** Write the code that will take a string and make this conversion given a number of rows:
+> **EN:** Write the code that will take a string and make this conversion given a number of `rows`:
 >
 > **VI:** Hãy viết code thực hiện phép chuyển đổi này với số hàng cho trước:
 
@@ -64,15 +64,15 @@ Output: "A"
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= s.length <= 1000`
+> **EN:** `1 <= `s`.length <= 1000`
 >
 > **VI:** Độ dài `s` từ `1` đến `1000`.
 
-> **EN:** s consists of English letters (lower-case and upper-case), ',' and '.'.
+> **EN:** `s` consists of English letters (lower-case and upper-case), ',' and '.'.
 >
 > **VI:** `s` gồm chữ cái tiếng Anh, dấu phẩy `,` và dấu chấm `.`.
 
-> **EN:** `1 <= numRows <= 1000`
+> **EN:** `1 <= `numRows` <= 1000`
 >
 > **VI:** `numRows` từ `1` đến `1000`.
 

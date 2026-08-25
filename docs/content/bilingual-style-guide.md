@@ -177,3 +177,21 @@ Explain their role in Vietnamese instead.
 When a term already has a preferred wording in this guide, future problem packages must reuse it unless the local problem context makes that translation technically inaccurate.
 
 If a new recurring term appears in several problems, add it to this guide before allowing multiple independent translations to spread across the repository.
+
+## 12. Semantic Formatting Rules (Code vs. Math)
+
+### 12.1. Code Identifiers & Programming Terms
+- Use inline code backticks (`` `...` ``) for variable names, property access, array indices, class names, and programming literals in both English and Vietnamese:
+  - Examples: `` `prices` ``, `` `prices[i]` ``, `` `nums.length` ``, `` `matrix[i][j]` ``, `` `root` ``, `` `head` ``, `` `TreeNode` ``, `` `null` ``, `` `true` ``, `` `false` ``.
+- Both EN and VI sentences must preserve identical code formatting for identical code tokens.
+
+### 12.2. Mathematical Expressions & Exponents
+- Use LaTeX inline math syntax (`$...$`) for true mathematical expressions, exponents, fractions, and numeric intervals:
+  - Exponents / Powers: `$10^5$`, `$10^4$`, `$10^9$`, `$2^{31} - 1$`, `$-2^{31}$`, `$x^n$`.
+  - Math fractions: `$\frac{1}{2^2}$`.
+  - Inequalities & constraints: `$-2^{31} \le n \le 2^{31} - 1$`, `$1 \le \text{prices.length} \le 10^5$` (hoặc `$1 \le n \le 10^5$`).
+- Do not collapse exponents (e.g., never write plain `105` for $10^5$ or `-231` for $-2^{31}$).
+
+### 12.3. Complexity Notation
+- Keep Big-O notation as inline code: `` `O(1)` ``, `` `O(n)` ``, `` `O(n \log n)` `` hoặc `` `O(n log n)` ``.
+

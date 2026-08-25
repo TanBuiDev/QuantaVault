@@ -20,7 +20,7 @@
 | D | 500 |
 | M | 1000 |
 
-> **EN:** Roman numerals are usually written largest to smallest from left to right. However, subtractive forms are used for 4, 9, 40, 90, 400 and 900: IV, IX, XL, XC, CD and CM.
+> **EN:** Roman numerals are usually written largest to smallest from `left` to `right`. However, `subtractive` forms are used for 4, 9, 40, 90, 400 and 900: IV, IX, XL, XC, CD and CM.
 >
 > **VI:** Thông thường ký hiệu được viết từ giá trị lớn tới nhỏ. Riêng `4, 9, 40, 90, 400, 900` dùng dạng trừ: `IV, IX, XL, XC, CD, CM`.
 
@@ -51,15 +51,15 @@ Output: 1994
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= s.length <= 15`
+> **EN:** `1 <= `s`.length <= 15`
 >
 > **VI:** Độ dài `s` từ `1` đến `15`.
 
-> **EN:** s contains only the characters ('I', 'V', 'X', 'L', 'C', 'D', 'M').
+> **EN:** `s` contains only the characters ('I', 'V', 'X', 'L', 'C', 'D', 'M').
 >
 > **VI:** `s` chỉ chứa các ký hiệu La Mã hợp lệ.
 
-> **EN:** It is guaranteed that s is a valid roman numeral in the range [1, 3999].
+> **EN:** It is guaranteed that `s` is a valid roman numeral in the range [1, 3999].
 >
 > **VI:** Đề đảm bảo `s` là số La Mã hợp lệ trong khoảng `[1,3999]`.
 

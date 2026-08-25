@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given a string s consisting of words and spaces, return the length of the last word in the string.
+> **EN:** Given a string `s` consisting of words and spaces, return the length of the last word in the string.
 >
 > **VI:** Cho một chuỗi `s` gồm các từ và khoảng trắng, hãy trả về độ dài của từ cuối cùng trong chuỗi.
 
@@ -51,15 +51,15 @@ Output: 6
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= s.length <= 104`
+> **EN:** `1 <= `s`.length <= 10^4`
 >
 > **VI:** Độ dài `s` từ `1` đến `10^4`.
 
-> **EN:** s consists of only English letters and spaces ' '.
+> **EN:** `s` consists of only English letters and spaces ' '.
 >
 > **VI:** `s` chỉ gồm chữ cái tiếng Anh và dấu cách `' '`.
 
-> **EN:** There will be at least one word in s.
+> **EN:** There will be at least `one` word in `s`.
 >
 > **VI:** `s` luôn chứa ít nhất một từ.
 

@@ -10,7 +10,7 @@
 >
 > **VI:** Theo phần mô tả trong đề, Game of Life là một cellular automaton do nhà toán học John Horton Conway đưa ra năm 1970.
 
-> **EN:** The board is made up of an m x n grid of cells, where each cell has an initial state: live (represented by a 1) or dead (represented by a 0). Each cell interacts with its eight neighbors (horizontal, vertical, diagonal) using the following four rules (taken from the above Wikipedia article):
+> **EN:** The `board` is made up of an m x n `grid` of cells, where each cell has an initial state: live (represented by a 1) or dead (represented by a 0). Each cell interacts with its eight neighbors (horizontal, vertical, diagonal) using the following four rules (taken from the above Wikipedia article):
 >
 > **VI:** Board là lưới `m x n`; mỗi cell ban đầu sống (`1`) hoặc chết (`0`) và tương tác với tám hàng xóm ngang, dọc, chéo theo bốn rule sau.
 
@@ -18,7 +18,7 @@
 >
 > **VI:** Cell sống có ít hơn hai hàng xóm sống sẽ chết.
 
-> **EN:** Any live cell with two or three live neighbors lives on to the next generation.
+> **EN:** Any live cell with two or three live neighbors lives on to the `next` generation.
 >
 > **VI:** Cell sống có hai hoặc ba hàng xóm sống tiếp tục sống.
 
@@ -30,11 +30,11 @@
 >
 > **VI:** Cell chết có đúng ba hàng xóm sống sẽ trở thành sống.
 
-> **EN:** The next state of the board is determined by applying the above rules simultaneously to every cell in the current state of the m x n grid board. In this process, births and deaths occur simultaneously.
+> **EN:** The `next` state of the `board` is determined by applying the above rules simultaneously to every cell in the current state of the m x n `grid` `board`. In this process, births and deaths occur simultaneously.
 >
 > **VI:** Trạng thái thế hệ tiếp theo phải được tính **đồng thời** từ trạng thái hiện tại; birth/death không được ảnh hưởng tới việc tính các cell khác trong cùng generation.
 
-> **EN:** Given the current state of the board, update the board to reflect its next state.
+> **EN:** Given the current state of the `board`, update the `board` to reflect its `next` state.
 >
 > **VI:** Hãy cập nhật trực tiếp board sang trạng thái thế hệ tiếp theo.
 
@@ -60,11 +60,11 @@ Output: [[1,1],[1,1]]
 
 ## Constraints / Ràng buộc
 
-> **EN:** `m == board.length`
+> **EN:** `m == `board`.length`
 >
 > **VI:** `m` là số hàng.
 
-> **EN:** `n == board[i].length`
+> **EN:** `n == `board[i]`.length`
 >
 > **VI:** `n` là số cột.
 
@@ -78,11 +78,11 @@ Output: [[1,1],[1,1]]
 
 ## Follow up / Mở rộng
 
-> **EN:** Could you solve it in-place? Remember that the board needs to be updated simultaneously: You cannot update some cells first and then use their updated values to update other cells.
+> **EN:** Could you solve it in-place? Remember that the `board` needs to be updated simultaneously: You cannot update some cells first and then use their updated values to update other cells.
 >
 > **VI:** Có thể giải in-place trong khi vẫn bảo đảm mọi cell được tính từ old state không?
 
-> **EN:** In this question, we represent the board using a 2D array. In principle, the board is infinite, which would cause problems when the active area encroaches upon the border of the array (i.e., live cells reach the border). How would you address these problems?
+> **EN:** In this question, we represent the `board` using a 2D array. In principle, the `board` is infinite, which would cause problems when the active area encroaches upon the border of the array (i.e., live cells reach the border). How would you address these problems?
 >
 > **VI:** Nếu mô hình board vô hạn và active region chạm biên representation hiện tại, bạn sẽ thiết kế storage thế nào?
 

@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given the root of a binary tree, return the zigzag level-order traversal of its nodes' values: left-to-right for one level, right-to-left for the next, alternating thereafter.
+> **EN:** Given the `root` of a binary tree, return the zigzag level-order traversal of its nodes' values: `left`-to-`right` for one level, `right`-to-`left` for the `next`, alternating thereafter.
 >
 > **VI:** Cho root của một binary tree, hãy trả về zigzag level-order traversal: level đầu từ trái sang phải, level kế từ phải sang trái rồi tiếp tục xen kẽ.
 
@@ -32,7 +32,7 @@ Output: []
 
 ## Constraints / Ràng buộc
 
-> **EN:** The number of nodes is in `[0, 2000]` and `-100 <= Node.val <= 100`.
+> **EN:** The number of nodes is in `[0, 2000]` and `-100 <= `Node`.val <= 100`.
 >
 > **VI:** Số node nằm trong `[0, 2000]` và `-100 <= Node.val <= 100`.
 

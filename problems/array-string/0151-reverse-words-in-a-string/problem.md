@@ -6,11 +6,11 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given an input string s, reverse the order of the words.
+> **EN:** Given an input string `s`, reverse the order of the words.
 >
 > **VI:** Cho chuỗi đầu vào `s`, hãy đảo ngược thứ tự các từ.
 
-> **EN:** A word is defined as a sequence of non-space characters. The words in s will be separated by at least one space.
+> **EN:** A word is defined as a sequence of non-space characters. The words in `s` will be separated by at least `one` space.
 >
 > **VI:** Một từ là một dãy ký tự không phải space. Các từ trong `s` được ngăn cách bởi ít nhất một space.
 
@@ -18,7 +18,7 @@
 >
 > **VI:** Trả về chuỗi gồm các từ theo thứ tự ngược, nối với nhau bằng đúng một space.
 
-> **EN:** Note that s may contain leading or trailing spaces or multiple spaces between two words. The returned string should only have a single space separating the words. Do not include any extra spaces.
+> **EN:** Note that `s` may contain leading or trailing spaces or multiple spaces between two words. The returned string should only have a single space separating the words. Do not include any extra spaces.
 >
 > **VI:** `s` có thể có leading spaces, trailing spaces hoặc nhiều space giữa hai từ. Kết quả chỉ được có một space giữa các từ và không có space thừa.
 
@@ -55,15 +55,15 @@ Output: "example good a"
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= s.length <= 104`
+> **EN:** `1 <= `s`.length <= 10^4`
 >
 > **VI:** Độ dài `s` từ `1` đến `10^4`.
 
-> **EN:** s contains English letters (upper-case and lower-case), digits, and spaces ' '.
+> **EN:** `s` contains English letters (upper-case and lower-case), digits, and spaces ' '.
 >
 > **VI:** `s` chứa chữ cái tiếng Anh, chữ số và space `' '`.
 
-> **EN:** There is at least one word in s.
+> **EN:** There is at least `one` word in `s`.
 >
 > **VI:** `s` có ít nhất một từ.
 

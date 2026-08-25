@@ -6,15 +6,15 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given head, the head of a linked list, determine if the linked list has a cycle in it.
+> **EN:** Given `head`, the `head` of a linked list, determine if the linked list has a `cycle` in it.
 >
 > **VI:** Cho `head` là node đầu của một linked list. Hãy xác định linked list đó có chứa cycle hay không.
 
-> **EN:** There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to. Note that pos is not passed as a parameter.
+> **EN:** There is a `cycle` in a linked list if there is some node in the list that can be reached again by continuously following the `next` pointer. Internally, pos is used to denote the index of the node that tail's `next` pointer is connected to. Note that pos is not passed as a parameter.
 >
 > **VI:** Linked list có cycle nếu tồn tại một node có thể được đi tới lần nữa bằng cách liên tục theo con trỏ `next`. Trong mô tả input, `pos` được dùng nội bộ để chỉ index của node mà `next` của tail nối tới. Lưu ý `pos` không được truyền vào hàm.
 
-> **EN:** Return true if there is a cycle in the linked list. Otherwise, return false.
+> **EN:** Return `true` if there is a `cycle` in the linked list. Otherwise, return `false`.
 >
 > **VI:** Trả về `true` nếu linked list có cycle. Ngược lại trả về `false`.
 
@@ -52,11 +52,11 @@ Explanation: There is no cycle in the linked list.
 
 ## Constraints / Ràng buộc
 
-> **EN:** The number of the nodes in the list is in the range [0, 104].
+> **EN:** The number of the nodes in the list is in the range [0, 10^4].
 >
 > **VI:** Số node của danh sách nằm trong khoảng được nêu trong source, từ `0` đến `10^4`.
 
-> **EN:** -105 <= Node.val <= 105
+> **EN:** -10^5 <= `Node`.val <= 10^5
 >
 > **VI:** Giá trị của mỗi node nằm trong khoảng `[-10^5, 10^5]`.
 

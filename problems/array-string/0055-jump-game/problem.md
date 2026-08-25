@@ -6,11 +6,11 @@
 
 ## Problem / Đề bài
 
-> **EN:** You are given an integer array nums. You are initially positioned at the array's first index, and each element in the array represents your maximum jump length at that position.
+> **EN:** You are given an integer array `nums`. You are initially positioned at the array's first index, and each element in the array represents your maximum jump length at that position.
 >
 > **VI:** Bạn được cho một mảng số nguyên `nums`. Ban đầu bạn đứng ở index đầu tiên của mảng, và mỗi phần tử biểu diễn độ dài bước nhảy tối đa tại vị trí đó.
 
-> **EN:** Return true if you can reach the last index, or false otherwise.
+> **EN:** Return `true` if you can reach the last index, or `false` otherwise.
 >
 > **VI:** Trả về `true` nếu bạn có thể tới index cuối cùng, ngược lại trả về `false`.
 
@@ -40,11 +40,11 @@ Output: false
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= nums.length <= 104`
+> **EN:** `1 <= `nums`.length <= 10^4`
 >
 > **VI:** Độ dài `nums` từ `1` đến `10^4`.
 
-> **EN:** `0 <= nums[i] <= 105`
+> **EN:** `0 <= `nums[i]` <= 10^5`
 >
 > **VI:** Mỗi `nums[i]` nằm trong khoảng `0` đến `10^5`.
 

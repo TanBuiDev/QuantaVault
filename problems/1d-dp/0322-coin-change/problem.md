@@ -6,11 +6,11 @@
 
 ## Problem / Đề bài
 
-> **EN:** You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money.
+> **EN:** You are given an integer array `coins` representing `coins` of different denominations and an integer `amount` representing a total `amount` of money.
 >
 > **VI:** Bạn được cho mảng số nguyên `coins` biểu diễn các mệnh giá đồng xu khác nhau và số nguyên `amount` biểu diễn tổng tiền cần tạo.
 
-> **EN:** Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+> **EN:** Return the fewest number of `coins` that you need to make up that `amount`. If that `amount` of money cannot be made up by any combination of the `coins`, return -1.
 >
 > **VI:** Trả về số đồng xu ít nhất cần để tạo đúng `amount`. Nếu không thể tạo được, trả về `-1`.
 
@@ -47,15 +47,15 @@ Output: 0
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= coins.length <= 12`
+> **EN:** `1 <= `coins`.length <= 12`
 >
 > **VI:** Số loại coin từ `1` đến `12`.
 
-> **EN:** `1 <= coins[i] <= 231 - 1`
+> **EN:** `1 <= `coins[i]` <= 2^31 - 1`
 >
 > **VI:** Mỗi mệnh giá dương và không vượt miền số nguyên 32-bit dương.
 
-> **EN:** `0 <= amount <= 104`
+> **EN:** `0 <= `amount` <= 10^4`
 >
 > **VI:** `amount` nằm từ `0` đến `10^4`.
 

@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given the root of a complete binary tree, return the number of nodes in the tree. Every level except possibly the last is completely filled, and nodes on the last level are as far left as possible. Design an algorithm that runs in less than `O(n)` time.
+> **EN:** Given the `root` of a `complete` binary tree, return the number of nodes in the tree. Every level except possibly the last is completely filled, and nodes on the last level are as far `left` as possible. Design an algorithm that runs in less than `O(n)` time.
 >
 > **VI:** Cho root của một complete binary tree, hãy trả về số node. Mọi level trừ level cuối đều đầy; các node ở level cuối nằm về bên trái nhiều nhất có thể. Hãy thiết kế thuật toán nhanh hơn `O(n)`.
 
@@ -35,7 +35,7 @@ Output: 1
 
 ## Constraints / Ràng buộc
 
-> **EN:** The number of nodes is in `[0, 5 * 10^4]`; the tree is guaranteed to be complete.
+> **EN:** The number of nodes is in `[0, 5 * 10^4]`; the tree is guaranteed to be `complete`.
 >
 > **VI:** Số node nằm trong `[0, 5 * 10^4]`; tree được đảm bảo là complete.
 

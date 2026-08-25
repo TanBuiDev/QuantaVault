@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given a string s, return the longest palindromic substring in s.
+> **EN:** Given a string `s`, return the longest palindromic substring in `s`.
 >
 > **VI:** Cho một chuỗi `s`, hãy trả về chuỗi con liên tiếp đối xứng dài nhất trong `s`.
 
@@ -32,7 +32,7 @@ Output: "bb"
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= s.length <= 1000`
+> **EN:** `1 <= `s`.length <= 1000`
 >
 > **VI:** Độ dài `s` từ `1` đến `1000`.
 

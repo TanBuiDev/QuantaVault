@@ -4,7 +4,7 @@
 **Medium / Trung bình**
 
 ## Problem / Đề bài
-> **EN:** Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.
+> **EN:** Given an array `nums` of distinct integers, return all the possible permutations. You can return the answer in any order.
 >
 > **VI:** Cho mảng `nums` gồm các số nguyên phân biệt, hãy trả về tất cả các hoán vị có thể có. Có thể trả về theo bất kỳ thứ tự nào.
 
@@ -28,15 +28,15 @@ Output: [[1]]
 ```
 
 ## Constraints / Ràng buộc
-> **EN:** `1 <= nums.length <= 6`
+> **EN:** `1 <= `nums`.length <= 6`
 >
 > **VI:** `nums` có từ 1 đến 6 phần tử.
 
-> **EN:** `-10 <= nums[i] <= 10`
+> **EN:** `-10 <= `nums[i]` <= 10`
 >
 > **VI:** Mỗi phần tử nằm trong khoảng -10 đến 10.
 
-> **EN:** All the integers of nums are unique.
+> **EN:** All the integers of `nums` are unique.
 >
 > **VI:** Tất cả các số trong `nums` là phân biệt.
 

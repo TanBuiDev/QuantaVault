@@ -6,9 +6,9 @@
 
 ## Problem / Đề bài
 
-> **EN:** Implement pow(x, n), which calculates x raised to the power n (i.e., xn).
+> **EN:** Implement `pow(`x`, `n`)`, which calculates `x` raised to the power `n` (i.e., $`x`^`n`$).
 >
-> **VI:** Cài đặt `pow(x, n)`, tính `x` lũy thừa `n`.
+> **VI:** Cài đặt `pow(x, n)`, tính `x` lũy thừa `n` ($x^n$).
 
 ## Examples / Ví dụ
 
@@ -29,17 +29,17 @@ Output: 9.26100
 Input: x = 2.00000, n = -2
 Output: 0.25000
 ```
-> **EN:** Explanation: 2-2 = 1/22 = 1/4 = 0.25
+> **EN:** Explanation: $2^{-2} = \frac{1}{2^2} = \frac{1}{4} = 0.25$
 >
-> **VI:** Số mũ âm tương đương lấy nghịch đảo, nên kết quả là `0.25`.
+> **VI:** Số mũ âm tương đương lấy nghịch đảo ($2^{-2} = \frac{1}{2^2} = \frac{1}{4} = 0.25$), nên kết quả là `0.25`.
 
 ## Constraints / Ràng buộc
 
-> **EN:** `-100.0 < x < 100.0`
+> **EN:** `-100.0 < `x` < 100.0`
 >
 > **VI:** `x` nằm giữa `-100` và `100`.
 
-> **EN:** `-231 <= n <= 231-1`
+> **EN:** `$-2^{31} <= `n` <= 2^{31} - 1$`
 >
 > **VI:** `n` nằm trong miền số nguyên 32-bit đã cho.
 
@@ -47,11 +47,11 @@ Output: 0.25000
 >
 > **VI:** `n` là số nguyên.
 
-> **EN:** `Either x is not zero or n > 0.`
+> **EN:** `Either `x` is not `zero` or `n` > 0.`
 >
 > **VI:** Hoặc `x != 0`, hoặc `n > 0`.
 
-> **EN:** `-104 <= xn <= 104`
+> **EN:** `$-10^4 <= `x`^`n` <= 10^4$`
 >
 > **VI:** Kết quả nằm trong miền giá trị đã cho.
 

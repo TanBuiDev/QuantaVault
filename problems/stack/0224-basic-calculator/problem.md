@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given a string s representing a valid expression, implement a basic calculator to evaluate it, and return the result of the evaluation.
+> **EN:** Given a string `s` representing a valid expression, implement a basic calculator to evaluate it, and return the result of the evaluation.
 >
 > **VI:** Cho chuỗi `s` biểu diễn một expression hợp lệ. Hãy cài đặt basic calculator để tính và trả về kết quả.
 
@@ -39,23 +39,23 @@ Output: 23
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= s.length <= 3 * 105`
+> **EN:** `1 <= `s`.length <= 3 * 10^5`
 >
 > **VI:** Độ dài expression nằm trong giới hạn được nêu trong source.
 
-> **EN:** s consists of digits, '+', '-', '(', ')', and ' '.
+> **EN:** `s` consists of digits, '+', '-', '(', ')', and ' '.
 >
 > **VI:** `s` chỉ gồm digit, `+`, `-`, parentheses và space.
 
-> **EN:** s represents a valid expression.
+> **EN:** `s` represents a valid expression.
 >
 > **VI:** `s` luôn là một expression hợp lệ.
 
-> **EN:** '+' is not used as a unary operation (i.e., "+1" and "+(2 + 3)" is invalid).
+> **EN:** '+' is not used as a `unary` operation (i.e., "+1" and "+(2 + 3)" is invalid).
 >
 > **VI:** `+` không được dùng như unary operator.
 
-> **EN:** '-' could be used as a unary operation (i.e., "-1" and "-(2 + 3)" is valid).
+> **EN:** '-' could be used as a `unary` operation (i.e., "-1" and "-(2 + 3)" is valid).
 >
 > **VI:** `-` có thể là unary operator, ví dụ `-1` hoặc `-(2+3)`.
 

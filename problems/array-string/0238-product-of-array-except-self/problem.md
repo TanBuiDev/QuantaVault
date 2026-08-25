@@ -6,11 +6,11 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i].
+> **EN:** Given an integer array `nums`, return an array answer such that `answer[i]` is equal to the product of all the elements of `nums` except `nums[i]`.
 >
 > **VI:** Cho mảng số nguyên `nums`, hãy trả về mảng `answer` sao cho `answer[i]` bằng tích của tất cả phần tử trong `nums` ngoại trừ `nums[i]`.
 
-> **EN:** The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
+> **EN:** The product of any prefix or suffix of `nums` is guaranteed to fit in a 32-bit integer.
 >
 > **VI:** Đề đảm bảo tích của mọi prefix hoặc suffix của `nums` vừa trong số nguyên 32-bit.
 
@@ -36,15 +36,15 @@ Output: [0,0,9,0,0]
 
 ## Constraints / Ràng buộc
 
-> **EN:** `2 <= nums.length <= 105`
+> **EN:** `2 <= `nums`.length <= 10^5`
 >
 > **VI:** Độ dài `nums` từ `2` đến `10^5`.
 
-> **EN:** `-30 <= nums[i] <= 30`
+> **EN:** `-30 <= `nums[i]` <= 30`
 >
 > **VI:** Mỗi `nums[i]` nằm trong khoảng `-30` đến `30`.
 
-> **EN:** The input is generated such that answer[i] is guaranteed to fit in a 32-bit integer.
+> **EN:** The input is generated such that `answer[i]` is guaranteed to fit in a 32-bit integer.
 >
 > **VI:** Đề đảm bảo mọi `answer[i]` vừa trong số nguyên 32-bit.
 

@@ -6,19 +6,19 @@
 
 ## Problem / Đề bài
 
-> **EN:** You are given a string s and an array of strings words. All the strings of words are of the same length.
+> **EN:** You are given a string `s` and an array of strings `words`. All the strings of `words` are of the same length.
 >
 > **VI:** Cho chuỗi `s` và mảng chuỗi `words`. Tất cả chuỗi trong `words` có cùng độ dài.
 
-> **EN:** A concatenated string is a string that exactly contains all the strings of any permutation of words concatenated.
+> **EN:** A concatenated string is a string that exactly contains all the strings of any permutation of `words` concatenated.
 >
 > **VI:** Một concatenated string là chuỗi chứa chính xác tất cả các chuỗi trong một hoán vị bất kỳ của `words` được nối liên tiếp.
 
-> **EN:** For example, if words = ["ab","cd","ef"], then "abcdef", "abefcd", "cdabef", "cdefab", "efabcd", and "efcdab" are all concatenated strings. "acdbef" is not a concatenated string because it is not the concatenation of any permutation of words.
+> **EN:** For `example`, if `words` = ["ab","cd","ef"], then "abcdef", "abefcd", "cdabef", "cdefab", "efabcd", and "efcdab" are all concatenated strings. "acdbef" is not a concatenated string because it is not the concatenation of any permutation of `words`.
 >
 > **VI:** Ví dụ với `words = ["ab","cd","ef"]`, mọi cách nối đủ ba word theo một hoán vị đều hợp lệ; `"acdbef"` không hợp lệ vì không thể tách thành một hoán vị của các word đó.
 
-> **EN:** Return an array of the starting indices of all the concatenated substrings in s. You can return the answer in any order.
+> **EN:** Return an array of the starting indices of all the concatenated substrings in `s`. You can return the answer in any order.
 >
 > **VI:** Trả về mảng các index bắt đầu của mọi substring trong `s` là concatenation hợp lệ. Có thể trả kết quả theo bất kỳ thứ tự nào.
 
@@ -64,19 +64,19 @@ Output: [6,9,12]
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= s.length <= 104`
+> **EN:** `1 <= `s`.length <= 10^4`
 >
 > **VI:** `1 <= s.length <= 10^4`.
 
-> **EN:** `1 <= words.length <= 5000`
+> **EN:** `1 <= `words`.length <= 5000`
 >
 > **VI:** `1 <= words.length <= 5000`.
 
-> **EN:** `1 <= words[i].length <= 30`
+> **EN:** `1 <= `words[i]`.length <= 30`
 >
 > **VI:** `1 <= words[i].length <= 30`.
 
-> **EN:** s and words[i] consist of lowercase English letters.
+> **EN:** `s` and `words[i]` consist of lowercase English letters.
 >
 > **VI:** `s` và `words[i]` chỉ gồm chữ cái tiếng Anh viết thường.
 

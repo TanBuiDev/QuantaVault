@@ -6,15 +6,15 @@
 
 ## Problem / Đề bài
 
-> **EN:** There are some spherical balloons taped onto a flat wall that represents the XY-plane. The balloons are represented as a 2D integer array points where points[i] = [xstart, xend] denotes a balloon whose horizontal diameter stretches between xstart and xend. You do not know the exact y-coordinates of the balloons.
+> **EN:** There are some spherical balloons taped onto a flat wall that represents the XY-plane. The balloons are represented as a 2D integer array `points` where `points[i]` = [xstart, xend] denotes a balloon whose horizontal diameter stretches between xstart and xend. You do not know the exact y-coordinates of the balloons.
 >
 > **VI:** Có một số quả bóng hình cầu được dán lên một bức tường phẳng biểu diễn mặt phẳng XY. Mỗi balloon được mô tả bởi `points[i] = [xstart, xend]`, tức đường kính ngang của nó trải từ `xstart` đến `xend`. Tọa độ `y` chính xác không được biết.
 
-> **EN:** Arrows can be shot up directly vertically (in the positive y-direction) from different points along the x-axis. A balloon with xstart and xend is burst by an arrow shot at x if xstart <= x <= xend. There is no limit to the number of arrows that can be shot. A shot arrow keeps traveling up infinitely, bursting any balloons in its path.
+> **EN:** Arrows can be shot up directly vertically (in the positive y-direction) from different `points` along the x-axis. A balloon with xstart and xend is burst by an arrow shot at x if xstart <= x <= xend. There is no limit to the number of arrows that can be shot. A shot arrow keeps traveling up infinitely, bursting any balloons in its path.
 >
 > **VI:** Mũi tên được bắn thẳng đứng theo chiều dương của trục `y` từ một vị trí `x` trên trục hoành. Balloon `[xstart, xend]` bị bắn vỡ nếu `xstart <= x <= xend`. Không giới hạn số mũi tên, và một mũi tên tiếp tục bay lên vô hạn nên có thể xuyên qua nhiều balloon cùng chứa vị trí `x` đó.
 
-> **EN:** Given the array points, return the minimum number of arrows that must be shot to burst all balloons.
+> **EN:** Given the array `points`, return the minimum number of arrows that must be shot to burst `all` balloons.
 >
 > **VI:** Cho `points`, hãy trả về số mũi tên ít nhất cần bắn để làm vỡ toàn bộ balloon.
 
@@ -59,7 +59,7 @@ Output: 2
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= points.length <= 105`
+> **EN:** `1 <= `points`.length <= 10^5`
 >
 > **VI:** Số balloon nằm trong giới hạn được nêu trong source.
 
@@ -67,7 +67,7 @@ Output: 2
 >
 > **VI:** Mỗi balloon có đúng hai endpoint.
 
-> **EN:** `-231 <= xstart < xend <= 231 - 1`
+> **EN:** `-2^31 <= xstart < xend <= 2^31 - 1`
 >
 > **VI:** Mỗi interval có `xstart < xend` và endpoint có thể âm hoặc dương trong miền integer được nêu trong source.
 

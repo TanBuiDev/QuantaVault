@@ -4,7 +4,7 @@
 **Hard / Khó**
 
 ## Problem / Đề bài
-> **EN:** You are given an array of `k` linked lists, each sorted in ascending order. Merge all lists into one sorted linked list and return it.
+> **EN:** You are given an array of `k` linked `lists`, each sorted in ascending order. Merge all `lists` into one sorted linked list and return it.
 >
 > **VI:** Cho mảng gồm `k` linked list, mỗi list đã tăng dần. Hãy merge tất cả thành một linked list tăng dần và trả về head.
 

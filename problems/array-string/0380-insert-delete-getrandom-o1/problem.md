@@ -14,15 +14,15 @@
 >
 > **VI:** `RandomizedSet()` khởi tạo đối tượng `RandomizedSet`.
 
-> **EN:** bool insert(int val) Inserts an item val into the set if not present. Returns true if the item was not present, false otherwise.
+> **EN:** bool insert(int `val`) Inserts an item `val` into the set if not present. Returns `true` if the item was not present, `false` otherwise.
 >
 > **VI:** `insert(int val)` chèn `val` nếu chưa tồn tại. Trả `true` nếu vừa chèn mới, ngược lại trả `false`.
 
-> **EN:** bool remove(int val) Removes an item val from the set if present. Returns true if the item was present, false otherwise.
+> **EN:** bool `remove`(int `val`) Removes an item `val` from the set if present. Returns `true` if the item was present, `false` otherwise.
 >
 > **VI:** `remove(int val)` xóa `val` nếu đang tồn tại. Trả `true` nếu đã xóa, ngược lại trả `false`.
 
-> **EN:** int getRandom() Returns a random element from the current set of elements (it's guaranteed that at least one element exists when this method is called). Each element must have the same probability of being returned.
+> **EN:** int getRandom() Returns a `random` element from the current set of elements (it's guaranteed that at least one element exists when this method is called). Each element must have the same probability of being returned.
 >
 > **VI:** `getRandom()` trả về một phần tử ngẫu nhiên trong set hiện tại. Đề đảm bảo set không rỗng khi gọi hàm này, và mọi phần tử phải có xác suất được chọn bằng nhau.
 
@@ -47,11 +47,11 @@ Output
 
 ## Constraints / Ràng buộc
 
-> **EN:** `-231 <= val <= 231 - 1`
+> **EN:** `-2^31 <= `val` <= 2^31 - 1`
 >
 > **VI:** `val` nằm trong miền số nguyên 32-bit có dấu.
 
-> **EN:** At most 2 * 105 calls will be made to insert, remove, and getRandom.
+> **EN:** At most 2 * 10^5 calls will be made to insert, `remove`, and getRandom.
 >
 > **VI:** Có tối đa `2 * 10^5` lời gọi tới `insert`, `remove` và `getRandom`.
 

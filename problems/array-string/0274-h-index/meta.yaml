@@ -30,4 +30,19 @@ solution_languages:
   - java
 time_complexity: O(n)
 space_complexity: O(n)
+solutions:
+  - id: bucket-sort
+    name: "Cách 1: Bucket Sort"
+    tag: "Optimal"
+    time: "O(n)"
+    space: "O(n)"
+    default: true
+  - id: sorting
+    name: "Cách 2: Sorting"
+    tag: "Intuitive"
+    time: "O(n log n)"
+    space: "O(1)"
+    dir: "solutions/approach-sorting"
 leetcode_url: https://leetcode.com/problems/h-index/
+
+

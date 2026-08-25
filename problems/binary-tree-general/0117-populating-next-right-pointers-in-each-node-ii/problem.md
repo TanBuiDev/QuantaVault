@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given a binary tree where each node contains `val`, `left`, `right`, and `next`, populate every `next` pointer so it points to the next node on the same level to the right. If there is no such node, set `next` to `NULL`.
+> **EN:** Given a binary tree where each node contains `val`, `left`, `right`, and `next`, populate every `next` pointer so it `points` to the `next` node on the same level to the `right`. If there is no such node, set `next` to `NULL`.
 >
 > **VI:** Cho một binary tree mà mỗi node có `val`, `left`, `right` và `next`. Hãy gán mỗi con trỏ `next` tới node kế tiếp bên phải trên cùng level. Nếu không có node nào như vậy, `next` phải là `NULL`.
 
@@ -38,7 +38,7 @@ Output: []
 >
 > **VI:** Số node của tree nằm trong khoảng `[0, 6000]`.
 
-> **EN:** `-100 <= Node.val <= 100`
+> **EN:** `-100 <= `Node`.val <= 100`
 >
 > **VI:** `-100 <= Node.val <= 100`.
 

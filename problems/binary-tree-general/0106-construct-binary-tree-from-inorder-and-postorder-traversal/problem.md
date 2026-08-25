@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given two integer arrays inorder and postorder where inorder is the inorder traversal of a binary tree and postorder is the postorder traversal of the same tree, construct and return the binary tree.
+> **EN:** Given two integer arrays `inorder` and `postorder` where `inorder` is the `inorder` traversal of a binary tree and `postorder` is the `postorder` traversal of the same tree, construct and return the binary tree.
 >
 > **VI:** Cho hai mảng `inorder` và `postorder`, lần lượt là inorder traversal và postorder traversal của cùng một binary tree. Hãy dựng lại và trả về cây đó.
 
@@ -28,19 +28,19 @@ Output: [-1]
 
 ## Constraints / Ràng buộc
 
-> **EN:** 1 <= inorder.length <= 3000
+> **EN:** 1 <= `inorder`.length <= 3000
 >
 > **VI:** `1 <= inorder.length <= 3000`.
 
-> **EN:** postorder.length == inorder.length
+> **EN:** `postorder`.length == `inorder`.length
 >
 > **VI:** `postorder.length == inorder.length`.
 
-> **EN:** -3000 <= inorder[i], postorder[i] <= 3000
+> **EN:** -3000 <= `inorder[i]`, `postorder[i]` <= 3000
 >
 > **VI:** Các value nằm trong `[-3000, 3000]`.
 
-> **EN:** inorder and postorder consist of unique values. Each value of postorder also appears in inorder. inorder is guaranteed to be the inorder traversal of the tree. postorder is guaranteed to be the postorder traversal of the tree.
+> **EN:** `inorder` and `postorder` consist of unique values. Each value of `postorder` also appears in `inorder`. `inorder` is guaranteed to be the `inorder` traversal of the tree. `postorder` is guaranteed to be the `postorder` traversal of the tree.
 >
 > **VI:** Các value là unique; hai traversal chứa cùng các value và được đảm bảo hợp lệ cho cùng một tree.
 

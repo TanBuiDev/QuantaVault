@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** A path in a binary tree is a sequence of nodes where each adjacent pair is connected by an edge. A node can appear at most once, and the path does not need to pass through the root. The path sum is the sum of the node values on that path. Given the root, return the maximum path sum of any non-empty path.
+> **EN:** A path in a binary tree is a sequence of nodes where each adjacent pair is connected by an edge. A node can appear at most once, and the path does not need to pass through the `root`. The path sum is the sum of the node values on that path. Given the `root`, return the maximum path sum of any non-empty path.
 >
 > **VI:** Một path trong binary tree là chuỗi node mà mỗi cặp kề nhau được nối bởi một edge. Mỗi node chỉ được xuất hiện tối đa một lần và path không nhất thiết đi qua root. Path sum là tổng value của các node trên path. Hãy trả về maximum path sum của mọi path không rỗng.
 
@@ -36,7 +36,7 @@ The optimal path is `15 -> 20 -> 7`.
 >
 > **VI:** Số node nằm trong `[1, 3 * 10^4]`.
 
-> **EN:** `-1000 <= Node.val <= 1000`
+> **EN:** `-1000 <= `Node`.val <= 1000`
 >
 > **VI:** `-1000 <= Node.val <= 1000`.
 

@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given a string s and a dictionary of strings wordDict, return true if s can be segmented into a space-separated sequence of one or more dictionary words.
+> **EN:** Given a string `s` and a dictionary of strings `wordDict`, return `true` if `s` can be segmented into a space-separated sequence of one or more dictionary words.
 >
 > **VI:** Cho chuỗi `s` và dictionary `wordDict`, trả về `true` nếu `s` có thể được tách thành một chuỗi gồm một hoặc nhiều từ trong dictionary.
 
@@ -21,7 +21,7 @@
 Input: s = "leetcode", wordDict = ["leet","code"]
 Output: true
 ```
-> **EN:** Explanation: Return true because "leetcode" can be segmented as "leet code".
+> **EN:** Explanation: Return `true` because "leetcode" can be segmented as "leet code".
 >
 > **VI:** `"leetcode"` có thể tách thành `"leet code"`.
 
@@ -30,7 +30,7 @@ Output: true
 Input: s = "applepenapple", wordDict = ["apple","pen"]
 Output: true
 ```
-> **EN:** Explanation: Return true because "applepenapple" can be segmented as "apple pen apple".
+> **EN:** Explanation: Return `true` because "applepenapple" can be segmented as "apple pen apple".
 > Note that you are allowed to reuse a dictionary word.
 >
 > **VI:** Có thể tách thành `"apple pen apple"`; từ `apple` được dùng lại.
@@ -43,23 +43,23 @@ Output: false
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= s.length <= 300`
+> **EN:** `1 <= `s`.length <= 300`
 >
 > **VI:** Độ dài `s` từ `1` đến `300`.
 
-> **EN:** `1 <= wordDict.length <= 1000`
+> **EN:** `1 <= `wordDict`.length <= 1000`
 >
 > **VI:** Dictionary có từ `1` đến `1000` từ.
 
-> **EN:** `1 <= wordDict[i].length <= 20`
+> **EN:** `1 <= `wordDict[i]`.length <= 20`
 >
 > **VI:** Mỗi từ dài từ `1` đến `20`.
 
-> **EN:** `s and wordDict[i] consist of only lowercase English letters.`
+> **EN:** `s and `wordDict[i]` consist of only lowercase English letters.`
 >
 > **VI:** `s` và các từ chỉ gồm chữ cái tiếng Anh viết thường.
 
-> **EN:** `All the strings of wordDict are unique.`
+> **EN:** `All the strings of `wordDict` are unique.`
 >
 > **VI:** Các từ trong dictionary là duy nhất.
 

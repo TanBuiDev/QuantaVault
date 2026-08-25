@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 import { AppSidebar } from "./AppSidebar";
 import { MobileHeader } from "./MobileHeader";
+import { CommandPalette } from "./CommandPalette";
 
 export interface AppShellProps {
   children: ReactNode;
@@ -18,6 +19,7 @@ export function AppShell({ children }: AppShellProps) {
       </a>
       <AppSidebar />
       <MobileHeader />
+      <CommandPalette />
       <div className="lg:pl-64">
         <main
           id="main-content"
@@ -29,3 +31,4 @@ export function AppShell({ children }: AppShellProps) {
     </div>
   );
 }
+

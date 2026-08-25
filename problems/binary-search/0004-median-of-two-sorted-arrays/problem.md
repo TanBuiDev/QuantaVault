@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.
+> **EN:** Given two sorted arrays `nums1` and `nums2` of size m and n respectively, return the median of the two sorted arrays.
 >
 > **VI:** Cho hai mảng đã sắp xếp `nums1`, `nums2` có kích thước `m`, `n`, hãy trả về median của hai mảng kết hợp.
 

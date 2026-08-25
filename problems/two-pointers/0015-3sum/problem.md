@@ -6,11 +6,11 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
+> **EN:** Given an integer array `nums`, return all the triplets [`nums[i]`, `nums[j]`, `nums[k]`] such that i != j, i != k, and j != k, and `nums[i]` + `nums[j]` + `nums[k]` == 0.
 >
 > **VI:** Cho mảng số nguyên `nums`, hãy trả về tất cả bộ ba `[nums[i], nums[j], nums[k]]` sao cho ba index khác nhau và tổng của ba phần tử bằng `0`.
 
-> **EN:** Notice that the solution set must not contain duplicate triplets.
+> **EN:** Notice that the solution set must not contain `duplicate` triplets.
 >
 > **VI:** Lưu ý rằng tập kết quả không được chứa các triplet trùng nhau.
 
@@ -56,11 +56,11 @@ Output: [[0,0,0]]
 
 ## Constraints / Ràng buộc
 
-> **EN:** `3 <= nums.length <= 3000`
+> **EN:** `3 <= `nums`.length <= 3000`
 >
 > **VI:** Độ dài `nums` từ `3` đến `3000`.
 
-> **EN:** `-105 <= nums[i] <= 105`
+> **EN:** `-10^5 <= `nums[i]` <= 10^5`
 >
 > **VI:** Mỗi `nums[i]` nằm trong khoảng `-10^5` đến `10^5`.
 

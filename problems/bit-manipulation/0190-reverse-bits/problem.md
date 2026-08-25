@@ -24,7 +24,7 @@ Output: 1073741822
 
 ## Constraints / Ràng buộc
 
-> **EN:** `0 <= n <= 2^31 - 2`
+> **EN:** `0 <= `n` <= 2^31 - 2`
 >
 > **VI:** `n` nằm trong khoảng từ 0 đến `2^31 - 2`.
 

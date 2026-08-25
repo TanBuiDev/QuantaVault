@@ -4,7 +4,7 @@
 **Medium / Trung bình**
 
 ## Problem / Đề bài
-> **EN:** A peak is strictly greater than its neighbors. Given `nums`, return the index of any peak. Imagine `nums[-1] = nums[n] = -∞`. The algorithm must run in `O(log n)`.
+> **EN:** A peak is strictly greater than its neighbors. Given `nums`, return the index of any peak. Imagine `nums[-1] = `nums[n]` = -∞`. The algorithm must run in `O(log n)`.
 >
 > **VI:** Peak là phần tử lớn hơn nghiêm ngặt hai hàng xóm. Hãy trả về index của bất kỳ peak nào, xem phần tử ngoài biên là `-∞`, trong `O(log n)`.
 
@@ -15,7 +15,7 @@
 ```
 
 ## Constraints / Ràng buộc
-> **EN:** `1 <= nums.length <= 1000`; adjacent values are different.
+> **EN:** `1 <= `nums`.length <= 1000`; adjacent values are different.
 >
 > **VI:** Mảng không rỗng và mọi cặp phần tử kề nhau khác nhau.
 

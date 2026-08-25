@@ -22,7 +22,7 @@
 >
 > **VI:** - Các operator hợp lệ là `+`, `-`, `*`, `/`.
 
-> **EN:** - Each operand may be an integer or another expression.
+> **EN:** - Each `operand` may be an integer or another expression.
 >
 > **VI:** - Mỗi operand có thể là một integer hoặc kết quả của một sub-expression.
 
@@ -82,7 +82,7 @@ Explanation: ((10 * (6 / ((9 + 3) * -11))) + 17) + 5
 
 ## Constraints / Ràng buộc
 
-> **EN:** - `1 <= tokens.length <= 104`
+> **EN:** - `1 <= `tokens`.length <= 10^4`
 >
 > **VI:** - Số token nằm trong giới hạn được nêu trong source.
 

@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Determine if a 9 x 9 Sudoku board is valid. Only the filled cells need to be validated according to the following rules:
+> **EN:** Determine if a 9 x 9 Sudoku `board` is valid. Only the filled cells need to be validated according to the following rules:
 >
 > **VI:** Xác định một bảng Sudoku `9 x 9` có hợp lệ hay không. Chỉ các ô đã điền cần được kiểm tra theo các quy tắc sau.
 
@@ -18,13 +18,13 @@
 >
 > **VI:** Mỗi cột không được lặp các chữ số `1-9`.
 
-> **EN:** Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.
+> **EN:** Each of the nine 3 x 3 sub-boxes of the `grid` must contain the digits 1-9 without repetition.
 >
 > **VI:** Mỗi một trong chín sub-box `3 x 3` không được lặp các chữ số `1-9`.
 
 ## Note / Lưu ý
 
-> **EN:** A Sudoku board (partially filled) could be valid but is not necessarily solvable.
+> **EN:** A Sudoku `board` (partially filled) could be valid but is not necessarily solvable.
 >
 > **VI:** Một bảng Sudoku mới điền một phần có thể hợp lệ nhưng chưa chắc giải được.
 
@@ -66,7 +66,7 @@ Input: board =
 Output: false
 ```
 
-> **EN:** Explanation: Same as Example 1, except with the 5 in the top left corner being modified to 8. Since there are two 8's in the top left 3x3 sub-box, it is invalid.
+> **EN:** Explanation: Same as Example 1, except with the 5 in the top `left` corner being modified to 8. Since there are two 8's in the top `left` 3x3 sub-box, it is invalid.
 >
 > **VI:** Giống Ví dụ 1 nhưng ô góc trên trái đổi từ `5` thành `8`. Khi đó sub-box `3 x 3` góc trên trái có hai số `8`, nên bảng không hợp lệ.
 

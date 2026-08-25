@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** You are climbing a staircase. It takes n steps to reach the top.
+> **EN:** You are climbing a staircase. It takes `n` steps to reach the top.
 >
 > **VI:** Bạn đang leo một cầu thang gồm `n` bậc để lên tới đỉnh.
 
@@ -45,7 +45,7 @@ Output: 3
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= n <= 45`
+> **EN:** `1 <= `n` <= 45`
 >
 > **VI:** `n` nằm trong khoảng từ `1` đến `45`.
 

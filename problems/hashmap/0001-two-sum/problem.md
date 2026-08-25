@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+> **EN:** Given an array of integers `nums` and an integer `target`, return indices of the two numbers such that they add up to `target`.
 >
 > **VI:** Cho mảng số nguyên `nums` và số nguyên `target`, hãy trả về index của hai số có tổng bằng `target`.
 
@@ -27,7 +27,7 @@ Input: nums = [2,7,11,15], target = 9
 Output: [0,1]
 ```
 
-> **EN:** Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].
+> **EN:** Explanation: Because `nums[0]` + `nums[1]` == 9, we return [0, 1].
 >
 > **VI:** Vì `nums[0] + nums[1] == 9`, trả `[0,1]`.
 
@@ -47,15 +47,15 @@ Output: [0,1]
 
 ## Constraints / Ràng buộc
 
-> **EN:** `2 <= nums.length <= 104`
+> **EN:** `2 <= `nums`.length <= 10^4`
 >
 > **VI:** `2 <= nums.length <= 10^4`.
 
-> **EN:** `-109 <= nums[i] <= 109`
+> **EN:** `-10^9 <= `nums[i]` <= 10^9`
 >
 > **VI:** `-10^9 <= nums[i] <= 10^9`.
 
-> **EN:** `-109 <= target <= 109`
+> **EN:** `-10^9 <= `target` <= 10^9`
 >
 > **VI:** `-10^9 <= target <= 10^9`.
 

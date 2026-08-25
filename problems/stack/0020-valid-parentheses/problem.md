@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+> **EN:** Given a string `s` containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
 >
 > **VI:** Cho một chuỗi `s` chỉ chứa các ký tự `'('`, `')'`, `'{'`, `'}'`, `'['`, `']'`. Hãy xác định chuỗi đó có hợp lệ hay không.
 
@@ -65,7 +65,7 @@ Output: false
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= s.length <= 104`
+> **EN:** `1 <= `s`.length <= 10^4`
 >
 > **VI:** Độ dài chuỗi nằm trong giới hạn được nêu trong source.
 

@@ -8,7 +8,7 @@
 >
 > **VI:** Cho mảng `nums` tăng nghiêm ngặt, hãy chuyển nó thành một binary search tree cân bằng chiều cao.
 
-> **EN:** A height-balanced binary tree has left and right subtree heights differing by at most one at every node.
+> **EN:** A height-balanced binary tree has `left` and `right` subtree heights differing by at most one at every node.
 >
 > **VI:** Cây cân bằng chiều cao có chênh lệch độ cao giữa hai subtree không quá 1 tại mọi node.
 
@@ -19,7 +19,7 @@ Output: any valid height-balanced BST with this inorder sequence
 ```
 
 ## Constraints / Ràng buộc
-> **EN:** `1 <= nums.length <= 10^4`; nums is sorted in strictly increasing order.
+> **EN:** `1 <= `nums`.length <= 10^4`; `nums` is sorted in strictly increasing order.
 >
 > **VI:** Mảng có từ 1 đến `10^4` phần tử và tăng nghiêm ngặt.
 

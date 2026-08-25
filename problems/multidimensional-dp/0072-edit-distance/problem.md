@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given two strings word1 and word2, return the minimum number of operations required to convert word1 to word2.
+> **EN:** Given two strings `word1` and `word2`, return the minimum number of operations required to convert `word1` to `word2`.
 >
 > **VI:** Cho hai chuỗi `word1` và `word2`, hãy trả về số thao tác ít nhất cần để biến `word1` thành `word2`.
 
@@ -60,11 +60,11 @@ Output: 5
 
 ## Constraints / Ràng buộc
 
-> **EN:** `0 <= word1.length, word2.length <= 500`
+> **EN:** `0 <= `word1`.length, `word2`.length <= 500`
 >
 > **VI:** Độ dài mỗi chuỗi nằm trong khoảng từ `0` đến `500`.
 
-> **EN:** `word1 and word2 consist of lowercase English letters.`
+> **EN:** `word1 and `word2` consist of lowercase English letters.`
 >
 > **VI:** Hai chuỗi chỉ gồm chữ cái tiếng Anh viết thường.
 

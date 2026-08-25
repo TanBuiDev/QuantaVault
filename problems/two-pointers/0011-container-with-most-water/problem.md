@@ -6,21 +6,22 @@
 
 ## Problem / Đề bài
 
-> **EN:** You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).
+> **EN:** You are given an integer array `height` of length `n`. There are `n` vertical lines drawn such that the two endpoints of the $i^{\text{th}}$ line are `(i, 0)` and `(i, height[i])`.
 >
-> **VI:** Cho mảng số nguyên `height` có độ dài `n`. Có `n` đường thẳng đứng, trong đó đường thứ `i` có hai đầu mút là `(i, 0)` và `(i, height[i])`.
+> **VI:** Cho mảng số nguyên `height` có độ dài `n`. Có `n` đường thẳng đứng, trong đó đường thứ $i$ có hai đầu mút là `(i, 0)` và `(i, height[i])`.
 
 > **EN:** Find two lines that together with the x-axis form a container, such that the container contains the most water.
 >
 > **VI:** Hãy tìm hai đường thẳng cùng với trục `x` tạo thành một container chứa được nhiều nước nhất.
 
-> **EN:** Return the maximum amount of water a container can store.
+> **EN:** *Return the maximum amount of water a container can store.*
 >
-> **VI:** Trả về lượng nước lớn nhất mà container có thể chứa.
+> **VI:** Hãy *trả về lượng nước lớn nhất mà container có thể chứa*.
 
-> **EN:** Notice that you may not slant the container.
+> **EN:** **Notice** that you may not slant the container.
 >
-> **VI:** Lưu ý rằng không được nghiêng container.
+> **VI:** **Lưu ý** rằng không được nghiêng container.
+
 
 ## Examples / Ví dụ
 
@@ -44,15 +45,15 @@ Output: 1
 
 ## Constraints / Ràng buộc
 
-> **EN:** `n == height.length`
+> **EN:** `n == `height`.length`
 >
 > **VI:** `n` chính là độ dài của `height`.
 
-> **EN:** `2 <= n <= 105`
+> **EN:** `2 <= n <= 10^5`
 >
 > **VI:** `2 <= n <= 10^5`.
 
-> **EN:** `0 <= height[i] <= 104`
+> **EN:** `0 <= `height[i]` <= 10^4`
 >
 > **VI:** `0 <= height[i] <= 10^4`.
 

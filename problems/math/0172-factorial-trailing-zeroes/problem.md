@@ -6,11 +6,11 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given an integer n, return the number of trailing zeroes in n!.
+> **EN:** Given an integer `n`, return the number of trailing zeroes in `n`!.
 >
 > **VI:** Cho số nguyên `n`, hãy trả về số lượng chữ số 0 liên tiếp ở cuối của `n!`.
 
-> **EN:** Note that n! = n * (n - 1) * (n - 2) * ... * 3 * 2 * 1.
+> **EN:** Note that `n`! = `n` * (`n` - 1) * (`n` - 2) * ... * 3 * 2 * 1.
 >
 > **VI:** Lưu ý `n! = n * (n - 1) * ... * 2 * 1`.
 
@@ -36,7 +36,7 @@ Output: 0
 
 ## Constraints / Ràng buộc
 
-> **EN:** `0 <= n <= 10^4`
+> **EN:** `0 <= `n` <= 10^4`
 >
 > **VI:** `n` nằm trong khoảng từ `0` đến `10^4`.
 

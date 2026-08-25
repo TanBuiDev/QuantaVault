@@ -4,15 +4,15 @@
 **Medium / Trung bình**
 
 ## Problem / Đề bài
-> **EN:** Given an array of distinct integers candidates and a target integer target, return a list of all unique combinations of candidates where the chosen numbers sum to target. You may return the combinations in any order.
+> **EN:** Given an array of distinct integers `candidates` and a `target` integer `target`, return a list of all unique combinations of `candidates` where the chosen numbers sum to `target`. You may return the combinations in any order.
 >
 > **VI:** Cho mảng các số nguyên phân biệt `candidates` và số nguyên `target`, hãy trả về tất cả các tổ hợp duy nhất có tổng bằng `target`. Có thể trả về theo bất kỳ thứ tự nào.
 
-> **EN:** The same number may be chosen from candidates an unlimited number of times. Two combinations are unique if the frequency of at least one of the chosen numbers is different.
+> **EN:** The same number may be chosen from `candidates` an unlimited number of times. Two combinations are unique if the frequency of at least one of the chosen numbers is different.
 >
 > **VI:** Mỗi số trong `candidates` có thể được chọn không giới hạn số lần. Hai tổ hợp khác nhau nếu tần suất của ít nhất một số được chọn khác nhau.
 
-> **EN:** The test cases are generated such that the number of unique combinations that sum up to target is less than 150 combinations for the given input.
+> **EN:** The test cases are generated such that the number of unique combinations that sum up to `target` is less than 150 combinations for the given input.
 >
 > **VI:** Test được tạo sao cho số tổ hợp duy nhất có tổng bằng `target` nhỏ hơn 150.
 
@@ -42,19 +42,19 @@ Output: []
 ```
 
 ## Constraints / Ràng buộc
-> **EN:** `1 <= candidates.length <= 30`
+> **EN:** `1 <= `candidates`.length <= 30`
 >
 > **VI:** `candidates` có từ 1 đến 30 phần tử.
 
-> **EN:** `2 <= candidates[i] <= 40`
+> **EN:** `2 <= `candidates[i]` <= 40`
 >
 > **VI:** Mỗi ứng viên nằm trong khoảng 2 đến 40.
 
-> **EN:** All elements of candidates are distinct.
+> **EN:** All elements of `candidates` are distinct.
 >
 > **VI:** Tất cả phần tử của `candidates` là phân biệt.
 
-> **EN:** `1 <= target <= 40`
+> **EN:** `1 <= `target` <= 40`
 >
 > **VI:** `target` nằm trong khoảng 1 đến 40.
 

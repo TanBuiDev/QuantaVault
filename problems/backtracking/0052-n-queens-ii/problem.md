@@ -4,11 +4,11 @@
 **Hard / Khó**
 
 ## Problem / Đề bài
-> **EN:** The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
+> **EN:** The `n`-queens puzzle is the problem of placing `n` queens on an `n` x `n` chessboard such that no two queens attack each other.
 >
 > **VI:** Bài toán n-queens yêu cầu đặt `n` quân hậu lên bàn cờ `n x n` sao cho không có hai quân hậu nào tấn công nhau.
 
-> **EN:** Given an integer n, return the number of distinct solutions to the n-queens puzzle.
+> **EN:** Given an integer `n`, return the number of distinct solutions to the `n`-queens puzzle.
 >
 > **VI:** Cho số nguyên `n`, hãy trả về số lượng lời giải khác nhau của bài toán n-queens.
 
@@ -29,7 +29,7 @@ Output: 1
 ```
 
 ## Constraints / Ràng buộc
-> **EN:** `1 <= n <= 9`
+> **EN:** `1 <= `n` <= 9`
 >
 > **VI:** `n` nằm trong khoảng từ 1 đến 9.
 

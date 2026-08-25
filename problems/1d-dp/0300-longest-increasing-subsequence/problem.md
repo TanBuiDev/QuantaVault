@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given an integer array nums, return the length of the longest strictly increasing subsequence.
+> **EN:** Given an integer array `nums`, return the length of the longest strictly increasing subsequence.
 >
 > **VI:** Cho mảng số nguyên `nums`, hãy trả về độ dài của dãy con giữ nguyên thứ tự tương đối tăng nghiêm ngặt dài nhất.
 
@@ -39,11 +39,11 @@ Output: 1
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= nums.length <= 2500`
+> **EN:** `1 <= `nums`.length <= 2500`
 >
 > **VI:** Độ dài `nums` từ `1` đến `2500`.
 
-> **EN:** `-104 <= nums[i] <= 104`
+> **EN:** `-10^4 <= `nums[i]` <= 10^4`
 >
 > **VI:** Mỗi phần tử nằm trong khoảng `-10^4` đến `10^4`.
 

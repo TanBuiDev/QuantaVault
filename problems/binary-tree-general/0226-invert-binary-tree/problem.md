@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given the root of a binary tree, invert the tree, and return its root.
+> **EN:** Given the `root` of a binary tree, invert the tree, and return its `root`.
 >
 > **VI:** Cho `root` của một binary tree. Hãy đảo cây theo trục dọc bằng cách hoán đổi left/right subtree ở mọi node và trả về root.
 
@@ -39,7 +39,7 @@ Output: []
 >
 > **VI:** Số node trong tree nằm trong `[0, 100]`.
 
-> **EN:** -100 <= Node.val <= 100
+> **EN:** -100 <= `Node`.val <= 100
 >
 > **VI:** `Node.val` nằm trong `[-100, 100]`.
 

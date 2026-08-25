@@ -6,11 +6,11 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given the root of a binary tree, return its maximum depth.
+> **EN:** Given the `root` of a binary tree, return its maximum depth.
 >
 > **VI:** Cho `root` của một binary tree. Hãy trả về độ sâu lớn nhất của cây.
 
-> **EN:** A binary tree's maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
+> **EN:** A binary tree's maximum depth is the number of nodes along the longest path from the `root` node down to the farthest leaf node.
 >
 > **VI:** Maximum depth là số node trên đường đi dài nhất từ root xuống leaf xa nhất.
 
@@ -32,11 +32,11 @@ Output: 2
 
 ## Constraints / Ràng buộc
 
-> **EN:** The number of nodes in the tree is in the range [0, 104].
+> **EN:** The number of nodes in the tree is in the range [0, 10^4].
 >
 > **VI:** Số node trong cây nằm trong khoảng `[0, 10^4]`.
 
-> **EN:** -100 <= Node.val <= 100
+> **EN:** -100 <= `Node`.val <= 100
 >
 > **VI:** `Node.val` nằm trong `[-100, 100]`.
 

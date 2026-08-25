@@ -10,7 +10,7 @@
 >
 > **VI:** Bạn là một tên trộm chuyên nghiệp đang lên kế hoạch trộm các ngôi nhà dọc một con phố. Mỗi nhà có một số tiền nhất định; hai nhà kề nhau có hệ thống an ninh liên kết nên không thể trộm cả hai trong cùng đêm.
 
-> **EN:** Given an integer array nums representing the amount of money of each house, return the maximum amount of money you can rob tonight without alerting the police.
+> **EN:** Given an integer array `nums` representing the amount of money of each house, return the maximum amount of money you can rob tonight without alerting the police.
 >
 > **VI:** Cho mảng số nguyên `nums` biểu diễn số tiền trong từng nhà, hãy trả về số tiền lớn nhất có thể lấy mà không kích hoạt báo động.
 
@@ -38,11 +38,11 @@ Output: 12
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= nums.length <= 100`
+> **EN:** `1 <= `nums`.length <= 100`
 >
 > **VI:** Có từ `1` đến `100` ngôi nhà.
 
-> **EN:** `0 <= nums[i] <= 400`
+> **EN:** `0 <= `nums[i]` <= 400`
 >
 > **VI:** Tiền trong mỗi nhà từ `0` đến `400`.
 

@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given two integer arrays preorder and inorder where preorder is the preorder traversal of a binary tree and inorder is the inorder traversal of the same tree, construct and return the binary tree.
+> **EN:** Given two integer arrays `preorder` and `inorder` where `preorder` is the `preorder` traversal of a binary tree and `inorder` is the `inorder` traversal of the same tree, construct and return the binary tree.
 >
 > **VI:** Cho hai mảng `preorder` và `inorder`, lần lượt là preorder traversal và inorder traversal của cùng một binary tree. Hãy dựng lại và trả về cây đó.
 
@@ -28,19 +28,19 @@ Output: [-1]
 
 ## Constraints / Ràng buộc
 
-> **EN:** 1 <= preorder.length <= 3000
+> **EN:** 1 <= `preorder`.length <= 3000
 >
 > **VI:** `1 <= preorder.length <= 3000`.
 
-> **EN:** inorder.length == preorder.length
+> **EN:** `inorder`.length == `preorder`.length
 >
 > **VI:** `inorder.length == preorder.length`.
 
-> **EN:** -3000 <= preorder[i], inorder[i] <= 3000
+> **EN:** -3000 <= `preorder[i]`, `inorder[i]` <= 3000
 >
 > **VI:** Mỗi giá trị nằm trong `[-3000, 3000]`.
 
-> **EN:** preorder and inorder consist of unique values. Each value of inorder also appears in preorder. preorder is guaranteed to be the preorder traversal of the tree. inorder is guaranteed to be the inorder traversal of the tree.
+> **EN:** `preorder` and `inorder` consist of unique values. Each value of `inorder` also appears in `preorder`. `preorder` is guaranteed to be the `preorder` traversal of the tree. `inorder` is guaranteed to be the `inorder` traversal of the tree.
 >
 > **VI:** Các value là unique; hai traversal chứa cùng các value và được đảm bảo hợp lệ cho cùng một tree.
 

@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** You are given a sorted unique integer array nums.
+> **EN:** You are given a sorted unique `integer` array `nums`.
 >
 > **VI:** Bạn được cho một mảng số nguyên `nums` đã được sắp xếp và không có phần tử trùng.
 
@@ -14,7 +14,7 @@
 >
 > **VI:** Một range `[a,b]` là tập tất cả số nguyên từ `a` đến `b`, tính cả hai đầu.
 
-> **EN:** Return the smallest sorted list of ranges that cover all the numbers in the array exactly. That is, each element of nums is covered by exactly one of the ranges, and there is no integer x such that x is in one of the ranges but not in nums.
+> **EN:** Return the smallest sorted list of ranges that cover all the numbers in the array exactly. That is, each element of `nums` is covered by exactly one of the ranges, and there is no `integer` x such that x is in one of the ranges but not in `nums`.
 >
 > **VI:** Trả về danh sách range nhỏ nhất, đã sắp xếp, bao phủ chính xác mọi số trong mảng: mỗi phần tử thuộc đúng một range và không range nào chứa số không có trong `nums`.
 
@@ -56,19 +56,19 @@ Output: ["0","2->4","6","8->9"]
 
 ## Constraints / Ràng buộc
 
-> **EN:** `0 <= nums.length <= 20`
+> **EN:** `0 <= `nums`.length <= 20`
 >
 > **VI:** `0 <= nums.length <= 20`.
 
-> **EN:** `-231 <= nums[i] <= 231 - 1`
+> **EN:** `-2^31 <= `nums[i]` <= 2^31 - 1`
 >
 > **VI:** Mỗi phần tử nằm trong miền số nguyên 32-bit.
 
-> **EN:** All the values of nums are unique.
+> **EN:** All the values of `nums` are unique.
 >
 > **VI:** Mọi giá trị trong `nums` là duy nhất.
 
-> **EN:** nums is sorted in ascending order.
+> **EN:** `nums` is sorted in ascending order.
 >
 > **VI:** `nums` được sắp xếp tăng dần.
 

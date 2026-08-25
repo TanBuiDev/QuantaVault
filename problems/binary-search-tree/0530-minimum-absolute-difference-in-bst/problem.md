@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given the root of a Binary Search Tree, return the minimum absolute difference between the values of any two different nodes.
+> **EN:** Given the `root` of a Binary Search Tree, return the minimum absolute difference between the values of any two different nodes.
 >
 > **VI:** Cho root của một Binary Search Tree, hãy trả về minimum absolute difference giữa value của hai node khác nhau bất kỳ.
 
@@ -26,7 +26,7 @@ Output: 1
 
 ## Constraints / Ràng buộc
 
-> **EN:** The tree contains `[2, 10^4]` nodes and `0 <= Node.val <= 10^5`.
+> **EN:** The tree contains `[2, 10^4]` nodes and `0 <= `Node`.val <= 10^5`.
 >
 > **VI:** Tree có `[2, 10^4]` node và `0 <= Node.val <= 10^5`.
 

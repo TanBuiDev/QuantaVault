@@ -37,7 +37,7 @@ Output: "MCMXCIV"
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= num <= 3999`
+> **EN:** `1 <= `num` <= 3999`
 >
 > **VI:** `num` nằm trong khoảng `1` đến `3999`.
 

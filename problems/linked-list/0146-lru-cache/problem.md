@@ -14,19 +14,19 @@
 >
 > **VI:** Cài đặt class `LRUCache`:
 
-> **EN:** LRUCache(int capacity) Initialize the LRU cache with positive size capacity.
+> **EN:** LRUCache(int `capacity`) Initialize the LRU cache with positive size `capacity`.
 >
 > **VI:** `LRUCache(int capacity)` khởi tạo cache với sức chứa dương `capacity`.
 
-> **EN:** int get(int key) Return the value of the key if the key exists, otherwise return -1.
+> **EN:** int `get`(int key) Return the value of the key if the key exists, otherwise return -1.
 >
 > **VI:** `get(key)` trả về value nếu key tồn tại, ngược lại trả `-1`.
 
-> **EN:** void put(int key, int value) Update the value of the key if the key exists. Otherwise, add the key-value pair to the cache. If the number of keys exceeds the capacity from this operation, evict the least recently used key.
+> **EN:** void put(int key, int value) Update the value of the key if the key exists. Otherwise, add the key-value pair to the cache. If the number of keys exceeds the `capacity` from this operation, evict the least recently used key.
 >
 > **VI:** `put(key, value)` cập nhật value nếu key đã tồn tại; nếu chưa thì thêm cặp key-value. Nếu vượt capacity, loại bỏ key ít được sử dụng gần đây nhất.
 
-> **EN:** The functions get and put must each run in O(1) average time complexity.
+> **EN:** The functions `get` and put must each run in O(1) average time complexity.
 >
 > **VI:** Cả `get` và `put` phải chạy với độ phức tạp trung bình `O(1)`.
 
@@ -47,19 +47,19 @@ Diễn biến chính: `get(1)` làm key `1` trở thành recently used; thêm ke
 
 ## Constraints / Ràng buộc
 
-> **EN:** 1 <= capacity <= 3000
+> **EN:** 1 <= `capacity` <= 3000
 >
 > **VI:** `1 <= capacity <= 3000`.
 
-> **EN:** 0 <= key <= 104
+> **EN:** 0 <= key <= 10^4
 >
 > **VI:** `0 <= key <= 10^4`.
 
-> **EN:** 0 <= value <= 105
+> **EN:** 0 <= value <= 10^5
 >
 > **VI:** `0 <= value <= 10^5`.
 
-> **EN:** At most 2 * 105 calls will be made to get and put.
+> **EN:** At most 2 * 10^5 calls will be made to `get` and put.
 >
 > **VI:** Có tối đa `2 * 10^5` lời gọi `get` và `put`.
 

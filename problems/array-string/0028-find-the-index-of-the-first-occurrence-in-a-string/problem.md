@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given two strings needle and haystack, return the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
+> **EN:** Given two strings `needle` and `haystack`, return the index of the first occurrence of `needle` in `haystack`, or -1 if `needle` is not part of `haystack`.
 >
 > **VI:** Cho hai chuỗi `needle` và `haystack`, hãy trả về index của lần xuất hiện đầu tiên của `needle` trong `haystack`, hoặc `-1` nếu `needle` không xuất hiện.
 
@@ -36,11 +36,11 @@ Output: -1
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= haystack.length, needle.length <= 104`
+> **EN:** `1 <= `haystack`.length, `needle`.length <= 10^4`
 >
 > **VI:** Độ dài của `haystack` và `needle` nằm trong khoảng `1` đến `10^4`.
 
-> **EN:** haystack and needle consist of only lowercase English characters.
+> **EN:** `haystack` and `needle` consist of only lowercase English characters.
 >
 > **VI:** `haystack` và `needle` chỉ gồm chữ cái tiếng Anh viết thường.
 

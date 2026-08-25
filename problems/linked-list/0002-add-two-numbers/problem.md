@@ -46,7 +46,7 @@ Output: [8,9,9,9,0,0,0,1]
 >
 > **VI:** Số node của mỗi linked list nằm trong khoảng `[1, 100]`.
 
-> **EN:** 0 <= Node.val <= 9
+> **EN:** 0 <= `Node`.val <= 9
 >
 > **VI:** Giá trị của mỗi node là một chữ số từ `0` đến `9`.
 

@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence.
+> **EN:** Given an unsorted array of integers `nums`, return the length of the longest consecutive elements sequence.
 >
 > **VI:** Cho mảng số nguyên chưa sắp xếp `nums`, hãy trả về độ dài của dãy các giá trị liên tiếp dài nhất.
 
@@ -43,11 +43,11 @@ Output: 3
 
 ## Constraints / Ràng buộc
 
-> **EN:** `0 <= nums.length <= 105`
+> **EN:** `0 <= `nums`.length <= 10^5`
 >
 > **VI:** `0 <= nums.length <= 10^5`.
 
-> **EN:** `-109 <= nums[i] <= 109`
+> **EN:** `-10^9 <= `nums[i]` <= 10^9`
 >
 > **VI:** `-10^9 <= nums[i] <= 10^9`.
 

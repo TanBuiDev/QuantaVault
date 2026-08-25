@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.
+> **EN:** Given a non-empty array of integers `nums`, every element appears twice except for one. Find that single one.
 >
 > **VI:** Cho mảng số nguyên không rỗng `nums`, mọi phần tử xuất hiện hai lần ngoại trừ một phần tử xuất hiện một lần. Hãy tìm phần tử đó.
 
@@ -33,11 +33,11 @@ Output: 1
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= nums.length <= 3 * 10^4`
+> **EN:** `1 <= `nums`.length <= 3 * 10^4`
 >
 > **VI:** Mảng có từ 1 đến `3 * 10^4` phần tử.
 
-> **EN:** `-3 * 10^4 <= nums[i] <= 3 * 10^4`
+> **EN:** `-3 * 10^4 <= `nums[i]` <= 3 * 10^4`
 >
 > **VI:** Mỗi giá trị nằm trong khoảng đã cho.
 

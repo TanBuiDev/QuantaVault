@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given an integer x, return true if x is a palindrome, and false otherwise.
+> **EN:** Given an integer `x`, return `true` if `x` is a palindrome, and `false` otherwise.
 >
 > **VI:** Cho số nguyên `x`, trả về `true` nếu `x` là số palindrome và `false` nếu không phải.
 
@@ -33,7 +33,7 @@ Output: false
 
 ## Constraints / Ràng buộc
 
-> **EN:** `-2^31 <= x <= 2^31 - 1`
+> **EN:** `-2^31 <= `x` <= 2^31 - 1`
 >
 > **VI:** `x` nằm trong miền số nguyên 32-bit có dấu.
 

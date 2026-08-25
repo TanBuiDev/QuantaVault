@@ -76,7 +76,7 @@ nums1 = [0], m = 0, nums2 = [1], n = 1
 
 ## Constraints / Ràng buộc
 
-> **EN:** `nums1.length == m + n`
+> **EN:** `nums1.length == `m` + n`
 >
 > **VI:** Độ dài `nums1` bằng `m + n`.
 
@@ -84,21 +84,21 @@ nums1 = [0], m = 0, nums2 = [1], n = 1
 >
 > **VI:** Độ dài `nums2` bằng `n`.
 
-> **EN:** `0 <= m, n <= 200`
+> **EN:** `0 <= `m`, `n` <= 200`
 >
 > **VI:** `m` và `n` nằm trong khoảng từ `0` đến `200`.
 
-> **EN:** `1 <= m + n <= 200`
+> **EN:** `1 <= `m` + `n` <= 200`
 >
 > **VI:** Tổng `m + n` nằm trong khoảng từ `1` đến `200`.
 
-> **EN:** `-109 <= nums1[i], nums2[j] <= 109`
+> **EN:** `-10^9 <= `nums1[i]`, `nums2[j]` <= 10^9`
 >
 > **VI:** Giá trị các phần tử nằm trong miền số nguyên được nêu trong đề nguồn.
 
 ## Follow-up / Câu hỏi mở rộng
 
-> **EN:** Can you come up with an algorithm that runs in `O(m + n)` time?
+> **EN:** Can you come up with an algorithm that runs in `O(`m` + `n`)` time?
 >
 > **VI:** Bạn có thể xây dựng thuật toán chạy trong thời gian `O(m + n)` không?
 

@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given the head of a linked list, remove the nth node from the end of the list and return its head.
+> **EN:** Given the `head` of a linked list, `remove` the nth node from the end of the list and return its `head`.
 >
 > **VI:** Cho `head` của một linked list. Hãy xóa node thứ `n` tính từ cuối list và trả về head sau khi xóa.
 
@@ -43,11 +43,11 @@ Output: [1]
 >
 > **VI:** `1 <= sz <= 30`.
 
-> **EN:** 0 <= Node.val <= 100
+> **EN:** 0 <= `Node`.val <= 100
 >
 > **VI:** `Node.val` nằm trong `[0, 100]`.
 
-> **EN:** 1 <= n <= sz
+> **EN:** 1 <= `n` <= sz
 >
 > **VI:** `1 <= n <= sz`.
 

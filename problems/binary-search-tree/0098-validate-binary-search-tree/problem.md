@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given the root of a binary tree, determine whether it is a valid binary search tree. Every node in the left subtree must be strictly smaller than the node, every node in the right subtree strictly greater, and both subtrees must satisfy the same rule.
+> **EN:** Given the `root` of a binary tree, determine whether it is a valid binary search tree. Every node in the `left` subtree must be strictly smaller than the node, every node in the `right` subtree strictly greater, and both subtrees must satisfy the same rule.
 >
 > **VI:** Cho root của một binary tree, hãy xác định tree có phải BST hợp lệ hay không. Mọi node ở left subtree phải nhỏ hơn current node, mọi node ở right subtree phải lớn hơn, và cả hai subtree cũng phải thỏa quy tắc này.
 

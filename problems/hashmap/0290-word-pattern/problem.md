@@ -6,19 +6,19 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given a pattern and a string s, find if s follows the same pattern.
+> **EN:** Given a `pattern` and a string `s`, find if `s` follows the same `pattern`.
 >
 > **VI:** Cho `pattern` và chuỗi `s`, hãy xác định `s` có tuân theo cùng pattern hay không.
 
-> **EN:** Here follow means a full match, such that there is a bijection between a letter in pattern and a non-empty word in s. Specifically:
+> **EN:** Here follow means a full match, such that there is a bijection between a letter in `pattern` and a non-empty word in `s`. Specifically:
 >
 > **VI:** “Follow” nghĩa là match hoàn toàn, sao cho tồn tại một bijection giữa mỗi ký tự trong `pattern` và một word không rỗng trong `s`.
 
-> **EN:** Each letter in pattern maps to exactly one unique word in s.
+> **EN:** Each letter in `pattern` maps to exactly one unique word in `s`.
 >
 > **VI:** Mỗi letter trong `pattern` map tới đúng một unique word.
 
-> **EN:** Each unique word in s maps to exactly one letter in pattern.
+> **EN:** Each unique word in `s` maps to exactly one letter in `pattern`.
 >
 > **VI:** Mỗi unique word trong `s` map tới đúng một letter.
 
@@ -55,27 +55,27 @@ Output: false
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= pattern.length <= 300`
+> **EN:** `1 <= `pattern`.length <= 300`
 >
 > **VI:** Độ dài `pattern` từ `1` đến `300`.
 
-> **EN:** pattern contains only lower-case English letters.
+> **EN:** `pattern` contains only lower-case English letters.
 >
 > **VI:** `pattern` chỉ gồm chữ cái tiếng Anh viết thường.
 
-> **EN:** `1 <= s.length <= 3000`
+> **EN:** `1 <= `s`.length <= 3000`
 >
 > **VI:** Độ dài `s` từ `1` đến `3000`.
 
-> **EN:** s contains only lowercase English letters and spaces ' '.
+> **EN:** `s` contains only lowercase English letters and spaces ' '.
 >
 > **VI:** `s` chỉ gồm chữ cái viết thường và khoảng trắng.
 
-> **EN:** s does not contain any leading or trailing spaces.
+> **EN:** `s` does not contain any leading or trailing spaces.
 >
 > **VI:** `s` không có khoảng trắng đầu/cuối.
 
-> **EN:** All the words in s are separated by a single space.
+> **EN:** All the words in `s` are separated by a single space.
 >
 > **VI:** Các word được ngăn cách bởi đúng một khoảng trắng.
 

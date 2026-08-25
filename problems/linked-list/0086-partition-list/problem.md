@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given the head of a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.
+> **EN:** Given the `head` of a linked list and a value `x`, partition it such that `all` nodes less than `x` come before nodes greater than or equal to `x`.
 >
 > **VI:** Cho `head` của một linked list và giá trị `x`. Hãy partition list sao cho mọi node có value nhỏ hơn `x` đứng trước các node có value lớn hơn hoặc bằng `x`.
 
@@ -36,11 +36,11 @@ Output: [1,2]
 >
 > **VI:** Số node trong list nằm trong khoảng `[0, 200]`.
 
-> **EN:** -100 <= Node.val <= 100
+> **EN:** -100 <= `Node`.val <= 100
 >
 > **VI:** `Node.val` nằm trong `[-100, 100]`.
 
-> **EN:** -200 <= x <= 200
+> **EN:** -200 <= `x` <= 200
 >
 > **VI:** `x` nằm trong `[-200, 200]`.
 

@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given an array of strings strs, group the anagrams together. You can return the answer in any order.
+> **EN:** Given an array of strings `strs`, group the anagrams together. You can return the answer in any order.
 >
 > **VI:** Cho mảng chuỗi `strs`, hãy gom các chuỗi là anagram vào cùng nhóm. Có thể trả kết quả theo bất kỳ thứ tự nào.
 
@@ -19,7 +19,7 @@ Input: strs = ["eat","tea","tan","ate","nat","bat"]
 Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
 ```
 
-> **EN:** Explanation: There is no string in strs that can be rearranged to form "bat". The strings "nat" and "tan" are anagrams as they can be rearranged to form each other. The strings "ate", "eat", and "tea" are anagrams as they can be rearranged to form each other.
+> **EN:** Explanation: There is no string in `strs` that can be rearranged to form "bat". The strings "nat" and "tan" are anagrams as they can be rearranged to form each other. The strings "ate", "eat", and "tea" are anagrams as they can be rearranged to form each other.
 >
 > **VI:** `"bat"` đứng riêng; `"nat"` và `"tan"` cùng nhóm; `"ate"`, `"eat"`, `"tea"` cùng nhóm vì mỗi nhóm có cùng multiset ký tự.
 
@@ -39,15 +39,15 @@ Output: [["a"]]
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= strs.length <= 104`
+> **EN:** `1 <= `strs`.length <= 10^4`
 >
 > **VI:** `1 <= strs.length <= 10^4`.
 
-> **EN:** `0 <= strs[i].length <= 100`
+> **EN:** `0 <= `strs[i]`.length <= 100`
 >
 > **VI:** Mỗi chuỗi có độ dài từ `0` đến `100`.
 
-> **EN:** strs[i] consists of lowercase English letters.
+> **EN:** `strs[i]` consists of lowercase English letters.
 >
 > **VI:** Mỗi chuỗi chỉ gồm chữ cái tiếng Anh viết thường.
 

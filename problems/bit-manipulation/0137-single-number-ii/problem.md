@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given an integer array nums where every element appears three times except for one, which appears exactly once. Find the single element and return it.
+> **EN:** Given an integer array `nums` where every element appears three times except for one, which appears exactly once. Find the `single` element and return it.
 >
 > **VI:** Cho mảng số nguyên `nums`, mọi phần tử xuất hiện ba lần ngoại trừ một phần tử xuất hiện đúng một lần. Hãy tìm và trả về phần tử đó.
 
@@ -30,15 +30,15 @@ Output: 99
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= nums.length <= 3 * 10^4`
+> **EN:** `1 <= `nums`.length <= 3 * 10^4`
 >
 > **VI:** Mảng có từ 1 đến `3 * 10^4` phần tử.
 
-> **EN:** `-2^31 <= nums[i] <= 2^31 - 1`
+> **EN:** `-2^31 <= `nums[i]` <= 2^31 - 1`
 >
 > **VI:** Mỗi giá trị nằm trong miền int 32-bit có dấu.
 
-> **EN:** Each element in nums appears exactly three times except for one element which appears once.
+> **EN:** Each element in `nums` appears exactly three times except for one element which appears once.
 >
 > **VI:** Mọi phần tử xuất hiện đúng ba lần, trừ một phần tử xuất hiện một lần.
 

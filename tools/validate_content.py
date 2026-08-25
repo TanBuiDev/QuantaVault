@@ -328,7 +328,37 @@ def validate_bilingual_problem(problem_dir: Path, meta: dict) -> list[str]:
         return [
             f"{problem_dir}: translation marked complete but problem.md is not bilingual"
         ]
-    return []
+
+    errors: list[str] = []
+    lines = text.splitlines()
+
+    # Check for unclosed math delimiters ($)
+    for idx, line in enumerate(lines, 1):
+        if line.count("$") % 2 != 0:
+            errors.append(f"{path}:{idx}: unclosed math delimiter ($)")
+
+    # Check for obvious exponent corruption in constraints
+    in_constraints = False
+    for idx, line in enumerate(lines, 1):
+        if line.startswith("## Constraints") or line.startswith("## Ràng buộc"):
+            in_constraints = True
+        elif line.startswith("## ") and in_constraints:
+            in_constraints = False
+
+        if in_constraints and (line.startswith("> **EN:**") or line.startswith("> `") or line.startswith("`")):
+            suspicious_patterns = [
+                (r"(?<!\^)\b105\b", "105 (likely collapsed 10^5)"),
+                (r"(?<!\^)\b104\b", "104 (likely collapsed 10^4)"),
+                (r"(?<!\^)\b109\b", "109 (likely collapsed 10^9)"),
+                (r"(?<!\^)-231\b", "-231 (likely collapsed -2^31)"),
+                (r"(?<!\^)\b231-1\b", "231-1 (likely collapsed 2^31 - 1)"),
+            ]
+            for pattern, desc in suspicious_patterns:
+                if re.search(pattern, line):
+                    errors.append(f"{path}:{idx}: suspicious collapsed exponent found: {desc} in '{line.strip()}'")
+
+    return errors
+
 
 
 def validate_interview(problem_dir: Path, meta: dict) -> list[str]:

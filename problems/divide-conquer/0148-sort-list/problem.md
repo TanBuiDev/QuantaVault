@@ -4,7 +4,7 @@
 **Medium / Trung bình**
 
 ## Problem / Đề bài
-> **EN:** Given the head of a linked list, return the list after sorting it in ascending order.
+> **EN:** Given the `head` of a linked list, return the list after sorting it in ascending order.
 >
 > **VI:** Cho `head` của linked list, hãy trả về list sau khi sắp xếp tăng dần.
 

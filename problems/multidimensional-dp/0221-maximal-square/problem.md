@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given an m x n binary matrix filled with 0's and 1's, find the largest square containing only 1's and return its area.
+> **EN:** Given an m x n binary `matrix` filled with 0's and 1's, find the largest square containing only 1's and return its area.
 >
 > **VI:** Cho một ma trận nhị phân kích thước `m x n` chỉ gồm các ký tự `0` và `1`, hãy tìm hình vuông lớn nhất chỉ chứa `1` và trả về diện tích của hình vuông đó.
 
@@ -56,11 +56,11 @@ matrix = [["0"]]
 
 ## Constraints / Ràng buộc
 
-> **EN:** `m == matrix.length`
+> **EN:** `m == `matrix`.length`
 >
 > **VI:** `m` là số hàng của `matrix`.
 
-> **EN:** `n == matrix[i].length`
+> **EN:** `n == `matrix[i]`.length`
 >
 > **VI:** `n` là số cột của mỗi hàng trong `matrix`.
 

@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.
+> **EN:** Given an array of `intervals` where `intervals[i]` = [starti, endi], merge `all` overlapping `intervals`, and return an array of the non-overlapping `intervals` that cover `all` the `intervals` in the input.
 >
 > **VI:** Cho một mảng các khoảng `intervals`, trong đó `intervals[i] = [starti, endi]`. Hãy gộp tất cả các khoảng bị chồng lấn và trả về một mảng các khoảng không còn chồng lấn nhưng vẫn bao phủ toàn bộ các khoảng ban đầu.
 
@@ -19,7 +19,7 @@ Input: intervals = [[1,3],[2,6],[8,10],[15,18]]
 Output: [[1,6],[8,10],[15,18]]
 ```
 
-> **EN:** Explanation: Since intervals [1,3] and [2,6] overlap, merge them into [1,6].
+> **EN:** Explanation: Since `intervals` [1,3] and [2,6] overlap, merge them into [1,6].
 >
 > **VI:** Giải thích: Vì `[1,3]` và `[2,6]` chồng lấn nên gộp chúng thành `[1,6]`.
 
@@ -47,7 +47,7 @@ Output: [[1,7]]
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= intervals.length <= 104`
+> **EN:** `1 <= `intervals`.length <= 10^4`
 >
 > **VI:** Số lượng interval nằm trong giới hạn được nêu trong source.
 
@@ -55,7 +55,7 @@ Output: [[1,7]]
 >
 > **VI:** Mỗi interval luôn có đúng hai giá trị: điểm bắt đầu và điểm kết thúc.
 
-> **EN:** `0 <= starti <= endi <= 104`
+> **EN:** `0 <= starti <= endi <= 10^4`
 >
 > **VI:** Mỗi interval hợp lệ và có `starti <= endi`, với giá trị nằm trong giới hạn được nêu trong source.
 

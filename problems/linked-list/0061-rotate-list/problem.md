@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given the head of a linked list, rotate the list to the right by k places.
+> **EN:** Given the `head` of a linked list, `rotate` the list to the `right` by `k` places.
 >
 > **VI:** Cho `head` của một linked list. Hãy xoay list sang phải `k` vị trí.
 
@@ -32,11 +32,11 @@ Output: [2,0,1]
 >
 > **VI:** Số node nằm trong `[0, 500]`.
 
-> **EN:** -100 <= Node.val <= 100
+> **EN:** -100 <= `Node`.val <= 100
 >
 > **VI:** `Node.val` nằm trong `[-100, 100]`.
 
-> **EN:** 0 <= k <= 2 * 109
+> **EN:** 0 <= `k` <= 2 * 10^9
 >
 > **VI:** `0 <= k <= 2 * 10^9`.
 

@@ -6,17 +6,18 @@
 
 ## Problem / Đề bài
 
-> **EN:** You are given an array prices where prices[i] is the price of a given stock on the ith day.
+> **EN:** You are given an array `prices` where `prices[i]` is the price of a given stock on the $i^{\text{th}}$ day.
 >
-> **VI:** Bạn được cho một mảng `prices`, trong đó `prices[i]` là giá của một cổ phiếu vào ngày thứ `i`.
+> **VI:** Bạn được cho một mảng `prices`, trong đó `prices[i]` là giá của một cổ phiếu vào ngày thứ $i$.
 
 > **EN:** You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
 >
 > **VI:** Bạn muốn tối đa hóa lợi nhuận bằng cách chọn **một ngày duy nhất để mua** cổ phiếu và chọn **một ngày khác trong tương lai để bán** cổ phiếu đó.
 
-> **EN:** Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.
+> **EN:** *Return the maximum profit you can achieve from this transaction.* If you cannot achieve any profit, return `0`.
 >
-> **VI:** Hãy trả về **lợi nhuận lớn nhất** có thể đạt được từ giao dịch này. Nếu không thể tạo ra lợi nhuận, hãy trả về `0`.
+> **VI:** Hãy *trả về lợi nhuận lớn nhất có thể đạt được từ giao dịch này*. Nếu không thể tạo ra lợi nhuận, hãy trả về `0`.
+
 
 ## Examples / Ví dụ
 
@@ -62,11 +63,11 @@ prices = [7,6,4,3,1]
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= prices.length <= 105`
+> **EN:** `1 <= `prices`.length <= 10^5`
 >
 > **VI:** Độ dài của mảng `prices` nằm trong giới hạn từ `1` đến `10^5`.
 
-> **EN:** `0 <= prices[i] <= 104`
+> **EN:** `0 <= `prices[i]` <= 10^4`
 >
 > **VI:** Mỗi giá trị `prices[i]` nằm trong khoảng từ `0` đến `10^4`.
 

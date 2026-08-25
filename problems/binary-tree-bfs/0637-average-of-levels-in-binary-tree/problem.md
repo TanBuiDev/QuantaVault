@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given the root of a binary tree, return the average value of the nodes on each level as an array. Answers within `10^-5` of the actual answer are accepted.
+> **EN:** Given the `root` of a binary tree, return the average value of the nodes on each level as an array. Answers within `10^-5` of the actual answer are accepted.
 >
 > **VI:** Cho root của một binary tree, trả về average value của các node trên từng level dưới dạng array. Sai số trong `10^-5` được chấp nhận.
 

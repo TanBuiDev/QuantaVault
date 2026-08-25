@@ -1,13 +1,15 @@
 "use client";
 
 import { useRef } from "react";
-import type { KeyboardEvent } from "react";
+import type { KeyboardEvent, ReactNode } from "react";
 
 import { classNames } from "./classNames";
 
 export interface TabItem {
   id: string;
   label: string;
+  badge?: ReactNode;
+  icon?: ReactNode;
   disabled?: boolean;
 }
 
@@ -59,7 +61,7 @@ export function Tabs({ items, value, onValueChange, ariaLabel = "Sections", clas
       role="tablist"
       aria-label={ariaLabel}
       className={classNames(
-        "inline-flex max-w-full gap-1 overflow-x-auto rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-1",
+        "inline-flex max-w-full items-center gap-1 overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)] p-1 shadow-inner backdrop-blur-sm",
         className,
       )}
     >
@@ -79,16 +81,21 @@ export function Tabs({ items, value, onValueChange, ariaLabel = "Sections", clas
             onClick={() => onValueChange(item.id)}
             onKeyDown={(event) => handleKeyDown(event, index)}
             className={classNames(
-              "whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)] disabled:cursor-not-allowed disabled:opacity-45",
+              "relative flex items-center gap-2 whitespace-nowrap rounded-xl px-3.5 py-2 text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-40 select-none",
               isActive
-                ? "bg-[var(--surface)] text-[var(--foreground)] shadow-sm"
-                : "text-[var(--muted)] hover:text-[var(--foreground)]",
+                ? "bg-[var(--surface)] text-[var(--foreground)] shadow-xs ring-1 ring-[var(--border)] font-bold"
+                : "text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface)]/50",
             )}
           >
-            {item.label}
+            {item.icon ? <span className="shrink-0">{item.icon}</span> : null}
+            <span>{item.label}</span>
+            {item.badge ? (
+              <span className="shrink-0 rounded-full px-1.5 py-0.5 text-[11px] font-bold">{item.badge}</span>
+            ) : null}
           </button>
         );
       })}
     </div>
   );
 }
+

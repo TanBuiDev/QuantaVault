@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** You are given the root of a binary tree containing digits from `0` to `9` only. Each root-to-leaf path represents a number; for example, `1 -> 2 -> 3` represents `123`. Return the total sum of all root-to-leaf numbers.
+> **EN:** You are given the `root` of a binary tree containing digits from `0` to `9` only. Each `root`-to-leaf path represents a number; for `example`, `1 -> 2 -> 3` represents `123`. Return the total sum of all `root`-to-leaf numbers.
 >
 > **VI:** Cho root của một binary tree chỉ chứa các chữ số từ `0` đến `9`. Mỗi path từ root tới leaf biểu diễn một số; ví dụ `1 -> 2 -> 3` biểu diễn `123`. Hãy trả về tổng của tất cả các số root-to-leaf.
 
@@ -40,7 +40,7 @@ The paths form `495`, `491`, and `40`; their sum is `1026`.
 >
 > **VI:** Số node nằm trong `[1, 1000]`.
 
-> **EN:** `0 <= Node.val <= 9`
+> **EN:** `0 <= `Node`.val <= 9`
 >
 > **VI:** `0 <= Node.val <= 9`.
 

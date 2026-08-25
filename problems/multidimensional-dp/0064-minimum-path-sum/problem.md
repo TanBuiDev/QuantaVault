@@ -6,11 +6,11 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right, which minimizes the sum of all numbers along its path.
+> **EN:** Given a m x n `grid` filled with non-negative numbers, find a path from top `left` to bottom `right`, which minimizes the sum of all numbers along its path.
 >
 > **VI:** Cho một lưới `m x n` chứa các số không âm, hãy tìm đường đi từ góc trên-trái đến góc dưới-phải sao cho tổng các số trên đường đi là nhỏ nhất.
 
-> **EN:** Note: You can only move either down or right at any point in time.
+> **EN:** Note: You can only move either down or `right` at any point in time.
 >
 > **VI:** Lưu ý: Ở mỗi bước chỉ được đi xuống hoặc sang phải.
 
@@ -36,11 +36,11 @@ Output: 12
 
 ## Constraints / Ràng buộc
 
-> **EN:** `m == grid.length`
+> **EN:** `m == `grid`.length`
 >
 > **VI:** `m` là số hàng của `grid`.
 
-> **EN:** `n == grid[i].length`
+> **EN:** `n == `grid[i]`.length`
 >
 > **VI:** `n` là số cột của mỗi hàng.
 
@@ -48,7 +48,7 @@ Output: 12
 >
 > **VI:** `m` và `n` nằm trong khoảng từ `1` đến `200`.
 
-> **EN:** `0 <= grid[i][j] <= 200`
+> **EN:** `0 <= `grid[i]` <= 200`
 >
 > **VI:** Mỗi giá trị trong lưới nằm từ `0` đến `200`.
 

@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given the head of a sorted linked list, delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list. Return the linked list sorted as well.
+> **EN:** Given the `head` of a sorted linked list, delete `all` nodes that have duplicate numbers, leaving only distinct numbers from the original list. Return the linked list sorted as well.
 >
 > **VI:** Cho `head` của một linked list đã được sắp xếp. Hãy xóa **toàn bộ node** có giá trị xuất hiện nhiều hơn một lần, chỉ giữ lại các giá trị xuất hiện đúng một lần trong list ban đầu. Trả về linked list vẫn theo thứ tự đã sắp xếp.
 
@@ -32,7 +32,7 @@ Output: [2,3]
 >
 > **VI:** Số node nằm trong `[0, 300]`.
 
-> **EN:** -100 <= Node.val <= 100
+> **EN:** -100 <= `Node`.val <= 100
 >
 > **VI:** `Node.val` nằm trong `[-100, 100]`.
 

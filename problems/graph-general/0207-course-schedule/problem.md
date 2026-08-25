@@ -26,7 +26,7 @@ Output: false
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= numCourses <= 2000`; prerequisite pairs refer to valid course labels and contain no duplicate edges.
+> **EN:** `1 <= `numCourses` <= 2000`; prerequisite pairs refer to valid course labels and contain `no` duplicate edges.
 >
 > **VI:** `1 <= numCourses <= 2000`; các prerequisite pair dùng course label hợp lệ và không có duplicate edge.
 

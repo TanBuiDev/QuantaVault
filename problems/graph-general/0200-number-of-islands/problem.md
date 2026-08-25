@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given an `m x n` binary grid where `'1'` is land and `'0'` is water, return the number of islands. Land is connected horizontally or vertically; all four edges are surrounded by water.
+> **EN:** Given an `m x n` binary `grid` where `'1'` is land and `'0'` is water, return the number of islands. Land is connected horizontally or vertically; all four edges are surrounded by water.
 >
 > **VI:** Cho binary grid `m x n`, trong đó `'1'` là land và `'0'` là water. Hãy trả về số island. Land chỉ nối theo bốn hướng ngang/dọc; bốn cạnh ngoài được xem là water.
 

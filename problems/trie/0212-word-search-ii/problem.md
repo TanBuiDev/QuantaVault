@@ -6,11 +6,11 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given an m x n board of characters and a list of strings words, return all words on the board.
+> **EN:** Given an m x n `board` of characters and a list of strings `words`, return all `words` on the `board`.
 >
 > **VI:** Cho một bảng ký tự kích thước `m x n` và một danh sách chuỗi `words`, hãy trả về tất cả các từ có thể tìm thấy trên bảng.
 
-> **EN:** Each word must be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once in a word.
+> **EN:** Each word must be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The `same` letter cell may not be used more than once in a word.
 >
 > **VI:** Mỗi từ phải được tạo từ các ký tự của những ô kề nhau theo thứ tự; hai ô được xem là kề nhau nếu nằm cạnh nhau theo chiều ngang hoặc dọc. Một ô không được dùng quá một lần trong cùng một từ.
 
@@ -36,11 +36,11 @@ Output: []
 
 ## Constraints / Ràng buộc
 
-> **EN:** `m == board.length`
+> **EN:** `m == `board`.length`
 >
 > **VI:** `m` là số hàng của board.
 
-> **EN:** `n == board[i].length`
+> **EN:** `n == `board[i]`.length`
 >
 > **VI:** `n` là số cột của mỗi hàng.
 
@@ -48,15 +48,15 @@ Output: []
 >
 > **VI:** Board có tối đa 12 hàng và 12 cột.
 
-> **EN:** `board[i][j]` is a lowercase English letter.
+> **EN:** `board[i]` is a lowercase English letter.
 >
 > **VI:** Mỗi ô chứa một chữ cái tiếng Anh viết thường.
 
-> **EN:** `1 <= words.length <= 3 * 10^4`
+> **EN:** `1 <= `words`.length <= 3 * 10^4`
 >
 > **VI:** Danh sách có từ 1 đến 30.000 từ.
 
-> **EN:** `1 <= words[i].length <= 10`
+> **EN:** `1 <= `words[i]`.length <= 10`
 >
 > **VI:** Mỗi từ dài từ 1 đến 10 ký tự.
 

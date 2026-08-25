@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** You are given the heads of two sorted linked lists list1 and list2.
+> **EN:** You are given the heads of two sorted linked lists `list1` and `list2`.
 >
 > **VI:** Bạn được cho head của hai linked list đã được sắp xếp là `list1` và `list2`.
 
@@ -14,7 +14,7 @@
 >
 > **VI:** Hãy merge hai list thành một sorted list. List kết quả phải được tạo bằng cách nối lại chính các node của hai list ban đầu.
 
-> **EN:** Return the head of the merged linked list.
+> **EN:** Return the `head` of the merged linked list.
 >
 > **VI:** Trả về head của linked list sau khi merge.
 
@@ -47,11 +47,11 @@ Output: [0]
 >
 > **VI:** Tổng số node xét theo constraint của source nằm trong phạm vi `[0, 50]` cho mỗi mô tả list của bài.
 
-> **EN:** -100 <= Node.val <= 100
+> **EN:** -100 <= `Node`.val <= 100
 >
 > **VI:** Mỗi `Node.val` nằm trong `[-100, 100]`.
 
-> **EN:** Both list1 and list2 are sorted in non-decreasing order.
+> **EN:** Both `list1` and `list2` are sorted in non-decreasing order.
 >
 > **VI:** Cả `list1` và `list2` đều được sắp xếp theo thứ tự không giảm.
 

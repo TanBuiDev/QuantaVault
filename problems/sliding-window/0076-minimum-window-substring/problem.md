@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given two strings s and t of lengths m and n respectively, return the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string "".
+> **EN:** Given two strings `s` and `t` of lengths m and n respectively, return the minimum window substring of `s` such that every character in `t` (including duplicates) is included in the window. If there is no such substring, return the empty string "".
 >
 > **VI:** Cho hai chuỗi `s` và `t` có độ dài lần lượt là `m` và `n`, hãy trả về substring ngắn nhất của `s` chứa mọi ký tự trong `t`, kể cả số lần lặp. Nếu không tồn tại, trả về chuỗi rỗng `""`.
 
@@ -23,7 +23,7 @@ Input: s = "ADOBECODEBANC", t = "ABC"
 Output: "BANC"
 ```
 
-> **EN:** Explanation: The minimum window substring "BANC" includes 'A', 'B', and 'C' from string t.
+> **EN:** Explanation: The minimum window substring "BANC" includes 'A', 'B', and 'C' from string `t`.
 >
 > **VI:** `"BANC"` là window ngắn nhất chứa đủ `A`, `B`, `C` từ `t`.
 
@@ -34,7 +34,7 @@ Input: s = "a", t = "a"
 Output: "a"
 ```
 
-> **EN:** Explanation: The entire string s is the minimum window.
+> **EN:** Explanation: The entire string `s` is the minimum window.
 >
 > **VI:** Toàn bộ `s` chính là minimum window.
 
@@ -45,26 +45,26 @@ Input: s = "a", t = "aa"
 Output: ""
 ```
 
-> **EN:** Explanation: Both 'a's from t must be included in the window.
+> **EN:** Explanation: Both 'a'`s` from `t` must be included in the window.
 > Since the largest window of s only has one 'a', return empty string.
 >
 > **VI:** `t` cần hai ký tự `a`, nhưng `s` chỉ có một nên không có window hợp lệ.
 
 ## Constraints / Ràng buộc
 
-> **EN:** `m == s.length`
+> **EN:** `m == `s`.length`
 >
 > **VI:** `m` là độ dài `s`.
 
-> **EN:** `n == t.length`
+> **EN:** `n == `t`.length`
 >
 > **VI:** `n` là độ dài `t`.
 
-> **EN:** `1 <= m, n <= 105`
+> **EN:** `1 <= m, n <= 10^5`
 >
 > **VI:** `1 <= m, n <= 10^5`.
 
-> **EN:** s and t consist of uppercase and lowercase English letters.
+> **EN:** `s` and `t` consist of uppercase and lowercase English letters.
 >
 > **VI:** `s` và `t` chỉ gồm chữ cái tiếng Anh viết hoa và viết thường.
 

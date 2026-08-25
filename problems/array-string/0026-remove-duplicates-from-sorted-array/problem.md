@@ -36,7 +36,7 @@ for (int i = 0; i < k; i++) {
 }
 ```
 
-> **EN:** If all assertions pass, then your solution will be accepted.
+> **EN:** If `all` assertions pass, then your solution will be accepted.
 >
 > **VI:** Nếu tất cả assertion đều đúng thì lời giải được chấp nhận.
 
@@ -80,11 +80,11 @@ nums = [0,0,1,1,1,2,2,3,3,4]
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= nums.length <= 3 * 104`
+> **EN:** `1 <= `nums`.length <= 3 * 10^4`
 >
 > **VI:** Độ dài `nums` nằm trong giới hạn được nêu trong đề nguồn.
 
-> **EN:** `-100 <= nums[i] <= 100`
+> **EN:** `-100 <= `nums[i]` <= 100`
 >
 > **VI:** Mỗi `nums[i]` nằm từ `-100` đến `100`.
 

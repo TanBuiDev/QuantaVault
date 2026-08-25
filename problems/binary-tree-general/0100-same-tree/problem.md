@@ -6,7 +6,7 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given the roots of two binary trees p and q, write a function to check if they are the same or not.
+> **EN:** Given the roots of two binary trees `p` and `q`, write a function to check if they are the same or not.
 >
 > **VI:** Cho root của hai binary tree `p` và `q`. Hãy kiểm tra hai cây có giống nhau hay không.
 
@@ -39,11 +39,11 @@ Output: false
 
 ## Constraints / Ràng buộc
 
-> **EN:** The number of nodes in both trees is in the range [0, 100].
+> **EN:** The number of nodes in `both` trees is in the range [0, 100].
 >
 > **VI:** Số node trong mỗi cây nằm trong `[0, 100]`.
 
-> **EN:** -104 <= Node.val <= 104
+> **EN:** -10^4 <= `Node`.val <= 10^4
 >
 > **VI:** `Node.val` nằm trong `[-10^4, 10^4]`.
 

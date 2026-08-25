@@ -6,11 +6,11 @@
 
 ## Problem / Đề bài
 
-> **EN:** Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. Return the answer in any order.
+> **EN:** Given a string containing `digits` from 2-9 inclusive, return all possible letter combinations that the number could represent. Return the answer in any order.
 >
 > **VI:** Cho một chuỗi chỉ chứa các chữ số từ `2` đến `9`, hãy trả về tất cả tổ hợp chữ cái mà chuỗi số đó có thể biểu diễn. Có thể trả kết quả theo bất kỳ thứ tự nào.
 
-> **EN:** A mapping of digits to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
+> **EN:** A mapping of `digits` to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
 >
 > **VI:** Ánh xạ từ chữ số sang chữ cái giống như trên bàn phím điện thoại được cung cấp bên dưới. Lưu ý rằng chữ số `1` không ánh xạ tới chữ cái nào.
 
@@ -42,7 +42,7 @@ Output: ["a","b","c"]
 
 ## Constraints / Ràng buộc
 
-> **EN:** `1 <= digits.length <= 4`
+> **EN:** `1 <= `digits`.length <= 4`
 >
 > **VI:** Độ dài chuỗi `digits` nằm trong khoảng từ 1 đến 4.
 

@@ -23,7 +23,7 @@ Output: 11
 ```
 
 ## Constraints / Ràng buộc
-> **EN:** `1 <= nums.length <= 5000`; all values are unique; nums is sorted and rotated between 1 and n times.
+> **EN:** `1 <= `nums`.length <= 5000`; all values are unique; `nums` is sorted and rotated between 1 and n times.
 >
 > **VI:** Mảng không rỗng, các giá trị duy nhất, và là một mảng tăng dần đã xoay.
 
