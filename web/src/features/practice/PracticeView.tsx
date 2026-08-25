@@ -47,19 +47,19 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
   const { getProgress, updateProblem } = useProgress();
   const progress = getProgress(content.id);
   const [activeTab, setActiveTab] = useState<PracticeTab>("problem");
-  const [langMode, setLangMode] = useState<"bilingual" | "en" | "vi">("bilingual");
-
-  // Load language mode preference from localStorage
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem("preferred_lang_mode");
-      if (saved === "bilingual" || saved === "en" || saved === "vi") {
-        setLangMode(saved);
+  const [langMode, setLangMode] = useState<"bilingual" | "en" | "vi">(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const saved = localStorage.getItem("preferred_lang_mode");
+        if (saved === "bilingual" || saved === "en" || saved === "vi") {
+          return saved;
+        }
+      } catch {
+        // ignore
       }
-    } catch {
-      // ignore
     }
-  }, []);
+    return "bilingual";
+  });
 
   function handleSetLangMode(mode: "bilingual" | "en" | "vi") {
     setLangMode(mode);
@@ -69,6 +69,7 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
       // ignore
     }
   }
+
 
 
   // Khôi phục tab & scroll position khi reload trang
