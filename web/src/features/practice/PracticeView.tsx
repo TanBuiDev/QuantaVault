@@ -43,32 +43,57 @@ function difficultyVariant(difficulty: ProblemContent["difficulty"]) {
 }
 
 
+function subscribeToLangStorage(callback: () => void) {
+  window.addEventListener("storage", callback);
+  return () => window.removeEventListener("storage", callback);
+}
+
+function getLangSnapshot(): "bilingual" | "en" | "vi" {
+  try {
+    const saved = localStorage.getItem("preferred_lang_mode");
+    if (saved === "bilingual" || saved === "en" || saved === "vi") {
+      return saved;
+    }
+  } catch {
+    // ignore
+  }
+  return "bilingual";
+}
+
+function getLangServerSnapshot(): "bilingual" | "en" | "vi" {
+  return "bilingual";
+}
+
 export function PracticeView({ content, hints, previous, next, sectionName }: PracticeViewProps) {
   const { getProgress, updateProblem } = useProgress();
   const progress = getProgress(content.id);
   const [activeTab, setActiveTab] = useState<PracticeTab>("problem");
-  const [langMode, setLangMode] = useState<"bilingual" | "en" | "vi">(() => {
-    if (typeof window !== "undefined") {
-      try {
-        const saved = localStorage.getItem("preferred_lang_mode");
-        if (saved === "bilingual" || saved === "en" || saved === "vi") {
-          return saved;
-        }
-      } catch {
-        // ignore
+  const [mounted, setMounted] = useState(false);
+  const [localLangMode, setLocalLangMode] = useState<"bilingual" | "en" | "vi">("bilingual");
+
+  useEffect(() => {
+    setMounted(true);
+    try {
+      const saved = localStorage.getItem("preferred_lang_mode");
+      if (saved === "bilingual" || saved === "en" || saved === "vi") {
+        setLocalLangMode(saved);
       }
+    } catch {
+      // ignore
     }
-    return "bilingual";
-  });
+  }, []);
+
+  const langMode = mounted ? localLangMode : "bilingual";
 
   function handleSetLangMode(mode: "bilingual" | "en" | "vi") {
-    setLangMode(mode);
+    setLocalLangMode(mode);
     try {
       localStorage.setItem("preferred_lang_mode", mode);
     } catch {
       // ignore
     }
   }
+
 
 
 
