@@ -39,8 +39,7 @@ Output: "MCMXCIV"
 
 > **EN:** `1 <= `num` <= 3999`
 >
-> **VI:** `num` nằm trong khoảng `1` đến `3999`.
-
+> **VI:** `1 <= num <= 3999`
 ## Source / Nguồn
 
 LeetCode: https://leetcode.com/problems/integer-to-roman/

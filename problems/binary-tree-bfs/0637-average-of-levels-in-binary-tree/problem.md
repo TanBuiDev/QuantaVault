@@ -28,8 +28,7 @@ Output: [3.00000,14.50000,11.00000]
 
 > **EN:** The tree contains `[1, 10^4]` nodes and node values fit in signed 32-bit integers.
 >
-> **VI:** Tree có `[1, 10^4]` node và value nằm trong miền signed 32-bit integer.
-
+> **VI:** `The tree contains [1, 10^4] nodes and node values fit in signed 32-bit integers.`
 ## Source / Nguồn
 
 LeetCode: https://leetcode.com/problems/average-of-levels-in-binary-tree/

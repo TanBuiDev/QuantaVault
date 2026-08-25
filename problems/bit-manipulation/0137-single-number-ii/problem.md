@@ -36,7 +36,7 @@ Output: 99
 
 > **EN:** `-2^31 <= `nums[i]` <= 2^31 - 1`
 >
-> **VI:** Mỗi giá trị nằm trong miền int 32-bit có dấu.
+> **VI:** `-2^31 <= nums[i] <= 2^31 - 1`
 
 > **EN:** Each element in `nums` appears exactly three times except for one element which appears once.
 >

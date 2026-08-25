@@ -42,7 +42,7 @@ Output: [0,0,9,0,0]
 
 > **EN:** `-30 <= `nums[i]` <= 30`
 >
-> **VI:** Mỗi `nums[i]` nằm trong khoảng `-30` đến `30`.
+> **VI:** `-30 <= nums[i] <= 30`
 
 > **EN:** The input is generated such that `answer[i]` is guaranteed to fit in a 32-bit integer.
 >

@@ -38,7 +38,7 @@ Output: -1
 
 > **EN:** `1 <= `haystack`.length, `needle`.length <= 10^4`
 >
-> **VI:** Độ dài của `haystack` và `needle` nằm trong khoảng `1` đến `10^4`.
+> **VI:** `1 <= haystack.length, needle.length <= 10^4`
 
 > **EN:** `haystack` and `needle` consist of only lowercase English characters.
 >

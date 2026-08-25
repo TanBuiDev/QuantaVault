@@ -63,8 +63,7 @@ Output: 0
 
 > **EN:** `0 <= `prices[i]` <= 10^5`
 >
-> **VI:** Mỗi giá nằm trong khoảng từ `0` đến `10^5`.
-
+> **VI:** `0 <= prices[i] <= 10^5`
 ## Source / Nguồn
 
 LeetCode: https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/

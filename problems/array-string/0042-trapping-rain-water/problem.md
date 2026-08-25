@@ -42,8 +42,7 @@ Output: 9
 
 > **EN:** `0 <= `height[i]` <= 10^5`
 >
-> **VI:** Mỗi `height[i]` nằm trong khoảng `0` đến `10^5`.
-
+> **VI:** `0 <= height[i] <= 10^5`
 ## Source / Nguồn
 
 LeetCode: https://leetcode.com/problems/trapping-rain-water/

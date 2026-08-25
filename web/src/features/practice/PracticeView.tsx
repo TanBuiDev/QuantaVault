@@ -47,6 +47,29 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
   const { getProgress, updateProblem } = useProgress();
   const progress = getProgress(content.id);
   const [activeTab, setActiveTab] = useState<PracticeTab>("problem");
+  const [langMode, setLangMode] = useState<"bilingual" | "en" | "vi">("bilingual");
+
+  // Load language mode preference from localStorage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("preferred_lang_mode");
+      if (saved === "bilingual" || saved === "en" || saved === "vi") {
+        setLangMode(saved);
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  function handleSetLangMode(mode: "bilingual" | "en" | "vi") {
+    setLangMode(mode);
+    try {
+      localStorage.setItem("preferred_lang_mode", mode);
+    } catch {
+      // ignore
+    }
+  }
+
 
   // Khôi phục tab & scroll position khi reload trang
   useEffect(() => {
@@ -279,15 +302,55 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,7fr)_minmax(18rem,3fr)] xl:items-start">
         <section aria-label="Study content" className="min-w-0 space-y-4">
-          <div className="flex items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <Tabs
               items={tabs}
               value={activeTab}
               onValueChange={changeTab}
               ariaLabel="Practice content"
             />
-            <span className="hidden text-xs text-[var(--muted)] sm:inline">Use ← → to switch tabs</span>
+
+            {/* Language Mode Selector: Bilingual | EN | VI */}
+            <div className="flex items-center gap-1 rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)] p-1 shadow-inner text-xs font-semibold">
+              <button
+                type="button"
+                onClick={() => setLangMode("bilingual")}
+                className={`rounded-xl px-2.5 py-1.5 transition-all ${
+                  langMode === "bilingual"
+                    ? "bg-[var(--surface)] text-[var(--foreground)] shadow-xs ring-1 ring-[var(--border)] font-bold"
+                    : "text-[var(--muted)] hover:text-[var(--foreground)]"
+                }`}
+                title="Hiển thị song ngữ Anh - Việt"
+              >
+                🌐 Song ngữ
+              </button>
+              <button
+                type="button"
+                onClick={() => setLangMode("en")}
+                className={`rounded-xl px-2.5 py-1.5 transition-all ${
+                  langMode === "en"
+                    ? "bg-[var(--surface)] text-[var(--foreground)] shadow-xs ring-1 ring-[var(--border)] font-bold"
+                    : "text-[var(--muted)] hover:text-[var(--foreground)]"
+                }`}
+                title="Chỉ hiển thị đề Tiếng Anh"
+              >
+                🇺🇸 English
+              </button>
+              <button
+                type="button"
+                onClick={() => setLangMode("vi")}
+                className={`rounded-xl px-2.5 py-1.5 transition-all ${
+                  langMode === "vi"
+                    ? "bg-[var(--surface)] text-[var(--foreground)] shadow-xs ring-1 ring-[var(--border)] font-bold"
+                    : "text-[var(--muted)] hover:text-[var(--foreground)]"
+                }`}
+                title="Chỉ hiển thị đề Tiếng Việt"
+              >
+                🇻🇳 Tiếng Việt
+              </button>
+            </div>
           </div>
+
 
           <Card>
             <CardContent className="p-5 sm:p-7 lg:p-8">
@@ -295,7 +358,12 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
                 {activeTab === "problem" ? (
                   <div className="space-y-6">
                     {content.problemMarkdown ? (
-                      <ProblemStatement markdown={content.problemMarkdown} media={problemMedia} problemId={content.id} />
+                      <ProblemStatement
+                        markdown={content.problemMarkdown}
+                        media={problemMedia}
+                        problemId={content.id}
+                        languageMode={langMode}
+                      />
                     ) : (
                       <EmptyState
                         title="Full problem source is not available yet"
@@ -315,11 +383,12 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
                         <div className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-[var(--primary-strong)]">
                           Hint {index + 1}
                         </div>
-                        <MarkdownContent markdown={hint} />
+                        <MarkdownContent markdown={hint} languageMode={langMode} />
                       </section>
                     ))}
                   </div>
                 ) : null}
+
 
                 {activeTab === "solution" ? (
                   <div className="space-y-8">
@@ -687,17 +756,32 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
 
 
 
-function ProblemStatement({ markdown, media, problemId }: { markdown: string; media: NonNullable<ProblemContent["media"]>; problemId: number }) {
-  if (media.length === 0) return <MarkdownContent markdown={markdown} />;
+function ProblemStatement({
+  markdown,
+  media,
+  problemId,
+  languageMode = "bilingual",
+}: {
+  markdown: string;
+  media: NonNullable<ProblemContent["media"]>;
+  problemId: number;
+  languageMode?: "bilingual" | "en" | "vi";
+}) {
+  if (media.length === 0) return <MarkdownContent markdown={markdown} languageMode={languageMode} />;
   const insertion = markdown.search(/^##\s+(?:Constraints|Ràng buộc|Source|Nguồn)\b/im);
   if (insertion < 0) {
-    return <><MarkdownContent markdown={markdown} /><MediaGallery items={media} problemId={problemId} /></>;
+    return (
+      <>
+        <MarkdownContent markdown={markdown} languageMode={languageMode} />
+        <MediaGallery items={media} problemId={problemId} />
+      </>
+    );
   }
   return (
     <>
-      <MarkdownContent markdown={markdown.slice(0, insertion).trimEnd()} />
+      <MarkdownContent markdown={markdown.slice(0, insertion).trimEnd()} languageMode={languageMode} />
       <MediaGallery items={media} problemId={problemId} />
-      <MarkdownContent markdown={markdown.slice(insertion).trimStart()} />
+      <MarkdownContent markdown={markdown.slice(insertion).trimStart()} languageMode={languageMode} />
     </>
   );
 }
@@ -715,3 +799,4 @@ function MediaGallery({ items, problemId }: { items: NonNullable<ProblemContent[
     </div>
   );
 }
+

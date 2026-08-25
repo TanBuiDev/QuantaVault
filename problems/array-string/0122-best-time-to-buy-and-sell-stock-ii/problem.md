@@ -61,8 +61,7 @@ Output: 0
 
 > **EN:** `0 <= `prices[i]` <= 10^4`
 >
-> **VI:** Mỗi `prices[i]` nằm trong khoảng `0` đến `10^4`.
-
+> **VI:** `0 <= prices[i] <= 10^4`
 ## Source / Nguồn
 
 LeetCode: https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/

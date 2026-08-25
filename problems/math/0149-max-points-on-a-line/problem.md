@@ -38,7 +38,7 @@ Output: 4
 
 > **EN:** `-10^4 <= xi, yi <= 10^4`
 >
-> **VI:** Mỗi tọa độ nằm trong khoảng `-10^4` đến `10^4`.
+> **VI:** `-10^4 <= xi, yi <= 10^4`
 
 > **EN:** `All the `points` are unique.`
 >

@@ -46,7 +46,7 @@ Output: 7
 
 > **EN:** `1 <= `k` <= 100`
 >
-> **VI:** `k` nằm trong khoảng từ `1` đến `100`.
+> **VI:** `1 <= k <= 100`
 
 > **EN:** `1 <= `prices`.length <= 1000`
 >
@@ -54,8 +54,7 @@ Output: 7
 
 > **EN:** `0 <= `prices[i]` <= 1000`
 >
-> **VI:** Mỗi giá nằm trong khoảng từ `0` đến `1000`.
-
+> **VI:** `0 <= prices[i] <= 1000`
 ## Source / Nguồn
 
 LeetCode: https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/

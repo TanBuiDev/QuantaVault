@@ -47,8 +47,7 @@ Output: 3
 
 > **EN:** `1 <= `n` <= 45`
 >
-> **VI:** `n` nằm trong khoảng từ `1` đến `45`.
-
+> **VI:** `1 <= n <= 45`
 ## Source / Nguồn
 
 LeetCode: https://leetcode.com/problems/climbing-stairs/

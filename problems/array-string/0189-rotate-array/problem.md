@@ -62,16 +62,15 @@ nums = [-1,-100,3,99], k = 2
 
 > **EN:** `1 <= `nums`.length <= 10^5`
 >
-> **VI:** Độ dài `nums` nằm trong khoảng từ `1` đến `10^5`.
+> **VI:** `1 <= nums.length <= 10^5`
 
 > **EN:** `-2^31 <= `nums[i]` <= 2^31 - 1`
 >
-> **VI:** Mỗi `nums[i]` nằm trong miền số nguyên 32-bit có dấu.
+> **VI:** `-2^31 <= nums[i] <= 2^31 - 1`
 
 > **EN:** `0 <= `k` <= 10^5`
 >
-> **VI:** `k` nằm trong khoảng từ `0` đến `10^5`.
-
+> **VI:** `0 <= k <= 10^5`
 ## Follow up / Câu hỏi mở rộng
 
 > **EN:** Try to come up with as many solutions as you can. There are at least three different ways to solve this problem.

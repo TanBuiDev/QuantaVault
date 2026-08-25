@@ -53,7 +53,7 @@ Output: 0
 
 > **EN:** `1 <= `coins[i]` <= 2^31 - 1`
 >
-> **VI:** Mỗi mệnh giá dương và không vượt miền số nguyên 32-bit dương.
+> **VI:** `1 <= coins[i] <= 2^31 - 1`
 
 > **EN:** `0 <= `amount` <= 10^4`
 >

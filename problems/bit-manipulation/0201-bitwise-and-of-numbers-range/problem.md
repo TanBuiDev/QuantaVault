@@ -34,8 +34,7 @@ Output: 0
 
 > **EN:** `0 <= `left` <= `right` <= 2^31 - 1`
 >
-> **VI:** `left` và `right` không âm, `left <= right`, và đều nằm trong miền int dương 32-bit.
-
+> **VI:** `0 <= left <= right <= 2^31 - 1`
 ## Source / Nguồn
 
 LeetCode: https://leetcode.com/problems/bitwise-and-of-numbers-range/

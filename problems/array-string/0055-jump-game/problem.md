@@ -46,8 +46,7 @@ Output: false
 
 > **EN:** `0 <= `nums[i]` <= 10^5`
 >
-> **VI:** Mỗi `nums[i]` nằm trong khoảng `0` đến `10^5`.
-
+> **VI:** `0 <= nums[i] <= 10^5`
 ## Source / Nguồn
 
 LeetCode: https://leetcode.com/problems/jump-game/

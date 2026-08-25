@@ -57,7 +57,7 @@ Output: 1
 
 > **EN:** `1 <= m, n <= 100`
 >
-> **VI:** `m` và `n` nằm trong khoảng từ `1` đến `100`.
+> **VI:** `1 <= m, n <= 100`
 
 > **EN:** `obstacleGrid[i][j] is 0 or 1.`
 >

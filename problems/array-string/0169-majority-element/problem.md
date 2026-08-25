@@ -52,11 +52,11 @@ nums = [2,2,1,1,1,2,2]
 
 > **EN:** `1 <= n <= 5 * 10^4`
 >
-> **VI:** `n` nằm trong giới hạn được nêu trong đề nguồn.
+> **VI:** `1 <= n <= 5 * 10^4`
 
 > **EN:** `-10^9 <= `nums[i]` <= 10^9`
 >
-> **VI:** Giá trị `nums[i]` nằm trong miền số nguyên được nêu trong đề nguồn.
+> **VI:** `-10^9 <= nums[i] <= 10^9`
 
 > **EN:** The input is generated such that a `majority` element will exist in the array.
 >

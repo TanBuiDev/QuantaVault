@@ -50,7 +50,7 @@ Output: 2
 
 > **EN:** `0 <= `nums[i]` <= 1000`
 >
-> **VI:** Mỗi `nums[i]` nằm trong khoảng `0` đến `1000`.
+> **VI:** `0 <= nums[i] <= 1000`
 
 > **EN:** It's guaranteed that you can reach `nums`[n - 1].
 >

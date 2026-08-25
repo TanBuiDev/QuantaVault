@@ -28,8 +28,7 @@ Output: false
 
 > **EN:** The tree contains `[1, 10^4]` nodes and node values can be any signed 32-bit integer.
 >
-> **VI:** Tree có `[1, 10^4]` node và value có thể là bất kỳ signed 32-bit integer nào.
-
+> **VI:** `The tree contains [1, 10^4] nodes and node values can be any signed 32-bit integer.`
 ## Source / Nguồn
 
 LeetCode: https://leetcode.com/problems/validate-binary-search-tree/

@@ -38,8 +38,7 @@ Output: 0
 
 > **EN:** `0 <= `n` <= 10^4`
 >
-> **VI:** `n` nằm trong khoảng từ `0` đến `10^4`.
-
+> **VI:** `0 <= n <= 10^4`
 ## Follow-up / Câu hỏi mở rộng
 
 > **EN:** Could you write a solution that works in logarithmic time complexity?

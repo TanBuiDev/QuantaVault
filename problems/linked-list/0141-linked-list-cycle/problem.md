@@ -54,11 +54,11 @@ Explanation: There is no cycle in the linked list.
 
 > **EN:** The number of the nodes in the list is in the range [0, 10^4].
 >
-> **VI:** Số node của danh sách nằm trong khoảng được nêu trong source, từ `0` đến `10^4`.
+> **VI:** `The number of the nodes in the list is in the range [0, 10^4].`
 
 > **EN:** -10^5 <= `Node`.val <= 10^5
 >
-> **VI:** Giá trị của mỗi node nằm trong khoảng `[-10^5, 10^5]`.
+> **VI:** `-10^5 <= Node.val <= 10^5`
 
 > **EN:** pos is -1 or a valid index in the linked-list.
 >

@@ -90,7 +90,7 @@ nums = [0,0,1,1,1,1,2,3,3]
 
 > **EN:** `-10^4 <= `nums[i]` <= 10^4`
 >
-> **VI:** Giá trị `nums[i]` nằm trong miền số nguyên được nêu trong đề nguồn.
+> **VI:** `-10^4 <= nums[i] <= 10^4`
 
 > **EN:** `nums` is sorted in non-decreasing order.
 >

@@ -62,7 +62,7 @@ Output: ["0","2->4","6","8->9"]
 
 > **EN:** `-2^31 <= `nums[i]` <= 2^31 - 1`
 >
-> **VI:** Mỗi phần tử nằm trong miền số nguyên 32-bit.
+> **VI:** `-2^31 <= nums[i] <= 2^31 - 1`
 
 > **EN:** All the values of `nums` are unique.
 >

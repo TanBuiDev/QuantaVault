@@ -49,7 +49,7 @@ Output
 
 > **EN:** `-2^31 <= `val` <= 2^31 - 1`
 >
-> **VI:** `val` nằm trong miền số nguyên 32-bit có dấu.
+> **VI:** `-2^31 <= val <= 2^31 - 1`
 
 > **EN:** At most 2 * 10^5 calls will be made to insert, `remove`, and getRandom.
 >

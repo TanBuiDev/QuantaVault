@@ -46,8 +46,7 @@ Output: [[0,0,0,0],[0,4,5,0],[0,3,1,0]]
 
 > **EN:** `-2^31 <= `matrix[i]` <= 2^31 - 1`
 >
-> **VI:** Giá trị nằm trong giới hạn số nguyên đề cho.
-
+> **VI:** `-2^31 <= matrix[i] <= 2^31 - 1`
 ## Follow up / Mở rộng
 
 > **EN:** A straightforward solution using O(mn) space is probably a bad idea.

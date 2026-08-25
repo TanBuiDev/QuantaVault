@@ -55,7 +55,7 @@ Output: -10
 
 > **EN:** `-10^4 <= `triangle[i]` <= 10^4`
 >
-> **VI:** Mỗi giá trị nằm trong khoảng `-10^4` đến `10^4`.
+> **VI:** `-10^4 <= triangle[i] <= 10^4`
 
 > **EN:** Follow up: Could you do this using only O(n) extra space, where n is the total number of rows in the `triangle`?
 >

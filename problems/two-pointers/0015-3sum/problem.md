@@ -62,8 +62,7 @@ Output: [[0,0,0]]
 
 > **EN:** `-10^5 <= `nums[i]` <= 10^5`
 >
-> **VI:** Mỗi `nums[i]` nằm trong khoảng `-10^5` đến `10^5`.
-
+> **VI:** `-10^5 <= nums[i] <= 10^5`
 ## Source / Nguồn
 
 LeetCode: https://leetcode.com/problems/3sum/

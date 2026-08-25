@@ -30,7 +30,7 @@ Output: false
 
 > **EN:** `1 <= `s`.length, `t`.length <= 5 * 10^4`
 >
-> **VI:** Độ dài hai chuỗi nằm trong khoảng `1..5*10^4`.
+> **VI:** `1 <= s.length, t.length <= 5 * 10^4`
 
 > **EN:** `s` and `t` consist of lowercase English letters.
 >

@@ -62,8 +62,7 @@ Output: 4
 
 > **EN:** `0 <= `ratings[i]` <= 5 * 10^4`
 >
-> **VI:** Mỗi `ratings[i]` nằm trong khoảng `0` đến `5 * 10^4`.
-
+> **VI:** `0 <= ratings[i] <= 5 * 10^4`
 ## Source / Nguồn
 
 LeetCode: https://leetcode.com/problems/candy/

@@ -41,7 +41,7 @@ Output: true
 
 > **EN:** `1 <= `ransomNote`.length, `magazine`.length <= 10^5`
 >
-> **VI:** Độ dài của `ransomNote` và `magazine` nằm trong khoảng từ `1` đến `10^5`.
+> **VI:** `1 <= ransomNote.length, magazine.length <= 10^5`
 
 > **EN:** `ransomNote` and `magazine` consist of lowercase English letters.
 >

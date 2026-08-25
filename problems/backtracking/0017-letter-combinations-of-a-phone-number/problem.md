@@ -44,7 +44,7 @@ Output: ["a","b","c"]
 
 > **EN:** `1 <= `digits`.length <= 4`
 >
-> **VI:** Độ dài chuỗi `digits` nằm trong khoảng từ 1 đến 4.
+> **VI:** `1 <= digits.length <= 4`
 
 > **EN:** `digits[i]` is a digit in the range `['2', '9']`.
 >

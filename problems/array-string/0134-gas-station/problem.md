@@ -54,7 +54,7 @@ Output: -1
 
 > **EN:** `0 <= `gas[i]`, `cost[i]` <= 10^4`
 >
-> **VI:** Mỗi `gas[i]` và `cost[i]` nằm trong khoảng `0` đến `10^4`.
+> **VI:** `0 <= gas[i], cost[i] <= 10^4`
 
 > **EN:** The input is generated such that the answer is unique.
 >

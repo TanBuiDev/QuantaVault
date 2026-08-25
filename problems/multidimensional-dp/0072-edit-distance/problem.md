@@ -62,7 +62,7 @@ Output: 5
 
 > **EN:** `0 <= `word1`.length, `word2`.length <= 500`
 >
-> **VI:** Độ dài mỗi chuỗi nằm trong khoảng từ `0` đến `500`.
+> **VI:** `0 <= word1.length, word2.length <= 500`
 
 > **EN:** `word1 and `word2` consist of lowercase English letters.`
 >

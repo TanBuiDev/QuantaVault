@@ -41,7 +41,7 @@ Output: 0.25000
 
 > **EN:** `$-2^{31} <= `n` <= 2^{31} - 1$`
 >
-> **VI:** `n` nằm trong miền số nguyên 32-bit đã cho.
+> **VI:** `$-2^{31} <= n <= 2^{31} - 1$`
 
 > **EN:** `n is an integer.`
 >

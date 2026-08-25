@@ -57,7 +57,7 @@ Output: [1,2]
 
 > **EN:** `-1000 <= `numbers[i]` <= 1000`
 >
-> **VI:** Mỗi `numbers[i]` nằm trong khoảng `-1000` đến `1000`.
+> **VI:** `-1000 <= numbers[i] <= 1000`
 
 > **EN:** `numbers` is sorted in non-decreasing order.
 >
@@ -65,7 +65,7 @@ Output: [1,2]
 
 > **EN:** `-1000 <= `target` <= 1000`
 >
-> **VI:** `target` nằm trong khoảng `-1000` đến `1000`.
+> **VI:** `-1000 <= target <= 1000`
 
 > **EN:** The tests are generated such that there is exactly one solution.
 >

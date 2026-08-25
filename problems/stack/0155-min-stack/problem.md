@@ -67,7 +67,7 @@ Output
 
 > **EN:** `-2^31 <= `val` <= 2^31 - 1`
 >
-> **VI:** Giá trị nằm trong miền signed 32-bit theo source.
+> **VI:** `-2^31 <= val <= 2^31 - 1`
 
 > **EN:** Methods pop, top and getMin operations will always be called on non-empty stacks.
 >

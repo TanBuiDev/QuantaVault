@@ -44,7 +44,7 @@ Output: [8,9,9,9,0,0,0,1]
 
 > **EN:** The number of nodes in each linked list is in the range [1, 100].
 >
-> **VI:** Số node của mỗi linked list nằm trong khoảng `[1, 100]`.
+> **VI:** `The number of nodes in each linked list is in the range [1, 100].`
 
 > **EN:** 0 <= `Node`.val <= 9
 >

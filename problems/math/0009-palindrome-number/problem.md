@@ -35,8 +35,7 @@ Output: false
 
 > **EN:** `-2^31 <= `x` <= 2^31 - 1`
 >
-> **VI:** `x` nằm trong miền số nguyên 32-bit có dấu.
-
+> **VI:** `-2^31 <= x <= 2^31 - 1`
 ## Follow-up / Câu hỏi mở rộng
 
 > **EN:** Could you solve it without converting the integer to a string?

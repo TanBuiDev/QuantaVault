@@ -82,7 +82,7 @@ nums = [0,0,1,1,1,2,2,3,3,4]
 
 > **EN:** `1 <= `nums`.length <= 3 * 10^4`
 >
-> **VI:** Độ dài `nums` nằm trong giới hạn được nêu trong đề nguồn.
+> **VI:** `1 <= nums.length <= 3 * 10^4`
 
 > **EN:** `-100 <= `nums[i]` <= 100`
 >

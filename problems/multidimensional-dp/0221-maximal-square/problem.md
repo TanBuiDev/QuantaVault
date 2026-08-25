@@ -66,7 +66,7 @@ matrix = [["0"]]
 
 > **EN:** `1 <= m, n <= 300`
 >
-> **VI:** Số hàng và số cột đều nằm trong khoảng từ `1` đến `300`.
+> **VI:** `1 <= m, n <= 300`
 
 > **EN:** `matrix[i][j] is '0' or '1'.`
 >

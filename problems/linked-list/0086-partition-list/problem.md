@@ -34,7 +34,7 @@ Output: [1,2]
 
 > **EN:** The number of nodes in the list is in the range [0, 200].
 >
-> **VI:** Số node trong list nằm trong khoảng `[0, 200]`.
+> **VI:** `The number of nodes in the list is in the range [0, 200].`
 
 > **EN:** -100 <= `Node`.val <= 100
 >

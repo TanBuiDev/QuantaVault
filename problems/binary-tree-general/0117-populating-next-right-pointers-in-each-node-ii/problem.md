@@ -36,7 +36,7 @@ Output: []
 
 > **EN:** The number of nodes in the tree is in the range `[0, 6000]`.
 >
-> **VI:** Số node của tree nằm trong khoảng `[0, 6000]`.
+> **VI:** `The number of nodes in the tree is in the range [0, 6000].`
 
 > **EN:** `-100 <= `Node`.val <= 100`
 >

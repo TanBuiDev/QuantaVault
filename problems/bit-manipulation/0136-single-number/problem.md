@@ -39,7 +39,7 @@ Output: 1
 
 > **EN:** `-3 * 10^4 <= `nums[i]` <= 3 * 10^4`
 >
-> **VI:** Mỗi giá trị nằm trong khoảng đã cho.
+> **VI:** `-3 * 10^4 <= nums[i] <= 3 * 10^4`
 
 > **EN:** Each element in the array appears twice except for one element which appears only once.
 >

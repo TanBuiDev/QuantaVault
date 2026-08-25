@@ -76,7 +76,43 @@ function CodeBlockWithCopy({ children, ...props }: React.ComponentPropsWithoutRe
 
 }
 
-export function MarkdownContent({ markdown }: { markdown: string }) {
+export type LanguageMode = "bilingual" | "en" | "vi";
+
+export interface MarkdownContentProps {
+  markdown: string;
+  languageMode?: LanguageMode;
+}
+
+function filterMarkdownByLanguage(text: string, mode: LanguageMode): string {
+  if (mode === "bilingual") return text;
+
+  // Lọc các block > **EN:** ... > **VI:** ...
+  // Pattern nhận diện block quote song ngữ:
+  // > **EN:** ...
+  // >
+  // > **VI:** ...
+  
+  if (mode === "en") {
+    // Chỉ giữ EN, bỏ dòng > **VI:** ...
+    // Thay thế `> **EN:** (content)\n>\n> **VI:** (vi_content)` thành `> **EN:** (content)` hoặc thành đoạn văn phẳng
+    return text
+      .replace(/> \*\*EN:\*\* (.*?)\n>\n> \*\*VI:\*\* .*?(?=\n\n|\Z)/gs, "> **EN:** $1")
+      .replace(/> \*\*VI:\*\* .*?(?=\n\n|\Z)/gs, "");
+  }
+
+  if (mode === "vi") {
+    // Chỉ giữ VI, bỏ dòng > **EN:** ...
+    return text
+      .replace(/> \*\*EN:\*\* .*?\n>\n> \*\*VI:\*\* (.*?)(?=\n\n|\Z)/gs, "> **VI:** $1")
+      .replace(/> \*\*EN:\*\* .*?(?=\n\n|\Z)/gs, "");
+  }
+
+  return text;
+}
+
+export function MarkdownContent({ markdown, languageMode = "bilingual" }: MarkdownContentProps) {
+  const processedMarkdown = filterMarkdownByLanguage(markdown, languageMode);
+
   return (
     <div className="max-w-none space-y-4 text-sm leading-7 text-[var(--muted-strong)] sm:text-[15.5px] sm:leading-7 [&_a]:font-semibold [&_a]:text-[var(--primary-strong)] [&_a]:underline [&_blockquote]:border-l-4 [&_blockquote]:border-[var(--border-strong)] [&_blockquote]:pl-4 [&_blockquote]:text-[var(--muted)] [&_code]:rounded-md [&_code]:bg-[var(--surface-hover)] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[var(--foreground)] [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-inherit [&_h1]:mt-2 [&_h1]:text-2xl [&_h1]:font-black [&_h1]:tracking-tight [&_h1]:text-[var(--foreground)] [&_h2]:mt-7 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-[var(--foreground)] [&_h3]:mt-6 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-[var(--foreground)] [&_li]:ml-5 [&_li]:list-disc [&_ol_li]:list-decimal [&_p]:max-w-[78ch] [&_table]:w-full [&_table]:border-collapse [&_td]:border [&_td]:border-[var(--border)] [&_td]:p-2 [&_th]:border [&_th]:border-[var(--border)] [&_th]:bg-[var(--surface-hover)] [&_th]:p-2 [&_th]:text-[var(--foreground)] [&_.katex-display]:overflow-x-auto [&_.katex-display]:py-1 [&_.katex]:text-[1.05em]">
       <ReactMarkdown
@@ -86,11 +122,12 @@ export function MarkdownContent({ markdown }: { markdown: string }) {
           pre: CodeBlockWithCopy,
         }}
       >
-        {markdown}
+        {processedMarkdown}
       </ReactMarkdown>
     </div>
   );
 }
+
 
 
 

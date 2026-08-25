@@ -34,8 +34,7 @@ Output: 2
 
 > **EN:** `0 <= `x` <= 2^31 - 1`
 >
-> **VI:** `x` nằm trong miền số nguyên không âm 32-bit có dấu.
-
+> **VI:** `0 <= x <= 2^31 - 1`
 ## Source / Nguồn
 
 LeetCode: https://leetcode.com/problems/sqrtx/

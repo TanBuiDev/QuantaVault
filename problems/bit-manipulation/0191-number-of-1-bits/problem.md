@@ -31,8 +31,7 @@ Output: 30
 
 > **EN:** `1 <= `n` <= 2^31 - 1`
 >
-> **VI:** `n` là số nguyên dương không vượt quá `2^31 - 1`.
-
+> **VI:** `1 <= n <= 2^31 - 1`
 ## Follow-up / Câu hỏi mở rộng
 
 > **EN:** If this function is called many times, how would you optimize it?

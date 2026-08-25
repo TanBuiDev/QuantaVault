@@ -34,7 +34,7 @@ Output: 2
 
 > **EN:** The number of nodes in the tree is in the range [0, 10^4].
 >
-> **VI:** Số node trong cây nằm trong khoảng `[0, 10^4]`.
+> **VI:** `The number of nodes in the tree is in the range [0, 10^4].`
 
 > **EN:** -100 <= `Node`.val <= 100
 >

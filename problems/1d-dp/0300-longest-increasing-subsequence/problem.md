@@ -45,7 +45,7 @@ Output: 1
 
 > **EN:** `-10^4 <= `nums[i]` <= 10^4`
 >
-> **VI:** Mỗi phần tử nằm trong khoảng `-10^4` đến `10^4`.
+> **VI:** `-10^4 <= nums[i] <= 10^4`
 
 > **EN:** Follow up: Can you come up with an algorithm that runs in O(n log(n)) time complexity?
 >

@@ -69,7 +69,7 @@ Output: [[3,null],[3,0],[3,null]]
 
 > **EN:** -10^4 <= `Node`.val <= 10^4
 >
-> **VI:** `Node.val` nằm trong khoảng `[-10^4, 10^4]`.
+> **VI:** `-10^4 <= Node.val <= 10^4`
 
 > **EN:** `Node`.random is `null` or is pointing to some node in the linked list.
 >
