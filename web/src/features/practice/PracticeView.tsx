@@ -341,38 +341,43 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
               <button
                 type="button"
                 onClick={() => handleSetLangMode("bilingual")}
-                className={`rounded-xl px-2.5 py-1.5 transition-all ${
+                className={`flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 transition-all ${
                   langMode === "bilingual"
                     ? "bg-[var(--surface)] text-[var(--foreground)] shadow-xs ring-1 ring-[var(--border)] font-bold"
                     : "text-[var(--muted)] hover:text-[var(--foreground)]"
                 }`}
                 title="Hiển thị song ngữ Anh - Việt"
               >
-                🌐 Song ngữ
+                <svg className="h-3.5 w-3.5 text-indigo-500" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+                </svg>
+                <span>Song ngữ</span>
               </button>
               <button
                 type="button"
                 onClick={() => handleSetLangMode("en")}
-                className={`rounded-xl px-2.5 py-1.5 transition-all ${
+                className={`flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 transition-all ${
                   langMode === "en"
                     ? "bg-[var(--surface)] text-[var(--foreground)] shadow-xs ring-1 ring-[var(--border)] font-bold"
                     : "text-[var(--muted)] hover:text-[var(--foreground)]"
                 }`}
                 title="Chỉ hiển thị đề Tiếng Anh"
               >
-                🇺🇸 English
+                <span className="rounded bg-indigo-500/10 px-1 py-0.2 text-[10px] font-bold text-indigo-600 dark:text-indigo-400">EN</span>
+                <span>English</span>
               </button>
               <button
                 type="button"
                 onClick={() => handleSetLangMode("vi")}
-                className={`rounded-xl px-2.5 py-1.5 transition-all ${
+                className={`flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 transition-all ${
                   langMode === "vi"
                     ? "bg-[var(--surface)] text-[var(--foreground)] shadow-xs ring-1 ring-[var(--border)] font-bold"
                     : "text-[var(--muted)] hover:text-[var(--foreground)]"
                 }`}
                 title="Chỉ hiển thị đề Tiếng Việt"
               >
-                🇻🇳 Tiếng Việt
+                <span className="rounded bg-rose-500/10 px-1 py-0.2 text-[10px] font-bold text-rose-600 dark:text-rose-400">VI</span>
+                <span>Tiếng Việt</span>
               </button>
             </div>
           </div>
@@ -546,7 +551,7 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
 
                       {/* Dots pagination ở trên chính giữa khối code khi có từ 2 phiên bản code trở lên */}
                       {codeVersions.length > 1 ? (
-                        <div className="flex items-center justify-center gap-2 py-1.5">
+                        <div className="flex items-center justify-between rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] px-4 py-2">
                           <button
                             type="button"
                             onClick={() => setSelectedVersionIdx((prev) => (prev > 0 ? prev - 1 : codeVersions.length - 1))}
@@ -558,12 +563,12 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
                             </svg>
                           </button>
 
-                          <div className="flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface-hover)] px-3 py-1.5 shadow-sm">
+                          <div className="flex items-center gap-2">
                             {codeVersions.map((v, idx) => {
                               const isSelected = idx === selectedVersionIdx;
                               return (
                                 <button
-                                  key={v.id}
+                                  key={v.id || idx}
                                   type="button"
                                   onClick={() => setSelectedVersionIdx(idx)}
                                   title={v.name || `Version ${idx + 1}`}
@@ -630,8 +635,17 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
                   variant={progress?.bookmarked ? "primary" : "secondary"}
                   aria-pressed={Boolean(progress?.bookmarked)}
                   onClick={() => updateProblem(content.id, { bookmarked: !progress?.bookmarked })}
+                  className="gap-1.5"
                 >
-                  {progress?.bookmarked ? "★ Saved" : "Bookmark"}
+                  <svg
+                    className={`h-4 w-4 ${progress?.bookmarked ? "fill-white text-white" : "text-[var(--muted-strong)]"}`}
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                  </svg>
+                  <span>{progress?.bookmarked ? "Saved" : "Bookmark"}</span>
                 </Button>
               </div>
 
@@ -656,17 +670,20 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
                             updateProblem(content.id, { confidence: newRating });
                           }}
                           title={`Đánh giá ${star} sao`}
-                          className="group p-1 text-2xl transition-transform hover:scale-125 active:scale-95 focus-visible:outline-none"
+                          className="group p-1 transition-transform hover:scale-125 active:scale-95 focus-visible:outline-none"
                         >
-                          <span
-                            className={
+                          <svg
+                            className={`h-6 w-6 transition-colors ${
                               isFilled
-                                ? "text-amber-400 drop-shadow-[0_2px_8px_rgba(251,191,36,0.5)]"
+                                ? "fill-amber-400 text-amber-500 drop-shadow-[0_2px_8px_rgba(251,191,36,0.5)]"
                                 : "text-[var(--border-strong)] group-hover:text-amber-300"
-                            }
+                            }`}
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.5"
+                            stroke="currentColor"
                           >
-                            ★
-                          </span>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                          </svg>
                         </button>
                       );
                     })}
