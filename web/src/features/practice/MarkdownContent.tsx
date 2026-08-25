@@ -84,66 +84,143 @@ export interface MarkdownContentProps {
 }
 
 function filterMarkdownByLanguage(text: string, mode: LanguageMode): string {
-  if (mode === "bilingual") return text;
+  if (mode === "bilingual" || !text) return text;
 
-  let result = text;
+  // Chuẩn hóa dòng trước khi xử lý
+  const lines = text.replace(/\r\n/g, "\n").split("\n");
+  const resultLines: string[] = [];
 
-  if (mode === "en") {
-    // 1. Dạng block quote có dấu `>` (> **EN:** ... > **VI:** ...)
-    result = result.replace(/> \*\*EN:\*\* ([\s\S]*?)\n>\n> \*\*VI:\*\* [\s\S]*?(?=\n\n|\Z)/g, "> $1");
-    result = result.replace(/> \*\*VI:\*\* [\s\S]*?(?=\n\n|\Z)/g, "");
+  let inBlockQuote = false;
+  let blockEnLines: string[] = [];
+  let blockViLines: string[] = [];
 
-    // 2. Dạng đoạn văn thường (**EN:** ... \n\n **VI:** ...) trong interview / solutions
-    result = result.replace(/\*\*EN:\*\* ([\s\S]*?)(?=\n\n\*\*VI:\*\*)/g, "$1");
-    result = result.replace(/\*\*VI:\*\* ([\s\S]*?)(?=\n\n|\Z)/g, "");
-
-    // 3. Dạng Q (EN) và Q (VI)
-    result = result.replace(/\*\*Q \(EN\):\*\* ([\s\S]*?)(?=\n\n\*\*Q \(VI\):\*\*)/g, "**Question:** $1");
-    result = result.replace(/\*\*Q \(VI\):\*\* ([\s\S]*?)(?=\n\n|\Z)/g, "");
-
-    // 4. Dạng heading song ngữ (## Title / Tiêu đề)
-    result = result.replace(/^(#+ .*) \/ [^\n]+$/gm, "$1");
-
-    // 5. Dạng Short answer (EN) / Trả lời ngắn (VI)
-    result = result.replace(/### Trả lời ngắn \(VI\)[\s\S]*?(?=###|\Z)/g, "");
-    result = result.replace(/### Trả lời chuẩn \(VI\)[\s\S]*?(?=###|\Z)/g, "");
-    result = result.replace(/### Trả lời sâu \(VI\)[\s\S]*?(?=###|\Z)/g, "");
-    result = result.replace(/### Short answer \(EN\)/g, "### Short answer");
-    result = result.replace(/### Standard answer \(EN\)/g, "### Standard answer");
-    result = result.replace(/### Deep answer \(EN\)/g, "### Deep answer");
-
-    return result;
+  function flushBlockQuote() {
+    if (!inBlockQuote) return;
+    if (mode === "en") {
+      if (blockEnLines.length > 0) {
+        resultLines.push(...blockEnLines.map((line) => `> ${line}`));
+      }
+    } else if (mode === "vi") {
+      if (blockViLines.length > 0) {
+        resultLines.push(...blockViLines.map((line) => `> ${line}`));
+      }
+    }
+    blockEnLines = [];
+    blockViLines = [];
+    inBlockQuote = false;
   }
 
-  if (mode === "vi") {
-    // 1. Dạng block quote có dấu `>`
-    result = result.replace(/> \*\*EN:\*\* [\s\S]*?\n>\n> \*\*VI:\*\* ([\s\S]*?)(?=\n\n|\Z)/g, "> $1");
-    result = result.replace(/> \*\*EN:\*\* [\s\S]*?(?=\n\n|\Z)/g, "");
+  let currentBlockType: "none" | "en" | "vi" = "none";
 
-    // 2. Dạng đoạn văn thường (**EN:** ... \n\n **VI:** ...)
-    result = result.replace(/\*\*EN:\*\* ([\s\S]*?)\n\n\*\*VI:\*\* ([\s\S]*?)(?=\n\n|\Z)/g, "$2");
-    result = result.replace(/\*\*EN:\*\* [\s\S]*?(?=\n\n|\Z)/g, "");
+  for (let i = 0; i < lines.length; i++) {
+    const rawLine = lines[i];
+    const trimmed = rawLine.trim();
 
-    // 3. Dạng Q (EN) và Q (VI)
-    result = result.replace(/\*\*Q \(EN\):\*\* [\s\S]*?\n\n\*\*Q \(VI\):\*\* ([\s\S]*?)(?=\n\n|\Z)/g, "**Câu hỏi:** $1");
-    result = result.replace(/\*\*Q \(EN\):\*\* [\s\S]*?(?=\n\n|\Z)/g, "");
+    // 1. Xử lý Blockquote (> ...)
+    if (trimmed.startsWith(">")) {
+      inBlockQuote = true;
+      const quoteContent = trimmed.replace(/^>\s?/, "");
 
-    // 4. Dạng heading song ngữ (## Title / Tiêu đề -> Lấy vế sau)
-    result = result.replace(/^(#+ )[^/\n]+ \/ ([^\n]+)$/gm, "$1$2");
+      if (quoteContent.startsWith("**EN:**")) {
+        currentBlockType = "en";
+        const content = quoteContent.replace(/^\*\*EN:\*\*\s*/, "");
+        if (content) blockEnLines.push(content);
+      } else if (quoteContent.startsWith("**VI:**")) {
+        currentBlockType = "vi";
+        const content = quoteContent.replace(/^\*\*VI:\*\*\s*/, "");
+        if (content) blockViLines.push(content);
+      } else if (quoteContent === "") {
+        // Dòng ngăn cách `>`
+        currentBlockType = "none";
+      } else {
+        if (currentBlockType === "en") blockEnLines.push(quoteContent);
+        else if (currentBlockType === "vi") blockViLines.push(quoteContent);
+      }
+      continue;
+    } else {
+      flushBlockQuote();
+      currentBlockType = "none";
+    }
 
-    // 5. Dạng Short answer (EN) / Trả lời ngắn (VI)
-    result = result.replace(/### Short answer \(EN\)[\s\S]*?(?=###|\Z)/g, "");
-    result = result.replace(/### Standard answer \(EN\)[\s\S]*?(?=###|\Z)/g, "");
-    result = result.replace(/### Deep answer \(EN\)[\s\S]*?(?=###|\Z)/g, "");
-    result = result.replace(/### Trả lời ngắn \(VI\)/g, "### Trả lời ngắn");
-    result = result.replace(/### Trả lời chuẩn \(VI\)/g, "### Trả lời chuẩn");
-    result = result.replace(/### Trả lời sâu \(VI\)/g, "### Trả lời sâu");
+    // 2. Xử lý Heading song ngữ (# Title / Tiêu đề)
+    const headingMatch = rawLine.match(/^(#+\s+)(.*?)\s+\/\s+(.*)$/);
+    if (headingMatch) {
+      const prefix = headingMatch[1];
+      const enTitle = headingMatch[2];
+      const viTitle = headingMatch[3];
+      resultLines.push(mode === "en" ? `${prefix}${enTitle}` : `${prefix}${viTitle}`);
+      continue;
+    }
 
-    return result;
+    // 3. Xử lý độ khó / inline (**Medium / Trung bình**)
+    const inlineSlashMatch = rawLine.match(/^\*\*(.*?)\s+\/\s+(.*?)\*\*$/);
+    if (inlineSlashMatch) {
+      resultLines.push(mode === "en" ? `**${inlineSlashMatch[1]}**` : `**${inlineSlashMatch[2]}**`);
+      continue;
+    }
+
+    // 4. Xử lý đoạn văn thường **EN:** và **VI:**
+    if (rawLine.startsWith("**EN:**")) {
+      if (mode === "en") {
+        resultLines.push(rawLine.replace(/^\*\*EN:\*\*\s*/, ""));
+      }
+      continue;
+    }
+    if (rawLine.startsWith("**VI:**")) {
+      if (mode === "vi") {
+        resultLines.push(rawLine.replace(/^\*\*VI:\*\*\s*/, ""));
+      }
+      continue;
+    }
+
+    // 5. Xử lý Q (EN) / Q (VI)
+    if (rawLine.startsWith("**Q (EN):**")) {
+      if (mode === "en") {
+        resultLines.push(`**Question:** ${rawLine.replace(/^\*\*Q \(EN\):\*\*\s*/, "")}`);
+      }
+      continue;
+    }
+    if (rawLine.startsWith("**Q (VI):**")) {
+      if (mode === "vi") {
+        resultLines.push(`**Câu hỏi:** ${rawLine.replace(/^\*\*Q \(VI\):\*\*\s*/, "")}`);
+      }
+      continue;
+    }
+
+    // 6. Xử lý các section answer EN/VI
+    if (rawLine.startsWith("### Short answer (EN)")) {
+      if (mode === "en") resultLines.push("### Short answer");
+      continue;
+    }
+    if (rawLine.startsWith("### Trả lời ngắn (VI)")) {
+      if (mode === "vi") resultLines.push("### Trả lời ngắn");
+      continue;
+    }
+    if (rawLine.startsWith("### Standard answer (EN)")) {
+      if (mode === "en") resultLines.push("### Standard answer");
+      continue;
+    }
+    if (rawLine.startsWith("### Trả lời chuẩn (VI)")) {
+      if (mode === "vi") resultLines.push("### Trả lời chuẩn");
+      continue;
+    }
+    if (rawLine.startsWith("### Deep answer (EN)")) {
+      if (mode === "en") resultLines.push("### Deep answer");
+      continue;
+    }
+    if (rawLine.startsWith("### Trả lời sâu (VI)")) {
+      if (mode === "vi") resultLines.push("### Trả lời sâu");
+      continue;
+    }
+
+    resultLines.push(rawLine);
   }
 
-  return text;
+  flushBlockQuote();
+
+  return resultLines.join("\n");
 }
+
 
 
 
