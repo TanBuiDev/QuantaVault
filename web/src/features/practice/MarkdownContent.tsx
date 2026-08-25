@@ -86,29 +86,23 @@ export interface MarkdownContentProps {
 function filterMarkdownByLanguage(text: string, mode: LanguageMode): string {
   if (mode === "bilingual") return text;
 
-  // Lọc các block > **EN:** ... > **VI:** ...
-  // Pattern nhận diện block quote song ngữ:
-  // > **EN:** ...
-  // >
-  // > **VI:** ...
-  
   if (mode === "en") {
     // Chỉ giữ EN, bỏ dòng > **VI:** ...
-    // Thay thế `> **EN:** (content)\n>\n> **VI:** (vi_content)` thành `> **EN:** (content)` hoặc thành đoạn văn phẳng
     return text
-      .replace(/> \*\*EN:\*\* (.*?)\n>\n> \*\*VI:\*\* .*?(?=\n\n|\Z)/gs, "> **EN:** $1")
-      .replace(/> \*\*VI:\*\* .*?(?=\n\n|\Z)/gs, "");
+      .replace(/> \*\*EN:\*\* ([\s\S]*?)\n>\n> \*\*VI:\*\* [\s\S]*?(?=\n\n|\Z)/g, "> **EN:** $1")
+      .replace(/> \*\*VI:\*\* [\s\S]*?(?=\n\n|\Z)/g, "");
   }
 
   if (mode === "vi") {
     // Chỉ giữ VI, bỏ dòng > **EN:** ...
     return text
-      .replace(/> \*\*EN:\*\* .*?\n>\n> \*\*VI:\*\* (.*?)(?=\n\n|\Z)/gs, "> **VI:** $1")
-      .replace(/> \*\*EN:\*\* .*?(?=\n\n|\Z)/gs, "");
+      .replace(/> \*\*EN:\*\* [\s\S]*?\n>\n> \*\*VI:\*\* ([\s\S]*?)(?=\n\n|\Z)/g, "> **VI:** $1")
+      .replace(/> \*\*EN:\*\* [\s\S]*?(?=\n\n|\Z)/g, "");
   }
 
   return text;
 }
+
 
 export function MarkdownContent({ markdown, languageMode = "bilingual" }: MarkdownContentProps) {
   const processedMarkdown = filterMarkdownByLanguage(markdown, languageMode);
