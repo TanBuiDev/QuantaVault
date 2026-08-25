@@ -86,22 +86,65 @@ export interface MarkdownContentProps {
 function filterMarkdownByLanguage(text: string, mode: LanguageMode): string {
   if (mode === "bilingual") return text;
 
+  let result = text;
+
   if (mode === "en") {
-    // Chỉ giữ EN, bỏ dòng > **VI:** ...
-    return text
-      .replace(/> \*\*EN:\*\* ([\s\S]*?)\n>\n> \*\*VI:\*\* [\s\S]*?(?=\n\n|\Z)/g, "> **EN:** $1")
-      .replace(/> \*\*VI:\*\* [\s\S]*?(?=\n\n|\Z)/g, "");
+    // 1. Dạng block quote có dấu `>` (> **EN:** ... > **VI:** ...)
+    result = result.replace(/> \*\*EN:\*\* ([\s\S]*?)\n>\n> \*\*VI:\*\* [\s\S]*?(?=\n\n|\Z)/g, "> $1");
+    result = result.replace(/> \*\*VI:\*\* [\s\S]*?(?=\n\n|\Z)/g, "");
+
+    // 2. Dạng đoạn văn thường (**EN:** ... \n\n **VI:** ...) trong interview / solutions
+    result = result.replace(/\*\*EN:\*\* ([\s\S]*?)(?=\n\n\*\*VI:\*\*)/g, "$1");
+    result = result.replace(/\*\*VI:\*\* ([\s\S]*?)(?=\n\n|\Z)/g, "");
+
+    // 3. Dạng Q (EN) và Q (VI)
+    result = result.replace(/\*\*Q \(EN\):\*\* ([\s\S]*?)(?=\n\n\*\*Q \(VI\):\*\*)/g, "**Question:** $1");
+    result = result.replace(/\*\*Q \(VI\):\*\* ([\s\S]*?)(?=\n\n|\Z)/g, "");
+
+    // 4. Dạng heading song ngữ (## Title / Tiêu đề)
+    result = result.replace(/^(#+ .*) \/ [^\n]+$/gm, "$1");
+
+    // 5. Dạng Short answer (EN) / Trả lời ngắn (VI)
+    result = result.replace(/### Trả lời ngắn \(VI\)[\s\S]*?(?=###|\Z)/g, "");
+    result = result.replace(/### Trả lời chuẩn \(VI\)[\s\S]*?(?=###|\Z)/g, "");
+    result = result.replace(/### Trả lời sâu \(VI\)[\s\S]*?(?=###|\Z)/g, "");
+    result = result.replace(/### Short answer \(EN\)/g, "### Short answer");
+    result = result.replace(/### Standard answer \(EN\)/g, "### Standard answer");
+    result = result.replace(/### Deep answer \(EN\)/g, "### Deep answer");
+
+    return result;
   }
 
   if (mode === "vi") {
-    // Chỉ giữ VI, bỏ dòng > **EN:** ...
-    return text
-      .replace(/> \*\*EN:\*\* [\s\S]*?\n>\n> \*\*VI:\*\* ([\s\S]*?)(?=\n\n|\Z)/g, "> **VI:** $1")
-      .replace(/> \*\*EN:\*\* [\s\S]*?(?=\n\n|\Z)/g, "");
+    // 1. Dạng block quote có dấu `>`
+    result = result.replace(/> \*\*EN:\*\* [\s\S]*?\n>\n> \*\*VI:\*\* ([\s\S]*?)(?=\n\n|\Z)/g, "> $1");
+    result = result.replace(/> \*\*EN:\*\* [\s\S]*?(?=\n\n|\Z)/g, "");
+
+    // 2. Dạng đoạn văn thường (**EN:** ... \n\n **VI:** ...)
+    result = result.replace(/\*\*EN:\*\* ([\s\S]*?)\n\n\*\*VI:\*\* ([\s\S]*?)(?=\n\n|\Z)/g, "$2");
+    result = result.replace(/\*\*EN:\*\* [\s\S]*?(?=\n\n|\Z)/g, "");
+
+    // 3. Dạng Q (EN) và Q (VI)
+    result = result.replace(/\*\*Q \(EN\):\*\* [\s\S]*?\n\n\*\*Q \(VI\):\*\* ([\s\S]*?)(?=\n\n|\Z)/g, "**Câu hỏi:** $1");
+    result = result.replace(/\*\*Q \(EN\):\*\* [\s\S]*?(?=\n\n|\Z)/g, "");
+
+    // 4. Dạng heading song ngữ (## Title / Tiêu đề -> Lấy vế sau)
+    result = result.replace(/^(#+ )[^/\n]+ \/ ([^\n]+)$/gm, "$1$2");
+
+    // 5. Dạng Short answer (EN) / Trả lời ngắn (VI)
+    result = result.replace(/### Short answer \(EN\)[\s\S]*?(?=###|\Z)/g, "");
+    result = result.replace(/### Standard answer \(EN\)[\s\S]*?(?=###|\Z)/g, "");
+    result = result.replace(/### Deep answer \(EN\)[\s\S]*?(?=###|\Z)/g, "");
+    result = result.replace(/### Trả lời ngắn \(VI\)/g, "### Trả lời ngắn");
+    result = result.replace(/### Trả lời chuẩn \(VI\)/g, "### Trả lời chuẩn");
+    result = result.replace(/### Trả lời sâu \(VI\)/g, "### Trả lời sâu");
+
+    return result;
   }
 
   return text;
 }
+
 
 
 export function MarkdownContent({ markdown, languageMode = "bilingual" }: MarkdownContentProps) {

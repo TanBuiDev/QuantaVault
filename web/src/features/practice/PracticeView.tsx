@@ -428,7 +428,7 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
                       </div>
                     ) : null}
 
-                    {currentSolutionMarkdown ? <MarkdownContent markdown={currentSolutionMarkdown} /> : null}
+                    {currentSolutionMarkdown ? <MarkdownContent markdown={currentSolutionMarkdown} languageMode={langMode} /> : null}
                     <MediaGallery items={solutionMedia} problemId={content.id} />
                     
                     <section className="space-y-3" aria-labelledby="java-solution-heading">
@@ -583,7 +583,7 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
 
 
                 {activeTab === "interview" && content.interviewMarkdown ? (
-                  <MarkdownContent markdown={content.interviewMarkdown} />
+                  <MarkdownContent markdown={content.interviewMarkdown} languageMode={langMode} />
                 ) : null}
               </div>
             </CardContent>
