@@ -314,7 +314,7 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
             <div className="flex items-center gap-1 rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)] p-1 shadow-inner text-xs font-semibold">
               <button
                 type="button"
-                onClick={() => setLangMode("bilingual")}
+                onClick={() => handleSetLangMode("bilingual")}
                 className={`rounded-xl px-2.5 py-1.5 transition-all ${
                   langMode === "bilingual"
                     ? "bg-[var(--surface)] text-[var(--foreground)] shadow-xs ring-1 ring-[var(--border)] font-bold"
@@ -326,7 +326,7 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
               </button>
               <button
                 type="button"
-                onClick={() => setLangMode("en")}
+                onClick={() => handleSetLangMode("en")}
                 className={`rounded-xl px-2.5 py-1.5 transition-all ${
                   langMode === "en"
                     ? "bg-[var(--surface)] text-[var(--foreground)] shadow-xs ring-1 ring-[var(--border)] font-bold"
@@ -338,7 +338,7 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
               </button>
               <button
                 type="button"
-                onClick={() => setLangMode("vi")}
+                onClick={() => handleSetLangMode("vi")}
                 className={`rounded-xl px-2.5 py-1.5 transition-all ${
                   langMode === "vi"
                     ? "bg-[var(--surface)] text-[var(--foreground)] shadow-xs ring-1 ring-[var(--border)] font-bold"
@@ -350,6 +350,7 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
               </button>
             </div>
           </div>
+
 
 
           <Card>
