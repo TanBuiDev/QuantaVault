@@ -81,6 +81,7 @@ export type LanguageMode = "bilingual" | "en" | "vi";
 export interface MarkdownContentProps {
   markdown: string;
   languageMode?: LanguageMode;
+  wordWrap?: boolean;
 }
 
 function filterMarkdownByLanguage(text: string, mode: LanguageMode): string {
@@ -224,7 +225,7 @@ function filterMarkdownByLanguage(text: string, mode: LanguageMode): string {
 
 
 
-export function MarkdownContent({ markdown, languageMode = "bilingual" }: MarkdownContentProps) {
+export function MarkdownContent({ markdown, languageMode = "bilingual", wordWrap = true }: MarkdownContentProps) {
   const processedMarkdown = filterMarkdownByLanguage(markdown, languageMode);
 
   return (
@@ -233,7 +234,14 @@ export function MarkdownContent({ markdown, languageMode = "bilingual" }: Markdo
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeKatex]}
         components={{
-          pre: CodeBlockWithCopy,
+          pre: (props) => (
+            <CodeBlockWithCopy
+              {...props}
+              className={`max-w-full overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--code-surface)] p-4 text-sm leading-6 text-[var(--code-foreground)] ${
+                wordWrap ? "whitespace-pre-wrap break-words" : "whitespace-pre"
+              }`}
+            />
+          ),
         }}
       >
         {processedMarkdown}

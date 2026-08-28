@@ -14,6 +14,7 @@ interface CodeEditorPanelProps {
   onRun: () => void;
   onSubmit: () => void;
   isRunning: boolean;
+  wordWrap?: boolean;
 }
 
 export function CodeEditorPanel({
@@ -24,6 +25,7 @@ export function CodeEditorPanel({
   onRun,
   onSubmit,
   isRunning,
+  wordWrap = true,
 }: CodeEditorPanelProps) {
   const [copied, setCopied] = useState(false);
   const [theme, setTheme] = useState<"vs-dark" | "light">("vs-dark");
@@ -178,7 +180,7 @@ export function CodeEditorPanel({
             quickSuggestions: true,
             renderLineHighlight: "all",
             smoothScrolling: true,
-            wordWrap: "on",
+            wordWrap: wordWrap ? "on" : "off",
             wrappingIndent: "indent",
             wrappingStrategy: "advanced",
           }}

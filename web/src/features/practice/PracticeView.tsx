@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { Group, Panel, Separator } from "react-resizable-panels";
-import { Play, Send, Terminal, CheckCircle2, Columns, LayoutTemplate, ArrowRightLeft } from "lucide-react";
+import { Play, Send, Terminal, CheckCircle2, Columns, LayoutTemplate, ArrowRightLeft, Settings, WrapText } from "lucide-react";
 
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -108,8 +108,29 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
 
   // User Code in Editor (default to starterCode template)
   const [userCode, setUserCode] = useState<string>(starterCode);
+  const [wordWrap, setWordWrap] = useState<boolean>(true);
+  const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
+  const settingsRef = useRef<HTMLDivElement>(null);
 
   const { success, error: toastError, info, warning } = useToast();
+
+  useEffect(() => {
+    if (!isSettingsOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (settingsRef.current && !settingsRef.current.contains(e.target as Node)) {
+        setIsSettingsOpen(false);
+      }
+    };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsSettingsOpen(false);
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isSettingsOpen]);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -122,6 +143,10 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
         const savedLayout = localStorage.getItem("preferred_layout_mode");
         if (savedLayout === "split" || savedLayout === "classic") {
           setLayoutMode(savedLayout);
+        }
+        const savedWrap = localStorage.getItem("preferred_word_wrap");
+        if (savedWrap !== null) {
+          setWordWrap(savedWrap === "true");
         }
         const savedCode = localStorage.getItem(`user_code_${content.id}`);
         if (savedCode) {
@@ -136,6 +161,16 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
 
     return () => window.cancelAnimationFrame(frame);
   }, [content.id, starterCode]);
+
+  const handleToggleWordWrap = () => {
+    setWordWrap((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem("preferred_word_wrap", String(next));
+      } catch {}
+      return next;
+    });
+  };
 
   const langMode = mounted ? localLangMode : "bilingual";
 
@@ -430,6 +465,7 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
                     media={problemMedia}
                     problemId={content.id}
                     languageMode={langMode}
+                    wordWrap={wordWrap}
                     badges={
                       <>
                         <Badge variant={difficultyVariant(content.difficulty)}>{content.difficulty}</Badge>
@@ -462,7 +498,7 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
                     <div className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-[var(--primary-strong)]">
                       Hint {index + 1}
                     </div>
-                    <MarkdownContent markdown={hint} languageMode={langMode} />
+                    <MarkdownContent markdown={hint} languageMode={langMode} wordWrap={wordWrap} />
                   </section>
                 ))}
               </div>
@@ -507,7 +543,7 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
                 ) : null}
 
                 {currentSolutionMarkdown ? (
-                  <MarkdownContent markdown={currentSolutionMarkdown} languageMode={langMode} />
+                  <MarkdownContent markdown={currentSolutionMarkdown} languageMode={langMode} wordWrap={wordWrap} />
                 ) : (
                   <EmptyState title="No solution explanation available" description="This problem does not have a detailed markdown solution guide yet." />
                 )}
@@ -661,7 +697,7 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
                   ) : null}
 
                   {currentJavaSource ? (
-                    <pre className="max-w-full overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--code-surface)] p-4 text-xs font-mono leading-6 text-[var(--code-foreground)]">
+                    <pre className={`max-w-full overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--code-surface)] p-4 text-xs font-mono leading-6 text-[var(--code-foreground)] ${wordWrap ? "whitespace-pre-wrap break-words" : "whitespace-pre"}`}>
                       <code>{currentJavaSource}</code>
                     </pre>
                   ) : null}
@@ -672,7 +708,7 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
             {activeTab === "interview" ? (
               <div className="space-y-6">
                 {content.interviewMarkdown ? (
-                  <MarkdownContent markdown={content.interviewMarkdown} languageMode={langMode} />
+                  <MarkdownContent markdown={content.interviewMarkdown} languageMode={langMode} wordWrap={wordWrap} />
                 ) : (
                   <EmptyState title="No interview guide available" description="This problem does not have an interview walkthrough yet." />
                 )}
@@ -788,6 +824,71 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
                 );
               })()}
             </div>
+
+            {/* Settings Button (Right of status button) */}
+            <div className="relative" ref={settingsRef}>
+              <button
+                type="button"
+                onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+                title="Cài đặt hiển thị (Settings)"
+                aria-label="Cài đặt hiển thị"
+                className={`flex h-8 w-8 items-center justify-center rounded-lg border transition-all cursor-pointer ${
+                  isSettingsOpen
+                    ? "border-indigo-500 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 shadow-xs"
+                    : "border-[var(--border)] bg-[var(--surface)] text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
+                }`}
+              >
+                <Settings className={`h-4 w-4 transition-transform duration-200 ${isSettingsOpen ? "rotate-45 text-indigo-500" : ""}`} />
+              </button>
+
+              {isSettingsOpen && (
+                <div className="absolute right-0 top-full mt-2 z-50 w-72 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-xl backdrop-blur-xl animate-in fade-in zoom-in-95 duration-150">
+                  <div className="flex items-center justify-between pb-3 border-b border-[var(--border)]">
+                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--foreground)]">
+                      <Settings className="h-3.5 w-3.5 text-indigo-500" />
+                      <span>Cài đặt Editor</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setIsSettingsOpen(false)}
+                      className="flex h-5 w-5 items-center justify-center rounded-md text-[var(--muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)] text-xs cursor-pointer"
+                      title="Đóng"
+                    >
+                      ✕
+                    </button>
+                  </div>
+
+                  <div className="pt-3 space-y-3">
+                    {/* Word Wrap Setting */}
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="space-y-0.5">
+                        <div className="flex items-center gap-1.5 text-xs font-semibold text-[var(--foreground)]">
+                          <WrapText className="h-3.5 w-3.5 text-indigo-500" />
+                          <span>Tự động xuống dòng</span>
+                        </div>
+                        <div className="text-[11px] text-[var(--muted)]">Word Wrap (Monaco & Docs)</div>
+                      </div>
+
+                      <button
+                        type="button"
+                        role="switch"
+                        aria-checked={wordWrap}
+                        onClick={handleToggleWordWrap}
+                        className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                          wordWrap ? "bg-indigo-600" : "bg-slate-600/50"
+                        }`}
+                      >
+                        <span
+                          className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                            wordWrap ? "translate-x-4" : "translate-x-0"
+                          }`}
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </header>
@@ -821,6 +922,7 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
                     onRun={handleRunCode}
                     onSubmit={handleSubmitCode}
                     isRunning={isRunning}
+                    wordWrap={wordWrap}
                   />
                 </Panel>
 
@@ -963,12 +1065,14 @@ function ProblemStatement({
   problemId,
   languageMode = "bilingual",
   badges,
+  wordWrap = true,
 }: {
   markdown: string;
   media: NonNullable<ProblemContent["media"]>;
   problemId: number;
   languageMode?: "bilingual" | "en" | "vi";
   badges?: React.ReactNode;
+  wordWrap?: boolean;
 }) {
   const headingMatch = markdown.match(/^(#\s+[^\n]+(?:\r?\n|$))/);
 
@@ -979,43 +1083,43 @@ function ProblemStatement({
 
     return (
       <div className="space-y-4">
-        <MarkdownContent markdown={titleText.trimEnd()} languageMode={languageMode} />
+        <MarkdownContent markdown={titleText.trimEnd()} languageMode={languageMode} wordWrap={wordWrap} />
         <div className="flex flex-wrap items-center gap-2 -mt-1 pb-1">
           {badges}
         </div>
         {media.length === 0 ? (
-          <MarkdownContent markdown={restMarkdown} languageMode={languageMode} />
+          <MarkdownContent markdown={restMarkdown} languageMode={languageMode} wordWrap={wordWrap} />
         ) : insertion < 0 ? (
           <>
-            <MarkdownContent markdown={restMarkdown} languageMode={languageMode} />
+            <MarkdownContent markdown={restMarkdown} languageMode={languageMode} wordWrap={wordWrap} />
             <MediaGallery items={media} problemId={problemId} />
           </>
         ) : (
           <>
-            <MarkdownContent markdown={restMarkdown.slice(0, insertion).trimEnd()} languageMode={languageMode} />
+            <MarkdownContent markdown={restMarkdown.slice(0, insertion).trimEnd()} languageMode={languageMode} wordWrap={wordWrap} />
             <MediaGallery items={media} problemId={problemId} />
-            <MarkdownContent markdown={restMarkdown.slice(insertion).trimStart()} languageMode={languageMode} />
+            <MarkdownContent markdown={restMarkdown.slice(insertion).trimStart()} languageMode={languageMode} wordWrap={wordWrap} />
           </>
         )}
       </div>
     );
   }
 
-  if (media.length === 0) return <MarkdownContent markdown={markdown} languageMode={languageMode} />;
+  if (media.length === 0) return <MarkdownContent markdown={markdown} languageMode={languageMode} wordWrap={wordWrap} />;
   const insertion = markdown.search(/^##\s+(?:Constraints|Ràng buộc|Source|Nguồn)\b/im);
   if (insertion < 0) {
     return (
       <>
-        <MarkdownContent markdown={markdown} languageMode={languageMode} />
+        <MarkdownContent markdown={markdown} languageMode={languageMode} wordWrap={wordWrap} />
         <MediaGallery items={media} problemId={problemId} />
       </>
     );
   }
   return (
     <>
-      <MarkdownContent markdown={markdown.slice(0, insertion).trimEnd()} languageMode={languageMode} />
+      <MarkdownContent markdown={markdown.slice(0, insertion).trimEnd()} languageMode={languageMode} wordWrap={wordWrap} />
       <MediaGallery items={media} problemId={problemId} />
-      <MarkdownContent markdown={markdown.slice(insertion).trimStart()} languageMode={languageMode} />
+      <MarkdownContent markdown={markdown.slice(insertion).trimStart()} languageMode={languageMode} wordWrap={wordWrap} />
     </>
   );
 }
