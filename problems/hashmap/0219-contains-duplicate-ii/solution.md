@@ -4,18 +4,32 @@
 
 Với mỗi value, để tìm duplicate gần nhất về phía trước, chỉ cần biết occurrence **gần nhất** đã thấy. Mọi occurrence cũ hơn luôn có khoảng cách lớn hơn.
 
-## 2. Algorithm
+## 2. Optimal Java solution
 
 ```java
-Map<Integer,Integer> lastSeen = new HashMap<>();
-for (int i = 0; i < nums.length; i++) {
-    Integer previous = lastSeen.get(nums[i]);
-    if (previous != null && i - previous <= k) {
-        return true;
+import java.util.HashMap;
+import java.util.Map;
+
+class Solution {
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        Map<Integer, Integer> lastSeen = new HashMap<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            Integer previous = lastSeen.get(nums[i]);
+
+            // Chỉ latest occurrence cần giữ: nếu latest đã cách quá k thì mọi
+            // occurrence cũ hơn còn xa hơn, nên không thể tạo pair hợp lệ với i.
+            if (previous != null && i - previous <= k) {
+                return true;
+            }
+
+            // Overwrite bằng index mới nhất để tối thiểu hóa distance cho các lần gặp sau.
+            lastSeen.put(nums[i], i);
+        }
+
+        return false;
     }
-    lastSeen.put(nums[i], i);
 }
-return false;
 ```
 
 ## 3. Why keeping only the latest index is enough
@@ -37,7 +51,7 @@ Space: O(n)
 
 ## 6. Alternative sliding-window set
 
-Có thể duy trì set chứa tối đa `k` phần tử gần nhất: trước khi thêm current value, nếu nó đã trong set thì trả true; loại phần tử rời window. Cũng `O(n)` average và `O(min(n,k))` space.
+Có thể duy trì set chứa tối đa `k` phần tử gần nhất. Cũng `O(n)` average và `O(min(n,k))` space.
 
 ## 7. Common mistakes
 

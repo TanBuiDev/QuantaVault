@@ -4,16 +4,33 @@
 
 Hai chuỗi là anagram khi chúng chứa chính xác cùng multiset ký tự. Vì alphabet là `a..z`, ta dùng 26 counters.
 
-## 2. Algorithm
-
-Nếu độ dài khác nhau, trả `false` ngay. Nếu bằng nhau, với mỗi index:
+## 2. Optimal Java solution
 
 ```java
-count[s.charAt(i) - 'a']++;
-count[t.charAt(i) - 'a']--;
-```
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        if (s.length() != t.length()) {
+            return false;
+        }
 
-Sau vòng lặp, mọi count phải bằng `0`.
+        int[] count = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            // Cùng một counter lưu hiệu frequency(s) - frequency(t), nên không cần
+            // hai mảng riêng; anagram iff mọi hiệu cuối cùng trở về 0.
+            count[s.charAt(i) - 'a']++;
+            count[t.charAt(i) - 'a']--;
+        }
+
+        for (int value : count) {
+            // Một counter khác 0 chứng minh multiplicity của ít nhất một letter khác nhau.
+            if (value != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
 
 ## 3. Correctness / Vì sao đúng
 

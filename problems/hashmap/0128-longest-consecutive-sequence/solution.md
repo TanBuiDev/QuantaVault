@@ -4,32 +4,43 @@
 
 Dùng `HashSet` để biết một value có tồn tại hay không trong average `O(1)`. Quan trọng nhất: **chỉ bắt đầu đếm ở đầu sequence**.
 
-`x` là sequence start iff:
-
-```text
-x - 1 không nằm trong set
-```
-
-Sau đó mở rộng `x, x+1, x+2, ...`.
+`x` là sequence start iff `x - 1` không nằm trong set. Sau đó mở rộng `x, x+1, x+2, ...`.
 
 ---
 
-## 2. Algorithm
+## 2. Optimal Java solution
 
 ```java
-Set<Integer> values = new HashSet<>();
-for (int x : nums) values.add(x);
+import java.util.HashSet;
+import java.util.Set;
 
-int best = 0;
-for (int x : values) {
-    if (!values.contains(x - 1)) {
-        int current = x;
-        int length = 1;
-        while (values.contains(current + 1)) {
-            current++;
-            length++;
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        Set<Integer> values = new HashSet<>();
+        for (int value : nums) {
+            values.add(value);
         }
-        best = Math.max(best, length);
+
+        int best = 0;
+        for (int value : values) {
+            // Chỉ value không có predecessor mới là đầu một maximal sequence.
+            // Nếu expand từ mọi value, một dãy dài sẽ bị quét lặp và thành O(n^2).
+            if (!values.contains(value - 1)) {
+                int current = value;
+                int length = 1;
+
+                // Vì mỗi sequence chỉ được mở rộng từ đầu duy nhất của nó,
+                // mỗi distinct value tham gia một expansion tối đa một lần amortized.
+                while (values.contains(current + 1)) {
+                    current++;
+                    length++;
+                }
+
+                best = Math.max(best, length);
+            }
+        }
+
+        return best;
     }
 }
 ```
@@ -51,8 +62,6 @@ Khi chỉ mở rộng từ value không có predecessor, mỗi actual sequence �
 ```text
 [100,4,200,1,3,2]
 ```
-
-Set chứa `{100,4,200,1,3,2}`.
 
 - `100`: `99` absent → sequence length `1`.
 - `4`: `3` exists → không start.

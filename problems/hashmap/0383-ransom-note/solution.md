@@ -8,26 +8,30 @@ Do alphabet cố định là `a..z`, dùng mảng 26 phần tử là đủ.
 
 ---
 
-## 2. Algorithm
-
-1. Đếm toàn bộ ký tự trong `magazine` vào `frequency[26]`.
-2. Duyệt từng ký tự trong `ransomNote`.
-3. Giảm frequency của ký tự đó đi `1`.
-4. Nếu frequency vừa âm, `magazine` không đủ ký tự đó → trả `false`.
-5. Duyệt hết mà không âm → trả `true`.
+## 2. Optimal Java solution
 
 ```java
-int[] frequency = new int[26];
-for (char c : magazine.toCharArray()) {
-    frequency[c - 'a']++;
-}
+class Solution {
+    public boolean canConstruct(String ransomNote, String magazine) {
+        int[] frequency = new int[26];
 
-for (char c : ransomNote.toCharArray()) {
-    if (--frequency[c - 'a'] < 0) {
-        return false;
+        for (char c : magazine.toCharArray()) {
+            frequency[c - 'a']++;
+        }
+
+        for (char c : ransomNote.toCharArray()) {
+            // Counter là inventory còn lại. Decrement trước rồi kiểm tra âm giúp
+            // phát hiện đúng thời điểm demand vượt supply của ký tự này.
+            if (--frequency[c - 'a'] < 0) {
+                // Thiếu hụt đã xảy ra trong toàn bộ magazine; ký tự phía sau
+                // không thể bổ sung lại inventory nên có thể fail ngay.
+                return false;
+            }
+        }
+
+        return true;
     }
 }
-return true;
 ```
 
 ---
@@ -42,35 +46,7 @@ Mỗi character trong `ransomNote` bắt buộc tiêu thụ đúng một bản s
 
 ## 4. Dry run
 
-```text
-ransomNote = "aa"
-magazine   = "aab"
-```
-
-Sau khi đếm magazine:
-
-```text
-a: 2
-b: 1
-```
-
-Duyệt ransomNote:
-
-```text
-'a' -> a: 1
-'a' -> a: 0
-```
-
-Không counter nào âm → `true`.
-
-Với `magazine = "ab"`:
-
-```text
-'a' -> a: 0
-'a' -> a: -1
-```
-
-Ngay lập tức trả `false`.
+Với `ransomNote = "aa"`, `magazine = "aab"`, inventory `a` giảm từ 2 về 0 nên hợp lệ. Với `magazine = "ab"`, lần dùng `a` thứ hai làm counter thành `-1`, trả `false`.
 
 ---
 
@@ -84,14 +60,10 @@ Khi tiêu thụ current character, decrement giữ đúng invariant. Nếu count
 
 ## 6. Complexity
 
-Gọi `m = magazine.length`, `n = ransomNote.length`:
-
 ```text
 Time: O(m+n)
 Extra space: O(1)
 ```
-
-`O(1)` vì array luôn có đúng 26 phần tử.
 
 ---
 

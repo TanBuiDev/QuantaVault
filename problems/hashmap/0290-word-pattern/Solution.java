@@ -15,9 +15,13 @@ class Solution {
             char c = pattern.charAt(i);
             String word = words[i];
 
+            // Forward map bảo đảm một pattern char không đổi target word.
             if (charToWord.containsKey(c) && !charToWord.get(c).equals(word)) {
                 return false;
             }
+
+            // Reverse map là phần bắt buộc để bảo đảm one-to-one: hai char khác nhau
+            // không được cùng map vào một word dù forward map riêng lẻ vẫn nhất quán.
             if (wordToChar.containsKey(word) && wordToChar.get(word) != c) {
                 return false;
             }

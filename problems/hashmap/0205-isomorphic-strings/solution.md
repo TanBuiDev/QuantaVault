@@ -2,34 +2,38 @@
 
 ## 1. Core idea / Ý tưởng cốt lõi
 
-Hai chuỗi isomorphic khi pattern lặp của các ký tự giống hệt nhau theo từng vị trí.
-
-Thay vì lưu trực tiếp mapping object, ta lưu **vị trí xuất hiện gần nhất** của mỗi character. Ở index `i`, nếu `s[i]` và `t[i]` thuộc cùng một bijection hợp lệ thì lịch sử last-seen của chúng phải giống nhau.
+Hai chuỗi isomorphic khi pattern lặp của các ký tự giống hệt nhau theo từng vị trí. Thay vì lưu trực tiếp mapping object, ta lưu **vị trí xuất hiện gần nhất** của mỗi character.
 
 ---
 
-## 2. Algorithm
-
-Dùng hai array cho ASCII:
+## 2. Optimal Java solution
 
 ```java
-int[] lastS = new int[256];
-int[] lastT = new int[256];
+class Solution {
+    public boolean isIsomorphic(String s, String t) {
+        int[] lastS = new int[256];
+        int[] lastT = new int[256];
+
+        for (int i = 0; i < s.length(); i++) {
+            char a = s.charAt(i);
+            char b = t.charAt(i);
+
+            // Hai ký tự tương ứng phải có cùng lịch sử xuất hiện. Equality này
+            // đồng thời chặn một source map sang hai target và hai source map vào một target.
+            if (lastS[a] != lastT[b]) {
+                return false;
+            }
+
+            // Lưu i+1 để 0 dành riêng cho trạng thái "chưa từng xuất hiện";
+            // nếu lưu i trực tiếp thì occurrence tại index 0 bị nhầm với unseen.
+            lastS[a] = i + 1;
+            lastT[b] = i + 1;
+        }
+
+        return true;
+    }
+}
 ```
-
-Với mỗi index `i`:
-
-```java
-char a = s.charAt(i);
-char b = t.charAt(i);
-
-if (lastS[a] != lastT[b]) return false;
-
-lastS[a] = i + 1;
-lastT[b] = i + 1;
-```
-
-Dùng `i+1` để `0` biểu diễn “chưa xuất hiện”.
 
 ---
 
@@ -45,25 +49,7 @@ Vì thế equality của hai last-seen signatures kiểm tra bijection theo cả
 
 ## 4. Dry run
 
-```text
-s = "egg"
-t = "add"
-```
-
-- index 0: `e/a` đều unseen (`0 == 0`) → ghi `1`.
-- index 1: `g/d` đều unseen (`0 == 0`) → ghi `2`.
-- index 2: `g/d` đều last seen tại encoded position `2` → hợp lệ.
-
-Kết quả `true`.
-
-Với:
-
-```text
-s = "f11"
-t = "b23"
-```
-
-Tới ký tự `1` thứ hai, last-seen phía `s` khác target `3` mới → `false`.
+Với `s = "egg"`, `t = "add"`: `e/a` đều unseen, `g/d` đều unseen, và lần lặp sau `g/d` có cùng encoded last position, nên hợp lệ.
 
 ---
 
@@ -71,7 +57,7 @@ Tới ký tự `1` thứ hai, last-seen phía `s` khác target `3` mới → `fa
 
 Invariant: sau khi xử lý prefix `0..i-1`, hai bảng last-seen ghi cùng một encoded position cho chính xác các cặp character đang tương ứng trong pattern.
 
-Tại `i`, nếu hai last-seen value khác nhau thì một phía đã từng xuất hiện ở vị trí mà phía kia không có cùng partner-history, nên bijection bị vi phạm. Nếu bằng nhau, cặp hiện tại tương thích với toàn bộ prefix; cập nhật cả hai về `i+1` bảo toàn invariant. Duyệt hết nghĩa là mọi vị trí đều tương thích, nên hai chuỗi isomorphic.
+Tại `i`, nếu hai last-seen value khác nhau thì một phía đã từng xuất hiện ở vị trí mà phía kia không có cùng partner-history, nên bijection bị vi phạm. Nếu bằng nhau, cặp hiện tại tương thích với toàn bộ prefix; cập nhật cả hai về `i+1` bảo toàn invariant.
 
 ---
 

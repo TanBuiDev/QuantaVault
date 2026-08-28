@@ -14,47 +14,46 @@ Mỗi state có đúng một next state. Chuỗi hoặc đi tới fixed point `1
 
 ## 2. Digit transform
 
+`next(n)` tính tổng bình phương các chữ số.
+
+---
+
+## 3. Optimal Java solution
+
 ```java
-private int next(int n) {
-    int sum = 0;
-    while (n > 0) {
-        int digit = n % 10;
-        sum += digit * digit;
-        n /= 10;
+class Solution {
+    public boolean isHappy(int n) {
+        int slow = n;
+        int fast = n;
+
+        // next() tạo một functional graph: mỗi state có đúng một successor.
+        // Nếu không tới fixed point 1 thì sequence hữu hạn phải rơi vào một cycle khác.
+        do {
+            slow = next(slow);
+            fast = next(next(fast));
+        } while (slow != fast);
+
+        // Nếu cycle gặp được chứa 1 thì vì next(1)=1, điểm gặp cuối cùng chính là 1.
+        return slow == 1;
     }
-    return sum;
+
+    private int next(int n) {
+        int sum = 0;
+        while (n > 0) {
+            int digit = n % 10;
+            sum += digit * digit;
+            n /= 10;
+        }
+        return sum;
+    }
 }
 ```
 
 ---
 
-## 3. Floyd algorithm
-
-```java
-int slow = n;
-int fast = n;
-
-do {
-    slow = next(slow);
-    fast = next(next(fast));
-} while (slow != fast);
-
-return slow == 1;
-```
-
-Nếu happy, cả hai cuối cùng gặp nhau tại `1`. Nếu không happy, functional graph có cycle khác và Floyd đảm bảo hai pointers gặp nhau trong cycle đó.
-
----
-
 ## 4. Why values become bounded
 
-Một số 32-bit có tối đa 10 chữ số. Sau một transformation, giá trị tối đa không vượt:
-
-```text
-10 * 9^2 = 810
-```
-
-Vì vậy sau bước đầu, chuỗi nằm trong tập hữu hạn nhỏ. Nếu không tới `1`, pigeonhole principle đảm bảo phải lặp và hình thành cycle.
+Một số 32-bit có tối đa 10 chữ số. Sau một transformation, giá trị tối đa không vượt `10 * 9^2 = 810`. Vì vậy sau bước đầu, chuỗi nằm trong tập hữu hạn nhỏ. Nếu không tới `1`, pigeonhole principle đảm bảo phải lặp và hình thành cycle.
 
 ---
 
@@ -68,13 +67,7 @@ Nếu cycle chứa `1`, vì `next(1)=1`, cycle đó chỉ là fixed point `1`, v
 
 ## 6. Complexity
 
-Mỗi `next` xử lý số chữ số của current value; sau bước đầu current values bị bounded rất nhỏ. Với integer input, sequence length trước khi hội tụ/cycle cũng bounded.
-
-```text
-Extra space: O(1)
-```
-
-Một cách diễn đạt interview thường dùng: linear theo số transformations, mỗi transformation `O(number of digits)`.
+Mỗi `next` xử lý số chữ số của current value; sau bước đầu current values bị bounded rất nhỏ. Extra space là `O(1)`.
 
 ---
 
