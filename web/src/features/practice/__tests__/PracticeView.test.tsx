@@ -149,13 +149,17 @@ describe("PracticeView", () => {
     renderPractice();
     await waitFor(() => expect(screen.getByRole("region", { name: "Study content" })).toBeInTheDocument());
 
-    expect(screen.getByRole("link", { name: /#189 Rotate Array/i })).toHaveAttribute(
-      "href",
-      "/problems/189",
-    );
-    expect(
-      screen.getByRole("link", { name: /#122 Best Time to Buy and Sell Stock II/i }),
-    ).toHaveAttribute("href", "/problems/122");
+    const prevLinks = screen.getAllByRole("link", { name: /#189 Rotate Array/i });
+    expect(prevLinks.length).toBeGreaterThan(0);
+    for (const link of prevLinks) {
+      expect(link).toHaveAttribute("href", "/problems/189");
+    }
+
+    const nextLinks = screen.getAllByRole("link", { name: /#122 Best Time to Buy and Sell Stock II/i });
+    expect(nextLinks.length).toBeGreaterThan(0);
+    for (const link of nextLinks) {
+      expect(link).toHaveAttribute("href", "/problems/122");
+    }
   });
 
   it("disables unavailable study tabs and explains missing canonical source", async () => {

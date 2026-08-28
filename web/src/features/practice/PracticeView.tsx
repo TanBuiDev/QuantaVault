@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { Group, Panel, Separator } from "react-resizable-panels";
-import { Play, Send, Terminal, CheckCircle2, Columns, LayoutTemplate, ArrowRightLeft, Settings, WrapText } from "lucide-react";
+import { Play, Send, Terminal, CheckCircle2, Columns, LayoutTemplate, ArrowRightLeft, Settings, WrapText, ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -754,8 +754,49 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
             </h1>
           </div>
 
-          {/* Quick controls: Layout switcher & LeetCode link & Status */}
+          {/* Quick controls: Problem navigation & Layout switcher & LeetCode link & Status & Settings */}
           <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
+            {/* Prev / Next Problem Navigation */}
+            <div className="flex items-center gap-0.5 rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-0.5" aria-label="Điều hướng bài tập">
+              {previous ? (
+                <Link
+                  href={`/problems/${previous.id}`}
+                  title={`Bài trước: #${previous.id} ${previous.title}`}
+                  aria-label={`Bài trước: #${previous.id} ${previous.title}`}
+                  className="flex h-7 w-7 items-center justify-center rounded-lg text-[var(--muted-strong)] transition-all hover:bg-[var(--surface)] hover:text-[var(--foreground)] hover:shadow-xs active:scale-95 cursor-pointer"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Link>
+              ) : (
+                <span
+                  title="Không có bài trước đó"
+                  className="flex h-7 w-7 items-center justify-center rounded-lg text-[var(--muted)]/30 cursor-not-allowed"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </span>
+              )}
+
+              <div className="h-3.5 w-px bg-[var(--border)]" />
+
+              {next ? (
+                <Link
+                  href={`/problems/${next.id}`}
+                  title={`Bài tiếp theo: #${next.id} ${next.title}`}
+                  aria-label={`Bài tiếp theo: #${next.id} ${next.title}`}
+                  className="flex h-7 w-7 items-center justify-center rounded-lg text-[var(--muted-strong)] transition-all hover:bg-[var(--surface)] hover:text-[var(--foreground)] hover:shadow-xs active:scale-95 cursor-pointer"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Link>
+              ) : (
+                <span
+                  title="Không có bài tiếp theo"
+                  className="flex h-7 w-7 items-center justify-center rounded-lg text-[var(--muted)]/30 cursor-not-allowed"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </span>
+              )}
+            </div>
+
             <div className="flex items-center gap-1 rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-1 text-xs">
               <button
                 type="button"
