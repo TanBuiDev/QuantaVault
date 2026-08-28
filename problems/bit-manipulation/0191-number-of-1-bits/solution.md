@@ -1,79 +1,33 @@
-# 191. Number of 1 Bits — Solution
+# Solution / Lời giải — 191. Number of 1 Bits
 
-## 1. Core idea / Intuition
+## 1. Core idea
 
-Dùng identity `n & (n - 1)` để xóa set bit thấp nhất. Số lần thực hiện trước khi `n` về 0 chính là số bit 1.
+Brian Kernighan's trick `n &= n - 1` removes the lowest set bit. Count how many removals are needed to reach zero.
 
-## 2. Requirement recap / Tóm tắt yêu cầu
-
-Cần đếm Hamming weight của một integer mà không cần chuyển sang chuỗi nhị phân.
-
-## 3. Key observations / Nhận xét quan trọng
-
-- Mỗi vòng xóa đúng một bit 1.
-- Bit 0 không tạo thêm iteration.
-- Số vòng bằng chính số set bits `k`.
-
-## 4. Alternative approaches / Các hướng khác
-
-Có thể kiểm tra 32 bit bằng shift và mask; cách đó luôn 32 bước. Kernighan chỉ chạy theo số set bits.
-
-## 5. Optimal approach / Hướng tối ưu
-
-Trong khi `n != 0`, gán `n &= n - 1` và tăng counter.
-
-## 6. Java solution overview
+## 2. Optimal Java solution
 
 ```java
 class Solution {
     public int hammingWeight(int n) {
         int count = 0;
+
         while (n != 0) {
+            // n-1 flips the lowest set bit to 0 and all lower zeros to 1; AND with
+            // original n therefore clears exactly that lowest set bit and nothing higher.
             n &= n - 1;
             count++;
         }
+
+        // One iteration runs per original set bit, so count is the Hamming weight.
         return count;
     }
 }
 ```
 
-## 7. Code explanation / Giải thích code
+## 3. Correctness
 
-`n - 1` làm set bit thấp nhất của `n` thành 0 và làm các bit thấp hơn thành 1; AND với `n` giữ mọi bit cao hơn và xóa set bit đó.
+Each loop removes exactly one `1` bit and never changes any other set bit to `1`. Thus the number of iterations equals the original population count.
 
-## 8. Dry run / Chạy thử
+## 4. Complexity
 
-`11 = 1011`: `1011 -> 1010 -> 1000 -> 0000`, tổng cộng 3 bước.
-
-## 9. Time and space complexity
-
-```text
-Time:  O(k), k = number of set bits
-Space: O(1)
-```
-
-## 10. Why the algorithm is correct / Vì sao đúng
-
-Mỗi iteration xóa đúng một set bit và không thay đổi các set bit cao hơn. Vì vậy sau đúng `k` iteration mọi set bit đã bị xóa và counter bằng Hamming weight ban đầu.
-
-## 11. Edge cases
-
-- Chỉ một set bit.
-- Nhiều set bit liên tiếp.
-- Giá trị lớn gần `Integer.MAX_VALUE`.
-
-## 12. Common mistakes
-
-- Dùng signed right shift trong một vòng phụ thuộc `n > 0` cho dữ liệu tổng quát 32-bit.
-- Nhầm `n & (n - 1)` với phép trừ đơn thuần.
-
-## 13. Pattern recognition / Khi nào tái sử dụng
-
-`x & (x - 1)` là bit trick chuẩn để đếm hoặc xóa set bits từng cái.
-
-## 14. Vocabulary
-
-- **set bit**: bit có giá trị 1
-- **Hamming weight**: số lượng set bits
-- **least significant set bit**: set bit thấp nhất
-- **bit mask**: mặt nạ bit
+`O(number of set bits)`, at most 32 iterations; `O(1)` space.

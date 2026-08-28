@@ -4,13 +4,20 @@ class Solution {
         int i = a.length() - 1;
         int j = b.length() - 1;
         int carry = 0;
+
+        // Binary addition must start at the least-significant end because each
+        // column can create a carry for the next more-significant column.
         while (i >= 0 || j >= 0 || carry != 0) {
             int sum = carry;
             if (i >= 0) sum += a.charAt(i--) - '0';
             if (j >= 0) sum += b.charAt(j--) - '0';
+
+            // sum is 0..3: its low bit is the output digit and sum/2 is carry.
             out.append(sum & 1);
             carry = sum >> 1;
         }
+
+        // Digits were produced least-significant first, so reverse once at the end.
         return out.reverse().toString();
     }
 }
