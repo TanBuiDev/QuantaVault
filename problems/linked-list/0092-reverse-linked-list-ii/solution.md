@@ -1,40 +1,10 @@
 # Solution / Lời giải — 92. Reverse Linked List II
 
-## 1. Ý tưởng chính
+## 1. Core idea
 
-Chỉ cần đảo đoạn `[left, right]`. Dùng một `dummy` trước `head`, đưa `before` tới node ngay trước `left`, rồi dùng kỹ thuật head-insertion trong đoạn cần đảo.
+Dùng dummy và head-insertion. `before` đứng ngay trước segment; `current` là original left node và giữ vai trò tail. Mỗi vòng lấy `current.next` đưa lên đầu segment.
 
-`current = before.next` là node ban đầu tại `left`. Trong quá trình, `current` giữ vai trò tail của phần đã đảo. Mỗi vòng lấy node `current.next` và đưa node đó lên ngay sau `before`.
-
-## 2. Thuật toán
-
-1. `dummy.next = head`.
-2. Đi `left - 1` bước để tìm `before`.
-3. `current = before.next`.
-4. Lặp `right - left` lần:
-   - `moving = current.next`.
-   - `current.next = moving.next`.
-   - `moving.next = before.next`.
-   - `before.next = moving`.
-5. Trả `dummy.next`.
-
-## 3. Vì sao đúng
-
-Sau mỗi iteration, đoạn ngay sau `before` chứa thêm một node được đưa về đầu theo thứ tự đảo, còn `current` vẫn là tail của đoạn đó. `current.next` luôn là node tiếp theo chưa xử lý. Sau đúng `right-left` lần, toàn bộ `right-left+1` node trong range đã đảo thứ tự, trong khi prefix và suffix vẫn được nối đúng.
-
-## 4. Dry run
-
-Với `[1,2,3,4,5]`, `left=2`, `right=4`:
-
-```text
-1 -> 2 -> 3 -> 4 -> 5
-1 -> 3 -> 2 -> 4 -> 5
-1 -> 4 -> 3 -> 2 -> 5
-```
-
-Kết quả là `[1,4,3,2,5]`.
-
-## 5. Java tối ưu
+## 2. Optimal Java solution
 
 ```java
 public class Solution {
@@ -42,13 +12,18 @@ public class Solution {
         ListNode dummy = new ListNode(0);
         dummy.next = head;
 
+        // before là predecessor cố định của segment; dummy giúp left==1
+        // vẫn có predecessor mà không cần special-case thay head.
         ListNode before = dummy;
         for (int i = 1; i < left; i++) {
             before = before.next;
         }
 
+        // current là original left node và sẽ luôn là tail của phần đã đảo.
         ListNode current = before.next;
         for (int i = 0; i < right - left; i++) {
+            // Head-insertion: lấy node ngay sau current và đưa nó lên đầu segment.
+            // current không di chuyển vì sau mỗi insertion nó vẫn là tail reversed prefix.
             ListNode moving = current.next;
             current.next = moving.next;
             moving.next = before.next;
@@ -60,26 +35,20 @@ public class Solution {
 }
 ```
 
-## 6. Complexity
+## 3. Correctness
 
-- Time: `O(n)` worst case.
-- Extra space: `O(1)`.
+Sau mỗi iteration, phần ngay sau `before` đã đảo thêm một node, `current` vẫn là tail và `current.next` là node tiếp theo chưa xử lý. Sau `right-left` lần, toàn segment đã reverse trong khi prefix/suffix vẫn nối đúng.
 
-## 7. Hướng khác
+## 4. Complexity
 
-Có thể reverse cục bộ bằng `prev/current/next` rồi reconnect ba phần prefix, reversed segment và suffix. Complexity vẫn `O(n)` / `O(1)`, nhưng phải quản lý nhiều boundary pointer hơn.
+```text
+Time: O(n)
+Space: O(1)
+```
 
-## 8. Edge cases
+## 5. Common mistakes
 
-- `left == right`.
-- `left == 1`.
-- `right == n`.
-- Reverse toàn bộ list.
-- List một node.
-
-## 9. Lỗi thường gặp
-
-- Không dùng dummy nên sai khi `left = 1`.
-- Di chuyển `current` trong head-insertion dù nó phải giữ vai trò tail.
-- Lặp sai số lần (`right-left`, không phải `right-left+1`).
-- Làm mất suffix do cập nhật pointer sai thứ tự.
+- Không dùng dummy khi `left=1`.
+- Di chuyển `current` dù nó phải giữ vai trò tail.
+- Lặp `right-left+1` lần.
+- Mất suffix do update pointer sai thứ tự.

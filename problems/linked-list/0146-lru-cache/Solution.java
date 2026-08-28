@@ -24,6 +24,9 @@ class LRUCache {
         this.cache = new HashMap<>();
         this.head = new Node(0, 0);
         this.tail = new Node(0, 0);
+
+        // Sentinels đảm bảo mọi real node luôn có cả prev và next, nên remove/add
+        // dùng cùng một pointer formula cho cả LRU/MRU mà không cần null edge cases.
         head.next = tail;
         tail.prev = head;
     }
@@ -33,6 +36,8 @@ class LRUCache {
         if (node == null) {
             return -1;
         }
+
+        // Successful get là một lần sử dụng, nên recency phải được refresh.
         moveToMostRecent(node);
         return node.value;
     }
@@ -41,6 +46,8 @@ class LRUCache {
         Node node = cache.get(key);
         if (node != null) {
             node.value = value;
+
+            // Update existing key không tăng size nhưng vẫn là recent access.
             moveToMostRecent(node);
             return;
         }
@@ -50,6 +57,8 @@ class LRUCache {
         addBeforeTail(added);
 
         if (cache.size() > capacity) {
+            // List invariant là head <-> LRU ... MRU <-> tail, nên head.next
+            // luôn là victim duy nhất cần evict khi capacity vừa bị vượt.
             Node lru = head.next;
             remove(lru);
             cache.remove(lru.key);
@@ -67,6 +76,8 @@ class LRUCache {
     }
 
     private void addBeforeTail(Node node) {
+        // Ngay trước tail là MRU position; four pointer writes splice node vào
+        // mà không cần scan list, giữ get/put ở average O(1).
         node.prev = tail.prev;
         node.next = tail;
         tail.prev.next = node;

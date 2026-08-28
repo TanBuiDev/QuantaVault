@@ -7,6 +7,8 @@ public class Solution {
 
         ListNode current = head;
         while (current != null) {
+            // Append vào tail thay vì insert ở head để giữ relative order ổn định
+            // của các node trong từng partition như đề yêu cầu.
             if (current.val < x) {
                 lessTail.next = current;
                 lessTail = current;
@@ -17,6 +19,8 @@ public class Solution {
             current = current.next;
         }
 
+        // Node cuối greater có thể vẫn trỏ theo edge cũ sang một node đã chuyển
+        // sang less; cắt null trước khi nối hai list để tránh cycle/cross-link cũ.
         greaterTail.next = null;
         lessTail.next = greaterDummy.next;
         return lessDummy.next;

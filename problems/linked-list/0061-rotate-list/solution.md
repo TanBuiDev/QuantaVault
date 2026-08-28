@@ -1,53 +1,10 @@
 # Solution / Lời giải — 61. Rotate List
 
-## 1. Core idea / Ý tưởng chính
+## 1. Core idea
 
-Nếu list dài `n`, xoay phải `n` lần không thay đổi list. Vì vậy rotation thực tế chỉ là `k %= n`.
+Chuẩn hóa `k %= n`, nối tail về head thành cycle tạm, tìm new tail tại vị trí `n-k`, rồi cắt cycle. Suffix dài `k` tự trở thành prefix mới mà không cần rotate từng bước.
 
-Sau khi xoay phải `k` vị trí, suffix dài `k` node trở thành prefix mới. Tương đương new tail nằm sau `n-k-1` cạnh tính từ old head, và node ngay sau nó là new head.
-
-Cách gọn nhất là nối old tail về old head thành một cycle tạm, đi tới new tail rồi cắt cycle.
-
-## 2. Algorithm / Thuật toán
-
-1. Nếu `head == null`, `head.next == null` hoặc `k == 0`, return `head`.
-2. Duyệt list để tìm `tail` và length `n`.
-3. `k %= n`; nếu `k == 0`, return `head`.
-4. Nối `tail.next = head` để tạo cycle.
-5. Số bước từ old head tới new tail là `n - k - 1`.
-6. Đi tới `newTail`.
-7. `newHead = newTail.next`.
-8. Cắt cycle: `newTail.next = null`.
-9. Return `newHead`.
-
-## 3. Why it works / Vì sao đúng
-
-Một right rotation `k` đưa chính xác `k` node cuối lên trước `n-k` node đầu mà không thay đổi thứ tự bên trong hai phần. Trong cycle tạm, đi `n-k-1` bước từ old head tới node cuối của prefix cũ. Node kế tiếp chính là node đầu của suffix cần đưa lên trước. Cắt cạnh sau new tail biến cycle thành thứ tự `suffix -> old prefix`, đúng kết quả rotate.
-
-## 4. Dry run / Chạy thử
-
-Với `[1,2,3,4,5]`, `k=2`:
-
-```text
-n = 5
-k = 2
-new tail index = n-k-1 = 2 => node 3
-new head = node 4
-```
-
-Tạo cycle:
-
-```text
-1 -> 2 -> 3 -> 4 -> 5 -> 1
-```
-
-Cắt sau `3`:
-
-```text
-4 -> 5 -> 1 -> 2 -> 3
-```
-
-## 5. Optimal Java solution / Java tối ưu
+## 2. Optimal Java solution
 
 ```java
 public class Solution {
@@ -63,13 +20,18 @@ public class Solution {
             length++;
         }
 
+        // Mỗi length rotations đưa list về nguyên trạng, nên modulo loại toàn bộ
+        // vòng dư và giữ thời gian phụ thuộc n thay vì phụ thuộc k có thể rất lớn.
         k %= length;
         if (k == 0) {
             return head;
         }
 
+        // Tạo cycle tạm để rotation chỉ còn là chọn một cạnh mới để cắt.
         tail.next = head;
 
+        // Suffix dài k sẽ thành prefix, nên new tail là node thứ length-k
+        // tính 1-based, tức cần đi length-k-1 cạnh từ old head.
         int stepsToNewTail = length - k - 1;
         ListNode newTail = head;
         for (int i = 0; i < stepsToNewTail; i++) {
@@ -77,30 +39,27 @@ public class Solution {
         }
 
         ListNode newHead = newTail.next;
+        // Cắt cycle đúng sau new tail tạo thứ tự suffix -> old prefix.
         newTail.next = null;
         return newHead;
     }
 }
 ```
 
-## 6. Complexity / Độ phức tạp
+## 3. Correctness
 
-- **Time:** `O(n)`.
-- **Extra space:** `O(1)`.
+Rotation phải đổi `A B` thành `B A` với `|B|=k`. Cycle giữ nguyên circular order; cắt sau node cuối của `A` làm node đầu của `B` thành head và tail cũ tiếp tục nối vào old head, cho đúng `B A`.
 
-## 7. Edge cases / Trường hợp biên
+## 4. Complexity
 
-- Empty list.
-- Một node.
-- `k = 0`.
-- `k` là bội số của `n`.
-- `k > n`, kể cả rất lớn.
-- `k = 1`.
+```text
+Time: O(n)
+Space: O(1)
+```
 
-## 8. Common mistakes / Lỗi thường gặp
+## 5. Common mistakes
 
-- Không dùng `k % n`, dẫn tới làm thừa hoặc time phụ thuộc `k` rất lớn.
-- Off-by-one khi tìm new tail.
-- Tạo cycle nhưng quên cắt lại.
-- Tính new head trước/sau khi thay đổi pointer sai thứ tự.
-- Rotate từng bước một làm complexity thành `O(k*n)`.
+- Không modulo `k`.
+- Off-by-one ở new tail.
+- Tạo cycle nhưng quên cắt.
+- Rotate từng bước thành `O(kn)`.

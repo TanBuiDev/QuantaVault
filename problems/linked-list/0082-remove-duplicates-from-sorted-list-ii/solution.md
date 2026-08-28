@@ -1,42 +1,10 @@
 # Solution / Lời giải — 82. Remove Duplicates from Sorted List II
 
-## 1. Core idea / Ý tưởng chính
+## 1. Core idea
 
-Vì list sorted, các node cùng value luôn đứng liền nhau. Ta duyệt từng run value và phân biệt hai trường hợp:
+Sorted list gom mọi value bằng nhau thành contiguous run. Run dài 1 được giữ; run dài >=2 phải bị bỏ toàn bộ. `prev` luôn là node cuối chắc chắn được giữ.
 
-- run chỉ có một node → giữ node đó và advance `prev`;
-- run có từ hai node trở lên → bỏ toàn bộ run bằng cách nối `prev.next` tới node đầu tiên có value khác.
-
-Dummy head xử lý tự nhiên trường hợp duplicate run nằm ngay đầu list.
-
-## 2. Algorithm / Thuật toán
-
-1. Tạo `dummy.next = head`.
-2. `prev = dummy`, `current = head`.
-3. Trong khi `current != null`:
-   - Nếu `current.next != null` và `current.val == current.next.val`, lưu `duplicateValue = current.val` và advance `current` cho tới khi value đổi; sau đó `prev.next = current`.
-   - Nếu không duplicate, set `prev = current`, `current = current.next`.
-4. Return `dummy.next`.
-
-## 3. Why it works / Vì sao đúng
-
-Do sorted order, tất cả node mang cùng một value tạo thành đúng một contiguous run. Khi phát hiện hai node liên tiếp bằng nhau, ta biết toàn bộ run của value đó phải bị xóa; loop nội bộ đi tới node đầu tiên có value khác, rồi `prev.next` bỏ qua chính xác toàn bộ run. Nếu node hiện tại không có neighbor cùng value, value đó chỉ xuất hiện một lần trong run hiện tại nên được giữ. Vì mọi run được xử lý đúng một lần, kết quả chứa chính xác các distinct values ban đầu và vẫn giữ sorted order.
-
-## 4. Dry run / Chạy thử
-
-```text
-[1,2,3,3,4,4,5]
-```
-
-- `1`: unique → giữ.
-- `2`: unique → giữ.
-- run `3,3`: bỏ cả hai.
-- run `4,4`: bỏ cả hai.
-- `5`: unique → giữ.
-
-Kết quả: `[1,2,5]`.
-
-## 5. Optimal Java solution / Java tối ưu
+## 2. Optimal Java solution
 
 ```java
 public class Solution {
@@ -44,17 +12,23 @@ public class Solution {
         ListNode dummy = new ListNode(0);
         dummy.next = head;
 
+        // prev luôn là node cuối cùng chắc chắn được giữ trong result prefix.
         ListNode prev = dummy;
         ListNode current = head;
 
         while (current != null) {
             if (current.next != null && current.val == current.next.val) {
                 int duplicateValue = current.val;
+
+                // Sorted order gom toàn bộ duplicate value thành một contiguous run;
+                // nhảy qua cả run để bài II không giữ lại dù chỉ một bản sao.
                 while (current != null && current.val == duplicateValue) {
                     current = current.next;
                 }
                 prev.next = current;
             } else {
+                // Chỉ advance prev khi current được chứng minh unique; nếu đang xóa run,
+                // prev phải đứng yên để có thể nối qua toàn bộ run đó.
                 prev = current;
                 current = current.next;
             }
@@ -65,24 +39,19 @@ public class Solution {
 }
 ```
 
-## 6. Complexity / Độ phức tạp
+## 3. Correctness
 
-- **Time:** `O(n)` — mỗi node được advance qua tối đa một lần.
-- **Extra space:** `O(1)`.
+Mỗi distinct value tạo đúng một run. Nếu run có duplicate, loop đi qua toàn bộ run và predecessor nối thẳng tới value kế; nếu không, node được giữ và trở thành predecessor mới. Do đó result chứa đúng các value xuất hiện một lần.
 
-## 7. Edge cases / Trường hợp biên
+## 4. Complexity
 
-- Empty list.
-- Một node.
-- Tất cả node duplicate → empty result.
-- Duplicate run ở đầu.
-- Duplicate run ở cuối.
-- Nhiều run duplicate xen giữa distinct nodes.
+```text
+Time: O(n)
+Space: O(1)
+```
 
-## 8. Common mistakes / Lỗi thường gặp
+## 5. Common mistakes
 
-- Chỉ xóa các bản sao thừa và giữ lại một node của value duplicate — sai yêu cầu bài II.
-- Advance `prev` vào duplicate run.
-- Không dùng dummy nên xử lý sai duplicate ngay head.
-- Bỏ sót duplicate run kéo dài hơn hai node.
-- So sánh value sau khi `current` đã thành `null`.
+- Giữ một bản sao của duplicate run như bài 83.
+- Advance `prev` vào run cần xóa.
+- Không dùng dummy cho duplicate ở head.

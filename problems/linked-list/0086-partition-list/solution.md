@@ -1,50 +1,10 @@
 # Solution / Lời giải — 86. Partition List
 
-## 1. Core idea / Ý tưởng chính
+## 1. Core idea
 
-Ta cần partition theo `x` nhưng **không được làm thay đổi thứ tự tương đối** trong mỗi nhóm. Vì vậy thay vì swap hoặc sort, ta duyệt list đúng một lần và append mỗi node vào một trong hai linked list tạm:
+Tạo hai stable lists: `< x` và `>= x`. Duyệt input theo thứ tự và append mỗi node vào tail đúng partition; cuối cùng nối hai lists.
 
-- `less`: các node có `val < x`.
-- `greater`: các node có `val >= x`.
-
-Cuối cùng nối `less` với `greater`.
-
-## 2. Algorithm / Thuật toán
-
-1. Tạo `lessDummy`, `greaterDummy` và hai tail tương ứng.
-2. Duyệt `current` qua original list:
-   - nếu `current.val < x`, append vào `lessTail`;
-   - ngược lại append vào `greaterTail`.
-3. Đặt `greaterTail.next = null` để loại bỏ mọi liên kết cũ còn sót.
-4. Nối `lessTail.next = greaterDummy.next`.
-5. Return `lessDummy.next`.
-
-## 3. Why it works / Vì sao đúng
-
-Mỗi node được đưa vào đúng một partition dựa trên điều kiện `val < x`. Vì ta luôn append vào tail theo thứ tự duyệt từ trái sang phải, thứ tự tương đối giữa các node trong cùng partition không đổi. Sau khi duyệt hết, nối partition `< x` trước partition `>= x` đảm bảo mọi node nhỏ hơn `x` đứng trước mọi node còn lại. Không node nào bị mất hoặc tạo mới.
-
-## 4. Dry run / Chạy thử
-
-Với:
-
-```text
-head = [1,4,3,2,5,2], x = 3
-```
-
-Trong lúc duyệt:
-
-```text
-less:    1 -> 2 -> 2
-greater: 4 -> 3 -> 5
-```
-
-Nối lại:
-
-```text
-1 -> 2 -> 2 -> 4 -> 3 -> 5
-```
-
-## 5. Optimal Java solution / Java tối ưu
+## 2. Optimal Java solution
 
 ```java
 public class Solution {
@@ -56,6 +16,8 @@ public class Solution {
 
         ListNode current = head;
         while (current != null) {
+            // Append vào tail thay vì insert ở head để giữ relative order ổn định
+            // của các node trong từng partition như đề yêu cầu.
             if (current.val < x) {
                 lessTail.next = current;
                 lessTail = current;
@@ -66,6 +28,8 @@ public class Solution {
             current = current.next;
         }
 
+        // Node cuối greater có thể vẫn trỏ theo edge cũ sang một node đã chuyển
+        // sang less; cắt null trước khi nối hai list để tránh cycle/cross-link cũ.
         greaterTail.next = null;
         lessTail.next = greaterDummy.next;
         return lessDummy.next;
@@ -73,22 +37,20 @@ public class Solution {
 }
 ```
 
-## 6. Complexity / Độ phức tạp
+## 3. Correctness
 
-- **Time:** `O(n)`.
-- **Extra space:** `O(1)` vì reuse các node input; chỉ dùng dummy nodes và vài pointer.
+Mỗi node đi vào đúng một partition. Append theo traversal order giữ relative order trong từng nhóm. Cắt tail của greater xóa edge cũ, rồi nối less trước greater tạo đúng partition stable.
 
-## 7. Edge cases / Trường hợp biên
+## 4. Complexity
 
-- Empty list.
-- Tất cả node `< x`.
-- Tất cả node `>= x`.
-- Các node bằng `x` phải thuộc partition thứ hai.
-- Nhiều value lặp quanh pivot.
+```text
+Time: O(n)
+Space: O(1)
+```
 
-## 8. Common mistakes / Lỗi thường gặp
+## 5. Common mistakes
 
-- Sort lại list, làm mất yêu cầu stable relative order.
-- Insert vào head của partition khiến thứ tự trong nhóm bị đảo.
-- Quên `greaterTail.next = null`, để lại liên kết cũ và có thể tạo cycle.
-- Dùng `<= x` thay vì `< x` cho partition đầu.
+- Sort list và phá stable order.
+- Insert ở head làm đảo thứ tự.
+- Quên `greaterTail.next = null`.
+- Dùng `<= x` sai partition.

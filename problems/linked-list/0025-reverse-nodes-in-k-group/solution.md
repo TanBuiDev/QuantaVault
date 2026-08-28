@@ -1,42 +1,10 @@
 # Solution / Lời giải — 25. Reverse Nodes in k-Group
 
-## 1. Core idea / Ý tưởng chính
+## 1. Core idea
 
-Xử lý list từng block `k` node. Với mỗi block, trước hết tìm node thứ `k`. Nếu không tồn tại thì phần còn lại có ít hơn `k` node và phải giữ nguyên.
+Xử lý từng block `k` node. Luôn tìm `kth` trước để bảo đảm group đủ `k`; nếu thiếu thì remainder giữ nguyên. Lưu `groupNext`, reverse đúng `[groupPrev.next .. kth]`, rồi reconnect prefix và suffix.
 
-Khi đủ `k`, lưu `groupNext = kth.next`, rồi reverse chính xác các node từ `groupPrev.next` tới ngay trước `groupNext`. Dummy node giúp nhóm đầu tiên được xử lý giống các nhóm sau.
-
-## 2. Algorithm / Thuật toán
-
-1. Tạo `dummy.next = head`, `groupPrev = dummy`.
-2. Tìm `kth` bằng cách đi `k` bước từ `groupPrev`.
-3. Nếu `kth == null`, return `dummy.next`.
-4. Lưu `groupNext = kth.next`.
-5. Reverse group:
-   - `prev = groupNext`
-   - `current = groupPrev.next`
-   - trong khi `current != groupNext`, đảo cạnh `current.next`.
-6. `oldGroupHead = groupPrev.next` chính là tail sau reverse.
-7. Nối `groupPrev.next = kth` và đặt `groupPrev = oldGroupHead`.
-8. Lặp lại.
-
-## 3. Why it works / Vì sao đúng
-
-Mỗi iteration chỉ chạy khi đã xác nhận có đủ `k` node. Loop reversal đảo đúng các cạnh của group và dùng `prev = groupNext`, nên tail mới tự nối tới suffix. Node `kth` trở thành head mới của group, còn head cũ trở thành tail. Prefix trước `groupPrev` đã hoàn tất và không bị thay đổi lại. Vì vậy sau mỗi iteration thêm đúng một nhóm `k` node được reverse; khi còn ít hơn `k`, thuật toán dừng mà không đụng phần dư.
-
-## 4. Dry run / Chạy thử
-
-Với `[1,2,3,4,5]`, `k=2`:
-
-```text
-Group 1: [1,2] -> [2,1]
-List:    [2,1,3,4,5]
-Group 2: [3,4] -> [4,3]
-List:    [2,1,4,3,5]
-Remainder: [5] has fewer than 2 nodes -> unchanged
-```
-
-## 5. Optimal Java solution / Java tối ưu
+## 2. Optimal Java solution
 
 ```java
 public class Solution {
@@ -46,6 +14,8 @@ public class Solution {
         ListNode groupPrev = dummy;
 
         while (true) {
+            // Phải xác nhận đủ k node TRƯỚC khi đảo; nếu không đủ, remainder
+            // bắt buộc giữ nguyên và không được mutate một phần.
             ListNode kth = getKth(groupPrev, k);
             if (kth == null) {
                 return dummy.next;
@@ -53,6 +23,9 @@ public class Solution {
 
             ListNode groupNext = kth.next;
             ListNode oldGroupHead = groupPrev.next;
+
+            // Khởi tạo prev = groupNext khiến tail mới của reversed group tự nối
+            // đúng vào suffix trong cùng quá trình reverse, tránh một reconnect riêng.
             ListNode prev = groupNext;
             ListNode current = oldGroupHead;
 
@@ -63,6 +36,8 @@ public class Solution {
                 current = next;
             }
 
+            // kth là head mới; old head đã trở thành tail và là predecessor
+            // cho group kế tiếp, nên groupPrev phải nhảy tới oldGroupHead.
             groupPrev.next = kth;
             groupPrev = oldGroupHead;
         }
@@ -78,23 +53,20 @@ public class Solution {
 }
 ```
 
-## 6. Complexity / Độ phức tạp
+## 3. Correctness
 
-- **Time:** `O(n)`. Mỗi group được scan để xác nhận `k` node rồi reverse; tổng vẫn tuyến tính với hệ số hằng số.
-- **Extra space:** `O(1)`.
+Mỗi iteration chỉ chạy với một group đủ `k`. Reverse loop đảo chính xác group và nhờ `prev=groupNext` tail mới đã nối suffix. `groupPrev.next=kth` nối prefix với head mới. Prefix hoàn tất không bị sửa lại; remainder thiếu `k` chưa từng bị mutate.
 
-## 7. Edge cases / Trường hợp biên
+## 4. Complexity
 
-- `k = 1` → list giữ nguyên.
-- `k = n` → reverse toàn bộ list.
-- `n` chia hết cho `k`.
-- `n` không chia hết cho `k` → phần dư giữ nguyên.
-- Một node với `k = 1`.
+```text
+Time: O(n)
+Space: O(1)
+```
 
-## 8. Common mistakes / Lỗi thường gặp
+## 5. Common mistakes
 
-- Reverse group trước khi xác nhận đủ `k` node.
-- Quên lưu `groupNext` trước khi thay đổi pointer.
-- Quên rằng head cũ trở thành tail mới.
-- Không nối tail của reversed group tới suffix.
-- Dùng recursion rồi tuyên bố `O(1)` space dù call stack tăng theo số group.
+- Reverse trước khi xác nhận đủ `k`.
+- Quên `groupNext`.
+- Quên old head trở thành tail.
+- Reconnect sai suffix.

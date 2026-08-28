@@ -5,6 +5,8 @@ public class Solution {
         ListNode groupPrev = dummy;
 
         while (true) {
+            // Phải xác nhận đủ k node TRƯỚC khi đảo; nếu không đủ, remainder
+            // bắt buộc giữ nguyên và không được mutate một phần.
             ListNode kth = getKth(groupPrev, k);
             if (kth == null) {
                 return dummy.next;
@@ -12,6 +14,9 @@ public class Solution {
 
             ListNode groupNext = kth.next;
             ListNode oldGroupHead = groupPrev.next;
+
+            // Khởi tạo prev = groupNext khiến tail mới của reversed group tự nối
+            // đúng vào suffix trong cùng quá trình reverse, tránh một reconnect riêng.
             ListNode prev = groupNext;
             ListNode current = oldGroupHead;
 
@@ -22,6 +27,8 @@ public class Solution {
                 current = next;
             }
 
+            // kth là head mới; old head đã trở thành tail và là predecessor
+            // cho group kế tiếp, nên groupPrev phải nhảy tới oldGroupHead.
             groupPrev.next = kth;
             groupPrev = oldGroupHead;
         }
