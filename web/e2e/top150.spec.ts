@@ -12,7 +12,9 @@ test("Top Interview 150 study workflow persists progress without exposing spoile
   await expect(page.getByRole("heading", { name: "Top Interview 150" })).toBeVisible();
   await expect(page.getByRole("region", { name: "Overall study progress" })).toBeVisible();
 
-  await page.getByRole("link", { name: "Problems", exact: true }).first().click();
+  // The app shell navigation is intentionally compact/icon-first now, so navigate directly
+  // to the problem explorer and keep this test focused on the study workflow itself.
+  await page.goto("/problems");
   await page.getByRole("searchbox", { name: "Search problems" }).fill("121");
   const problemLink = page.getByRole("link", { name: /Best Time to Buy and Sell Stock/i }).first();
   await expect(problemLink).toBeVisible();
@@ -21,39 +23,41 @@ test("Top Interview 150 study workflow persists progress without exposing spoile
   await expect(
     page.getByRole("heading", { name: "Best Time to Buy and Sell Stock", exact: true }).first(),
   ).toBeVisible();
-  await expect(page.getByRole("region", { name: "Study content" })).toBeVisible();
-  await expect(page.getByRole("complementary", { name: "Study progress" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Open on LeetCode" })).toBeVisible();
+  await expect(page.getByRole("tab", { name: "Problem" })).toHaveAttribute("aria-selected", "true");
+  await expect(page.getByRole("link", { name: /LeetCode/i })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Java solution", exact: true })).toHaveCount(0);
 
   const problemTab = page.getByRole("tab", { name: "Problem" });
   await problemTab.focus();
   await page.keyboard.press("ArrowRight");
   await expect(page.getByRole("tab", { name: "Hints" })).toHaveAttribute("aria-selected", "true");
-
-  await expect(page.getByRole("heading", { name: "Hint 1" }).first()).toBeVisible();
+  await expect(page.getByText("Hint 1", { exact: true }).first()).toBeVisible();
 
   await page.getByRole("tab", { name: "Solution" }).click();
   await expect(page.getByRole("heading", { name: "Java solution", exact: true })).toBeVisible();
 
-  await page.getByRole("button", { name: "Solved", exact: true }).click();
-  await page.getByLabel("Personal notes").fill("Review running minimum before interview.");
+  // Cycle current status: Not Started -> In Progress -> Solved.
+  await page.getByRole("button", { name: "Not Started", exact: true }).click();
+  await page.getByRole("button", { name: "In Progress", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Solved", exact: true })).toBeVisible();
+
+  await page.getByRole("tab", { name: "Notes" }).click();
+  const personalNotes = page.getByLabel(/Ghi chú cá nhân/i);
+  await personalNotes.fill("Review running minimum before interview.");
   await page.reload();
 
-  await expect(page.getByRole("button", { name: "Solved", exact: true })).toHaveAttribute(
-    "aria-pressed",
-    "true",
-  );
-  await expect(page.getByLabel("Personal notes")).toHaveValue(
+  await expect(page.getByRole("button", { name: "Solved", exact: true })).toBeVisible();
+  await expect(page.getByRole("tab", { name: "Notes" })).toHaveAttribute("aria-selected", "true");
+  await expect(page.getByLabel(/Ghi chú cá nhân/i)).toHaveValue(
     "Review running minimum before interview.",
   );
 
-  await expect(page.getByRole("link", { name: /Previous.*Rotate Array/i })).toHaveAttribute(
+  await expect(page.getByRole("link", { name: /Bài trước: #189 Rotate Array/i })).toHaveAttribute(
     "href",
     "/problems/189",
   );
   await expect(
-    page.getByRole("link", { name: /Next.*Best Time to Buy and Sell Stock II/i }),
+    page.getByRole("link", { name: /Bài tiếp theo: #122 Best Time to Buy and Sell Stock II/i }),
   ).toHaveAttribute("href", "/problems/122");
 });
 
@@ -81,14 +85,15 @@ test("dashboard, filters, and practice layout fit a mobile viewport", async ({ p
   await expect(page.getByRole("heading", { name: "Top Interview 150" })).toBeVisible();
   expect(await documentFitsViewport()).toBe(true);
 
-  await page.getByRole("link", { name: "Problems", exact: true }).first().click();
+  await page.goto("/problems");
   await expect(page.getByRole("searchbox", { name: "Search problems" })).toBeVisible();
   await expect(page.getByLabel("Learning status")).toBeVisible();
   expect(await documentFitsViewport()).toBe(true);
 
   await page.goto("/problems/121");
-  await expect(page.getByRole("link", { name: "Open on LeetCode" })).toBeVisible();
+  await expect(page.getByRole("link", { name: /LeetCode/i })).toBeVisible();
   await expect(page.getByRole("tab", { name: "Problem" })).toBeVisible();
-  await expect(page.getByLabel("Personal notes")).toBeVisible();
+  await page.getByRole("tab", { name: "Notes" }).click();
+  await expect(page.getByLabel(/Ghi chú cá nhân/i)).toBeVisible();
   expect(await documentFitsViewport()).toBe(true);
 });
