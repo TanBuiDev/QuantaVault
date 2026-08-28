@@ -36,10 +36,14 @@ test("Top Interview 150 study workflow persists progress without exposing spoile
   await page.getByRole("tab", { name: "Solution" }).click();
   await expect(page.getByRole("heading", { name: "Java solution", exact: true })).toBeVisible();
 
-  // Cycle current status: Not Started -> In Progress -> Solved.
-  await page.getByRole("button", { name: "Not Started", exact: true }).click();
-  await page.getByRole("button", { name: "In Progress", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Solved", exact: true })).toBeVisible();
+  // Entering a problem from the explorer may already mark it In Progress. Cycle from
+  // whichever current state the UI exposes until it reaches Solved.
+  const statusButton = page.getByLabel("Learning status").getByRole("button");
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    if ((await statusButton.textContent())?.trim() === "Solved") break;
+    await statusButton.click();
+  }
+  await expect(statusButton).toHaveText("Solved");
 
   await page.getByRole("tab", { name: "Notes" }).click();
   const personalNotes = page.getByLabel(/Ghi chú cá nhân/i);
