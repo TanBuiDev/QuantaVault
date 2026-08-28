@@ -10,12 +10,18 @@ public class Solution {
 
         Queue<TreeNode> queue = new ArrayDeque<>();
         queue.offer(root);
+
         while (!queue.isEmpty()) {
+            // Snapshot size TRƯỚC khi enqueue children. Đây chính xác là số node
+            // của current depth; dùng queue.size() động trong loop sẽ trộn level kế tiếp.
             int size = queue.size();
             List<Integer> level = new ArrayList<>(size);
+
             for (int i = 0; i < size; i++) {
                 TreeNode node = queue.poll();
                 level.add(node.val);
+
+                // Enqueue left trước right giữ thứ tự từ trái sang phải cho level sau.
                 if (node.left != null) queue.offer(node.left);
                 if (node.right != null) queue.offer(node.right);
             }

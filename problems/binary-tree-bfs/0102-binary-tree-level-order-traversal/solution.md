@@ -1,25 +1,10 @@
 # Solution / Lời giải — 102. Binary Tree Level Order Traversal
 
-## 1. Core idea / Ý tưởng chính
+## 1. Core idea
 
-Dùng BFS với queue. Trước mỗi level, lưu `size = queue.size()`. Poll đúng `size` node, thêm value vào một `level` list và enqueue children. Sau đó append `level` vào result.
+BFS với queue. Snapshot `queue.size()` ở đầu mỗi vòng để đóng băng boundary của current level; children được enqueue cho vòng kế tiếp.
 
-## 2. Algorithm / Thuật toán
-
-1. Nếu root null, trả list rỗng.
-2. Enqueue root.
-3. Khi queue chưa rỗng:
-   - lưu `size`;
-   - tạo `level` list;
-   - poll đúng `size` node, append value, enqueue left/right child;
-   - append `level` vào result.
-4. Trả result.
-
-## 3. Why it works / Vì sao đúng
-
-Tại đầu mỗi vòng, queue chứa toàn bộ node của current level trước các child chưa được enqueue. Processing đúng số lượng đã lưu nên `level` nhận chính xác mọi node cùng depth theo thứ tự trái sang phải. Children được xếp cuối queue cho vòng kế tiếp. Lặp invariant này tạo đúng level-order traversal.
-
-## 4. Optimal Java solution / Java tối ưu
+## 2. Optimal Java solution
 
 ```java
 import java.util.ArrayDeque;
@@ -34,12 +19,18 @@ public class Solution {
 
         Queue<TreeNode> queue = new ArrayDeque<>();
         queue.offer(root);
+
         while (!queue.isEmpty()) {
+            // Snapshot size TRƯỚC khi enqueue children. Đây chính xác là số node
+            // của current depth; dùng queue.size() động trong loop sẽ trộn level kế tiếp.
             int size = queue.size();
             List<Integer> level = new ArrayList<>(size);
+
             for (int i = 0; i < size; i++) {
                 TreeNode node = queue.poll();
                 level.add(node.val);
+
+                // Enqueue left trước right giữ thứ tự từ trái sang phải cho level sau.
                 if (node.left != null) queue.offer(node.left);
                 if (node.right != null) queue.offer(node.right);
             }
@@ -50,13 +41,19 @@ public class Solution {
 }
 ```
 
-## 5. Complexity / Độ phức tạp
+## 3. Correctness
 
-- **Time:** `O(n)`.
-- **Extra space:** `O(w)` cho queue, ngoài output.
+Tại đầu mỗi vòng, queue prefix có đúng toàn bộ nodes của một depth. Poll đúng `size` nodes tạo current level; children được append sau boundary đó nên trở thành chính batch của depth tiếp theo.
 
-## 6. Common mistakes / Lỗi thường gặp
+## 4. Complexity
 
-- Dùng queue size động trong for-loop sau khi enqueue child.
-- Gộp tất cả value vào một list thay vì tách level.
-- Quên empty tree.
+```text
+Time: O(n)
+Space: O(w)
+```
+
+## 5. Common mistakes
+
+- Dùng queue size động trong for-loop.
+- Không tách output theo level.
+- Enqueue thứ tự không nhất quán nếu cần left-to-right output.

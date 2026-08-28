@@ -1,29 +1,17 @@
 # Solution / Lời giải — 103. Binary Tree Zigzag Level Order Traversal
 
-## 1. Core idea / Ý tưởng chính
+## 1. Core idea
 
-BFS vẫn duyệt node trái sang phải. Với mỗi level, nếu direction là left-to-right thì append value ở cuối; nếu right-to-left thì add value vào đầu `LinkedList`. Sau mỗi level đảo direction.
+Giữ BFS traversal luôn trái→phải để queue invariant không đổi; chỉ thay cách ghi values của current level: `addLast` khi thuận, `addFirst` khi ngược.
 
-## 2. Algorithm / Thuật toán
-
-1. Root null → trả list rỗng.
-2. Enqueue root, đặt `leftToRight = true`.
-3. Với mỗi level:
-   - lưu `size`;
-   - tạo `LinkedList<Integer> level`;
-   - poll đúng `size` node;
-   - addLast hoặc addFirst tùy direction;
-   - enqueue left rồi right child.
-4. Append `level`, đảo direction.
-
-## 3. Why it works / Vì sao đúng
-
-Queue vẫn giữ đúng grouping theo depth. Khi direction thuận, addLast bảo toàn thứ tự BFS. Khi direction ngược, addFirst đảo đúng thứ tự value của cùng level mà không làm thay đổi thứ tự enqueue children, vì vậy level sau vẫn được tạo chính xác.
-
-## 4. Optimal Java solution / Java tối ưu
+## 2. Optimal Java solution
 
 ```java
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 public class Solution {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
@@ -37,14 +25,21 @@ public class Solution {
         while (!queue.isEmpty()) {
             int size = queue.size();
             LinkedList<Integer> level = new LinkedList<>();
+
             for (int i = 0; i < size; i++) {
                 TreeNode node = queue.poll();
+
+                // Chỉ đảo cách ghi OUTPUT, không đảo BFS traversal/enqueue order.
+                // Nhờ đó cấu trúc queue của level kế tiếp luôn đúng left-to-right.
                 if (leftToRight) level.addLast(node.val);
                 else level.addFirst(node.val);
+
                 if (node.left != null) queue.offer(node.left);
                 if (node.right != null) queue.offer(node.right);
             }
+
             result.add(level);
+            // Direction đổi đúng một lần sau khi cả level đã hoàn tất.
             leftToRight = !leftToRight;
         }
         return result;
@@ -52,13 +47,19 @@ public class Solution {
 }
 ```
 
-## 5. Complexity / Độ phức tạp
+## 3. Correctness
 
-- **Time:** `O(n)`.
-- **Extra space:** `O(w)` ngoài output.
+Queue vẫn phân level đúng như BFS thường. `addFirst` đảo đúng thứ tự values trong một level mà không tác động thứ tự children trong queue, nên các level sau không bị phá cấu trúc.
 
-## 6. Common mistakes / Lỗi thường gặp
+## 4. Complexity
 
-- Đảo luôn thứ tự enqueue child, làm sai grouping của các level sau.
+```text
+Time: O(n)
+Space: O(w)
+```
+
+## 5. Common mistakes
+
+- Đảo thứ tự enqueue child và làm hỏng traversal level sau.
+- Reverse cả list sau mỗi level dù có thể ghi trực tiếp hai đầu.
 - Quên toggle direction.
-- Reverse list bằng thao tác `O(k)` không cần thiết ở mỗi level.
