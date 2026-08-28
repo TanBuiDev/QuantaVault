@@ -1,83 +1,77 @@
 # Solution / Lời giải — 208. Implement Trie (Prefix Tree)
 
-## 1. Core idea / Trực giác
+## 1. Core idea
 
-Trie lưu các word theo từng ký tự. Mỗi edge tương ứng với một chữ cái và các word có chung prefix sẽ dùng chung đoạn đầu của cây.
+Mỗi trie node đại diện một prefix; `children[ch-'a']` là edge sang prefix dài hơn một ký tự. `isWord` tách exact-word membership khỏi prefix existence.
 
-## 2. Requirement recap / Tóm tắt yêu cầu
+## 2. Optimal Java solution
 
-Cần hỗ trợ ba operation chính: insert một word, kiểm tra exact word, và kiểm tra prefix. `search` phải phân biệt giữa "đường đi tồn tại" và "có word kết thúc tại node đó".
+```java
+class Trie {
+    private static class Node {
+        // Fixed lowercase alphabet lets every edge be addressed directly by ch-'a'
+        // instead of hashing a character at each trie level.
+        private final Node[] children = new Node[26];
+        private boolean isWord;
+    }
 
-## 3. Key observations / Nhận xét quan trọng
+    private final Node root;
 
-- Input chỉ dùng `a-z`, nên mỗi node có thể dùng `Node[26]`.
-- `index = ch - 'a'`.
-- `isWord` đánh dấu node kết thúc của một word hoàn chỉnh.
-- `startsWith` chỉ cần toàn bộ prefix path tồn tại, không quan tâm `isWord`.
+    public Trie() {
+        root = new Node();
+    }
 
-## 4. Alternative approaches / Hướng khác
+    public void insert(String word) {
+        Node node = root;
 
-Có thể dùng `HashMap<Character, Node>` để tiết kiệm child slot khi trie rất sparse hoặc alphabet lớn. Với alphabet cố định 26 chữ, array đơn giản và truy cập nhanh hơn.
+        for (char ch : word.toCharArray()) {
+            int index = ch - 'a';
 
-## 5. Optimal approach / Cách tiếp cận tối ưu
+            if (node.children[index] == null) {
+                node.children[index] = new Node();
+            }
 
-- `insert`: đi qua từng character; thiếu child thì tạo node mới; cuối cùng đặt `isWord = true`.
-- `search`: tìm node của toàn bộ word rồi trả `node != null && node.isWord`.
-- `startsWith`: tìm node của prefix rồi chỉ cần `node != null`.
+            node = node.children[index];
+        }
 
-## 6. Java solution overview
+        // Reaching a node only proves the prefix exists; this flag is what
+        // distinguishes an inserted full word from a prefix shared by longer words.
+        node.isWord = true;
+    }
 
-Class LeetCode-compatible là `Trie`. `Node` được khai báo `static` bên trong và chứa `Node[] children = new Node[26]` cùng boolean `isWord`.
+    public boolean search(String word) {
+        Node node = findNode(word);
+        return node != null && node.isWord;
+    }
 
-## 7. Code explanation
+    public boolean startsWith(String prefix) {
+        // Prefix existence does not require an end-of-word marker.
+        return findNode(prefix) != null;
+    }
 
-Helper `findNode` gom logic traversal dùng chung cho `search` và `startsWith`, tránh lặp code. `insert` tạo node lazily khi cần.
+    private Node findNode(String text) {
+        Node node = root;
 
-## 8. Dry run
+        for (char ch : text.toCharArray()) {
+            int index = ch - 'a';
+            node = node.children[index];
 
-Insert `"apple"`:
+            // A missing edge means no inserted word has this entire prefix,
+            // so both exact search and startsWith can stop immediately.
+            if (node == null) {
+                return null;
+            }
+        }
 
-`root -> a -> p -> p -> l -> e`, sau đó node `e` có `isWord = true`.
+        return node;
+    }
+}
+```
 
-- `search("apple")` → đến node `e`, `isWord = true`.
-- `search("app")` → đến node `p`, nhưng `isWord = false`.
-- `startsWith("app")` → path tồn tại nên true.
+## 3. Correctness
 
-## 9. Time and space complexity
+Following trie edges consumes exactly the queried prefix. `search` additionally requires `isWord`, while `startsWith` only requires the path to exist, matching the two contracts exactly.
 
-Gọi `L` là độ dài input operation.
+## 4. Complexity
 
-- `insert`: `O(L)`
-- `search`: `O(L)`
-- `startsWith`: `O(L)`
-- Space tổng: `O(total inserted characters)` trong worst case khi các word không chia sẻ prefix.
-
-## 10. Why the algorithm is correct / Vì sao đúng
-
-Mỗi path từ root tương ứng chính xác với một prefix. `insert` tạo đầy đủ path của word và đánh dấu endpoint. Vì vậy `findNode(x)` tồn tại khi và chỉ khi `x` là prefix của ít nhất một word đã insert; thêm điều kiện `isWord` giúp `search` đúng với exact word.
-
-## 11. Edge cases
-
-- Một word là prefix của word khác.
-- Insert cùng word nhiều lần.
-- Nhiều word chia sẻ prefix dài.
-- Search một prefix chưa từng được insert thành word.
-
-## 12. Common mistakes / Lỗi thường gặp
-
-- Không có `isWord`, khiến prefix bị nhầm thành exact word.
-- Tạo child array sai index.
-- `startsWith` kiểm tra `isWord` dù không cần.
-- Tạo toàn bộ 26 node con trước thay vì lazy allocation.
-
-## 13. Pattern recognition / Khi nào tái sử dụng
-
-Trie phù hợp với prefix lookup, autocomplete, dictionary search, routing theo chuỗi và các bài cần chia sẻ prefix giữa nhiều string.
-
-## 14. Vocabulary
-
-- **trie / prefix tree**: cây tiền tố
-- **child reference**: tham chiếu node con
-- **prefix lookup**: truy vấn tiền tố
-- **endpoint marker**: cờ đánh dấu kết thúc word
-- **shared prefix**: tiền tố dùng chung
+Each operation is `O(L)` for text length `L`; storage is proportional to the number of trie nodes created.

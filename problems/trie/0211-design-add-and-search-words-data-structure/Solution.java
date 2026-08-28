@@ -32,6 +32,8 @@ class WordDictionary {
 
     private boolean search(String word, int index, Node node) {
         if (index == word.length()) {
+            // Matching every character is not enough if we stopped at a prefix;
+            // the trie node must correspond to a complete inserted word.
             return node.isWord;
         }
 
@@ -42,6 +44,8 @@ class WordDictionary {
             return child != null && search(word, index + 1, child);
         }
 
+        // '.' represents exactly one arbitrary character, so the search state
+        // branches to every existing child and succeeds if ANY branch finishes.
         for (Node child : node.children) {
             if (child != null && search(word, index + 1, child)) {
                 return true;

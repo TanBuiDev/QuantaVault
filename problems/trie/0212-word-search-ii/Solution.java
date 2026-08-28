@@ -4,6 +4,9 @@ import java.util.List;
 class Solution {
     private static class TrieNode {
         private final TrieNode[] children = new TrieNode[26];
+
+        // Storing the complete word at terminal nodes avoids rebuilding the path
+        // into a String every time DFS reaches a dictionary word.
         private String word;
     }
 
@@ -50,15 +53,23 @@ class Solution {
 
         int index = letter - 'a';
         TrieNode node = parent.children[index];
+
+        // If the current board path is not a prefix of ANY dictionary word,
+        // the trie lets us prune the entire DFS branch immediately.
         if (node == null) {
             return;
         }
 
         if (node.word != null) {
             result.add(node.word);
+
+            // The same word may be reachable from many board paths; clearing it
+            // after first output deduplicates without a separate result HashSet.
             node.word = null;
         }
 
+        // In-place marker enforces the rule that one board cell cannot be reused
+        // inside the current path; restoration makes the cell available to siblings.
         board[row][col] = '#';
         dfs(board, row - 1, col, node, result);
         dfs(board, row + 1, col, node, result);
@@ -66,6 +77,8 @@ class Solution {
         dfs(board, row, col + 1, node, result);
         board[row][col] = letter;
 
+        // Once this trie node is neither a remaining word nor a prefix of one,
+        // removing it is safe and prunes the same dead prefix in future board starts.
         if (node.word == null && hasNoChildren(node)) {
             parent.children[index] = null;
         }

@@ -1,5 +1,7 @@
 class Trie {
     private static class Node {
+        // Fixed lowercase alphabet lets every edge be addressed directly by ch-'a'
+        // instead of hashing a character at each trie level.
         private final Node[] children = new Node[26];
         private boolean isWord;
     }
@@ -23,6 +25,8 @@ class Trie {
             node = node.children[index];
         }
 
+        // Reaching a node only proves the prefix exists; this flag is what
+        // distinguishes an inserted full word from a prefix shared by longer words.
         node.isWord = true;
     }
 
@@ -32,6 +36,7 @@ class Trie {
     }
 
     public boolean startsWith(String prefix) {
+        // Prefix existence does not require an end-of-word marker.
         return findNode(prefix) != null;
     }
 
@@ -42,6 +47,8 @@ class Trie {
             int index = ch - 'a';
             node = node.children[index];
 
+            // A missing edge means no inserted word has this entire prefix,
+            // so both exact search and startsWith can stop immediately.
             if (node == null) {
                 return null;
             }
