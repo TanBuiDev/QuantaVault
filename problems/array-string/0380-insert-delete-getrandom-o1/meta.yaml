@@ -39,3 +39,11 @@ code_versions:
     file: Solution.java
     is_canonical: true
     is_default: true
+  - id: v-7dc4b904
+    name: Version 2
+    file: Solution_v-7dc4b904.java
+    is_default: false
+  - id: v-e16c140b
+    name: Note
+    file: Solution_v-e16c140b.java
+    is_default: false

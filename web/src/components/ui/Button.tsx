@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 import { classNames } from "./classNames";
 
-export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger" | "outline";
+export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger" | "warning" | "outline";
 export type ButtonSize = "xs" | "sm" | "md" | "lg";
 
 const variantClasses: Record<ButtonVariant, string> = {
@@ -16,6 +16,8 @@ const variantClasses: Record<ButtonVariant, string> = {
     "text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:opacity-50 disabled:text-[var(--muted)]",
   danger:
     "bg-rose-500 text-white shadow-sm shadow-rose-500/20 hover:bg-rose-600 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-rose-500 disabled:opacity-50",
+  warning:
+    "bg-amber-500 text-white shadow-sm shadow-amber-500/20 hover:bg-amber-600 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-amber-500 disabled:opacity-50",
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
@@ -70,4 +72,3 @@ export function Button({
     </button>
   );
 }
-

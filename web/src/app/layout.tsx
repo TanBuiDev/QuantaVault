@@ -6,6 +6,7 @@ import { AppShell } from "@/components/layout/AppShell";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { ProgressProvider } from "@/lib/progress/provider";
 import { ToastProvider } from "@/components/ui/Toast";
+import { ConfirmProvider } from "@/components/ui/ConfirmDialog";
 
 import "katex/dist/katex.min.css";
 import "./globals.css";
@@ -37,7 +38,9 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
         <ThemeProvider>
           <ProgressProvider>
             <ToastProvider>
-              <AppShell>{children}</AppShell>
+              <ConfirmProvider>
+                <AppShell>{children}</AppShell>
+              </ConfirmProvider>
             </ToastProvider>
           </ProgressProvider>
         </ThemeProvider>
@@ -45,4 +48,3 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
     </html>
   );
 }
-
