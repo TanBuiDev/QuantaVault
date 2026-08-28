@@ -1,6 +1,8 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 
+import { ConfirmProvider } from "@/components/ui/ConfirmDialog";
+import { ToastProvider } from "@/components/ui/Toast";
 import { PracticeView } from "@/features/practice/PracticeView";
 import { parseProblemId } from "@/features/practice/route";
 import type { ProblemContent } from "@/lib/content";
@@ -34,24 +36,23 @@ const problem121: ProblemContent = {
   casesYaml: "problem_id: 121",
 };
 
-import { ToastProvider } from "@/components/ui/Toast";
-
 function renderPractice(content: ProblemContent = problem121) {
   return render(
     <ToastProvider>
-      <ProgressProvider>
-        <PracticeView
-          content={content}
-          hints={["## Hint 1\nHint one body.", "## Hint 2\nHint two body.", "## Hint 3\nHint three body."]}
-          previous={{ id: 189, title: "Rotate Array" }}
-          next={{ id: 122, title: "Best Time to Buy and Sell Stock II" }}
-          sectionName="Array / String"
-        />
-      </ProgressProvider>
+      <ConfirmProvider>
+        <ProgressProvider>
+          <PracticeView
+            content={content}
+            hints={["## Hint 1\nHint one body.", "## Hint 2\nHint two body.", "## Hint 3\nHint three body."]}
+            previous={{ id: 189, title: "Rotate Array" }}
+            next={{ id: 122, title: "Best Time to Buy and Sell Stock II" }}
+            sectionName="Array / String"
+          />
+        </ProgressProvider>
+      </ConfirmProvider>
     </ToastProvider>,
   );
 }
-
 
 describe("practice route parsing", () => {
   it("accepts positive integer IDs and rejects malformed routes", () => {
@@ -69,7 +70,6 @@ describe("PracticeView", () => {
     localStorage.clear();
     sessionStorage.clear();
   });
-
 
   it("shows the problem tab first without rendering inactive tab content", async () => {
     renderPractice();

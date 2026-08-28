@@ -4,6 +4,9 @@ import { render, screen } from "@testing-library/react";
 
 import { AppShell } from "@/components/layout/AppShell";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import { ConfirmProvider } from "@/components/ui/ConfirmDialog";
+import { ToastProvider } from "@/components/ui/Toast";
+import { ProgressProvider } from "@/lib/progress/provider";
 
 vi.mock("next/navigation", () => ({
   usePathname: () => null,
@@ -14,14 +17,19 @@ vi.mock("next/navigation", () => ({
   }),
 }));
 
-
 describe("AppShell", () => {
   it("renders the primary navigation and wraps child content", () => {
     render(
       <ThemeProvider>
-        <AppShell>
-          <p>Shell child content</p>
-        </AppShell>
+        <ProgressProvider>
+          <ToastProvider>
+            <ConfirmProvider>
+              <AppShell>
+                <p>Shell child content</p>
+              </AppShell>
+            </ConfirmProvider>
+          </ToastProvider>
+        </ProgressProvider>
       </ThemeProvider>,
     );
 

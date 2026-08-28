@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
+import { ConfirmProvider } from "@/components/ui/ConfirmDialog";
+import { ToastProvider } from "@/components/ui/Toast";
 import { PracticeView } from "@/features/practice/PracticeView";
 import type { ProblemContent } from "@/lib/content";
 import { ProgressProvider } from "@/lib/progress/provider";
@@ -32,24 +34,23 @@ const content: ProblemContent = {
   casesYaml: null,
 };
 
-import { ToastProvider } from "@/components/ui/Toast";
-
 describe("Practice workspace layout", () => {
   it("separates study content from the personal progress panel", () => {
     render(
       <ToastProvider>
-        <ProgressProvider>
-          <PracticeView
-            content={content}
-            hints={["## Hint 1\nThink first."]}
-            previous={{ id: 189, title: "Rotate Array" }}
-            next={{ id: 122, title: "Best Time to Buy and Sell Stock II" }}
-            sectionName="Array / String"
-          />
-        </ProgressProvider>
+        <ConfirmProvider>
+          <ProgressProvider>
+            <PracticeView
+              content={content}
+              hints={["## Hint 1\nThink first."]}
+              previous={{ id: 189, title: "Rotate Array" }}
+              next={{ id: 122, title: "Best Time to Buy and Sell Stock II" }}
+              sectionName="Array / String"
+            />
+          </ProgressProvider>
+        </ConfirmProvider>
       </ToastProvider>,
     );
-
 
     expect(screen.getByRole("region", { name: "Study content" })).toBeInTheDocument();
     expect(screen.getByRole("complementary", { name: "Study progress" })).toBeInTheDocument();
