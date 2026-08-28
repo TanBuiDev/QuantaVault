@@ -13,8 +13,15 @@ public class Solution {
                 stack.push(current);
                 current = current.left;
             }
+
             current = stack.pop();
-            if (previous != null) best = Math.min(best, current.val - previous);
+
+            // Inorder BST là sorted sequence. Minimum absolute difference của một
+            // sorted sequence luôn nằm giữa hai phần tử kề nhau, nên chỉ cần previous.
+            if (previous != null) {
+                best = Math.min(best, current.val - previous);
+            }
+
             previous = current.val;
             current = current.right;
         }

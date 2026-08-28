@@ -1,21 +1,10 @@
 # Solution / Lời giải — 530. Minimum Absolute Difference in BST
 
-## 1. Core idea / Ý tưởng chính
+## 1. Core idea
 
-BST inorder tạo một sorted sequence. Vì minimum difference trong sorted sequence nằm giữa hai phần tử kề nhau, ta duyệt inorder và so sánh mỗi value với previous value.
+Inorder BST là sorted sequence; minimum gap toàn cục nằm giữa hai phần tử kề nhau nên chỉ cần giữ previous value.
 
-## 2. Algorithm / Thuật toán
-
-1. Dùng iterative inorder với stack.
-2. Mỗi khi pop một node, nếu đã có `previous`, cập nhật `best = min(best, node.val - previous)`.
-3. Gán `previous = node.val`, rồi sang right subtree.
-4. Trả `best`.
-
-## 3. Why it works / Vì sao đúng
-
-Với mọi cặp không kề nhau `a < b < c`, ta có `c-a >= min(b-a, c-b)`. Do đó một minimum pair luôn có thể chọn là hai phần tử kề nhau trong sorted inorder sequence. Thuật toán xét đúng mọi cặp kề nhau nên tìm được global minimum.
-
-## 4. Optimal Java solution / Java tối ưu
+## 2. Optimal Java solution
 
 ```java
 import java.util.ArrayDeque;
@@ -33,8 +22,15 @@ public class Solution {
                 stack.push(current);
                 current = current.left;
             }
+
             current = stack.pop();
-            if (previous != null) best = Math.min(best, current.val - previous);
+
+            // Inorder BST là sorted sequence. Minimum absolute difference của một
+            // sorted sequence luôn nằm giữa hai phần tử kề nhau, nên chỉ cần previous.
+            if (previous != null) {
+                best = Math.min(best, current.val - previous);
+            }
+
             previous = current.val;
             current = current.right;
         }
@@ -43,13 +39,10 @@ public class Solution {
 }
 ```
 
-## 5. Complexity / Độ phức tạp
+## 3. Correctness
 
-- **Time:** `O(n)`.
-- **Extra space:** `O(h)` stack.
+Với sorted values `a < b < c`, gap `c-a` không thể nhỏ hơn cả hai adjacent gaps. Vì vậy xét mọi adjacent inorder pair là đủ để tìm minimum global.
 
-## 6. Common mistakes / Lỗi thường gặp
+## 4. Complexity
 
-- So sánh chỉ parent-child và bỏ qua các inorder neighbors không có quan hệ trực tiếp.
-- Lưu toàn bộ inorder array dù chỉ cần previous value.
-- Quên BST property khiến inorder được sorted.
+`O(n)` time, `O(h)` stack.

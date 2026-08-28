@@ -1,44 +1,38 @@
 # Solution / Lời giải — 98. Validate Binary Search Tree
 
-## 1. Core idea / Ý tưởng chính
+## 1. Core idea
 
-Mỗi node phải nằm trong một range được quyết định bởi toàn bộ ancestors, không chỉ parent. Root bắt đầu với `(Long.MIN_VALUE, Long.MAX_VALUE)`. Khi đi left, upper bound trở thành current value; khi đi right, lower bound trở thành current value.
+Mỗi node phải thỏa range do toàn bộ ancestors tạo ra. DFS truyền strict `(low, high)` xuống hai nhánh thay vì chỉ so child với parent.
 
-## 2. Algorithm / Thuật toán
-
-1. `valid(root, Long.MIN_VALUE, Long.MAX_VALUE)`.
-2. Null node → true.
-3. Nếu `node.val <= low || node.val >= high`, trả false.
-4. Recursively validate left với `(low, node.val)` và right với `(node.val, high)`.
-
-## 3. Why it works / Vì sao đúng
-
-Range tại mỗi call chính là intersection của tất cả constraints do ancestors tạo ra. Nếu node nằm strict bên trong range, nó thỏa mọi ancestor relation. Việc thu hẹp upper/lower bound khi đi left/right truyền đúng BST rule xuống descendants. Vì mọi node được kiểm tra, toàn tree hợp lệ khi và chỉ khi recursion trả true.
-
-## 4. Optimal Java solution / Java tối ưu
+## 2. Optimal Java solution
 
 ```java
 public class Solution {
     public boolean isValidBST(TreeNode root) {
+        // long sentinels nằm ngoài toàn bộ miền int nên node có Integer.MIN/MAX_VALUE
+        // vẫn được kiểm tra bằng strict bounds mà không cần special case.
         return valid(root, Long.MIN_VALUE, Long.MAX_VALUE);
     }
 
     private boolean valid(TreeNode node, long low, long high) {
         if (node == null) return true;
+
+        // BST constraint đến từ TOÀN BỘ ancestors, không chỉ parent; current node
+        // phải nằm strict trong intersection range đang được truyền xuống.
         if (node.val <= low || node.val >= high) return false;
+
+        // Đi left siết upper bound; đi right siết lower bound. Strict bounds
+        // đồng thời loại duplicate values vì đề định nghĩa BST bằng < và >.
         return valid(node.left, low, node.val)
             && valid(node.right, node.val, high);
     }
 }
 ```
 
-## 5. Complexity / Độ phức tạp
+## 3. Correctness
 
-- **Time:** `O(n)`.
-- **Space:** `O(h)` recursion stack.
+Range ở mỗi call là intersection của mọi ancestor constraint. Node nằm strict trong range iff nó thỏa toàn bộ quan hệ BST phía trên; hai recursive ranges bổ sung đúng constraint của current node.
 
-## 6. Common mistakes / Lỗi thường gặp
+## 4. Complexity
 
-- Chỉ kiểm tra child với parent, bỏ qua ancestor violation.
-- Cho phép duplicate bằng `<=`/`>=` sai chiều.
-- Dùng `int` sentinel và làm fail node ở boundary.
+`O(n)` time, `O(h)` recursion stack.
