@@ -1,46 +1,55 @@
-# 23. Merge k Sorted Lists — Solution
+# Solution / Lời giải — 23. Merge k Sorted Lists
 
-## 1. Core idea / Intuition
-Dùng min-heap làm frontier của k sorted lists. Heap luôn chứa node nhỏ nhất chưa dùng từ mỗi list.
+## 1. Core idea
 
-## 2. Requirement recap / Tóm tắt yêu cầu
-Merge toàn bộ node theo thứ tự tăng mà không cần gom rồi sort lại.
+Maintain one frontier node per non-empty sorted list in a min-heap. The minimum frontier is always the smallest value among all remaining nodes.
 
-## 3. Key observations / Nhận xét quan trọng
-Khi poll head nhỏ nhất, candidate mới duy nhất của list đó là `node.next`.
+## 2. Optimal Java solution
 
-## 4. Alternative approaches / Các hướng khác
-Divide-and-conquer merge pairs cũng đạt O(N log k); heap thể hiện k-way merge trực tiếp.
-
-## 5. Optimal approach / Hướng tối ưu
-Offer mọi non-null head, liên tục poll min, nối vào output, rồi offer successor.
-
-## 6. Java solution overview
 ```java
-PriorityQueue<ListNode> pq = new PriorityQueue<>((a,b)->Integer.compare(a.val,b.val));
+import java.util.PriorityQueue;
+
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode() {}
+    ListNode(int val) { this.val = val; }
+    ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+}
+
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        PriorityQueue<ListNode> heap = new PriorityQueue<>((a, b) -> Integer.compare(a.val, b.val));
+
+        // The head of each sorted list is that list's smallest remaining value.
+        // Keeping exactly those frontier nodes in a min-heap exposes the global minimum.
+        for (ListNode node : lists) {
+            if (node != null) heap.offer(node);
+        }
+
+        ListNode dummy = new ListNode(0);
+        ListNode tail = dummy;
+        while (!heap.isEmpty()) {
+            ListNode node = heap.poll();
+
+            // The heap minimum cannot be beaten by any node hidden later in a list,
+            // because every such node is >= its own current frontier node.
+            tail.next = node;
+            tail = node;
+
+            // Once node is consumed, its successor becomes the new frontier for
+            // that same list and must enter the heap to preserve the invariant.
+            if (node.next != null) heap.offer(node.next);
+        }
+        return dummy.next;
+    }
+}
 ```
-Dùng dummy head để nối kết quả.
 
-## 7. Code explanation / Giải thích code
-Mỗi node vào và ra heap đúng một lần; heap có tối đa k node.
+## 3. Correctness
 
-## 8. Dry run / Chạy thử
-Ba head ban đầu 1,1,2; poll theo thứ tự và mỗi lần mở node kế tiếp của chính list đó.
+At all times the heap contains the smallest unmerged node from every active list. Therefore `poll()` returns the globally smallest remaining value; adding its successor restores the same invariant until all nodes are emitted.
 
-## 9. Time and space complexity
-O(N log k) time, O(k) heap space ngoài output.
+## 4. Complexity
 
-## 10. Why the algorithm is correct / Vì sao đúng
-Vì mỗi list sorted, phần tử nhỏ nhất chưa dùng của list luôn là head frontier. Minimum toàn cục của mọi phần tử chưa dùng vì vậy là minimum của các frontier trong heap. Poll tuần tự tạo đúng merged order.
-
-## 11. Edge cases
-Không có list, mọi list rỗng, một list, duplicate values.
-
-## 12. Common mistakes
-Push toàn bộ nodes vào heap; quên null heads; comparator dùng subtraction gây overflow.
-
-## 13. Pattern recognition / Khi nào tái sử dụng
-K-way merge áp dụng cho nhiều sorted sequences.
-
-## 14. Vocabulary
-**linked list**: danh sách liên kết; **frontier**: biên ứng viên; **min-heap**: heap cực tiểu; **dummy head**: node đầu giả.
+For `N` total nodes and `k` lists: `O(N log k)` time, `O(k)` heap space.

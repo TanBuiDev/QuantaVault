@@ -1,43 +1,73 @@
-# 427. Construct Quad Tree — Solution
+# Solution / Lời giải — 427. Construct Quad Tree
 
-## 1. Core idea / Intuition
-Dùng 2D prefix sum để biết số lượng bit 1 trong bất kỳ square region. Nếu count bằng 0 hoặc area, region đồng nhất; nếu không, chia bốn.
+## 1. Core idea
 
-## 2. Requirement recap / Tóm tắt yêu cầu
-Mỗi internal node phải có đúng bốn children, còn leaf không cần children.
+A square becomes one leaf when all cells are equal; otherwise split it into four quadrants recursively. A 2D prefix sum tests uniformity of each square in `O(1)`.
 
-## 3. Key observations / Nhận xét quan trọng
-Uniformity chỉ phụ thuộc `ones == 0` hoặc `ones == size*size`; prefix sum giúp query O(1).
+## 2. Optimal Java solution
 
-## 4. Alternative approaches / Các hướng khác
-Scan từng region trực tiếp đơn giản hơn nhưng lặp lại công việc qua nhiều level.
+```java
+class Node {
+    public boolean val;
+    public boolean isLeaf;
+    public Node topLeft;
+    public Node topRight;
+    public Node bottomLeft;
+    public Node bottomRight;
 
-## 5. Optimal approach / Hướng tối ưu
-Build prefix O(n²), sau đó recursively query region sum and split midpoint until uniform.
+    public Node() {}
+    public Node(boolean val, boolean isLeaf) { this.val = val; this.isLeaf = isLeaf; }
+    public Node(boolean val, boolean isLeaf, Node topLeft, Node topRight, Node bottomLeft, Node bottomRight) {
+        this.val = val; this.isLeaf = isLeaf; this.topLeft = topLeft; this.topRight = topRight; this.bottomLeft = bottomLeft; this.bottomRight = bottomRight;
+    }
+}
 
-## 6. Java solution overview
-`build(row,col,size)` query sum, trả leaf nếu uniform; nếu không gọi bốn quadrant size/2 và trả internal node.
+class Solution {
+    private int[][] prefix;
 
-## 7. Code explanation / Giải thích code
-Helper `sum(r,c,size)` dùng inclusion-exclusion trên prefix matrix.
+    public Node construct(int[][] grid) {
+        int n = grid.length;
+        prefix = new int[n + 1][n + 1];
 
-## 8. Dry run / Chạy thử
-`[[0,1],[1,0]]` có sum 2 trên area 4 nên root internal; mỗi size-1 child tự động là leaf.
+        // 2D prefix sums let every recursive square ask "how many ones are here?"
+        // in O(1), avoiding a fresh scan of the region at every tree level.
+        for (int r = 0; r < n; r++) {
+            for (int c = 0; c < n; c++) {
+                prefix[r + 1][c + 1] = grid[r][c] + prefix[r][c + 1] + prefix[r + 1][c] - prefix[r][c];
+            }
+        }
+        return build(0, 0, n);
+    }
 
-## 9. Time and space complexity
-O(n²) build/query-tree work and O(n²) prefix extra space; output tree itself can also be O(n²).
+    private Node build(int row, int col, int size) {
+        int ones = sum(row, col, size);
 
-## 10. Why the algorithm is correct / Vì sao đúng
-Uniform regions được nhận diện chính xác bằng count ones. Non-uniform square được partition thành bốn disjoint quadrants phủ đúng toàn vùng; induction trên `size` cho thấy mỗi child biểu diễn đúng quadrant và root biểu diễn đúng grid.
+        // A region is a leaf iff all size^2 cells agree: either zero ones or all ones.
+        if (ones == 0 || ones == size * size) return new Node(ones != 0, true);
 
-## 11. Edge cases
-`n=1`, all zero, all one, checkerboard.
+        // Mixed regions cannot be represented by one leaf, so split into the four
+        // equal quadrants required by the quad-tree definition.
+        int half = size / 2;
+        return new Node(true, false,
+            build(row, col, half),
+            build(row, col + half, half),
+            build(row + half, col, half),
+            build(row + half, col + half, half));
+    }
 
-## 12. Common mistakes
-Không tạo đủ bốn children cho internal node; chia sai quadrant; nhầm prefix boundaries.
+    private int sum(int row, int col, int size) {
+        int r2 = row + size, c2 = col + size;
 
-## 13. Pattern recognition / Khi nào tái sử dụng
-Recursive spatial decomposition xuất hiện ở quad trees, image compression và region queries.
+        // Inclusion-exclusion returns the number of ones in [row,r2) x [col,c2).
+        return prefix[r2][c2] - prefix[row][c2] - prefix[r2][col] + prefix[row][col];
+    }
+}
+```
 
-## 14. Vocabulary
-**Quad-Tree**: cây tứ phân; **quadrant**: góc phần tư; **leaf**: nút lá; **prefix sum**: tổng tiền tố.
+## 3. Correctness
+
+Uniform regions are represented exactly by one leaf. Every mixed region is partitioned into the four required disjoint quadrants, and recursion constructs each quadrant correctly; together they represent the original square exactly.
+
+## 4. Complexity
+
+Prefix build `O(n²)`; construction creates at most `O(n²)` nodes and uses `O(log n)` recursion depth for power-of-two side length.
