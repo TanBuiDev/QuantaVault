@@ -1,35 +1,10 @@
 # Solution / Lời giải — 114. Flatten Binary Tree to Linked List
 
-## 1. Core idea / Ý tưởng chính
+## 1. Core idea
 
-Với mỗi node có `left`, preorder sẽ đi toàn bộ left subtree trước khi đi original right subtree. Node cuối của left subtree trong preorder chính là node ngoài cùng bên phải khi lần theo `right` từ `current.left`. Ta nối original right subtree vào sau node đó, rồi chuyển toàn bộ left subtree sang `current.right` và xóa `current.left`.
+Preorder tại node là `node -> left subtree -> right subtree`. Nếu có left, nối original right vào rightmost node của left subtree rồi chuyển left sang right; lặp dọc right chain.
 
-## 2. Algorithm / Thuật toán
-
-1. Đặt `current = root`.
-2. Trong khi `current != null`:
-   - nếu `current.left != null`, tìm `predecessor` là rightmost node của left subtree;
-   - `predecessor.right = current.right`;
-   - `current.right = current.left`;
-   - `current.left = null`;
-   - tiến `current = current.right`.
-3. Không cần trả về gì vì tree được mutate in-place.
-
-## 3. Why it works / Vì sao đúng
-
-Tại mỗi node, nếu có left subtree thì preorder mong muốn là `current -> left subtree -> original right subtree`. Rewiring đặt original right subtree ngay sau node cuối của left subtree, đồng thời biến left subtree thành right chain bắt đầu ngay sau `current`. Vì không thay đổi thứ tự nội bộ của left hay right subtree, preorder toàn bộ được bảo toàn. Sau khi xử lý mọi node, tất cả left pointer đều null và right chain chính là preorder sequence.
-
-## 4. Dry run / Chạy thử
-
-```text
-root = [1,2,5,3,4,null,6]
-```
-
-- Tại `1`, rightmost của left subtree `2` là `4`; nối `4.right = 5`, rồi `1.right = 2`, `1.left = null`.
-- Tại `2`, rightmost của left subtree là `3`; nối `3.right = 4`, rồi `2.right = 3`, `2.left = null`.
-- Tiếp tục theo right chain thu được `1 -> 2 -> 3 -> 4 -> 5 -> 6`.
-
-## 5. Optimal Java solution / Java tối ưu
+## 2. Optimal Java solution
 
 ```java
 public class Solution {
@@ -38,34 +13,40 @@ public class Solution {
 
         while (current != null) {
             if (current.left != null) {
+                // Rightmost node của left subtree là node cuối cùng của left subtree
+                // trong preorder sau khi left subtree tự được flatten về right chain.
                 TreeNode predecessor = current.left;
                 while (predecessor.right != null) {
                     predecessor = predecessor.right;
                 }
 
+                // Bảo toàn original right subtree bằng cách nối nó sau predecessor
+                // TRƯỚC khi ghi đè current.right bằng current.left.
                 predecessor.right = current.right;
                 current.right = current.left;
                 current.left = null;
             }
 
+            // Sau rewiring, current.right chính là node kế tiếp trong preorder.
             current = current.right;
         }
     }
 }
 ```
 
-## 6. Complexity / Độ phức tạp
+## 3. Correctness
 
-- **Time:** `O(n)` amortized; mỗi edge được theo dõi số lần hữu hạn trong quá trình rewiring.
-- **Extra space:** `O(1)`.
+Rewiring biến local order thành `current -> left subtree -> original right subtree` mà không đổi internal order của hai subtrees. Lặp cho mọi node làm tất cả left pointers null và right chain đúng preorder.
 
-## 7. Alternative
+## 4. Complexity
 
-Reverse-preorder recursion (`right -> left`) có code ngắn và dễ chứng minh nhưng dùng `O(h)` call stack. Explicit stack cũng cần `O(h)` hoặc `O(n)` trong worst case.
+```text
+Time: O(n) amortized
+Space: O(1)
+```
 
-## 8. Common mistakes / Lỗi thường gặp
+## 5. Common mistakes
 
-- Ghi đè `current.right` trước khi bảo toàn original right subtree.
-- Quên đặt `current.left = null`.
-- Tạo node mới thay vì mutate tree hiện có.
-- Trả đúng preorder values nhưng tạo cycle hoặc để sót left pointer.
+- Ghi đè right trước khi bảo toàn original right subtree.
+- Quên set left null.
+- Tạo node mới thay vì in-place.

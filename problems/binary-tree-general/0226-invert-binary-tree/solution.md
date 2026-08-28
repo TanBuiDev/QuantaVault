@@ -1,31 +1,10 @@
 # Solution / Lời giải — 226. Invert Binary Tree
 
-## 1. Core idea / Ý tưởng chính
+## 1. Core idea
 
-Dùng DFS đệ quy. Mỗi subtree được invert bằng cách invert hai child rồi đổi chỗ chúng. Vì thao tác cần áp dụng cho mọi node, recursion khớp trực tiếp với cấu trúc tree.
+Recursively invert hai child subtrees rồi swap chúng tại current node. Đây là structural recursion trực tiếp theo định nghĩa mirror.
 
-## 2. Algorithm / Thuật toán
-
-1. Nếu `root == null`, return `null`.
-2. Recursively invert `root.left` và `root.right`.
-3. Gán subtree phải đã invert vào `root.left`, subtree trái đã invert vào `root.right`.
-4. Return `root`.
-
-## 3. Why it works / Vì sao đúng
-
-Giả sử recursive call invert đúng left và right subtree. Sau khi swap hai subtree đã invert, mọi edge ngay dưới current node được phản chiếu và mọi descendant bên trong cũng đã được phản chiếu. Base tree rỗng đúng hiển nhiên; quy nạp theo structure chứng minh toàn tree được invert chính xác.
-
-## 4. Dry run / Chạy thử
-
-```text
-      4                 4
-    /   \             /   \
-   2     7     ->    7     2
-  / \   / \         / \   / \
- 1   3 6   9       9   6 3   1
-```
-
-## 5. Optimal Java solution / Java tối ưu
+## 2. Optimal Java solution
 
 ```java
 public class Solution {
@@ -33,8 +12,13 @@ public class Solution {
         if (root == null) {
             return null;
         }
+
+        // Lưu kết quả của cả hai recursive calls trước khi gán để không ghi đè
+        // một child reference rồi vô tình recurse/assign từ pointer đã bị thay đổi.
         TreeNode left = invertTree(root.left);
         TreeNode right = invertTree(root.right);
+
+        // Mirror tại current node là đổi chỗ hai subtrees đã được mirror hoàn chỉnh.
         root.left = right;
         root.right = left;
         return root;
@@ -42,24 +26,19 @@ public class Solution {
 }
 ```
 
-## 6. Complexity / Độ phức tạp
+## 3. Correctness
 
-- **Time:** `O(n)`.
-- **Extra space:** `O(h)` recursion stack.
+Giả sử recursive calls mirror đúng hai child subtrees. Swap hai kết quả đó phản chiếu edge tại current node; induction từ null/leaf lên root cho toàn tree inverted đúng.
 
-## 7. Alternative — BFS
+## 4. Complexity
 
-Có thể dùng queue, swap children khi pop từng node. Time `O(n)`, auxiliary space `O(w)` theo maximum width.
+```text
+Time: O(n)
+Space: O(h)
+```
 
-## 8. Edge cases / Trường hợp biên
+## 5. Common mistakes
 
-- Empty tree.
-- Một node.
-- Chỉ có left/right chain.
-- Balanced tree.
-
-## 9. Common mistakes / Lỗi thường gặp
-
-- Swap chỉ ở root mà quên descendants.
-- Ghi đè một child trước khi lưu reference còn lại.
-- Nhầm việc invert values với invert links.
+- Swap chỉ root.
+- Ghi đè child trước khi giữ reference cần thiết.
+- Nhầm invert links với đổi values.

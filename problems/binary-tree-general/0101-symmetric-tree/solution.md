@@ -1,36 +1,10 @@
 # Solution / Lời giải — 101. Symmetric Tree
 
-## 1. Core idea / Ý tưởng chính
+## 1. Core idea
 
-Kiểm tra hai subtree của root có phải mirror của nhau không. Với hai node `left` và `right`, chúng mirror nếu:
+Hai subtree mirror khi roots bằng nhau, **outer children** mirror nhau và **inner children** mirror nhau. Đây là Same Tree với cách ghép child chéo hướng.
 
-- cả hai cùng null; hoặc
-- cả hai tồn tại, cùng value, `left.left` mirror `right.right`, và `left.right` mirror `right.left`.
-
-## 2. Algorithm / Thuật toán
-
-1. Nếu `root == null`, return `true`.
-2. Return `isMirror(root.left, root.right)`.
-3. Trong helper:
-   - cả hai null → true;
-   - chỉ một null → false;
-   - value khác → false;
-   - recurse hai cặp outer/inner children.
-
-## 3. Why it works / Vì sao đúng
-
-Hai subtree là mirror khi root tương ứng bằng nhau và các nhánh ngoài phản chiếu nhau, đồng thời các nhánh trong cũng phản chiếu nhau. Helper kiểm tra đúng ba điều kiện đó tại mọi level. Base cases xử lý cấu trúc null, nên induction theo cấu trúc tree chứng minh toàn cây symmetric khi và chỉ khi helper trả true.
-
-## 4. Dry run / Chạy thử
-
-Với `[1,2,2,3,4,4,3]`:
-
-- `2` trái và `2` phải bằng nhau.
-- outer: `3` trái so với `3` phải → match.
-- inner: `4` trái so với `4` phải → match.
-- các child null cũng match → `true`.
-
-## 5. Optimal Java solution / Java tối ưu
+## 2. Optimal Java solution
 
 ```java
 public class Solution {
@@ -39,9 +13,13 @@ public class Solution {
     }
 
     private boolean isMirror(TreeNode left, TreeNode right) {
+        // Khi một bên null, mirror chỉ đúng nếu bên kia cũng chính là null.
         if (left == null || right == null) {
             return left == right;
         }
+
+        // Mirror không so cùng hướng: outer child phải khớp outer child đối diện,
+        // inner child phải khớp inner child đối diện.
         return left.val == right.val
             && isMirror(left.left, right.right)
             && isMirror(left.right, right.left);
@@ -49,23 +27,19 @@ public class Solution {
 }
 ```
 
-## 6. Complexity / Độ phức tạp
+## 3. Correctness
 
-- **Time:** `O(n)`.
-- **Extra space:** `O(h)` recursion stack.
+Helper kiểm tra đúng định nghĩa mirror tại mọi cặp node. Base case xử lý null structure; recursive cases ghép `left.left` với `right.right` và `left.right` với `right.left`, nên induction theo chiều cao chứng minh symmetry toàn cây.
 
-## 7. Alternative — Iterative queue
+## 4. Complexity
 
-Đưa các node vào queue theo cặp mirror: `(left.left,right.right)` và `(left.right,right.left)`. Time `O(n)`, space `O(w)`. Đây là follow-up iterative tự nhiên.
+```text
+Time: O(n)
+Space: O(h)
+```
 
-## 8. Edge cases / Trường hợp biên
+## 5. Common mistakes
 
-- Một node → symmetric.
-- Same values nhưng structure khác → false.
-- Một phía có null ở vị trí mirror còn phía kia có node → false.
-
-## 9. Common mistakes / Lỗi thường gặp
-
-- So `left.left` với `right.left` thay vì mirror direction.
-- Chỉ so values mà bỏ qua null structure.
-- Dùng cùng logic của Same Tree mà không đổi cặp child.
+- So left-left với right-left.
+- Chỉ so values.
+- Dùng Same Tree nguyên xi mà quên cross children.

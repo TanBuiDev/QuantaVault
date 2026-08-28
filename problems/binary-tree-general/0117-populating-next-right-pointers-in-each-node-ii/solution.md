@@ -1,34 +1,10 @@
 # Solution / Lời giải — 117. Populating Next Right Pointers in Each Node II
 
-## 1. Core idea / Ý tưởng chính
+## 1. Core idea
 
-Duyệt tree theo từng level nhưng không dùng queue. `levelStart` trỏ tới node đầu tiên của level hiện tại. Các `next` pointer đã được tạo cho level đó cho phép ta đi ngang qua toàn bộ level. Trong lúc duyệt, dùng `nextLevelStart` và `nextLevelTail` để xây chain cho level kế tiếp.
+Dùng `next` chain đã xây của current level như một queue không tốn thêm memory. Trong lúc scan ngang, `nextLevelStart/nextLevelTail` xây chain của level kế tiếp.
 
-## 2. Algorithm / Thuật toán
-
-1. Đặt `levelStart = root`.
-2. Với mỗi level:
-   - đặt `nextLevelStart = null`, `nextLevelTail = null`;
-   - duyệt `current` bằng `current = current.next`;
-   - với `current.left` rồi `current.right`, nếu child khác null thì append child vào chain level kế tiếp;
-   - sau khi quét xong, gán `levelStart = nextLevelStart`.
-3. Trả lại `root`.
-
-## 3. Why it works / Vì sao đúng
-
-Giả sử `next` pointers của level hiện tại đã đúng. Ta duyệt các node của level đó từ trái sang phải và append các child theo đúng thứ tự `left` rồi `right`. Vì vậy mọi node của level kế tiếp được nối theo đúng thứ tự từ trái sang phải, kể cả khi hai node kề nhau có parent khác nhau. Node cuối cùng giữ `next = null`. Base case là root: level đầu chỉ có một node nên chain đã đúng. Theo induction, mọi level đều được nối đúng.
-
-## 4. Dry run / Chạy thử
-
-```text
-root = [1,2,3,4,5,null,7]
-```
-
-- Level 1: duyệt `1`, tạo chain `2 -> 3`.
-- Level 2: duyệt `2 -> 3`, append `4`, `5`, `7` thành `4 -> 5 -> 7`.
-- Level 3 không có child, thuật toán kết thúc.
-
-## 5. Optimal Java solution / Java tối ưu
+## 2. Optimal Java solution
 
 ```java
 public class Solution {
@@ -39,19 +15,31 @@ public class Solution {
             Node nextLevelStart = null;
             Node nextLevelTail = null;
 
+            // next pointers của level hiện tại đóng vai trò queue miễn phí,
+            // cho phép scan ngang mà không dùng O(width) auxiliary memory.
             for (Node current = levelStart; current != null; current = current.next) {
                 if (current.left != null) {
-                    if (nextLevelStart == null) nextLevelStart = current.left;
-                    else nextLevelTail.next = current.left;
+                    if (nextLevelStart == null) {
+                        nextLevelStart = current.left;
+                    } else {
+                        // Tail nối children xuyên qua parent boundaries, nên xử lý được
+                        // tree không perfect nơi neighbor cùng level có parent khác nhau.
+                        nextLevelTail.next = current.left;
+                    }
                     nextLevelTail = current.left;
                 }
+
                 if (current.right != null) {
-                    if (nextLevelStart == null) nextLevelStart = current.right;
-                    else nextLevelTail.next = current.right;
+                    if (nextLevelStart == null) {
+                        nextLevelStart = current.right;
+                    } else {
+                        nextLevelTail.next = current.right;
+                    }
                     nextLevelTail = current.right;
                 }
             }
 
+            // Chỉ chuyển level sau khi toàn bộ next chain của level mới đã hoàn tất.
             levelStart = nextLevelStart;
         }
 
@@ -60,18 +48,19 @@ public class Solution {
 }
 ```
 
-## 6. Complexity / Độ phức tạp
+## 3. Correctness
 
-- **Time:** `O(n)` vì mỗi node được duyệt một lần.
-- **Extra space:** `O(1)` vì chỉ dùng một số reference; không dùng queue hay collection phụ thuộc `n`.
+Induction theo level: current `next` chain đúng cho phép scan trái→phải; appending non-null children left rồi right tạo chính xác thứ tự nodes của next level, kể cả qua nhiều parents. Sau scan chain mới hoàn tất và trở thành current level tiếp theo.
 
-## 7. Alternative
+## 4. Complexity
 
-BFS với queue dễ viết nhưng dùng `O(w)` extra space, với `w` là maximum width của tree, nên không đáp ứng follow-up constant-space.
+```text
+Time: O(n)
+Extra space: O(1)
+```
 
-## 8. Common mistakes / Lỗi thường gặp
+## 5. Common mistakes
 
-- Dùng queue rồi vẫn ghi space là `O(1)`.
-- Chỉ nối siblings cùng parent và bỏ sót liên kết giữa hai parent khác nhau.
-- Duyệt level kế tiếp trước khi chain `next` của nó hoàn tất.
-- Không xử lý tree thưa có nhiều child null.
+- Dùng queue rồi claim O(1) space.
+- Chỉ nối siblings cùng parent.
+- Chuyển level trước khi chain mới hoàn tất.

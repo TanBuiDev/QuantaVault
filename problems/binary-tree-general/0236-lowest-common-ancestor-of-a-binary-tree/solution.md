@@ -1,55 +1,49 @@
 # Solution / Lời giải — 236. Lowest Common Ancestor of a Binary Tree
 
-## 1. Core idea / Ý tưởng chính
+## 1. Core idea
 
-Dùng postorder DFS. Nếu current node là null, `p`, hoặc `q`, trả ngay current node. Sau đó hỏi left và right subtree. Nếu cả hai bên đều trả non-null thì hai target nằm ở hai phía (hoặc đã được đại diện bởi kết quả subtree), nên current node là LCA. Nếu chỉ một bên non-null, truyền kết quả đó lên trên.
+Postorder DFS trả một “evidence” non-null khi subtree chứa target hoặc đã tìm được LCA. Nếu left và right đều non-null tại một node, hai targets tách qua hai phía nên node đó là LCA.
 
-## 2. Algorithm / Thuật toán
-
-1. Nếu `root == null || root == p || root == q`, trả `root`.
-2. `left = lowestCommonAncestor(root.left, p, q)`.
-3. `right = lowestCommonAncestor(root.right, p, q)`.
-4. Nếu `left != null && right != null`, trả `root`.
-5. Nếu không, trả bên non-null.
-
-## 3. Why it works / Vì sao đúng
-
-Khi một recursive call trả non-null, subtree đó đã tìm thấy ít nhất một target hoặc LCA của cả hai target. Nếu current node nhận non-null từ cả hai child, đây là node thấp nhất nơi evidence của `p` và `q` tách sang hai phía, nên nó là LCA. Nếu chỉ một side có evidence, LCA phải nằm trong side đó hoặc chính evidence đó là một target ancestor; truyền nó lên giữ nguyên candidate đúng. Base case `root == p || root == q` xử lý trực tiếp trường hợp một target là ancestor của target còn lại.
-
-## 4. Dry run / Chạy thử
-
-Với `p = 5`, `q = 1` trong root `3`, left subtree trả node `5`, right subtree trả node `1`, nên node `3` nhận hai kết quả non-null và là LCA.
-
-Với `p = 5`, `q = 4`, DFS tại node `5` trả ngay `5`; vì `4` nằm bên dưới `5`, candidate `5` được truyền lên và cuối cùng trả về đúng ancestor target.
-
-## 5. Optimal Java solution / Java tối ưu
+## 2. Optimal Java solution
 
 ```java
 public class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null || root == p || root == q) return root;
+        // Return non-null mang nghĩa subtree này đã tìm thấy p/q hoặc LCA của chúng.
+        // Trả target ngay cũng xử lý case một target chính là ancestor của target kia.
+        if (root == null || root == p || root == q) {
+            return root;
+        }
 
         TreeNode left = lowestCommonAncestor(root.left, p, q);
         TreeNode right = lowestCommonAncestor(root.right, p, q);
 
-        if (left != null && right != null) return root;
+        // Evidence xuất hiện ở cả hai child nghĩa p và q tách sang hai phía;
+        // current là node thấp nhất nơi hai search paths hội tụ nên chính là LCA.
+        if (left != null && right != null) {
+            return root;
+        }
+
+        // Một phía non-null thì LCA/target candidate vẫn nằm hoàn toàn phía đó;
+        // truyền nguyên evidence lên parent thay vì thay nó bằng current.
         return left != null ? left : right;
     }
 }
 ```
 
-## 6. Complexity / Độ phức tạp
+## 3. Correctness
 
-- **Time:** `O(n)` worst case.
-- **Extra space:** `O(h)` recursion stack.
+Return value của mỗi subtree biểu diễn nơi tìm thấy target/LCA. Hai child cùng non-null là lần thấp nhất evidence của hai targets hội tụ, nên current là LCA. Một child non-null thì answer vẫn nằm phía đó. Base case target tự trả về xử lý ancestor case.
 
-## 7. Alternative
+## 4. Complexity
 
-Có thể dựng parent map rồi đi ancestor chain, nhưng cần `O(n)` extra memory. Với nhiều LCA queries trên cùng tree, preprocessing/binary lifting có thể phù hợp hơn.
+```text
+Time: O(n)
+Space: O(h)
+```
 
-## 8. Common mistakes / Lỗi thường gặp
+## 5. Common mistakes
 
-- So sánh node theo value thay vì identity dù đề truyền trực tiếp `TreeNode` references.
-- Quên trường hợp `p` là ancestor của `q` hoặc ngược lại.
-- Trả root ngay khi chỉ một subtree non-null.
-- Dùng parent map không cần thiết cho một query duy nhất.
+- So node theo value thay identity.
+- Quên target có thể là ancestor của target kia.
+- Thấy một side non-null đã trả current ngay.

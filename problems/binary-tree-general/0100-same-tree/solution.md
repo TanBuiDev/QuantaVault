@@ -1,67 +1,45 @@
 # Solution / Lời giải — 100. Same Tree
 
-## 1. Core idea / Ý tưởng chính
+## 1. Core idea
 
-Duyệt hai tree song song bằng DFS. Ở mỗi cặp node `(p, q)`:
+DFS hai tree song song. Mỗi vị trí phải giống cả **structure** lẫn value; sau khi current pair khớp thì left pair và right pair đều phải khớp.
 
-- cả hai `null` → subtree giống nhau;
-- chỉ một `null` → khác cấu trúc;
-- value khác nhau → khác;
-- còn lại phải đồng thời giống ở left và right subtree.
-
-## 2. Algorithm / Thuật toán
-
-```text
-if p == null && q == null: true
-if p == null || q == null: false
-if p.val != q.val: false
-return isSameTree(p.left,q.left) && isSameTree(p.right,q.right)
-```
-
-## 3. Why it works / Vì sao đúng
-
-Base cases kiểm tra đầy đủ sự tồn tại của node ở cùng vị trí. Khi cả hai node tồn tại và value bằng nhau, hai subtree tại vị trí đó chỉ có thể giống nhau nếu cả left pair và right pair cùng giống nhau. Quy nạp theo cấu trúc tree cho thấy kết quả tại root là chính xác.
-
-## 4. Dry run / Chạy thử
-
-Với `p=[1,2,3]`, `q=[1,2,3]`, root `1` bằng nhau; hai left node `2` bằng nhau và có child null tương ứng; hai right node `3` cũng vậy → `true`.
-
-Với `p=[1,2]`, `q=[1,null,2]`, tại left child ta gặp `(2,null)` → `false` ngay vì khác cấu trúc.
-
-## 5. Optimal Java solution / Java tối ưu
+## 2. Optimal Java solution
 
 ```java
 public class Solution {
     public boolean isSameTree(TreeNode p, TreeNode q) {
+        // Hai null tại cùng vị trí là một structural match, không phải failure.
         if (p == null && q == null) {
             return true;
         }
+
+        // Chỉ một null chứng minh structure khác; nếu cả hai tồn tại thì value
+        // khác nhau cũng đủ fail ngay mà không cần duyệt descendants.
         if (p == null || q == null || p.val != q.val) {
             return false;
         }
+
+        // Same tree đòi hỏi đồng thời cả hai subtree tương ứng giống nhau;
+        // short-circuit AND dừng sớm khi một phía đã chứng minh khác biệt.
         return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
     }
 }
 ```
 
-## 6. Complexity / Độ phức tạp
+## 3. Correctness
 
-- **Time:** `O(n)` với `n` là số node cần so sánh trước khi kết luận; worst case hai tree giống nhau nên thăm toàn bộ node.
-- **Extra space:** `O(h)` recursion stack.
+Base cases quyết định chính xác structural equality tại current position. Khi cả hai nodes tồn tại và value bằng nhau, subtree chỉ giống khi cả left và right pairs cùng giống. Structural induction cho kết quả đúng tại root.
 
-## 7. Alternative — BFS/iterative
+## 4. Complexity
 
-Có thể dùng queue chứa các cặp node và kiểm tra cùng logic. Time vẫn `O(n)`, space phụ thuộc maximum width. Recursive DFS ngắn hơn cho structural equality.
+```text
+Time: O(n)
+Space: O(h) recursion stack
+```
 
-## 8. Edge cases / Trường hợp biên
+## 5. Common mistakes
 
-- Cả hai tree rỗng.
-- Một tree rỗng, một tree không rỗng.
-- Cùng values nhưng khác structure.
-- Cùng structure nhưng khác một value sâu bên trong.
-
-## 9. Common mistakes / Lỗi thường gặp
-
-- Chỉ so preorder values mà bỏ qua null markers.
-- Dùng OR giữa left/right comparison thay vì AND.
-- Truy cập `.val` trước khi xử lý null.
+- Chỉ so values mà bỏ null structure.
+- Dùng OR thay AND.
+- Đọc `.val` trước null checks.
