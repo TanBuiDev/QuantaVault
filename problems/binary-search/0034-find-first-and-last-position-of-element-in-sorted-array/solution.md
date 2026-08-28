@@ -1,43 +1,57 @@
-# 34. Find First and Last Position of Element in Sorted Array — Solution
+# Solution / Lời giải — 34. Find First and Last Position of Element in Sorted Array
 
-## 1. Core idea / Intuition
-Dùng hai boundary binary searches: lower bound cho lần xuất hiện đầu và upper bound cho vị trí ngay sau lần xuất hiện cuối.
+## 1. Core idea
 
-## 2. Requirement recap / Tóm tắt yêu cầu
-Phải trả đúng cả hai biên trong `O(log n)`, kể cả khi có nhiều duplicate.
+Find the first index `>= target` and the first index `> target`. If target exists, these boundaries are exactly `first` and `afterLast - 1`.
 
-## 3. Key observations / Nhận xét quan trọng
-`lowerBound(target)` là index đầu tiên `nums[i] >= target`; `upperBound(target)` là index đầu tiên `nums[i] > target`.
+## 2. Optimal Java solution
 
-## 4. Alternative approaches / Các hướng khác
-Tìm một occurrence rồi scan hai phía có thể thành O(n), nên không đạt yêu cầu.
+```java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int first = lowerBound(nums, target);
 
-## 5. Optimal approach / Hướng tối ưu
-Tìm `first = lowerBound(target)`. Nếu first ngoài mảng hoặc khác target, trả `[-1,-1]`. Ngược lại `last = lowerBound(target + strict)` bằng helper upper-bound riêng.
+        // lowerBound may legally return nums.length; verify existence before indexing.
+        if (first == nums.length || nums[first] != target) {
+            return new int[]{-1, -1};
+        }
 
-## 6. Java solution overview
-Hai helper binary search trên interval half-open `[left,right)` tránh off-by-one.
+        int afterLast = upperBound(nums, target);
+        return new int[]{first, afterLast - 1};
+    }
 
-## 7. Code explanation / Giải thích code
-Lower bound di chuyển right khi `nums[mid] >= target`; upper bound di chuyển right khi `nums[mid] > target`.
+    private int lowerBound(int[] nums, int target) {
+        int left = 0, right = nums.length;
 
-## 8. Dry run / Chạy thử
-Với `[5,7,7,8,8,10]`, target 8: lower=3, upper=5, nên kết quả `[3,4]`.
+        // Invariant on half-open [left,right): answer is still somewhere in this
+        // interval. We seek the FIRST index whose value is >= target.
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] < target) left = mid + 1;
+            else right = mid;
+        }
+        return left;
+    }
 
-## 9. Time and space complexity
-Hai binary search đều O(log n); space O(1).
+    private int upperBound(int[] nums, int target) {
+        int left = 0, right = nums.length;
 
-## 10. Why the algorithm is correct / Vì sao đúng
-Lower-bound invariant loại mọi index chắc chắn nhỏ hơn target; upper-bound invariant loại mọi index không vượt target. Vì vậy hai điểm hội tụ là biên trái và biên phải độc quyền chính xác.
+        // Same half-open search, but now seek the FIRST value > target. Therefore
+        // values equal to target belong to the discarded left side as well.
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] <= target) left = mid + 1;
+            else right = mid;
+        }
+        return left;
+    }
+}
+```
 
-## 11. Edge cases
-Mảng rỗng, target không có, toàn bộ phần tử bằng target, một phần tử.
+## 3. Correctness
 
-## 12. Common mistakes
-Scan sau binary search; nhầm `>=` và `>`; không kiểm tra target có tồn tại.
+`lowerBound` returns the first position where target could start; `upperBound` returns the first position after all target occurrences. Their half-open invariants preserve the respective boundary until convergence.
 
-## 13. Pattern recognition / Khi nào tái sử dụng
-Lower/upper bound là pattern chuẩn cho range của duplicate trong dữ liệu sorted.
+## 4. Complexity
 
-## 14. Vocabulary
-**lower bound**: cận dưới; **upper bound**: cận trên; **occurrence**: lần xuất hiện; **half-open interval**: khoảng nửa mở.
+Two binary searches: `O(log n)` time, `O(1)` space.

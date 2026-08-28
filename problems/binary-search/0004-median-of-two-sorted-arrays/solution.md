@@ -1,43 +1,64 @@
-# 4. Median of Two Sorted Arrays — Solution
+# Solution / Lời giải — 4. Median of Two Sorted Arrays
 
-## 1. Core idea / Intuition
-Binary search a partition in the shorter array; the matching partition in the other array is determined by the required left-half size.
+## 1. Core idea
 
-## 2. Requirement recap / Tóm tắt yêu cầu
-Merging would be linear; the requested logarithmic bound requires searching partition positions.
+Partition both arrays so the combined left side contains half the elements and every left value is `<=` every right value. Binary-search only the partition position in the shorter array.
 
-## 3. Key observations / Nhận xét quan trọng
-A valid partition has every left element <= every right element, which reduces to two boundary inequalities.
+## 2. Optimal Java solution
 
-## 4. Alternative approaches / Các hướng khác
-Merge/two pointers is O(m+n). Partition search is O(log min(m,n)).
+```java
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        // Binary-search the shorter array so partition i always ranges over
+        // [0, min(m,n)], giving O(log min(m,n)) and keeping j within valid bounds.
+        if (nums1.length > nums2.length) {
+            return findMedianSortedArrays(nums2, nums1);
+        }
 
-## 5. Optimal approach / Hướng tối ưu
-Always binary-search the shorter array. Let `i` be its partition and `j = (m+n+1)/2 - i`. Move left/right based on crossing boundaries.
+        int m = nums1.length, n = nums2.length;
+        int left = 0, right = m;
 
-## 6. Java solution overview
-Use `Integer.MIN_VALUE/MAX_VALUE` as sentinels when a partition touches an endpoint; after finding a valid partition, choose the max-left and min-right values.
+        // The left partition receives one extra element when total length is odd,
+        // so its maximum is directly the odd-length median.
+        int half = (m + n + 1) / 2;
 
-## 7. Code explanation / Giải thích code
-Odd total length returns `max(leftA,leftB)`. Even total length averages it with `min(rightA,rightB)` using `long` for the sum.
+        while (left <= right) {
+            int i = left + (right - left) / 2;
+            int j = half - i;
 
-## 8. Dry run / Chạy thử
-For `[1,3]` and `[2]`, search the shorter `[2]`; valid left side ends at 2 and median is 2.
+            // Sentinels make partitions at array boundaries obey the same comparisons
+            // as interior partitions without separate empty-side cases.
+            int leftA = i == 0 ? Integer.MIN_VALUE : nums1[i - 1];
+            int rightA = i == m ? Integer.MAX_VALUE : nums1[i];
+            int leftB = j == 0 ? Integer.MIN_VALUE : nums2[j - 1];
+            int rightB = j == n ? Integer.MAX_VALUE : nums2[j];
 
-## 9. Time and space complexity
-O(log min(m,n)) time, O(1) space.
+            // A partition is correct iff every value on the combined left side is
+            // <= every value on the combined right side; these two cross-checks suffice.
+            if (leftA <= rightB && leftB <= rightA) {
+                int maxLeft = Math.max(leftA, leftB);
+                if (((m + n) & 1) == 1) return maxLeft;
 
-## 10. Why the algorithm is correct / Vì sao đúng
-The chosen partitions have the required cardinality. When both crossing inequalities hold, every element in the combined left half is <= every element in the combined right half; therefore the middle boundary value(s) are exactly the median.
+                int minRight = Math.min(rightA, rightB);
+                // Cast before addition so two large int endpoints cannot overflow.
+                return ((long) maxLeft + minRight) / 2.0;
+            }
 
-## 11. Edge cases
-One empty array, odd/even total length, partitions at endpoints, duplicate values.
+            // leftA too large means i took too many elements from A; otherwise
+            // leftB > rightA means i must move right and take more from A.
+            if (leftA > rightB) right = i - 1;
+            else left = i + 1;
+        }
 
-## 12. Common mistakes
-Searching the longer array; wrong left-size formula; overflow while averaging.
+        throw new IllegalArgumentException("Inputs must be sorted");
+    }
+}
+```
 
-## 13. Pattern recognition / Khi nào tái sử dụng
-Binary search on partition is useful when rank constraints split two sorted sequences.
+## 3. Correctness
 
-## 14. Vocabulary
-**partition**: điểm chia; **median**: trung vị; **sentinel**: giá trị biên giả; **crossing condition**: điều kiện giao biên.
+The chosen partition sizes always contain exactly `half` elements on the combined left. When both cross inequalities hold, all left elements are no greater than all right elements, so the median is the maximum left element for odd length or the average of the two boundary elements for even length. Binary-search direction removes only impossible partitions.
+
+## 4. Complexity
+
+`O(log min(m,n))` time and `O(1)` auxiliary space.

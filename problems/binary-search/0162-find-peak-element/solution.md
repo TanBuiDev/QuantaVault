@@ -1,54 +1,40 @@
-# 162. Find Peak Element — Solution
+# Solution / Lời giải — 162. Find Peak Element
 
-## 1. Core idea / Intuition
-Binary search theo hướng của slope. Khi `nums[mid] < nums[mid+1]`, đi phải; ngược lại giữ mid và đi trái.
+## 1. Core idea
 
-## 2. Requirement recap / Tóm tắt yêu cầu
-Cần bất kỳ peak nào trong O(log n).
+Binary-search the local slope. If `nums[mid] < nums[mid+1]`, moving right is uphill and guarantees a peak on the right; otherwise a peak exists at `mid` or on the left.
 
-## 3. Key observations / Nhận xét quan trọng
-Vì ngoài biên là `-∞` và adjacent khác nhau, đi theo hướng tăng cuối cùng phải dẫn tới một peak.
+## 2. Optimal Java solution
 
-## 4. Alternative approaches / Các hướng khác
-Linear scan O(n) không đạt yêu cầu.
-
-## 5. Optimal approach / Hướng tối ưu
-Binary search interval `[left,right]`, so sánh mid với mid+1 và giữ nửa chắc chắn chứa peak.
-
-## 6. Java solution overview
 ```java
 class Solution {
-  public int findPeakElement(int[] nums) {
-    int l=0,r=nums.length-1;
-    while(l<r){
-      int m=l+(r-l)/2;
-      if(nums[m]<nums[m+1]) l=m+1; else r=m;
+    public int findPeakElement(int[] nums) {
+        int left = 0, right = nums.length - 1;
+
+        // Invariant: [left,right] contains at least one peak. Comparing adjacent
+        // values reveals a slope direction without needing the peak value itself.
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+
+            if (nums[mid] < nums[mid + 1]) {
+                // We are climbing to the right. With conceptual -infinity outside
+                // the array, some peak must exist in [mid+1,right].
+                left = mid + 1;
+            } else {
+                // We are descending at mid->mid+1, so a peak exists in [left,mid];
+                // mid itself might already be that peak and must be retained.
+                right = mid;
+            }
+        }
+        return left;
     }
-    return l;
-  }
 }
 ```
 
-## 7. Code explanation / Giải thích code
-Nhánh xuống dùng `right=mid` vì mid vẫn có thể là peak.
+## 3. Correctness
 
-## 8. Dry run / Chạy thử
-`[1,2,3,1]`: slope ở mid tăng nên đi phải, sau đó slope giảm và hội tụ tại index 2.
+An uphill edge guarantees the right interval eventually reaches a local maximum or the `-∞` boundary; a downhill edge gives the symmetric guarantee on the left including `mid`. Thus every shrink preserves at least one peak until one index remains.
 
-## 9. Time and space complexity
-O(log n) time, O(1) space.
+## 4. Complexity
 
-## 10. Why the algorithm is correct / Vì sao đúng
-Mỗi comparison cho một hướng mà tại đó, do boundary `-∞`, chuỗi tăng không thể kéo dài mãi mà không gặp peak. Interval luôn giữ ít nhất một peak và thu nhỏ đến một index.
-
-## 11. Edge cases
-Một phần tử; peak ở đầu; peak ở cuối; nhiều peak.
-
-## 12. Common mistakes
-Đọc `mid+1` khi dùng loop sai; dùng `right=mid-1` và bỏ mất mid.
-
-## 13. Pattern recognition / Khi nào tái sử dụng
-Slope binary search dùng khi chỉ cần một local optimum.
-
-## 14. Vocabulary
-**peak**: đỉnh; **slope**: độ dốc; **local maximum**: cực đại cục bộ; **converge**: hội tụ.
+`O(log n)` time, `O(1)` space.
