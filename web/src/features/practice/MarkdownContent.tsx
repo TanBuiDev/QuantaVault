@@ -67,7 +67,7 @@ function CodeBlockWithCopy({ children, ...props }: React.ComponentPropsWithoutRe
       </button>
       <pre
         {...props}
-        className="max-w-full overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--code-surface)] p-4 text-sm leading-6 text-[var(--code-foreground)]"
+        className="max-w-full overflow-x-auto whitespace-pre-wrap break-words rounded-2xl border border-[var(--border)] bg-[var(--code-surface)] p-4 text-sm leading-6 text-[var(--code-foreground)]"
       >
         {children}
       </pre>

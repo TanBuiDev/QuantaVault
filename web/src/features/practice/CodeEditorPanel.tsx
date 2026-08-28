@@ -178,6 +178,9 @@ export function CodeEditorPanel({
             quickSuggestions: true,
             renderLineHighlight: "all",
             smoothScrolling: true,
+            wordWrap: "on",
+            wrappingIndent: "indent",
+            wrappingStrategy: "advanced",
           }}
           loading={
             <div className="flex h-full items-center justify-center text-xs text-[var(--muted)]">
