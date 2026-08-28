@@ -24,7 +24,7 @@ describe("formatJavaSource", () => {
 
     const formatted = formatJavaSource(source);
     expect(formatted).toContain("for (int i=0; i<n; i++) {");
-    expect(formatted).toContain("        System.out.println(i);");
+    expect(formatted).toContain("            System.out.println(i);");
   });
 
   it("keeps braces and semicolons inside strings and comments intact", () => {
