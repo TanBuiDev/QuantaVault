@@ -1,50 +1,39 @@
-# 215. Kth Largest Element in an Array — Solution
+# Solution / Lời giải — 215. Kth Largest Element in an Array
 
-## 1. Core idea / Intuition
-Duy trì min-heap chứa đúng `k` phần tử lớn nhất đã xử lý.
+## 1. Core idea
 
-## 2. Requirement recap / Tóm tắt yêu cầu
-Cần kth largest theo multiplicity, không cần distinct và không cần sort toàn mảng.
+Maintain a min-heap containing the `k` largest values seen so far. Whenever its size exceeds `k`, remove the smallest candidate.
 
-## 3. Key observations / Nhận xét quan trọng
-Khi heap có hơn k phần tử, phần tử nhỏ nhất chắc chắn không thuộc top k cuối cùng và có thể loại.
+## 2. Optimal Java solution
 
-## 4. Alternative approaches / Các hướng khác
-Quickselect đạt O(n) average time và O(1) extra space; min-heap dễ triển khai và có bound O(n log k).
-
-## 5. Optimal approach / Hướng tối ưu
-Offer mọi số vào min-heap; nếu size > k thì poll. Sau cùng peek là kth largest.
-
-## 6. Java solution overview
 ```java
-PriorityQueue<Integer> heap = new PriorityQueue<>();
-for (int num : nums) {
-    heap.offer(num);
-    if (heap.size() > k) heap.poll();
+import java.util.PriorityQueue;
+
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        // Keep exactly the k largest values seen so far. A min-heap makes the
+        // weakest member of that top-k set available at the root for eviction.
+        PriorityQueue<Integer> heap = new PriorityQueue<>();
+
+        for (int num : nums) {
+            heap.offer(num);
+            if (heap.size() > k) {
+                // Removing the smallest of k+1 candidates leaves the k largest
+                // values from the processed prefix, preserving the invariant.
+                heap.poll();
+            }
+        }
+
+        // The smallest value among the final k largest values is exactly kth largest.
+        return heap.peek();
+    }
 }
-return heap.peek();
 ```
 
-## 7. Code explanation / Giải thích code
-Heap root luôn là ngưỡng top-k hiện tại.
+## 3. Correctness
 
-## 8. Dry run / Chạy thử
-Với `[3,2,1,5,6,4], k=2`, heap cuối là `[5,6]`, root 5.
+After every prefix the heap contains exactly its `k` largest values (or all values if fewer than `k`). Thus after the full array, the heap root is the smallest member of the global top `k`, i.e. the kth largest.
 
-## 9. Time and space complexity
-O(n log k) time, O(k) space.
+## 4. Complexity
 
-## 10. Why the algorithm is correct / Vì sao đúng
-Invariant: sau mỗi prefix, heap chứa `min(k,prefixLength)` giá trị lớn nhất của prefix. Khi thêm giá trị mới và xóa minimum nếu cần, invariant được giữ. Cuối mảng, minimum của top-k chính là kth largest.
-
-## 11. Edge cases
-Duplicates, k=1, k=n, negative values.
-
-## 12. Common mistakes
-Tìm kth distinct; dùng max-heap rồi poll k lần với O(n) memory; comparator thừa.
-
-## 13. Pattern recognition / Khi nào tái sử dụng
-Bounded heap phù hợp với streaming top-k.
-
-## 14. Vocabulary
-**kth largest**: lớn thứ k; **bounded heap**: heap giới hạn kích thước; **top-k**: k phần tử lớn nhất.
+`O(n log k)` time, `O(k)` space.
