@@ -1,26 +1,11 @@
-# 77. Combinations — Solution / Lời giải
+# Solution / Lời giải — 77. Combinations
 
-## 1. Core idea / Intuition
-Dùng `backtracking` với `start`. Mỗi lần chỉ chọn số từ `start` trở đi nên các phần tử trong một nhánh tăng dần và mỗi tổ hợp chỉ được sinh một lần.
+## 1. Core idea
 
-## 2. Requirement recap / Tóm tắt yêu cầu
-Liệt kê tất cả cách chọn đúng `k` số khác nhau từ `1..n`, không phân biệt thứ tự.
+Build each combination in strictly increasing order. `start` prevents reusing/switching earlier values, and the loop upper bound prunes choices that leave too few numbers to reach size `k`.
 
-## 3. Key observations / Nhận xét quan trọng
-- Khi `current.size() == k`, ghi nhận một đáp án.
-- Sau khi chọn `value`, lần sau bắt đầu ở `value + 1`.
-- Có thể giới hạn vòng lặp để đảm bảo vẫn còn đủ số lấp đầy các vị trí còn thiếu.
+## 2. Optimal Java solution
 
-## 4. Alternative approach
-Sinh mọi subset rồi lọc subset có kích thước `k` vẫn đúng nhưng duyệt nhiều trạng thái không cần thiết.
-
-## 5. Optimal approach
-Backtrack trực tiếp theo số lượng phần tử cần chọn, kèm pruning `value <= n - need + 1`.
-
-## 6. Java solution overview
-Mỗi recursion level thêm một số, recurse với `value + 1`, rồi remove để thử lựa chọn kế tiếp.
-
-## 7. Code explanation
 ```java
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +23,16 @@ class Solution {
             result.add(new ArrayList<>(current));
             return;
         }
+
         int need = k - current.size();
+
+        // If we still need 'need' values, the next choice cannot exceed
+        // n-need+1; choosing later would leave too few numbers to finish the set.
         for (int value = start; value <= n - need + 1; value++) {
             current.add(value);
+
+            // Only consider larger values afterward. This creates each k-element
+            // set in increasing order and avoids all permutation duplicates.
             backtrack(value + 1, n, k, current, result);
             current.remove(current.size() - 1);
         }
@@ -48,26 +40,10 @@ class Solution {
 }
 ```
 
-## 8. Dry run
-Với `n = 4, k = 2`, nhánh `1` lần lượt ghép với `2,3,4`; sau đó nhánh `2` ghép với `3,4`; cuối cùng `3` ghép với `4`.
+## 3. Correctness
 
-## 9. Time and space complexity
-Có `C(n,k)` đáp án và cần copy `k` phần tử cho mỗi đáp án, nên thời gian `O(k * C(n,k))`. Recursion depth là `O(k)` ngoài output.
+Every emitted path has `k` distinct increasing values, so it is a valid combination. Every `k`-subset has exactly one increasing representation, which the recursion reaches through its values in order.
 
-## 10. Why the algorithm is correct
-Mọi tổ hợp có đúng một biểu diễn tăng dần. Thuật toán thử mọi chuỗi tăng dần độ dài `k`, vì vậy sinh đầy đủ mọi tổ hợp và không sinh duplicate.
+## 4. Complexity
 
-## 11. Edge cases
-- `k = 1`: mỗi số tạo một tổ hợp riêng.
-- `k = n`: chỉ có `[1,2,...,n]`.
-
-## 12. Common mistakes
-- Recurse lại từ 1 và tạo duplicate.
-- Dùng `value` thay vì `value + 1`, khiến một số có thể bị chọn lại.
-- Prune sai cận khiến bỏ sót đáp án.
-
-## 13. Pattern recognition
-Dùng mẫu này khi cần chọn một số lượng cố định phần tử mà thứ tự không quan trọng.
-
-## 14. Vocabulary
-`combination`, `choose k`, `start index`, `pruning`, `backtracking`, `unordered`.
+Output-sensitive: `O(k * C(n,k))` to materialize results; recursion/path state is `O(k)`.

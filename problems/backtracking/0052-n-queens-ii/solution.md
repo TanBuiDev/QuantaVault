@@ -1,26 +1,11 @@
-# 52. N-Queens II — Solution / Lời giải
+# Solution / Lời giải — 52. N-Queens II
 
-## 1. Core idea / Intuition
-Dùng `backtracking` theo từng hàng. Vì mỗi hàng chỉ đặt đúng một hậu, ta chỉ cần thử các cột chưa xung đột với cột và hai đường chéo đã dùng.
+## 1. Core idea
 
-## 2. Requirement recap / Tóm tắt yêu cầu
-Không cần dựng các bàn cờ; chỉ cần đếm số cấu hình hợp lệ.
+Place one queen per row. Three boolean sets—column, `row-col`, and `row+col` diagonals—answer in `O(1)` whether a placement conflicts with any earlier row.
 
-## 3. Key observations / Nhận xét quan trọng
-- Hai hậu cùng cột xung đột.
-- Hai ô cùng đường chéo chính có cùng `row - col`.
-- Hai ô cùng đường chéo phụ có cùng `row + col`.
+## 2. Optimal Java solution
 
-## 4. Alternative approach
-Kiểm tra toàn bộ các cặp hậu sau mỗi lần đặt sẽ tốn thêm thời gian. Ta nên duy trì trạng thái xung đột trực tiếp.
-
-## 5. Optimal approach
-Tại hàng `row`, thử từng `col`. Nếu ba cấu trúc đánh dấu đều chưa dùng, đặt hậu, recurse sang hàng sau rồi undo.
-
-## 6. Java solution overview
-Ba mảng boolean cho `columns`, `diag1`, `diag2` cho phép kiểm tra và cập nhật trong `O(1)`.
-
-## 7. Code explanation
 ```java
 class Solution {
     public int totalNQueens(int n) {
@@ -28,18 +13,28 @@ class Solution {
     }
 
     private int search(int row, int n, boolean[] columns, boolean[] diag1, boolean[] diag2) {
+        // We place exactly one queen per row, so reaching row n means n non-attacking
+        // queens have been placed and this branch contributes one complete solution.
         if (row == n) {
             return 1;
         }
+
         int count = 0;
         for (int col = 0; col < n; col++) {
+            // Cells on the same \ diagonal share row-col; +n-1 shifts it nonnegative.
+            // Cells on the same / diagonal share row+col.
             int d1 = row - col + n - 1;
             int d2 = row + col;
+
             if (columns[col] || diag1[d1] || diag2[d2]) {
                 continue;
             }
+
             columns[col] = diag1[d1] = diag2[d2] = true;
             count += search(row + 1, n, columns, diag1, diag2);
+
+            // These occupancy arrays describe only the CURRENT partial board;
+            // undoing all three constraints is required before trying the next column.
             columns[col] = diag1[d1] = diag2[d2] = false;
         }
         return count;
@@ -47,25 +42,10 @@ class Solution {
 }
 ```
 
-## 8. Dry run
-Với `n = 4`, chọn một cột cho hàng 0, đánh dấu cột và hai đường chéo, rồi tiếp tục. Mọi nhánh xung đột bị cắt ngay. Có đúng 2 nhánh đi tới hàng 4.
+## 3. Correctness
 
-## 9. Time and space complexity
-Worst-case search thường được mô tả là `O(n!)` nhờ constraint mỗi hàng/cột. Bộ nhớ phụ là `O(n)` cho recursion và các mảng đánh dấu.
+Each row receives exactly one queen and every attempted column is accepted only if its column and both diagonals are unused. Thus every counted board is valid, and every valid board corresponds to one sequence of column choices explored by the recursion.
 
-## 10. Why the algorithm is correct
-Mỗi recursive level đặt đúng một hậu trên một hàng mới. Ba bảng đánh dấu đảm bảo hậu mới không tấn công hậu cũ. Thuật toán thử mọi cột hợp lệ ở mỗi hàng nên liệt kê đủ mọi cấu hình hợp lệ và đếm mỗi cấu hình một lần.
+## 4. Complexity
 
-## 11. Edge cases
-`n = 1` có đúng một lời giải.
-
-## 12. Common mistakes
-- Quên offset cho `row - col`.
-- Không undo trạng thái sau recursion.
-- Đếm cấu hình trước khi đã đặt đủ `n` hậu.
-
-## 13. Pattern recognition
-Mẫu `row-by-row constraint backtracking` phù hợp với các bài placement có giới hạn cột/đường chéo.
-
-## 14. Vocabulary
-`queen placement`, `main diagonal`, `anti-diagonal`, `backtracking`, `constraint`, `pruning`.
+Backtracking is `O(n!)`-scale in the worst search tree with `O(n)` recursion plus `O(n)` constraint arrays.

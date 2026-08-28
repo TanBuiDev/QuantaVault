@@ -1,26 +1,11 @@
-# 46. Permutations — Solution / Lời giải
+# Solution / Lời giải — 46. Permutations
 
-## 1. Core idea / Intuition
-Dùng `backtracking` để điền từng vị trí của hoán vị. Mỗi phần tử được dùng đúng một lần trong một nhánh.
+## 1. Core idea
 
-## 2. Requirement recap / Tóm tắt yêu cầu
-Với `n` phần tử phân biệt, cần sinh đủ `n!` hoán vị.
+At each permutation position, choose any input index not already used in the current path. Mark → recurse → unmark makes every ordering reachable exactly once for distinct input values.
 
-## 3. Key observations / Nhận xét quan trọng
-- Ở depth `k`, `current` đã chứa `k` phần tử khác nhau.
-- Chỉ số chưa được đánh dấu có thể là lựa chọn tiếp theo.
-- Khi `current.size() == nums.length`, ta có một hoán vị hoàn chỉnh.
+## 2. Optimal Java solution
 
-## 4. Alternative approach
-Có thể swap phần tử trực tiếp trong mảng theo depth; cách `used[]` dễ đọc hơn cho mục tiêu học tập.
-
-## 5. Optimal approach
-Thử mọi chỉ số chưa dùng, đánh dấu, recurse, rồi undo cả list và `used`.
-
-## 6. Java solution overview
-`used[i]` đảm bảo mỗi giá trị xuất hiện đúng một lần trong mỗi hoán vị.
-
-## 7. Code explanation
 ```java
 import java.util.ArrayList;
 import java.util.List;
@@ -35,14 +20,24 @@ class Solution {
     private void backtrack(int[] nums, boolean[] used, List<Integer> current,
                            List<List<Integer>> result) {
         if (current.size() == nums.length) {
+            // Copy because current will be changed while exploring sibling permutations.
             result.add(new ArrayList<>(current));
             return;
         }
+
         for (int i = 0; i < nums.length; i++) {
-            if (used[i]) continue;
+            // used tracks INPUT POSITIONS already placed in the current permutation;
+            // each position must appear exactly once before a permutation is complete.
+            if (used[i]) {
+                continue;
+            }
+
             used[i] = true;
             current.add(nums[i]);
             backtrack(nums, used, current, result);
+
+            // Undo both pieces of branch state so the next candidate can occupy
+            // this same permutation position independently.
             current.remove(current.size() - 1);
             used[i] = false;
         }
@@ -50,25 +45,10 @@ class Solution {
 }
 ```
 
-## 8. Dry run
-Với `[1,2,3]`, nhánh bắt đầu bằng `1` tiếp tục bằng `2` rồi `3`, sau đó undo `3`, thử `3` ở vị trí thứ hai và tạo `[1,3,2]`.
+## 3. Correctness
 
-## 9. Time and space complexity
-Có `n!` kết quả và cần copy `n` phần tử cho mỗi kết quả, nên thời gian `O(n * n!)`. Recursion và trạng thái hiện tại dùng `O(n)` ngoài output.
+The path contains distinct input positions only. A length-`n` path therefore contains every input exactly once; exploring every unused position at each depth enumerates every permutation.
 
-## 10. Why the algorithm is correct
-Mỗi depth chọn đúng một phần tử chưa dùng. Vì thuật toán thử mọi lựa chọn chưa dùng ở mỗi vị trí, nó sinh mọi hoán vị; `used[]` ngăn lặp một phần tử trong cùng hoán vị.
+## 4. Complexity
 
-## 11. Edge cases
-Mảng một phần tử tạo đúng một hoán vị.
-
-## 12. Common mistakes
-- Quên copy `current` khi thêm vào result.
-- Quên reset `used[i]` sau recursion.
-- Dùng giá trị thay vì index làm trạng thái khi bài toán có thể có duplicate; ở bài này input là unique.
-
-## 13. Pattern recognition
-Mẫu này dùng cho bài yêu cầu sắp thứ tự toàn bộ các phần tử phân biệt.
-
-## 14. Vocabulary
-`permutation`, `used array`, `backtracking`, `choice`, `undo`, `recursion depth`.
+`O(n * n!)` time to materialize all permutations, `O(n)` recursion/path state excluding output.

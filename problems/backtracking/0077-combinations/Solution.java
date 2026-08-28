@@ -14,9 +14,16 @@ class Solution {
             result.add(new ArrayList<>(current));
             return;
         }
+
         int need = k - current.size();
+
+        // If we still need 'need' values, the next choice cannot exceed
+        // n-need+1; choosing later would leave too few numbers to finish the set.
         for (int value = start; value <= n - need + 1; value++) {
             current.add(value);
+
+            // Only consider larger values afterward. This creates each k-element
+            // set in increasing order and avoids all permutation duplicates.
             backtrack(value + 1, n, k, current, result);
             current.remove(current.size() - 1);
         }

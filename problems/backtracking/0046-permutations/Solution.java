@@ -11,16 +11,24 @@ class Solution {
     private void backtrack(int[] nums, boolean[] used, List<Integer> current,
                            List<List<Integer>> result) {
         if (current.size() == nums.length) {
+            // Copy because current will be changed while exploring sibling permutations.
             result.add(new ArrayList<>(current));
             return;
         }
+
         for (int i = 0; i < nums.length; i++) {
+            // used tracks INPUT POSITIONS already placed in the current permutation;
+            // each position must appear exactly once before a permutation is complete.
             if (used[i]) {
                 continue;
             }
+
             used[i] = true;
             current.add(nums[i]);
             backtrack(nums, used, current, result);
+
+            // Undo both pieces of branch state so the next candidate can occupy
+            // this same permutation position independently.
             current.remove(current.size() - 1);
             used[i] = false;
         }
