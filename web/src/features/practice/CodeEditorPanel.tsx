@@ -48,8 +48,25 @@ export function CodeEditorPanel({
     return () => observer.disconnect();
   }, []);
 
+  // Update Monaco Editor options when wordWrap prop changes dynamically
+  useEffect(() => {
+    if (editorRef.current) {
+      editorRef.current.updateOptions({
+        wordWrap: wordWrap ? "on" : "off",
+        wrappingIndent: "indent",
+        wrappingStrategy: "advanced",
+      });
+    }
+  }, [wordWrap]);
+
   const handleEditorMount: OnMount = (editor, monaco) => {
     editorRef.current = editor;
+
+    editor.updateOptions({
+      wordWrap: wordWrap ? "on" : "off",
+      wrappingIndent: "indent",
+      wrappingStrategy: "advanced",
+    });
 
     // Register shortcut: Ctrl+' to Run, Ctrl+Enter to Submit
     editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Quote, () => {

@@ -6,7 +6,7 @@ import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 
-function CodeBlockWithCopy({ children, ...props }: React.ComponentPropsWithoutRef<"pre">) {
+function CodeBlockWithCopy({ children, className, ...props }: React.ComponentPropsWithoutRef<"pre">) {
   const [copied, setCopied] = useState(false);
 
   function handleCopy() {
@@ -67,7 +67,7 @@ function CodeBlockWithCopy({ children, ...props }: React.ComponentPropsWithoutRe
       </button>
       <pre
         {...props}
-        className="max-w-full overflow-x-auto whitespace-pre-wrap break-words rounded-2xl border border-[var(--border)] bg-[var(--code-surface)] p-4 text-sm leading-6 text-[var(--code-foreground)]"
+        className={className || "max-w-full overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--code-surface)] p-4 text-sm leading-6 text-[var(--code-foreground)]"}
       >
         {children}
       </pre>
