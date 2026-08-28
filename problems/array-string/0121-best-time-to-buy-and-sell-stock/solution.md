@@ -191,7 +191,7 @@ Vì `minPrice` chỉ được xây dựng từ ngày hiện tại hoặc các ng
 
 ---
 
-## 6. Java solution overview
+## 6. Optimal Java solution
 
 Canonical implementation:
 
