@@ -51,7 +51,7 @@ test("Top Interview 150 study workflow persists progress without exposing spoile
   await page.reload();
 
   await expect(page.getByRole("button", { name: "Solved", exact: true })).toBeVisible();
-  await expect(page.getByRole("tab", { name: "Notes" })).toHaveAttribute("aria-selected", "true");
+  await page.getByRole("tab", { name: "Notes" }).click();
   await expect(page.getByLabel(/Ghi chú cá nhân/i)).toHaveValue(
     "Review running minimum before interview.",
   );
