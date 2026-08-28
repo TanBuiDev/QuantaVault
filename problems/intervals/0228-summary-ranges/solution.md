@@ -4,27 +4,46 @@
 
 Vì `nums` sorted và unique, ta chỉ cần nén từng run consecutive thành một range. Giữ `start` và `end`; số mới nối được vào run iff nó bằng `end + 1`.
 
-## 2. Algorithm
+## 2. Optimal Java solution
 
 ```java
-List<String> answer = new ArrayList<>();
-if (nums.length == 0) return answer;
+import java.util.ArrayList;
+import java.util.List;
 
-int start = nums[0];
-int end = nums[0];
+class Solution {
+    public List<String> summaryRanges(int[] nums) {
+        List<String> answer = new ArrayList<>();
+        if (nums.length == 0) {
+            return answer;
+        }
 
-for (int i = 1; i < nums.length; i++) {
-    if ((long) nums[i] == (long) end + 1L) {
-        end = nums[i];
-    } else {
+        int start = nums[0];
+        int end = nums[0];
+
+        for (int i = 1; i < nums.length; i++) {
+            // Cast trước phép +1 để tránh int overflow khi end == Integer.MAX_VALUE;
+            // comparison cần phản ánh tính consecutive thật chứ không phải wrap-around.
+            if ((long) nums[i] == (long) end + 1L) {
+                end = nums[i];
+            } else {
+                // Có gap nghĩa là run [start,end] đã maximal vì input sorted/unique;
+                // không phần tử tương lai nào có thể nối lại qua số đang bị thiếu.
+                answer.add(format(start, end));
+                start = nums[i];
+                end = nums[i];
+            }
+        }
+
+        // Run cuối không gặp gap phía sau để tự được flush trong loop.
         answer.add(format(start, end));
-        start = end = nums[i];
+        return answer;
+    }
+
+    private String format(int start, int end) {
+        return start == end ? String.valueOf(start) : start + "->" + end;
     }
 }
-answer.add(format(start, end));
 ```
-
-`format(a,b)` trả `"a"` nếu bằng nhau, ngược lại `"a->b"`.
 
 ## 3. Why the long cast matters
 
@@ -32,7 +51,7 @@ Nếu `end == Integer.MAX_VALUE`, biểu thức `end + 1` bằng `int` sẽ over
 
 ## 4. Correctness / Vì sao đúng
 
-Invariant: trước khi xử lý `nums[i]`, `[start,end]` là maximal consecutive run của prefix chưa được output. Nếu `nums[i] == end+1`, nó phải thuộc cùng range và việc mở rộng giữ range chính xác. Nếu có gap, không integer range nào có thể nối hai phần mà không chứa số thiếu, nên current run phải kết thúc và được output. Sau loop, output run cuối. Vì mọi element thuộc đúng một run maximal, answer là cover nhỏ nhất và chính xác.
+Invariant: `[start,end]` là maximal consecutive run của prefix chưa được output. Số kế tiếp bằng `end+1` thì mở rộng run; nếu có gap thì current run đã maximal và được flush. Sau loop flush run cuối. Mọi element thuộc đúng một maximal run.
 
 ## 5. Complexity
 
@@ -47,4 +66,4 @@ Extra space: O(1) excluding output
 - Single element range.
 - Negative numbers.
 - Integer boundaries.
-- Quên flush range cuối sau loop.
+- Quên flush range cuối.
