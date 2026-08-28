@@ -12,9 +12,13 @@ class Solution {
             Integer previous = lastSeen.get(c);
 
             if (previous != null) {
+                // previous có thể nằm ngoài current window. Math.max ngăn left đi lùi,
+                // còn khi previous >= left thì nhảy qua nó là vị trí nhỏ nhất loại duplicate.
                 left = Math.max(left, previous + 1);
             }
 
+            // Ghi occurrence mới nhất để lần lặp sau có thể bỏ thẳng toàn bộ prefix
+            // không còn hữu ích thay vì shrink từng ký tự.
             lastSeen.put(c, right);
             best = Math.max(best, right - left + 1);
         }
