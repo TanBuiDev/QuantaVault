@@ -18,17 +18,7 @@ Ví dụ:
 
 ## 2. Transpose in-place
 
-Chỉ swap các cặp phía trên main diagonal:
-
-```java
-for (int r = 0; r < n; r++) {
-    for (int c = r + 1; c < n; c++) {
-        swap(matrix[r][c], matrix[c][r]);
-    }
-}
-```
-
-Nếu loop toàn ma trận, cùng một cặp sẽ bị swap hai lần và trở về vị trí cũ.
+Chỉ swap các cặp phía trên main diagonal. Nếu loop toàn ma trận, cùng một cặp sẽ bị swap hai lần và trở về vị trí cũ.
 
 ## 3. Reverse each row
 
@@ -44,11 +34,45 @@ Original coordinate `(r,c)` sau transpose thành `(c,r)`. Reverse row biến col
 
 Đó chính là coordinate transform của rotation clockwise 90°.
 
-## 5. Correctness
+## 5. Optimal Java solution
+
+```java
+class Solution {
+    public void rotate(int[][] matrix) {
+        int n = matrix.length;
+
+        // Transpose chỉ swap phía trên main diagonal. Nếu duyệt cả hai phía,
+        // mỗi cặp (r,c)/(c,r) sẽ bị swap hai lần và quay về trạng thái ban đầu.
+        for (int r = 0; r < n; r++) {
+            for (int c = r + 1; c < n; c++) {
+                int temp = matrix[r][c];
+                matrix[r][c] = matrix[c][r];
+                matrix[c][r] = temp;
+            }
+        }
+
+        // Transpose map (r,c) -> (c,r). Reverse mỗi row đổi column r thành
+        // n-1-r, nên tổng hợp hai phép biến đổi chính là rotate clockwise 90°.
+        for (int r = 0; r < n; r++) {
+            int left = 0;
+            int right = n - 1;
+            while (left < right) {
+                int temp = matrix[r][left];
+                matrix[r][left] = matrix[r][right];
+                matrix[r][right] = temp;
+                left++;
+                right--;
+            }
+        }
+    }
+}
+```
+
+## 6. Correctness
 
 Transpose đưa mọi value từ `(r,c)` tới `(c,r)`. Row reversal sau đó đưa nó tới `(c,n-1-r)`. Vì mỗi original coordinate được map bijectively tới đúng rotated coordinate, toàn bộ matrix sau hai phép biến đổi bằng rotation yêu cầu.
 
-## 6. Complexity
+## 7. Complexity
 
 Cả transpose và row reversal xử lý `O(n²)` cells/swaps:
 
@@ -57,7 +81,7 @@ Time: O(n²)
 Extra space: O(1)
 ```
 
-## 7. Common mistakes
+## 8. Common mistakes
 
 - Dùng ma trận mới, vi phạm in-place.
 - Transpose toàn bộ hai phía diagonal và swap hai lần.

@@ -11,9 +11,15 @@ class Solution {
                     continue;
                 }
 
+                // '1'..'9' được nén thành 0..8 để dùng trực tiếp làm index boolean.
                 int digit = ch - '1';
+
+                // r/3 và c/3 cho tọa độ box 0..2; flatten theo row-major
+                // tạo đúng một id 0..8 cho mỗi sub-box 3x3.
                 int box = (r / 3) * 3 + (c / 3);
 
+                // Một occurrence trước đó trong bất kỳ phạm vi nào đã đủ chứng minh
+                // board invalid; không cần đợi scan hết ba cấu trúc.
                 if (rows[r][digit] || cols[c][digit] || boxes[box][digit]) {
                     return false;
                 }
