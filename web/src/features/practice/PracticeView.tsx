@@ -47,6 +47,31 @@ function difficultyVariant(difficulty: ProblemContent["difficulty"]) {
   return "neutral" as const;
 }
 
+function getStatusConfig(status?: string) {
+  switch (status) {
+    case "solved":
+      return {
+        label: "Solved",
+        className: "bg-emerald-600 hover:bg-emerald-500 text-white shadow-xs shadow-emerald-950/20",
+      };
+    case "review":
+      return {
+        label: "Review",
+        className: "bg-amber-600 hover:bg-amber-500 text-white shadow-xs shadow-amber-950/20",
+      };
+    case "in-progress":
+      return {
+        label: "In Progress",
+        className: "bg-indigo-600 hover:bg-indigo-500 text-white shadow-xs shadow-indigo-950/20",
+      };
+    default:
+      return {
+        label: "Not Started",
+        className: "bg-slate-700/60 hover:bg-slate-700 text-slate-200 border border-slate-600/40 shadow-xs",
+      };
+  }
+}
+
 export function PracticeView({ content, hints, previous, next, sectionName }: PracticeViewProps) {
   const { getProgress, updateProblem } = useProgress();
   const progress = getProgress(content.id);
@@ -405,6 +430,18 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
                     media={problemMedia}
                     problemId={content.id}
                     languageMode={langMode}
+                    badges={
+                      <>
+                        <Badge variant={difficultyVariant(content.difficulty)}>{content.difficulty}</Badge>
+                        <Badge variant="info">{sectionName}</Badge>
+                        {content.topics.map((topic) => (
+                          <Badge key={topic}>{topic}</Badge>
+                        ))}
+                        {content.patterns?.map((pattern) => (
+                          <Badge key={pattern} variant="primary">{pattern}</Badge>
+                        ))}
+                      </>
+                    }
                   />
                 ) : (
                   <EmptyState
@@ -673,17 +710,16 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
     <div className="space-y-5">
       {/* Header Bar */}
       <header className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm sm:p-5">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge variant={difficultyVariant(content.difficulty)}>{content.difficulty}</Badge>
-            <Badge variant="info">{sectionName}</Badge>
-            {content.topics.slice(0, 3).map((topic) => (
-              <Badge key={topic}>{topic}</Badge>
-            ))}
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--muted)]">Problem #{content.id}</p>
+            <h1 className="text-2xl font-black tracking-tight text-[var(--foreground)] sm:text-3xl">
+              {content.title}
+            </h1>
           </div>
 
-          {/* Quick controls: Layout switcher & LeetCode link */}
-          <div className="flex items-center gap-2">
+          {/* Quick controls: Layout switcher & LeetCode link & Status */}
+          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
             <div className="flex items-center gap-1 rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-1 text-xs">
               <button
                 type="button"
@@ -717,47 +753,51 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
               href={content.leetcodeUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex min-h-9 items-center justify-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 text-xs font-semibold text-[var(--foreground)] transition hover:bg-[var(--surface-hover)]"
+              className="inline-flex min-h-8 items-center justify-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 text-xs font-semibold text-[var(--foreground)] transition hover:bg-[var(--surface-hover)]"
             >
               LeetCode <span aria-hidden="true">↗</span>
             </a>
-          </div>
-        </div>
 
-        <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--muted)]">Problem #{content.id}</p>
-            <h1 className="text-2xl font-black tracking-tight text-[var(--foreground)] sm:text-3xl">
-              {content.title}
-            </h1>
-          </div>
+            <div className="flex items-center" aria-label="Learning status">
+              {(() => {
+                const statusConfig = getStatusConfig(progress?.status);
+                const handleCycleStatus = () => {
+                  const current = progress?.status;
+                  let next: "in-progress" | "solved" | "review" = "in-progress";
+                  if (current === "in-progress") {
+                    next = "solved";
+                  } else if (current === "solved") {
+                    next = "review";
+                  } else if (current === "review") {
+                    next = "in-progress";
+                  } else {
+                    next = "in-progress";
+                  }
+                  updateProblem(content.id, { status: next });
+                };
 
-          <div className="flex items-center gap-2" aria-label="Learning status">
-            {([
-              ["in-progress", "In progress"],
-              ["solved", "Solved"],
-              ["review", "Review"],
-            ] as const).map(([status, label]) => (
-              <Button
-                key={status}
-                size="sm"
-                variant={progress?.status === status ? "primary" : "secondary"}
-                aria-pressed={progress?.status === status}
-                onClick={() => updateProblem(content.id, { status })}
-              >
-                {label}
-              </Button>
-            ))}
+                return (
+                  <button
+                    type="button"
+                    onClick={handleCycleStatus}
+                    title="Click to change status"
+                    className={`h-8 px-3.5 text-xs font-semibold rounded-lg transition-all duration-150 active:scale-[0.97] cursor-pointer select-none ${statusConfig.className}`}
+                  >
+                    {statusConfig.label}
+                  </button>
+                );
+              })()}
+            </div>
           </div>
         </div>
       </header>
 
       {/* Main Practice Container */}
       {layoutMode === "split" ? (
-        <div className="h-[calc(100vh-190px)] min-h-[640px] w-full rounded-2xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden shadow-sm">
+        <div className="h-[calc(100vh-130px)] min-h-[750px] lg:min-h-[820px] w-full rounded-2xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden shadow-sm">
           <Group orientation="horizontal" className="h-full w-full">
             {/* Left Panel: Study Content */}
-            <Panel defaultSize={48} minSize={25} className="flex flex-col h-full overflow-hidden bg-[var(--surface)]">
+            <Panel defaultSize={46} minSize={25} className="flex flex-col h-full overflow-hidden bg-[var(--surface)]">
               <div className="h-full overflow-y-auto p-4 sm:p-5">
                 {renderStudyContent()}
               </div>
@@ -769,10 +809,10 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
             </Separator>
 
             {/* Right Panel: Code Editor (Top) & Console (Bottom) */}
-            <Panel defaultSize={52} minSize={30} className="flex flex-col h-full overflow-hidden">
+            <Panel defaultSize={54} minSize={30} className="flex flex-col h-full overflow-hidden">
               <Group orientation="vertical" className="h-full w-full">
-                {/* Top: Monaco Editor */}
-                <Panel defaultSize={62} minSize={30} className="h-full overflow-hidden">
+                {/* Top: Monaco Editor (Adjusted ratio) */}
+                <Panel defaultSize={67} minSize={30} className="h-full overflow-hidden">
                   <CodeEditorPanel
                     problemId={content.id}
                     initialCode={starterCode}
@@ -789,8 +829,8 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
                   <div className="h-0.5 w-8 rounded-full bg-[var(--muted)]/40" />
                 </Separator>
 
-                {/* Bottom: Testcase & Console Tabs + Execution Toolbar */}
-                <Panel defaultSize={38} minSize={20} className="flex flex-col h-full overflow-hidden bg-[var(--surface)]">
+                {/* Bottom: Testcase & Console Tabs */}
+                <Panel defaultSize={33} minSize={18} className="flex flex-col h-full overflow-hidden bg-[var(--surface)]">
                   {/* Console Header Bar */}
                   <div className="flex shrink-0 items-center justify-between border-b border-[var(--border)] px-4 py-2 bg-[var(--surface)] text-xs">
                     {/* Console Tabs */}
@@ -826,31 +866,6 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
                             }`}
                           />
                         )}
-                      </button>
-                    </div>
-
-                    {/* Action Execution Buttons: Run & Submit */}
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={handleRunCode}
-                        disabled={isRunning}
-                        className="flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] px-3 py-1.5 font-bold text-[var(--foreground)] transition hover:bg-[var(--border)] disabled:opacity-50"
-                        title="Chạy thử 3 testcases mẫu (Ctrl + ')"
-                      >
-                        <Play className="h-3.5 w-3.5 text-emerald-500 fill-emerald-500" />
-                        <span>{isRunning ? "Running..." : "Run"}</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={handleSubmitCode}
-                        disabled={isRunning}
-                        className="flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-1.5 font-bold text-white shadow-xs transition hover:bg-emerald-700 active:scale-98 disabled:opacity-50"
-                        title="Nộp bài và chấm điểm toàn bộ testcase (Ctrl + Enter)"
-                      >
-                        <Send className="h-3.5 w-3.5" />
-                        <span>{isRunning ? "Testing..." : "Submit"}</span>
                       </button>
                     </div>
                   </div>
@@ -947,12 +962,45 @@ function ProblemStatement({
   media,
   problemId,
   languageMode = "bilingual",
+  badges,
 }: {
   markdown: string;
   media: NonNullable<ProblemContent["media"]>;
   problemId: number;
   languageMode?: "bilingual" | "en" | "vi";
+  badges?: React.ReactNode;
 }) {
+  const headingMatch = markdown.match(/^(#\s+[^\n]+(?:\r?\n|$))/);
+
+  if (headingMatch && badges) {
+    const titleText = headingMatch[0];
+    const restMarkdown = markdown.slice(titleText.length).trimStart();
+    const insertion = restMarkdown.search(/^##\s+(?:Constraints|Ràng buộc|Source|Nguồn)\b/im);
+
+    return (
+      <div className="space-y-4">
+        <MarkdownContent markdown={titleText.trimEnd()} languageMode={languageMode} />
+        <div className="flex flex-wrap items-center gap-2 -mt-1 pb-1">
+          {badges}
+        </div>
+        {media.length === 0 ? (
+          <MarkdownContent markdown={restMarkdown} languageMode={languageMode} />
+        ) : insertion < 0 ? (
+          <>
+            <MarkdownContent markdown={restMarkdown} languageMode={languageMode} />
+            <MediaGallery items={media} problemId={problemId} />
+          </>
+        ) : (
+          <>
+            <MarkdownContent markdown={restMarkdown.slice(0, insertion).trimEnd()} languageMode={languageMode} />
+            <MediaGallery items={media} problemId={problemId} />
+            <MarkdownContent markdown={restMarkdown.slice(insertion).trimStart()} languageMode={languageMode} />
+          </>
+        )}
+      </div>
+    );
+  }
+
   if (media.length === 0) return <MarkdownContent markdown={markdown} languageMode={languageMode} />;
   const insertion = markdown.search(/^##\s+(?:Constraints|Ràng buộc|Source|Nguồn)\b/im);
   if (insertion < 0) {

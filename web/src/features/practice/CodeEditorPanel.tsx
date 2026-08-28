@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import Editor, { OnMount } from "@monaco-editor/react";
-import { RotateCcw, Copy, Check, Code2 } from "lucide-react";
+import { RotateCcw, Copy, Check, Code2, Play, Send, Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/Toast";
 import { useConfirm } from "@/components/ui/ConfirmDialog";
 
@@ -77,10 +77,10 @@ export function CodeEditorPanel({
     try {
       await navigator.clipboard.writeText(code);
       setCopied(true);
-      success("Đã sao chép mã nguồn vào bộ nhớ tạm");
+      success("Đã sao chép mã nguồn");
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      error("Không thể sao chép mã nguồn");
+      error("Không thể sao chép");
     }
   };
 
@@ -97,23 +97,57 @@ export function CodeEditorPanel({
           <span className="text-[11px] text-[var(--muted)]">OpenJDK 15</span>
         </div>
 
-        {/* Action Tools */}
+        {/* Action Tools: Run, Submit, Copy, Reset */}
         <div className="flex items-center gap-1.5">
+          {/* Run button (Icon only) */}
+          <button
+            type="button"
+            onClick={onRun}
+            disabled={isRunning}
+            title="Chạy thử code (Ctrl + ')"
+            className="flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface-hover)] transition hover:bg-[var(--border)] active:scale-95 disabled:opacity-50 cursor-pointer"
+          >
+            {isRunning ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin text-emerald-500" />
+            ) : (
+              <Play className="h-3.5 w-3.5 text-emerald-500 fill-emerald-500" />
+            )}
+          </button>
+
+          {/* Submit button (Icon only) */}
+          <button
+            type="button"
+            onClick={onSubmit}
+            disabled={isRunning}
+            title="Nộp bài chấm điểm (Ctrl + Enter)"
+            className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-600 text-white shadow-xs transition hover:bg-emerald-500 active:scale-95 disabled:opacity-50 cursor-pointer"
+          >
+            {isRunning ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <Send className="h-3.5 w-3.5" />
+            )}
+          </button>
+
+          <div className="mx-0.5 h-3.5 w-px bg-[var(--border)]" />
+
+          {/* Copy button */}
           <button
             type="button"
             onClick={handleCopy}
             title="Sao chép code"
-            className="flex items-center gap-1 rounded-lg border border-[var(--border)] bg-[var(--surface-hover)] px-2.5 py-1 text-[11px] font-medium text-[var(--foreground)] transition hover:bg-[var(--border)]"
+            className="flex items-center gap-1 rounded-lg border border-[var(--border)] bg-[var(--surface-hover)] px-2.5 py-1 text-[11px] font-medium text-[var(--foreground)] transition hover:bg-[var(--border)] active:scale-95 cursor-pointer"
           >
             {copied ? <Check className="h-3.5 w-3.5 text-emerald-500" /> : <Copy className="h-3.5 w-3.5 text-[var(--muted)]" />}
             <span>{copied ? "Đã chép" : "Copy"}</span>
           </button>
 
+          {/* Reset button */}
           <button
             type="button"
             onClick={handleReset}
             title="Khôi phục code mẫu"
-            className="flex items-center gap-1 rounded-lg border border-[var(--border)] bg-[var(--surface-hover)] px-2.5 py-1 text-[11px] font-medium text-[var(--foreground)] transition hover:bg-[var(--border)]"
+            className="flex items-center gap-1 rounded-lg border border-[var(--border)] bg-[var(--surface-hover)] px-2.5 py-1 text-[11px] font-medium text-[var(--foreground)] transition hover:bg-[var(--border)] active:scale-95 cursor-pointer"
           >
             <RotateCcw className="h-3.5 w-3.5 text-[var(--muted)]" />
             <span>Reset</span>

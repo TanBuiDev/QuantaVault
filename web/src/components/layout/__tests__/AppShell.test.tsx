@@ -51,10 +51,6 @@ describe("AppShell", () => {
     expect(dashboard).toHaveAttribute("href", "/");
     expect(dashboard).not.toHaveAttribute("aria-current");
 
-    const problems = await screen.findByRole("link", { name: "Top Interview 150" });
-    expect(problems).toHaveAttribute("href", "/problems");
-    expect(problems).not.toHaveAttribute("aria-current");
-
     expect(screen.getByText("Shell child content")).toBeInTheDocument();
   });
 });

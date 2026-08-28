@@ -17,3 +17,4 @@ Object.defineProperty(globalThis, "ResizeObserver", {
 afterEach(() => {
   cleanup();
 });
+

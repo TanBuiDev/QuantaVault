@@ -123,7 +123,11 @@ describe("PracticeView", () => {
     renderPractice();
     await waitFor(() => expect(screen.getByText("VISIBLE PROBLEM")).toBeInTheDocument());
 
-    fireEvent.click(screen.getByRole("button", { name: "Solved" }));
+    // Cycle status: Not Started -> In Progress -> Solved
+    fireEvent.click(screen.getByRole("button", { name: "Not Started" }));
+    fireEvent.click(screen.getByRole("button", { name: "In Progress" }));
+    expect(screen.getByRole("button", { name: "Solved" })).toBeInTheDocument();
+
     fireEvent.click(screen.getByRole("tab", { name: "Notes" }));
     fireEvent.change(screen.getByLabelText(/Ghi chú cá nhân/i), {
       target: { value: "Remember the running-minimum invariant." },
