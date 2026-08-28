@@ -2,9 +2,21 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import Editor, { OnMount } from "@monaco-editor/react";
-import { RotateCcw, Copy, Check, Code2, Play, Send, Loader2 } from "lucide-react";
+import {
+  RotateCcw,
+  Copy,
+  Check,
+  Code2,
+  Play,
+  Send,
+  Loader2,
+  Braces,
+  Maximize2,
+  Minimize2,
+} from "lucide-react";
 import { useToast } from "@/components/ui/Toast";
 import { useConfirm } from "@/components/ui/ConfirmDialog";
+import { formatJavaSource } from "@/lib/javaFormatter";
 
 interface CodeEditorPanelProps {
   problemId: number;
@@ -29,9 +41,15 @@ export function CodeEditorPanel({
 }: CodeEditorPanelProps) {
   const [copied, setCopied] = useState(false);
   const [theme, setTheme] = useState<"vs-dark" | "light">("vs-dark");
+  const [isMaximized, setIsMaximized] = useState(false);
   const editorRef = useRef<Parameters<OnMount>[0] | null>(null);
+  const onCodeChangeRef = useRef(onCodeChange);
   const { success, error, info } = useToast();
   const confirm = useConfirm();
+
+  useEffect(() => {
+    onCodeChangeRef.current = onCodeChange;
+  }, [onCodeChange]);
 
   // Detect dark mode from document root
   useEffect(() => {
@@ -59,6 +77,34 @@ export function CodeEditorPanel({
     }
   }, [wordWrap]);
 
+  // Maximize is a pure client-side workspace mode. Escape restores the normal split layout.
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => editorRef.current?.layout());
+    if (!isMaximized) return () => window.cancelAnimationFrame(frame);
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsMaximized(false);
+    };
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isMaximized]);
+
+  const handleFormatAndSave = () => {
+    const currentCode = editorRef.current?.getValue() ?? code;
+    const formattedCode = formatJavaSource(currentCode);
+    onCodeChangeRef.current(formattedCode);
+    success("Đã định dạng và lưu code");
+    window.requestAnimationFrame(() => editorRef.current?.focus());
+  };
+
   const handleEditorMount: OnMount = (editor, monaco) => {
     editorRef.current = editor;
 
@@ -68,12 +114,17 @@ export function CodeEditorPanel({
       wrappingStrategy: "advanced",
     });
 
-    // Register shortcut: Ctrl+' to Run, Ctrl+Enter to Submit
+    // Register shortcuts: Ctrl+' Run, Ctrl+Enter Submit, Ctrl+S Format + Save.
     editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Quote, () => {
       onRun();
     });
     editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
       onSubmit();
+    });
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, () => {
+      const formattedCode = formatJavaSource(editor.getValue());
+      onCodeChangeRef.current(formattedCode);
+      success("Đã định dạng và lưu code");
     });
   };
 
@@ -104,7 +155,14 @@ export function CodeEditorPanel({
   };
 
   return (
-    <div className="flex h-full flex-col overflow-hidden bg-[var(--surface)]">
+    <div
+      className={
+        isMaximized
+          ? "fixed inset-0 z-[100] flex h-dvh w-screen flex-col overflow-hidden bg-[var(--surface)]"
+          : "flex h-full flex-col overflow-hidden bg-[var(--surface)]"
+      }
+      data-editor-maximized={isMaximized ? "true" : "false"}
+    >
       {/* Editor Header Bar */}
       <div className="flex shrink-0 items-center justify-between border-b border-[var(--border)] px-4 py-2 bg-[var(--surface)] text-xs">
         {/* Language selector & info */}
@@ -116,7 +174,7 @@ export function CodeEditorPanel({
           <span className="text-[11px] text-[var(--muted)]">OpenJDK 15</span>
         </div>
 
-        {/* Action Tools: Run, Submit, Copy, Reset */}
+        {/* Action Tools: Run, Submit, Format, Copy, Reset, Maximize */}
         <div className="flex items-center gap-1.5">
           {/* Run button (Icon only) */}
           <button
@@ -150,6 +208,18 @@ export function CodeEditorPanel({
 
           <div className="mx-0.5 h-3.5 w-px bg-[var(--border)]" />
 
+          {/* Format + Save button */}
+          <button
+            type="button"
+            onClick={handleFormatAndSave}
+            title="Định dạng và lưu code (Ctrl + S)"
+            aria-label="Format and save code"
+            className="flex items-center gap-1 rounded-lg border border-[var(--border)] bg-[var(--surface-hover)] px-2.5 py-1 text-[11px] font-medium text-[var(--foreground)] transition hover:bg-[var(--border)] active:scale-95 cursor-pointer"
+          >
+            <Braces className="h-3.5 w-3.5 text-indigo-500" />
+            <span>Format</span>
+          </button>
+
           {/* Copy button */}
           <button
             type="button"
@@ -170,6 +240,20 @@ export function CodeEditorPanel({
           >
             <RotateCcw className="h-3.5 w-3.5 text-[var(--muted)]" />
             <span>Reset</span>
+          </button>
+
+          <div className="mx-0.5 h-3.5 w-px bg-[var(--border)]" />
+
+          {/* Maximize / restore button */}
+          <button
+            type="button"
+            onClick={() => setIsMaximized((value) => !value)}
+            title={isMaximized ? "Thu nhỏ Editor (Esc)" : "Phóng to Editor"}
+            aria-label={isMaximized ? "Restore editor" : "Maximize editor"}
+            aria-pressed={isMaximized}
+            className="flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface-hover)] text-[var(--muted)] transition hover:bg-[var(--border)] hover:text-[var(--foreground)] active:scale-95 cursor-pointer"
+          >
+            {isMaximized ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
           </button>
         </div>
       </div>
