@@ -48,7 +48,46 @@ nên:
 
 ---
 
-## 4. Dry run
+## 4. Optimal Java solution
+
+```java
+class Solution {
+    public String reverseWords(String s) {
+        StringBuilder result = new StringBuilder();
+        int i = s.length() - 1;
+
+        while (i >= 0) {
+            // Scan từ phải giúp gặp các word đúng theo thứ tự output cần có;
+            // spaces của input chỉ là delimiter nên được bỏ thay vì copy sang kết quả.
+            while (i >= 0 && s.charAt(i) == ' ') {
+                i--;
+            }
+
+            if (i < 0) {
+                break;
+            }
+
+            int end = i;
+            while (i >= 0 && s.charAt(i) != ' ') {
+                i--;
+            }
+
+            // Tự tạo separator thay vì giữ spaces gốc để đồng thời loại leading,
+            // trailing và multiple spaces mà không cần trim/split.
+            if (result.length() > 0) {
+                result.append(' ');
+            }
+            result.append(s, i + 1, end + 1);
+        }
+
+        return result.toString();
+    }
+}
+```
+
+---
+
+## 5. Dry run
 
 ```text
 s = "  hello   world  "
@@ -62,7 +101,7 @@ s = "  hello   world  "
 
 ---
 
-## 5. Alternative approaches / Các hướng khác
+## 6. Alternative approaches / Các hướng khác
 
 ### `trim().split("\\s+")`
 
@@ -84,13 +123,13 @@ Phù hợp Java `String`, đơn giản và chỉ tạo output cần thiết.
 
 ---
 
-## 6. Correctness / Vì sao đúng
+## 7. Correctness / Vì sao đúng
 
 Reverse scan gặp các word theo thứ tự từ cuối input về đầu input, chính là thứ tự output yêu cầu. Mỗi word được append nguyên vẹn nên internal character order không đổi. Vì mọi input spaces bị skip và chỉ một separator được thêm giữa hai output words, spacing cũng đúng. Do đó result chứa đúng toàn bộ words theo thứ tự đảo và định dạng yêu cầu.
 
 ---
 
-## 7. Complexity
+## 8. Complexity
 
 Mỗi character được pointer đi qua tối đa một lần; append tổng cộng `O(n)` character:
 
@@ -103,7 +142,7 @@ Ngoài output, working state là `O(1)`.
 
 ---
 
-## 8. Common mistakes
+## 9. Common mistakes
 
 1. Reverse toàn bộ string và làm mỗi word cũng bị reverse characters.
 2. Giữ lại multiple spaces của input.
@@ -112,6 +151,6 @@ Ngoài output, working state là `O(1)`.
 
 ---
 
-## 9. Pattern recognition
+## 10. Pattern recognition
 
 Nếu output cần tokens theo thứ tự ngược và separator output được normalize, scan input từ cuối thường đơn giản hơn tokenize toàn bộ rồi reverse collection.

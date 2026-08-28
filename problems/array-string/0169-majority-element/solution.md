@@ -110,7 +110,35 @@ Khi `count == 0`, các vote của candidate hiện tại đã bị các phần t
 
 ---
 
-## 5. Dry run / Chạy thử
+## 5. Optimal Java solution
+
+```java
+class Solution {
+    public int majorityElement(int[] nums) {
+        int candidate = 0;
+        int count = 0;
+
+        for (int num : nums) {
+            // count == 0 nghĩa là các vote của nhóm trước đã bị pair-cancel hết;
+            // ta có thể bắt đầu một nhóm mới mà không làm mất majority thật.
+            if (count == 0) {
+                candidate = num;
+            }
+
+            // Cùng candidate tạo một vote dư; khác candidate triệt tiêu một vote.
+            // Majority > n/2 nên sau mọi phép ghép cặp khác nhau nó không thể bị xóa hết.
+            count += (num == candidate) ? 1 : -1;
+        }
+
+        // Đề đảm bảo majority tồn tại, nên survivor không cần verification pass.
+        return candidate;
+    }
+}
+```
+
+---
+
+## 6. Dry run / Chạy thử
 
 ```text
 nums = [2,2,1,1,1,2,2]
@@ -130,7 +158,7 @@ Candidate cuối là `2`.
 
 ---
 
-## 6. Correctness / Vì sao thuật toán đúng?
+## 7. Correctness / Vì sao thuật toán đúng?
 
 Gọi majority thật là `M`.
 
@@ -156,7 +184,7 @@ frequency(candidate) > n / 2
 
 ---
 
-## 7. Complexity / Độ phức tạp
+## 8. Complexity / Độ phức tạp
 
 Duyệt mảng đúng một lần:
 
@@ -172,7 +200,7 @@ Space: O(1)
 
 ---
 
-## 8. Edge cases / Trường hợp biên
+## 9. Edge cases / Trường hợp biên
 
 - Một phần tử → chính nó là majority.
 - Majority là số âm → không ảnh hưởng.
@@ -182,7 +210,7 @@ Space: O(1)
 
 ---
 
-## 9. Common mistakes / Lỗi thường gặp
+## 10. Common mistakes / Lỗi thường gặp
 
 1. Nhầm majority với **mode**. Majority phải xuất hiện hơn một nửa, không chỉ là nhiều nhất.
 2. Nghĩ `count` là tần suất thật của candidate.
@@ -193,7 +221,7 @@ Space: O(1)
 
 ---
 
-## 10. Pattern recognition / Nhận diện pattern
+## 11. Pattern recognition / Nhận diện pattern
 
 Khi thấy:
 
@@ -217,7 +245,7 @@ majority > all others combined
 
 ---
 
-## 11. Vocabulary / Từ vựng
+## 12. Vocabulary / Từ vựng
 
 | English | Tiếng Việt |
 |---|---|

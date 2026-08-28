@@ -97,7 +97,47 @@ Thuật toán đặt chính xác giá trị đó, không tăng bất kỳ child 
 
 ---
 
-## 6. Dry run
+## 6. Optimal Java solution
+
+```java
+import java.util.Arrays;
+
+class Solution {
+    public int candy(int[] ratings) {
+        int n = ratings.length;
+        int[] candies = new int[n];
+
+        // 1 là lower bound bắt buộc cho mọi child; hai lượt sau chỉ tăng khi
+        // một quan hệ với hàng xóm chứng minh cần nhiều hơn mức tối thiểu này.
+        Arrays.fill(candies, 1);
+
+        for (int i = 1; i < n; i++) {
+            // Lượt trái -> phải tạo lower bound nhỏ nhất thỏa constraint với bên trái.
+            if (ratings[i] > ratings[i - 1]) {
+                candies[i] = candies[i - 1] + 1;
+            }
+        }
+
+        for (int i = n - 2; i >= 0; i--) {
+            if (ratings[i] > ratings[i + 1]) {
+                // Constraint bên phải có thể đòi hỏi nhiều hơn, nhưng không được giảm
+                // giá trị đã cần để thỏa bên trái; lấy max chính là hợp hai lower bound.
+                candies[i] = Math.max(candies[i], candies[i + 1] + 1);
+            }
+        }
+
+        int total = 0;
+        for (int amount : candies) {
+            total += amount;
+        }
+        return total;
+    }
+}
+```
+
+---
+
+## 7. Dry run
 
 ```text
 ratings = [1,3,4,5,2]
@@ -129,7 +169,7 @@ sum = 11
 
 ---
 
-## 7. Alternative approaches / Các hướng khác
+## 8. Alternative approaches / Các hướng khác
 
 ### Repeated relaxation
 
@@ -145,7 +185,7 @@ Có lời giải `O(1)` extra space bằng cách đếm các đoạn tăng/giả
 
 ---
 
-## 8. Correctness / Vì sao đúng
+## 9. Correctness / Vì sao đúng
 
 Sau lượt trái, với mọi `i` có `ratings[i] > ratings[i-1]`, ta có `candies[i] > candies[i-1]`.
 
@@ -155,7 +195,7 @@ Mọi child có ít nhất 1 candy. Do mỗi giá trị cuối là maximum của
 
 ---
 
-## 9. Complexity
+## 10. Complexity
 
 Ba lượt tuyến tính (hai constraint pass + sum):
 
@@ -166,7 +206,7 @@ Space: O(n)
 
 ---
 
-## 10. Edge cases
+## 11. Edge cases
 
 - Một child → 1.
 - Ratings tăng hoàn toàn → `1,2,3,...`.
@@ -176,7 +216,7 @@ Space: O(n)
 
 ---
 
-## 11. Common mistakes
+## 12. Common mistakes
 
 1. Dùng `>=` thay vì `>` cho ratings bằng nhau.
 2. Ở lượt phải gán trực tiếp `candies[i] = candies[i+1]+1` thay vì `max`.
@@ -185,6 +225,6 @@ Space: O(n)
 
 ---
 
-## 12. Pattern recognition
+## 13. Pattern recognition
 
 Khi constraint cục bộ phụ thuộc vào hai hướng trái/phải, hãy thử tách thành **hai directional passes** rồi kết hợp các lower bound.
