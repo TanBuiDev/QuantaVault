@@ -1,27 +1,18 @@
 # Solution / Lời giải — 399. Evaluate Division
 
-## 1. Core idea / Ý tưởng chính
+## 1. Core idea
 
-Biến mỗi equation thành hai weighted directed edges. Với `a / b = v`, thêm `a -> b` weight `v` và `b -> a` weight `1/v`. Mỗi query chạy DFS từ source tới target và nhân các weight dọc path.
+Mỗi equation trở thành hai weighted edges. Query là tìm một path và nhân weights; các biến trung gian triệt tiêu nên product của path chính là tỷ số cần tìm.
 
-## 2. Algorithm / Thuật toán
-
-1. Xây adjacency list weighted từ toàn bộ equations.
-2. Với query `(source, target)`:
-   - nếu một variable không có trong graph, trả `-1.0`;
-   - DFS với `product = 1.0` và visited set;
-   - khi tới target, trả product;
-   - nếu không có path, trả `-1.0`.
-3. Lặp cho mọi query.
-
-## 3. Why it works / Vì sao đúng
-
-Mỗi edge biểu diễn đúng một tỷ số. Khi đi qua path `a -> b -> c`, product là `(a/b) * (b/c) = a/c`; các variable trung gian triệt tiêu. Vì DFS xét mọi path reachable mà không lặp cycle, nếu target reachable thì một path cho đúng tỷ số; nếu không reachable thì query không thể xác định.
-
-## 4. Optimal Java solution / Java tối ưu
+## 2. Optimal Java solution
 
 ```java
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Solution {
     private static class Edge {
@@ -36,15 +27,21 @@ public class Solution {
         for (int i = 0; i < equations.size(); i++) {
             String a = equations.get(i).get(0);
             String b = equations.get(i).get(1);
-            double v = values[i];
-            graph.computeIfAbsent(a, k -> new ArrayList<>()).add(new Edge(b, v));
-            graph.computeIfAbsent(b, k -> new ArrayList<>()).add(new Edge(a, 1.0 / v));
+            double value = values[i];
+
+            // a / b = value tương đương hai directed ratios. Reverse edge phải
+            // là reciprocal để đi ngược vẫn biểu diễn đúng phép chia.
+            graph.computeIfAbsent(a, key -> new ArrayList<>()).add(new Edge(b, value));
+            graph.computeIfAbsent(b, key -> new ArrayList<>()).add(new Edge(a, 1.0 / value));
         }
 
         double[] answer = new double[queries.size()];
         for (int i = 0; i < queries.size(); i++) {
             String source = queries.get(i).get(0);
             String target = queries.get(i).get(1);
+
+            // Kể cả source == target, variable chưa từng xuất hiện vẫn là unknown,
+            // nên phải reject trước khi DFS có thể trả product ban đầu là 1.0.
             if (!graph.containsKey(source) || !graph.containsKey(target)) {
                 answer[i] = -1.0;
             } else {
@@ -58,8 +55,11 @@ public class Solution {
                        Map<String, List<Edge>> graph, Set<String> visited) {
         if (current.equals(target)) return product;
         visited.add(current);
+
         for (Edge edge : graph.get(current)) {
             if (!visited.contains(edge.to)) {
+                // Multiplying path weights telescopes intermediate variables:
+                // (a/b) * (b/c) * ... = a/target.
                 double result = dfs(edge.to, target, product * edge.weight, graph, visited);
                 if (result != -1.0) return result;
             }
@@ -69,16 +69,10 @@ public class Solution {
 }
 ```
 
-## 5. Complexity / Độ phức tạp
+## 3. Correctness
 
-- Build graph: `O(E)`.
-- Mỗi query: worst-case `O(V + E)`.
-- Tổng: `O(Q * (V + E))` worst-case.
-- Space: `O(V + E)` cho graph và `O(V)` visited/DFS stack mỗi query.
+Mỗi edge lưu đúng một tỷ số và reverse edge lưu reciprocal. Product dọc path từ `source` tới `target` telescopes thành `source/target`; DFS tìm một path reachable và visited ngăn cycle.
 
-## 6. Common mistakes / Lỗi thường gặp
+## 4. Complexity
 
-- Quên reverse edge `1/v`.
-- Cộng weight thay vì nhân.
-- Cho `x/x = 1` ngay cả khi `x` chưa từng xuất hiện trong graph.
-- Không dùng visited và bị cycle recursion.
+Build `O(E)`; mỗi query worst-case `O(V + E)`; graph `O(V + E)` space và `O(V)` visited/DFS stack mỗi query.

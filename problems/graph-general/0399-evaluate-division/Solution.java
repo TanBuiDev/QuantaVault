@@ -19,6 +19,9 @@ public class Solution {
             String a = equations.get(i).get(0);
             String b = equations.get(i).get(1);
             double value = values[i];
+
+            // a / b = value tương đương hai directed ratios. Reverse edge phải
+            // là reciprocal để đi ngược vẫn biểu diễn đúng phép chia.
             graph.computeIfAbsent(a, key -> new ArrayList<>()).add(new Edge(b, value));
             graph.computeIfAbsent(b, key -> new ArrayList<>()).add(new Edge(a, 1.0 / value));
         }
@@ -27,6 +30,9 @@ public class Solution {
         for (int i = 0; i < queries.size(); i++) {
             String source = queries.get(i).get(0);
             String target = queries.get(i).get(1);
+
+            // Kể cả source == target, variable chưa từng xuất hiện vẫn là unknown,
+            // nên phải reject trước khi DFS có thể trả product ban đầu là 1.0.
             if (!graph.containsKey(source) || !graph.containsKey(target)) {
                 answer[i] = -1.0;
             } else {
@@ -40,8 +46,11 @@ public class Solution {
                        Map<String, List<Edge>> graph, Set<String> visited) {
         if (current.equals(target)) return product;
         visited.add(current);
+
         for (Edge edge : graph.get(current)) {
             if (!visited.contains(edge.to)) {
+                // Multiplying path weights telescopes intermediate variables:
+                // (a/b) * (b/c) * ... = a/target.
                 double result = dfs(edge.to, target, product * edge.weight, graph, visited);
                 if (result != -1.0) return result;
             }

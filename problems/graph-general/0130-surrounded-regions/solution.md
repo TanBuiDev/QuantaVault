@@ -1,27 +1,18 @@
 # Solution / Lời giải — 130. Surrounded Regions
 
-## 1. Core idea / Ý tưởng chính
+## 1. Core idea
 
-Một region không bị surrounded khi và chỉ khi nó nối được tới biên. Vì vậy flood-fill từ mọi `O` ở biên để mark toàn bộ safe region bằng `#`. Sau đó scan board: `O` chưa mark phải bị capture thành `X`; `#` được restore về `O`.
+Một region chỉ sống sót khi nối được tới biên. Flood-fill từ mọi `O` ở biên để mark safe component, rồi capture toàn bộ `O` chưa được mark.
 
-## 2. Algorithm / Thuật toán
-
-1. Flood-fill từ các cell `O` ở bốn cạnh và đổi chúng thành `#`.
-2. Quét toàn board:
-   - `O -> X`;
-   - `# -> O`.
-3. Board được mutate in-place, không return value.
-
-## 3. Why it works / Vì sao đúng
-
-Mọi region chạm biên được flood-fill và mark safe. Một `O` không được mark thì component của nó không chứa cell biên, nên theo định nghĩa nó bị surrounded và phải capture. Vì flood-fill chỉ đi 4 hướng qua `O`, không cell safe nào bị lẫn với region kín.
-
-## 4. Optimal Java solution / Java tối ưu
+## 2. Optimal Java solution
 
 ```java
 public class Solution {
     public void solve(char[][] board) {
         int m = board.length, n = board[0].length;
+
+        // Chỉ các O nối được tới biên mới KHÔNG bị surrounded, nên ta bảo vệ
+        // những component này trước thay vì cố phát hiện từng region kín.
         for (int r = 0; r < m; r++) {
             mark(board, r, 0);
             if (n > 1) mark(board, r, n - 1);
@@ -30,6 +21,9 @@ public class Solution {
             mark(board, 0, c);
             if (m > 1) mark(board, m - 1, c);
         }
+
+        // O còn lại không thể chạm biên => chắc chắn bị bao kín. Marker # là
+        // O an toàn đã được chứng minh, nên chỉ cần restore chúng về O.
         for (int r = 0; r < m; r++) {
             for (int c = 0; c < n; c++) {
                 if (board[r][c] == 'O') board[r][c] = 'X';
@@ -40,6 +34,9 @@ public class Solution {
 
     private void mark(char[][] board, int r, int c) {
         if (r < 0 || r >= board.length || c < 0 || c >= board[0].length || board[r][c] != 'O') return;
+
+        // Đổi state trước khi recurse vừa đánh dấu safe vừa đóng vai trò visited,
+        // tránh quay lại cùng cell qua một cạnh khác của component.
         board[r][c] = '#';
         mark(board, r + 1, c);
         mark(board, r - 1, c);
@@ -49,13 +46,10 @@ public class Solution {
 }
 ```
 
-## 5. Complexity / Độ phức tạp
+## 3. Correctness
 
-- **Time:** `O(m*n)`.
-- **Space:** worst-case `O(m*n)` recursion stack.
+Flood-fill đánh dấu chính xác mọi `O` thuộc component chạm biên. Vì vậy mọi `O` chưa mark không có đường 4-hướng ra biên và phải là surrounded region; đổi chúng thành `X` là đúng, còn `#` được restore.
 
-## 6. Common mistakes / Lỗi thường gặp
+## 4. Complexity
 
-- Flood-fill region kín thay vì bảo vệ region biên.
-- Capture `O` trên biên.
-- Quên restore marker an toàn.
+`O(m*n)` time; worst-case `O(m*n)` recursion stack.
