@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom/vitest";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 
 import { AppShell } from "@/components/layout/AppShell";
@@ -18,7 +18,21 @@ vi.mock("next/navigation", () => ({
 }));
 
 describe("AppShell", () => {
-  it("renders the primary navigation and wraps child content", () => {
+  beforeEach(() => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ sections: [] }),
+      }),
+    );
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("renders the primary navigation and wraps child content", async () => {
     render(
       <ThemeProvider>
         <ProgressProvider>
@@ -33,14 +47,14 @@ describe("AppShell", () => {
       </ThemeProvider>,
     );
 
-    for (const link of screen.getAllByRole("link", { name: "Dashboard" })) {
-      expect(link).toHaveAttribute("href", "/");
-      expect(link).not.toHaveAttribute("aria-current");
-    }
-    for (const link of screen.getAllByRole("link", { name: "Problems" })) {
-      expect(link).toHaveAttribute("href", "/problems");
-      expect(link).not.toHaveAttribute("aria-current");
-    }
+    const dashboard = screen.getByRole("link", { name: "Dashboard Tổng Quan" });
+    expect(dashboard).toHaveAttribute("href", "/");
+    expect(dashboard).not.toHaveAttribute("aria-current");
+
+    const problems = await screen.findByRole("link", { name: "Top Interview 150" });
+    expect(problems).toHaveAttribute("href", "/problems");
+    expect(problems).not.toHaveAttribute("aria-current");
+
     expect(screen.getByText("Shell child content")).toBeInTheDocument();
   });
 });
