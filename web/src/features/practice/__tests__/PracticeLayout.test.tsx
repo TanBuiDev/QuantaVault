@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { ConfirmProvider } from "@/components/ui/ConfirmDialog";
@@ -35,7 +35,9 @@ const content: ProblemContent = {
 };
 
 describe("Practice workspace layout", () => {
-  it("separates study content from the personal progress panel", () => {
+  it("separates study content from problem information in Classic layout", async () => {
+    localStorage.setItem("preferred_layout_mode", "classic");
+
     render(
       <ToastProvider>
         <ConfirmProvider>
@@ -52,9 +54,10 @@ describe("Practice workspace layout", () => {
       </ToastProvider>,
     );
 
-    expect(screen.getByRole("region", { name: "Study content" })).toBeInTheDocument();
-    expect(screen.getByRole("complementary", { name: "Study progress" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Open on LeetCode" })).toHaveAttribute("target", "_blank");
-    expect(screen.getByRole("link", { name: "Open on LeetCode" })).toHaveAttribute("rel", "noreferrer");
+    await waitFor(() => expect(screen.getByRole("region", { name: "Study content" })).toBeInTheDocument());
+    expect(screen.getByRole("complementary", { name: "Problem information" })).toBeInTheDocument();
+    const leetcodeLink = screen.getByRole("link", { name: /LeetCode/i });
+    expect(leetcodeLink).toHaveAttribute("target", "_blank");
+    expect(leetcodeLink).toHaveAttribute("rel", "noreferrer");
   });
 });

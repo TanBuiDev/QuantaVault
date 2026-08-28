@@ -326,6 +326,9 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
     if (tab === "solution" && hasSolution) {
       updateProblem(content.id, { solutionViewed: true });
     }
+    if (tab === "interview" && hasInterview) {
+      updateProblem(content.id, { interviewViewed: true });
+    }
   }
 
   const approaches = content.approaches ?? [];

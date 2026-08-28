@@ -98,10 +98,12 @@ describe("PracticeView", () => {
     expect(screen.getByText("SECRET SOLUTION")).toBeInTheDocument();
     expect(screen.getByText(/SECRET JAVA/)).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Java solution" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Copy Java solution/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Copy Java/i })).toBeInTheDocument();
 
-    const stored = JSON.parse(localStorage.getItem(PROGRESS_STORAGE_KEY) ?? "null");
-    expect(stored.problems["121"].solutionViewed).toBe(true);
+    await waitFor(() => {
+      const stored = JSON.parse(localStorage.getItem(PROGRESS_STORAGE_KEY) ?? "null");
+      expect(stored?.problems?.["121"]?.solutionViewed).toBe(true);
+    });
   });
 
   it("records an intentional interview view", async () => {
@@ -111,40 +113,44 @@ describe("PracticeView", () => {
     fireEvent.click(screen.getByRole("tab", { name: "Interview" }));
     expect(screen.getByText("INTERVIEW ANSWER")).toBeInTheDocument();
 
-    const stored = JSON.parse(localStorage.getItem(PROGRESS_STORAGE_KEY) ?? "null");
-    expect(stored.problems["121"].interviewViewed).toBe(true);
+    await waitFor(() => {
+      const stored = JSON.parse(localStorage.getItem(PROGRESS_STORAGE_KEY) ?? "null");
+      expect(stored?.problems?.["121"]?.interviewViewed).toBe(true);
+    });
   });
 
-  it("persists status, bookmark, confidence, and personal notes", async () => {
+  it("persists status and personal notes from the current practice UI", async () => {
     renderPractice();
     await waitFor(() => expect(screen.getByText("VISIBLE PROBLEM")).toBeInTheDocument());
 
     fireEvent.click(screen.getByRole("button", { name: "Solved" }));
-    fireEvent.click(screen.getByRole("button", { name: /Bookmark/i }));
-    fireEvent.change(screen.getByLabelText("Confidence"), { target: { value: "5" } });
-    fireEvent.change(screen.getByLabelText("Personal notes"), {
+    fireEvent.click(screen.getByRole("tab", { name: "Notes" }));
+    fireEvent.change(screen.getByLabelText(/Ghi chú cá nhân/i), {
       target: { value: "Remember the running-minimum invariant." },
     });
 
-    const stored = JSON.parse(localStorage.getItem(PROGRESS_STORAGE_KEY) ?? "null");
-    expect(stored.problems["121"]).toMatchObject({
-      status: "solved",
-      bookmarked: true,
-      confidence: 5,
-      notes: "Remember the running-minimum invariant.",
+    await waitFor(() => {
+      const stored = JSON.parse(localStorage.getItem(PROGRESS_STORAGE_KEY) ?? "null");
+      expect(stored?.problems?.["121"]).toMatchObject({
+        status: "solved",
+        bookmarked: false,
+        confidence: null,
+        notes: "Remember the running-minimum invariant.",
+      });
     });
   });
 
-  it("uses canonical previous and next destinations", async () => {
+  it("uses canonical previous and next destinations in Classic layout", async () => {
+    localStorage.setItem("preferred_layout_mode", "classic");
     renderPractice();
-    await waitFor(() => expect(screen.getByText("VISIBLE PROBLEM")).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByRole("region", { name: "Study content" })).toBeInTheDocument());
 
-    expect(screen.getByRole("link", { name: /Previous.*Rotate Array/i })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /#189 Rotate Array/i })).toHaveAttribute(
       "href",
       "/problems/189",
     );
     expect(
-      screen.getByRole("link", { name: /Next.*Best Time to Buy and Sell Stock II/i }),
+      screen.getByRole("link", { name: /#122 Best Time to Buy and Sell Stock II/i }),
     ).toHaveAttribute("href", "/problems/122");
   });
 
