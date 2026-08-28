@@ -27,15 +27,12 @@ export function CodeEditorPanel({
 }: CodeEditorPanelProps) {
   const [copied, setCopied] = useState(false);
   const [theme, setTheme] = useState<"vs-dark" | "light">("vs-dark");
-  const editorRef = useRef<any>(null);
+  const editorRef = useRef<Parameters<OnMount>[0] | null>(null);
   const { success, error, info } = useToast();
   const confirm = useConfirm();
 
   // Detect dark mode from document root
   useEffect(() => {
-    const isDark = document.documentElement.classList.contains("dark") || true;
-    setTheme(isDark ? "vs-dark" : "light");
-
     const observer = new MutationObserver(() => {
       const darkNow = document.documentElement.classList.contains("dark");
       setTheme(darkNow ? "vs-dark" : "light");

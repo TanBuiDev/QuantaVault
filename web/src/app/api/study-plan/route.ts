@@ -49,7 +49,7 @@ export async function GET() {
     };
 
     return NextResponse.json(response);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("API /api/study-plan error:", error);
     return NextResponse.json({ error: "Failed to load study plan" }, { status: 500 });
   }

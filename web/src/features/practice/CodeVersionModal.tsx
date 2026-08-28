@@ -26,16 +26,20 @@ export function CodeVersionModal({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (editingVersion) {
-      setName(editingVersion.name || "");
-      setSource(editingVersion.source || "");
-      setIsDefault(Boolean(editingVersion.isDefault));
-    } else {
-      setName("");
-      setSource("");
-      setIsDefault(false);
-    }
-    setError(null);
+    const frame = window.requestAnimationFrame(() => {
+      if (editingVersion) {
+        setName(editingVersion.name || "");
+        setSource(editingVersion.source || "");
+        setIsDefault(Boolean(editingVersion.isDefault));
+      } else {
+        setName("");
+        setSource("");
+        setIsDefault(false);
+      }
+      setError(null);
+    });
+
+    return () => window.cancelAnimationFrame(frame);
   }, [editingVersion, isOpen]);
 
   if (!isOpen) return null;

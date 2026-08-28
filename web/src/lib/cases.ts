@@ -3,11 +3,11 @@ import { parse } from "yaml";
 export interface TestCaseItem {
   name: string;
   source?: string;
-  input?: Record<string, any>;
-  expected?: any;
-  expected_mutation?: Record<string, any>;
+  input?: Record<string, unknown>;
+  expected?: unknown;
+  expected_mutation?: Record<string, unknown>;
   operations?: string[];
-  arguments?: any[][];
+  arguments?: unknown[][];
 }
 
 export interface LanguageContractParameter {

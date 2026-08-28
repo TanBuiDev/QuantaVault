@@ -29,7 +29,7 @@ export interface RunCodeResponse {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { sourceCode, language = "java", casesData, runAll = false } = body;
+    const { sourceCode, casesData, runAll = false } = body;
 
     if (!sourceCode) {
       return NextResponse.json({ error: "Source code is required" }, { status: 400 });
@@ -166,12 +166,13 @@ export async function POST(req: Request) {
       rawStdout,
       rawStderr,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("API /api/run-code error:", error);
+    const message = error instanceof Error ? error.message : "Internal server error";
     return NextResponse.json<RunCodeResponse>(
       {
         overallStatus: "SERVER_ERROR",
-        runtimeError: error?.message || "Internal server error",
+        runtimeError: message,
         results: [],
         totalCases: 0,
         passedCases: 0,

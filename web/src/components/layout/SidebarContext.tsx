@@ -15,18 +15,22 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
-    try {
-      const saved = localStorage.getItem("sidebar_open_preference");
-      if (saved !== null) {
-        setIsOpenState(saved === "true");
-      } else {
-        // Default: open on desktop (>=1024), closed on mobile
-        setIsOpenState(window.innerWidth >= 1024);
+    const frame = window.requestAnimationFrame(() => {
+      setIsMounted(true);
+      try {
+        const saved = localStorage.getItem("sidebar_open_preference");
+        if (saved !== null) {
+          setIsOpenState(saved === "true");
+        } else {
+          // Default: open on desktop (>=1024), closed on mobile
+          setIsOpenState(window.innerWidth >= 1024);
+        }
+      } catch {
+        // ignore
       }
-    } catch {
-      // ignore
-    }
+    });
+
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   const toggleSidebar = useCallback(() => {

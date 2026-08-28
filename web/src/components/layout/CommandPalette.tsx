@@ -40,7 +40,7 @@ export function CommandPalette() {
   // Load danh sách bài tập khi mở lần đầu
   useEffect(() => {
     if (isOpen && problems.length === 0) {
-      setLoading(true);
+      const loadingTimer = window.setTimeout(() => setLoading(true), 0);
       fetch("/api/problems")
         .then((res) => res.json())
         .then((data) => {
@@ -49,20 +49,27 @@ export function CommandPalette() {
           }
         })
         .catch(() => {})
-        .finally(() => setLoading(false));
+        .finally(() => {
+          window.clearTimeout(loadingTimer);
+          setLoading(false);
+        });
+
+      return () => window.clearTimeout(loadingTimer);
     }
   }, [isOpen, problems.length]);
 
   // Tự động focus input khi mở
   useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => {
+    const timer = window.setTimeout(() => {
+      if (isOpen) {
         inputRef.current?.focus();
-      }, 50);
-    } else {
-      setQuery("");
-      setSelectedIndex(0);
-    }
+      } else {
+        setQuery("");
+        setSelectedIndex(0);
+      }
+    }, isOpen ? 50 : 0);
+
+    return () => window.clearTimeout(timer);
   }, [isOpen]);
 
   // Lọc bài tập

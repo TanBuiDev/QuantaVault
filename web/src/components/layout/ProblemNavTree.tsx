@@ -3,9 +3,9 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, ChevronRight, CheckCircle2, Clock, Circle, BookOpen, Layers } from "lucide-react";
+import { ChevronDown, ChevronRight, CheckCircle2, Clock, Circle, Layers } from "lucide-react";
 import { useProgress } from "@/lib/progress/provider";
-import type { StudyPlanNavResponse, NavSectionItem } from "@/app/api/study-plan/route";
+import type { StudyPlanNavResponse } from "@/app/api/study-plan/route";
 
 function difficultyColor(diff: "Easy" | "Medium" | "Hard") {
   if (diff === "Easy") return "text-emerald-600 dark:text-emerald-400";
@@ -51,21 +51,6 @@ export function ProblemNavTree() {
       isMounted = false;
     };
   }, []);
-
-  // Auto-expand section containing active problem
-  useEffect(() => {
-    if (activeProblemId && studyPlan) {
-      for (const section of studyPlan.sections) {
-        if (section.problems.some((p) => p.id === activeProblemId)) {
-          setExpandedSections((prev) => ({
-            ...prev,
-            [section.slug]: true,
-          }));
-          break;
-        }
-      }
-    }
-  }, [activeProblemId, studyPlan]);
 
   const toggleSection = (slug: string) => {
     setExpandedSections((prev) => ({

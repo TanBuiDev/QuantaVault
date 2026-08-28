@@ -87,25 +87,29 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
   const { success, error: toastError, info, warning } = useToast();
 
   useEffect(() => {
-    setMounted(true);
-    try {
-      const savedLang = localStorage.getItem("preferred_lang_mode");
-      if (savedLang === "bilingual" || savedLang === "en" || savedLang === "vi") {
-        setLocalLangMode(savedLang);
+    const frame = window.requestAnimationFrame(() => {
+      setMounted(true);
+      try {
+        const savedLang = localStorage.getItem("preferred_lang_mode");
+        if (savedLang === "bilingual" || savedLang === "en" || savedLang === "vi") {
+          setLocalLangMode(savedLang);
+        }
+        const savedLayout = localStorage.getItem("preferred_layout_mode");
+        if (savedLayout === "split" || savedLayout === "classic") {
+          setLayoutMode(savedLayout);
+        }
+        const savedCode = localStorage.getItem(`user_code_${content.id}`);
+        if (savedCode) {
+          setUserCode(savedCode);
+        } else {
+          setUserCode(starterCode);
+        }
+      } catch {
+        // ignore
       }
-      const savedLayout = localStorage.getItem("preferred_layout_mode");
-      if (savedLayout === "split" || savedLayout === "classic") {
-        setLayoutMode(savedLayout);
-      }
-      const savedCode = localStorage.getItem(`user_code_${content.id}`);
-      if (savedCode) {
-        setUserCode(savedCode);
-      } else {
-        setUserCode(starterCode);
-      }
-    } catch {
-      // ignore
-    }
+    });
+
+    return () => window.cancelAnimationFrame(frame);
   }, [content.id, starterCode]);
 
   const langMode = mounted ? localLangMode : "bilingual";
@@ -234,8 +238,8 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
       } else {
         info("Một số testcase chưa chính xác", "Wrong Answer");
       }
-    } catch (err: any) {
-      toastError(err?.message || "Lỗi kết nối khi chạy mã nguồn", "Lỗi");
+    } catch (err: unknown) {
+      toastError(err instanceof Error ? err.message : "Lỗi kết nối khi chạy mã nguồn", "Lỗi");
     } finally {
       setIsRunning(false);
     }
@@ -272,8 +276,8 @@ export function PracticeView({ content, hints, previous, next, sectionName }: Pr
       } else {
         toastError("Kiểm thử chưa hoàn tất", "Lỗi thực thi");
       }
-    } catch (err: any) {
-      toastError(err?.message || "Lỗi kết nối khi nộp bài", "Lỗi");
+    } catch (err: unknown) {
+      toastError(err instanceof Error ? err.message : "Lỗi kết nối khi nộp bài", "Lỗi");
     } finally {
       setIsRunning(false);
     }

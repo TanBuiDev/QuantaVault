@@ -1,6 +1,6 @@
-import type { CasesData, TestCaseItem, LanguageContractParameter } from "../cases";
+import type { CasesData, LanguageContractParameter } from "../cases";
 
-function valueToJavaLiteral(value: any, typeHint?: string): string {
+function valueToJavaLiteral(value: unknown, typeHint?: string): string {
   if (value === null || value === undefined) {
     if (typeHint?.startsWith("List") || typeHint?.includes("Node") || typeHint === "String") {
       return "null";
