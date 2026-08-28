@@ -1,51 +1,37 @@
-# 53. Maximum Subarray — Solution
+# Solution / Lời giải — 53. Maximum Subarray
 
-## 1. Core idea / Intuition
-Kadane giữ tổng tốt nhất của subarray kết thúc đúng tại vị trí hiện tại; nếu prefix trước làm tổng xấu đi thì bỏ prefix đó và bắt đầu mới.
+## 1. Core idea
 
-## 2. Requirement recap / Tóm tắt yêu cầu
-Cần maximum sum của một non-empty contiguous subarray.
+Kadane keeps the best sum of a subarray that must end at the current index. Either extend the previous best-ending subarray or start a new one here.
 
-## 3. Key observations / Nhận xét quan trọng
-State chỉ phụ thuộc state trước và phần tử hiện tại, nên không cần DP array.
+## 2. Optimal Java solution
 
-## 4. Alternative approaches / Các hướng khác
-Brute force O(n²); divide-and-conquer O(n log n) đáp ứng follow-up nhưng chậm hơn Kadane.
-
-## 5. Optimal approach / Hướng tối ưu
-Khởi tạo `current=best=nums[0]`, sau đó cập nhật `current=max(x,current+x)` và `best=max(best,current)`.
-
-## 6. Java solution overview
 ```java
 class Solution {
-  public int maxSubArray(int[] nums){
-    int current=nums[0],best=nums[0];
-    for(int i=1;i<nums.length;i++){current=Math.max(nums[i],current+nums[i]);best=Math.max(best,current);}
-    return best;
-  }
+    public int maxSubArray(int[] nums) {
+        // Starting from nums[0] (not 0) is essential when every number is negative:
+        // the answer must still contain at least one element.
+        int current = nums[0];
+        int best = nums[0];
+
+        for (int i = 1; i < nums.length; i++) {
+            // current = best subarray sum that MUST end at i. Such a subarray either
+            // starts fresh at nums[i] or extends the best ending at i-1.
+            current = Math.max(nums[i], current + nums[i]);
+
+            // Every non-empty subarray has some ending index, so taking the maximum
+            // over all best-ending-here states gives the global optimum.
+            best = Math.max(best, current);
+        }
+        return best;
+    }
 }
 ```
 
-## 7. Code explanation / Giải thích code
-`current` luôn là best sum kết thúc tại i; `best` là global maximum của các state đó.
+## 3. Correctness
 
-## 8. Dry run / Chạy thử
-Trong ví dụ đầu, state tốt nhất đạt 6 trên `[4,-1,2,1]`.
+The recurrence considers the only two possible forms of an optimal subarray ending at each index. `best` takes the maximum of these endpoint optima, covering every non-empty subarray.
 
-## 9. Time and space complexity
-O(n) time, O(1) space.
+## 4. Complexity
 
-## 10. Why the algorithm is correct / Vì sao đúng
-Mọi subarray kết thúc tại i hoặc bắt đầu ở i hoặc nối một subarray kết thúc tại i-1. Chọn tốt nhất giữa hai khả năng tạo recurrence chính xác; maximum qua mọi i là đáp án toàn cục.
-
-## 11. Edge cases
-Một phần tử, toàn âm, toàn dương.
-
-## 12. Common mistakes
-Khởi tạo bằng 0 và vô tình cho phép empty subarray; chỉ cộng khi positive mà bỏ all-negative case.
-
-## 13. Pattern recognition / Khi nào tái sử dụng
-Kadane dùng cho contiguous optimum khi state “best ending here” có recurrence cục bộ.
-
-## 14. Vocabulary
-**contiguous subarray**: mảng con liên tiếp; **maximum sum**: tổng lớn nhất; **recurrence**: công thức truy hồi; **Kadane**: thuật toán Kadane.
+`O(n)` time, `O(1)` extra space.

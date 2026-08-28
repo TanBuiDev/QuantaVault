@@ -1,51 +1,45 @@
-# 918. Maximum Sum Circular Subarray — Solution
+# Solution / Lời giải — 918. Maximum Sum Circular Subarray
 
-## 1. Core idea / Intuition
-Tính đồng thời max subarray, min subarray và total. Circular maximum là `max(maxSum, total-minSum)`, trừ trường hợp toàn âm.
+## 1. Core idea
 
-## 2. Requirement recap / Tóm tắt yêu cầu
-Subarray phải không rỗng và không dùng phần tử quá một lần.
+The optimum is either an ordinary non-wrapping maximum subarray or a wrapping suffix+prefix. A wrapping choice equals `totalSum - minimumMiddleSubarray`.
 
-## 3. Key observations / Nhận xét quan trọng
-Một wrapped subarray tương đương toàn mảng bỏ đi một contiguous minimum subarray ở giữa.
+## 2. Optimal Java solution
 
-## 4. Alternative approaches / Các hướng khác
-Duplicate array + window/monotonic queue phức tạp hơn. Hai Kadane passes có thể gộp trong một vòng.
-
-## 5. Optimal approach / Hướng tối ưu
-Maintain current/global max and min Kadane plus total. Nếu `maxSum < 0`, trả maxSum; ngược lại lấy max của non-wrap và wrap.
-
-## 6. Java solution overview
 ```java
 class Solution {
-  public int maxSubarraySumCircular(int[] nums){
-    int total=0,curMax=0,max=Integer.MIN_VALUE,curMin=0,min=Integer.MAX_VALUE;
-    for(int x:nums){curMax=Math.max(x,curMax+x);max=Math.max(max,curMax);curMin=Math.min(x,curMin+x);min=Math.min(min,curMin);total+=x;}
-    return max<0?max:Math.max(max,total-min);
-  }
+    public int maxSubarraySumCircular(int[] nums) {
+        int total = 0;
+        int currentMax = 0, maxSum = Integer.MIN_VALUE;
+        int currentMin = 0, minSum = Integer.MAX_VALUE;
+
+        for (int x : nums) {
+            // Ordinary Kadane gives the best non-wrapping subarray.
+            currentMax = Math.max(x, currentMax + x);
+            maxSum = Math.max(maxSum, currentMax);
+
+            // A wrapping maximum keeps a suffix + prefix, equivalently removing
+            // one contiguous middle segment; therefore we also need the minimum subarray.
+            currentMin = Math.min(x, currentMin + x);
+            minSum = Math.min(minSum, currentMin);
+            total += x;
+        }
+
+        // If every value is negative, minSum == total and total-minSum would choose
+        // an empty wrapped subarray, which is forbidden. The ordinary max is correct.
+        if (maxSum < 0) return maxSum;
+
+        // Every optimum is either non-wrapping (maxSum) or wrapping, whose value is
+        // total minus the minimum contiguous segment excluded from the middle.
+        return Math.max(maxSum, total - minSum);
+    }
 }
 ```
 
-## 7. Code explanation / Giải thích code
-Kadane max xử lý non-wrap; Kadane min xác định phần giữa nên loại trong trường hợp wrap.
+## 3. Correctness
 
-## 8. Dry run / Chạy thử
-`[5,-3,5]`: max non-wrap=7, min=-3, total=7, wrap=10.
+A circular subarray either stays within the linear array or crosses the boundary. Any crossing subarray is exactly the complement of one contiguous excluded segment, so maximizing it means subtracting the minimum subarray. The all-negative guard prevents selecting an empty complement.
 
-## 9. Time and space complexity
-O(n) time, O(1) space.
+## 4. Complexity
 
-## 10. Why the algorithm is correct / Vì sao đúng
-Mọi circular subarray hoặc không qua boundary, hoặc là complement của một contiguous subarray. Trường hợp thứ hai tối đa khi complement bị loại có tổng nhỏ nhất. All-negative được tách để bảo đảm subarray không rỗng.
-
-## 11. Edge cases
-All-negative, one element, best non-wrap, best wrap.
-
-## 12. Common mistakes
-Dùng `total-minSum` khi all-negative; cho phép empty subarray; quên min Kadane.
-
-## 13. Pattern recognition / Khi nào tái sử dụng
-Circular max/min thường biến thành total trừ complement cực trị.
-
-## 14. Vocabulary
-**circular array**: mảng vòng; **wrap**: vòng qua boundary; **complement**: phần bù; **Kadane's algorithm**: thuật toán Kadane.
+`O(n)` time, `O(1)` extra space.
