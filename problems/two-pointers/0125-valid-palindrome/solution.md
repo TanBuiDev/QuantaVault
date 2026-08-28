@@ -44,7 +44,45 @@ Nếu hai pointer gặp nhau mà chưa mismatch → `true`.
 
 ---
 
-## 4. Dry run
+## 4. Optimal Java solution
+
+```java
+class Solution {
+    public boolean isPalindrome(String s) {
+        int left = 0;
+        int right = s.length() - 1;
+
+        while (left < right) {
+            // Skip lazily tương đương tạo một normalized string nhưng không cần
+            // allocate buffer; hai pointer luôn tìm cặp alphanumeric ngoài cùng còn lại.
+            while (left < right && !Character.isLetterOrDigit(s.charAt(left))) {
+                left++;
+            }
+            while (left < right && !Character.isLetterOrDigit(s.charAt(right))) {
+                right--;
+            }
+
+            char leftChar = Character.toLowerCase(s.charAt(left));
+            char rightChar = Character.toLowerCase(s.charAt(right));
+
+            // Mismatch ở cặp hợp lệ ngoài cùng chứng minh ngay normalized sequence
+            // không thể đối xứng, nên không cần kiểm tra phần bên trong nữa.
+            if (leftChar != rightChar) {
+                return false;
+            }
+
+            left++;
+            right--;
+        }
+
+        return true;
+    }
+}
+```
+
+---
+
+## 5. Dry run
 
 Với:
 
@@ -59,19 +97,19 @@ Với:
 
 ---
 
-## 5. Alternative approach
+## 6. Alternative approach
 
 Có thể build normalized `StringBuilder`, rồi reverse hoặc dùng two pointers trên builder. Code dễ hiểu nhưng cần `O(n)` extra space. Direct two-pointer giữ `O(1)` working space.
 
 ---
 
-## 6. Correctness / Vì sao đúng
+## 7. Correctness / Vì sao đúng
 
 Hai pointer luôn trỏ tới ký tự chưa được so sánh ngoài cùng còn lại của normalized sequence. Skip invalid characters tương đương loại chúng khỏi sequence. Nếu hai ký tự hợp lệ ngoài cùng khác nhau sau lowercase thì normalized string không thể là palindrome. Nếu giống, bỏ cặp đó và lặp cho phần bên trong. Khi hết cặp mà không mismatch, mọi cặp đối xứng đều bằng nhau nên chuỗi là palindrome.
 
 ---
 
-## 7. Complexity
+## 8. Complexity
 
 Mỗi pointer chỉ di chuyển vào trong và mỗi character bị đi qua tối đa một lần:
 
@@ -82,7 +120,7 @@ Space: O(1)
 
 ---
 
-## 8. Common mistakes
+## 9. Common mistakes
 
 1. Chỉ bỏ spaces nhưng quên punctuation.
 2. So sánh case-sensitive.
@@ -91,6 +129,6 @@ Space: O(1)
 
 ---
 
-## 9. Pattern recognition
+## 10. Pattern recognition
 
 Khi cần so sánh một sequence sau khi bỏ một số phần tử, có thể dùng two pointers và **lazy skipping** thay vì xây sequence đã filter.
