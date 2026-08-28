@@ -24,7 +24,7 @@ test("Top Interview 150 study workflow persists progress without exposing spoile
     page.getByRole("heading", { name: "Best Time to Buy and Sell Stock", exact: true }).first(),
   ).toBeVisible();
   await expect(page.getByRole("tab", { name: "Problem" })).toHaveAttribute("aria-selected", "true");
-  await expect(page.getByRole("link", { name: /LeetCode/i })).toBeVisible();
+  await expect(page.getByRole("link", { name: "LeetCode", exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Java solution", exact: true })).toHaveCount(0);
 
   const problemTab = page.getByRole("tab", { name: "Problem" });
@@ -91,7 +91,7 @@ test("dashboard, filters, and practice layout fit a mobile viewport", async ({ p
   expect(await documentFitsViewport()).toBe(true);
 
   await page.goto("/problems/121");
-  await expect(page.getByRole("link", { name: /LeetCode/i })).toBeVisible();
+  await expect(page.getByRole("link", { name: "LeetCode", exact: true })).toBeVisible();
   await expect(page.getByRole("tab", { name: "Problem" })).toBeVisible();
   await page.getByRole("tab", { name: "Notes" }).click();
   await expect(page.getByLabel(/Ghi chú cá nhân/i)).toBeVisible();
