@@ -43,6 +43,18 @@ def count_comments(code: str) -> tuple[int, int]:
     return comment_lines, code_lines
 
 def extract_optimal_java_from_md(md_content: str) -> str | None:
+    # Ưu tiên đúng section Optimal Java solution thay vì lấy code block Java đầu tiên,
+    # vì nhiều bài có snippet Java minh họa ở các section Observation/Algorithm phía trên.
+    section_match = re.search(
+        r'(?ims)^##\s+(?:\d+\.\s*)?Optimal Java solution[^\n]*\n(.*?)(?=^##\s+|\Z)',
+        md_content,
+    )
+    if section_match:
+        code_match = re.search(r'```java\s*([\s\S]*?)\s*```', section_match.group(1))
+        if code_match:
+            return code_match.group(1).strip()
+
+    # Fallback cho tài liệu legacy chưa được migration sang heading Optimal Java solution.
     match = re.search(r'```java\s*([\s\S]*?)\s*```', md_content)
     if match:
         return match.group(1).strip()

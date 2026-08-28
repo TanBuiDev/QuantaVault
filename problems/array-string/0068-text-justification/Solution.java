@@ -10,6 +10,8 @@ class Solution {
             int j = i + 1;
             int wordLength = words[i].length();
 
+            // (j - i) là số space tối thiểu nếu thêm words[j].
+            // Vì đề yêu cầu pack tối đa số từ, dừng đúng tại word đầu tiên không còn fit.
             while (j < words.length
                     && wordLength + (j - i) + words[j].length() <= maxWidth) {
                 wordLength += words[j].length();
@@ -20,6 +22,8 @@ class Solution {
             boolean lastLine = j == words.length;
             StringBuilder line = new StringBuilder(maxWidth);
 
+            // Last line bắt buộc left-justify; single-word line không có gap để chia,
+            // nên hai trường hợp dùng cùng policy: một space giữa từ rồi pad phần còn lại ở cuối.
             if (lastLine || gaps == 0) {
                 for (int k = i; k < j; k++) {
                     if (k > i) {
@@ -30,6 +34,8 @@ class Solution {
                 appendSpaces(line, maxWidth - line.length());
             } else {
                 int totalSpaces = maxWidth - wordLength;
+                // Chia quotient/remainder bảo đảm mọi gap chênh nhau nhiều nhất 1 space;
+                // remainder phải được phát cho các gap bên trái theo yêu cầu đề.
                 int baseSpaces = totalSpaces / gaps;
                 int extraSpaces = totalSpaces % gaps;
 
@@ -44,6 +50,7 @@ class Solution {
             }
 
             result.add(line.toString());
+            // j là word đầu tiên chưa được dùng, nên trở thành start của line kế tiếp.
             i = j;
         }
 
