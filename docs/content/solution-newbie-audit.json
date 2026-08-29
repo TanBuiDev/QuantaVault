@@ -1,0 +1,3931 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-29T00:55:49.381607+00:00",
+  "auditMethod": "deterministic structural baseline; semantic pedagogy still requires reviewer/Newbie Simulator review",
+  "expectedProblemCount": 150,
+  "actualProblemCount": 150,
+  "scoreRange": [
+    0,
+    12
+  ],
+  "criteria": [
+    "problem_framing",
+    "algorithm_derivation",
+    "state_and_structure_meaning",
+    "java_blockers",
+    "dry_run_and_correctness",
+    "transfer_and_mistakes"
+  ],
+  "classification": {
+    "Critical": "0-4",
+    "Partial": "5-8",
+    "Close": "9-11",
+    "Model": "12"
+  },
+  "summary": {
+    "classificationCounts": {
+      "Close": 6,
+      "Critical": 105,
+      "Partial": 39
+    },
+    "tierCounts": {
+      "1": 37,
+      "2": 94,
+      "3": 19
+    },
+    "averageScore": 3.97,
+    "goldenSetCount": 8
+  },
+  "sections": {
+    "1d-dp": {
+      "count": 5,
+      "averageScore": 2.8,
+      "critical": 5,
+      "partial": 0,
+      "close": 0,
+      "model": 0
+    },
+    "array-string": {
+      "count": 24,
+      "averageScore": 7.58,
+      "critical": 0,
+      "partial": 18,
+      "close": 6,
+      "model": 0
+    },
+    "backtracking": {
+      "count": 7,
+      "averageScore": 1.86,
+      "critical": 7,
+      "partial": 0,
+      "close": 0,
+      "model": 0
+    },
+    "binary-search": {
+      "count": 7,
+      "averageScore": 3.29,
+      "critical": 7,
+      "partial": 0,
+      "close": 0,
+      "model": 0
+    },
+    "binary-search-tree": {
+      "count": 3,
+      "averageScore": 2.33,
+      "critical": 3,
+      "partial": 0,
+      "close": 0,
+      "model": 0
+    },
+    "binary-tree-bfs": {
+      "count": 4,
+      "averageScore": 3.5,
+      "critical": 4,
+      "partial": 0,
+      "close": 0,
+      "model": 0
+    },
+    "binary-tree-general": {
+      "count": 14,
+      "averageScore": 2.86,
+      "critical": 14,
+      "partial": 0,
+      "close": 0,
+      "model": 0
+    },
+    "bit-manipulation": {
+      "count": 6,
+      "averageScore": 1.5,
+      "critical": 6,
+      "partial": 0,
+      "close": 0,
+      "model": 0
+    },
+    "divide-conquer": {
+      "count": 4,
+      "averageScore": 2.25,
+      "critical": 4,
+      "partial": 0,
+      "close": 0,
+      "model": 0
+    },
+    "graph-bfs": {
+      "count": 3,
+      "averageScore": 2.0,
+      "critical": 3,
+      "partial": 0,
+      "close": 0,
+      "model": 0
+    },
+    "graph-general": {
+      "count": 6,
+      "averageScore": 3.33,
+      "critical": 6,
+      "partial": 0,
+      "close": 0,
+      "model": 0
+    },
+    "hashmap": {
+      "count": 9,
+      "averageScore": 4.89,
+      "critical": 3,
+      "partial": 6,
+      "close": 0,
+      "model": 0
+    },
+    "heap": {
+      "count": 4,
+      "averageScore": 2.75,
+      "critical": 4,
+      "partial": 0,
+      "close": 0,
+      "model": 0
+    },
+    "intervals": {
+      "count": 4,
+      "averageScore": 5.0,
+      "critical": 2,
+      "partial": 2,
+      "close": 0,
+      "model": 0
+    },
+    "kadanes-algorithm": {
+      "count": 2,
+      "averageScore": 2.5,
+      "critical": 2,
+      "partial": 0,
+      "close": 0,
+      "model": 0
+    },
+    "linked-list": {
+      "count": 11,
+      "averageScore": 3.64,
+      "critical": 10,
+      "partial": 1,
+      "close": 0,
+      "model": 0
+    },
+    "math": {
+      "count": 6,
+      "averageScore": 2.5,
+      "critical": 6,
+      "partial": 0,
+      "close": 0,
+      "model": 0
+    },
+    "matrix": {
+      "count": 5,
+      "averageScore": 5.0,
+      "critical": 2,
+      "partial": 3,
+      "close": 0,
+      "model": 0
+    },
+    "multidimensional-dp": {
+      "count": 9,
+      "averageScore": 2.67,
+      "critical": 9,
+      "partial": 0,
+      "close": 0,
+      "model": 0
+    },
+    "sliding-window": {
+      "count": 4,
+      "averageScore": 5.75,
+      "critical": 0,
+      "partial": 4,
+      "close": 0,
+      "model": 0
+    },
+    "stack": {
+      "count": 5,
+      "averageScore": 2.4,
+      "critical": 5,
+      "partial": 0,
+      "close": 0,
+      "model": 0
+    },
+    "trie": {
+      "count": 3,
+      "averageScore": 2.33,
+      "critical": 3,
+      "partial": 0,
+      "close": 0,
+      "model": 0
+    },
+    "two-pointers": {
+      "count": 5,
+      "averageScore": 6.4,
+      "critical": 0,
+      "partial": 5,
+      "close": 0,
+      "model": 0
+    }
+  },
+  "problems": [
+    {
+      "id": 70,
+      "title": "Climbing Stairs",
+      "difficulty": "Easy",
+      "section": "1d-dp",
+      "path": "problems/1d-dp/0070-climbing-stairs",
+      "tier": 1,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 139,
+      "title": "Word Break",
+      "difficulty": "Medium",
+      "section": "1d-dp",
+      "path": "problems/1d-dp/0139-word-break",
+      "tier": 2,
+      "score": 1,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 0,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "dry_run_and_correctness",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 198,
+      "title": "House Robber",
+      "difficulty": "Medium",
+      "section": "1d-dp",
+      "path": "problems/1d-dp/0198-house-robber",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 300,
+      "title": "Longest Increasing Subsequence",
+      "difficulty": "Medium",
+      "section": "1d-dp",
+      "path": "problems/1d-dp/0300-longest-increasing-subsequence",
+      "tier": 2,
+      "score": 4,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 322,
+      "title": "Coin Change",
+      "difficulty": "Medium",
+      "section": "1d-dp",
+      "path": "problems/1d-dp/0322-coin-change",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 6,
+      "title": "Zigzag Conversion",
+      "difficulty": "Medium",
+      "section": "array-string",
+      "path": "problems/array-string/0006-zigzag-conversion",
+      "tier": 2,
+      "score": 8,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 2,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 12,
+      "title": "Integer to Roman",
+      "difficulty": "Medium",
+      "section": "array-string",
+      "path": "problems/array-string/0012-integer-to-roman",
+      "tier": 2,
+      "score": 7,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 2,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete pitfalls and pattern-recognition transfer cues",
+      "golden_set": false
+    },
+    {
+      "id": 13,
+      "title": "Roman to Integer",
+      "difficulty": "Easy",
+      "section": "array-string",
+      "path": "problems/array-string/0013-roman-to-integer",
+      "tier": 1,
+      "score": 6,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 14,
+      "title": "Longest Common Prefix",
+      "difficulty": "Easy",
+      "section": "array-string",
+      "path": "problems/array-string/0014-longest-common-prefix",
+      "tier": 1,
+      "score": 7,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 2,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [
+        "problem_framing"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example",
+      "golden_set": false
+    },
+    {
+      "id": 26,
+      "title": "Remove Duplicates from Sorted Array",
+      "difficulty": "Easy",
+      "section": "array-string",
+      "path": "problems/array-string/0026-remove-duplicates-from-sorted-array",
+      "tier": 1,
+      "score": 7,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 2,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 27,
+      "title": "Remove Element",
+      "difficulty": "Easy",
+      "section": "array-string",
+      "path": "problems/array-string/0027-remove-element",
+      "tier": 1,
+      "score": 9,
+      "classification": "Close",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 2,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 2,
+        "transfer_and_mistakes": 2
+      },
+      "blockers": [],
+      "recommended_action": "add concrete framing and a hand-worked example; explain variable/state/data-structure meaning before code",
+      "golden_set": false
+    },
+    {
+      "id": 28,
+      "title": "Find the Index of the First Occurrence in a String",
+      "difficulty": "Easy",
+      "section": "array-string",
+      "path": "problems/array-string/0028-find-the-index-of-the-first-occurrence-in-a-string",
+      "tier": 1,
+      "score": 8,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 2,
+        "state_and_structure_meaning": 2,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [],
+      "recommended_action": "add concrete framing and a hand-worked example; add focused Java API/syntax notes where comprehension blocks",
+      "golden_set": false
+    },
+    {
+      "id": 42,
+      "title": "Trapping Rain Water",
+      "difficulty": "Hard",
+      "section": "array-string",
+      "path": "problems/array-string/0042-trapping-rain-water",
+      "tier": 3,
+      "score": 8,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 2,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 2,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [
+        "problem_framing"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example",
+      "golden_set": false
+    },
+    {
+      "id": 45,
+      "title": "Jump Game II",
+      "difficulty": "Medium",
+      "section": "array-string",
+      "path": "problems/array-string/0045-jump-game-ii",
+      "tier": 2,
+      "score": 9,
+      "classification": "Close",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 2,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 2,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": true
+    },
+    {
+      "id": 55,
+      "title": "Jump Game",
+      "difficulty": "Medium",
+      "section": "array-string",
+      "path": "problems/array-string/0055-jump-game",
+      "tier": 2,
+      "score": 7,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 2,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 58,
+      "title": "Length of Last Word",
+      "difficulty": "Easy",
+      "section": "array-string",
+      "path": "problems/array-string/0058-length-of-last-word",
+      "tier": 1,
+      "score": 6,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [
+        "problem_framing"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example",
+      "golden_set": false
+    },
+    {
+      "id": 68,
+      "title": "Text Justification",
+      "difficulty": "Hard",
+      "section": "array-string",
+      "path": "problems/array-string/0068-text-justification",
+      "tier": 3,
+      "score": 7,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 80,
+      "title": "Remove Duplicates from Sorted Array II",
+      "difficulty": "Medium",
+      "section": "array-string",
+      "path": "problems/array-string/0080-remove-duplicates-from-sorted-array-ii",
+      "tier": 2,
+      "score": 8,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 2,
+        "transfer_and_mistakes": 2
+      },
+      "blockers": [],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 88,
+      "title": "Merge Sorted Array",
+      "difficulty": "Easy",
+      "section": "array-string",
+      "path": "problems/array-string/0088-merge-sorted-array",
+      "tier": 1,
+      "score": 9,
+      "classification": "Close",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 2,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 2,
+        "transfer_and_mistakes": 2
+      },
+      "blockers": [],
+      "recommended_action": "add concrete framing and a hand-worked example; explain variable/state/data-structure meaning before code",
+      "golden_set": false
+    },
+    {
+      "id": 121,
+      "title": "Best Time to Buy and Sell Stock",
+      "difficulty": "Easy",
+      "section": "array-string",
+      "path": "problems/array-string/0121-best-time-to-buy-and-sell-stock",
+      "tier": 1,
+      "score": 10,
+      "classification": "Close",
+      "scores": {
+        "problem_framing": 2,
+        "algorithm_derivation": 2,
+        "state_and_structure_meaning": 2,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 2
+      },
+      "blockers": [],
+      "recommended_action": "add focused Java API/syntax notes where comprehension blocks; add an implementation-state dry run and correctness bridge",
+      "golden_set": true
+    },
+    {
+      "id": 122,
+      "title": "Best Time to Buy and Sell Stock II",
+      "difficulty": "Medium",
+      "section": "array-string",
+      "path": "problems/array-string/0122-best-time-to-buy-and-sell-stock-ii",
+      "tier": 2,
+      "score": 7,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 2,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [],
+      "recommended_action": "derive the optimal idea from a natural approach and bottleneck; explain variable/state/data-structure meaning before code",
+      "golden_set": false
+    },
+    {
+      "id": 134,
+      "title": "Gas Station",
+      "difficulty": "Medium",
+      "section": "array-string",
+      "path": "problems/array-string/0134-gas-station",
+      "tier": 2,
+      "score": 6,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [
+        "problem_framing"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example",
+      "golden_set": false
+    },
+    {
+      "id": 135,
+      "title": "Candy",
+      "difficulty": "Hard",
+      "section": "array-string",
+      "path": "problems/array-string/0135-candy",
+      "tier": 3,
+      "score": 9,
+      "classification": "Close",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 2,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 2,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [],
+      "recommended_action": "add concrete framing and a hand-worked example; explain variable/state/data-structure meaning before code",
+      "golden_set": false
+    },
+    {
+      "id": 151,
+      "title": "Reverse Words in a String",
+      "difficulty": "Medium",
+      "section": "array-string",
+      "path": "problems/array-string/0151-reverse-words-in-a-string",
+      "tier": 2,
+      "score": 7,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 169,
+      "title": "Majority Element",
+      "difficulty": "Easy",
+      "section": "array-string",
+      "path": "problems/array-string/0169-majority-element",
+      "tier": 1,
+      "score": 8,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 2,
+        "transfer_and_mistakes": 2
+      },
+      "blockers": [],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 189,
+      "title": "Rotate Array",
+      "difficulty": "Medium",
+      "section": "array-string",
+      "path": "problems/array-string/0189-rotate-array",
+      "tier": 2,
+      "score": 9,
+      "classification": "Close",
+      "scores": {
+        "problem_framing": 2,
+        "algorithm_derivation": 2,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [],
+      "recommended_action": "explain variable/state/data-structure meaning before code; add an implementation-state dry run and correctness bridge",
+      "golden_set": false
+    },
+    {
+      "id": 238,
+      "title": "Product of Array Except Self",
+      "difficulty": "Medium",
+      "section": "array-string",
+      "path": "problems/array-string/0238-product-of-array-except-self",
+      "tier": 2,
+      "score": 8,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 2,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": true
+    },
+    {
+      "id": 274,
+      "title": "H-Index",
+      "difficulty": "Medium",
+      "section": "array-string",
+      "path": "problems/array-string/0274-h-index",
+      "tier": 2,
+      "score": 6,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 380,
+      "title": "Insert Delete GetRandom O(1)",
+      "difficulty": "Medium",
+      "section": "array-string",
+      "path": "problems/array-string/0380-insert-delete-getrandom-o1",
+      "tier": 2,
+      "score": 6,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [
+        "problem_framing"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example",
+      "golden_set": false
+    },
+    {
+      "id": 17,
+      "title": "Letter Combinations of a Phone Number",
+      "difficulty": "Medium",
+      "section": "backtracking",
+      "path": "problems/backtracking/0017-letter-combinations-of-a-phone-number",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "derive the optimal idea from a natural approach and bottleneck; explain variable/state/data-structure meaning before code",
+      "golden_set": false
+    },
+    {
+      "id": 22,
+      "title": "Generate Parentheses",
+      "difficulty": "Medium",
+      "section": "backtracking",
+      "path": "problems/backtracking/0022-generate-parentheses",
+      "tier": 2,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 39,
+      "title": "Combination Sum",
+      "difficulty": "Medium",
+      "section": "backtracking",
+      "path": "problems/backtracking/0039-combination-sum",
+      "tier": 2,
+      "score": 1,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 0,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "dry_run_and_correctness",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 46,
+      "title": "Permutations",
+      "difficulty": "Medium",
+      "section": "backtracking",
+      "path": "problems/backtracking/0046-permutations",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "derive the optimal idea from a natural approach and bottleneck; explain variable/state/data-structure meaning before code",
+      "golden_set": false
+    },
+    {
+      "id": 52,
+      "title": "N-Queens II",
+      "difficulty": "Hard",
+      "section": "backtracking",
+      "path": "problems/backtracking/0052-n-queens-ii",
+      "tier": 3,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 0,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "dry_run_and_correctness",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 77,
+      "title": "Combinations",
+      "difficulty": "Medium",
+      "section": "backtracking",
+      "path": "problems/backtracking/0077-combinations",
+      "tier": 2,
+      "score": 1,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 0,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "dry_run_and_correctness",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 79,
+      "title": "Word Search",
+      "difficulty": "Medium",
+      "section": "backtracking",
+      "path": "problems/backtracking/0079-word-search",
+      "tier": 2,
+      "score": 1,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 0,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "dry_run_and_correctness",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 4,
+      "title": "Median of Two Sorted Arrays",
+      "difficulty": "Hard",
+      "section": "binary-search",
+      "path": "problems/binary-search/0004-median-of-two-sorted-arrays",
+      "tier": 3,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": true
+    },
+    {
+      "id": 33,
+      "title": "Search in Rotated Sorted Array",
+      "difficulty": "Medium",
+      "section": "binary-search",
+      "path": "problems/binary-search/0033-search-in-rotated-sorted-array",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 34,
+      "title": "Find First and Last Position of Element in Sorted Array",
+      "difficulty": "Medium",
+      "section": "binary-search",
+      "path": "problems/binary-search/0034-find-first-and-last-position-of-element-in-sorted-array",
+      "tier": 2,
+      "score": 4,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 35,
+      "title": "Search Insert Position",
+      "difficulty": "Easy",
+      "section": "binary-search",
+      "path": "problems/binary-search/0035-search-insert-position",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 74,
+      "title": "Search a 2D Matrix",
+      "difficulty": "Medium",
+      "section": "binary-search",
+      "path": "problems/binary-search/0074-search-a-2d-matrix",
+      "tier": 2,
+      "score": 4,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "derive the optimal idea from a natural approach and bottleneck; explain variable/state/data-structure meaning before code",
+      "golden_set": false
+    },
+    {
+      "id": 153,
+      "title": "Find Minimum in Rotated Sorted Array",
+      "difficulty": "Medium",
+      "section": "binary-search",
+      "path": "problems/binary-search/0153-find-minimum-in-rotated-sorted-array",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 162,
+      "title": "Find Peak Element",
+      "difficulty": "Medium",
+      "section": "binary-search",
+      "path": "problems/binary-search/0162-find-peak-element",
+      "tier": 2,
+      "score": 4,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 98,
+      "title": "Validate Binary Search Tree",
+      "difficulty": "Medium",
+      "section": "binary-search-tree",
+      "path": "problems/binary-search-tree/0098-validate-binary-search-tree",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 230,
+      "title": "Kth Smallest Element in a BST",
+      "difficulty": "Medium",
+      "section": "binary-search-tree",
+      "path": "problems/binary-search-tree/0230-kth-smallest-element-in-a-bst",
+      "tier": 2,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 0,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "dry_run_and_correctness",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 530,
+      "title": "Minimum Absolute Difference in BST",
+      "difficulty": "Easy",
+      "section": "binary-search-tree",
+      "path": "problems/binary-search-tree/0530-minimum-absolute-difference-in-bst",
+      "tier": 1,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 102,
+      "title": "Binary Tree Level Order Traversal",
+      "difficulty": "Medium",
+      "section": "binary-tree-bfs",
+      "path": "problems/binary-tree-bfs/0102-binary-tree-level-order-traversal",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 103,
+      "title": "Binary Tree Zigzag Level Order Traversal",
+      "difficulty": "Medium",
+      "section": "binary-tree-bfs",
+      "path": "problems/binary-tree-bfs/0103-binary-tree-zigzag-level-order-traversal",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 199,
+      "title": "Binary Tree Right Side View",
+      "difficulty": "Medium",
+      "section": "binary-tree-bfs",
+      "path": "problems/binary-tree-bfs/0199-binary-tree-right-side-view",
+      "tier": 2,
+      "score": 4,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 637,
+      "title": "Average of Levels in Binary Tree",
+      "difficulty": "Easy",
+      "section": "binary-tree-bfs",
+      "path": "problems/binary-tree-bfs/0637-average-of-levels-in-binary-tree",
+      "tier": 1,
+      "score": 4,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 100,
+      "title": "Same Tree",
+      "difficulty": "Easy",
+      "section": "binary-tree-general",
+      "path": "problems/binary-tree-general/0100-same-tree",
+      "tier": 1,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 101,
+      "title": "Symmetric Tree",
+      "difficulty": "Easy",
+      "section": "binary-tree-general",
+      "path": "problems/binary-tree-general/0101-symmetric-tree",
+      "tier": 1,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 104,
+      "title": "Maximum Depth of Binary Tree",
+      "difficulty": "Easy",
+      "section": "binary-tree-general",
+      "path": "problems/binary-tree-general/0104-maximum-depth-of-binary-tree",
+      "tier": 1,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 105,
+      "title": "Construct Binary Tree from Preorder and Inorder Traversal",
+      "difficulty": "Medium",
+      "section": "binary-tree-general",
+      "path": "problems/binary-tree-general/0105-construct-binary-tree-from-preorder-and-inorder-traversal",
+      "tier": 2,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 106,
+      "title": "Construct Binary Tree from Inorder and Postorder Traversal",
+      "difficulty": "Medium",
+      "section": "binary-tree-general",
+      "path": "problems/binary-tree-general/0106-construct-binary-tree-from-inorder-and-postorder-traversal",
+      "tier": 2,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 112,
+      "title": "Path Sum",
+      "difficulty": "Easy",
+      "section": "binary-tree-general",
+      "path": "problems/binary-tree-general/0112-path-sum",
+      "tier": 1,
+      "score": 4,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "derive the optimal idea from a natural approach and bottleneck; explain variable/state/data-structure meaning before code",
+      "golden_set": false
+    },
+    {
+      "id": 114,
+      "title": "Flatten Binary Tree to Linked List",
+      "difficulty": "Medium",
+      "section": "binary-tree-general",
+      "path": "problems/binary-tree-general/0114-flatten-binary-tree-to-linked-list",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 117,
+      "title": "Populating Next Right Pointers in Each Node II",
+      "difficulty": "Medium",
+      "section": "binary-tree-general",
+      "path": "problems/binary-tree-general/0117-populating-next-right-pointers-in-each-node-ii",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 124,
+      "title": "Binary Tree Maximum Path Sum",
+      "difficulty": "Hard",
+      "section": "binary-tree-general",
+      "path": "problems/binary-tree-general/0124-binary-tree-maximum-path-sum",
+      "tier": 3,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": true
+    },
+    {
+      "id": 129,
+      "title": "Sum Root to Leaf Numbers",
+      "difficulty": "Medium",
+      "section": "binary-tree-general",
+      "path": "problems/binary-tree-general/0129-sum-root-to-leaf-numbers",
+      "tier": 2,
+      "score": 4,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 173,
+      "title": "Binary Search Tree Iterator",
+      "difficulty": "Medium",
+      "section": "binary-tree-general",
+      "path": "problems/binary-tree-general/0173-binary-search-tree-iterator",
+      "tier": 2,
+      "score": 1,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 0,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "dry_run_and_correctness",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 222,
+      "title": "Count Complete Tree Nodes",
+      "difficulty": "Medium",
+      "section": "binary-tree-general",
+      "path": "problems/binary-tree-general/0222-count-complete-tree-nodes",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 226,
+      "title": "Invert Binary Tree",
+      "difficulty": "Easy",
+      "section": "binary-tree-general",
+      "path": "problems/binary-tree-general/0226-invert-binary-tree",
+      "tier": 1,
+      "score": 4,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 236,
+      "title": "Lowest Common Ancestor of a Binary Tree",
+      "difficulty": "Medium",
+      "section": "binary-tree-general",
+      "path": "problems/binary-tree-general/0236-lowest-common-ancestor-of-a-binary-tree",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 67,
+      "title": "Add Binary",
+      "difficulty": "Easy",
+      "section": "bit-manipulation",
+      "path": "problems/bit-manipulation/0067-add-binary",
+      "tier": 1,
+      "score": 1,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 0,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "dry_run_and_correctness",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 136,
+      "title": "Single Number",
+      "difficulty": "Easy",
+      "section": "bit-manipulation",
+      "path": "problems/bit-manipulation/0136-single-number",
+      "tier": 1,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 137,
+      "title": "Single Number II",
+      "difficulty": "Medium",
+      "section": "bit-manipulation",
+      "path": "problems/bit-manipulation/0137-single-number-ii",
+      "tier": 2,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 190,
+      "title": "Reverse Bits",
+      "difficulty": "Easy",
+      "section": "bit-manipulation",
+      "path": "problems/bit-manipulation/0190-reverse-bits",
+      "tier": 1,
+      "score": 1,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 0,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "dry_run_and_correctness",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 191,
+      "title": "Number of 1 Bits",
+      "difficulty": "Easy",
+      "section": "bit-manipulation",
+      "path": "problems/bit-manipulation/0191-number-of-1-bits",
+      "tier": 1,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 0,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "dry_run_and_correctness",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 201,
+      "title": "Bitwise AND of Numbers Range",
+      "difficulty": "Medium",
+      "section": "bit-manipulation",
+      "path": "problems/bit-manipulation/0201-bitwise-and-of-numbers-range",
+      "tier": 2,
+      "score": 1,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 0,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "dry_run_and_correctness",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 23,
+      "title": "Merge k Sorted Lists",
+      "difficulty": "Hard",
+      "section": "divide-conquer",
+      "path": "problems/divide-conquer/0023-merge-k-sorted-lists",
+      "tier": 3,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 108,
+      "title": "Convert Sorted Array to Binary Search Tree",
+      "difficulty": "Easy",
+      "section": "divide-conquer",
+      "path": "problems/divide-conquer/0108-convert-sorted-array-to-binary-search-tree",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 148,
+      "title": "Sort List",
+      "difficulty": "Medium",
+      "section": "divide-conquer",
+      "path": "problems/divide-conquer/0148-sort-list",
+      "tier": 2,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 427,
+      "title": "Construct Quad Tree",
+      "difficulty": "Medium",
+      "section": "divide-conquer",
+      "path": "problems/divide-conquer/0427-construct-quad-tree",
+      "tier": 2,
+      "score": 1,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 0,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "dry_run_and_correctness",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 127,
+      "title": "Word Ladder",
+      "difficulty": "Hard",
+      "section": "graph-bfs",
+      "path": "problems/graph-bfs/0127-word-ladder",
+      "tier": 3,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 0,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "dry_run_and_correctness",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 433,
+      "title": "Minimum Genetic Mutation",
+      "difficulty": "Medium",
+      "section": "graph-bfs",
+      "path": "problems/graph-bfs/0433-minimum-genetic-mutation",
+      "tier": 2,
+      "score": 1,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 0,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "dry_run_and_correctness",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 909,
+      "title": "Snakes and Ladders",
+      "difficulty": "Medium",
+      "section": "graph-bfs",
+      "path": "problems/graph-bfs/0909-snakes-and-ladders",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 130,
+      "title": "Surrounded Regions",
+      "difficulty": "Medium",
+      "section": "graph-general",
+      "path": "problems/graph-general/0130-surrounded-regions",
+      "tier": 2,
+      "score": 4,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 133,
+      "title": "Clone Graph",
+      "difficulty": "Medium",
+      "section": "graph-general",
+      "path": "problems/graph-general/0133-clone-graph",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 200,
+      "title": "Number of Islands",
+      "difficulty": "Medium",
+      "section": "graph-general",
+      "path": "problems/graph-general/0200-number-of-islands",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 207,
+      "title": "Course Schedule",
+      "difficulty": "Medium",
+      "section": "graph-general",
+      "path": "problems/graph-general/0207-course-schedule",
+      "tier": 2,
+      "score": 4,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 210,
+      "title": "Course Schedule II",
+      "difficulty": "Medium",
+      "section": "graph-general",
+      "path": "problems/graph-general/0210-course-schedule-ii",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 399,
+      "title": "Evaluate Division",
+      "difficulty": "Medium",
+      "section": "graph-general",
+      "path": "problems/graph-general/0399-evaluate-division",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 1,
+      "title": "Two Sum",
+      "difficulty": "Easy",
+      "section": "hashmap",
+      "path": "problems/hashmap/0001-two-sum",
+      "tier": 1,
+      "score": 5,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete pitfalls and pattern-recognition transfer cues",
+      "golden_set": false
+    },
+    {
+      "id": 49,
+      "title": "Group Anagrams",
+      "difficulty": "Medium",
+      "section": "hashmap",
+      "path": "problems/hashmap/0049-group-anagrams",
+      "tier": 2,
+      "score": 6,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 2,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 0,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "dry_run_and_correctness",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add an implementation-state dry run and correctness bridge; add concrete pitfalls and pattern-recognition transfer cues",
+      "golden_set": false
+    },
+    {
+      "id": 128,
+      "title": "Longest Consecutive Sequence",
+      "difficulty": "Medium",
+      "section": "hashmap",
+      "path": "problems/hashmap/0128-longest-consecutive-sequence",
+      "tier": 2,
+      "score": 5,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [
+        "problem_framing"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example",
+      "golden_set": false
+    },
+    {
+      "id": 202,
+      "title": "Happy Number",
+      "difficulty": "Easy",
+      "section": "hashmap",
+      "path": "problems/hashmap/0202-happy-number",
+      "tier": 1,
+      "score": 4,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; add concrete pitfalls and pattern-recognition transfer cues",
+      "golden_set": false
+    },
+    {
+      "id": 205,
+      "title": "Isomorphic Strings",
+      "difficulty": "Easy",
+      "section": "hashmap",
+      "path": "problems/hashmap/0205-isomorphic-strings",
+      "tier": 1,
+      "score": 6,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 2,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; add concrete pitfalls and pattern-recognition transfer cues",
+      "golden_set": false
+    },
+    {
+      "id": 219,
+      "title": "Contains Duplicate II",
+      "difficulty": "Easy",
+      "section": "hashmap",
+      "path": "problems/hashmap/0219-contains-duplicate-ii",
+      "tier": 1,
+      "score": 4,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; add concrete pitfalls and pattern-recognition transfer cues",
+      "golden_set": false
+    },
+    {
+      "id": 242,
+      "title": "Valid Anagram",
+      "difficulty": "Easy",
+      "section": "hashmap",
+      "path": "problems/hashmap/0242-valid-anagram",
+      "tier": 1,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; explain variable/state/data-structure meaning before code",
+      "golden_set": false
+    },
+    {
+      "id": 290,
+      "title": "Word Pattern",
+      "difficulty": "Easy",
+      "section": "hashmap",
+      "path": "problems/hashmap/0290-word-pattern",
+      "tier": 1,
+      "score": 6,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 2,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete pitfalls and pattern-recognition transfer cues",
+      "golden_set": false
+    },
+    {
+      "id": 383,
+      "title": "Ransom Note",
+      "difficulty": "Easy",
+      "section": "hashmap",
+      "path": "problems/hashmap/0383-ransom-note",
+      "tier": 1,
+      "score": 5,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete pitfalls and pattern-recognition transfer cues",
+      "golden_set": false
+    },
+    {
+      "id": 215,
+      "title": "Kth Largest Element in an Array",
+      "difficulty": "Medium",
+      "section": "heap",
+      "path": "problems/heap/0215-kth-largest-element-in-an-array",
+      "tier": 2,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 295,
+      "title": "Find Median from Data Stream",
+      "difficulty": "Hard",
+      "section": "heap",
+      "path": "problems/heap/0295-find-median-from-data-stream",
+      "tier": 3,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 0,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "dry_run_and_correctness",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 373,
+      "title": "Find K Pairs with Smallest Sums",
+      "difficulty": "Medium",
+      "section": "heap",
+      "path": "problems/heap/0373-find-k-pairs-with-smallest-sums",
+      "tier": 2,
+      "score": 4,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 502,
+      "title": "IPO",
+      "difficulty": "Hard",
+      "section": "heap",
+      "path": "problems/heap/0502-ipo",
+      "tier": 3,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 56,
+      "title": "Merge Intervals",
+      "difficulty": "Medium",
+      "section": "intervals",
+      "path": "problems/intervals/0056-merge-intervals",
+      "tier": 2,
+      "score": 6,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 2,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete pitfalls and pattern-recognition transfer cues",
+      "golden_set": false
+    },
+    {
+      "id": 57,
+      "title": "Insert Interval",
+      "difficulty": "Medium",
+      "section": "intervals",
+      "path": "problems/intervals/0057-insert-interval",
+      "tier": 2,
+      "score": 4,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "explain variable/state/data-structure meaning before code; add concrete pitfalls and pattern-recognition transfer cues",
+      "golden_set": false
+    },
+    {
+      "id": 228,
+      "title": "Summary Ranges",
+      "difficulty": "Easy",
+      "section": "intervals",
+      "path": "problems/intervals/0228-summary-ranges",
+      "tier": 1,
+      "score": 6,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 452,
+      "title": "Minimum Number of Arrows to Burst Balloons",
+      "difficulty": "Medium",
+      "section": "intervals",
+      "path": "problems/intervals/0452-minimum-number-of-arrows-to-burst-balloons",
+      "tier": 2,
+      "score": 4,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; add concrete pitfalls and pattern-recognition transfer cues",
+      "golden_set": false
+    },
+    {
+      "id": 53,
+      "title": "Maximum Subarray",
+      "difficulty": "Medium",
+      "section": "kadanes-algorithm",
+      "path": "problems/kadanes-algorithm/0053-maximum-subarray",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 918,
+      "title": "Maximum Sum Circular Subarray",
+      "difficulty": "Medium",
+      "section": "kadanes-algorithm",
+      "path": "problems/kadanes-algorithm/0918-maximum-sum-circular-subarray",
+      "tier": 2,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 2,
+      "title": "Add Two Numbers",
+      "difficulty": "Medium",
+      "section": "linked-list",
+      "path": "problems/linked-list/0002-add-two-numbers",
+      "tier": 2,
+      "score": 6,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete pitfalls and pattern-recognition transfer cues",
+      "golden_set": false
+    },
+    {
+      "id": 19,
+      "title": "Remove Nth Node From End of List",
+      "difficulty": "Medium",
+      "section": "linked-list",
+      "path": "problems/linked-list/0019-remove-nth-node-from-end-of-list",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 21,
+      "title": "Merge Two Sorted Lists",
+      "difficulty": "Easy",
+      "section": "linked-list",
+      "path": "problems/linked-list/0021-merge-two-sorted-lists",
+      "tier": 1,
+      "score": 4,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 25,
+      "title": "Reverse Nodes in k-Group",
+      "difficulty": "Hard",
+      "section": "linked-list",
+      "path": "problems/linked-list/0025-reverse-nodes-in-k-group",
+      "tier": 3,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 61,
+      "title": "Rotate List",
+      "difficulty": "Medium",
+      "section": "linked-list",
+      "path": "problems/linked-list/0061-rotate-list",
+      "tier": 2,
+      "score": 4,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 82,
+      "title": "Remove Duplicates from Sorted List II",
+      "difficulty": "Medium",
+      "section": "linked-list",
+      "path": "problems/linked-list/0082-remove-duplicates-from-sorted-list-ii",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 86,
+      "title": "Partition List",
+      "difficulty": "Medium",
+      "section": "linked-list",
+      "path": "problems/linked-list/0086-partition-list",
+      "tier": 2,
+      "score": 4,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "derive the optimal idea from a natural approach and bottleneck; explain variable/state/data-structure meaning before code",
+      "golden_set": false
+    },
+    {
+      "id": 92,
+      "title": "Reverse Linked List II",
+      "difficulty": "Medium",
+      "section": "linked-list",
+      "path": "problems/linked-list/0092-reverse-linked-list-ii",
+      "tier": 2,
+      "score": 4,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 138,
+      "title": "Copy List with Random Pointer",
+      "difficulty": "Medium",
+      "section": "linked-list",
+      "path": "problems/linked-list/0138-copy-list-with-random-pointer",
+      "tier": 2,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 141,
+      "title": "Linked List Cycle",
+      "difficulty": "Easy",
+      "section": "linked-list",
+      "path": "problems/linked-list/0141-linked-list-cycle",
+      "tier": 1,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 146,
+      "title": "LRU Cache",
+      "difficulty": "Medium",
+      "section": "linked-list",
+      "path": "problems/linked-list/0146-lru-cache",
+      "tier": 3,
+      "score": 4,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": true
+    },
+    {
+      "id": 9,
+      "title": "Palindrome Number",
+      "difficulty": "Easy",
+      "section": "math",
+      "path": "problems/math/0009-palindrome-number",
+      "tier": 1,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 50,
+      "title": "Pow(x, n)",
+      "difficulty": "Medium",
+      "section": "math",
+      "path": "problems/math/0050-powx-n",
+      "tier": 2,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 66,
+      "title": "Plus One",
+      "difficulty": "Easy",
+      "section": "math",
+      "path": "problems/math/0066-plus-one",
+      "tier": 1,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 69,
+      "title": "Sqrt(x)",
+      "difficulty": "Easy",
+      "section": "math",
+      "path": "problems/math/0069-sqrtx",
+      "tier": 1,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 149,
+      "title": "Max Points on a Line",
+      "difficulty": "Hard",
+      "section": "math",
+      "path": "problems/math/0149-max-points-on-a-line",
+      "tier": 3,
+      "score": 1,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 0,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "dry_run_and_correctness",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 172,
+      "title": "Factorial Trailing Zeroes",
+      "difficulty": "Medium",
+      "section": "math",
+      "path": "problems/math/0172-factorial-trailing-zeroes",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 36,
+      "title": "Valid Sudoku",
+      "difficulty": "Medium",
+      "section": "matrix",
+      "path": "problems/matrix/0036-valid-sudoku",
+      "tier": 2,
+      "score": 7,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 2,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete pitfalls and pattern-recognition transfer cues",
+      "golden_set": false
+    },
+    {
+      "id": 48,
+      "title": "Rotate Image",
+      "difficulty": "Medium",
+      "section": "matrix",
+      "path": "problems/matrix/0048-rotate-image",
+      "tier": 2,
+      "score": 6,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete pitfalls and pattern-recognition transfer cues",
+      "golden_set": false
+    },
+    {
+      "id": 54,
+      "title": "Spiral Matrix",
+      "difficulty": "Medium",
+      "section": "matrix",
+      "path": "problems/matrix/0054-spiral-matrix",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 73,
+      "title": "Set Matrix Zeroes",
+      "difficulty": "Medium",
+      "section": "matrix",
+      "path": "problems/matrix/0073-set-matrix-zeroes",
+      "tier": 2,
+      "score": 6,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [
+        "problem_framing"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example",
+      "golden_set": false
+    },
+    {
+      "id": 289,
+      "title": "Game of Life",
+      "difficulty": "Medium",
+      "section": "matrix",
+      "path": "problems/matrix/0289-game-of-life",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 5,
+      "title": "Longest Palindromic Substring",
+      "difficulty": "Medium",
+      "section": "multidimensional-dp",
+      "path": "problems/multidimensional-dp/0005-longest-palindromic-substring",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 63,
+      "title": "Unique Paths II",
+      "difficulty": "Medium",
+      "section": "multidimensional-dp",
+      "path": "problems/multidimensional-dp/0063-unique-paths-ii",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 64,
+      "title": "Minimum Path Sum",
+      "difficulty": "Medium",
+      "section": "multidimensional-dp",
+      "path": "problems/multidimensional-dp/0064-minimum-path-sum",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 72,
+      "title": "Edit Distance",
+      "difficulty": "Medium",
+      "section": "multidimensional-dp",
+      "path": "problems/multidimensional-dp/0072-edit-distance",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 97,
+      "title": "Interleaving String",
+      "difficulty": "Medium",
+      "section": "multidimensional-dp",
+      "path": "problems/multidimensional-dp/0097-interleaving-string",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 120,
+      "title": "Triangle",
+      "difficulty": "Medium",
+      "section": "multidimensional-dp",
+      "path": "problems/multidimensional-dp/0120-triangle",
+      "tier": 2,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 123,
+      "title": "Best Time to Buy and Sell Stock III",
+      "difficulty": "Hard",
+      "section": "multidimensional-dp",
+      "path": "problems/multidimensional-dp/0123-best-time-to-buy-and-sell-stock-iii",
+      "tier": 3,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 188,
+      "title": "Best Time to Buy and Sell Stock IV",
+      "difficulty": "Hard",
+      "section": "multidimensional-dp",
+      "path": "problems/multidimensional-dp/0188-best-time-to-buy-and-sell-stock-iv",
+      "tier": 3,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": true
+    },
+    {
+      "id": 221,
+      "title": "Maximal Square",
+      "difficulty": "Medium",
+      "section": "multidimensional-dp",
+      "path": "problems/multidimensional-dp/0221-maximal-square",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 3,
+      "title": "Longest Substring Without Repeating Characters",
+      "difficulty": "Medium",
+      "section": "sliding-window",
+      "path": "problems/sliding-window/0003-longest-substring-without-repeating-characters",
+      "tier": 2,
+      "score": 7,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 2,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 30,
+      "title": "Substring with Concatenation of All Words",
+      "difficulty": "Hard",
+      "section": "sliding-window",
+      "path": "problems/sliding-window/0030-substring-with-concatenation-of-all-words",
+      "tier": 3,
+      "score": 6,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 2,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; add concrete pitfalls and pattern-recognition transfer cues",
+      "golden_set": false
+    },
+    {
+      "id": 76,
+      "title": "Minimum Window Substring",
+      "difficulty": "Hard",
+      "section": "sliding-window",
+      "path": "problems/sliding-window/0076-minimum-window-substring",
+      "tier": 3,
+      "score": 5,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete pitfalls and pattern-recognition transfer cues",
+      "golden_set": false
+    },
+    {
+      "id": 209,
+      "title": "Minimum Size Subarray Sum",
+      "difficulty": "Medium",
+      "section": "sliding-window",
+      "path": "problems/sliding-window/0209-minimum-size-subarray-sum",
+      "tier": 2,
+      "score": 5,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 2,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; add concrete pitfalls and pattern-recognition transfer cues",
+      "golden_set": false
+    },
+    {
+      "id": 20,
+      "title": "Valid Parentheses",
+      "difficulty": "Easy",
+      "section": "stack",
+      "path": "problems/stack/0020-valid-parentheses",
+      "tier": 1,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 71,
+      "title": "Simplify Path",
+      "difficulty": "Medium",
+      "section": "stack",
+      "path": "problems/stack/0071-simplify-path",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 150,
+      "title": "Evaluate Reverse Polish Notation",
+      "difficulty": "Medium",
+      "section": "stack",
+      "path": "problems/stack/0150-evaluate-reverse-polish-notation",
+      "tier": 2,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 155,
+      "title": "Min Stack",
+      "difficulty": "Medium",
+      "section": "stack",
+      "path": "problems/stack/0155-min-stack",
+      "tier": 2,
+      "score": 2,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 0,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "dry_run_and_correctness",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 224,
+      "title": "Basic Calculator",
+      "difficulty": "Hard",
+      "section": "stack",
+      "path": "problems/stack/0224-basic-calculator",
+      "tier": 3,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": true
+    },
+    {
+      "id": 208,
+      "title": "Implement Trie (Prefix Tree)",
+      "difficulty": "Medium",
+      "section": "trie",
+      "path": "problems/trie/0208-implement-trie-prefix-tree",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 0,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "dry_run_and_correctness",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 211,
+      "title": "Design Add and Search Words Data Structure",
+      "difficulty": "Medium",
+      "section": "trie",
+      "path": "problems/trie/0211-design-add-and-search-words-data-structure",
+      "tier": 2,
+      "score": 3,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 0,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "dry_run_and_correctness",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 212,
+      "title": "Word Search II",
+      "difficulty": "Hard",
+      "section": "trie",
+      "path": "problems/trie/0212-word-search-ii",
+      "tier": 3,
+      "score": 1,
+      "classification": "Critical",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 0,
+        "state_and_structure_meaning": 0,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 0,
+        "transfer_and_mistakes": 0
+      },
+      "blockers": [
+        "problem_framing",
+        "algorithm_derivation",
+        "state_and_structure_meaning",
+        "dry_run_and_correctness",
+        "transfer_and_mistakes"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 11,
+      "title": "Container With Most Water",
+      "difficulty": "Medium",
+      "section": "two-pointers",
+      "path": "problems/two-pointers/0011-container-with-most-water",
+      "tier": 2,
+      "score": 6,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 2,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [
+        "problem_framing"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example",
+      "golden_set": false
+    },
+    {
+      "id": 15,
+      "title": "3Sum",
+      "difficulty": "Medium",
+      "section": "two-pointers",
+      "path": "problems/two-pointers/0015-3sum",
+      "tier": 2,
+      "score": 5,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 1,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [
+        "problem_framing"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example",
+      "golden_set": false
+    },
+    {
+      "id": 125,
+      "title": "Valid Palindrome",
+      "difficulty": "Easy",
+      "section": "two-pointers",
+      "path": "problems/two-pointers/0125-valid-palindrome",
+      "tier": 1,
+      "score": 6,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [
+        "problem_framing"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example",
+      "golden_set": false
+    },
+    {
+      "id": 167,
+      "title": "Two Sum II - Input Array Is Sorted",
+      "difficulty": "Medium",
+      "section": "two-pointers",
+      "path": "problems/two-pointers/0167-two-sum-ii-input-array-is-sorted",
+      "tier": 2,
+      "score": 8,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 1,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 2,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [],
+      "recommended_action": "add concrete framing and a hand-worked example; derive the optimal idea from a natural approach and bottleneck",
+      "golden_set": false
+    },
+    {
+      "id": 392,
+      "title": "Is Subsequence",
+      "difficulty": "Easy",
+      "section": "two-pointers",
+      "path": "problems/two-pointers/0392-is-subsequence",
+      "tier": 1,
+      "score": 7,
+      "classification": "Partial",
+      "scores": {
+        "problem_framing": 0,
+        "algorithm_derivation": 1,
+        "state_and_structure_meaning": 1,
+        "java_blockers": 2,
+        "dry_run_and_correctness": 2,
+        "transfer_and_mistakes": 1
+      },
+      "blockers": [
+        "problem_framing"
+      ],
+      "recommended_action": "add concrete framing and a hand-worked example",
+      "golden_set": false
+    }
+  ]
+}
