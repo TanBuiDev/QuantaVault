@@ -1,0 +1,89 @@
+{
+  "group": "bit-math",
+  "problems": {
+    "9": {
+      "framing": "Palindrome Number có thể kiểm tra digits đối xứng mà không convert string. Với 1221, ta chỉ cần reverse nửa cuối thành 12 rồi so với nửa đầu còn lại 12, tránh reverse toàn số gây overflow.",
+      "derive": "String conversion đơn giản nhưng dùng representation phụ. Reverse toàn integer có nguy cơ overflow; observation khi reversedHalf >= remainingHalf là đã đi qua nửa số, đủ để so hai halves.",
+      "state": "x giữ nửa đầu chưa consume, reversed giữ digits đã lấy từ cuối theo thứ tự đảo. Invariant mỗi loop chuyển đúng digit cuối của x sang reversed. Số âm và số kết thúc 0 (trừ0) reject sớm.",
+      "trace": "Dry run 1221: reversed=1,x=122; reversed=12,x=12 rồi stop và compare equal. Với 121: reversed=1,x=12; reversed=12,x=1, odd length bỏ middle bằng reversed/10=1 nên match.",
+      "transfer": "Lỗi thường gặp là reverse toàn số rồi overflow hoặc quên odd digit giữa. Khi nào dùng: numeric palindrome có thể compare halves bằng digit extraction để giữ O(1) space."
+    },
+    "50": {
+      "framing": "x^n nếu nhân x n lần là O(n), nhưng exponent có thể chia đôi: x^10=(x^5)^2 và x^11=x*(x^5)^2. Binary representation của n cho biết chính xác những powers nào phải nhân vào answer.",
+      "derive": "Linear multiplication quá chậm cho exponent lớn. Exponentiation by squaring mỗi bước halve exponent; negative n đổi thành reciprocal và cần dùng long để xử lý -Integer.MIN_VALUE an toàn.",
+      "state": "base là x^(2^bit) hiện tại, exponent là phần bits chưa xử lý, result tích các powers ứng với bits 1 đã đi qua. Invariant original x^N = result * base^exponent theo transformed positive exponent.",
+      "trace": "Dry run 2^10, binary1010: bit0=0 square base4; bit1=1 result4 square16; bit2=0 square256; bit3=1 result1024, exponent về0.",
+      "transfer": "Lỗi thường gặp là negate int MIN_VALUE bị overflow hoặc quên reciprocal cho n âm. Khi nào dùng: repeated multiplication với exponent/count lớn thường giảm logarithmic bằng doubling/squaring theo bits."
+    },
+    "66": {
+      "framing": "Plus One là phép cộng tay 1 vào số lưu dạng digits. Bắt đầu từ cuối: nếu digit<9 chỉ tăng và xong; nếu digit=9 thì thành0 và carry tiếp sang trái.",
+      "derive": "Convert array thành integer/string parse có overflow với số rất dài. Quan sát carry ở bài này chỉ là 0/1 và chỉ lan qua suffix toàn số9, nên một backward pass là đủ.",
+      "state": "Index i đi từ cuối; suffix sau i đã được xử lý thành0 nếu carry còn lan. Nếu gặp digit<9, increment và return ngay vì carry kết thúc; nếu mọi digits là9 cần array mới length+1 với leading1.",
+      "trace": "Dry run [1,2,9]: 9->0 carry; digit2<9 ->3 và return [1,3,0]. Với [9,9], cả hai thành0 rồi tạo [1,0,0].",
+      "transfer": "Lỗi thường gặp là luôn tạo array mới hoặc dừng sau 9 đầu tiên. Khi nào dùng: arithmetic trên digit arrays nên mô phỏng carry trực tiếp thay vì chuyển sang primitive numeric type."
+    },
+    "67": {
+      "framing": "Add Binary giống cộng thập phân nhưng base2: tại mỗi vị trí sum=bitA+bitB+carry, output bit=sum%2 và carry=sum/2. Hai strings có thể khác length nên pointers đi từ phải sang trái độc lập.",
+      "derive": "Parse binary thành integer có overflow với chuỗi dài. Digit-by-digit addition là O(max(m,n)) và chỉ cần StringBuilder plus carry.",
+      "state": "i,j trỏ bits chưa xử lý; carry thuộc {0,1}. Invariant builder đang chứa các result bits từ least significant lên; mỗi loop consume tối đa một bit mỗi input và tạo đúng một output bit.",
+      "trace": "Dry run 1010+1011: từ phải 0+1=1; 1+1=2 output0 carry1; 0+0+1=1; 1+1=2 output0 carry1; append carry1 rồi reverse thành10101.",
+      "transfer": "Lỗi thường gặp là quên carry sau khi cả pointers hết hoặc không reverse output. Khi nào dùng: addition trên arbitrary-base strings là synchronized backward pointers + carry."
+    },
+    "69": {
+      "framing": "Integer sqrt(x) là số nguyên lớn nhất r sao cho r*r<=x. Predicate mid*mid<=x là monotonic theo mid, nên bài là tìm last true boundary trong [0,x].",
+      "derive": "Tăng r từ0 tới sqrt(x) là O(sqrt x). Binary search boundary cho O(log x), nhưng phép mid*mid phải dùng long hoặc so mid<=x/mid để tránh int overflow.",
+      "state": "Search interval chứa floor sqrt. Khi square<=x, mid là candidate hợp lệ và có thể tìm lớn hơn bên phải; khi square>x, mọi value >=mid cũng quá lớn nên right giảm.",
+      "trace": "Dry run x=8: mid4 square16 quá lớn -> right3; mid1 valid -> ans1,left2; mid2 square4 valid -> ans2,left3; mid3 square9 quá lớn, trả2.",
+      "transfer": "Lỗi thường gặp là overflow square hoặc trả insertion point sai một. Khi nào dùng: tìm largest/smallest integer thỏa monotonic numeric predicate thường là binary search on answer."
+    },
+    "136": {
+      "framing": "XOR có hai tính chất x^x=0 và x^0=x, lại associative/commutative. Vì mọi number trừ một xuất hiện đúng hai lần, các pairs tự triệt tiêu bất kể thứ tự.",
+      "derive": "HashSet/count map dùng O(n) space; sort O(n log n). XOR accumulator cho O(n), O(1) bằng chính constraint 'mọi phần tử hai lần trừ một'.",
+      "state": "result là XOR của prefix đã xử lý. Invariant duplicate pair đóng góp0; cuối cùng result=0 ^ single = single. Không cần biết pair nằm cạnh nhau.",
+      "trace": "Dry run [4,1,2,1,2]: (((0^4)^1)^2)^1^2. Reorder conceptually thành 4^(1^1)^(2^2)=4^0^0=4.",
+      "transfer": "Lỗi thường gặp là áp dụng XOR khi frequency pattern không đúng. Khi nào dùng: values xuất hiện số lần chẵn và một outlier thường gợi ý cancellation bằng XOR."
+    },
+    "137": {
+      "framing": "Nếu mọi number khác xuất hiện ba lần, xét từng bit position thì số bit1 từ triplicates là bội của3; count bit modulo3 còn lại chính là bit của single number.",
+      "derive": "HashMap frequency O(n) space. Có thể count 32 bits O(32n), hoặc dùng two bitmasks ones/twos như một finite-state machine mod3. Mental model modulo per bit giúp hiểu thay vì học công thức mask.",
+      "state": "Với bit-count approach, count[b] là số occurrences bit b trong toàn input; result set bit nếu count[b]%3==1. Dùng unsigned shift/bit operations đúng cả số âm theo two's-complement 32-bit.",
+      "trace": "Dry run [2,2,3,2]: bit1 của value2 xuất hiện3 lần -> modulo0; bits của3 gồm bit0 một lần và bit1 thêm một làm total bit1=4 -> modulo1, reconstruct3.",
+      "transfer": "Lỗi thường gặp là dùng XOR như bài136, vì ba copies không triệt tiêu. Khi nào dùng: repeated frequency k và một outlier thường giải bằng per-bit counts modulo k hoặc bit-state machine."
+    },
+    "149": {
+      "framing": "Max Points on a Line: cố định một anchor point i, mọi point j trên cùng line qua i có cùng slope. Ta chỉ cần group các j theo slope canonical rồi lấy group lớn nhất cho từng anchor.",
+      "derive": "So mọi triples O(n³) hoặc dùng floating slope dễ precision/vertical issues. Quan sát slope dy/dx có thể chuẩn hóa thành reduced integer pair bằng gcd và sign convention, dùng HashMap key.",
+      "state": "Với mỗi anchor, map[normalized(dy,dx)] là số points khác cùng direction line. Invariant các equivalent slopes reduce về cùng pair; vertical/horizontal và duplicate points cần convention rõ theo constraints.",
+      "trace": "Anchor (1,1), points (2,2),(3,3): deltas (1,1),(2,2) đều gcd-reduce (1,1), count2 plus anchor=3. Point (1,3) canonical vertical key khác.",
+      "transfer": "Lỗi thường gặp là dùng double slope hoặc không normalize dấu khiến (1,1) và(-1,-1) khác keys. Khi nào dùng: geometric collinearity/group-by-ratio nên canonicalize rational direction bằng gcd."
+    },
+    "172": {
+      "framing": "Trailing zero của n! đến từ factor 10=2*5. Trong factorial luôn có nhiều factor2 hơn5, nên chỉ cần đếm tổng số factor5 xuất hiện trong 1..n.",
+      "derive": "Tính n! rồi đếm zeros impossible vì số khổng lồ. Đếm từng number divisible by5 vẫn O(n); observation multiples of25 đóng góp thêm một5, 125 thêm nữa, nên sum floor(n/5)+floor(n/25)+...",
+      "state": "Mỗi iteration n/=5 rồi cộng n vào count. Invariant sau k iterations, count đã cộng contributions của factor5 thứ1..k từ mọi multiples 5^j; loop dừng khi quotient0.",
+      "trace": "Dry run n=30: floor30/5=6 cho six first factors; floor30/25=1 cho extra factor của25; higher0, total7 trailing zeros.",
+      "transfer": "Lỗi thường gặp là chỉ n/5 và bỏ extra powers hoặc tìm factors10 trực tiếp. Khi nào dùng: valuation của factorial theo prime p thường là tổng floor(n/p^k)."
+    },
+    "190": {
+      "framing": "Reverse Bits chuyển bit ở vị trí thấp của input thành vị trí cao tương ứng của output. Ta có thể lặp đúng32 lần: shift result trái, lấy lowest bit của n, rồi unsigned-shift n phải.",
+      "derive": "Convert binary string rồi reverse vừa thừa vừa dễ mất leading zeros. Fixed 32-bit operations giữ đủ zeros và O(1) time theo word size.",
+      "state": "Sau k iterations, result chứa k lowest bits ban đầu theo thứ tự đảo ở phần đã build; n đã bỏ k lowest bits bằng >>>. Dùng >>> thay >> để không sign-extend số âm.",
+      "trace": "Nếu low bits đầu ...101, iterations lần lượt append1 rồi0 rồi1 vào result bằng result=(result<<1)|(n&1), đồng thời n>>>=1 mỗi bước cho đủ32 positions.",
+      "transfer": "Lỗi thường gặp là dừng khi n==0 làm mất leading zeros hoặc dùng signed >>. Khi nào dùng: fixed-width bit permutation nên lặp đúng word size và dùng masks/shifts rõ ràng."
+    },
+    "191": {
+      "framing": "Đếm set bits có thể kiểm từng bit, nhưng trick n & (n-1) luôn xóa đúng bit1 thấp nhất của n. Số lần lặp tới0 chính là số bit1.",
+      "derive": "Loop32 bits đã O(1), nhưng Brian Kernighan chỉ lặp theo số set bits. Observation subtract1 biến lowest 1 thành0 và các zeros sau nó thành1; AND với original xóa đúng lowest1 đó.",
+      "state": "n sau mỗi iteration là original value với một số lowest set bits đã bị xóa; count là số bits đã xóa. Invariant popcount(original)=count+popcount(n).",
+      "trace": "Dry run n=12 binary1100: 12&11 (1100&1011)=1000=8 count1; 8&7=0 count2, nên 12 có hai set bits.",
+      "transfer": "Lỗi thường gặp là dùng n%2 với signed behavior hoặc không hiểu n-1 transform. Khi nào dùng: thao tác cần remove/iterate set bits thường dùng n &= n-1."
+    },
+    "201": {
+      "framing": "Bitwise AND của mọi số trong [left,right] chỉ giữ những prefix bits không thay đổi trên cả range. Khi range đi qua một boundary làm bit thay đổi, bit đó và mọi bit thấp hơn kết quả phải thành0.",
+      "derive": "AND từng số có thể O(right-left). Observation dịch left/right phải cho tới khi chúng bằng nhau sẽ loại các suffix bits biến động; common prefix còn lại dịch trái lại chính là answer.",
+      "state": "shift đếm số low bits đã bỏ. Invariant sau mỗi >>, left/right biểu diễn range endpoints không xét shift low bits; khi equal, value đó là common high-bit prefix của mọi số ban đầu.",
+      "trace": "Dry run [5,7]: 101 và111 khác, shift ->10 và11; shift ->1 và1, shift=2; common prefix1 <<2 =100=4, đúng 5&6&7.",
+      "transfer": "Lỗi thường gặp là tìm AND chỉ hai endpoints dù intermediate có thể clear thêm bits. Khi nào dùng: aggregate bitwise AND trên contiguous range = tìm common binary prefix của endpoints."
+    }
+  }
+}
