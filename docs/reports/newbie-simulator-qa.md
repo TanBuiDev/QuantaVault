@@ -19,6 +19,7 @@ The central simulator question is:
 - Golden references: **9**.
 - Curated non-golden reasoning bridges: **141**.
 - Each non-golden bridge carries five problem-specific pieces of evidence: framing/example, natural approach → bottleneck → observation, state/invariant meaning, implementation-state dry run, and mistakes/transfer knowledge.
+- `tools/apply_newbie_bridges.py --check` is idempotent for the final **141** non-golden bridge set; promoted golden files are excluded from future generated rewrites.
 
 ## Golden references
 
@@ -102,6 +103,8 @@ Potential jargon-led openings are warnings only. They are not converted into fai
 
 ## QA result
 
-The Phase 5 structural pedagogy gate passes across the complete canonical inventory. Java algorithm blocks continue to be protected separately by the existing exact-sync audit. Final lint/test/build/E2E status is recorded in `newbie-solution-final-report.md` after the implementation branch reaches its final HEAD.
+The Phase 5 structural pedagogy gate passes across the complete canonical inventory. Java algorithm blocks continue to be protected separately by the existing exact-sync audit. The H-Index reference was promoted from a generated bridge to a full golden rewrite so its derivation now leads directly to the canonical bounded-bucket implementation.
+
+Final lint/test/build/E2E status is recorded in `newbie-solution-final-report.md` after the implementation branch reaches its final validation checkpoint.
 
 There are no known unresolved content blockers in the migration set at this QA checkpoint. The remaining limitation is inherent: automated checks cannot measure whether every individual learner will find every explanation intuitive, so future learner feedback can still improve examples or wording without weakening the structural contract.
