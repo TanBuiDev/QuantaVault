@@ -8,7 +8,7 @@
 
 - Coverage: **150/150** canonical problems
 - Average structural score: **8.78/12**
-- Golden-set matches: **9/8**
+- Golden-set matches: **9/9**
 - Tier distribution: **T1 37 · T2 94 · T3 19**
 - Classification: **Critical 1** · **Partial 54** · **Close 94** · **Model 1**
 

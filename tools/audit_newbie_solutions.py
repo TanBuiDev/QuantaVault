@@ -362,7 +362,7 @@ def markdown(data: dict) -> str:
         "",
         f"- Coverage: **{data['actualProblemCount']}/{data['expectedProblemCount']}** canonical problems",
         f"- Average structural score: **{summary['averageScore']}/12**",
-        f"- Golden-set matches: **{summary['goldenSetCount']}/8**",
+        f"- Golden-set matches: **{summary['goldenSetCount']}/{len(GOLDEN_TITLES)}**",
         f"- Tier distribution: **T1 {summary['tierCounts'].get('1', 0)} · T2 {summary['tierCounts'].get('2', 0)} · T3 {summary['tierCounts'].get('3', 0)}**",
         "- Classification: " + " · ".join(
             f"**{name} {summary['classificationCounts'].get(name, 0)}**"
