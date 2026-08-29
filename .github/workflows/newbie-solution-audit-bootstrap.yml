@@ -1,14 +1,13 @@
-name: Bootstrap newbie solution audit
+name: Refresh newbie solution audit
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - content/newbie-first-solutions-150
     paths:
       - tools/audit_newbie_solutions.py
-      - problems/**/meta.yaml
-      - problems/**/solution.md
-      - problems/**/Solution.java
+      - docs/content/.refresh-newbie-audit
       - .github/workflows/newbie-solution-audit-bootstrap.yml
 
 permissions:
@@ -27,7 +26,7 @@ jobs:
       - name: Generate deterministic 150-problem audit
         run: python tools/audit_newbie_solutions.py --write
 
-      - name: Commit generated baseline reports
+      - name: Commit refreshed audit reports
         shell: bash
         run: |
           set -euo pipefail
@@ -38,5 +37,5 @@ jobs:
             echo "Audit reports already current."
             exit 0
           fi
-          git commit -m "docs(content): add 150-problem newbie audit baseline"
+          git commit -m "docs(content): refresh 150-problem newbie audit"
           git push origin HEAD:${GITHUB_REF_NAME}
