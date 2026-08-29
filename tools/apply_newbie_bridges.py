@@ -20,7 +20,8 @@ PROBLEMS = ROOT / "problems"
 START = "<!-- NEWBIE-FIRST-BRIDGE:START -->"
 END = "<!-- NEWBIE-FIRST-BRIDGE:END -->"
 EXPECTED_TOTAL = 150
-GOLDEN_IDS = {4, 45, 121, 124, 146, 188, 224, 238}
+# Eight plan golden problems + LRU Cache as the additional pointer/data-structure reference.
+GOLDEN_IDS = {4, 45, 121, 124, 146, 188, 224, 238, 274}
 REQUIRED_FIELDS = ("framing", "derive", "state", "trace", "transfer")
 
 
@@ -47,10 +48,13 @@ def load_catalog() -> tuple[dict[int, dict[str, str]], dict[int, str]]:
             raise ValueError(f"{path}: problems must be an object")
         for raw_id, entry in problems.items():
             problem_id = int(raw_id)
+            # A problem promoted to the manually reviewed golden set may still have
+            # a historical catalog entry. Ignore it so future bridge runs never
+            # overwrite the full golden rewrite.
+            if problem_id in GOLDEN_IDS:
+                continue
             if problem_id in entries:
                 raise ValueError(f"duplicate catalog id {problem_id}")
-            if problem_id in GOLDEN_IDS:
-                raise ValueError(f"golden id {problem_id} must be a full rewrite, not a bridge")
             if not isinstance(entry, dict):
                 raise ValueError(f"{path}: id {problem_id} entry must be an object")
             missing = [field for field in REQUIRED_FIELDS if not str(entry.get(field, "")).strip()]
