@@ -1,0 +1,145 @@
+{
+  "group": "trees",
+  "problems": {
+    "98": {
+      "framing": "BST không chỉ yêu cầu node.left < node < node.right ngay tại parent; mọi node trong cả left subtree phải nhỏ hơn node và mọi node trong right subtree phải lớn hơn. Case [5,4,6,null,null,3,7] cho thấy local checks có thể bị lừa.",
+      "derive": "Chỉ so mỗi node với children là bottleneck logic sai. Quan sát mỗi node kế thừa một khoảng giá trị hợp lệ từ ancestors: đi trái hạ upper bound xuống node.val, đi phải nâng lower bound lên node.val.",
+      "state": "DFS state là (node, lower, upper). Invariant mọi node trong call phải thỏa lower < node.val < upper; bounds encode toàn bộ constraints từ ancestors, không chỉ parent hiện tại.",
+      "trace": "Dry run root5: left subtree nhận (-∞,5), right nhận (5,+∞). Node3 nằm trong right subtree của5 dù là left child của6 nhận bounds (5,6); 3<=5 nên reject đúng.",
+      "transfer": "Lỗi thường gặp là chỉ compare direct children hoặc dùng <= sai với BST strict uniqueness. Khi nào dùng: tree ordering constraints xuyên nhiều levels thường truyền allowed range qua recursion."
+    },
+    "100": {
+      "framing": "Hai trees giống nhau khi tại mọi vị trí tương ứng: cả hai cùng null, hoặc cả hai non-null có cùng value và hai cặp children tương ứng cũng giống nhau.",
+      "derive": "Serialize rồi so string tạo representation trung gian. Quan sát definition của 'same tree' đã recursive sẵn, nên DFS trực tiếp theo cặp nodes là cách ngắn nhất và O(h) stack.",
+      "state": "Mỗi call nhận (p,q) là hai nodes ở cùng structural position. Invariant nếu call trả true thì toàn bộ subtrees rooted tại p và q giống cả shape lẫn values.",
+      "trace": "Dry run [1,2,3] và [1,2,3]: root values match, recurse (2,2) và (3,3), rồi các null-null true. Nếu một side null còn side kia node, fail ngay.",
+      "transfer": "Lỗi thường gặp là chỉ so preorder values mà bỏ shape/null markers. Khi nào dùng: structural equality của recursive objects thường mirror definition bằng recursion trên paired nodes."
+    },
+    "101": {
+      "framing": "Symmetric tree nghĩa là left subtree là ảnh gương của right subtree: outer child của bên trái phải match outer child của bên phải và inner children cũng phải đổi chéo.",
+      "derive": "Serialize từng subtree rồi reverse dễ rối null positions. Quan sát hàm mirror(a,b) chỉ cần check values rồi recurse a.left với b.right và a.right với b.left.",
+      "state": "State là cặp mirror candidates. Invariant mirror(a,b) true iff subtrees có shape/value đối xứng quanh trục; null-null true, one-null false, value mismatch false.",
+      "trace": "Dry run root1 với children2,2: compare outer 3 với3, inner4 với4 theo cross pairs. Case [1,2,2,null,3,null,3] fail vì một cross pair là 3 với null.",
+      "transfer": "Lỗi thường gặp là compare left.left với right.left thay vì right.right. Khi nào dùng: mirror/anti-isomorphism tree problems thường recurse trên crossed child pairs."
+    },
+    "102": {
+      "framing": "Level-order output gom nodes theo khoảng cách từ root: root ở level0, children level1, grandchildren level2. Queue tự nhiên giữ frontier theo đúng thứ tự BFS.",
+      "derive": "DFS với depth cũng làm được, nhưng queue cho mental model trực tiếp. Bottleneck để tách levels là biết bao nhiêu nodes thuộc frontier hiện tại; lấy queue.size() ở đầu mỗi vòng giải việc đó.",
+      "state": "Queue trước một level chứa đúng nodes của level đó. size cố định trước khi poll; children được offer trong lúc xử lý nhưng thuộc level kế tiếp và không được trộn vào current list.",
+      "trace": "Dry run [3,9,20,null,null,15,7]: queue [3], size1 -> [3]; sau đó queue [9,20], size2 -> [9,20]; rồi [15,7].",
+      "transfer": "Lỗi thường gặp là loop theo queue.size() động khi đang offer children, làm gộp levels. Khi nào dùng: shortest layer/level grouping trong unweighted structures là BFS frontier-size pattern."
+    },
+    "103": {
+      "framing": "Zigzag level order vẫn duyệt tree theo levels như BFS; chỉ hướng ghi output đổi trái->phải rồi phải->trái luân phiên. Không cần thay cách enqueue children để hiểu đúng levels.",
+      "derive": "Reverse cả list sau mỗi odd level đúng nhưng thêm pass. Có thể dùng deque/list addFirst cho odd levels hoặc fill index ngược; observation quan trọng là traversal order và presentation order là hai concerns tách biệt.",
+      "state": "Queue giữ frontier BFS bình thường; boolean leftToRight quyết định cách thêm value vào level result. Invariant children luôn enqueue left rồi right, còn output direction chỉ ảnh hưởng container của level hiện tại.",
+      "trace": "Dry run [3,9,20,null,null,15,7]: level0 [3]; level1 values 9,20 nhưng addFirst tạo [20,9]; level2 lại addLast thành [15,7].",
+      "transfer": "Lỗi thường gặp là đổi cả enqueue order rồi khó reasoning levels. Khi nào dùng: traversal và output formatting khác nhau nên giữ traversal invariant ổn định, biến đổi chỉ ở bước collect."
+    },
+    "104": {
+      "framing": "Depth của một node là 1 cộng depth lớn hơn giữa hai children, vì path root-to-leaf dài nhất sau node hiện tại phải chọn đúng một nhánh trái hoặc phải.",
+      "derive": "BFS đếm levels đúng; DFS recursion còn trực tiếp hơn vì definition depth tự phân rã. Null subtree có depth0 là base case tự nhiên.",
+      "state": "Hàm maxDepth(node) trả đúng maximum number of nodes trên path từ node xuống leaf. Invariant return value là thông tin parent cần; không cần global variable.",
+      "trace": "Dry run node20 có leaves15,7: hai child trả1 nên20 trả2; root3 có left9 trả1 và right20 trả2 nên root trả1+max(1,2)=3.",
+      "transfer": "Lỗi thường gặp là cộng cả left+right như count nodes. Khi nào dùng: tree metric 'longest downward path' thường return 1 + max(child metrics)."
+    },
+    "105": {
+      "framing": "Preorder cho root trước, inorder cho biết mọi node bên trái root thuộc left subtree và mọi node bên phải thuộc right subtree. Hai traversals cùng nhau xác định cách chia recursively.",
+      "derive": "Tìm root trong inorder bằng scan ở mỗi call tạo O(n²) worst-case. Quan sát build map value->inorder index một lần, rồi preorder pointer chọn root kế tiếp O(1) và inorder bounds chia subtree.",
+      "state": "preIndex là root tiếp theo chưa dùng trong preorder; recursion nhận inorder left/right bounds. Invariant call dựng chính subtree gồm inorder segment đó, và preIndex tiến đúng số nodes của subtree.",
+      "trace": "Dry run preorder [3,9,20,15,7], inorder [9,3,15,20,7]: root3 ở inorder index1 chia [9] và [15,20,7]; preorder next9 dựng left rồi20 dựng right.",
+      "transfer": "Lỗi thường gặp là slice arrays gây extra copies hoặc update preorder index sai. Khi nào dùng: traversal reconstruction thường chọn root từ một order và partition bằng index trong order khác."
+    },
+    "106": {
+      "framing": "Postorder đặt root ở cuối, còn inorder vẫn chia left/right subtrees. Nếu consume postorder từ phải sang trái, sau root ta gặp right subtree trước rồi mới left subtree.",
+      "derive": "Repeated inorder scans/slices là bottleneck O(n²)/allocations. Map inorder index + một postIndex đi ngược cho O(n), nhưng recursion order phải là right trước left để khớp postorder reverse.",
+      "state": "postIndex trỏ root chưa dùng tiếp theo từ cuối; call giữ inorder bounds. Invariant call consume đúng số nodes trong segment; sau tạo root phải build right segment trước để postIndex không lấy nhầm node.",
+      "trace": "Dry run inorder [9,3,15,20,7], postorder [9,15,7,20,3]: lấy3 root; postIndex kế là20 nên build right [15,20,7], rồi mới left [9].",
+      "transfer": "Lỗi thường gặp là recurse left trước như preorder version. Khi nào dùng: reconstruction cần align recursion order với hướng đang consume traversal root positions."
+    },
+    "112": {
+      "framing": "Path Sum chỉ chấp nhận root-to-leaf path. Khi đi xuống, ta có thể trừ node.val khỏi target còn lại; tới leaf chỉ cần kiểm tra remainder có đúng leaf value/0 theo formulation.",
+      "derive": "Liệt kê mọi path thành lists dùng extra memory. Quan sát mỗi branch độc lập và chỉ cần running remaining sum, nên DFS có thể short-circuit ngay khi một child tìm được path hợp lệ.",
+      "state": "remaining đại diện số tổng còn phải đạt trên path từ node hiện tại xuống leaf. Invariant ancestors đã được trừ khỏi original target; chỉ tại leaf mới được kết luận equality.",
+      "trace": "Dry run target22 trên 5->4->11->2: remaining 22,17,13,2 rồi leaf2 làm remainder sau node thành0 nên true; node nội bộ có sum đúng nhưng chưa leaf không được accept.",
+      "transfer": "Lỗi thường gặp là return true tại node non-leaf khi running sum đạt target. Khi nào dùng: root-to-leaf constraints thường carry accumulated/remaining state qua DFS và validate ở leaf."
+    },
+    "114": {
+      "framing": "Flatten yêu cầu linked list theo preorder root-left-right dùng right pointers. Sau khi flatten left và right subtrees, left chain phải được chèn giữa node và old right chain.",
+      "derive": "Collect preorder nodes vào list rồi relink dùng O(n) extra. Có thể DFS reverse preorder right-left-root với prev pointer, hoặc in-place tìm rightmost predecessor. Cốt lõi là giữ successor trước khi overwrite pointers.",
+      "state": "Trong reverse-preorder approach, prev là head của chain đã flatten gồm nodes xuất hiện sau current trong preorder. Set current.right=prev, current.left=null rồi prev=current giữ invariant chain đúng.",
+      "trace": "Dry run tree 1(left2,right5), 2 children3,4: process reverse preorder 6,5,4,3,2,1; mỗi current nối right tới prev, cuối chain 1->2->3->4->5->6.",
+      "transfer": "Lỗi thường gặp là overwrite right trước khi recurse/giữ nó hoặc quên left=null. Khi nào dùng: tree-to-list in traversal order thường dễ reasoning bằng predecessor/successor state trong DFS."
+    },
+    "117": {
+      "framing": "Mỗi level cần nối node.next tới node kế bên dù tree không perfect. Khi đã có next links của current level, ta có thể dùng chúng như một linked list để xây chain children cho level tiếp theo mà không cần queue.",
+      "derive": "BFS queue O(width) rất rõ ràng. Optimization O(1) extra dùng dummy head cho next level: scan current level qua next, append mọi non-null child vào tail, rồi chuyển current=dummy.next.",
+      "state": "current chạy chain level hiện tại đã hoàn chỉnh; dummy.next/tail xây chain level kế tiếp. Invariant mọi child đã gặp trong scan được nối đúng left-to-right, không cần biết parent có đủ hai children.",
+      "trace": "Dry run level [2,3]: scan2 append child4 rồi5 nếu có; scan3 append child7; dummy chain trở thành 4->5->7, rồi nó là current level tiếp theo.",
+      "transfer": "Lỗi thường gặp là giả định perfect tree và nối node.right với node.next.left không tồn tại. Khi nào dùng: đã có sibling links có thể tái sử dụng current layer để xây next layer với dummy-tail."
+    },
+    "129": {
+      "framing": "Mỗi root-to-leaf path tạo một số bằng cách append digit: nếu prefix là 12 và child value3 thì số mới là 12*10+3. Chỉ leaves đóng góp số hoàn chỉnh vào total.",
+      "derive": "Build strings/path lists rồi parse là thừa. Quan sát decimal accumulation có thể carry một integer prefix qua DFS; branches nhận copy value nên không cần backtracking mutable state.",
+      "state": "currentNumber trong call là số được tạo bởi path từ root tới node. Invariant update current=parent*10+node.val; nếu leaf return current, nếu internal return sum của child results.",
+      "trace": "Dry run tree 1 với children2,3: tại root current1; left thành12 leaf trả12; right thành13 trả13; root cộng thành25.",
+      "transfer": "Lỗi thường gặp là cộng node values thay vì positional decimal value hoặc tính ở non-leaf. Khi nào dùng: digits trên path thường carry rolling base-B number state."
+    },
+    "173": {
+      "framing": "BST Iterator phải trả values theo inorder tăng dần nhưng next() không nên traverse lại tree từ root. Ta chỉ cần giữ path các ancestors mà inorder traversal chưa emit.",
+      "derive": "Precompute toàn inorder array cho O(n) space. Lazy stack giữ chỉ left spine O(h): constructor pushLeft(root); next pop smallest node rồi pushLeft(node.right) để chuẩn bị successor.",
+      "state": "Stack top luôn là node nhỏ nhất chưa trả. Invariant stack chứa một path candidates; mọi left descendants của relevant right subtree đã được push trước khi next lần sau.",
+      "trace": "Dry run BST 7(left3,right15 with9,20): stack [7,3], next pop3; next pop7 rồi push left spine of15 => [15,9], tiếp pop9,15,20 theo sorted order.",
+      "transfer": "Lỗi thường gặp là push cả subtree hoặc quên push left chain của right child. Khi nào dùng: lazy traversal iterator thường lưu explicit recursion stack thay vì materialize toàn output."
+    },
+    "199": {
+      "framing": "Right side view cần đúng một node visible ở mỗi depth: node ngoài cùng bên phải. BFS có thể lấy phần tử cuối mỗi level, hoặc DFS đi right trước và ghi node đầu tiên khi lần đầu đạt một depth.",
+      "derive": "Collect cả levels rồi lấy cuối vẫn đúng nhưng lưu thừa. Quan sát chỉ cần một value per depth; BFS queue already knows level boundary, nên khi xử lý index size-1 append node.val.",
+      "state": "Queue chứa current level; size snapshot cố định. Invariant node cuối trong thứ tự left-to-right của level là rightmost visible node, kể cả tree có holes.",
+      "trace": "Dry run [1,2,3,null,5,null,4]: levels [1], [2,3], [5,4]; lấy last mỗi level cho [1,3,4].",
+      "transfer": "Lỗi thường gặp là chỉ đi theo right child chain và bỏ node trái visible khi right side thiếu. Khi nào dùng: one representative per tree depth thường BFS level boundary hoặc DFS first-at-depth."
+    },
+    "222": {
+      "framing": "Complete binary tree đầy mọi level trừ có thể level cuối và nodes cuối dồn trái. Nếu leftmost height của left và right subtrees bằng nhau ở một node, một phía là perfect và có thể đếm bằng 2^h thay vì visit từng node.",
+      "derive": "DFS count mọi node O(n) không tận dụng completeness. Quan sát so heights cho biết subtree nào perfect; mỗi recursive level chỉ đi vào một subtree chưa chắc perfect, cho khoảng O(log² n).",
+      "state": "Height đo đường đi leftmost. Tại node, nếu leftHeight==rightHeight thì left subtree perfect; ngược lại right subtree perfect theo complete-tree property. Count perfect part bằng power of two cộng recursive remainder.",
+      "trace": "Dry run complete tree 6 nodes: root left height2, right height2 theo convention child-spines có thể cho biết left subtree perfect 3 nodes; recurse right subtree còn2 nodes rồi cộng root đúng6.",
+      "transfer": "Lỗi thường gặp là công thức 2^h off-by-one do định nghĩa height khác nhau. Khi nào dùng: complete/perfect tree structure cho phép thay traversal bằng height-based counting."
+    },
+    "226": {
+      "framing": "Invert tree nghĩa là tại mọi node đổi chỗ toàn bộ left subtree và right subtree. Vì yêu cầu giống nhau ở mỗi subtree, thao tác local swap + recursion là đủ.",
+      "derive": "Không cần flatten hay collect nodes. Quan sát sau khi swap hai child references của current node, chỉ cần invert recursively hai subtrees vừa đổi; mỗi node xử lý đúng một lần.",
+      "state": "Contract invert(node): khi return, subtree rooted tại node là mirror của subtree ban đầu. Null là base; swap references rồi recurse giữ contract bằng induction.",
+      "trace": "Dry run root4 children2,7: swap thành7,2; tại7 swap children6,9 thành9,6; tại2 swap1,3 thành3,1; kết quả mirror hoàn chỉnh.",
+      "transfer": "Lỗi thường gặp là swap values thay vì child subtrees hoặc recurse trên references bị hiểu nhầm. Khi nào dùng: tree transform áp cùng local operation ở mọi node thường là direct DFS recursion."
+    },
+    "230": {
+      "framing": "BST inorder traversal trả values tăng dần, nên kth smallest chính là node thứ k được visit theo inorder. Không cần sort lại vì tree ordering đã encode thứ tự.",
+      "derive": "Collect toàn inorder O(n) space/time rồi index là đơn giản. Iterative stack có thể dừng ngay node thứ k, dùng O(h) space và không visit phần tree sau đáp án.",
+      "state": "Stack mô phỏng recursion và chứa path ancestors chưa visit. Sau push-left spine, pop luôn cho next smallest; decrement k mỗi pop, rồi chuyển sang right subtree và push left spine mới.",
+      "trace": "Dry run BST [3,1,4,null,2], k=1: push3,1; pop1 làm k=0 nên trả1 ngay. Với k=3, sequence pops 1,2,3 rồi trả3.",
+      "transfer": "Lỗi thường gặp là count khi push thay vì khi inorder visit/pop. Khi nào dùng: order-statistics đơn query trên BST có thể khai thác inorder; nhiều queries cần subtree sizes augmentation."
+    },
+    "236": {
+      "framing": "LCA là node thấp nhất có p và q trong hai branches của nó, hoặc chính node đó nếu nó là p/q. DFS từ dưới lên có thể báo cho parent subtree chứa target nào.",
+      "derive": "Lưu parent map rồi ancestor set đúng nhưng extra memory. Quan sát recursive return có thể là null nếu không target, p/q nếu tìm thấy một target, hoặc LCA đã xác định; nếu left và right đều non-null, current là split point.",
+      "state": "Contract dfs(node): trả null nếu subtree không chứa p/q; trả target/LCA nếu chứa relevant answer. Invariant nếu cả child returns non-null thì p và q nằm hai phía nên current là lowest split và phải return current.",
+      "trace": "Dry run tree root3 với p=5,q=1 ở hai children: left DFS trả5, right trả1, root thấy cả hai non-null nên trả3. Nếu p=5,q=4 nằm trong subtree5, subtree5 tự trả LCA5 lên root.",
+      "transfer": "Lỗi thường gặp là chỉ tìm common ancestor từ root mà không đảm bảo lowest. Khi nào dùng: 'lowest node connecting targets' thường dùng postorder aggregate signals từ children."
+    },
+    "530": {
+      "framing": "Trong BST, inorder values tăng dần. Minimum absolute difference toàn tree vì vậy phải nằm giữa hai values kề nhau trong sorted inorder order, không cần so mọi pair.",
+      "derive": "Collect sorted list rồi scan dùng O(n) extra. Quan sát khi inorder streaming, chỉ cần previous value và best difference; current chỉ cần so với predecessor gần nhất.",
+      "state": "prev là value vừa visit trong inorder; best là min adjacent difference đã thấy. Invariant mọi pair có current làm phần tử lớn hơn có difference nhỏ nhất với nearest predecessor prev, nên các predecessor xa hơn không cần xét.",
+      "trace": "Dry run BST values inorder [1,2,3,4,6]: differences 1,1,1,2; best=1. Recursion/stack update prev sau mỗi visit node.",
+      "transfer": "Lỗi thường gặp là so parent-child only; nearest values có thể không là trực tiếp relatives. Khi nào dùng: BST numeric neighbor questions thường biến thành sorted inorder streaming với previous state."
+    },
+    "637": {
+      "framing": "Average of Levels cần sum và số node của từng depth. BFS đã gom đúng một frontier level, nên chỉ snapshot size, cộng values của đúng size nodes rồi chia.",
+      "derive": "DFS với depth arrays cũng đúng. BFS tránh bookkeeping depth riêng; bottleneck duy nhất là không để children mới enqueue bị tính vào denominator current level.",
+      "state": "size=queue.size() trước loop là count cố định của current level. sum nên dùng double/long phù hợp để tránh overflow; sau exactly size polls, queue chứa level kế tiếp.",
+      "trace": "Dry run [3,9,20,null,null,15,7]: level0 sum3/count1=3; level1 29/2=14.5; level2 22/2=11.",
+      "transfer": "Lỗi thường gặp là dùng queue.size() sau khi enqueue children hoặc integer division. Khi nào dùng: per-level aggregate trong tree là BFS frontier-size + accumulator."
+    }
+  }
+}
