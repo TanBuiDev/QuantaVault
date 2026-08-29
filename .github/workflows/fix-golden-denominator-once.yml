@@ -1,0 +1,58 @@
+name: Fix golden audit denominator once
+
+on:
+  push:
+    branches:
+      - content/newbie-first-solutions-150
+    paths:
+      - .github/workflows/fix-golden-denominator-once.yml
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout implementation branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fix dynamic golden denominator
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('tools/audit_newbie_solutions.py')
+          text = path.read_text(encoding='utf-8')
+          old = 'f"- Golden-set matches: **{summary[\'goldenSetCount\']}/8**",'
+          new = 'f"- Golden-set matches: **{summary[\'goldenSetCount\']}/{len(GOLDEN_TITLES)}**",'
+          if old not in text:
+              raise SystemExit('hardcoded golden denominator not found')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
+
+      - name: Refresh and verify reports
+        run: |
+          python tools/audit_newbie_solutions.py --write
+          python tools/audit_newbie_solutions.py --check
+          grep -F 'Golden-set matches: **9/9**' docs/content/solution-newbie-audit.md
+
+      - name: Recheck content contracts
+        run: |
+          python tools/apply_newbie_bridges.py --check
+          python tools/audit_java_solution_comments.py
+          python tools/audit_solution_pedagogy.py
+
+      - name: Remove one-shot workflow and commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rm .github/workflows/fix-golden-denominator-once.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tools/audit_newbie_solutions.py docs/content/solution-newbie-audit.json docs/content/solution-newbie-audit.md
+          git commit -m "fix(content): report 9-of-9 golden references"
+          git push origin HEAD:${GITHUB_REF_NAME}
