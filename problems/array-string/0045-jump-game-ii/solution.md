@@ -1,96 +1,80 @@
 # 45. Jump Game II — Solution
 
-## 1. Core idea / Ý tưởng cốt lõi
+## 1. Đừng bắt đầu bằng tên pattern: hãy nhìn “vùng có thể tới”
 
-Ta có thể nhìn bài này như **BFS trên các index**, nhưng không cần tạo queue.
-
-- Những index reachable bằng `jumps` bước tạo thành current range.
-- Khi quét hết current range, `farthest` cho biết biên của next range reachable bằng `jumps + 1` bước.
-- Mỗi lần chạm `currentEnd`, ta kết thúc một BFS level và tăng `jumps`.
-
-State:
+Với:
 
 ```text
-jumps      = số level đã dùng
-currentEnd = biên phải của level hiện tại
-farthest   = biên phải xa nhất của level kế tiếp
+nums = [2, 3, 1, 1, 4]
 ```
+
+Từ index `0`, ta nhảy tối đa `2` bước, nên sau **1 jump** ta có thể đứng ở vùng:
 
 ```text
-Time:  O(n)
-Space: O(1)
+index 1 .. 2
 ```
 
----
+Bây giờ chưa cần quyết định ngay “nhảy từ index 1 hay index 2”. Hãy hỏi câu khác:
 
-## 2. Requirement recap / Tóm tắt yêu cầu
+> Trong toàn bộ những vị trí có thể tới bằng cùng số jump hiện tại, vị trí nào giúp lần nhảy kế tiếp vươn xa nhất?
 
-Không chỉ cần reachability như Jump Game I; phải tìm **minimum number of jumps**. Đề đảm bảo đích reachable, nên không cần xử lý trạng thái impossible trong canonical code.
+- từ index `1`: tới tối đa `1 + nums[1] = 4`
+- từ index `2`: tới tối đa `2 + nums[2] = 3`
 
----
+Vì vậy sau jump tiếp theo ta có thể mở vùng reachable tới index `4`, tức đích.
 
-## 3. Why the BFS-level view works
-
-Từ tất cả index có thể đạt với `jumps` bước, mọi index mà chúng có thể nhảy tới tạo ra tập vị trí cho `jumps + 1` bước.
-
-Vì jump có thể chọn bất kỳ độ dài từ `0` đến `nums[i]`, union của các khả năng này có thể tóm tắt bằng biên xa nhất `farthest`.
-
-Ta quét lần lượt current range thay vì đưa từng index vào queue. Khi hết range, ta bắt buộc dùng thêm một jump nếu chưa tới đích.
+Ta chỉ cần **2 jumps**.
 
 ---
 
-## 4. Variables / Ý nghĩa biến
+## 2. Cách tự nhiên và bottleneck
 
-### `currentEnd`
+Có thể coi mỗi index là một node; từ `i` có edge tới mọi index từ `i + 1` tới `i + nums[i]`. Vì mỗi edge là một jump, BFS sẽ tìm số edge ít nhất.
 
-Index cuối cùng reachable với số jump hiện tại.
+BFS đúng, nhưng nếu tạo mọi edge và dùng queue thì ta đang lưu nhiều thông tin hơn cần thiết.
 
-### `farthest`
+Quan sát quan trọng là các index reachable với cùng số jump tạo thành một **vùng liên tiếp**. Khi đang quét hết vùng này, ta chỉ cần biết ranh giới xa nhất mà jump tiếp theo có thể mở ra.
 
-Trong khi duyệt current range:
+Từ đó sinh ra ba state:
 
-```java
-farthest = Math.max(farthest, i + nums[i]);
+- `jumps`: số jump đã commit.
+- `currentEnd`: index cuối cùng reachable với `jumps` hiện tại.
+- `farthest`: xa nhất mà **bất kỳ index nào đã quét trong vùng hiện tại** có thể đưa ta tới ở jump tiếp theo.
+
+Cách nhìn này tương đương quét từng level BFS, nhưng nén cả level thành hai boundary nên không cần queue.
+
+---
+
+## 3. Khi nào phải tăng `jumps`?
+
+Trong khi `i < currentEnd`, ta vẫn đang xem các lựa chọn thuộc cùng một số jump hiện tại. Ta chưa cần commit jump mới; chỉ cập nhật:
+
+```text
+farthest = max(farthest, i + nums[i])
 ```
-
-đây là index xa nhất mà **một jump nữa** có thể đưa tới.
-
-### `jumps`
 
 Khi:
 
-```java
+```text
 i == currentEnd
 ```
 
-nghĩa là đã xét hết các lựa chọn của current level. Ta tăng `jumps` và chuyển level:
+ta đã quét **hết mọi vị trí** reachable với số jump hiện tại. Muốn đi tiếp thì bắt buộc phải dùng thêm một jump:
 
-```java
-jumps++;
-currentEnd = farthest;
+```text
+jumps++
+currentEnd = farthest
 ```
 
----
+Đây chính là greedy choice: không chọn một điểm nhảy cụ thể quá sớm; ta quét toàn bộ vùng hiện tại rồi giữ ranh giới tốt nhất mà vùng đó mở ra.
 
-## 5. Alternative approaches / Các hướng khác
+### Vì sao loop dừng ở `nums.length - 2`?
 
-### Approach A — Dynamic programming
-
-Có thể đặt `dp[i]` là minimum jumps tới `i` rồi thử transitions từ các vị trí trước.
-
-Implementation trực tiếp có thể tốn `O(n²)`.
-
-### Approach B — Explicit BFS
-
-Xem mỗi index là node và mọi jump hợp lệ là edge. BFS tìm shortest path theo số edge, nhưng tạo/duyệt edges tường minh là dư thừa.
-
-### Approach C — Greedy compressed BFS
-
-Nén một BFS level thành interval và chỉ lưu hai biên. Đây là canonical solution `O(n)`/`O(1)`.
+Index cuối là đích. Nếu đã tới được nó thì không cần đứng tại đích rồi “nhảy thêm”. Vì vậy code chỉ cần xét các index trước phần tử cuối.
 
 ---
 
-## 6. Optimal Java solution
+## 4. Optimal Java solution
 
 ```java
 class Solution {
@@ -121,29 +105,11 @@ class Solution {
 }
 ```
 
----
-
-## 7. Why loop only to `n - 2`?
-
-Index cuối là **đích**, không phải nơi ta cần khởi tạo một jump mới.
-
-Nếu loop xử lý `i = n - 1` và `i == currentEnd`, code có thể tăng `jumps` thêm một lần sau khi đã đến đích.
-
-Vì vậy:
-
-```java
-for (int i = 0; i < nums.length - 1; i++)
-```
-
-là biên tự nhiên.
+Block trên được giữ exact-sync với [`Solution.java`](Solution.java).
 
 ---
 
-## 8. Dry run
-
-```text
-nums = [2,3,1,1,4]
-```
+## 5. Dry run: `[2,3,1,1,4]`
 
 Ban đầu:
 
@@ -153,86 +119,68 @@ currentEnd = 0
 farthest = 0
 ```
 
-### i = 0
+| `i` | `nums[i]` | `farthest` sau update | `i == currentEnd`? | state sau bước |
+|---:|---:|---:|:---:|---|
+| 0 | 2 | 2 | ✓ | `jumps=1`, `currentEnd=2` |
+| 1 | 3 | 4 | ✗ | vẫn đang quét vùng của jump 1 |
+| 2 | 1 | 4 | ✓ | `jumps=2`, `currentEnd=4` |
+| 3 | 1 | 4 | ✗ | loop kết thúc sau index này |
+
+Hai lần chạm boundary tương ứng hai lần phải mở sang một vùng mới, nên đáp án là `2`.
+
+Một cách hình dung:
 
 ```text
-farthest = 2
+jump 0: [0]
+         |
+jump 1:    [1, 2]
+              \____ farthest = 4
+jump 2:              [3, 4]
 ```
-
-`i == currentEnd`, kết thúc level 0:
-
-```text
-jumps = 1
-currentEnd = 2
-```
-
-### i = 1
-
-```text
-farthest = max(2, 1 + 3) = 4
-```
-
-### i = 2
-
-Đã xét hết level hiện tại:
-
-```text
-jumps = 2
-currentEnd = 4
-```
-
-Đích nằm trong range → kết quả `2`.
 
 ---
 
-## 9. Correctness / Vì sao đúng
+## 6. Vì sao greedy này đúng?
 
-Mỗi current range chứa chính các index cần xét để tìm mọi vị trí có thể đạt sau **một jump bổ sung**. `farthest` là biên xa nhất của union đó.
+Sau khi quét xong vùng `[... currentEnd]`, mọi index có thể đạt bằng `jumps` hiện tại đã được xét. Bất kỳ phương án nào dùng thêm một jump từ vùng đó cũng không thể vượt quá:
 
-Thuật toán chỉ tăng `jumps` sau khi đã xét tất cả index của current range, tức là chỉ chuyển sang level tiếp theo khi không còn lựa chọn nào với ít jump hơn chưa được xem xét. Đây chính là nguyên tắc shortest path của BFS.
+```text
+max(i + nums[i]) = farthest
+```
 
-Do đó lần đầu các range mở rộng đủ để chứa index cuối, số level đã dùng là minimum number of jumps.
+Do đó đặt boundary mới thành `farthest` không bỏ mất phương án nào tốt hơn: nó chính là union xa nhất của mọi lựa chọn thuộc level hiện tại.
+
+Mỗi lần tăng `jumps` chỉ xảy ra khi đã xét hết level hiện tại, nên ta không dùng jump mới sớm hơn cần thiết. Vì các level được mở theo thứ tự số jump tăng dần, lần đầu boundary bao phủ đích chính là số jump tối thiểu.
 
 ---
 
-## 10. Complexity
-
-Mỗi index trước đích được quét đúng một lần:
+## 7. Complexity
 
 ```text
 Time:  O(n)
 Space: O(1)
 ```
 
----
-
-## 11. Edge cases
-
-- `n = 1`: đã ở đích, vòng lặp không chạy, trả `0`.
-- Có thể tới đích trong một jump: `jumps = 1`.
-- Nhiều jump độ dài 1: mỗi range chỉ mở rộng một index.
-- Giá trị `0` trong mảng vẫn ổn vì đề đảm bảo toàn bộ input reachable.
+Mỗi index được quét một lần; ta không tạo graph hay queue.
 
 ---
 
-## 12. Common mistakes
+## 8. Lỗi thường gặp
 
-1. Tăng `jumps` ở mọi index thay vì khi hết current range.
-2. Dùng `farthest` làm current range ngay sau mỗi index và mất ý nghĩa BFS level.
-3. Loop tới `n - 1` rồi đếm dư một jump.
-4. Chọn jump lớn nhất tại từng vị trí theo kiểu local choice; greedy đúng ở đây là chọn **farthest của toàn current range**.
+- Tăng `jumps` ở **mọi index**. Jump chỉ được commit khi `i == currentEnd`.
+- Gán `currentEnd = i + nums[i]`. Ta phải dùng `farthest` của **toàn bộ vùng**, không chỉ reach của index cuối vùng.
+- Duyệt tới index cuối rồi tăng thêm một jump không cần thiết.
+- Chọn ngay index có `nums[i]` lớn nhất. Điều cần tối đa hóa là `i + nums[i]`, và còn quan trọng hơn là ta không cần commit một index cụ thể; chỉ cần boundary xa nhất.
+- Nhầm với Jump Game I: bài 55 hỏi “có tới được không?”, bài này hỏi “ít jump nhất”.
 
 ---
 
-## 13. Connection to Jump Game I
+## 9. Cách nhận ra pattern ở bài khác
 
-Jump Game I giữ một biên `farthest` để trả lời reachability.
+Khi bài hỏi số bước ít nhất, mỗi bước có cùng cost và một bước mở ra nhiều trạng thái kế tiếp, hãy thử nghĩ theo **layers**.
 
-Jump Game II thêm:
+Nếu các trạng thái trong cùng layer có thể được nén thành một interval/boundary liên tiếp, có thể ta không cần queue BFS thật. Hãy hỏi:
 
-```text
-currentEnd
-jumps
-```
+> “Tất cả lựa chọn của level hiện tại có thể được tóm tắt bằng ranh giới xa nhất nào?”
 
-để biết lúc nào một lớp reachable kết thúc. Đây là ví dụ rất tốt về cách một greedy reachability invariant được nâng cấp thành shortest-path-by-level.
+Sau khi mental model đó rõ, tên pattern mới là: **greedy theo BFS-level boundary**.

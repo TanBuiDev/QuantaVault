@@ -1,76 +1,142 @@
 # 238. Product of Array Except Self — Solution
 
-## 1. Core idea / Ý tưởng cốt lõi
+## 1. Bắt đầu từ đúng một vị trí
 
-Với mỗi index `i`:
-
-```text
-answer[i] = product of values left of i
-          * product of values right of i
-```
-
-Ta xây tích bên trái trong lượt đầu và ghi trực tiếp vào `answer`. Lượt thứ hai đi từ phải sang trái, giữ một scalar `suffix` và nhân nó vào `answer[i]`.
+Với:
 
 ```text
-Time:  O(n)
-Space: O(1) extra, excluding output
+nums = [2, 3, 4, 5]
 ```
+
+Ở `i = 2`, ta phải tạo kết quả bằng tích của mọi phần tử **trừ `nums[2] = 4`**:
+
+```text
+answer[2] = 2 × 3 × 5
+```
+
+Thay vì nghĩ “làm sao nhân tất cả rồi chia cho `4`?”, hãy nhóm những phần tử hợp lệ thành hai phía:
+
+```text
+bên trái i : 2 × 3
+bên phải i : 5
+
+answer[2] = leftProduct × rightProduct
+```
+
+Ý tưởng này hoạt động cho mọi index:
+
+```text
+answer[i]
+= product(nums[0 ... i-1])
+× product(nums[i+1 ... n-1])
+```
+
+Đây là nguồn gốc của `prefix` và `suffix`; không cần học thuộc tên pattern trước.
 
 ---
 
-## 2. Why division is not needed
+## 2. Vì sao không dùng những cách dễ nghĩ đầu tiên?
 
-Cách `totalProduct / nums[i]` vừa bị cấm, vừa khó xử lý zero. Prefix/suffix không cần special-case zero: zero tự lan vào đúng các tích có chứa nó.
+### Thử nhân lại cho từng index
+
+Với mỗi `i`, duyệt cả mảng và bỏ qua `i`:
+
+```text
+Time: O(n²)
+```
+
+Ta đang tính lại rất nhiều tích giống nhau.
+
+### Tích toàn bộ rồi chia
+
+Nếu không có `0`, ta có thể nghĩ:
+
+```text
+totalProduct / nums[i]
+```
+
+Nhưng đề không cho dùng phép chia, và số `0` còn làm cách nghĩ này rắc rối hơn.
+
+### Lưu hai mảng prefix/suffix
+
+Ta có thể lưu:
+
+```text
+left[i]  = tích bên trái i
+right[i] = tích bên phải i
+```
+
+Cách này đạt `O(n)` time nhưng dùng `O(n)` extra space ngoài output.
+
+Ta có thể tốt hơn vì chính `answer` có thể tạm giữ prefix products.
 
 ---
 
-## 3. First pass — left product
+## 3. Pass trái: `answer[i]` tạm lưu tích bên trái
 
-Khởi tạo:
+Ban đầu:
 
 ```text
 prefix = 1
 ```
 
-Tại index `i`, trước khi nhân `nums[i]`:
+Tại index `i`, **trước khi nhân `nums[i]`**, `prefix` chỉ chứa các phần tử nằm bên trái `i`.
+
+Do đó thứ tự phải là:
 
 ```text
-prefix = product(nums[0 .. i-1])
+answer[i] = prefix
+prefix *= nums[i]
 ```
 
-nên:
+Ví dụ với `[2,3,4,5]`:
 
-```java
-answer[i] = prefix;
-prefix *= nums[i];
+| `i` | `prefix` trước gán | `answer[i]` | `prefix` sau nhân |
+|---:|---:|---:|---:|
+| 0 | 1 | 1 | 2 |
+| 1 | 2 | 2 | 6 |
+| 2 | 6 | 6 | 24 |
+| 3 | 24 | 24 | 120 |
+
+Sau pass đầu:
+
+```text
+answer = [1, 2, 6, 24]
 ```
 
-Sau lượt đầu, `answer[i]` chứa chính xác tích bên trái.
+Mỗi ô đang chứa đúng tích của các số nằm bên trái nó.
 
 ---
 
-## 4. Second pass — right product
+## 4. Pass phải: nhân thêm tích bên phải
 
-Khởi tạo:
+Ta đi ngược lại với:
 
 ```text
 suffix = 1
 ```
 
-Duyệt phải → trái. Trước khi nhân `nums[i]`:
+Tại `i`, trước khi nhân `nums[i]`, `suffix` chỉ chứa các phần tử nằm bên phải `i`.
+
+Vì `answer[i]` đã chứa left product:
 
 ```text
-suffix = product(nums[i+1 .. n-1])
+answer[i] *= suffix
 ```
 
-Do đó:
+sẽ tạo:
 
-```java
-answer[i] *= suffix;
-suffix *= nums[i];
+```text
+left product × right product
 ```
 
-Sau phép nhân, `answer[i]` có cả left product và right product, tức là mọi phần tử trừ chính `nums[i]`.
+rồi mới cập nhật:
+
+```text
+suffix *= nums[i]
+```
+
+Điểm khó nhất của bài chính là **update order**: cả `prefix` lẫn `suffix` phải được dùng trước khi đưa `nums[i]` vào state, vì phần tử tại `i` phải bị loại khỏi kết quả của chính nó.
 
 ---
 
@@ -103,104 +169,101 @@ class Solution {
 }
 ```
 
----
-
-## 6. Alternative approaches / Các hướng khác
-
-### Prefix + suffix arrays
-
-Tạo hai mảng riêng rồi nhân:
-
-```text
-Time: O(n)
-Extra space: O(n)
-```
-
-Dễ hiểu nhưng không đạt follow-up mạnh nhất.
-
-### Division
-
-Có thể tính total product rồi chia, nhưng bị đề cấm và cần logic riêng cho zero.
-
-### Output-as-prefix + scalar suffix
-
-Đạt `O(n)` time và `O(1)` extra space ngoài output; đây là canonical solution.
+Block trên được giữ exact-sync với [`Solution.java`](Solution.java).
 
 ---
 
-## 7. Dry run
+## 6. Dry run hoàn chỉnh
+
+Tiếp tục với:
 
 ```text
-nums = [1,2,3,4]
+nums   = [2, 3, 4, 5]
+answer = [1, 2, 6, 24]   // sau prefix pass
 ```
 
-Sau lượt prefix:
+Suffix pass:
 
-```text
-answer = [1,1,2,6]
-```
-
-Lượt suffix:
-
-```text
-i=3: suffix=1  -> answer[3]=6,  suffix=4
-i=2: suffix=4  -> answer[2]=8,  suffix=12
-i=1: suffix=12 -> answer[1]=12, suffix=24
-i=0: suffix=24 -> answer[0]=24
-```
+| `i` | `suffix` trước nhân | `answer[i]` trước | `answer[i]` sau `*= suffix` | `suffix` sau `*= nums[i]` |
+|---:|---:|---:|---:|---:|
+| 3 | 1 | 24 | 24 | 5 |
+| 2 | 5 | 6 | 30 | 20 |
+| 1 | 20 | 2 | 40 | 60 |
+| 0 | 60 | 1 | 60 | 120 |
 
 Kết quả:
 
 ```text
-[24,12,8,6]
+[60, 40, 30, 24]
 ```
 
----
-
-## 8. Correctness / Vì sao đúng
-
-Invariant lượt đầu: khi gán `answer[i]`, `prefix` bằng tích của toàn bộ phần tử có index nhỏ hơn `i`.
-
-Invariant lượt hai: trước khi xử lý `i`, `suffix` bằng tích của toàn bộ phần tử có index lớn hơn `i`.
-
-Vì vậy sau `answer[i] *= suffix`, giá trị tại `i` bằng tích của mọi phần tử bên trái nhân mọi phần tử bên phải — chính xác là tích của toàn bộ mảng ngoại trừ `nums[i]`.
+Ví dụ có `0` cũng tự nhiên hoạt động. Với `[1,2,0,4]`, prefix/suffix chỉ nhân những phần tử ở hai phía; không có phép chia nên không cần special case cho zero.
 
 ---
 
-## 9. Complexity
+## 7. Vì sao thuật toán đúng?
 
-Hai lượt tuyến tính:
+Sau pass trái, invariant là:
 
 ```text
-Time: O(n)
+answer[i] = product của nums[0 ... i-1]
 ```
 
-Ngoài output chỉ dùng `prefix`, `suffix` và loop variables:
+Trong pass phải, ngay trước khi xử lý `i`:
 
 ```text
-Extra space: O(1)
+suffix = product của nums[i+1 ... n-1]
 ```
 
----
+Vì vậy dòng:
 
-## 10. Edge cases
+```text
+answer[i] *= suffix
+```
 
-- Một zero: chỉ vị trí zero có thể nhận tích khác zero.
-- Hai zero trở lên: mọi output bằng zero.
-- Số âm: dấu được xử lý tự nhiên bởi phép nhân.
-- `n = 2`: output chỉ hoán đổi hai giá trị.
+biến `answer[i]` thành:
 
----
+```text
+product(left of i) × product(right of i)
+```
 
-## 11. Common mistakes
+chính xác là tích của mọi phần tử ngoại trừ `nums[i]`.
 
-1. Gán `answer[i]` sau khi nhân `nums[i]`, khiến tích chứa chính phần tử cần loại.
-2. Update `suffix` trước khi nhân vào `answer[i]`.
-3. Tạo suffix array dù follow-up yêu cầu `O(1)` extra space.
-4. Dùng phép chia hoặc special-case zero không cần thiết.
+Sau đó mới nhân `nums[i]` vào `suffix` để chuẩn bị cho index bên trái kế tiếp. Hai invariant giữ đúng ở mọi bước, nên mọi ô output đều đúng.
 
 ---
 
-## 12. Pattern recognition
+## 8. Complexity
 
-Khi mỗi đáp án phụ thuộc vào **mọi phần tử trừ chính nó**, hãy thử tách contribution thành phần bên trái và bên phải, rồi nén một trong hai phía thành scalar running state.
+```text
+Time:  O(n) — hai pass tuyến tính
+Space: O(1) — nếu không tính mảng output theo quy ước của đề
+```
+
+`answer` là output bắt buộc; ngoài nó chỉ có `prefix`, `suffix`, `n`, `i`.
+
+---
+
+## 9. Lỗi thường gặp
+
+- Viết `prefix *= nums[i]` **trước** `answer[i] = prefix`: lúc đó kết quả tại `i` đã chứa chính `nums[i]`.
+- Tương tự, update `suffix` trước khi nhân vào `answer[i]` cũng đưa `nums[i]` vào kết quả.
+- Dùng division rồi cố patch riêng trường hợp zero; vừa trái constraint vừa phức tạp không cần thiết.
+- Tạo cả `left[]` và `right[]` dù output array có thể tái sử dụng để lưu prefix.
+- Hiểu `prefix` là “tích đến i”. Trong thời điểm được gán cho `answer[i]`, nó phải có nghĩa chính xác là “tích **trước i**”.
+
+---
+
+## 10. Cách nhận ra pattern ở bài khác
+
+Khi output tại `i` phụ thuộc vào “mọi thứ trước `i`” và “mọi thứ sau `i`”, hãy thử tách thành:
+
+```text
+left contribution ×/+/combine right contribution
+```
+
+Sau đó hỏi tiếp:
+
+> Có cần lưu toàn bộ prefix/suffix arrays, hay một phía có thể ghi thẳng vào output và phía còn lại được giữ bằng một running variable?
+
+Đó là cách suy ra prefix/suffix optimization thay vì học thuộc công thức.
