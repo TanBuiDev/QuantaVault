@@ -1,135 +1,124 @@
 # 274. H-Index — Solution
 
-<!-- NEWBIE-FIRST-BRIDGE:START -->
-## Newbie-first reasoning bridge
+## 1. Bài toán thực sự hỏi gì?
 
-**Tự nhìn bài toán bằng ví dụ.** H-index h cần ít nhất h papers có citations >= h. Nếu sort citations tăng dần, tại index i có n-i papers từ i tới cuối cùng đều có citations ít nhất citations[i].
+Đừng bắt đầu bằng bucket hay sorting. Trước tiên hãy đọc định nghĩa theo cách đời thường:
 
-**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Thử mọi h và đếm lại papers gây O(n²). Sort tạo bottleneck O(n log n) nhưng làm condition monotonic rõ: tại mỗi i chỉ cần kiểm tra citations[i] >= n-i; lần đầu đúng cho h lớn nhất theo cách quét phù hợp.
+> Ta cần tìm số lớn nhất `h` sao cho có **ít nhất `h` bài báo**, và mỗi bài trong nhóm đó có **ít nhất `h` citations**.
 
-**State / invariant / data structure cần hiểu trước code.** Sau sort, candidate h=n-i gắn trực tiếp với suffix size. Invariant: mọi paper trong suffix i..n-1 có citation >= citations[i], nên nếu citations[i]>=h thì toàn suffix chứng minh h hợp lệ.
+Ví dụ:
 
-**Dry run mental theo implementation.** Dry run [3,0,6,1,5] sort -> [0,1,3,5,6]. i=2 cho h=3 và citations[2]=3 nên có đúng ba paper ít nhất 3 citations; h=4 tại i=1 không đạt.
+```text
+citations = [3, 0, 6, 1, 5]
+```
 
-**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là yêu cầu đúng h papers thay vì ít nhất h hoặc trả citation value thay cho h. Khi nào dùng: definition dạng 'ít nhất k phần tử đạt threshold k' thường dễ thấy sau sort/count buckets.
-<!-- NEWBIE-FIRST-BRIDGE:END -->
+Thử `h = 4`: cần 4 bài có ít nhất 4 citations, nhưng chỉ có `6` và `5` → không đủ.
+
+Thử `h = 3`: có `3`, `6`, `5` → đúng 3 bài có ít nhất 3 citations.
+
+Vậy đáp án là `3`.
+
+Điểm dễ nhầm nhất là chữ **ít nhất**. Không cần đúng `h` bài; chỉ cần số bài đạt threshold không nhỏ hơn `h`.
 
 ---
 
-## 1. Core idea / Ý tưởng cốt lõi
+## 2. Cách nghĩ tự nhiên đầu tiên
 
-H-index là **ngưỡng lớn nhất `h`** sao cho có ít nhất `h` bài với citation `>= h`.
+Ta có thể thử từng candidate:
 
-Nếu có `n` bài thì:
+```text
+h = 0, 1, 2, ..., n
+```
+
+và với mỗi `h`, quét toàn bộ mảng để đếm bao nhiêu paper có `citation >= h`.
+
+Cách này đúng nhưng tốn:
+
+```text
+O(n²)
+```
+
+Một cách tốt hơn là sort citations rồi tìm threshold, đạt `O(n log n)`.
+
+Nhưng đề còn cho ta một quan sát mạnh hơn để bỏ cả bước sort.
+
+---
+
+## 3. Quan sát quyết định: H-index không thể lớn hơn số paper
+
+Nếu có `n` bài báo thì chắc chắn:
 
 ```text
 0 <= h <= n
 ```
 
-Do đó citation lớn hơn `n` không cần giữ giá trị chính xác. Ta gom tất cả vào bucket `n`, rồi đếm cumulative từ phải sang trái.
+Ngay cả khi một bài có một triệu citations, nó vẫn chỉ là **một** bài.
+
+Vì vậy với mục tiêu tìm `h`, ta không cần phân biệt:
 
 ```text
-Time:  O(n)
-Space: O(n)
+citation = n
+citation = n + 20
+citation = 1_000_000
 ```
 
----
-
-## 2. Requirement recap / Tóm tắt yêu cầu
-
-Tìm maximum `h` thỏa:
+Tất cả đều có thể gom vào cùng bucket `n`, vì với mọi candidate `h <= n`, các giá trị này đều trả lời giống nhau cho câu hỏi:
 
 ```text
-number of papers with citations >= h >= h
+citation >= h ?
 ```
 
-Không cần yêu cầu các bài còn lại có citation nhỏ hơn `h`; điều quyết định là điều kiện “ít nhất `h` bài có ít nhất `h` citations”.
-
----
-
-## 3. Observation 1 — H-index bị chặn bởi số bài
-
-Dù:
-
-```text
-citations = [1000000]
-```
-
-chỉ có một bài, nên h-index tối đa là `1`.
-
-Vì vậy khi xây bucket:
+Đó là lý do của:
 
 ```java
 count[Math.min(citation, n)]++;
 ```
 
-mọi giá trị `>= n` có thể cùng nằm ở bucket `n` mà không mất thông tin cần thiết.
-
 ---
 
-## 4. Observation 2 — Cumulative count từ lớn xuống nhỏ
+## 4. Từ observation sinh ra state nào?
 
-Sau khi có bucket, duyệt:
-
-```text
-h = n, n-1, ..., 0
-```
-
-và duy trì:
+Ta dùng:
 
 ```text
-papersAtLeastH += count[h]
+count[x] = số paper có x citations
 ```
 
-Tại mỗi `h`, biến này bằng số bài có ít nhất `h` citations.
+riêng:
 
-Ngay khi:
+```text
+count[n] = số paper có citations >= n
+```
+
+Sau đó duyệt candidate `h` từ lớn xuống nhỏ và duy trì:
+
+```text
+papersAtLeastH
+```
+
+Ý nghĩa của biến này tại candidate `h`:
+
+> Tổng số paper có citations `>= h`.
+
+Mỗi khi giảm `h`, ta cộng thêm `count[h]`:
+
+```java
+papersAtLeastH += count[h];
+```
+
+Nếu:
 
 ```text
 papersAtLeastH >= h
 ```
 
-thì `h` hợp lệ. Vì đang duyệt giảm dần, đó cũng là **h lớn nhất**.
+thì `h` hợp lệ.
+
+Ta duyệt từ `n` xuống `0`, nên candidate hợp lệ đầu tiên chính là H-index lớn nhất.
 
 ---
 
-## 5. Alternative approaches / Các hướng khác
-
-### Approach A — Sorting
-
-Sort citations tăng hoặc giảm rồi tìm ngưỡng phù hợp.
-
-```text
-Time:  O(n log n)
-Space: tùy thuật toán sort
-```
-
-Dễ nghĩ và thường đủ nhanh với `n <= 5000`.
-
-### Approach B — Test từng h
-
-Với mỗi `h`, đếm lại số paper `>= h`.
-
-```text
-Time: O(n²)
-```
-
-Không cần thiết.
-
-### Approach C — Counting buckets
-
-Dựa vào bound `h <= n` để đạt:
-
-```text
-Time:  O(n)
-Space: O(n)
-```
-
-Đây là canonical solution.
-
----
-
-## 6. Optimal Java solution
+## 5. Optimal Java solution
 
 ```java
 class Solution {
@@ -164,53 +153,68 @@ class Solution {
 }
 ```
 
+Block trên được giữ exact-sync với [`Solution.java`](Solution.java).
+
 ---
 
-## 7. Dry run
+## 6. Dry run theo đúng biến trong code
+
+Với:
 
 ```text
-citations = [3,0,6,1,5]
+citations = [3, 0, 6, 1, 5]
 n = 5
 ```
 
-Buckets sau saturation:
+Sau bucket saturation:
 
 ```text
-0 -> 1
-1 -> 1
-2 -> 0
-3 -> 1
-4 -> 0
-5 -> 2   // citation 5 và 6
+count[0] = 1
+count[1] = 1
+count[2] = 0
+count[3] = 1
+count[4] = 0
+count[5] = 2   // citation 5 và 6 cùng nằm ở đây
 ```
 
-Duyệt xuống:
+Bắt đầu:
 
-| h | papers with >= h citations | valid? |
-|---:|---:|---|
-| 5 | 2 | no |
-| 4 | 2 | no |
-| 3 | 3 | yes |
+```text
+papersAtLeastH = 0
+```
 
-Trả `3`.
+| h | cộng `count[h]` | `papersAtLeastH` | `>= h`? |
+|---:|---:|---:|---|
+| 5 | 2 | 2 | no |
+| 4 | 0 | 2 | no |
+| 3 | 1 | 3 | yes |
 
----
-
-## 8. Correctness / Vì sao đúng
-
-Saturation `min(citation, n)` không thay đổi bất kỳ câu hỏi nào dạng “citation có >= h không?” với `h <= n`.
-
-Khi duyệt từ `n` xuống `h`, cumulative sum chứa chính xác tất cả paper có citation `>= h`. Nếu cumulative >= `h`, ngưỡng `h` hợp lệ.
-
-Do kiểm tra các giá trị từ lớn xuống nhỏ, giá trị hợp lệ đầu tiên là maximum valid `h`, đúng định nghĩa h-index.
+Ngay tại `h = 3`, có 3 paper có ít nhất 3 citations, nên trả `3`.
 
 ---
 
-## 9. Complexity
+## 7. Vì sao thuật toán đúng?
 
-- Tạo bucket: `O(n)`.
-- Duyệt `n+1` bucket: `O(n)`.
-- Bucket array: `O(n)`.
+Có hai ý cần giữ:
+
+1. Mọi candidate H-index đều nằm trong `[0, n]`, nên gom tất cả citation `>= n` vào bucket `n` không làm mất thông tin cần thiết.
+2. Khi đang xét `h`, cumulative sum từ bucket `n` xuống `h` chính xác là số paper có citation `>= h`.
+
+Do đó điều kiện:
+
+```text
+papersAtLeastH >= h
+```
+
+đúng chính xác với định nghĩa H-index.
+
+Vì ta thử `h` từ lớn xuống nhỏ, giá trị hợp lệ đầu tiên là maximum valid `h`.
+
+---
+
+## 8. Complexity
+
+Ta quét citations một lần để tạo bucket và quét tối đa `n + 1` bucket một lần nữa:
 
 ```text
 Time:  O(n)
@@ -219,24 +223,33 @@ Space: O(n)
 
 ---
 
-## 10. Edge cases
+## 9. Edge cases
 
-- Tất cả citation bằng `0` → `h = 0`.
-- Một paper có citation rất lớn → `h = 1`.
-- Tất cả `n` paper có citation `>= n` → `h = n`.
-- Citation lớn hơn `n` được bucket saturation xử lý đúng.
-
----
-
-## 11. Common mistakes
-
-1. Hiểu h-index là số citation trung bình hoặc median.
-2. Yêu cầu **đúng h bài** thay vì **ít nhất h bài**.
-3. Không nhận ra `h <= n`, dẫn đến bucket theo max citation không cần thiết.
-4. Duyệt bucket tăng dần rồi trả ngưỡng hợp lệ đầu tiên — sẽ không đảm bảo maximum.
+- `[0,0,0]` → không có paper nào đạt threshold 1 → `0`.
+- `[100]` → chỉ có một paper nên H-index tối đa là `1`.
+- `[5,5,5,5,5]` với `n = 5` → cả 5 paper vào bucket 5 → `5`.
+- Citation cực lớn không làm bucket array phình theo citation value.
 
 ---
 
-## 12. Pattern recognition
+## 10. Common mistakes
 
-Khi output là một threshold bị chặn bởi `n`, còn input values có thể lớn hơn nhiều, hãy cân nhắc **saturating buckets** tại `n` rồi dùng cumulative frequency.
+- Hiểu H-index là trung bình/median citations.
+- Yêu cầu **đúng `h` paper** thay vì **ít nhất `h` paper**.
+- Tạo bucket tới `max(citations)` dù output bị chặn bởi `n`.
+- Duyệt `h` tăng dần rồi return candidate đầu tiên; ta cần maximum nên phải tìm từ lớn xuống.
+- Nhớ tên “bucket saturation” nhưng không hiểu lý do: ta chỉ được phép saturate vì mọi candidate cần xét đều `<= n`.
+
+---
+
+## 11. Cách nhận ra ý tưởng này ở bài khác
+
+Hãy để ý dạng bài:
+
+```text
+output là một threshold k
+threshold bị chặn bởi số lượng phần tử n
+input value có thể lớn hơn n rất nhiều
+```
+
+Khi các giá trị lớn hơn `n` đều tương đương đối với câu hỏi cần trả lời, ta có thể **gom chúng vào bucket biên** rồi dùng frequency/cumulative count thay vì sort toàn bộ dữ liệu.
