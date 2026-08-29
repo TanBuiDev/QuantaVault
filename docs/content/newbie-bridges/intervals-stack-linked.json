@@ -1,0 +1,131 @@
+{
+  "group": "intervals-stack-linked",
+  "problems": {
+    "2": {
+      "framing": "Hai linked lists lưu chữ số theo thứ tự ngược, nên head chính là hàng đơn vị. Ta có thể cộng giống phép cộng tay từ phải sang trái trên giấy, chỉ khác là list đã đặt digit theo đúng thứ tự cần xử lý.",
+      "derive": "Chuyển cả list thành integer có bottleneck overflow và làm mất ý nghĩa arbitrary length. Quan sát mỗi bước chỉ cần digit của hai node hiện tại và carry từ bước trước; tạo node kết quả ngay rồi tiến pointers.",
+      "state": "p,q trỏ digits chưa xử lý; carry là hàng chục của tổng trước. Invariant: list output đã chứa chính xác các chữ số thấp của tổng, và carry chứa toàn bộ ảnh hưởng còn phải truyền sang digit kế tiếp.",
+      "trace": "Dry run 342 + 465 được lưu 2->4->3 và 5->6->4: 2+5=7; 4+6=10 ghi0 carry1; 3+4+1=8, tạo 7->0->8 biểu diễn 807.",
+      "transfer": "Lỗi thường gặp là dừng khi một list hết dù list kia/carry còn, hoặc quên node cuối cho carry. Khi nào dùng: digit lists thường mô phỏng arithmetic từng cột với carry state O(1)."
+    },
+    "19": {
+      "framing": "Muốn xóa node thứ n từ cuối nhưng list chỉ đi xuôi. Nếu fast đi trước slow đúng n+1 bước kể từ dummy, khi fast tới null thì slow đứng ngay trước node cần xóa.",
+      "derive": "Đếm length rồi đi lần hai đúng nhưng cần hai passes. Quan sát khoảng cách cố định giữa hai pointers biến 'n từ cuối' thành một pass; dummy tạo predecessor ngay cả khi node cần xóa là head.",
+      "state": "fast và slow bắt đầu ở dummy; sau khi tạo gap, invariant fast luôn cách slow n+1 edges. Khi fast=null, slow.next chính là target và phép xóa chỉ là slow.next=slow.next.next.",
+      "trace": "Dry run 1->2->3->4->5, n=2: fast được đẩy ba edges trước slow; cùng tiến đến khi fast null, slow ở node3 nên bỏ slow.next=node4, còn 1->2->3->5.",
+      "transfer": "Lỗi thường gặp là gap n thay vì n+1 khi muốn predecessor, hoặc không dùng dummy cho xóa head. Khi nào dùng: kth-from-end trong singly list thường là fixed-gap two pointers."
+    },
+    "20": {
+      "framing": "Mỗi closing bracket phải đóng đúng opening bracket gần nhất chưa được đóng. Từ '([{}])', dấu } phải ghép với { chứ không phải ( hay [, nên thứ tự LIFO là bản chất bài toán.",
+      "derive": "Đếm số lượng từng loại không đủ vì '([)]' có counts đúng nhưng nesting sai. Quan sát stack lưu các opening brackets còn pending; closing chỉ hợp lệ nếu top là loại tương ứng.",
+      "state": "Stack là chuỗi opening tokens chưa matched theo thứ tự nesting. Invariant sau mỗi ký tự hợp lệ: stack top luôn là bracket bắt buộc phải được đóng tiếp trước mọi opening nằm dưới.",
+      "trace": "Dry run '([)]': push (, push [, gặp ) nhưng top là [ nên fail ngay. Với '([])', ] pop [, ) pop (, cuối stack rỗng nên valid.",
+      "transfer": "Lỗi thường gặp là chỉ check stack không rỗng mà không check type hoặc quên yêu cầu stack rỗng cuối. Khi nào dùng: nested open/close scopes thường là stack pending-context."
+    },
+    "21": {
+      "framing": "Hai lists đã sorted, nên head nhỏ hơn chắc chắn là node nhỏ nhất còn lại của merged list. Chọn node đó rồi chỉ tiến pointer của list vừa chọn giống merge step trong merge sort.",
+      "derive": "Copy mọi value rồi sort lại bỏ phí sorted order và tạo extra work. Quan sát local smallest head là globally safe; dummy node giúp append đầu tiên và mọi node sau bằng cùng một công thức.",
+      "state": "p1,p2 là suffix chưa merge; tail là node cuối output. Invariant list từ dummy.next tới tail đã chứa đúng các phần tử nhỏ nhất đã tiêu thụ theo sorted order.",
+      "trace": "Dry run 1->2->4 và 1->3->4: chọn 1(list1),1(list2),2,3,4 rồi nối suffix 4 còn lại. Không cần tạo node mới nếu implementation relink nodes.",
+      "transfer": "Lỗi thường gặp là quên nối phần list còn lại hoặc làm mất next khi relink. Khi nào dùng: merge hai sorted streams là classic two pointers với dummy tail."
+    },
+    "25": {
+      "framing": "Reverse Nodes in k-Group không phải reverse toàn list: chỉ group đủ k node mới được đảo, suffix ngắn hơn k phải giữ nguyên. Cần xác định group boundary trước khi rewiring.",
+      "derive": "Copy values vào array làm mất yêu cầu node manipulation. Bottleneck pointer dễ lỗi; quan sát dummy + groupPrev + kth cho ta hai anchors ổn định, rồi reverse đúng đoạn [groupStart..kth].",
+      "state": "groupPrev.next là start group; kth là end; groupNext=kth.next phải lưu trước reverse. Sau reverse, old groupStart trở thành group tail và là groupPrev mới cho vòng tiếp theo.",
+      "trace": "Dry run 1->2->3->4->5, k=2: group [1,2] thành 2->1, groupPrev chuyển tới1; [3,4] thành4->3; chỉ còn node5 <k nên dừng, kết quả 2->1->4->3->5.",
+      "transfer": "Lỗi thường gặp là reverse group thiếu k, mất groupNext hoặc cập nhật groupPrev vào node sai. Khi nào dùng: block-wise linked-list mutation nên khóa predecessor, end và successor trước khi đổi pointers."
+    },
+    "56": {
+      "framing": "Sau khi sort intervals theo start, nếu interval mới bắt đầu trước hoặc tại end của interval đang merge thì chúng overlap; nếu start lớn hơn end, không interval tương lai nào có thể nối ngược lại vì starts chỉ tăng.",
+      "derive": "So mọi cặp và merge lặp là rối và O(n²). Sorting tạo thứ tự để quyết định overlap chỉ bằng currentEnd; mỗi interval được merge một lần vào accumulator.",
+      "state": "current=[start,end] là union của một run intervals overlap đã thấy. Invariant mọi interval trước current đã được output và kết thúc trước current.start; current bao phủ toàn bộ run chưa flush.",
+      "trace": "Dry run [[1,3],[2,6],[8,10],[15,18]]: [1,3] gặp [2,6] overlap -> [1,6]; [8,10] tách nên flush [1,6], rồi các interval sau tương tự.",
+      "transfer": "Lỗi thường gặp là sort theo end nhưng dùng logic start đơn giản, hoặc dùng < thay <= khi endpoint chạm nhau vẫn overlap. Khi nào dùng: interval union thường sort by start rồi sweep."
+    },
+    "57": {
+      "framing": "Intervals input đã sorted và non-overlap. Khi chèn newInterval, mọi interval thuộc đúng ba vùng: nằm hoàn toàn trước, overlap với newInterval, hoặc nằm hoàn toàn sau.",
+      "derive": "Thêm interval rồi sort+merge lại đúng nhưng bỏ phí invariant input và tốn O(n log n). Quan sát chỉ cần một pass qua ba phase; vùng overlap được gộp bằng min start và max end.",
+      "state": "newStart/newEnd đại diện union đang mở rộng. Invariant phase1 đã output intervals trước; phase2 hấp thụ mọi overlap liên tiếp; khi gặp first interval sau thì newInterval đã final và phần còn lại append nguyên.",
+      "trace": "Dry run [[1,3],[6,9]], new=[2,5]: [1,3] overlap nên new thành [1,5]; [6,9] bắt đầu sau5 nên output [1,5] rồi [6,9].",
+      "transfer": "Lỗi thường gặp là dùng điều kiện overlap ngược hoặc quên append newInterval nếu nó nằm cuối. Khi nào dùng: sorted disjoint intervals + một update thường giải bằng before/overlap/after three-phase scan."
+    },
+    "61": {
+      "framing": "Rotate list phải k nghĩa là lấy k node cuối đưa lên đầu. Nếu biết length n, rotate k tương đương cắt sau node thứ n-k rồi nối tail cũ vào head cũ.",
+      "derive": "Di chuyển tail lên đầu k lần là O(nk). Quan sát k có thể giảm modulo n và list có thể tạm nối thành vòng; sau đó chỉ cần tìm newTail đúng n-k steps rồi break vòng.",
+      "state": "tail và length được tìm trong pass đầu; sau tail.next=head tạo cycle, newTail nằm n-k-1 edges từ head và newHead=newTail.next. Invariant cycle bảo toàn mọi node trong lúc đổi điểm cắt.",
+      "trace": "Dry run 1->2->3->4->5, k=2: n=5, tạo 5->1; newTail là node3, newHead=4; cắt 3.next=null cho 4->5->1->2->3.",
+      "transfer": "Lỗi thường gặp là quên k%=n, off-by-one newTail hoặc không break cycle. Khi nào dùng: list rotation thường dễ hơn nếu tạm biến list thành ring rồi chọn điểm cắt mới."
+    },
+    "71": {
+      "framing": "Unix path gồm các segments: tên folder đi vào một level, '.' không đổi gì, '..' quay lại một level nếu có. Multiple slashes chỉ là separator dư và không tạo folder.",
+      "derive": "Xử lý ký tự từng char dễ tạo nhiều edge cases. Quan sát split theo '/' biến input thành tokens có semantic rõ; stack/deque giữ canonical path segments chưa bị '..' hủy.",
+      "state": "Deque chứa folder names của simplified path từ root tới current. Invariant sau mỗi token: deque chính là canonical path của prefix đã đọc; '..' pop nếu nonempty, '.'/empty bỏ qua, name push/add.",
+      "trace": "Dry run '/a/./b/../../c/': tokens a push, . skip, b push, .. pop b, .. pop a, c push; join deque thành '/c'.",
+      "transfer": "Lỗi thường gặp là cho '..' đi trên root hoặc giữ empty tokens. Khi nào dùng: hierarchical navigation với enter/stay/back semantics thường là stack of path components."
+    },
+    "82": {
+      "framing": "Khác bài remove duplicates giữ một copy, bài này phải xóa toàn bộ value xuất hiện nhiều lần. Sorted order giúp nhận một run duplicate liên tiếp và bỏ cả run.",
+      "derive": "Đếm frequency bằng map rồi rebuild dùng extra space. Quan sát chỉ cần prev trước run và current scan run; dummy rất quan trọng vì run duplicate có thể bắt đầu ngay ở head.",
+      "state": "prev trỏ node cuối chắc chắn giữ; current trỏ run đang xét. Nếu current.next cùng value, advance tới cuối run rồi set prev.next sau run; nếu unique, prev tiến một node.",
+      "trace": "Dry run 1->2->3->3->4->4->5: giữ1,2; tại3 detect duplicate, skip cả hai3; tại4 skip cả run4; giữ5, output 1->2->5.",
+      "transfer": "Lỗi thường gặp là chỉ xóa duplicate thứ hai và giữ một copy, hoặc không có dummy khi head duplicate. Khi nào dùng: sorted list run filtering thường cần predecessor ổn định + scan tới end of run."
+    },
+    "86": {
+      "framing": "Partition list cần mọi node < x đứng trước nodes >= x nhưng phải giữ relative order trong mỗi nhóm. Ta có thể stream mỗi node vào một trong hai lists rồi nối chúng.",
+      "derive": "Swap values/nodes tại chỗ dễ phá stability và pointer. Quan sát hai dummy heads small/large biến bài thành stable partition: append node theo original order vào đúng tail.",
+      "state": "beforeTail và afterTail là đuôi của hai lists đã phân loại. Invariant mỗi list giữ đúng relative order của nodes đã thấy thuộc nhóm đó; cuối phải set afterTail.next=null rồi nối beforeTail.next=afterDummy.next.",
+      "trace": "Dry run 1->4->3->2->5->2, x=3: before nhận 1,2,2; after nhận4,3,5; nối thành 1->2->2->4->3->5, thứ tự nội bộ được giữ.",
+      "transfer": "Lỗi thường gặp là quên terminate after list tạo cycle qua next cũ. Khi nào dùng: stable partition của linked list thường dùng nhiều dummy-tail buckets rồi concatenate."
+    },
+    "92": {
+      "framing": "Reverse list chỉ trong [left,right] cần giữ ba vùng: prefix trước left, segment đang reverse, suffix sau right. Dummy cho ta node predecessor ngay cả khi left=1.",
+      "derive": "Tách values rồi đảo không luyện pointer và dùng extra space. Quan sát head-insertion có thể giữ sublistPrev cố định rồi lần lượt kéo node sau current lên đầu segment, mỗi lần O(1).",
+      "state": "sublistPrev là node trước vùng reverse, current ban đầu là node left. Mỗi iteration lấy move=current.next, tháo move rồi chèn ngay sau sublistPrev; current vẫn là tail của phần đã reverse.",
+      "trace": "Dry run 1->2->3->4->5, left2 right4: prev=1,current=2; kéo3 trước2 ->1,3,2,4,5; kéo4 trước3 ->1,4,3,2,5.",
+      "transfer": "Lỗi thường gặp là mất current.next khi rewiring hoặc move sublistPrev trong loop. Khi nào dùng: reverse một contiguous linked segment có thể dùng fixed predecessor + repeated head insertion."
+    },
+    "138": {
+      "framing": "Mỗi node có next và random trỏ tới bất kỳ node nào, nên clone node không đủ; mọi pointer của clone phải trỏ tới clone tương ứng chứ không trỏ original.",
+      "derive": "HashMap old->copy là cách trực tiếp O(n) space. Cách interweaving O(1) extra chèn copy ngay sau original, nhờ adjacency đó random copy của node x chính là x.random.next.",
+      "state": "Phase1 invariant original X luôn theo sau bởi copy X'. Phase2 set X'.random = X.random?.next. Phase3 tách xen kẽ, đồng thời restore original next links và nối copy list.",
+      "trace": "Dry run A->B với A.random=B: sau weave A->A'->B->B'; vì A.random=B nên A'.random=B.next=B'. Sau tách, original A->B và copy A'->B' độc lập.",
+      "transfer": "Lỗi thường gặp là set copy.random=original.random hoặc phá list trước khi random links xong. Khi nào dùng: clone graph-like structure có thể map old->new; interleaving là optimization đặc biệt khi next chain cho phép đặt clone cạnh original."
+    },
+    "141": {
+      "framing": "Nếu linked list có cycle, slow đi 1 bước và fast đi 2 bước sẽ cuối cùng cùng nằm trong vòng; fast không thể mãi cách slow một khoảng khác vì khoảng cách modulo cycle length thay đổi mỗi bước.",
+      "derive": "HashSet visited phát hiện repeat O(n) space. Quan sát Floyd cycle detection chỉ cần hai pointers; nếu không cycle thì fast chạm null, nếu có cycle thì fast 'đuổi kịp' slow trong ring.",
+      "state": "slow=slow.next, fast=fast.next.next. Invariant cả hai đi theo cùng next relation; sau khi cùng vào cycle, relative distance giảm/tăng modulo L một đơn vị mỗi iteration nên chắc chắn có lúc bằng0.",
+      "trace": "Dry run 3->2->0->-4 rồi -4.next=2: slow/fast tiến với tốc độ1/2; sau vài bước cả hai gặp nhau tại một node trong cycle, trả true mà không cần biết cycle bắt đầu đâu.",
+      "transfer": "Lỗi thường gặp là dereference fast.next.next khi fast/fast.next null. Khi nào dùng: repeated deterministic next-pointer state có thể dùng slow/fast để detect cycle O(1) space."
+    },
+    "150": {
+      "framing": "Reverse Polish Notation đặt operator sau operands, nên khi gặp số ta chưa tính; khi gặp operator, hai giá trị gần nhất trên stack chính là right và left operands của phép toán đó.",
+      "derive": "Parse thành expression tree là thừa. Quan sát postfix order đã encode precedence/parentheses, stack chỉ cần giữ các subexpression values chưa được operator bên ngoài consume.",
+      "state": "Stack invariant: sau mỗi token, mỗi phần tử là giá trị của một subexpression hoàn chỉnh thuộc prefix. Với operator, pop b trước rồi a, push a op b; thứ tự đặc biệt quan trọng cho '-' và '/'.",
+      "trace": "Dry run ['2','1','+','3','*']: push2,1; '+' pop b=1,a=2 push3; push3; '*' pop3,3 push9; stack cuối [9].",
+      "transfer": "Lỗi thường gặp là tính b-a thay a-b hoặc integer division semantics. Khi nào dùng: postfix evaluation và nhiều expression-machine tasks là stack of partial results."
+    },
+    "155": {
+      "framing": "Min Stack phải trả minimum O(1) dù pop có thể xóa chính minimum. Chỉ một biến min không biết minimum trước đó để khôi phục, nên cần lưu lịch sử min song song với values.",
+      "derive": "Mỗi getMin scan stack là O(n). Quan sát tại mỗi depth ta có thể lưu min của prefix stack tới depth đó; pop đồng thời loại value và min snapshot tương ứng.",
+      "state": "Có thể dùng hai stacks hoặc mỗi entry chứa (value,minSoFar). Invariant top min stack luôn bằng minimum của toàn bộ value stack hiện tại, kể cả duplicates của minimum.",
+      "trace": "Dry run push -2,0,-3: min snapshots -2,-2,-3; getMin=-3; pop -3 đồng thời pop snapshot, top min trở lại -2 ngay O(1).",
+      "transfer": "Lỗi thường gặp là chỉ push min khi nhỏ hơn chứ không xử lý duplicate min đúng. Khi nào dùng: stack cần aggregate query O(1) thường lưu aggregate-so-far cùng mỗi depth."
+    },
+    "228": {
+      "framing": "Sorted unique nums cho phép một range được kéo dài chừng nào nums[i] = previous+1. Khi gap xuất hiện hoặc hết array, range hiện tại phải được đóng và format thành 'a' hoặc 'a->b'.",
+      "derive": "Kiểm tra từng possible integer giữa min/max là vô ích nếu values lớn. Quan sát chỉ input adjacency quyết định consecutive; một scan giữ start và current end của run.",
+      "state": "start là phần tử đầu run chưa flush; i/current là end. Invariant mọi nums trước start đã được output thành ranges, còn [start..current] là một consecutive run duy nhất đang mở.",
+      "trace": "Dry run [0,1,2,4,5,7]: run 0-2 đóng khi gặp4 -> '0->2'; run4-5 đóng khi gặp7 -> '4->5'; cuối flush '7'.",
+      "transfer": "Lỗi thường gặp là quên flush run cuối hoặc format singleton thành a->a. Khi nào dùng: sorted data cần compress consecutive runs thường là run-start + boundary detection scan."
+    },
+    "452": {
+      "framing": "Một arrow tại x bắn được mọi balloon interval chứa x. Để dùng ít arrows, khi chọn một group balloons overlap ta muốn đặt arrow ở điểm kết thúc nhỏ nhất để chừa cơ hội overlap tối đa với balloons sau.",
+      "derive": "Thử mọi điểm/combination là lớn. Sorting theo end tạo greedy: bắn arrow tại end của balloon chưa covered đầu tiên; mọi balloon có start<=arrow đều được cùng arrow cover.",
+      "state": "arrowEnd là vị trí arrow gần nhất; count là arrows đã dùng. Invariant sau sort-by-end, khi start>arrowEnd thì balloon hiện tại không thể được bất kỳ arrow cũ cover và bắt buộc mở arrow mới tại end hiện tại.",
+      "trace": "Dry run [[10,16],[2,8],[1,6],[7,12]] sort end -> [1,6],[2,8],[7,12],[10,16]: arrow=6 cover first2; start7>6 mở arrow=12 cover last2, count2.",
+      "transfer": "Lỗi thường gặp là sort theo start rồi chọn endpoint không có proof. Khi nào dùng: minimum points để stab/cover intervals thường greedy theo earliest finishing endpoint."
+    }
+  }
+}
