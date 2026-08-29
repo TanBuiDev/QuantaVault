@@ -1,5 +1,21 @@
 # Solution / Lời giải — 97. Interleaving String
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Interleaving String cần dùng toàn bộ s1 và s2 theo thứ tự nội bộ để tạo s3. State tự nhiên là đã lấy i chars từ s1 và j chars từ s2; vị trí s3 lúc đó luôn k=i+j.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Backtracking chọn s1/s2 có thể branch exponential khi chars giống nhau. DP memo trên (i,j) gom states trùng; transition thử lấy next char từ s1 nếu match s3[k] hoặc từ s2 nếu match.
+
+**State / invariant / data structure cần hiểu trước code.** dp[i][j] nghĩa là s3 prefix length i+j có thể tạo từ s1 prefix i và s2 prefix j. Invariant chỉ có hai predecessor: (i-1,j) nếu s1[i-1] match, hoặc (i,j-1) nếu s2[j-1] match.
+
+**Dry run mental theo implementation.** s1='aab', s2='axy', s3='aaxaby': early 'aa' có nhiều choices nhưng DP giữ reachable prefix pairs; mỗi cell OR hai legal predecessors và tránh khám lại cùng suffix choice tree.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là chỉ greedy chọn s1 khi cả hai chars cùng match và có thể dead-end. Khi nào dùng: merge hai sequences giữ order để match third sequence thường DP trên pair prefix indices.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 State `(i,j)` asks whether the first `i+j` characters of `s3` can be formed from the first `i` of `s1` and first `j` of `s2`. The final character must come from one of those two strings.

@@ -1,5 +1,21 @@
 # Solution / Lời giải — 222. Count Complete Tree Nodes
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Complete binary tree đầy mọi level trừ có thể level cuối và nodes cuối dồn trái. Nếu leftmost height của left và right subtrees bằng nhau ở một node, một phía là perfect và có thể đếm bằng 2^h thay vì visit từng node.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** DFS count mọi node O(n) không tận dụng completeness. Quan sát so heights cho biết subtree nào perfect; mỗi recursive level chỉ đi vào một subtree chưa chắc perfect, cho khoảng O(log² n).
+
+**State / invariant / data structure cần hiểu trước code.** Height đo đường đi leftmost. Tại node, nếu leftHeight==rightHeight thì left subtree perfect; ngược lại right subtree perfect theo complete-tree property. Count perfect part bằng power of two cộng recursive remainder.
+
+**Dry run mental theo implementation.** Dry run complete tree 6 nodes: root left height2, right height2 theo convention child-spines có thể cho biết left subtree perfect 3 nodes; recurse right subtree còn2 nodes rồi cộng root đúng6.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là công thức 2^h off-by-one do định nghĩa height khác nhau. Khi nào dùng: complete/perfect tree structure cho phép thay traversal bằng height-based counting.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Complete-tree structure cho phép mỗi bước nhận diện một child subtree là **perfect** từ leftmost heights, tính số node của nó bằng power of two và chỉ recurse vào side còn lại.

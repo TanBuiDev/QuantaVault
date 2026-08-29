@@ -1,5 +1,21 @@
 # Solution / Lời giải — 909. Snakes and Ladders
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Snakes and Ladders mỗi turn roll 1..6 rồi nếu landing cell có snake/ladder thì chuyển ngay tới destination. Board cells là graph states; mỗi dice roll là một edge cost1 nên cần BFS.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** DP theo cell index không đơn giản vì snakes có thể đi lùi và ladders nhảy xa tạo cycles. BFS xử lý graph arbitrary; cần một hàm đổi square number 1..n² sang row/col theo boustrophedon numbering.
+
+**State / invariant / data structure cần hiểu trước code.** Queue chứa square numbers, visited theo square sau khi áp snake/ladder. Invariant dequeue ở level moves là số dice rolls tối thiểu tới square đó; mỗi neighbor là kết quả của một roll 1..6 rồi optional jump.
+
+**Dry run mental theo implementation.** Từ square1, generate 2..7; nếu square2 có ladder tới15 thì enqueue15 với distance1 chứ không enqueue2 như final state. BFS lần đầu chạm n² trả số rolls.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là tính row/column direction sai ở hàng xen kẽ hoặc cho chain nhiều snake/ladder trong một roll. Khi nào dùng: board game minimum turns với deterministic special transitions là BFS trên board states.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Mỗi square là state, một die roll là một unweighted transition. BFS tối thiểu hóa số roll; transition phải mô phỏng đúng zigzag label và tối đa một snake/ladder jump.

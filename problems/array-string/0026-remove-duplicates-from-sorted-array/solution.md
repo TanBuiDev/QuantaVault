@@ -1,5 +1,21 @@
 # 26. Remove Duplicates from Sorted Array — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Mảng đã sorted như [1,1,2,2,3] đặt các duplicate cạnh nhau. Ta không cần xóa vật lý; chỉ cần viết các giá trị unique vào prefix và trả độ dài prefix đó.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Dùng remove/shift từng duplicate làm bottleneck O(n²). Quan sát sorted order cho phép phát hiện giá trị mới bằng cách so với unique cuối cùng đã ghi, nên một read pointer và một write pointer đủ.
+
+**State / invariant / data structure cần hiểu trước code.** write đại diện index sẽ ghi unique tiếp theo; prefix [0, write) luôn chứa đúng các giá trị distinct của phần đã đọc. read chỉ quét input và không bao giờ lùi.
+
+**Dry run mental theo implementation.** Dry run [1,1,2]: giữ 1 làm prefix, read gặp 1 thì bỏ, gặp 2 khác nums[write-1] nên ghi vào write=1 rồi tăng write thành 2; prefix [1,2] là đáp án.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là tăng write cả khi duplicate hoặc so với phần tử vừa đọc thay vì unique cuối. Khi nào dùng: sorted array + yêu cầu in-place compact thường là slow/read + write pointer.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Intuition
 
 Bài 26 là phiên bản deduplication của pattern **read pointer + write pointer**.

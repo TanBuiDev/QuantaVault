@@ -1,5 +1,21 @@
 # 219. Contains Duplicate II — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Ta cần hai equal values có distance <= k. Khi scan index i, chỉ cần biết occurrence gần nhất của nums[i]; occurrence cũ hơn luôn cho distance lớn hơn và không hữu ích hơn.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** So mọi pair O(n²). HashMap lastIndex nén history: nếu value từng thấy ở j và i-j<=k thì true; sau đó update lastIndex=value->i.
+
+**State / invariant / data structure cần hiểu trước code.** Map lưu index gần nhất của mỗi value trong prefix. Invariant lastIndex[x] là occurrence lớn nhất < i, vì vậy nếu occurrence gần nhất còn quá xa thì mọi occurrence cũ cũng quá xa.
+
+**Dry run mental theo implementation.** Dry run [1,2,3,1], k=3: khi i=3 gặp 1, map[1]=0 và distance3 đạt điều kiện. Với k=2, distance3 quá lớn rồi map[1] update thành3.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là giữ index đầu tiên thay vì gần nhất. Khi nào dùng: pair condition dựa trên distance trong stream thường chỉ cần most-recent occurrence hoặc sliding set size k.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Với mỗi value, để tìm duplicate gần nhất về phía trước, chỉ cần biết occurrence **gần nhất** đã thấy. Mọi occurrence cũ hơn luôn có khoảng cách lớn hơn.

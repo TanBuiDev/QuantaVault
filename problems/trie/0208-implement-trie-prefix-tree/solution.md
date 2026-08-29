@@ -1,5 +1,21 @@
 # Solution / Lời giải — 208. Implement Trie (Prefix Tree)
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Trie lưu nhiều words bằng cách chia sẻ prefix: apple và app cùng đi qua a->p->p, rồi chỉ apple đi tiếp l->e. Mỗi node đại diện một prefix, không phải một word hoàn chỉnh mặc định.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** HashSet giải exact search nhưng startsWith phải scan words. Quan sát prefix tree cho cả insert/search/prefix trong O(length): follow một child theo mỗi character.
+
+**State / invariant / data structure cần hiểu trước code.** TrieNode children ánh xạ character->next prefix; isWord đánh dấu có word kết thúc đúng node đó. Invariant sau insert word, path characters tồn tại và only terminal node được mark isWord=true.
+
+**Dry run mental theo implementation.** Insert apple tạo path a-p-p-l-e mark e. Insert app reuse a-p-p và mark second p. search app true sau insert thứ hai; startsWith ap true chỉ cần path, không cần terminal mark.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là coi node có children là word hoặc startsWith check isWord. Khi nào dùng: nhiều string operations theo prefix thường dùng trie để share prefix work.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Mỗi trie node đại diện một prefix; `children[ch-'a']` là edge sang prefix dài hơn một ký tự. `isWord` tách exact-word membership khỏi prefix existence.

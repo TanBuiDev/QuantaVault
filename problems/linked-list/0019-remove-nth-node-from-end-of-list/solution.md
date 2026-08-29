@@ -1,5 +1,21 @@
 # Solution / Lời giải — 19. Remove Nth Node From End of List
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Muốn xóa node thứ n từ cuối nhưng list chỉ đi xuôi. Nếu fast đi trước slow đúng n+1 bước kể từ dummy, khi fast tới null thì slow đứng ngay trước node cần xóa.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Đếm length rồi đi lần hai đúng nhưng cần hai passes. Quan sát khoảng cách cố định giữa hai pointers biến 'n từ cuối' thành một pass; dummy tạo predecessor ngay cả khi node cần xóa là head.
+
+**State / invariant / data structure cần hiểu trước code.** fast và slow bắt đầu ở dummy; sau khi tạo gap, invariant fast luôn cách slow n+1 edges. Khi fast=null, slow.next chính là target và phép xóa chỉ là slow.next=slow.next.next.
+
+**Dry run mental theo implementation.** Dry run 1->2->3->4->5, n=2: fast được đẩy ba edges trước slow; cùng tiến đến khi fast null, slow ở node3 nên bỏ slow.next=node4, còn 1->2->3->5.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là gap n thay vì n+1 khi muốn predecessor, hoặc không dùng dummy cho xóa head. Khi nào dùng: kth-from-end trong singly list thường là fixed-gap two pointers.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Dùng fast/slow với khoảng cách cố định. Cho `fast` đi trước `n+1` cạnh từ dummy; khi `fast` chạm `null`, `slow` đứng ngay trước node thứ `n` tính từ cuối.

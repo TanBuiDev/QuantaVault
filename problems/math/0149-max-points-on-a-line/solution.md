@@ -1,5 +1,21 @@
 # Solution / Lời giải — 149. Max Points on a Line
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Max Points on a Line: cố định một anchor point i, mọi point j trên cùng line qua i có cùng slope. Ta chỉ cần group các j theo slope canonical rồi lấy group lớn nhất cho từng anchor.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** So mọi triples O(n³) hoặc dùng floating slope dễ precision/vertical issues. Quan sát slope dy/dx có thể chuẩn hóa thành reduced integer pair bằng gcd và sign convention, dùng HashMap key.
+
+**State / invariant / data structure cần hiểu trước code.** Với mỗi anchor, map[normalized(dy,dx)] là số points khác cùng direction line. Invariant các equivalent slopes reduce về cùng pair; vertical/horizontal và duplicate points cần convention rõ theo constraints.
+
+**Dry run mental theo implementation.** Anchor (1,1), points (2,2),(3,3): deltas (1,1),(2,2) đều gcd-reduce (1,1), count2 plus anchor=3. Point (1,3) canonical vertical key khác.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là dùng double slope hoặc không normalize dấu khiến (1,1) và(-1,-1) khác keys. Khi nào dùng: geometric collinearity/group-by-ratio nên canonicalize rational direction bằng gcd.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Fix one point as anchor and group every later point by its exact normalized slope relative to that anchor. The largest slope group plus the anchor is the largest line through it.

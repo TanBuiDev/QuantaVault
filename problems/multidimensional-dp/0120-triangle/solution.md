@@ -1,5 +1,21 @@
 # Solution / Lời giải — 120. Triangle
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Trong Triangle, từ cell row r,col c chỉ đi xuống (r+1,c) hoặc (r+1,c+1). Nếu tính từ dưới lên, minimum path từ cell hiện tại = value + min(best của hai children).
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** DFS mọi root-to-bottom paths exponential. DP bottom-up có lợi vì last row đã là base answers; một 1D array copy last row rồi overwrite upward, không cần full table.
+
+**State / invariant / data structure cần hiểu trước code.** dp[c] trước xử lý row r là minimum sum từ child (r+1,c) xuống đáy. Update dp[c]=triangle[r][c]+min(dp[c],dp[c+1]); invariant sau row r, dp[c] là best từ cell(r,c) xuống.
+
+**Dry run mental theo implementation.** Triangle [[2],[3,4],[6,5,7],[4,1,8,3]]: start [4,1,8,3]; row2 -> [7,6,10]; row1 -> [9,10]; row0 -> [11], answer11.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là update top-down in-place mà overwrite state còn cần. Khi nào dùng: layered DAG với transitions xuống next layer có thể DP bottom-up và rolling one layer.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Work bottom-up. The minimum path from a cell equals its value plus the smaller minimum path of its two allowed children. One array can store the row below.

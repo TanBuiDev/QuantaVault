@@ -1,5 +1,21 @@
 # 202. Happy Number — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Repeatedly thay n bằng tổng bình phương digits tạo một deterministic sequence. Hoặc sequence chạm 1, hoặc nếu không thì vì state hữu hạn nó sẽ lặp một value và mắc trong cycle.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Giới hạn số bước tùy ý không có proof. HashSet seen phát hiện cycle rõ ràng; hoặc fast/slow pointers dùng Floyd. Bottleneck cần giải là biết khi nào dừng nếu n không happy.
+
+**State / invariant / data structure cần hiểu trước code.** Với set approach, seen chứa mọi value trước đây; nếu next đã seen thì cycle. Với Floyd, slow=f(slow), fast=f(f(fast)); invariant nếu có cycle hai pointer cuối cùng gặp nhau.
+
+**Dry run mental theo implementation.** Dry run 19: 19 -> 82 -> 68 -> 100 -> 1 nên happy. Với 2, sequence cuối đi vào cycle 4,16,37,58,89,145,42,20,4 nên phát hiện repeat.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là chỉ loop while n!=1 mà không detect cycle. Khi nào dùng: lặp một hàm deterministic trên state có thể dùng seen set hoặc Floyd cycle detection giống linked list ẩn.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Xem quá trình như một linked functional graph:

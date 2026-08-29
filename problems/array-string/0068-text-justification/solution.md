@@ -1,5 +1,21 @@
 # 68. Text Justification — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Text justification có hai quyết định tách biệt: chọn bao nhiêu word vừa một line, rồi phân phối số space còn thiếu giữa các gap; last line lại dùng luật left-justified riêng.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Nối word rồi thêm space tùy hứng dễ sai vì bottleneck nằm ở việc chia đều và phần dư. Quan sát sau khi chốt một line, total letters và gap count xác định duy nhất base spaces và extra spaces.
+
+**State / invariant / data structure cần hiểu trước code.** State của outer scan là range words cho line hiện tại. Khi format line thường, spaces = width-letters, gaps = count-1, mỗi gap nhận spaces/gaps và các gap trái đầu tiên nhận phần dư.
+
+**Dry run mental theo implementation.** Dry run width=16 với 'This is an': letters=8, gaps=2, cần 8 spaces nên mỗi gap 4. Nếu cần 9 spaces, gap trái nhận 5 và gap phải 4.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là chia space cho số word thay vì số gap, xử lý last line như line thường, hoặc quên line một word. Khi nào dùng: formatting có quota cố định thường nên tách selection phase và distribution phase.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Bài này dễ hơn khi tách thành **packing** và **formatting**.

@@ -1,5 +1,21 @@
 # 209. Minimum Size Subarray Sum — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Tất cả nums đều positive, nên khi mở rộng right thì sum không giảm; khi shrink left thì sum không tăng. Monotonicity này cho phép tìm shortest subarray đạt target bằng sliding window.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Prefix sum + thử mọi pair O(n²), binary search prefix có O(n log n). Với positive numbers, quan sát window sum monotonic cho O(n): expand tới đủ target rồi shrink càng nhiều càng tốt.
+
+**State / invariant / data structure cần hiểu trước code.** sum là tổng window [left,right]. Invariant: sau vòng while shrink, window hiện tại là không đủ target, còn mọi valid window kết thúc tại right đã được thử trong lúc shrink và minLength cập nhật.
+
+**Dry run mental theo implementation.** Dry run target7, [2,3,1,2,4,3]: tới sum8 ở right=3 shrink; sau đó khi right=4 và 5, window co được [4,3] length2, là đáp án.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là dùng kỹ thuật này khi nums có số âm, làm sum mất monotonicity. Khi nào dùng: contiguous positive-sum threshold là signal mạnh cho variable sliding window.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Điều kiện quan trọng nhất là mọi phần tử đều dương. Vì vậy window sum có tính monotonic:

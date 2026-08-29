@@ -1,5 +1,21 @@
 # Solution / Lời giải — 17. Letter Combinations of a Phone Number
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Mỗi digit 2–9 mở ra một nhóm letters, ví dụ 23 nghĩa là chọn một letter trong abc rồi một letter trong def. Mỗi output là một đường đi dài đúng bằng số digits qua cây lựa chọn này.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Có thể tạo product bằng nhiều vòng lặp nhưng số digit thay đổi nên không tổng quát. Quan sát mỗi vị trí có một tập choices độc lập; backtracking chọn một letter, recurse sang digit kế, rồi undo để thử choice khác.
+
+**State / invariant / data structure cần hiểu trước code.** State gồm index digit hiện tại và path/StringBuilder đang chứa prefix letters đã chọn. Invariant path.length()==index; khi index==digits.length, path là một combination hoàn chỉnh và được copy vào result.
+
+**Dry run mental theo implementation.** Dry run 23: chọn a rồi d/e/f tạo ad,ae,af; undo a, chọn b rồi d/e/f; tiếp c. Mỗi return xóa đúng letter vừa append nên sibling branch không dính state của nhau.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là quên undo StringBuilder hoặc xử lý digits rỗng thành một empty combination. Khi nào dùng: Cartesian product có số lớp thay đổi thường là choose → recurse → undo backtracking.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Backtracking depth equals the digit index. At each depth choose one mapped letter; a full path has exactly one letter per input digit.

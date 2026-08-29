@@ -1,5 +1,21 @@
 # 57. Insert Interval — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Intervals input đã sorted và non-overlap. Khi chèn newInterval, mọi interval thuộc đúng ba vùng: nằm hoàn toàn trước, overlap với newInterval, hoặc nằm hoàn toàn sau.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Thêm interval rồi sort+merge lại đúng nhưng bỏ phí invariant input và tốn O(n log n). Quan sát chỉ cần một pass qua ba phase; vùng overlap được gộp bằng min start và max end.
+
+**State / invariant / data structure cần hiểu trước code.** newStart/newEnd đại diện union đang mở rộng. Invariant phase1 đã output intervals trước; phase2 hấp thụ mọi overlap liên tiếp; khi gặp first interval sau thì newInterval đã final và phần còn lại append nguyên.
+
+**Dry run mental theo implementation.** Dry run [[1,3],[6,9]], new=[2,5]: [1,3] overlap nên new thành [1,5]; [6,9] bắt đầu sau5 nên output [1,5] rồi [6,9].
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là dùng điều kiện overlap ngược hoặc quên append newInterval nếu nó nằm cuối. Khi nào dùng: sorted disjoint intervals + một update thường giải bằng before/overlap/after three-phase scan.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Intuition
 
 Vì `intervals` đã **sorted theo start** và **không overlap**, ta không cần sort lại. Chỉ cần scan một lần theo ba phase:

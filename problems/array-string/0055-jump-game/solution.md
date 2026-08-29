@@ -1,5 +1,21 @@
 # 55. Jump Game — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Với [2,3,1,1,4], từ index 0 ta có thể tới 1 hoặc 2; điều quan trọng không phải chọn path cụ thể mà là theo dõi ranh giới xa nhất reachable sau khi quét các index đã tới được.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** DFS/BFS thử nhiều path tạo bottleneck lặp state. Quan sát nếu i đã nằm trong vùng reachable, mọi reach i+nums[i] có thể mở rộng cùng một boundary farthest; nếu i vượt boundary thì không path nào tới i được.
+
+**State / invariant / data structure cần hiểu trước code.** farthest là index lớn nhất reachable từ mọi vị trí đã xử lý. Invariant: trước khi xử lý i, nếu i <= farthest thì i thật sự reachable; sau update farthest bao phủ mọi jump từ prefix reachable.
+
+**Dry run mental theo implementation.** Dry run [3,2,1,0,4]: farthest lần lượt 3,3,3,3; tới i=4 thì 4>3 nên thất bại. Với [2,3,1,1,4], tại i=1 farthest mở tới 4 và đủ tới đích.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là greedy chọn index có nums[i] lớn nhất thay vì theo reach i+nums[i]. Khi nào dùng: reachability một chiều với các interval mở rộng liên tục thường nén được thành một farthest boundary.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Ta không cần mô phỏng một đường nhảy cụ thể. Với mọi index đã duyệt, chỉ cần giữ:

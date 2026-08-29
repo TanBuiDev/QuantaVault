@@ -1,5 +1,21 @@
 # Solution / Lời giải — 211. Design Add and Search Words Data Structure
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** WordDictionary giống Trie nhưng search pattern có '.' nghĩa là bất kỳ một ký tự. Với literal char ta đi đúng một child; với '.' ta phải thử mọi child hiện có tại vị trí đó.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Regex trên toàn word list sẽ scan nhiều strings. Trie chia sẻ prefixes; wildcard chỉ branch tại các node relevant, và branch có thể fail sớm nếu suffix không tồn tại.
+
+**State / invariant / data structure cần hiểu trước code.** DFS search(node,index) nghĩa là prefix pattern[0..index) đã match path tới node. Literal giữ một branch; '.' recurse all non-null children; index==len chỉ true nếu node.isWord.
+
+**Dry run mental theo implementation.** Sau add bad,dad,mad, search '.ad': tại root '.' thử b,d,m branches; mỗi branch suffix a->d tồn tại và terminal true nên return true ngay branch đầu hợp lệ.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là '.' match nhiều hơn/ít hơn đúng một char hoặc base case bỏ isWord. Khi nào dùng: trie search với single-position wildcard là DFS branching only at wildcard positions.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Insertion is ordinary trie traversal. Search becomes DFS only at `.`: a literal follows one edge, while wildcard branches over all existing children.

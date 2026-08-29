@@ -1,5 +1,21 @@
 # Solution / Lời giải — 295. Find Median from Data Stream
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Median stream cần hai nửa: lower half và upper half. Nếu giữ max-heap lower và min-heap upper, ta lấy ngay hai values gần center mà không sort lại toàn stream sau mỗi add.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Insert vào sorted list tốn O(n) shift hoặc sort lại O(n log n). Two heaps cho add O(log n), median O(1), miễn giữ size balance và ordering lower<=upper.
+
+**State / invariant / data structure cần hiểu trước code.** maxHeap chứa nửa nhỏ, minHeap nửa lớn. Invariants: sizes chênh tối đa1 và mọi maxHeap value <= mọi minHeap value; thường maxHeap có cùng size hoặc nhiều hơn1.
+
+**Dry run mental theo implementation.** Add1 -> lower[1]; add2 chuyển/balance lower[1], upper[2], median1.5; add3 vào lower/upper qua rebalance để lower có [2,1], upper[3], median2.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là chỉ balance sizes mà không đảm bảo ordering, hoặc overflow khi average two ints. Khi nào dùng: dynamic median/quantile boundary thường tách data thành two heaps quanh center.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Split the stream into a max-heap lower half and min-heap upper half. Keep all lower values `<=` all upper values and keep their sizes equal or with one extra in `lower`.

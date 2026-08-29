@@ -1,5 +1,21 @@
 # Solution / Lời giải — 221. Maximal Square
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Nếu cell (r,c) là '1', square lớn nhất có bottom-right tại đó chỉ mở rộng khi ba neighbors left, top, top-left đều hỗ trợ square. Side =1+min(ba side lengths đó).
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Thử mọi square và scan cells rất tốn. DP state theo bottom-right nén điều kiện hình học: weakest trong ba hướng giới hạn side mới, giống thêm một border quanh square nhỏ hơn.
+
+**State / invariant / data structure cần hiểu trước code.** dp[r][c] là side length max square toàn1 kết thúc tại (r,c). Nếu matrix cell0 thì0; nếu1 thì1+min(top,left,diag). Track maxSide rồi area=maxSide².
+
+**Dry run mental theo implementation.** Nếu top=2,left=2,diag=2 và current1, tạo side3. Nếu diag chỉ1 dù top/left2, side chỉ2 vì thiếu square 2x2 ở góc chéo để hỗ trợ 3x3.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là dùng max neighbors hoặc trả side thay area. Khi nào dùng: largest all-valid square/rectangle local expansion thường DP theo boundary/corner states.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Let DP store the largest all-ones square side ending at each cell. A `1` cell can extend a square by one beyond the minimum of its top, left, and top-left neighbors.

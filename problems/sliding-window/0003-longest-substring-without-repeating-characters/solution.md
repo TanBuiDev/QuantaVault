@@ -1,5 +1,21 @@
 # 3. Longest Substring Without Repeating Characters — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Trong 'abcabcbb', window 'abc' hợp lệ vì không ký tự nào lặp; thêm 'a' làm vi phạm, nên boundary trái phải nhảy qua occurrence trước của a trước khi tiếp tục mở rộng.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Khởi động substring ở mọi vị trí gây O(n²). Quan sát khi right tăng, chỉ ký tự mới có thể tạo duplicate; ta có thể giữ last index của mỗi char và dịch left tiến thẳng qua duplicate thay vì reset window.
+
+**State / invariant / data structure cần hiểu trước code.** Window [left,right] luôn không có duplicate. Map/array lastSeen[c] lưu index gần nhất; khi c đã nằm trong window, left=max(left,lastSeen[c]+1). answer là max window length sau khi khôi phục invariant.
+
+**Dry run mental theo implementation.** Dry run 'abba': a,b tạo length2; b tại index2 có lastSeen=1 nên left=2; a tại index3 có lastSeen=0 nhưng max giữ left=2, tránh kéo boundary lùi về 1.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là gán left=lastSeen+1 mà không dùng max, khiến left đi lùi. Khi nào dùng: longest contiguous segment với constraint có thể sửa bằng cách bỏ prefix thường gợi ý sliding window.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Ta giữ invariant:

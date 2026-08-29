@@ -1,5 +1,21 @@
 # 383. Ransom Note — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Ransom note có thể tạo từ magazine khi magazine cung cấp ít nhất số lượng mỗi char note cần. Đây là bài inventory: mỗi char magazine tăng stock, mỗi char note tiêu một unit.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Tìm và xóa từng char trong magazine gây search/shift lặp. Với alphabet nhỏ, frequency array tạo O(n+m) và O(1) space theo alphabet.
+
+**State / invariant / data structure cần hiểu trước code.** count[c] là số copies còn khả dụng. Khi scan note, decrement; nếu count âm thì note yêu cầu nhiều hơn stock và có thể fail ngay. Invariant count phản ánh magazine minus prefix note.
+
+**Dry run mental theo implementation.** Dry run note='aa', magazine='aab': stock a=2,b=1; consume a hai lần về0 nên true. Với magazine='ab', consume a đầu còn0, a thứ hai làm -1 nên false.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là chỉ check character tồn tại mà không count duplicate. Khi nào dùng: construct-one-multiset-from-another thường là frequency inventory và early deficit detection.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Mỗi ký tự trong `magazine` chỉ dùng được một lần, nên bài toán là kiểm tra liệu frequency supply của `magazine` có đủ cho frequency demand của `ransomNote` hay không.

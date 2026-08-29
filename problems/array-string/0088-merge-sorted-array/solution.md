@@ -1,5 +1,21 @@
 # 88. Merge Sorted Array — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** nums1 có vùng trống ở cuối để nhận nums2. Nếu merge từ đầu, việc ghi có thể đè lên phần nums1 chưa đọc; merge từ cuối dùng chính vùng trống nên không phá dữ liệu.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Tạo mảng mới rồi copy lại dùng O(m+n) extra space. Bottleneck của merge in-place từ trái là overwrite. Quan sát phần tử lớn nhất còn lại luôn phải nằm ở vị trí cuối còn trống, nên đi ba pointer từ phải sang trái.
+
+**State / invariant / data structure cần hiểu trước code.** i trỏ phần tử thật cuối nums1, j trỏ cuối nums2, write trỏ ô cuối cần điền. Invariant: suffix sau write đã chứa đúng các phần tử lớn nhất ở vị trí cuối cùng của merged array.
+
+**Dry run mental theo implementation.** Dry run nums1=[1,2,3,0,0,0], nums2=[2,5,6]: so 3 và 6 ghi 6, rồi 5, rồi 3, rồi so 2 và 2; không phần tử chưa đọc nào bị ghi đè.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là bắt đầu write ở 0 hoặc quên copy phần nums2 còn lại khi nums1 cạn. Khi nào dùng: merge vào buffer nằm ở cuối array thường gợi ý fill backward.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Intuition
 
 Điểm đặc biệt của bài này là `nums1` đã có đủ chỗ để chứa toàn bộ kết quả:

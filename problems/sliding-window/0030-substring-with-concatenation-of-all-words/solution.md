@@ -1,5 +1,21 @@
 # 30. Substring with Concatenation of All Words — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Mọi word có cùng length L, nên một concatenation hợp lệ chỉ bắt đầu ở một trong L offset classes. Trong mỗi class, ta đọc chuỗi theo block word thay vì từng ký tự.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Thử mọi start rồi copy/count toàn substring tốn nhiều công lặp. Quan sát block alignment cố định cho phép sliding window theo word; khi một word xuất hiện quá nhiều, shrink từng block từ trái.
+
+**State / invariant / data structure cần hiểu trước code.** need[word] là frequency cần; seen[word] là frequency trong window; left/right chạy theo bước L và count là số word hiện có. Window hợp lệ khi không seen nào vượt need và count đúng số words.
+
+**Dry run mental theo implementation.** Dry run s='barfoofoobar', words=['foo','bar'], L=3: offset0 đọc bar,foo -> đủ hai word nên record 0; đọc foo làm foo dư, shrink bar rồi foo cũ cho tới frequency hợp lệ.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là chỉ scan offset0, shrink theo ký tự hoặc quên duplicate words. Khi nào dùng: fixed-length tokens tạo natural block-aligned sliding windows thay vì character windows.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Ta không trượt theo từng character bên trong một alignment; ta trượt theo **token** có kích thước cố định `wordLength`.

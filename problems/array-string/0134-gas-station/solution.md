@@ -1,5 +1,21 @@
 # 134. Gas Station — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Mỗi station cho net fuel = gas[i]-cost[i]. Nếu tổng net toàn vòng âm thì không start nào đủ; nếu tổng không âm, ta cần tìm nơi prefix fuel không bao giờ rơi âm khi bắt đầu từ đó.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Thử từng start mô phỏng cả vòng là O(n²). Quan sát nếu bắt đầu tại start và fuel âm ở i, thì bất kỳ station giữa start và i cũng không thể là start tốt hơn vì nó bỏ mất một prefix net không âm đã tích lũy.
+
+**State / invariant / data structure cần hiểu trước code.** total theo dõi khả năng tồn tại toàn cục; tank theo dõi fuel từ candidate start hiện tại. Khi tank<0, reset tank=0 và start=i+1; invariant loại bỏ cả đoạn start..i khỏi candidates.
+
+**Dry run mental theo implementation.** Dry run gas=[1,2,3,4,5], cost=[3,4,5,1,2]: tank âm qua các station đầu nên start dời tới 3; từ 3 net +3,+3,-2,-2,-2 vẫn hoàn tất vòng, total=0.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là reset total cùng tank hoặc không hiểu vì sao bỏ được cả đoạn. Khi nào dùng: circular feasibility với additive resource thường có global-sum condition cộng greedy reset khi prefix deficit.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Biến bài toán thành balance:

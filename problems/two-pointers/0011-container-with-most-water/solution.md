@@ -1,5 +1,21 @@
 # 11. Container With Most Water — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Diện tích giữa hai line là width * min(height[left],height[right]); chiều cao nhỏ hơn là bottleneck. Khi thu hẹp width, chỉ có thay line thấp hơn mới có cơ hội bù lại bằng height lớn hơn.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Thử mọi cặp là O(n²). Quan sát nếu left line thấp hơn, giữ left và move right vào chỉ giảm width trong khi min height vẫn không thể vượt left; các cặp đó không thể tốt hơn current, nên loại cả loạt bằng một move.
+
+**State / invariant / data structure cần hiểu trước code.** left/right bao search interval chưa bị chứng minh vô ích. Mỗi bước cập nhật maxArea rồi move pointer của side thấp hơn; invariant là mọi cặp bị bỏ qua có upper bound không vượt candidate đã xét với bottleneck đó.
+
+**Dry run mental theo implementation.** Dry run heights=[1,8,6,2,5,4,8,3,7]: cặp đầu bị height1 giới hạn nên move left; tại left=1,right=8 area=min(8,7)*7=49, một candidate lớn hình thành.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là move side cao hơn hoặc tối đa hóa height thay vì min height. Khi nào dùng: objective giữa hai boundary có width giảm dần và bị side yếu hơn giới hạn thường cho elimination two-pointer proof.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Với hai cạnh tại `left` và `right`:

@@ -1,5 +1,21 @@
 # 12. Integer to Roman — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Ví dụ 1994 được tách thành 1000 + 900 + 90 + 4, tương ứng M + CM + XC + IV. Bài toán là liên tục lấy ký hiệu Roman lớn nhất không vượt quá phần giá trị còn lại.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Có thể viết hàng loạt if cho từng chữ số, nhưng bottleneck là logic rời rạc và khó mở rộng. Quan sát rằng Roman chuẩn có một bảng value-symbol cố định theo thứ tự giảm dần, kể cả các cặp subtractive như CM, CD, XC, IV.
+
+**State / invariant / data structure cần hiểu trước code.** State là phần số còn lại num và output đang xây. Với mỗi value từ lớn xuống nhỏ, trong khi num còn chứa value đó thì append symbol và trừ value; thứ tự bảng là invariant giữ representation canonical.
+
+**Dry run mental theo implementation.** Dry run 58: lấy L=50 còn 8, lấy V=5 còn 3, rồi III. Với 1994, 1000 -> 900 -> 90 -> 4 cho MCMXCIV; trace này cho thấy subtractive pairs chỉ là entry bình thường trong bảng.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là thiếu 4/9, 40/90, 400/900 hoặc sắp bảng sai thứ tự. Khi nào dùng: bài encode theo các denomination hữu hạn và luôn chọn denomination lớn nhất hợp lệ thường gợi ý greedy table.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Đưa cả các subtractive form vào một bảng giá trị giảm dần:

@@ -1,5 +1,21 @@
 # Solution / Lời giải — 199. Binary Tree Right Side View
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Right side view cần đúng một node visible ở mỗi depth: node ngoài cùng bên phải. BFS có thể lấy phần tử cuối mỗi level, hoặc DFS đi right trước và ghi node đầu tiên khi lần đầu đạt một depth.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Collect cả levels rồi lấy cuối vẫn đúng nhưng lưu thừa. Quan sát chỉ cần một value per depth; BFS queue already knows level boundary, nên khi xử lý index size-1 append node.val.
+
+**State / invariant / data structure cần hiểu trước code.** Queue chứa current level; size snapshot cố định. Invariant node cuối trong thứ tự left-to-right của level là rightmost visible node, kể cả tree có holes.
+
+**Dry run mental theo implementation.** Dry run [1,2,3,null,5,null,4]: levels [1], [2,3], [5,4]; lấy last mỗi level cho [1,3,4].
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là chỉ đi theo right child chain và bỏ node trái visible khi right side thiếu. Khi nào dùng: one representative per tree depth thường BFS level boundary hoặc DFS first-at-depth.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 BFS từng level từ trái sang phải; phần tử cuối của mỗi level snapshot là node ngoài cùng bên phải tại depth đó.

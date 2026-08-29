@@ -1,5 +1,21 @@
 # 54. Spiral Matrix — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Spiral traversal chỉ cần giữ bốn boundary top,bottom,left,right của rectangle chưa đọc. Mỗi vòng lấy top row, right column, bottom row và left column rồi co rectangle vào trong.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Mô phỏng direction với visited matrix hoạt động nhưng dùng extra space và nhiều turning logic. Quan sát các lớp hình chữ nhật được bóc lần lượt, nên bốn boundaries đủ mô tả toàn bộ phần chưa xử lý.
+
+**State / invariant / data structure cần hiểu trước code.** Invariant: mọi cell ngoài [top..bottom]x[left..right] đã được output đúng một lần. Sau mỗi side, boundary tương ứng dịch vào; trước bottom/left pass phải check rectangle còn tồn tại.
+
+**Dry run mental theo implementation.** Dry run 3x4: lấy row0, col3 từ row1..2, row2 ngược col2..0, col0 ngược row1; boundaries còn top=1,bottom=1,left=1,right=2 và lấy nốt [6,7].
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là duplicate row/column ở rectangle một hàng hoặc một cột. Khi nào dùng: traversal theo concentric layers thường nén visited state thành moving boundaries.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Mô phỏng từng lớp bằng bốn boundary của phần ma trận chưa xử lý:

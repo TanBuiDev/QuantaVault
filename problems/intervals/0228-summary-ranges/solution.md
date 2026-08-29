@@ -1,5 +1,21 @@
 # 228. Summary Ranges — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Sorted unique nums cho phép một range được kéo dài chừng nào nums[i] = previous+1. Khi gap xuất hiện hoặc hết array, range hiện tại phải được đóng và format thành 'a' hoặc 'a->b'.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Kiểm tra từng possible integer giữa min/max là vô ích nếu values lớn. Quan sát chỉ input adjacency quyết định consecutive; một scan giữ start và current end của run.
+
+**State / invariant / data structure cần hiểu trước code.** start là phần tử đầu run chưa flush; i/current là end. Invariant mọi nums trước start đã được output thành ranges, còn [start..current] là một consecutive run duy nhất đang mở.
+
+**Dry run mental theo implementation.** Dry run [0,1,2,4,5,7]: run 0-2 đóng khi gặp4 -> '0->2'; run4-5 đóng khi gặp7 -> '4->5'; cuối flush '7'.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là quên flush run cuối hoặc format singleton thành a->a. Khi nào dùng: sorted data cần compress consecutive runs thường là run-start + boundary detection scan.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Vì `nums` sorted và unique, ta chỉ cần nén từng run consecutive thành một range. Giữ `start` và `end`; số mới nối được vào run iff nó bằng `end + 1`.

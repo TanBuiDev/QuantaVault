@@ -1,5 +1,21 @@
 # Solution / Lời giải — 502. IPO
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Mỗi project có capital requirement và profit. Ở current capital w, chỉ projects requirement<=w là feasible; trong số feasible, chọn profit lớn nhất tăng capital nhiều nhất và không làm giảm lựa chọn tương lai.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Mỗi round scan toàn projects O(k*n). Sort projects theo capital rồi dùng max-heap profits: pointer đưa tất cả newly feasible projects vào heap một lần, mỗi round poll best profit.
+
+**State / invariant / data structure cần hiểu trước code.** Pointer i phân chia sorted projects: trước i đã trở thành feasible/được heap xử lý; maxHeap chứa profits của feasible chưa chọn. Invariant heap top là project tốt nhất có thể chọn ngay với current capital.
+
+**Dry run mental theo implementation.** k=2,w=0, capital[0,1,1], profits[1,2,3]: add project0 profit1, choose->w1; now add profits2,3, choose3 ->w4, final4.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là push infeasible profits hoặc chọn lowest capital thay highest profit. Khi nào dùng: repeated choose-best-among-items-that-become-feasible = sort by eligibility + heap by reward.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Use a min-heap to reveal newly affordable projects by required capital and a max-heap to choose the highest profit among all currently affordable projects.

@@ -1,5 +1,21 @@
 # Solution / Lời giải — 918. Maximum Sum Circular Subarray
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Maximum circular subarray hoặc không wrap, khi đó Kadane max bình thường; hoặc wrap qua cuối->đầu, tương đương lấy tổng toàn array trừ một subarray contiguous ở giữa bị loại có sum nhỏ nhất.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Duplicate array rồi enumerate windows có thể O(n²). Observation wrapBest=total-minSubarray; chạy Kadane song song cho max và min trong O(n). Exception: nếu mọi số âm, total-minSum=0 tương ứng chọn empty wrap không hợp lệ.
+
+**State / invariant / data structure cần hiểu trước code.** currentMax/bestMax là Kadane maximum ending/global; currentMin/bestMin tương tự minimum; total cộng toàn array. Invariant hai Kadanes bao phủ mọi non-wrap segment và mọi middle segment có thể bị loại khỏi wrap.
+
+**Dry run mental theo implementation.** Dry run [5,-3,5]: bestMax=7? nonwrap max is7 via 5-3+5, total7, minSum=-3, wrap=10 nên answer10 từ [5] cuối + [5] đầu. Với [-3,-2,-3], return bestMax=-2 thay0.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là luôn dùng total-minSum và trả0 cho all-negative. Khi nào dùng: circular contiguous optimum thường tách non-wrap và wrap=complement of opposite-sign optimum.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 The optimum is either an ordinary non-wrapping maximum subarray or a wrapping suffix+prefix. A wrapping choice equals `totalSum - minimumMiddleSubarray`.

@@ -1,5 +1,21 @@
 # 290. Word Pattern — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Pattern 'abba' và câu 'dog cat cat dog' khớp vì a luôn ứng với dog, b luôn ứng với cat và không word nào dùng chung cho hai pattern chars khác nhau.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Chỉ map char->word bỏ sót injectivity, giống Isomorphic Strings. Quan sát cần bijection giữa pattern symbols và words; dùng hai maps hoặc map plus used-word set.
+
+**State / invariant / data structure cần hiểu trước code.** Mapping phải one-to-one trên prefix token đã xử lý. Trước hết số words phải bằng pattern length; mỗi vị trí hoặc xác nhận mapping cũ hoặc tạo mapping mới mà target word chưa thuộc symbol khác.
+
+**Dry run mental theo implementation.** Dry run abba / dog cat cat dog: a->dog,b->cat, hai vị trí sau match reverse. Với abba / dog cat cat fish, a ở cuối đòi dog nhưng gặp fish nên false.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là quên check token count hoặc uniqueness phía word. Khi nào dùng: pattern matching theo rename cần bijection, không chỉ frequency hay one-way mapping.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Bài toán yêu cầu bijection giữa hai tập khác kiểu dữ liệu:

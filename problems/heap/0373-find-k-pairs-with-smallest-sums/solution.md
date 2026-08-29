@@ -1,5 +1,21 @@
 # Solution / Lời giải — 373. Find K Pairs with Smallest Sums
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Hai arrays sorted; với mỗi nums1[i], pairs (nums1[i],nums2[0]), (..nums2[1])... có sums tăng dần. Ta cần merge k sorted 'pair streams' theo sum.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Sinh mọi m*n pairs rồi sort quá lớn. Min-heap khởi tạo pair đầu của một số rows i; khi poll (i,j), chỉ successor (i,j+1) cùng row stream cần được offer.
+
+**State / invariant / data structure cần hiểu trước code.** Heap chứa frontier nhỏ nhất chưa dùng của mỗi active nums1 row. Invariant heap root là pair có sum nhỏ nhất toàn cục chưa output vì mọi stream riêng sorted theo j.
+
+**Dry run mental theo implementation.** nums1=[1,7,11], nums2=[2,4,6]: heap (1,2),(7,2),(11,2); poll(1,2) offer(1,4); poll(1,4) offer(1,6); rồi candidates tiếp quyết định top k.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là push toàn Cartesian product hoặc offer j+1 vượt bounds. Khi nào dùng: k smallest combinations từ sorted dimensions thường coi mỗi fixed-dimension slice là sorted stream và heap-merge frontiers.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 For each `nums1[i]`, increasing `j` creates a sorted stream of pair sums. Put the first pair of relevant streams in a min-heap and perform a k-way merge.

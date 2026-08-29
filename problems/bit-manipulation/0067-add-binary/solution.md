@@ -1,5 +1,21 @@
 # Solution / Lời giải — 67. Add Binary
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Add Binary giống cộng thập phân nhưng base2: tại mỗi vị trí sum=bitA+bitB+carry, output bit=sum%2 và carry=sum/2. Hai strings có thể khác length nên pointers đi từ phải sang trái độc lập.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Parse binary thành integer có overflow với chuỗi dài. Digit-by-digit addition là O(max(m,n)) và chỉ cần StringBuilder plus carry.
+
+**State / invariant / data structure cần hiểu trước code.** i,j trỏ bits chưa xử lý; carry thuộc {0,1}. Invariant builder đang chứa các result bits từ least significant lên; mỗi loop consume tối đa một bit mỗi input và tạo đúng một output bit.
+
+**Dry run mental theo implementation.** Dry run 1010+1011: từ phải 0+1=1; 1+1=2 output0 carry1; 0+0+1=1; 1+1=2 output0 carry1; append carry1 rồi reverse thành10101.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là quên carry sau khi cả pointers hết hoặc không reverse output. Khi nào dùng: addition trên arbitrary-base strings là synchronized backward pointers + carry.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Perform ordinary column addition from right to left. For each column, the low bit of `sum` is the result digit and the next bit is the carry.

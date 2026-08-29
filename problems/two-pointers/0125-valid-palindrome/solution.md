@@ -1,5 +1,21 @@
 # 125. Valid Palindrome — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Palindrome chỉ xét alphanumeric và không phân biệt hoa thường, nên hai pointer từ hai đầu có thể bỏ qua ký tự không hợp lệ rồi so cặp ký tự chuẩn hóa.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Tạo cleaned string rồi reverse rất dễ nhưng dùng O(n) extra space. Quan sát không cần materialize chuỗi lọc; left/right có thể skip trực tiếp trên input và quyết định mismatch ngay.
+
+**State / invariant / data structure cần hiểu trước code.** left/right luôn trỏ phần chưa xác nhận. Trước mỗi compare, advance qua non-alphanumeric. Invariant: mọi cặp nằm ngoài [left,right] đã match sau lowercase normalization.
+
+**Dry run mental theo implementation.** Dry run 'A man, a plan, a canal: Panama': left A và right a match; các space/comma/colon bị skip; pointers tiến dần tới giữa mà không tạo string mới.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là so trước khi skip hoặc normalize chỉ một side. Khi nào dùng: so sequence đối xứng với ký tự bỏ qua thường giải bằng converging two pointers.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Palindrome là property đối xứng, nên dùng hai pointer từ hai đầu:

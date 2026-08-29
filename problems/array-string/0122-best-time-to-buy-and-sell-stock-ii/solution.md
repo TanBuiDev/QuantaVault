@@ -1,5 +1,21 @@
 # 122. Best Time to Buy and Sell Stock II — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Vì được giao dịch nhiều lần nhưng không giữ hai cổ phiếu cùng lúc, mọi đoạn tăng giá có thể được thu profit; [1,5,3,6] cho (5-1)+(6-3)=7.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** DP holding/cash đúng nhưng dài hơn cần thiết. Quan sát một đợt tăng từ a lên d có d-a bằng tổng mọi chênh lệch dương từng ngày, nên chỉ cần cộng price[i]-price[i-1] khi dương.
+
+**State / invariant / data structure cần hiểu trước code.** profit là tổng các positive deltas đã thấy. Invariant: sau ngày i, profit là lợi nhuận tối đa trên prefix vì mọi xu hướng tăng đã được chia thành các giao dịch ngày-kề-ngày tương đương.
+
+**Dry run mental theo implementation.** Dry run [7,1,5,3,6,4]: deltas -6,+4,-2,+3,-2; chỉ cộng 4 và 3 được 7, tương đương mua 1 bán 5 rồi mua 3 bán 6.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là áp dụng logic một giao dịch của bài 121 hoặc cộng delta âm. Khi nào dùng: nếu được reset hành động không giới hạn và profit cộng được theo các bước cục bộ, thử decomposition thành positive increments.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Vì được thực hiện nhiều giao dịch, ta có thể thu **mọi đoạn tăng giá dương**.

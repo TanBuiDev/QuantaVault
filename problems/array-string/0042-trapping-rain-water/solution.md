@@ -1,5 +1,21 @@
 # 42. Trapping Rain Water — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Nước trên cột i bị giới hạn bởi min(max height bên trái, max height bên phải)-height[i]. Hai pointer cho phép biết bên nào đã có boundary chắc chắn nhỏ hơn để chốt nước ngay.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Precompute leftMax/rightMax dùng O(n) space. Quan sát nếu leftMax <= rightMax thì nước tại left chỉ phụ thuộc leftMax, vì chắc chắn phía phải có boundary ít nhất cao bằng nó; xử lý left rồi tiến vào.
+
+**State / invariant / data structure cần hiểu trước code.** leftMax và rightMax là boundary cao nhất đã thấy từ hai mép. Pointer ở phía có max nhỏ hơn là phía có mức nước đã xác định; invariant cho phép finalize vị trí đó mà không cần biết chi tiết bên còn lại.
+
+**Dry run mental theo implementation.** Dry run [4,2,0,3,2,5]: rightMax sớm là 5, nên phía trái được chốt dần: tại 2 giữ 2 nước, tại 0 giữ 4, tại 3 giữ 1... tổng cuối 9.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là dùng max(leftMax,rightMax) thay min hoặc move pointer phía cao hơn. Khi nào dùng: quantity tại vị trí bị kẹp bởi hai boundary và boundary nhỏ hơn quyết định bottleneck thường gợi ý two pointers.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core formula / Công thức cốt lõi
 
 Tại index `i`, mặt nước tối đa bị giới hạn bởi cột cao nhất ở hai phía:

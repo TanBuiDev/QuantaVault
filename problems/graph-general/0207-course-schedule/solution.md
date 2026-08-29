@@ -1,5 +1,21 @@
 # Solution / Lời giải — 207. Course Schedule
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Prerequisite a->b tạo directed dependency: để hoàn thành mọi course, dependency graph phải không có directed cycle. Cycle nghĩa là một course cuối cùng phụ thuộc lại chính nó.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Thử mọi ordering là factorial. Topological sort dùng indegree: mọi node indegree0 có thể học ngay; remove nó làm giảm prerequisites của neighbors. Nếu process đủ n nodes thì không cycle.
+
+**State / invariant / data structure cần hiểu trước code.** indegree[c] là số prerequisites chưa được remove; queue chứa courses hiện sẵn sàng. Invariant mỗi dequeue là safe next course; processed count tăng đúng số nodes đã topo-order được.
+
+**Dry run mental theo implementation.** Dry run 0<-1 (prereq [1,0] theo representation chuẩn cần đọc edge direction đúng): course có indegree0 vào queue; process và giảm neighbor. Với edges 0->1,1->0 không node indegree0, processed0<n nên false.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là đảo edge direction khi tính indegree hoặc chỉ DFS visited mà không có recursion-state. Khi nào dùng: dependency feasibility là DAG check bằng Kahn topo sort hoặc 3-color DFS.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Kahn topological sort. `indegree[x]` là số prerequisite chưa được loại của course `x`; chỉ course có indegree `0` mới có thể học ngay.

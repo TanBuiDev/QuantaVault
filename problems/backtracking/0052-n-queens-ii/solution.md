@@ -1,5 +1,21 @@
 # Solution / Lời giải — 52. N-Queens II
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** N-Queens cần đặt đúng một queen mỗi row; khi chọn column cho row hiện tại, chỉ cần biết column và hai diagonals đó đã bị queen trước chiếm chưa. Không cần đặt thử mọi ô của board.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Sinh mọi board n² choices mỗi queen tạo search cực lớn. Quan sát xử lý row theo thứ tự loại luôn row conflict; sets/bitmasks cho columns, r-c diagonal và r+c diagonal prune conflict O(1).
+
+**State / invariant / data structure cần hiểu trước code.** row là level recursion; cols, diag1, diag2 chứa lines đã occupied bởi rows trước. Invariant trước khi đặt row, các queens trong prefix rows không attack nhau; choose chỉ được phép nếu cả ba keys chưa dùng.
+
+**Dry run mental theo implementation.** Dry run n=4: row0 chọn col1, đánh dấu col1,d=-1,s=1; row1 thử columns và bỏ ngay các conflict. Một valid branch đi [1,3,0,2], tới row4 thì count++.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là tính diagonal key không nhất quán hoặc quên unmark ba sets. Khi nào dùng: board placement có one-item-per-row/column nên encode attack lines thành O(1) occupancy state để prune.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Place one queen per row. Three boolean sets—column, `row-col`, and `row+col` diagonals—answer in `O(1)` whether a placement conflicts with any earlier row.

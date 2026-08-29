@@ -1,5 +1,21 @@
 # Solution / Lời giải — 129. Sum Root to Leaf Numbers
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Mỗi root-to-leaf path tạo một số bằng cách append digit: nếu prefix là 12 và child value3 thì số mới là 12*10+3. Chỉ leaves đóng góp số hoàn chỉnh vào total.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Build strings/path lists rồi parse là thừa. Quan sát decimal accumulation có thể carry một integer prefix qua DFS; branches nhận copy value nên không cần backtracking mutable state.
+
+**State / invariant / data structure cần hiểu trước code.** currentNumber trong call là số được tạo bởi path từ root tới node. Invariant update current=parent*10+node.val; nếu leaf return current, nếu internal return sum của child results.
+
+**Dry run mental theo implementation.** Dry run tree 1 với children2,3: tại root current1; left thành12 leaf trả12; right thành13 trả13; root cộng thành25.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là cộng node values thay vì positional decimal value hoặc tính ở non-leaf. Khi nào dùng: digits trên path thường carry rolling base-B number state.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 DFS mang decimal prefix. Append digit `d` bằng `prefix*10+d`; chỉ khi tới leaf mới cộng số hoàn chỉnh vào kết quả.

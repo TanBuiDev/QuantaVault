@@ -1,5 +1,21 @@
 # Solution / Lời giải — 399. Evaluate Division
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Equation a/b=2 là một directed weighted edge a->b weight2 và reverse b->a weight1/2. Query a/c là tích weights dọc một path từ a tới c nếu hai variables connected.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Suy ra mọi cặp trước bằng Floyd-Warshall có thể tốn O(V³). Với số queries vừa phải, graph DFS/BFS on-demand chỉ khám component relevant; multiply running product theo edges.
+
+**State / invariant / data structure cần hiểu trước code.** Graph adjacency lưu (neighbor,ratio). DFS currentProduct là giá trị source/current theo path đã đi. visited ngăn cycles; invariant product nhân edge current/next sẽ thành source/next.
+
+**Dry run mental theo implementation.** Nếu a/b=2,b/c=3: graph a->b 2, b->c3. Query a/c DFS product1 -> b product2 -> c product6, trả6. Query c/a theo reverse edges trả1/6.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là reverse weight cũng dùng value thay vì1/value, hoặc return1 cho unknown variable. Khi nào dùng: multiplicative relations có thể model weighted graph và path-product queries.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Mỗi equation trở thành hai weighted edges. Query là tìm một path và nhân weights; các biến trung gian triệt tiêu nên product của path chính là tỷ số cần tìm.

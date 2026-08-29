@@ -1,5 +1,21 @@
 # 155. Min Stack — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Min Stack phải trả minimum O(1) dù pop có thể xóa chính minimum. Chỉ một biến min không biết minimum trước đó để khôi phục, nên cần lưu lịch sử min song song với values.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Mỗi getMin scan stack là O(n). Quan sát tại mỗi depth ta có thể lưu min của prefix stack tới depth đó; pop đồng thời loại value và min snapshot tương ứng.
+
+**State / invariant / data structure cần hiểu trước code.** Có thể dùng hai stacks hoặc mỗi entry chứa (value,minSoFar). Invariant top min stack luôn bằng minimum của toàn bộ value stack hiện tại, kể cả duplicates của minimum.
+
+**Dry run mental theo implementation.** Dry run push -2,0,-3: min snapshots -2,-2,-3; getMin=-3; pop -3 đồng thời pop snapshot, top min trở lại -2 ngay O(1).
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là chỉ push min khi nhỏ hơn chứ không xử lý duplicate min đúng. Khi nào dùng: stack cần aggregate query O(1) thường lưu aggregate-so-far cùng mỗi depth.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Intuition
 
 Để `getMin()` là `O(1)`, lưu một **minimum snapshot ở mỗi stack depth**. `values` giữ dữ liệu, `mins` giữ minimum của prefix stack tương ứng.

@@ -1,5 +1,21 @@
 # Solution / Lời giải — 138. Copy List with Random Pointer
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Mỗi node có next và random trỏ tới bất kỳ node nào, nên clone node không đủ; mọi pointer của clone phải trỏ tới clone tương ứng chứ không trỏ original.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** HashMap old->copy là cách trực tiếp O(n) space. Cách interweaving O(1) extra chèn copy ngay sau original, nhờ adjacency đó random copy của node x chính là x.random.next.
+
+**State / invariant / data structure cần hiểu trước code.** Phase1 invariant original X luôn theo sau bởi copy X'. Phase2 set X'.random = X.random?.next. Phase3 tách xen kẽ, đồng thời restore original next links và nối copy list.
+
+**Dry run mental theo implementation.** Dry run A->B với A.random=B: sau weave A->A'->B->B'; vì A.random=B nên A'.random=B.next=B'. Sau tách, original A->B và copy A'->B' độc lập.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là set copy.random=original.random hoặc phá list trước khi random links xong. Khi nào dùng: clone graph-like structure có thể map old->new; interleaving là optimization đặc biệt khi next chain cho phép đặt clone cạnh original.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Thay HashMap bằng interleaving: `A -> A' -> B -> B'...`. Khi đó copy của original `X` luôn là `X.next`, nên random target copy được lấy bằng `original.random.next`. Sau đó tách hai lists và restore original.

@@ -1,5 +1,21 @@
 # Solution / Lời giải — 105. Construct Binary Tree from Preorder and Inorder Traversal
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Preorder cho root trước, inorder cho biết mọi node bên trái root thuộc left subtree và mọi node bên phải thuộc right subtree. Hai traversals cùng nhau xác định cách chia recursively.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Tìm root trong inorder bằng scan ở mỗi call tạo O(n²) worst-case. Quan sát build map value->inorder index một lần, rồi preorder pointer chọn root kế tiếp O(1) và inorder bounds chia subtree.
+
+**State / invariant / data structure cần hiểu trước code.** preIndex là root tiếp theo chưa dùng trong preorder; recursion nhận inorder left/right bounds. Invariant call dựng chính subtree gồm inorder segment đó, và preIndex tiến đúng số nodes của subtree.
+
+**Dry run mental theo implementation.** Dry run preorder [3,9,20,15,7], inorder [9,3,15,20,7]: root3 ở inorder index1 chia [9] và [15,20,7]; preorder next9 dựng left rồi20 dựng right.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là slice arrays gây extra copies hoặc update preorder index sai. Khi nào dùng: traversal reconstruction thường chọn root từ một order và partition bằng index trong order khác.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Preorder cho root trước; inorder cho ranh giới left/root/right. Global `preorderIndex` consume nodes theo đúng preorder, còn map vị trí inorder cho split `O(1)`.

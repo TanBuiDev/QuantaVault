@@ -1,5 +1,21 @@
 # Solution / Lời giải — 200. Number of Islands
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Number of Islands đếm connected components của cells '1' theo 4 hướng. Mỗi khi scan gặp một land chưa thăm, ta vừa tìm được một island mới; flood-fill sẽ tiêu thụ toàn bộ component đó.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** So từng land pair để group là không cần thiết. Grid adjacency cho DFS/BFS trực tiếp; mark visited bằng đổi '1' thành '0' có thể tránh visited matrix nếu input được phép mutate.
+
+**State / invariant / data structure cần hiểu trước code.** Outer scan invariant: mọi land trước vị trí hiện tại đã thuộc một island đã đếm và được mark. Khi gặp '1', count++ rồi DFS mark tất cả cells reachable từ nó nên island đó không bao giờ được đếm lại.
+
+**Dry run mental theo implementation.** Dry run hai cụm land tách nhau: cell đầu cụm1 trigger count1 và flood toàn cụm; các cell còn lại của cụm1 khi scan đã là0. Gặp cell đầu cụm2 trigger count2.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là tăng count cho từng land cell hoặc dùng diagonal adjacency sai. Khi nào dùng: count connected components trên grid = scan + flood-fill mỗi unvisited component root.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Mỗi `'1'` còn tồn tại khi scan là đầu tiên ta gặp một connected component mới. Count nó rồi flood-fill toàn component thành `'0'` để không thể đếm lại.

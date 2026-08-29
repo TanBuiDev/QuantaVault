@@ -1,5 +1,21 @@
 # Solution / Lời giải — 148. Sort List
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Linked list không random-access nên merge sort phù hợp hơn quicksort: dùng slow/fast tìm midpoint, cắt list thành hai halves, sort recursively rồi merge hai sorted lists bằng pointers.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Copy values ra array rồi sort dùng O(n) extra và không sort nodes trực tiếp. Merge sort đạt O(n log n), còn split/merge đều tự nhiên trên linked list mà không cần index access.
+
+**State / invariant / data structure cần hiểu trước code.** Mỗi recursion nhận head của một list độc lập đã được cắt null ở midpoint. Contract trả sorted list chứa đúng các nodes ban đầu; merge dùng dummy/tail và giữ sorted invariant như bài Merge Two Sorted Lists.
+
+**Dry run mental theo implementation.** Dry run 4->2->1->3: split [4,2] và [1,3]; sort thành [2,4] và [1,3]; merge chọn1,2,3,4 thành output sorted.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là không cắt prevSlow.next=null gây recursion vô hạn hoặc split lệch. Khi nào dùng: sorting singly linked list với O(n log n) target thường chọn merge sort vì sequential merge O(1) pointer work.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Bottom-up merge sort is ideal for linked lists: split adjacent sorted runs, merge them by rewiring pointers, and double run size each pass. It achieves `O(n log n)` without recursion.

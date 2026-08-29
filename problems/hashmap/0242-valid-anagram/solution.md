@@ -1,5 +1,21 @@
 # 242. Valid Anagram — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Anagram yêu cầu hai string có đúng cùng số lần xuất hiện của mỗi ký tự. Thứ tự không quan trọng, nên bài toán biến từ so chuỗi thành so frequency vector.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Sort hai string O(n log n) đúng. Nếu alphabet nhỏ cố định, count frequencies O(n) nhanh và ít overhead hơn; một pass tăng theo s và giảm theo t có thể phát hiện mismatch.
+
+**State / invariant / data structure cần hiểu trước code.** count[c] là chênh lệch occurrences s minus t đã xử lý. Invariant cuối cùng mọi count phải bằng 0; length khác nhau có thể reject ngay vì tổng số ký tự không thể match.
+
+**Dry run mental theo implementation.** Dry run anagram/nagaram: mỗi char tăng rồi giảm tương ứng, vector về 0. Với rat/car, count của t/r/c không cân bằng nên còn nonzero.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là chỉ so set characters và bỏ qua multiplicity. Khi nào dùng: equality không quan tâm order nhưng quan tâm số lần xuất hiện thường dùng frequency map/array.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Hai chuỗi là anagram khi chúng chứa chính xác cùng multiset ký tự. Vì alphabet là `a..z`, ta dùng 26 counters.

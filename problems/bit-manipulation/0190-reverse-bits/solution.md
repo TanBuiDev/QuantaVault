@@ -1,5 +1,21 @@
 # Solution / Lời giải — 190. Reverse Bits
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Reverse Bits chuyển bit ở vị trí thấp của input thành vị trí cao tương ứng của output. Ta có thể lặp đúng32 lần: shift result trái, lấy lowest bit của n, rồi unsigned-shift n phải.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Convert binary string rồi reverse vừa thừa vừa dễ mất leading zeros. Fixed 32-bit operations giữ đủ zeros và O(1) time theo word size.
+
+**State / invariant / data structure cần hiểu trước code.** Sau k iterations, result chứa k lowest bits ban đầu theo thứ tự đảo ở phần đã build; n đã bỏ k lowest bits bằng >>>. Dùng >>> thay >> để không sign-extend số âm.
+
+**Dry run mental theo implementation.** Nếu low bits đầu ...101, iterations lần lượt append1 rồi0 rồi1 vào result bằng result=(result<<1)|(n&1), đồng thời n>>>=1 mỗi bước cho đủ32 positions.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là dừng khi n==0 làm mất leading zeros hoặc dùng signed >>. Khi nào dùng: fixed-width bit permutation nên lặp đúng word size và dùng masks/shifts rõ ràng.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Read the 32 source bits from least significant to most significant and append each one to the result from left to right.

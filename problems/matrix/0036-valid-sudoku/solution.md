@@ -1,5 +1,21 @@
 # 36. Valid Sudoku — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Sudoku board hợp lệ khi mỗi digit không lặp trong row, column và 3x3 box. Mỗi cell cần được kiểm tra đồng thời trong ba nhóm đó.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Quét lại cả row/column/box cho từng cell gây công lặp. Quan sát có thể lưu seen sets/bit masks cho 9 rows, 9 columns và 9 boxes, rồi mỗi digit chỉ cần ba lookup O(1).
+
+**State / invariant / data structure cần hiểu trước code.** rowSeen[r], colSeen[c], boxSeen[b] đại diện digits đã gặp trước cell hiện tại. Box index thường b=(r/3)*3+c/3. Invariant: trước mỗi cell, ba structures phản ánh đúng prefix cells đã scan.
+
+**Dry run mental theo implementation.** Dry run cell (4,7): box index=(4/3)*3+7/3=5. Nếu digit '6' đã có trong boxSeen[5] dù row/column chưa có, board vẫn invalid ngay.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là tính box index sai hoặc coi '.' như digit. Khi nào dùng: constraint uniqueness trên nhiều overlapping groups thường giải bằng một seen structure cho mỗi group.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Mỗi digit đã điền tạo ba constraint độc lập:

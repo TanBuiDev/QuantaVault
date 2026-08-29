@@ -1,5 +1,21 @@
 # 392. Is Subsequence — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Subsequence giữ thứ tự nhưng được bỏ ký tự. Ta chỉ cần pointer i cho ký tự tiếp theo của s cần match và scan t từ trái sang phải cho tới khi match hết s.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Recursion/DP có thể giải nhưng thừa cho một query đơn. Quan sát greedy match occurrence s[i] sớm nhất không làm hại tương lai, vì để lại suffix t lớn nhất cho các ký tự sau.
+
+**State / invariant / data structure cần hiểu trước code.** i là độ dài prefix của s đã match. Invariant sau khi scan prefix t, i là số ký tự đầu s có thể match bằng greedy earliest occurrences; i chỉ tăng, không lùi.
+
+**Dry run mental theo implementation.** Dry run s='abc', t='ahbgdc': a match ở0 -> i1; b match ở2 -> i2; c match ở5 -> i3 bằng s.length nên true.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là yêu cầu chars liên tiếp như substring. Khi nào dùng: kiểm tra một sequence có xuất hiện theo thứ tự trong sequence khác thường là two pointers greedy.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Ta quét `t` từ trái sang phải và luôn cố match **ký tự chưa match sớm nhất của `s`**.

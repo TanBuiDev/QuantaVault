@@ -1,5 +1,21 @@
 # 80. Remove Duplicates from Sorted Array II — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Sorted array cho phép mỗi value xuất hiện tối đa hai lần; với [1,1,1,2,2,3], prefix hợp lệ cần thành [1,1,2,2,3]. Ta chỉ cần biết candidate có bằng phần tử cách write hai vị trí không.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Đếm frequency bằng map là thừa và tốn space. Quan sát vì output prefix đã sorted, nếu write<2 luôn giữ; sau đó nums[write-2] là giá trị mà candidate sẽ tạo lần xuất hiện thứ ba nếu bằng nó.
+
+**State / invariant / data structure cần hiểu trước code.** write là độ dài prefix hợp lệ. Invariant: nums[0..write) sorted và không value nào xuất hiện hơn hai lần; candidate được ghi chỉ khi write<2 hoặc candidate != nums[write-2].
+
+**Dry run mental theo implementation.** Dry run [1,1,1,2]: hai số 1 đầu được ghi; số 1 thứ ba bằng nums[0] nên bỏ; 2 khác nums[0] nên ghi tại write=2.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là dùng nums[write-1] khiến chỉ giữ một copy. Khi nào dùng: sorted array cho phép tối đa k duplicates thường tổng quát thành candidate != nums[write-k].
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Intuition
 
 Bài này là bước tổng quát hóa tự nhiên từ bài 26.

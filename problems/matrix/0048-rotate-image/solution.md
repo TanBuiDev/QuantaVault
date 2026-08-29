@@ -1,5 +1,21 @@
 # 48. Rotate Image — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Rotate matrix 90° clockwise có thể nhìn thành hai phép biến đổi đơn giản: transpose qua đường chéo chính rồi reverse từng row; mỗi cell cuối cùng đi đúng vị trí (r,c)->(c,n-1-r).
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Tạo matrix mới rất dễ nhưng dùng O(n²) extra space. Quan sát transpose + row reverse đều làm in-place bằng swaps, nên đạt O(1) extra space và tránh cycle-index khó nhớ.
+
+**State / invariant / data structure cần hiểu trước code.** Trong transpose, chỉ swap cells phía trên diagonal với mirror (r,c)<->(c,r) để không swap hai lần. Sau đó mỗi row dùng two pointers reverse; hai phase có invariant độc lập rõ ràng.
+
+**Dry run mental theo implementation.** Dry run [[1,2,3],[4,5,6],[7,8,9]]: transpose -> [[1,4,7],[2,5,8],[3,6,9]], reverse rows -> [[7,4,1],[8,5,2],[9,6,3]].
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là transpose toàn matrix và swap lại lần hai, hoặc reverse columns thay rows. Khi nào dùng: matrix geometric transforms thường phân rã thành transpose/reflection operations dễ chứng minh.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Rotation clockwise có thể phân rã thành:

@@ -1,5 +1,21 @@
 # 73. Set Matrix Zeroes — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Nếu cell (r,c)=0, toàn row r và column c phải thành 0. Dùng row/col đầu làm chính các marker giúp tránh hai arrays phụ, nhưng cần nhớ riêng row0/col0 có zero ban đầu hay không.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Set zero ngay khi gặp zero làm mất thông tin vì zero mới tạo sẽ lan giả. Two marker arrays O(m+n) đúng; quan sát first row/column có sẵn O(m+n) cells để lưu markers in-place.
+
+**State / invariant / data structure cần hiểu trước code.** matrix[r][0]=0 đánh dấu row r; matrix[0][c]=0 đánh dấu column c. Hai booleans riêng bảo vệ trạng thái first row/column. Invariant marker phase không zero body cells ngoài marker nên source information không bị phá.
+
+**Dry run mental theo implementation.** Dry run [[1,1,1],[1,0,1],[1,1,1]]: cell(1,1) đặt matrix[1][0]=0 và matrix[0][1]=0; second pass zero row1/col1; first row/col xử lý cuối.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là mutate body ngay trong scan đầu hoặc quên first-row/first-column flags. Khi nào dùng: in-place marking thường mượn một phần input làm metadata nhưng phải xử lý vùng metadata riêng.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Dùng first row và first column làm marker storage, cộng hai boolean:

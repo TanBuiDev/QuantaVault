@@ -1,5 +1,21 @@
 # 289. Game of Life — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Game of Life update phải đồng thời: trạng thái cell kế tiếp phụ thuộc board cũ, nên nếu overwrite 0/1 ngay, neighbor sau sẽ đọc state mới và kết quả sai.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Copy board giải dễ với O(mn) space. Quan sát mỗi cell chỉ cần encode old và new state cùng lúc bằng transitional values hoặc bits, rồi pass hai normalize về 0/1.
+
+**State / invariant / data structure cần hiểu trước code.** Quy ước transitional codes phải cho phép hàm đếm neighbor vẫn suy ra old alive status. Invariant pass đầu: mọi cell dù đã marked vẫn giữ thông tin old state; pass hai mới commit final states.
+
+**Dry run mental theo implementation.** Dry run một live cell sẽ chết: mark nó bằng code biểu diễn old=1,new=0; neighbor chưa xử lý vẫn phải đếm code đó như alive. Sau khi mọi decision xong mới convert code thành 0.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là update trực tiếp hoặc đếm transitional code sai. Khi nào dùng: in-place simultaneous update thường cần encode old+new state hoặc tách decision pass và commit pass.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Nếu overwrite `0/1` ngay lập tức, cell sau sẽ thấy **new state** thay vì old state. Ta encode old và new state cùng lúc:

@@ -1,5 +1,21 @@
 # Solution / Lời giải — 22. Generate Parentheses
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Một chuỗi ngoặc hợp lệ được xây từ trái sang phải với hai luật: số '(' đã dùng không vượt n, và số ')' đã dùng không bao giờ vượt số '(' trong bất kỳ prefix nào.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Sinh mọi 2^(2n) chuỗi rồi validate lãng phí hầu hết branches sai. Quan sát ta có thể prune ngay khi xây: chỉ add '(' nếu open<n; chỉ add ')' nếu close<open.
+
+**State / invariant / data structure cần hiểu trước code.** open và close là số ngoặc đã đặt; path là prefix hiện tại. Invariant 0<=close<=open<=n luôn giữ, nên mọi prefix generated đều có khả năng hoàn thành thành chuỗi valid.
+
+**Dry run mental theo implementation.** Dry run n=2: từ empty phải chọn '('; state (1,0) có thể '(' -> (2,0) rồi đóng hai lần tạo (()), hoặc ')' -> (1,1), rồi '(' và ')' tạo ()().
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là chỉ check validity ở cuối hoặc cho close==open rồi vẫn add ')'. Khi nào dùng: generation với prefix-validity constraint nên prune trong lúc xây thay vì sinh toàn bộ rồi lọc.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Generate only valid prefixes. Add `(` while `open < n`; add `)` only while `close < open`, so no prefix can ever have more closing than opening parentheses.

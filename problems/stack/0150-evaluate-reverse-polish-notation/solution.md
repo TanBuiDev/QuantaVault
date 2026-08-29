@@ -1,5 +1,21 @@
 # 150. Evaluate Reverse Polish Notation — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Reverse Polish Notation đặt operator sau operands, nên khi gặp số ta chưa tính; khi gặp operator, hai giá trị gần nhất trên stack chính là right và left operands của phép toán đó.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Parse thành expression tree là thừa. Quan sát postfix order đã encode precedence/parentheses, stack chỉ cần giữ các subexpression values chưa được operator bên ngoài consume.
+
+**State / invariant / data structure cần hiểu trước code.** Stack invariant: sau mỗi token, mỗi phần tử là giá trị của một subexpression hoàn chỉnh thuộc prefix. Với operator, pop b trước rồi a, push a op b; thứ tự đặc biệt quan trọng cho '-' và '/'.
+
+**Dry run mental theo implementation.** Dry run ['2','1','+','3','*']: push2,1; '+' pop b=1,a=2 push3; push3; '*' pop3,3 push9; stack cuối [9].
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là tính b-a thay a-b hoặc integer division semantics. Khi nào dùng: postfix evaluation và nhiều expression-machine tasks là stack of partial results.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Intuition
 
 RPN đặt operator sau operands. Khi gặp operator, hai intermediate results gần nhất trên stack chính là operands cần consume.

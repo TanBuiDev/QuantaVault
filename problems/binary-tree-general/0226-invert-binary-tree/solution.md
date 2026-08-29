@@ -1,5 +1,21 @@
 # Solution / Lời giải — 226. Invert Binary Tree
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Invert tree nghĩa là tại mọi node đổi chỗ toàn bộ left subtree và right subtree. Vì yêu cầu giống nhau ở mỗi subtree, thao tác local swap + recursion là đủ.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Không cần flatten hay collect nodes. Quan sát sau khi swap hai child references của current node, chỉ cần invert recursively hai subtrees vừa đổi; mỗi node xử lý đúng một lần.
+
+**State / invariant / data structure cần hiểu trước code.** Contract invert(node): khi return, subtree rooted tại node là mirror của subtree ban đầu. Null là base; swap references rồi recurse giữ contract bằng induction.
+
+**Dry run mental theo implementation.** Dry run root4 children2,7: swap thành7,2; tại7 swap children6,9 thành9,6; tại2 swap1,3 thành3,1; kết quả mirror hoàn chỉnh.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là swap values thay vì child subtrees hoặc recurse trên references bị hiểu nhầm. Khi nào dùng: tree transform áp cùng local operation ở mọi node thường là direct DFS recursion.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Recursively invert hai child subtrees rồi swap chúng tại current node. Đây là structural recursion trực tiếp theo định nghĩa mirror.

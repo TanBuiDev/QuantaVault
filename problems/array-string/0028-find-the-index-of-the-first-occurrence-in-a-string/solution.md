@@ -1,5 +1,21 @@
 # 28. Find the Index of the First Occurrence in a String — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Để tìm needle trong haystack, với mỗi vị trí bắt đầu hợp lệ ta hỏi các ký tự liên tiếp có khớp toàn bộ needle không; ví dụ sad trong sadbutsad khớp ngay tại index 0.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Cách trực tiếp thử từng start và so từng ký tự có worst-case O(nm), nhưng với constraints chuẩn vẫn dễ hiểu và đúng. Bottleneck quan trọng là không thử start sau n-m vì không còn đủ chỗ cho needle.
+
+**State / invariant / data structure cần hiểu trước code.** Outer index i là candidate start; inner index j là số ký tự needle đã match. Invariant trong inner loop: haystack[i..i+j) đã bằng needle[0..j).
+
+**Dry run mental theo implementation.** Dry run haystack=leetcode, needle=leeto: start 0 match l,e,e,t rồi mismatch o với c nên bỏ candidate; các start sau không tạo full match, trả -1.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là off-by-one ở giới hạn i <= n-m hoặc quên needle rỗng theo contract. Khi nào dùng: substring search nhỏ có thể bắt đầu bằng direct alignment trước khi cân nhắc KMP/Z nếu constraints lớn hơn.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Canonical solution dùng **Knuth–Morris–Pratt (KMP)** để tránh so lại những character đã biết.

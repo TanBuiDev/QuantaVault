@@ -1,5 +1,21 @@
 # Solution / Lời giải — 63. Unique Paths II
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Unique Paths II giống đếm đường trên grid nhưng obstacle làm số ways tại cell đó bằng0. Với cell trống, mọi path tới nó phải đến từ top hoặc left, nên ways = top + left.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** DFS thử mọi đường exponential. DP nén các subproblems trùng: số ways tới một cell chỉ phụ thuộc hai neighbors trước đó; dùng 1D dp theo columns giảm space từ O(mn) xuống O(n).
+
+**State / invariant / data structure cần hiểu trước code.** dp[c] trước update là ways từ row trên tới column c; sau dp[c]+=dp[c-1] nó thành ways tới current cell. Obstacle đặt dp[c]=0. Invariant sau xử lý row prefix, dp[c] đúng số paths tới cell đó.
+
+**Dry run mental theo implementation.** Grid [[0,0,0],[0,1,0],[0,0,0]]: row0 dp [1,1,1]; row1 column1 obstacle reset0 nên row thành [1,0,1]; row2 thành [1,1,2], đáp án2.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là không reset obstacle về0 khiến paths đi xuyên obstacle. Khi nào dùng: grid paths với moves từ top/left thường DP theo incoming ways, rolling one row nếu chỉ cần previous row.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Compress the grid DP into one row. At a free cell, paths come from above plus left; at an obstacle, the number of paths ending there becomes zero.

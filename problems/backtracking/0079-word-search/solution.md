@@ -1,5 +1,21 @@
 # Solution / Lời giải — 79. Word Search
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Word Search là một path trên grid: mỗi ký tự word phải khớp cell kế tiếp kề 4 hướng và một cell không được dùng hai lần trong cùng path. Mỗi cell có thể là điểm bắt đầu.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Copy visited matrix cho mỗi branch tốn memory. Quan sát ta có thể mark cell hiện tại visited tạm thời, recurse 4 neighbors rồi restore; mismatch ký tự prune ngay trước khi branching.
+
+**State / invariant / data structure cần hiểu trước code.** State là (r,c,index) cùng marks của cells trong path. Invariant cells marked chính xác path đã dùng và board[r][c] phải match word[index] trước khi đi tiếp; index cuối match thì success.
+
+**Dry run mental theo implementation.** Dry run ABCCED trên board mẫu: start A, đi B,C,C,E,D theo neighbors; mỗi bước mark cell. Nếu một branch dead-end, restore cell trước khi thử hướng sibling để không khóa nhầm đường khác.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là cho phép reuse cell hoặc restore quá sớm. Khi nào dùng: tìm sequence trong grid với path-local visited là DFS backtracking mark → explore → unmark.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Start DFS from every cell. A state matches `word[index]`, marks the cell as temporarily used, explores four neighbors, then restores it so sibling paths remain independent.

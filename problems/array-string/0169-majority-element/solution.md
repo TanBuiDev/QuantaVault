@@ -1,5 +1,21 @@
 # 169. Majority Element — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Majority element xuất hiện hơn n/2 lần, nên nếu ghép mỗi occurrence của majority với một phần tử khác để triệt tiêu, cuối cùng majority vẫn còn ít nhất một đại diện.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Map frequency dùng O(n) space, sort dùng O(n log n). Quan sát phép cancel cặp khác nhau dẫn tới Boyer-Moore: giữ một candidate và count balance, reset candidate khi balance về 0.
+
+**State / invariant / data structure cần hiểu trước code.** candidate là giá trị đang thắng trong đoạn chưa bị cancel; count là số vote dư của candidate. Invariant: sau khi bỏ các cặp giá trị khác nhau trong prefix, phần dư có thể đại diện bằng candidate,count.
+
+**Dry run mental theo implementation.** Dry run [2,2,1,1,1,2,2]: candidate 2 count tăng 2, hai số 1 kéo count về 0, reset candidate 1 rồi cuối các số 2 khiến candidate cuối là 2.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là nghĩ candidate luôn là majority ở mọi prefix; chỉ cuối toàn mảng mới được đảm bảo bởi constraint. Khi nào dùng: phần tử xuất hiện hơn một nửa thường có cancellation invariant O(1) space.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Intuition
 
 Điểm mạnh nhất của đề là điều kiện:

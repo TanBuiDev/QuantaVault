@@ -1,5 +1,21 @@
 # 135. Candy — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Candy phải thỏa hai hướng: nếu rating cao hơn neighbor trái thì candy cao hơn trái; nếu cao hơn neighbor phải thì candy cao hơn phải. Một pass chỉ nhìn một hướng không đủ.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Tăng candy lặp cho tới ổn định có thể O(n²). Quan sát hai constraint độc lập theo trái và phải có thể tính bằng hai pass; tại mỗi child lấy max requirement từ hai phía.
+
+**State / invariant / data structure cần hiểu trước code.** Pass trái đảm bảo relation với left neighbor; pass phải đảm bảo relation với right neighbor. Candy tại i cuối cùng phải đủ lớn cho cả hai, nên dùng max hoặc update từ phải với requirement hiện tại.
+
+**Dry run mental theo implementation.** Dry run ratings=[1,0,2]: left requirements [1,1,2]; từ phải, index0 phải hơn index1 nên requirement trái-side cho index0 thành 2; kết quả [2,1,2], tổng 5.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là chỉ pass trái hoặc cộng hai requirement thay vì lấy max. Khi nào dùng: local constraints phụ thuộc cả neighbor trái và phải thường tách thành directional passes rồi combine.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Mỗi child có thể bị ràng buộc từ **hai phía**:

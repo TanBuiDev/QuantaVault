@@ -1,5 +1,21 @@
 # 128. Longest Consecutive Sequence — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Với [100,4,200,1,3,2], sequence 1,2,3,4 dài 4. Nếu mỗi số đều thử mở rộng cả trái/phải, cùng sequence bị đếm lại nhiều lần; chỉ bắt đầu ở số không có predecessor x-1.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Sort cho O(n log n). HashSet cho membership O(1), nhưng để đạt O(n) cần observation start-of-run: chỉ x với x-1 không tồn tại mới scan x,x+1,...; mỗi element thuộc đúng một scan dài.
+
+**State / invariant / data structure cần hiểu trước code.** Set chứa toàn bộ values; current bắt đầu tại run head và length tăng khi current+1 tồn tại. Invariant mỗi sequence chỉ được enumerated từ minimum của nó nên tổng số membership steps tuyến tính.
+
+**Dry run mental theo implementation.** Dry run set {100,4,200,1,3,2}: 4 bị skip vì 3 tồn tại; 1 không có 0 nên scan 1,2,3,4 length4; 100 và 200 tạo runs length1.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là scan từ mọi number dẫn worst-case O(n²). Khi nào dùng: HashSet + consecutive chains thường cần nhận ra một điều kiện xác định duy nhất head của mỗi chain.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Dùng `HashSet` để biết một value có tồn tại hay không trong average `O(1)`. Quan trọng nhất: **chỉ bắt đầu đếm ở đầu sequence**.

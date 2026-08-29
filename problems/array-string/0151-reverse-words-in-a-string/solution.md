@@ -1,5 +1,21 @@
 # 151. Reverse Words in a String — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Input có leading/trailing/multiple spaces nhưng output cần word theo thứ tự đảo ngược, cách nhau đúng một space; ví dụ '  hello world  ' thành 'world hello'.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Split bằng regex rất ngắn nhưng tạo nhiều object và che mất kỹ thuật scan. Quan sát ta có thể đi từ phải sang trái, skip spaces, xác định [start,end] của từng word rồi append trực tiếp.
+
+**State / invariant / data structure cần hiểu trước code.** Index i di chuyển từ cuối; mỗi vòng có phase bỏ spaces và phase tìm đầu word. StringBuilder output giữ các word đã lấy theo thứ tự đảo; chỉ thêm một space khi output đã có word trước.
+
+**Dry run mental theo implementation.** Dry run 'the sky is blue': từ cuối lấy blue, rồi is, sky, the; giữa mỗi lần chỉ append một space, nên output tự loại mọi khoảng trắng thừa.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là để space đầu/cuối output hoặc tạo empty word từ nhiều spaces. Khi nào dùng: tokenization đơn giản với delimiter lặp có thể scan boundary trực tiếp thay vì split.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Output cần word cuối trước, nên scan từ phải sang trái và lấy từng word theo đúng thứ tự cần append.

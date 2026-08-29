@@ -1,5 +1,21 @@
 # 15. 3Sum — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** 3Sum có thể cố định một số a rồi biến phần còn lại thành bài two-sum target=-a. Sorting giúp vừa dùng two pointers vừa bỏ duplicate có hệ thống.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Ba vòng lặp O(n³) là bottleneck. Sau sort, với mỗi i, sum của left/right thay đổi monotonic: sum nhỏ thì tăng left, lớn thì giảm right, đưa xuống O(n²).
+
+**State / invariant / data structure cần hiểu trước code.** i cố định phần tử đầu; left/right tìm cặp trên suffix. Invariant theo sort: tăng left không làm sum giảm và giảm right không làm sum tăng. Sau khi tìm triplet, skip các value duplicate để output unique.
+
+**Dry run mental theo implementation.** Dry run [-1,0,1,2,-1,-4] sort -> [-4,-1,-1,0,1,2]. Với i=-1, left=-1,right=2 cho sum0 -> [-1,-1,2], rồi skip duplicate; tiếp [ -1,0,1 ].
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là không sort/skip duplicate hoặc reuse i trong pair. Khi nào dùng: k-sum thường giảm một dimension bằng cách fix một phần tử; 3Sum sau sort trở thành 2Sum two-pointers.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Brute force thử mọi bộ ba là `O(n³)`. Ta giảm một chiều bằng cách sort và fix phần tử đầu tiên.

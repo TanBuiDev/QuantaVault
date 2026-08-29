@@ -1,5 +1,21 @@
 # 76. Minimum Window Substring — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Minimum window cần đoạn ngắn nhất chứa đủ frequency của mọi char trong t. Ta expand right để gom requirement, rồi ngay khi đủ thì shrink left tối đa để tìm window nhỏ nhất vẫn hợp lệ.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Thử mọi substring và đếm lại là O(n²) hoặc tệ hơn. Quan sát validity thay đổi incrementally khi một char vào/ra window; frequency arrays/maps và một counter formed/required tránh recount toàn bộ.
+
+**State / invariant / data structure cần hiểu trước code.** need[c] là count bắt buộc, window[c] là count hiện tại. State satisfied/formed chỉ tăng khi một requirement vừa đạt đúng threshold và giảm khi shrink làm tụt dưới threshold. Invariant window valid iff mọi requirement được satisfied.
+
+**Dry run mental theo implementation.** Dry run s='ADOBECODEBANC', t='ABC': expand tới ADOBEC lần đầu đủ, shrink không qua A; tiếp tục đến BANC lại đủ rồi shrink thành BANC length4, candidate tốt nhất.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là chỉ kiểm tra presence thay vì frequency, hoặc update formed mỗi lần count vượt need. Khi nào dùng: shortest window satisfying monotone counts thường là expand-until-valid rồi shrink-while-valid.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Ta cần minimum window thỏa **multiset requirement** của `t`, không chỉ set membership.

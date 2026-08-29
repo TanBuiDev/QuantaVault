@@ -1,5 +1,21 @@
 # 58. Length of Last Word — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Chuỗi có thể kết thúc bằng nhiều space, nên việc cần làm là bỏ qua khoảng trắng ở cuối rồi đếm liên tiếp các ký tự của word cuối cho tới space hoặc đầu chuỗi.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Split toàn chuỗi tạo nhiều substring/list không cần thiết. Quan sát đáp án chỉ phụ thuộc suffix, nên quét từ phải sang trái tránh xử lý mọi word trước đó và dùng O(1) extra space.
+
+**State / invariant / data structure cần hiểu trước code.** Index i đi ngược; phase đầu bỏ trailing spaces, phase hai tăng length khi gặp ký tự. Invariant phase hai: length đúng bằng số non-space đã đi qua trong last word.
+
+**Dry run mental theo implementation.** Dry run '   fly me   to   the moon  ': bỏ hai space cuối, bắt đầu ở n của moon và đếm n,o,o,m thành 4, dừng khi gặp space trước m.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là đếm trailing spaces vào word hoặc access khi chuỗi toàn space nếu constraint khác. Khi nào dùng: câu hỏi chỉ về token cuối/đầu thường nên scan từ phía gần token thay vì parse toàn chuỗi.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Vì chỉ cần độ dài của **từ cuối**, hướng tự nhiên nhất là quét từ phải sang trái:

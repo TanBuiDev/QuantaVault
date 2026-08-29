@@ -1,5 +1,21 @@
 # 27. Remove Element — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Với [3,2,2,3] và val=3, đề chỉ quan tâm prefix đầu có các phần tử khác 3; thứ tự phần còn lại ngoài k không quan trọng đối với kết quả.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Xóa phần tử khỏi array làm shift và tạo bottleneck. Quan sát ta có thể đọc từng số và chỉ copy những số cần giữ vào write position, biến thao tác remove thành overwrite O(1).
+
+**State / invariant / data structure cần hiểu trước code.** write là số phần tử hợp lệ đã giữ và cũng là index ghi tiếp theo. Invariant: trước mỗi read, nums[0..write) chứa đúng các phần tử khác val trong prefix đã quét.
+
+**Dry run mental theo implementation.** Dry run [3,2,2,3]: read 3 bỏ; read 2 ghi nums[0]; read 2 ghi nums[1]; read 3 bỏ. write=2, prefix [2,2] là phần hợp lệ.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là cố giữ nguyên toàn bộ tail hoặc dùng remove của collection. Khi nào dùng: bài in-place filter trên array thường chỉ cần một write pointer đại diện vùng output đã hoàn tất.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Intuition
 
 Bài không yêu cầu thu nhỏ mảng Java. Nó chỉ yêu cầu:

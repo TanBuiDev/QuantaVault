@@ -1,5 +1,21 @@
 # 49. Group Anagrams — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Hai anagram có cùng multiset ký tự, nên cần một key canonical giống nhau cho eat, tea, ate. Key có thể là string đã sort hoặc vector 26 counts.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** So từng cặp string là O(n²). Quan sát group-by-key biến bài thành một pass: tính signature cho mỗi word rồi append vào bucket của signature trong HashMap.
+
+**State / invariant / data structure cần hiểu trước code.** Map key -> list words. Invariant: mọi word đã xử lý nằm đúng bucket có signature bằng frequency của nó; hai words chung bucket iff chúng là anagram theo alphabet constraint.
+
+**Dry run mental theo implementation.** Dry run eat: counts a1,e1,t1 tạo key; tea tạo đúng counts đó nên vào cùng list; tan có a1,n1,t1 nên key khác và mở bucket khác.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là dùng hash không encode count rõ hoặc reuse mutable key array. Khi nào dùng: grouping theo equivalence relation thường cần tìm một canonical signature làm HashMap key.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Anagram không phụ thuộc thứ tự ký tự mà phụ thuộc **multiset** ký tự. Với lowercase English letters, vector 26 frequency là canonical representation tự nhiên.

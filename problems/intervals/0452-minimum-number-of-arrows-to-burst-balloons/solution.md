@@ -1,5 +1,21 @@
 # 452. Minimum Number of Arrows to Burst Balloons — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Một arrow tại x bắn được mọi balloon interval chứa x. Để dùng ít arrows, khi chọn một group balloons overlap ta muốn đặt arrow ở điểm kết thúc nhỏ nhất để chừa cơ hội overlap tối đa với balloons sau.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Thử mọi điểm/combination là lớn. Sorting theo end tạo greedy: bắn arrow tại end của balloon chưa covered đầu tiên; mọi balloon có start<=arrow đều được cùng arrow cover.
+
+**State / invariant / data structure cần hiểu trước code.** arrowEnd là vị trí arrow gần nhất; count là arrows đã dùng. Invariant sau sort-by-end, khi start>arrowEnd thì balloon hiện tại không thể được bất kỳ arrow cũ cover và bắt buộc mở arrow mới tại end hiện tại.
+
+**Dry run mental theo implementation.** Dry run [[10,16],[2,8],[1,6],[7,12]] sort end -> [1,6],[2,8],[7,12],[10,16]: arrow=6 cover first2; start7>6 mở arrow=12 cover last2, count2.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là sort theo start rồi chọn endpoint không có proof. Khi nào dùng: minimum points để stab/cover intervals thường greedy theo earliest finishing endpoint.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Intuition
 
 Mỗi balloon là interval `[xstart,xend]`. Greedy chuẩn là **sort theo xend tăng dần**. Với balloon chưa được cover kết thúc sớm nhất, nếu cần arrow mới thì đặt tại chính `xend`: đây là điểm xa nhất sang phải vẫn chắc chắn bắn được balloon đó, đồng thời giữ cơ hội cover nhiều balloon sau nhất.

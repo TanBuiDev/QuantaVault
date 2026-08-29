@@ -1,5 +1,21 @@
 # Solution / Lời giải — 101. Symmetric Tree
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Symmetric tree nghĩa là left subtree là ảnh gương của right subtree: outer child của bên trái phải match outer child của bên phải và inner children cũng phải đổi chéo.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Serialize từng subtree rồi reverse dễ rối null positions. Quan sát hàm mirror(a,b) chỉ cần check values rồi recurse a.left với b.right và a.right với b.left.
+
+**State / invariant / data structure cần hiểu trước code.** State là cặp mirror candidates. Invariant mirror(a,b) true iff subtrees có shape/value đối xứng quanh trục; null-null true, one-null false, value mismatch false.
+
+**Dry run mental theo implementation.** Dry run root1 với children2,2: compare outer 3 với3, inner4 với4 theo cross pairs. Case [1,2,2,null,3,null,3] fail vì một cross pair là 3 với null.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là compare left.left với right.left thay vì right.right. Khi nào dùng: mirror/anti-isomorphism tree problems thường recurse trên crossed child pairs.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Hai subtree mirror khi roots bằng nhau, **outer children** mirror nhau và **inner children** mirror nhau. Đây là Same Tree với cách ghép child chéo hướng.

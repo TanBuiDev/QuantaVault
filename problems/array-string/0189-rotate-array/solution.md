@@ -1,5 +1,21 @@
 # 189. Rotate Array — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Rotate phải k nghĩa là suffix dài k đi lên đầu: [1,2,3,4,5,6,7], k=3 -> [5,6,7,1,2,3,4]. Ta cần thực hiện in-place.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Dịch từng bước k lần có O(nk) hoặc dùng array phụ O(n). Quan sát ba lần reverse biến đúng hai block A|B thành B|A: reverse toàn bộ, reverse B mới ở đầu, reverse A mới ở sau.
+
+**State / invariant / data structure cần hiểu trước code.** Sau k%=n, boundary n-k chia original thành A và B. Reverse là primitive in-place với left/right; invariant của từng reverse là vùng ngoài hai pointer đã ở vị trí mirror cuối cùng.
+
+**Dry run mental theo implementation.** Dry run [1,2,3,4,5,6,7], k=3: reverse all -> [7,6,5,4,3,2,1]; reverse first3 -> [5,6,7,4,3,2,1]; reverse rest -> [5,6,7,1,2,3,4].
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là quên k%=n, chia boundary sai hoặc reverse ranges inclusive lệch một. Khi nào dùng: rotation/block swap in-place thường có thể biểu diễn bằng các phép reverse.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Mục tiêu là đưa `k` phần tử cuối lên đầu mà vẫn giữ thứ tự tương đối của hai đoạn.

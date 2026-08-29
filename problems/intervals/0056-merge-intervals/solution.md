@@ -1,5 +1,21 @@
 # 56. Merge Intervals — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Sau khi sort intervals theo start, nếu interval mới bắt đầu trước hoặc tại end của interval đang merge thì chúng overlap; nếu start lớn hơn end, không interval tương lai nào có thể nối ngược lại vì starts chỉ tăng.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** So mọi cặp và merge lặp là rối và O(n²). Sorting tạo thứ tự để quyết định overlap chỉ bằng currentEnd; mỗi interval được merge một lần vào accumulator.
+
+**State / invariant / data structure cần hiểu trước code.** current=[start,end] là union của một run intervals overlap đã thấy. Invariant mọi interval trước current đã được output và kết thúc trước current.start; current bao phủ toàn bộ run chưa flush.
+
+**Dry run mental theo implementation.** Dry run [[1,3],[2,6],[8,10],[15,18]]: [1,3] gặp [2,6] overlap -> [1,6]; [8,10] tách nên flush [1,6], rồi các interval sau tương tự.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là sort theo end nhưng dùng logic start đơn giản, hoặc dùng < thay <= khi endpoint chạm nhau vẫn overlap. Khi nào dùng: interval union thường sort by start rồi sweep.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Intuition
 
 Nếu các interval đang ở thứ tự bất kỳ, một interval có thể overlap với một interval nằm rất xa trong input. Vì vậy bước quan trọng nhất là **sort theo điểm bắt đầu**. Sau khi sort, ta scan một lần từ trái sang phải và duy trì interval đã merge hiện tại.

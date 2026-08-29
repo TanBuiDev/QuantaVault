@@ -1,5 +1,21 @@
 # 205. Isomorphic Strings — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Isomorphic nghĩa là mỗi char của s ánh xạ nhất quán tới đúng một char của t và hai char khác nhau của s không được cùng map vào một char t; cần kiểm tra hai chiều.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Chỉ map s->t bỏ sót case 'ab' và 'aa'. Quan sát bijection cần uniqueness cả source->target và target->source, nên dùng hai maps/arrays hoặc compare last-seen patterns.
+
+**State / invariant / data structure cần hiểu trước code.** mapST[a]=b và mapTS[b]=a phải luôn đồng thời đúng cho prefix đã xử lý. Invariant: trước index i, mapping là one-to-one; pair mới hoặc khớp mapping cũ hoặc tạo cặp mới chưa dùng hai phía.
+
+**Dry run mental theo implementation.** Dry run egg/add: e->a, g->d, g gặp lại vẫn ->d nên true. Với foo/bar: f->b, o->a, o sau đó cần map tới r khác a nên false.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là chỉ check một map hoặc so frequency counts. Khi nào dùng: rename-equivalence/bijection giữa symbols cần consistency và injectivity, thường kiểm bằng mapping hai chiều.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Hai chuỗi isomorphic khi pattern lặp của các ký tự giống hệt nhau theo từng vị trí. Thay vì lưu trực tiếp mapping object, ta lưu **vị trí xuất hiện gần nhất** của mỗi character.

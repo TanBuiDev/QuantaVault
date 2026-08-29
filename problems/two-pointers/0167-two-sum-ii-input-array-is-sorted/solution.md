@@ -1,5 +1,21 @@
 # 167. Two Sum II - Input Array Is Sorted — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Array sorted cho phép loại nhiều pair sau một comparison. Nếu numbers[left]+numbers[right] quá nhỏ, giữ left cũ và giảm right chỉ làm sum còn nhỏ hơn, nên phải tăng left.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** HashMap O(n) time nhưng O(n) space; nested loops O(n²). Quan sát monotonicity của sorted array cho two pointers O(n), O(1): sum nhỏ move left, sum lớn move right.
+
+**State / invariant / data structure cần hiểu trước code.** left/right bao toàn bộ candidate interval. Invariant sau mỗi move, mọi pair bị bỏ qua đã được chứng minh không thể đạt target dựa trên upper/lower sum monotonicity.
+
+**Dry run mental theo implementation.** Dry run [2,7,11,15], target9: left=2,right=15 sum17 quá lớn -> right tới11 sum13 -> right tới7 sum9, trả indices 1-based [1,2].
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là trả 0-based indices hoặc move sai pointer khi sum nhỏ/lớn. Khi nào dùng: pair sum trên sorted data thường cho elimination two pointers với proof monotonic.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Tính sorted biến bài Two Sum thành một quá trình điều chỉnh tổng có hướng.

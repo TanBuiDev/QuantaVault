@@ -1,5 +1,21 @@
 # 380. Insert Delete GetRandom O(1) — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** RandomizedSet cần insert, remove và getRandom đều average O(1). HashSet giải insert/remove nhưng không lấy random index O(1); ArrayList lấy random index tốt nhưng xóa giữa bị shift.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Bottleneck là remove khỏi giữa ArrayList. Quan sát có thể đổi phần tử cần xóa với phần tử cuối, cập nhật index của phần tử được chuyển, rồi pop cuối; không cần giữ thứ tự.
+
+**State / invariant / data structure cần hiểu trước code.** ArrayList lưu index->value, HashMap lưu value->index. Invariant hai chiều: với mọi value trong set, values[indexByValue[value]] chính là value; mọi mutation phải update cả hai representation.
+
+**Dry run mental theo implementation.** Dry run values=[10,20,30], remove 20: map cho index1; move last=30 vào index1, map[30]=1, pop cuối, remove map[20]; còn [10,30] và map hoàn toàn đồng bộ.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là remove giữa list hoặc quên update map cho last moved value. Khi nào dùng: cần random-by-index cộng lookup/remove-by-value O(1) thường là array/list + map value->index.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Không có một cấu trúc Java built-in đơn lẻ nào đồng thời cho ta:

@@ -1,5 +1,21 @@
 # 6. Zigzag Conversion — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Với chuỗi PAYPALISHIRING và vài hàng, hãy tưởng tượng viết từng ký tự xuống rồi chéo lên như một cây bút chạy zigzag; output chỉ là đọc từng hàng từ trái sang phải sau khi đường đi đã hoàn tất.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Cách tự nhiên là dựng hẳn ma trận ký tự, nhưng bottleneck là rất nhiều ô trống. Quan sát rằng ta chỉ cần biết hàng hiện tại và hướng đi; mỗi ký tự được append thẳng vào StringBuilder của đúng hàng.
+
+**State / invariant / data structure cần hiểu trước code.** State tối thiểu là row hiện tại và direction đang đi xuống hay đi lên. Các StringBuilder đại diện cho nội dung đã hoàn chỉnh của từng hàng; khi chạm hàng 0 hoặc hàng cuối, direction phải đảo.
+
+**Dry run mental theo implementation.** Dry run với numRows=3: các row index đi theo 0,1,2,1,0,1,2,... Hãy trace vài ký tự đầu P,A,Y,P,A để thấy ký tự không di chuyển sau khi append; chỉ row và direction thay đổi.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là đảo hướng quá sớm hoặc xử lý sai numRows=1. Khi nào dùng: khi một layout 2D thực chất chỉ cần mô phỏng một con trỏ chạy theo chu kỳ, hãy nén grid thành các bucket theo hàng.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Ta không cần mô phỏng khoảng trắng của hình zigzag. Chỉ cần mô phỏng **row index** mà mỗi character đi qua.

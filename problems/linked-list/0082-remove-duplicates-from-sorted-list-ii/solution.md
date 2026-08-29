@@ -1,5 +1,21 @@
 # Solution / Lời giải — 82. Remove Duplicates from Sorted List II
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Khác bài remove duplicates giữ một copy, bài này phải xóa toàn bộ value xuất hiện nhiều lần. Sorted order giúp nhận một run duplicate liên tiếp và bỏ cả run.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Đếm frequency bằng map rồi rebuild dùng extra space. Quan sát chỉ cần prev trước run và current scan run; dummy rất quan trọng vì run duplicate có thể bắt đầu ngay ở head.
+
+**State / invariant / data structure cần hiểu trước code.** prev trỏ node cuối chắc chắn giữ; current trỏ run đang xét. Nếu current.next cùng value, advance tới cuối run rồi set prev.next sau run; nếu unique, prev tiến một node.
+
+**Dry run mental theo implementation.** Dry run 1->2->3->3->4->4->5: giữ1,2; tại3 detect duplicate, skip cả hai3; tại4 skip cả run4; giữ5, output 1->2->5.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là chỉ xóa duplicate thứ hai và giữ một copy, hoặc không có dummy khi head duplicate. Khi nào dùng: sorted list run filtering thường cần predecessor ổn định + scan tới end of run.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Sorted list gom mọi value bằng nhau thành contiguous run. Run dài 1 được giữ; run dài >=2 phải bị bỏ toàn bộ. `prev` luôn là node cuối chắc chắn được giữ.

@@ -1,5 +1,21 @@
 # Solution / Lời giải — 427. Construct Quad Tree
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Quad Tree chia square thành bốn quadrant. Nếu toàn vùng có cùng 0 hoặc1, một leaf node đủ; nếu mixed, node internal chứa bốn recursively built children.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Scan toàn submatrix ở mỗi recursion có thể lặp nhiều cells. Prefix sum có thể kiểm tra uniform region O(1), nhưng ngay cả direct scan vẫn minh họa divide-and-conquer: test leaf condition rồi chia halves.
+
+**State / invariant / data structure cần hiểu trước code.** Recursive call đại diện region (row,col,size). Contract trả quad node biểu diễn chính xác region đó; nếu sum==0 hoặc size² thì leaf, ngược lại split size/2 thành TL,TR,BL,BR.
+
+**Dry run mental theo implementation.** Vùng 2x2 [[1,1],[1,0]] không uniform nên root non-leaf; ba quadrant single-cell1 thành leaves true, quadrant cuối leaf0 false.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là coordinate quadrants sai hoặc val của internal node bị coi semantic. Khi nào dùng: spatial region recursively uniform/nonuniform thường là divide region until homogeneous, tạo tree hierarchy.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 A square becomes one leaf when all cells are equal; otherwise split it into four quadrants recursively. A 2D prefix sum tests uniformity of each square in `O(1)`.

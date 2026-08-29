@@ -1,5 +1,21 @@
 # 13. Roman to Integer — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Trong MCMXCIV, hầu hết ký tự được cộng, nhưng C đứng trước M nghĩa là 900 và I đứng trước V nghĩa là 4. Điều cần nhận ra là một ký tự nhỏ đứng trước ký tự lớn hơn phải bị trừ thay vì cộng.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Cách tự nhiên là special-case mọi cặp IV, IX, XL..., nhưng bottleneck là nhiều nhánh. Quan sát tổng quát hơn: nếu value hiện tại nhỏ hơn value kế tiếp thì subtract; ngược lại add, nên một quy tắc xử lý được mọi cặp subtractive hợp lệ.
+
+**State / invariant / data structure cần hiểu trước code.** State chỉ cần total và vị trí hiện tại; map/switch chuyển Roman char thành value. Invariant: sau khi xử lý prefix, total bằng giá trị của prefix đó theo quy tắc nhìn một ký tự kế tiếp.
+
+**Dry run mental theo implementation.** Dry run XIV: X=10 cộng; I=1 nhỏ hơn V=5 nên trừ; V=5 là cuối nên cộng, tổng 14. Với MCM, M cộng, C trừ vì trước M, M cộng, tổng 1900.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là luôn cộng hoặc chỉ nhớ một vài cặp subtractive. Khi nào dùng: encoding nơi ý nghĩa token phụ thuộc token kế tiếp thường giải được bằng local lookahead thay vì catalog mọi pattern.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Với số La Mã hợp lệ, quy tắc cộng/trừ có thể xác định bằng **một ký hiệu lookahead**:

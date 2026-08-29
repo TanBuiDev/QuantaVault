@@ -1,5 +1,21 @@
 # Solution / Lời giải — 212. Word Search II
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Word Search II nếu chạy Word Search riêng cho từng word sẽ lặp lại cùng grid prefixes rất nhiều. Trie gộp words theo prefix để một DFS board có thể đồng thời theo dõi tất cả words còn khả năng match.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Bottleneck là W lần DFS. Build trie của words; từ mỗi board cell, đi trie child tương ứng. Nếu trie không có child, cả nhóm words có prefix đó bị prune cùng lúc.
+
+**State / invariant / data structure cần hiểu trước code.** DFS state là board cell + TrieNode của prefix đã match; board mark ngăn reuse cell. Trie node có word/end marker để emit khi path tạo word; có thể clear marker để tránh duplicate output.
+
+**Dry run mental theo implementation.** Với words oath,pea,eat,rain, start board 'o' chỉ follow trie child o; path o-a-t-h tới terminal emit oath. Start 'e' có thể follow e-a-t emit eat; branches không có trie prefix dừng sớm.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là DFS mọi word riêng, quên unmark board, hoặc emit cùng word nhiều lần. Khi nào dùng: nhiều pattern searches chia sẻ prefixes trên cùng search space thường kết hợp trie + backtracking.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Build one trie for all words, then backtrack on the board. The trie prunes any board path that is not a dictionary prefix, shares prefix work across words, and terminal nodes store the full word for direct output.

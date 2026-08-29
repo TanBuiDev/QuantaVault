@@ -1,5 +1,21 @@
 # Solution / Lời giải — 433. Minimum Genetic Mutation
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Minimum Genetic Mutation là shortest path: mỗi gene string là state, một mutation đổi đúng một position và chỉ state nằm trong bank mới hợp lệ. Mỗi mutation cost1 nên BFS cho minimum.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** DFS có thể tìm một path nhưng không đảm bảo shortest. Dựng all-pairs graph tốn O(B²L); generate neighbors on-demand bằng thử 4 chars tại mỗi vị trí và HashSet bank.
+
+**State / invariant / data structure cần hiểu trước code.** Queue BFS giữ genes theo distance; visited/remove-from-bank khi enqueue đảm bảo mỗi gene vào queue một lần. Invariant first time reach a gene là mutation count nhỏ nhất.
+
+**Dry run mental theo implementation.** start AACCGGTT, end AAACGGTA, bank AACCGGTA,AACCGCTA,AAACGGTA: BFS level1 AACCGGTA, level2 các valid neighbors, cuối AAACGGTA ở shortest level phù hợp.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là cho mutation tới string không trong bank hoặc mark visited quá muộn. Khi nào dùng: minimum edits với finite allowed intermediate states và unit cost là implicit-graph BFS.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Mỗi valid gene là một node; mutation một ký tự là unweighted edge. BFS theo level trực tiếp tối thiểu hóa số mutation.

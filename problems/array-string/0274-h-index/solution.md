@@ -1,5 +1,21 @@
 # 274. H-Index — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** H-index h cần ít nhất h papers có citations >= h. Nếu sort citations tăng dần, tại index i có n-i papers từ i tới cuối cùng đều có citations ít nhất citations[i].
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Thử mọi h và đếm lại papers gây O(n²). Sort tạo bottleneck O(n log n) nhưng làm condition monotonic rõ: tại mỗi i chỉ cần kiểm tra citations[i] >= n-i; lần đầu đúng cho h lớn nhất theo cách quét phù hợp.
+
+**State / invariant / data structure cần hiểu trước code.** Sau sort, candidate h=n-i gắn trực tiếp với suffix size. Invariant: mọi paper trong suffix i..n-1 có citation >= citations[i], nên nếu citations[i]>=h thì toàn suffix chứng minh h hợp lệ.
+
+**Dry run mental theo implementation.** Dry run [3,0,6,1,5] sort -> [0,1,3,5,6]. i=2 cho h=3 và citations[2]=3 nên có đúng ba paper ít nhất 3 citations; h=4 tại i=1 không đạt.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là yêu cầu đúng h papers thay vì ít nhất h hoặc trả citation value thay cho h. Khi nào dùng: definition dạng 'ít nhất k phần tử đạt threshold k' thường dễ thấy sau sort/count buckets.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 H-index là **ngưỡng lớn nhất `h`** sao cho có ít nhất `h` bài với citation `>= h`.

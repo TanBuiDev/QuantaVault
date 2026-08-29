@@ -1,5 +1,21 @@
 # Solution / Lời giải — 61. Rotate List
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Rotate list phải k nghĩa là lấy k node cuối đưa lên đầu. Nếu biết length n, rotate k tương đương cắt sau node thứ n-k rồi nối tail cũ vào head cũ.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Di chuyển tail lên đầu k lần là O(nk). Quan sát k có thể giảm modulo n và list có thể tạm nối thành vòng; sau đó chỉ cần tìm newTail đúng n-k steps rồi break vòng.
+
+**State / invariant / data structure cần hiểu trước code.** tail và length được tìm trong pass đầu; sau tail.next=head tạo cycle, newTail nằm n-k-1 edges từ head và newHead=newTail.next. Invariant cycle bảo toàn mọi node trong lúc đổi điểm cắt.
+
+**Dry run mental theo implementation.** Dry run 1->2->3->4->5, k=2: n=5, tạo 5->1; newTail là node3, newHead=4; cắt 3.next=null cho 4->5->1->2->3.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là quên k%=n, off-by-one newTail hoặc không break cycle. Khi nào dùng: list rotation thường dễ hơn nếu tạm biến list thành ring rồi chọn điểm cắt mới.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Chuẩn hóa `k %= n`, nối tail về head thành cycle tạm, tìm new tail tại vị trí `n-k`, rồi cắt cycle. Suffix dài `k` tự trở thành prefix mới mà không cần rotate từng bước.

@@ -1,5 +1,21 @@
 # Solution / Lời giải — 64. Minimum Path Sum
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Minimum Path Sum: để tới cell (r,c), bước trước chỉ có thể từ trên hoặc trái. Vì costs cộng dồn, đường rẻ nhất tới current = grid[r][c] + min(bestTop,bestLeft).
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** DFS enumerate paths exponential; memo/DP lưu best cost mỗi cell. Vì current row chỉ cần dp[c] từ row trên và dp[c-1] vừa update từ trái, một array O(n) đủ.
+
+**State / invariant / data structure cần hiểu trước code.** dp[c] trước update là min cost tới cell trên; dp[c-1] là min cost tới cell trái trong row hiện tại. Invariant sau update dp[c] là min cost tới current; first row/column chỉ có một predecessor.
+
+**Dry run mental theo implementation.** Grid [[1,3,1],[1,5,1],[4,2,1]]: row0 cumulative [1,4,5]; row1 [2,7,6]; row2 [6,8,7], trả7 theo path 1-3-1-1-1.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là dùng max hoặc mishandle boundary với nonexistent predecessor. Khi nào dùng: acyclic grid shortest path với fixed incoming directions thường là straightforward DP topological order.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 The cheapest path to a cell must come from either above or left. Compress the previous/current DP rows into one array and add the current cell cost to the cheaper predecessor.

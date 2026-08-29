@@ -1,5 +1,21 @@
 # Solution / Lời giải — 25. Reverse Nodes in k-Group
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Reverse Nodes in k-Group không phải reverse toàn list: chỉ group đủ k node mới được đảo, suffix ngắn hơn k phải giữ nguyên. Cần xác định group boundary trước khi rewiring.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Copy values vào array làm mất yêu cầu node manipulation. Bottleneck pointer dễ lỗi; quan sát dummy + groupPrev + kth cho ta hai anchors ổn định, rồi reverse đúng đoạn [groupStart..kth].
+
+**State / invariant / data structure cần hiểu trước code.** groupPrev.next là start group; kth là end; groupNext=kth.next phải lưu trước reverse. Sau reverse, old groupStart trở thành group tail và là groupPrev mới cho vòng tiếp theo.
+
+**Dry run mental theo implementation.** Dry run 1->2->3->4->5, k=2: group [1,2] thành 2->1, groupPrev chuyển tới1; [3,4] thành4->3; chỉ còn node5 <k nên dừng, kết quả 2->1->4->3->5.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là reverse group thiếu k, mất groupNext hoặc cập nhật groupPrev vào node sai. Khi nào dùng: block-wise linked-list mutation nên khóa predecessor, end và successor trước khi đổi pointers.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Xử lý từng block `k` node. Luôn tìm `kth` trước để bảo đảm group đủ `k`; nếu thiếu thì remainder giữ nguyên. Lưu `groupNext`, reverse đúng `[groupPrev.next .. kth]`, rồi reconnect prefix và suffix.

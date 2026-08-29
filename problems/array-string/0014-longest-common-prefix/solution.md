@@ -1,5 +1,21 @@
 # 14. Longest Common Prefix — Solution
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Với flower, flow, flight, prefix chung được kéo dài chỉ đến fl; ngay khi một chuỗi khác ký tự tại cùng vị trí, mọi ký tự sau không thể còn thuộc common prefix nữa.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Có thể so mọi cặp chuỗi, nhưng bottleneck là lặp lại so sánh. Quan sát rằng chỉ cần lấy một chuỗi làm candidate rồi thu ngắn candidate khi gặp chuỗi không bắt đầu bằng nó, hoặc so theo cột cho tới mismatch đầu tiên.
+
+**State / invariant / data structure cần hiểu trước code.** State là prefix candidate hiện tại hoặc index cột đang được kiểm tra. Invariant: sau khi xử lý k chuỗi, candidate là prefix chung dài nhất của đúng k chuỗi đó; nó chỉ có thể giữ nguyên hoặc ngắn đi.
+
+**Dry run mental theo implementation.** Dry run flower -> flow giữ flow sau khi shrink; so tiếp flight thì flow không match, flo không match, fl match. Candidate cuối fl và không bao giờ cần dài trở lại.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là đọc quá độ dài chuỗi ngắn nhất hoặc tiếp tục sau mismatch. Khi nào dùng: bài tìm phần chung của nhiều sequence thường có invariant rằng candidate chỉ thu hẹp dần khi thêm dữ liệu.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea / Ý tưởng cốt lõi
 
 Dùng chuỗi đầu tiên làm reference và kiểm tra theo **cột ký tự**:

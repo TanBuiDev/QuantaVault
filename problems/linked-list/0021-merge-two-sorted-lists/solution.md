@@ -1,5 +1,21 @@
 # Solution / Lời giải — 21. Merge Two Sorted Lists
 
+<!-- NEWBIE-FIRST-BRIDGE:START -->
+## Newbie-first reasoning bridge
+
+**Tự nhìn bài toán bằng ví dụ.** Hai lists đã sorted, nên head nhỏ hơn chắc chắn là node nhỏ nhất còn lại của merged list. Chọn node đó rồi chỉ tiến pointer của list vừa chọn giống merge step trong merge sort.
+
+**Cách nghĩ tự nhiên → bottleneck → quan sát tối ưu.** Copy mọi value rồi sort lại bỏ phí sorted order và tạo extra work. Quan sát local smallest head là globally safe; dummy node giúp append đầu tiên và mọi node sau bằng cùng một công thức.
+
+**State / invariant / data structure cần hiểu trước code.** p1,p2 là suffix chưa merge; tail là node cuối output. Invariant list từ dummy.next tới tail đã chứa đúng các phần tử nhỏ nhất đã tiêu thụ theo sorted order.
+
+**Dry run mental theo implementation.** Dry run 1->2->4 và 1->3->4: chọn 1(list1),1(list2),2,3,4 rồi nối suffix 4 còn lại. Không cần tạo node mới nếu implementation relink nodes.
+
+**Lỗi thường gặp và khi nào dùng lại ý tưởng này.** Lỗi thường gặp là quên nối phần list còn lại hoặc làm mất next khi relink. Khi nào dùng: merge hai sorted streams là classic two pointers với dummy tail.
+<!-- NEWBIE-FIRST-BRIDGE:END -->
+
+---
+
 ## 1. Core idea
 
 Giống merge step của Merge Sort: vì hai suffix đều sorted, node nhỏ nhất chưa xử lý phải là một trong hai current heads. Reuse input nodes và append head nhỏ hơn vào result.
