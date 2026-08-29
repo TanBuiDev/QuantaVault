@@ -1,0 +1,152 @@
+{
+  "group": "array-string",
+  "problems": {
+    "6": {
+      "framing": "Với chuỗi PAYPALISHIRING và vài hàng, hãy tưởng tượng viết từng ký tự xuống rồi chéo lên như một cây bút chạy zigzag; output chỉ là đọc từng hàng từ trái sang phải sau khi đường đi đã hoàn tất.",
+      "derive": "Cách tự nhiên là dựng hẳn ma trận ký tự, nhưng bottleneck là rất nhiều ô trống. Quan sát rằng ta chỉ cần biết hàng hiện tại và hướng đi; mỗi ký tự được append thẳng vào StringBuilder của đúng hàng.",
+      "state": "State tối thiểu là row hiện tại và direction đang đi xuống hay đi lên. Các StringBuilder đại diện cho nội dung đã hoàn chỉnh của từng hàng; khi chạm hàng 0 hoặc hàng cuối, direction phải đảo.",
+      "trace": "Dry run với numRows=3: các row index đi theo 0,1,2,1,0,1,2,... Hãy trace vài ký tự đầu P,A,Y,P,A để thấy ký tự không di chuyển sau khi append; chỉ row và direction thay đổi.",
+      "transfer": "Lỗi thường gặp là đảo hướng quá sớm hoặc xử lý sai numRows=1. Khi nào dùng: khi một layout 2D thực chất chỉ cần mô phỏng một con trỏ chạy theo chu kỳ, hãy nén grid thành các bucket theo hàng."
+    },
+    "12": {
+      "framing": "Ví dụ 1994 được tách thành 1000 + 900 + 90 + 4, tương ứng M + CM + XC + IV. Bài toán là liên tục lấy ký hiệu Roman lớn nhất không vượt quá phần giá trị còn lại.",
+      "derive": "Có thể viết hàng loạt if cho từng chữ số, nhưng bottleneck là logic rời rạc và khó mở rộng. Quan sát rằng Roman chuẩn có một bảng value-symbol cố định theo thứ tự giảm dần, kể cả các cặp subtractive như CM, CD, XC, IV.",
+      "state": "State là phần số còn lại num và output đang xây. Với mỗi value từ lớn xuống nhỏ, trong khi num còn chứa value đó thì append symbol và trừ value; thứ tự bảng là invariant giữ representation canonical.",
+      "trace": "Dry run 58: lấy L=50 còn 8, lấy V=5 còn 3, rồi III. Với 1994, 1000 -> 900 -> 90 -> 4 cho MCMXCIV; trace này cho thấy subtractive pairs chỉ là entry bình thường trong bảng.",
+      "transfer": "Lỗi thường gặp là thiếu 4/9, 40/90, 400/900 hoặc sắp bảng sai thứ tự. Khi nào dùng: bài encode theo các denomination hữu hạn và luôn chọn denomination lớn nhất hợp lệ thường gợi ý greedy table."
+    },
+    "13": {
+      "framing": "Trong MCMXCIV, hầu hết ký tự được cộng, nhưng C đứng trước M nghĩa là 900 và I đứng trước V nghĩa là 4. Điều cần nhận ra là một ký tự nhỏ đứng trước ký tự lớn hơn phải bị trừ thay vì cộng.",
+      "derive": "Cách tự nhiên là special-case mọi cặp IV, IX, XL..., nhưng bottleneck là nhiều nhánh. Quan sát tổng quát hơn: nếu value hiện tại nhỏ hơn value kế tiếp thì subtract; ngược lại add, nên một quy tắc xử lý được mọi cặp subtractive hợp lệ.",
+      "state": "State chỉ cần total và vị trí hiện tại; map/switch chuyển Roman char thành value. Invariant: sau khi xử lý prefix, total bằng giá trị của prefix đó theo quy tắc nhìn một ký tự kế tiếp.",
+      "trace": "Dry run XIV: X=10 cộng; I=1 nhỏ hơn V=5 nên trừ; V=5 là cuối nên cộng, tổng 14. Với MCM, M cộng, C trừ vì trước M, M cộng, tổng 1900.",
+      "transfer": "Lỗi thường gặp là luôn cộng hoặc chỉ nhớ một vài cặp subtractive. Khi nào dùng: encoding nơi ý nghĩa token phụ thuộc token kế tiếp thường giải được bằng local lookahead thay vì catalog mọi pattern."
+    },
+    "14": {
+      "framing": "Với flower, flow, flight, prefix chung được kéo dài chỉ đến fl; ngay khi một chuỗi khác ký tự tại cùng vị trí, mọi ký tự sau không thể còn thuộc common prefix nữa.",
+      "derive": "Có thể so mọi cặp chuỗi, nhưng bottleneck là lặp lại so sánh. Quan sát rằng chỉ cần lấy một chuỗi làm candidate rồi thu ngắn candidate khi gặp chuỗi không bắt đầu bằng nó, hoặc so theo cột cho tới mismatch đầu tiên.",
+      "state": "State là prefix candidate hiện tại hoặc index cột đang được kiểm tra. Invariant: sau khi xử lý k chuỗi, candidate là prefix chung dài nhất của đúng k chuỗi đó; nó chỉ có thể giữ nguyên hoặc ngắn đi.",
+      "trace": "Dry run flower -> flow giữ flow sau khi shrink; so tiếp flight thì flow không match, flo không match, fl match. Candidate cuối fl và không bao giờ cần dài trở lại.",
+      "transfer": "Lỗi thường gặp là đọc quá độ dài chuỗi ngắn nhất hoặc tiếp tục sau mismatch. Khi nào dùng: bài tìm phần chung của nhiều sequence thường có invariant rằng candidate chỉ thu hẹp dần khi thêm dữ liệu."
+    },
+    "26": {
+      "framing": "Mảng đã sorted như [1,1,2,2,3] đặt các duplicate cạnh nhau. Ta không cần xóa vật lý; chỉ cần viết các giá trị unique vào prefix và trả độ dài prefix đó.",
+      "derive": "Dùng remove/shift từng duplicate làm bottleneck O(n²). Quan sát sorted order cho phép phát hiện giá trị mới bằng cách so với unique cuối cùng đã ghi, nên một read pointer và một write pointer đủ.",
+      "state": "write đại diện index sẽ ghi unique tiếp theo; prefix [0, write) luôn chứa đúng các giá trị distinct của phần đã đọc. read chỉ quét input và không bao giờ lùi.",
+      "trace": "Dry run [1,1,2]: giữ 1 làm prefix, read gặp 1 thì bỏ, gặp 2 khác nums[write-1] nên ghi vào write=1 rồi tăng write thành 2; prefix [1,2] là đáp án.",
+      "transfer": "Lỗi thường gặp là tăng write cả khi duplicate hoặc so với phần tử vừa đọc thay vì unique cuối. Khi nào dùng: sorted array + yêu cầu in-place compact thường là slow/read + write pointer."
+    },
+    "27": {
+      "framing": "Với [3,2,2,3] và val=3, đề chỉ quan tâm prefix đầu có các phần tử khác 3; thứ tự phần còn lại ngoài k không quan trọng đối với kết quả.",
+      "derive": "Xóa phần tử khỏi array làm shift và tạo bottleneck. Quan sát ta có thể đọc từng số và chỉ copy những số cần giữ vào write position, biến thao tác remove thành overwrite O(1).",
+      "state": "write là số phần tử hợp lệ đã giữ và cũng là index ghi tiếp theo. Invariant: trước mỗi read, nums[0..write) chứa đúng các phần tử khác val trong prefix đã quét.",
+      "trace": "Dry run [3,2,2,3]: read 3 bỏ; read 2 ghi nums[0]; read 2 ghi nums[1]; read 3 bỏ. write=2, prefix [2,2] là phần hợp lệ.",
+      "transfer": "Lỗi thường gặp là cố giữ nguyên toàn bộ tail hoặc dùng remove của collection. Khi nào dùng: bài in-place filter trên array thường chỉ cần một write pointer đại diện vùng output đã hoàn tất."
+    },
+    "28": {
+      "framing": "Để tìm needle trong haystack, với mỗi vị trí bắt đầu hợp lệ ta hỏi các ký tự liên tiếp có khớp toàn bộ needle không; ví dụ sad trong sadbutsad khớp ngay tại index 0.",
+      "derive": "Cách trực tiếp thử từng start và so từng ký tự có worst-case O(nm), nhưng với constraints chuẩn vẫn dễ hiểu và đúng. Bottleneck quan trọng là không thử start sau n-m vì không còn đủ chỗ cho needle.",
+      "state": "Outer index i là candidate start; inner index j là số ký tự needle đã match. Invariant trong inner loop: haystack[i..i+j) đã bằng needle[0..j).",
+      "trace": "Dry run haystack=leetcode, needle=leeto: start 0 match l,e,e,t rồi mismatch o với c nên bỏ candidate; các start sau không tạo full match, trả -1.",
+      "transfer": "Lỗi thường gặp là off-by-one ở giới hạn i <= n-m hoặc quên needle rỗng theo contract. Khi nào dùng: substring search nhỏ có thể bắt đầu bằng direct alignment trước khi cân nhắc KMP/Z nếu constraints lớn hơn."
+    },
+    "55": {
+      "framing": "Với [2,3,1,1,4], từ index 0 ta có thể tới 1 hoặc 2; điều quan trọng không phải chọn path cụ thể mà là theo dõi ranh giới xa nhất reachable sau khi quét các index đã tới được.",
+      "derive": "DFS/BFS thử nhiều path tạo bottleneck lặp state. Quan sát nếu i đã nằm trong vùng reachable, mọi reach i+nums[i] có thể mở rộng cùng một boundary farthest; nếu i vượt boundary thì không path nào tới i được.",
+      "state": "farthest là index lớn nhất reachable từ mọi vị trí đã xử lý. Invariant: trước khi xử lý i, nếu i <= farthest thì i thật sự reachable; sau update farthest bao phủ mọi jump từ prefix reachable.",
+      "trace": "Dry run [3,2,1,0,4]: farthest lần lượt 3,3,3,3; tới i=4 thì 4>3 nên thất bại. Với [2,3,1,1,4], tại i=1 farthest mở tới 4 và đủ tới đích.",
+      "transfer": "Lỗi thường gặp là greedy chọn index có nums[i] lớn nhất thay vì theo reach i+nums[i]. Khi nào dùng: reachability một chiều với các interval mở rộng liên tục thường nén được thành một farthest boundary."
+    },
+    "58": {
+      "framing": "Chuỗi có thể kết thúc bằng nhiều space, nên việc cần làm là bỏ qua khoảng trắng ở cuối rồi đếm liên tiếp các ký tự của word cuối cho tới space hoặc đầu chuỗi.",
+      "derive": "Split toàn chuỗi tạo nhiều substring/list không cần thiết. Quan sát đáp án chỉ phụ thuộc suffix, nên quét từ phải sang trái tránh xử lý mọi word trước đó và dùng O(1) extra space.",
+      "state": "Index i đi ngược; phase đầu bỏ trailing spaces, phase hai tăng length khi gặp ký tự. Invariant phase hai: length đúng bằng số non-space đã đi qua trong last word.",
+      "trace": "Dry run '   fly me   to   the moon  ': bỏ hai space cuối, bắt đầu ở n của moon và đếm n,o,o,m thành 4, dừng khi gặp space trước m.",
+      "transfer": "Lỗi thường gặp là đếm trailing spaces vào word hoặc access khi chuỗi toàn space nếu constraint khác. Khi nào dùng: câu hỏi chỉ về token cuối/đầu thường nên scan từ phía gần token thay vì parse toàn chuỗi."
+    },
+    "68": {
+      "framing": "Text justification có hai quyết định tách biệt: chọn bao nhiêu word vừa một line, rồi phân phối số space còn thiếu giữa các gap; last line lại dùng luật left-justified riêng.",
+      "derive": "Nối word rồi thêm space tùy hứng dễ sai vì bottleneck nằm ở việc chia đều và phần dư. Quan sát sau khi chốt một line, total letters và gap count xác định duy nhất base spaces và extra spaces.",
+      "state": "State của outer scan là range words cho line hiện tại. Khi format line thường, spaces = width-letters, gaps = count-1, mỗi gap nhận spaces/gaps và các gap trái đầu tiên nhận phần dư.",
+      "trace": "Dry run width=16 với 'This is an': letters=8, gaps=2, cần 8 spaces nên mỗi gap 4. Nếu cần 9 spaces, gap trái nhận 5 và gap phải 4.",
+      "transfer": "Lỗi thường gặp là chia space cho số word thay vì số gap, xử lý last line như line thường, hoặc quên line một word. Khi nào dùng: formatting có quota cố định thường nên tách selection phase và distribution phase."
+    },
+    "80": {
+      "framing": "Sorted array cho phép mỗi value xuất hiện tối đa hai lần; với [1,1,1,2,2,3], prefix hợp lệ cần thành [1,1,2,2,3]. Ta chỉ cần biết candidate có bằng phần tử cách write hai vị trí không.",
+      "derive": "Đếm frequency bằng map là thừa và tốn space. Quan sát vì output prefix đã sorted, nếu write<2 luôn giữ; sau đó nums[write-2] là giá trị mà candidate sẽ tạo lần xuất hiện thứ ba nếu bằng nó.",
+      "state": "write là độ dài prefix hợp lệ. Invariant: nums[0..write) sorted và không value nào xuất hiện hơn hai lần; candidate được ghi chỉ khi write<2 hoặc candidate != nums[write-2].",
+      "trace": "Dry run [1,1,1,2]: hai số 1 đầu được ghi; số 1 thứ ba bằng nums[0] nên bỏ; 2 khác nums[0] nên ghi tại write=2.",
+      "transfer": "Lỗi thường gặp là dùng nums[write-1] khiến chỉ giữ một copy. Khi nào dùng: sorted array cho phép tối đa k duplicates thường tổng quát thành candidate != nums[write-k]."
+    },
+    "88": {
+      "framing": "nums1 có vùng trống ở cuối để nhận nums2. Nếu merge từ đầu, việc ghi có thể đè lên phần nums1 chưa đọc; merge từ cuối dùng chính vùng trống nên không phá dữ liệu.",
+      "derive": "Tạo mảng mới rồi copy lại dùng O(m+n) extra space. Bottleneck của merge in-place từ trái là overwrite. Quan sát phần tử lớn nhất còn lại luôn phải nằm ở vị trí cuối còn trống, nên đi ba pointer từ phải sang trái.",
+      "state": "i trỏ phần tử thật cuối nums1, j trỏ cuối nums2, write trỏ ô cuối cần điền. Invariant: suffix sau write đã chứa đúng các phần tử lớn nhất ở vị trí cuối cùng của merged array.",
+      "trace": "Dry run nums1=[1,2,3,0,0,0], nums2=[2,5,6]: so 3 và 6 ghi 6, rồi 5, rồi 3, rồi so 2 và 2; không phần tử chưa đọc nào bị ghi đè.",
+      "transfer": "Lỗi thường gặp là bắt đầu write ở 0 hoặc quên copy phần nums2 còn lại khi nums1 cạn. Khi nào dùng: merge vào buffer nằm ở cuối array thường gợi ý fill backward."
+    },
+    "122": {
+      "framing": "Vì được giao dịch nhiều lần nhưng không giữ hai cổ phiếu cùng lúc, mọi đoạn tăng giá có thể được thu profit; [1,5,3,6] cho (5-1)+(6-3)=7.",
+      "derive": "DP holding/cash đúng nhưng dài hơn cần thiết. Quan sát một đợt tăng từ a lên d có d-a bằng tổng mọi chênh lệch dương từng ngày, nên chỉ cần cộng price[i]-price[i-1] khi dương.",
+      "state": "profit là tổng các positive deltas đã thấy. Invariant: sau ngày i, profit là lợi nhuận tối đa trên prefix vì mọi xu hướng tăng đã được chia thành các giao dịch ngày-kề-ngày tương đương.",
+      "trace": "Dry run [7,1,5,3,6,4]: deltas -6,+4,-2,+3,-2; chỉ cộng 4 và 3 được 7, tương đương mua 1 bán 5 rồi mua 3 bán 6.",
+      "transfer": "Lỗi thường gặp là áp dụng logic một giao dịch của bài 121 hoặc cộng delta âm. Khi nào dùng: nếu được reset hành động không giới hạn và profit cộng được theo các bước cục bộ, thử decomposition thành positive increments."
+    },
+    "134": {
+      "framing": "Mỗi station cho net fuel = gas[i]-cost[i]. Nếu tổng net toàn vòng âm thì không start nào đủ; nếu tổng không âm, ta cần tìm nơi prefix fuel không bao giờ rơi âm khi bắt đầu từ đó.",
+      "derive": "Thử từng start mô phỏng cả vòng là O(n²). Quan sát nếu bắt đầu tại start và fuel âm ở i, thì bất kỳ station giữa start và i cũng không thể là start tốt hơn vì nó bỏ mất một prefix net không âm đã tích lũy.",
+      "state": "total theo dõi khả năng tồn tại toàn cục; tank theo dõi fuel từ candidate start hiện tại. Khi tank<0, reset tank=0 và start=i+1; invariant loại bỏ cả đoạn start..i khỏi candidates.",
+      "trace": "Dry run gas=[1,2,3,4,5], cost=[3,4,5,1,2]: tank âm qua các station đầu nên start dời tới 3; từ 3 net +3,+3,-2,-2,-2 vẫn hoàn tất vòng, total=0.",
+      "transfer": "Lỗi thường gặp là reset total cùng tank hoặc không hiểu vì sao bỏ được cả đoạn. Khi nào dùng: circular feasibility với additive resource thường có global-sum condition cộng greedy reset khi prefix deficit."
+    },
+    "135": {
+      "framing": "Candy phải thỏa hai hướng: nếu rating cao hơn neighbor trái thì candy cao hơn trái; nếu cao hơn neighbor phải thì candy cao hơn phải. Một pass chỉ nhìn một hướng không đủ.",
+      "derive": "Tăng candy lặp cho tới ổn định có thể O(n²). Quan sát hai constraint độc lập theo trái và phải có thể tính bằng hai pass; tại mỗi child lấy max requirement từ hai phía.",
+      "state": "Pass trái đảm bảo relation với left neighbor; pass phải đảm bảo relation với right neighbor. Candy tại i cuối cùng phải đủ lớn cho cả hai, nên dùng max hoặc update từ phải với requirement hiện tại.",
+      "trace": "Dry run ratings=[1,0,2]: left requirements [1,1,2]; từ phải, index0 phải hơn index1 nên requirement trái-side cho index0 thành 2; kết quả [2,1,2], tổng 5.",
+      "transfer": "Lỗi thường gặp là chỉ pass trái hoặc cộng hai requirement thay vì lấy max. Khi nào dùng: local constraints phụ thuộc cả neighbor trái và phải thường tách thành directional passes rồi combine."
+    },
+    "151": {
+      "framing": "Input có leading/trailing/multiple spaces nhưng output cần word theo thứ tự đảo ngược, cách nhau đúng một space; ví dụ '  hello world  ' thành 'world hello'.",
+      "derive": "Split bằng regex rất ngắn nhưng tạo nhiều object và che mất kỹ thuật scan. Quan sát ta có thể đi từ phải sang trái, skip spaces, xác định [start,end] của từng word rồi append trực tiếp.",
+      "state": "Index i di chuyển từ cuối; mỗi vòng có phase bỏ spaces và phase tìm đầu word. StringBuilder output giữ các word đã lấy theo thứ tự đảo; chỉ thêm một space khi output đã có word trước.",
+      "trace": "Dry run 'the sky is blue': từ cuối lấy blue, rồi is, sky, the; giữa mỗi lần chỉ append một space, nên output tự loại mọi khoảng trắng thừa.",
+      "transfer": "Lỗi thường gặp là để space đầu/cuối output hoặc tạo empty word từ nhiều spaces. Khi nào dùng: tokenization đơn giản với delimiter lặp có thể scan boundary trực tiếp thay vì split."
+    },
+    "169": {
+      "framing": "Majority element xuất hiện hơn n/2 lần, nên nếu ghép mỗi occurrence của majority với một phần tử khác để triệt tiêu, cuối cùng majority vẫn còn ít nhất một đại diện.",
+      "derive": "Map frequency dùng O(n) space, sort dùng O(n log n). Quan sát phép cancel cặp khác nhau dẫn tới Boyer-Moore: giữ một candidate và count balance, reset candidate khi balance về 0.",
+      "state": "candidate là giá trị đang thắng trong đoạn chưa bị cancel; count là số vote dư của candidate. Invariant: sau khi bỏ các cặp giá trị khác nhau trong prefix, phần dư có thể đại diện bằng candidate,count.",
+      "trace": "Dry run [2,2,1,1,1,2,2]: candidate 2 count tăng 2, hai số 1 kéo count về 0, reset candidate 1 rồi cuối các số 2 khiến candidate cuối là 2.",
+      "transfer": "Lỗi thường gặp là nghĩ candidate luôn là majority ở mọi prefix; chỉ cuối toàn mảng mới được đảm bảo bởi constraint. Khi nào dùng: phần tử xuất hiện hơn một nửa thường có cancellation invariant O(1) space."
+    },
+    "189": {
+      "framing": "Rotate phải k nghĩa là suffix dài k đi lên đầu: [1,2,3,4,5,6,7], k=3 -> [5,6,7,1,2,3,4]. Ta cần thực hiện in-place.",
+      "derive": "Dịch từng bước k lần có O(nk) hoặc dùng array phụ O(n). Quan sát ba lần reverse biến đúng hai block A|B thành B|A: reverse toàn bộ, reverse B mới ở đầu, reverse A mới ở sau.",
+      "state": "Sau k%=n, boundary n-k chia original thành A và B. Reverse là primitive in-place với left/right; invariant của từng reverse là vùng ngoài hai pointer đã ở vị trí mirror cuối cùng.",
+      "trace": "Dry run [1,2,3,4,5,6,7], k=3: reverse all -> [7,6,5,4,3,2,1]; reverse first3 -> [5,6,7,4,3,2,1]; reverse rest -> [5,6,7,1,2,3,4].",
+      "transfer": "Lỗi thường gặp là quên k%=n, chia boundary sai hoặc reverse ranges inclusive lệch một. Khi nào dùng: rotation/block swap in-place thường có thể biểu diễn bằng các phép reverse."
+    },
+    "274": {
+      "framing": "H-index h cần ít nhất h papers có citations >= h. Nếu sort citations tăng dần, tại index i có n-i papers từ i tới cuối cùng đều có citations ít nhất citations[i].",
+      "derive": "Thử mọi h và đếm lại papers gây O(n²). Sort tạo bottleneck O(n log n) nhưng làm condition monotonic rõ: tại mỗi i chỉ cần kiểm tra citations[i] >= n-i; lần đầu đúng cho h lớn nhất theo cách quét phù hợp.",
+      "state": "Sau sort, candidate h=n-i gắn trực tiếp với suffix size. Invariant: mọi paper trong suffix i..n-1 có citation >= citations[i], nên nếu citations[i]>=h thì toàn suffix chứng minh h hợp lệ.",
+      "trace": "Dry run [3,0,6,1,5] sort -> [0,1,3,5,6]. i=2 cho h=3 và citations[2]=3 nên có đúng ba paper ít nhất 3 citations; h=4 tại i=1 không đạt.",
+      "transfer": "Lỗi thường gặp là yêu cầu đúng h papers thay vì ít nhất h hoặc trả citation value thay cho h. Khi nào dùng: definition dạng 'ít nhất k phần tử đạt threshold k' thường dễ thấy sau sort/count buckets."
+    },
+    "380": {
+      "framing": "RandomizedSet cần insert, remove và getRandom đều average O(1). HashSet giải insert/remove nhưng không lấy random index O(1); ArrayList lấy random index tốt nhưng xóa giữa bị shift.",
+      "derive": "Bottleneck là remove khỏi giữa ArrayList. Quan sát có thể đổi phần tử cần xóa với phần tử cuối, cập nhật index của phần tử được chuyển, rồi pop cuối; không cần giữ thứ tự.",
+      "state": "ArrayList lưu index->value, HashMap lưu value->index. Invariant hai chiều: với mọi value trong set, values[indexByValue[value]] chính là value; mọi mutation phải update cả hai representation.",
+      "trace": "Dry run values=[10,20,30], remove 20: map cho index1; move last=30 vào index1, map[30]=1, pop cuối, remove map[20]; còn [10,30] và map hoàn toàn đồng bộ.",
+      "transfer": "Lỗi thường gặp là remove giữa list hoặc quên update map cho last moved value. Khi nào dùng: cần random-by-index cộng lookup/remove-by-value O(1) thường là array/list + map value->index."
+    },
+    "42": {
+      "framing": "Nước trên cột i bị giới hạn bởi min(max height bên trái, max height bên phải)-height[i]. Hai pointer cho phép biết bên nào đã có boundary chắc chắn nhỏ hơn để chốt nước ngay.",
+      "derive": "Precompute leftMax/rightMax dùng O(n) space. Quan sát nếu leftMax <= rightMax thì nước tại left chỉ phụ thuộc leftMax, vì chắc chắn phía phải có boundary ít nhất cao bằng nó; xử lý left rồi tiến vào.",
+      "state": "leftMax và rightMax là boundary cao nhất đã thấy từ hai mép. Pointer ở phía có max nhỏ hơn là phía có mức nước đã xác định; invariant cho phép finalize vị trí đó mà không cần biết chi tiết bên còn lại.",
+      "trace": "Dry run [4,2,0,3,2,5]: rightMax sớm là 5, nên phía trái được chốt dần: tại 2 giữ 2 nước, tại 0 giữ 4, tại 3 giữ 1... tổng cuối 9.",
+      "transfer": "Lỗi thường gặp là dùng max(leftMax,rightMax) thay min hoặc move pointer phía cao hơn. Khi nào dùng: quantity tại vị trí bị kẹp bởi hai boundary và boundary nhỏ hơn quyết định bottleneck thường gợi ý two pointers."
+    }
+  }
+}
