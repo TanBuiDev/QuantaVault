@@ -1,0 +1,110 @@
+{
+  "group": "dp-kadane",
+  "problems": {
+    "5": {
+      "framing": "Longest Palindromic Substring có thể nhìn từ tâm: palindrome mở rộng đối xứng quanh một ký tự (odd length) hoặc khe giữa hai ký tự (even length). Mỗi palindrome có đúng một tâm kiểu này.",
+      "derive": "DP O(n²) space đúng nhưng nặng. Quan sát chỉ cần thử 2n-1 centers và expand trong khi chars hai phía bằng nhau; worst-case O(n²) time nhưng O(1) extra space.",
+      "state": "Với mỗi center, left/right là boundary palindrome hiện tại. Invariant s[left+1..right-1] đã palindrome; khi s[left]==s[right], mở rộng thêm một lớp. BestStart/bestLen giữ palindrome dài nhất đã thấy.",
+      "trace": "Dry run 'babad': center tại a index1 expand b-a-b thành 'bab'; center tại b index2 có thể tạo 'aba'. Cả hai length3 hợp lệ; implementation giữ một trong chúng.",
+      "transfer": "Lỗi thường gặp là chỉ thử odd centers và bỏ 'abba'. Khi nào dùng: substring đối xứng contiguous thường có center-expansion mental model trước khi cân nhắc DP/Manacher."
+    },
+    "53": {
+      "framing": "Nếu maximum subarray bắt buộc kết thúc tại index i, chỉ có hai lựa chọn: nối nums[i] vào best subarray kết thúc ở i-1, hoặc bỏ quá khứ và bắt đầu mới tại nums[i].",
+      "derive": "Thử mọi subarray O(n²). Observation local choice trên tạo recurrence current=max(nums[i], current+nums[i]); global best lấy max của mọi current, chính là Kadane O(n).",
+      "state": "current là maximum sum của subarray kết thúc đúng tại vị trí hiện tại; best là maximum trên mọi ending positions đã xử lý. Invariant current không phải arbitrary prefix sum mà có bắt buộc endpoint i.",
+      "trace": "Dry run [-2,1,-3,4,-1,2,1,-5,4]: tại4, current chọn bắt đầu mới4; sau -1,2,1 current tiến 4,3,5,6 và best=6 cho [4,-1,2,1].",
+      "transfer": "Lỗi thường gặp là reset current về0 và trả0 cho array toàn âm nếu không xử lý cẩn thận. Khi nào dùng: best contiguous segment với additive score thường hỏi 'best segment ending here' để sinh Kadane recurrence."
+    },
+    "63": {
+      "framing": "Unique Paths II giống đếm đường trên grid nhưng obstacle làm số ways tại cell đó bằng0. Với cell trống, mọi path tới nó phải đến từ top hoặc left, nên ways = top + left.",
+      "derive": "DFS thử mọi đường exponential. DP nén các subproblems trùng: số ways tới một cell chỉ phụ thuộc hai neighbors trước đó; dùng 1D dp theo columns giảm space từ O(mn) xuống O(n).",
+      "state": "dp[c] trước update là ways từ row trên tới column c; sau dp[c]+=dp[c-1] nó thành ways tới current cell. Obstacle đặt dp[c]=0. Invariant sau xử lý row prefix, dp[c] đúng số paths tới cell đó.",
+      "trace": "Grid [[0,0,0],[0,1,0],[0,0,0]]: row0 dp [1,1,1]; row1 column1 obstacle reset0 nên row thành [1,0,1]; row2 thành [1,1,2], đáp án2.",
+      "transfer": "Lỗi thường gặp là không reset obstacle về0 khiến paths đi xuyên obstacle. Khi nào dùng: grid paths với moves từ top/left thường DP theo incoming ways, rolling one row nếu chỉ cần previous row."
+    },
+    "64": {
+      "framing": "Minimum Path Sum: để tới cell (r,c), bước trước chỉ có thể từ trên hoặc trái. Vì costs cộng dồn, đường rẻ nhất tới current = grid[r][c] + min(bestTop,bestLeft).",
+      "derive": "DFS enumerate paths exponential; memo/DP lưu best cost mỗi cell. Vì current row chỉ cần dp[c] từ row trên và dp[c-1] vừa update từ trái, một array O(n) đủ.",
+      "state": "dp[c] trước update là min cost tới cell trên; dp[c-1] là min cost tới cell trái trong row hiện tại. Invariant sau update dp[c] là min cost tới current; first row/column chỉ có một predecessor.",
+      "trace": "Grid [[1,3,1],[1,5,1],[4,2,1]]: row0 cumulative [1,4,5]; row1 [2,7,6]; row2 [6,8,7], trả7 theo path 1-3-1-1-1.",
+      "transfer": "Lỗi thường gặp là dùng max hoặc mishandle boundary với nonexistent predecessor. Khi nào dùng: acyclic grid shortest path với fixed incoming directions thường là straightforward DP topological order."
+    },
+    "70": {
+      "framing": "Để đứng ở step n, bước cuối chỉ có thể từ n-1 bằng một bước hoặc n-2 bằng hai bước. Hai nhóm đường không overlap, nên ways(n)=ways(n-1)+ways(n-2).",
+      "derive": "Recursion thuần tính cùng ways(k) nhiều lần và exponential. Memo/DP sửa được; vì recurrence chỉ cần hai state trước, rolling variables cho O(1) space giống Fibonacci.",
+      "state": "prev2=ways(i-2), prev1=ways(i-1) trước khi tính i. Invariant sau update hai biến dịch một bước và giữ đúng hai giá trị gần nhất; base ways(1)=1, ways(2)=2 theo convention.",
+      "trace": "n=5: ways1=1, ways2=2; ways3=3, ways4=5, ways5=8. Mỗi value phân chia paths theo final jump 1 hoặc2 nên không double-count.",
+      "transfer": "Lỗi thường gặp là off-by-one bases. Khi nào dùng: đếm cách tới position với step sizes cố định thường recurrence bằng tổng ways của predecessor positions."
+    },
+    "72": {
+      "framing": "Edit Distance trên prefixes: để biến word1[0..i) thành word2[0..j), nhìn hai ký tự cuối. Nếu chúng bằng nhau không cần operation mới; nếu khác, operation cuối là insert, delete hoặc replace.",
+      "derive": "Recursion ba branches exponential vì cùng prefix pairs lặp lại. DP state (i,j) nén mỗi pair prefixes một lần, tạo bảng O(mn); recurrence trực tiếp từ ba possibilities của operation cuối.",
+      "state": "dp[i][j] là minimum edits đổi first i chars của word1 thành first j chars word2. Base dp[i][0]=i deletions, dp[0][j]=j insertions; mismatch =1+min(delete,insert,replace).",
+      "trace": "Với horse->ros, tại state h/ r mismatch chọn min của neighbors +1; bảng lần lượt xây từ empty prefixes. Kết quả3 tương ứng replace h->r, delete r, delete e theo một optimal sequence.",
+      "transfer": "Lỗi thường gặp là không gắn ba neighbors với đúng operation hoặc sai base empty string. Khi nào dùng: minimum operations biến sequence A thành B thường DP trên hai prefix lengths."
+    },
+    "97": {
+      "framing": "Interleaving String cần dùng toàn bộ s1 và s2 theo thứ tự nội bộ để tạo s3. State tự nhiên là đã lấy i chars từ s1 và j chars từ s2; vị trí s3 lúc đó luôn k=i+j.",
+      "derive": "Backtracking chọn s1/s2 có thể branch exponential khi chars giống nhau. DP memo trên (i,j) gom states trùng; transition thử lấy next char từ s1 nếu match s3[k] hoặc từ s2 nếu match.",
+      "state": "dp[i][j] nghĩa là s3 prefix length i+j có thể tạo từ s1 prefix i và s2 prefix j. Invariant chỉ có hai predecessor: (i-1,j) nếu s1[i-1] match, hoặc (i,j-1) nếu s2[j-1] match.",
+      "trace": "s1='aab', s2='axy', s3='aaxaby': early 'aa' có nhiều choices nhưng DP giữ reachable prefix pairs; mỗi cell OR hai legal predecessors và tránh khám lại cùng suffix choice tree.",
+      "transfer": "Lỗi thường gặp là chỉ greedy chọn s1 khi cả hai chars cùng match và có thể dead-end. Khi nào dùng: merge hai sequences giữ order để match third sequence thường DP trên pair prefix indices."
+    },
+    "120": {
+      "framing": "Trong Triangle, từ cell row r,col c chỉ đi xuống (r+1,c) hoặc (r+1,c+1). Nếu tính từ dưới lên, minimum path từ cell hiện tại = value + min(best của hai children).",
+      "derive": "DFS mọi root-to-bottom paths exponential. DP bottom-up có lợi vì last row đã là base answers; một 1D array copy last row rồi overwrite upward, không cần full table.",
+      "state": "dp[c] trước xử lý row r là minimum sum từ child (r+1,c) xuống đáy. Update dp[c]=triangle[r][c]+min(dp[c],dp[c+1]); invariant sau row r, dp[c] là best từ cell(r,c) xuống.",
+      "trace": "Triangle [[2],[3,4],[6,5,7],[4,1,8,3]]: start [4,1,8,3]; row2 -> [7,6,10]; row1 -> [9,10]; row0 -> [11], answer11.",
+      "transfer": "Lỗi thường gặp là update top-down in-place mà overwrite state còn cần. Khi nào dùng: layered DAG với transitions xuống next layer có thể DP bottom-up và rolling one layer."
+    },
+    "123": {
+      "framing": "Stock III cho tối đa hai transactions. Thay vì enumerate ngày mua/bán, ta theo dõi bốn trạng thái sau mỗi price: best cash sau buy1, sell1, buy2 và sell2.",
+      "derive": "Brute force split point và best trade hai phía có thể O(n) với arrays nhưng thêm space. State-machine DP cập nhật bốn best-so-far values trong một pass O(1) space.",
+      "state": "buy1=max cash khi giữ sau first buy; sell1=max cash sau first sell; buy2=max cash khi giữ sau second buy (funded by sell1); sell2=max cash sau second sell. Mỗi state chọn giữ cũ hoặc transition hôm nay.",
+      "trace": "Prices [3,3,5,0,0,3,1,4]: state updates cuối cùng sell2=6, tương ứng buy0 sell3 profit3 rồi buy1 sell4 profit3; transitions giữ tốt nhất dù exact days không lưu.",
+      "transfer": "Lỗi thường gặp là update buy2 từ0-price thay vì sell1-price. Khi nào dùng: số transaction nhỏ cố định thường unroll holding/not-holding DP thành vài scalar states."
+    },
+    "139": {
+      "framing": "Word Break hỏi prefix s[0..i) có thể được chia hoàn toàn thành dictionary words không. Nếu segmentation hợp lệ kết thúc tại i, sẽ tồn tại split j sao cho prefix tới j đã hợp lệ và s[j..i) là một word.",
+      "derive": "Backtracking thử mọi split exponential vì cùng suffix/prefix lặp lại. DP lưu boolean cho từng prefix; HashSet cho dictionary lookup, và max word length có thể giới hạn j không cần lùi xa hơn.",
+      "state": "dp[i] nghĩa là chính xác prefix length i segmentable; dp[0]=true cho empty prefix. Invariant khi xét i, mọi dp[j] với j<i đã final; chỉ cần tìm một j có dp[j] và substring(j,i) trong set.",
+      "trace": "Dry run 'leetcode', dict ['leet','code']: dp0=true; i=4 thấy j0 + 'leet' nên dp4=true; i=8 thấy j4 + 'code' nên dp8=true, trả true.",
+      "transfer": "Lỗi thường gặp là check substring dictionary mà quên dp[j], tức suffix word đúng nhưng prefix trước nó chưa segmentable. Khi nào dùng: sequence có thể partition thành valid pieces thường là DP trên prefix endpoints."
+    },
+    "198": {
+      "framing": "House Robber tại nhà i có hai lựa chọn mutually exclusive: bỏ nhà i và giữ best tới i-1, hoặc cướp i nên chỉ cộng được best tới i-2. Chọn max hai lựa chọn.",
+      "derive": "Recursion choose/skip exponential. DP recurrence best[i]=max(best[i-1],best[i-2]+nums[i]); vì chỉ cần hai values trước, rolling O(1) space.",
+      "state": "prev1 là best profit tới house i-1, prev2 tới i-2. Invariant trước mỗi house hai biến là optimal prefixes đã giải; current=max(prev1,prev2+money) bao phủ mọi optimal solution kết thúc decision tại i.",
+      "trace": "Dry run [2,7,9,3,1]: states best 2,7,11,11,12; tại house9 chọn prev2(2)+9=11, tại3 skip giữ11, tại1 chọn11+1=12.",
+      "transfer": "Lỗi thường gặp là greedy chọn house value lớn cục bộ. Khi nào dùng: chọn items trên line với no-adjacent constraint thường là take current + dp[i-2] vs skip dp[i-1]."
+    },
+    "221": {
+      "framing": "Nếu cell (r,c) là '1', square lớn nhất có bottom-right tại đó chỉ mở rộng khi ba neighbors left, top, top-left đều hỗ trợ square. Side =1+min(ba side lengths đó).",
+      "derive": "Thử mọi square và scan cells rất tốn. DP state theo bottom-right nén điều kiện hình học: weakest trong ba hướng giới hạn side mới, giống thêm một border quanh square nhỏ hơn.",
+      "state": "dp[r][c] là side length max square toàn1 kết thúc tại (r,c). Nếu matrix cell0 thì0; nếu1 thì1+min(top,left,diag). Track maxSide rồi area=maxSide².",
+      "trace": "Nếu top=2,left=2,diag=2 và current1, tạo side3. Nếu diag chỉ1 dù top/left2, side chỉ2 vì thiếu square 2x2 ở góc chéo để hỗ trợ 3x3.",
+      "transfer": "Lỗi thường gặp là dùng max neighbors hoặc trả side thay area. Khi nào dùng: largest all-valid square/rectangle local expansion thường DP theo boundary/corner states."
+    },
+    "300": {
+      "framing": "LIS không cần giữ actual subsequence để biết length. Ta có thể giữ tails[len-1] = giá trị kết thúc nhỏ nhất có thể của một increasing subsequence length len; tail nhỏ hơn dễ extend hơn về sau.",
+      "derive": "DP O(n²) thử mọi predecessor. Observation tails luôn sorted, nên với mỗi x binary-search first tails[pos]>=x rồi replace; nếu x lớn hơn mọi tails thì append và tăng LIS length, đạt O(n log n).",
+      "state": "tails không nhất thiết là một subsequence thật hoàn chỉnh, mà là best ending value cho mỗi length. Invariant tails strictly increasing và sau prefix nó lưu minimum possible tail cho mọi achievable length.",
+      "trace": "Dry run [10,9,2,5,3,7,101,18]: tails [10]->[9]->[2]->[2,5]->[2,3]->[2,3,7]->[2,3,7,101]->[2,3,7,18], length4.",
+      "transfer": "Lỗi thường gặp là coi tails content chính là LIS cần output hoặc dùng upper bound > thay lower bound >= cho strictly increasing. Khi nào dùng: LIS length thường patience-sorting tails + binary search."
+    },
+    "322": {
+      "framing": "Coin Change: dp[a] là ít coins nhất để tạo amount a. Nếu coin c là đồng cuối cùng của một solution cho a, phần trước phải là optimal solution cho a-c; vậy candidate dp[a-c]+1.",
+      "derive": "Backtracking combinations exponential và lặp same remaining amounts. DP bottom-up tính mỗi amount một lần; initialize unreachable bằng sentinel lớn, dp[0]=0 là base không cần coin.",
+      "state": "dp[a] sau khi xét transitions là min số coins cho exact amount a hoặc INF nếu impossible. Invariant mọi candidate chỉ dùng state smaller amount đã biết; min qua all coins bao phủ mọi lựa chọn đồng cuối.",
+      "trace": "Coins [1,2,5], amount11: dp values dần tạo dp5=1, dp10=2, dp11=min(dp10+1=3,dp9+1,...)=3 cho 5+5+1.",
+      "transfer": "Lỗi thường gặp là greedy chọn coin lớn nhất, sai với hệ coin tùy ý như [1,3,4], amount6. Khi nào dùng: unbounded minimum pieces để đạt exact sum thường là 1D DP over amounts."
+    },
+    "918": {
+      "framing": "Maximum circular subarray hoặc không wrap, khi đó Kadane max bình thường; hoặc wrap qua cuối->đầu, tương đương lấy tổng toàn array trừ một subarray contiguous ở giữa bị loại có sum nhỏ nhất.",
+      "derive": "Duplicate array rồi enumerate windows có thể O(n²). Observation wrapBest=total-minSubarray; chạy Kadane song song cho max và min trong O(n). Exception: nếu mọi số âm, total-minSum=0 tương ứng chọn empty wrap không hợp lệ.",
+      "state": "currentMax/bestMax là Kadane maximum ending/global; currentMin/bestMin tương tự minimum; total cộng toàn array. Invariant hai Kadanes bao phủ mọi non-wrap segment và mọi middle segment có thể bị loại khỏi wrap.",
+      "trace": "Dry run [5,-3,5]: bestMax=7? nonwrap max is7 via 5-3+5, total7, minSum=-3, wrap=10 nên answer10 từ [5] cuối + [5] đầu. Với [-3,-2,-3], return bestMax=-2 thay0.",
+      "transfer": "Lỗi thường gặp là luôn dùng total-minSum và trả0 cho all-negative. Khi nào dùng: circular contiguous optimum thường tách non-wrap và wrap=complement of opposite-sign optimum."
+    }
+  }
+}
