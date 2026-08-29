@@ -49,7 +49,8 @@ The refreshed prioritization report covers **150/150** canonical problems and re
 - Final deterministic pedagogy GREEN: **150/150**.
 - Golden reference rewrites: **9**.
 - Curated non-golden reasoning bridges: **141**.
-- Canonical Java solutions protected by existing WHY-comment/exact-sync audit: **150/150**.
+- Canonical Java WHY/exact-sync audit: **150/150**.
+- Compiled/executed Java reference regressions: **150/150 PASS**.
 - Implementation branch: `content/newbie-first-solutions-150`.
 - Pull request: `#4` (kept Draft during implementation/validation).
 
@@ -150,7 +151,7 @@ Java notes remain targeted. Collections, priority queues, deque operations, bit 
 - `tools/audit_solution_pedagogy.py`
 - `.github/workflows/web-ci.yml` now executes the pedagogy structural audit in addition to existing canonical-content and Java exact-sync validation.
 
-Migration-only bootstrap/apply/finalization workflows were removed after use and are not intended to land on `main`.
+Migration-only bootstrap/apply/finalization/reference-validation workflows were removed after use and are not intended to land on `main`.
 
 ## Validator strategy
 
@@ -170,7 +171,9 @@ Potential jargon-first openings remain heuristic warnings rather than hard failu
 
 ## Validation / CI status
 
-Implementation validation checkpoint **Web CI #125** completed successfully on the human-authored implementation checkpoint before this final report was added.
+### Standard PR Web CI
+
+**Web CI #128** completed successfully on the report-bearing implementation tree.
 
 All workflow stages passed:
 
@@ -185,9 +188,23 @@ All workflow stages passed:
 - Install Playwright Chromium — PASS
 - End-to-end tests — PASS
 
-After that checkpoint, the only generated fix was to make the legacy audit's golden denominator dynamic (`9/9` instead of a hardcoded `/8`). Its one-shot workflow also re-ran bridge idempotency, Java exact-sync, and the pedagogy gate successfully, then removed itself.
+### Full repository / Java reference regression
 
-This report commit is intentionally a normal repository-author commit so the pull request's standard Web CI runs again on the final tree.
+A read-only validation run adapted from the repository's existing historical final-migration harness completed successfully on the current implementation branch:
+
+- `python -m unittest tests.test_inventory tests.test_validate_content -v` — PASS
+- `tools/inventory.py --self-test` — PASS
+- `tools/validate_content.py --root .` — PASS
+- `tools/audit_java_solution_comments.py` — PASS
+- `tools/audit_solution_pedagogy.py` — PASS
+- `tools/apply_newbie_bridges.py --check` — PASS
+- `tools/audit_newbie_solutions.py --check` — PASS
+- `git diff --check` — PASS
+- compile + execute every `tests/java/*/TestSolution.java` against its canonical `Solution.java` — **150/150 PASS**
+
+The temporary workflow used to execute that read-only validation removed itself after success, so it does not remain in the branch.
+
+This report update is a normal repository-author commit, so the standard pull-request Web CI runs again on the final clean HEAD before the PR checklist is closed.
 
 ## Known limitations
 
@@ -205,9 +222,11 @@ The implementation satisfies the migration's repository-level completion contrac
 150 / 150 deterministic pedagogy GREEN
 9 / 9 golden references recognized
 141 / 141 non-golden curated bridges current/idempotent
-150 / 150 canonical Java exact-sync protected
+150 / 150 canonical Java WHY/exact-sync protected
+150 / 150 Java reference regressions PASS
 canonical content validation PASS
 pedagogy structural audit PASS
+repository Python validators PASS
 lint / test / build PASS
 E2E PASS
 ```
