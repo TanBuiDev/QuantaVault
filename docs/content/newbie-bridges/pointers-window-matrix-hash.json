@@ -1,0 +1,166 @@
+{
+  "group": "pointers-window-matrix-hash",
+  "problems": {
+    "1": {
+      "framing": "Với nums=[2,7,11,15], target=9, khi đang nhìn số 7 ta chỉ cần biết số còn thiếu là 2 đã xuất hiện ở index nào trước đó; không cần thử lại mọi cặp.",
+      "derive": "Hai vòng lặp là cách tự nhiên nhưng bottleneck O(n²). Quan sát mỗi value x xác định duy nhất complement target-x; HashMap cho phép hỏi complement đã thấy chưa trong average O(1).",
+      "state": "Map lưu value -> index của phần tử đã quét. Invariant: trước khi xử lý nums[i], map chỉ chứa indices < i, nên khi tìm complement ta luôn tạo hai index khác nhau và đúng thứ tự quét.",
+      "trace": "Dry run [2,7,11,15]: i=0 complement=7 chưa có, lưu 2->0; i=1 complement=2 có index0 nên trả [0,1]. Việc lookup trước put tránh dùng cùng phần tử hai lần khi target=2*x.",
+      "transfer": "Lỗi thường gặp là put trước rồi match chính nums[i], hoặc lưu complement/value lẫn lộn. Khi nào dùng: bài tìm pair theo phương trình a+b=target thường đổi thành lookup một complement trong set/map."
+    },
+    "3": {
+      "framing": "Trong 'abcabcbb', window 'abc' hợp lệ vì không ký tự nào lặp; thêm 'a' làm vi phạm, nên boundary trái phải nhảy qua occurrence trước của a trước khi tiếp tục mở rộng.",
+      "derive": "Khởi động substring ở mọi vị trí gây O(n²). Quan sát khi right tăng, chỉ ký tự mới có thể tạo duplicate; ta có thể giữ last index của mỗi char và dịch left tiến thẳng qua duplicate thay vì reset window.",
+      "state": "Window [left,right] luôn không có duplicate. Map/array lastSeen[c] lưu index gần nhất; khi c đã nằm trong window, left=max(left,lastSeen[c]+1). answer là max window length sau khi khôi phục invariant.",
+      "trace": "Dry run 'abba': a,b tạo length2; b tại index2 có lastSeen=1 nên left=2; a tại index3 có lastSeen=0 nhưng max giữ left=2, tránh kéo boundary lùi về 1.",
+      "transfer": "Lỗi thường gặp là gán left=lastSeen+1 mà không dùng max, khiến left đi lùi. Khi nào dùng: longest contiguous segment với constraint có thể sửa bằng cách bỏ prefix thường gợi ý sliding window."
+    },
+    "11": {
+      "framing": "Diện tích giữa hai line là width * min(height[left],height[right]); chiều cao nhỏ hơn là bottleneck. Khi thu hẹp width, chỉ có thay line thấp hơn mới có cơ hội bù lại bằng height lớn hơn.",
+      "derive": "Thử mọi cặp là O(n²). Quan sát nếu left line thấp hơn, giữ left và move right vào chỉ giảm width trong khi min height vẫn không thể vượt left; các cặp đó không thể tốt hơn current, nên loại cả loạt bằng một move.",
+      "state": "left/right bao search interval chưa bị chứng minh vô ích. Mỗi bước cập nhật maxArea rồi move pointer của side thấp hơn; invariant là mọi cặp bị bỏ qua có upper bound không vượt candidate đã xét với bottleneck đó.",
+      "trace": "Dry run heights=[1,8,6,2,5,4,8,3,7]: cặp đầu bị height1 giới hạn nên move left; tại left=1,right=8 area=min(8,7)*7=49, một candidate lớn hình thành.",
+      "transfer": "Lỗi thường gặp là move side cao hơn hoặc tối đa hóa height thay vì min height. Khi nào dùng: objective giữa hai boundary có width giảm dần và bị side yếu hơn giới hạn thường cho elimination two-pointer proof."
+    },
+    "15": {
+      "framing": "3Sum có thể cố định một số a rồi biến phần còn lại thành bài two-sum target=-a. Sorting giúp vừa dùng two pointers vừa bỏ duplicate có hệ thống.",
+      "derive": "Ba vòng lặp O(n³) là bottleneck. Sau sort, với mỗi i, sum của left/right thay đổi monotonic: sum nhỏ thì tăng left, lớn thì giảm right, đưa xuống O(n²).",
+      "state": "i cố định phần tử đầu; left/right tìm cặp trên suffix. Invariant theo sort: tăng left không làm sum giảm và giảm right không làm sum tăng. Sau khi tìm triplet, skip các value duplicate để output unique.",
+      "trace": "Dry run [-1,0,1,2,-1,-4] sort -> [-4,-1,-1,0,1,2]. Với i=-1, left=-1,right=2 cho sum0 -> [-1,-1,2], rồi skip duplicate; tiếp [ -1,0,1 ].",
+      "transfer": "Lỗi thường gặp là không sort/skip duplicate hoặc reuse i trong pair. Khi nào dùng: k-sum thường giảm một dimension bằng cách fix một phần tử; 3Sum sau sort trở thành 2Sum two-pointers."
+    },
+    "30": {
+      "framing": "Mọi word có cùng length L, nên một concatenation hợp lệ chỉ bắt đầu ở một trong L offset classes. Trong mỗi class, ta đọc chuỗi theo block word thay vì từng ký tự.",
+      "derive": "Thử mọi start rồi copy/count toàn substring tốn nhiều công lặp. Quan sát block alignment cố định cho phép sliding window theo word; khi một word xuất hiện quá nhiều, shrink từng block từ trái.",
+      "state": "need[word] là frequency cần; seen[word] là frequency trong window; left/right chạy theo bước L và count là số word hiện có. Window hợp lệ khi không seen nào vượt need và count đúng số words.",
+      "trace": "Dry run s='barfoofoobar', words=['foo','bar'], L=3: offset0 đọc bar,foo -> đủ hai word nên record 0; đọc foo làm foo dư, shrink bar rồi foo cũ cho tới frequency hợp lệ.",
+      "transfer": "Lỗi thường gặp là chỉ scan offset0, shrink theo ký tự hoặc quên duplicate words. Khi nào dùng: fixed-length tokens tạo natural block-aligned sliding windows thay vì character windows."
+    },
+    "36": {
+      "framing": "Sudoku board hợp lệ khi mỗi digit không lặp trong row, column và 3x3 box. Mỗi cell cần được kiểm tra đồng thời trong ba nhóm đó.",
+      "derive": "Quét lại cả row/column/box cho từng cell gây công lặp. Quan sát có thể lưu seen sets/bit masks cho 9 rows, 9 columns và 9 boxes, rồi mỗi digit chỉ cần ba lookup O(1).",
+      "state": "rowSeen[r], colSeen[c], boxSeen[b] đại diện digits đã gặp trước cell hiện tại. Box index thường b=(r/3)*3+c/3. Invariant: trước mỗi cell, ba structures phản ánh đúng prefix cells đã scan.",
+      "trace": "Dry run cell (4,7): box index=(4/3)*3+7/3=5. Nếu digit '6' đã có trong boxSeen[5] dù row/column chưa có, board vẫn invalid ngay.",
+      "transfer": "Lỗi thường gặp là tính box index sai hoặc coi '.' như digit. Khi nào dùng: constraint uniqueness trên nhiều overlapping groups thường giải bằng một seen structure cho mỗi group."
+    },
+    "48": {
+      "framing": "Rotate matrix 90° clockwise có thể nhìn thành hai phép biến đổi đơn giản: transpose qua đường chéo chính rồi reverse từng row; mỗi cell cuối cùng đi đúng vị trí (r,c)->(c,n-1-r).",
+      "derive": "Tạo matrix mới rất dễ nhưng dùng O(n²) extra space. Quan sát transpose + row reverse đều làm in-place bằng swaps, nên đạt O(1) extra space và tránh cycle-index khó nhớ.",
+      "state": "Trong transpose, chỉ swap cells phía trên diagonal với mirror (r,c)<->(c,r) để không swap hai lần. Sau đó mỗi row dùng two pointers reverse; hai phase có invariant độc lập rõ ràng.",
+      "trace": "Dry run [[1,2,3],[4,5,6],[7,8,9]]: transpose -> [[1,4,7],[2,5,8],[3,6,9]], reverse rows -> [[7,4,1],[8,5,2],[9,6,3]].",
+      "transfer": "Lỗi thường gặp là transpose toàn matrix và swap lại lần hai, hoặc reverse columns thay rows. Khi nào dùng: matrix geometric transforms thường phân rã thành transpose/reflection operations dễ chứng minh."
+    },
+    "49": {
+      "framing": "Hai anagram có cùng multiset ký tự, nên cần một key canonical giống nhau cho eat, tea, ate. Key có thể là string đã sort hoặc vector 26 counts.",
+      "derive": "So từng cặp string là O(n²). Quan sát group-by-key biến bài thành một pass: tính signature cho mỗi word rồi append vào bucket của signature trong HashMap.",
+      "state": "Map key -> list words. Invariant: mọi word đã xử lý nằm đúng bucket có signature bằng frequency của nó; hai words chung bucket iff chúng là anagram theo alphabet constraint.",
+      "trace": "Dry run eat: counts a1,e1,t1 tạo key; tea tạo đúng counts đó nên vào cùng list; tan có a1,n1,t1 nên key khác và mở bucket khác.",
+      "transfer": "Lỗi thường gặp là dùng hash không encode count rõ hoặc reuse mutable key array. Khi nào dùng: grouping theo equivalence relation thường cần tìm một canonical signature làm HashMap key."
+    },
+    "54": {
+      "framing": "Spiral traversal chỉ cần giữ bốn boundary top,bottom,left,right của rectangle chưa đọc. Mỗi vòng lấy top row, right column, bottom row và left column rồi co rectangle vào trong.",
+      "derive": "Mô phỏng direction với visited matrix hoạt động nhưng dùng extra space và nhiều turning logic. Quan sát các lớp hình chữ nhật được bóc lần lượt, nên bốn boundaries đủ mô tả toàn bộ phần chưa xử lý.",
+      "state": "Invariant: mọi cell ngoài [top..bottom]x[left..right] đã được output đúng một lần. Sau mỗi side, boundary tương ứng dịch vào; trước bottom/left pass phải check rectangle còn tồn tại.",
+      "trace": "Dry run 3x4: lấy row0, col3 từ row1..2, row2 ngược col2..0, col0 ngược row1; boundaries còn top=1,bottom=1,left=1,right=2 và lấy nốt [6,7].",
+      "transfer": "Lỗi thường gặp là duplicate row/column ở rectangle một hàng hoặc một cột. Khi nào dùng: traversal theo concentric layers thường nén visited state thành moving boundaries."
+    },
+    "73": {
+      "framing": "Nếu cell (r,c)=0, toàn row r và column c phải thành 0. Dùng row/col đầu làm chính các marker giúp tránh hai arrays phụ, nhưng cần nhớ riêng row0/col0 có zero ban đầu hay không.",
+      "derive": "Set zero ngay khi gặp zero làm mất thông tin vì zero mới tạo sẽ lan giả. Two marker arrays O(m+n) đúng; quan sát first row/column có sẵn O(m+n) cells để lưu markers in-place.",
+      "state": "matrix[r][0]=0 đánh dấu row r; matrix[0][c]=0 đánh dấu column c. Hai booleans riêng bảo vệ trạng thái first row/column. Invariant marker phase không zero body cells ngoài marker nên source information không bị phá.",
+      "trace": "Dry run [[1,1,1],[1,0,1],[1,1,1]]: cell(1,1) đặt matrix[1][0]=0 và matrix[0][1]=0; second pass zero row1/col1; first row/col xử lý cuối.",
+      "transfer": "Lỗi thường gặp là mutate body ngay trong scan đầu hoặc quên first-row/first-column flags. Khi nào dùng: in-place marking thường mượn một phần input làm metadata nhưng phải xử lý vùng metadata riêng."
+    },
+    "76": {
+      "framing": "Minimum window cần đoạn ngắn nhất chứa đủ frequency của mọi char trong t. Ta expand right để gom requirement, rồi ngay khi đủ thì shrink left tối đa để tìm window nhỏ nhất vẫn hợp lệ.",
+      "derive": "Thử mọi substring và đếm lại là O(n²) hoặc tệ hơn. Quan sát validity thay đổi incrementally khi một char vào/ra window; frequency arrays/maps và một counter formed/required tránh recount toàn bộ.",
+      "state": "need[c] là count bắt buộc, window[c] là count hiện tại. State satisfied/formed chỉ tăng khi một requirement vừa đạt đúng threshold và giảm khi shrink làm tụt dưới threshold. Invariant window valid iff mọi requirement được satisfied.",
+      "trace": "Dry run s='ADOBECODEBANC', t='ABC': expand tới ADOBEC lần đầu đủ, shrink không qua A; tiếp tục đến BANC lại đủ rồi shrink thành BANC length4, candidate tốt nhất.",
+      "transfer": "Lỗi thường gặp là chỉ kiểm tra presence thay vì frequency, hoặc update formed mỗi lần count vượt need. Khi nào dùng: shortest window satisfying monotone counts thường là expand-until-valid rồi shrink-while-valid."
+    },
+    "125": {
+      "framing": "Palindrome chỉ xét alphanumeric và không phân biệt hoa thường, nên hai pointer từ hai đầu có thể bỏ qua ký tự không hợp lệ rồi so cặp ký tự chuẩn hóa.",
+      "derive": "Tạo cleaned string rồi reverse rất dễ nhưng dùng O(n) extra space. Quan sát không cần materialize chuỗi lọc; left/right có thể skip trực tiếp trên input và quyết định mismatch ngay.",
+      "state": "left/right luôn trỏ phần chưa xác nhận. Trước mỗi compare, advance qua non-alphanumeric. Invariant: mọi cặp nằm ngoài [left,right] đã match sau lowercase normalization.",
+      "trace": "Dry run 'A man, a plan, a canal: Panama': left A và right a match; các space/comma/colon bị skip; pointers tiến dần tới giữa mà không tạo string mới.",
+      "transfer": "Lỗi thường gặp là so trước khi skip hoặc normalize chỉ một side. Khi nào dùng: so sequence đối xứng với ký tự bỏ qua thường giải bằng converging two pointers."
+    },
+    "128": {
+      "framing": "Với [100,4,200,1,3,2], sequence 1,2,3,4 dài 4. Nếu mỗi số đều thử mở rộng cả trái/phải, cùng sequence bị đếm lại nhiều lần; chỉ bắt đầu ở số không có predecessor x-1.",
+      "derive": "Sort cho O(n log n). HashSet cho membership O(1), nhưng để đạt O(n) cần observation start-of-run: chỉ x với x-1 không tồn tại mới scan x,x+1,...; mỗi element thuộc đúng một scan dài.",
+      "state": "Set chứa toàn bộ values; current bắt đầu tại run head và length tăng khi current+1 tồn tại. Invariant mỗi sequence chỉ được enumerated từ minimum của nó nên tổng số membership steps tuyến tính.",
+      "trace": "Dry run set {100,4,200,1,3,2}: 4 bị skip vì 3 tồn tại; 1 không có 0 nên scan 1,2,3,4 length4; 100 và 200 tạo runs length1.",
+      "transfer": "Lỗi thường gặp là scan từ mọi number dẫn worst-case O(n²). Khi nào dùng: HashSet + consecutive chains thường cần nhận ra một điều kiện xác định duy nhất head của mỗi chain."
+    },
+    "167": {
+      "framing": "Array sorted cho phép loại nhiều pair sau một comparison. Nếu numbers[left]+numbers[right] quá nhỏ, giữ left cũ và giảm right chỉ làm sum còn nhỏ hơn, nên phải tăng left.",
+      "derive": "HashMap O(n) time nhưng O(n) space; nested loops O(n²). Quan sát monotonicity của sorted array cho two pointers O(n), O(1): sum nhỏ move left, sum lớn move right.",
+      "state": "left/right bao toàn bộ candidate interval. Invariant sau mỗi move, mọi pair bị bỏ qua đã được chứng minh không thể đạt target dựa trên upper/lower sum monotonicity.",
+      "trace": "Dry run [2,7,11,15], target9: left=2,right=15 sum17 quá lớn -> right tới11 sum13 -> right tới7 sum9, trả indices 1-based [1,2].",
+      "transfer": "Lỗi thường gặp là trả 0-based indices hoặc move sai pointer khi sum nhỏ/lớn. Khi nào dùng: pair sum trên sorted data thường cho elimination two pointers với proof monotonic."
+    },
+    "202": {
+      "framing": "Repeatedly thay n bằng tổng bình phương digits tạo một deterministic sequence. Hoặc sequence chạm 1, hoặc nếu không thì vì state hữu hạn nó sẽ lặp một value và mắc trong cycle.",
+      "derive": "Giới hạn số bước tùy ý không có proof. HashSet seen phát hiện cycle rõ ràng; hoặc fast/slow pointers dùng Floyd. Bottleneck cần giải là biết khi nào dừng nếu n không happy.",
+      "state": "Với set approach, seen chứa mọi value trước đây; nếu next đã seen thì cycle. Với Floyd, slow=f(slow), fast=f(f(fast)); invariant nếu có cycle hai pointer cuối cùng gặp nhau.",
+      "trace": "Dry run 19: 19 -> 82 -> 68 -> 100 -> 1 nên happy. Với 2, sequence cuối đi vào cycle 4,16,37,58,89,145,42,20,4 nên phát hiện repeat.",
+      "transfer": "Lỗi thường gặp là chỉ loop while n!=1 mà không detect cycle. Khi nào dùng: lặp một hàm deterministic trên state có thể dùng seen set hoặc Floyd cycle detection giống linked list ẩn."
+    },
+    "205": {
+      "framing": "Isomorphic nghĩa là mỗi char của s ánh xạ nhất quán tới đúng một char của t và hai char khác nhau của s không được cùng map vào một char t; cần kiểm tra hai chiều.",
+      "derive": "Chỉ map s->t bỏ sót case 'ab' và 'aa'. Quan sát bijection cần uniqueness cả source->target và target->source, nên dùng hai maps/arrays hoặc compare last-seen patterns.",
+      "state": "mapST[a]=b và mapTS[b]=a phải luôn đồng thời đúng cho prefix đã xử lý. Invariant: trước index i, mapping là one-to-one; pair mới hoặc khớp mapping cũ hoặc tạo cặp mới chưa dùng hai phía.",
+      "trace": "Dry run egg/add: e->a, g->d, g gặp lại vẫn ->d nên true. Với foo/bar: f->b, o->a, o sau đó cần map tới r khác a nên false.",
+      "transfer": "Lỗi thường gặp là chỉ check một map hoặc so frequency counts. Khi nào dùng: rename-equivalence/bijection giữa symbols cần consistency và injectivity, thường kiểm bằng mapping hai chiều."
+    },
+    "209": {
+      "framing": "Tất cả nums đều positive, nên khi mở rộng right thì sum không giảm; khi shrink left thì sum không tăng. Monotonicity này cho phép tìm shortest subarray đạt target bằng sliding window.",
+      "derive": "Prefix sum + thử mọi pair O(n²), binary search prefix có O(n log n). Với positive numbers, quan sát window sum monotonic cho O(n): expand tới đủ target rồi shrink càng nhiều càng tốt.",
+      "state": "sum là tổng window [left,right]. Invariant: sau vòng while shrink, window hiện tại là không đủ target, còn mọi valid window kết thúc tại right đã được thử trong lúc shrink và minLength cập nhật.",
+      "trace": "Dry run target7, [2,3,1,2,4,3]: tới sum8 ở right=3 shrink; sau đó khi right=4 và 5, window co được [4,3] length2, là đáp án.",
+      "transfer": "Lỗi thường gặp là dùng kỹ thuật này khi nums có số âm, làm sum mất monotonicity. Khi nào dùng: contiguous positive-sum threshold là signal mạnh cho variable sliding window."
+    },
+    "219": {
+      "framing": "Ta cần hai equal values có distance <= k. Khi scan index i, chỉ cần biết occurrence gần nhất của nums[i]; occurrence cũ hơn luôn cho distance lớn hơn và không hữu ích hơn.",
+      "derive": "So mọi pair O(n²). HashMap lastIndex nén history: nếu value từng thấy ở j và i-j<=k thì true; sau đó update lastIndex=value->i.",
+      "state": "Map lưu index gần nhất của mỗi value trong prefix. Invariant lastIndex[x] là occurrence lớn nhất < i, vì vậy nếu occurrence gần nhất còn quá xa thì mọi occurrence cũ cũng quá xa.",
+      "trace": "Dry run [1,2,3,1], k=3: khi i=3 gặp 1, map[1]=0 và distance3 đạt điều kiện. Với k=2, distance3 quá lớn rồi map[1] update thành3.",
+      "transfer": "Lỗi thường gặp là giữ index đầu tiên thay vì gần nhất. Khi nào dùng: pair condition dựa trên distance trong stream thường chỉ cần most-recent occurrence hoặc sliding set size k."
+    },
+    "242": {
+      "framing": "Anagram yêu cầu hai string có đúng cùng số lần xuất hiện của mỗi ký tự. Thứ tự không quan trọng, nên bài toán biến từ so chuỗi thành so frequency vector.",
+      "derive": "Sort hai string O(n log n) đúng. Nếu alphabet nhỏ cố định, count frequencies O(n) nhanh và ít overhead hơn; một pass tăng theo s và giảm theo t có thể phát hiện mismatch.",
+      "state": "count[c] là chênh lệch occurrences s minus t đã xử lý. Invariant cuối cùng mọi count phải bằng 0; length khác nhau có thể reject ngay vì tổng số ký tự không thể match.",
+      "trace": "Dry run anagram/nagaram: mỗi char tăng rồi giảm tương ứng, vector về 0. Với rat/car, count của t/r/c không cân bằng nên còn nonzero.",
+      "transfer": "Lỗi thường gặp là chỉ so set characters và bỏ qua multiplicity. Khi nào dùng: equality không quan tâm order nhưng quan tâm số lần xuất hiện thường dùng frequency map/array."
+    },
+    "289": {
+      "framing": "Game of Life update phải đồng thời: trạng thái cell kế tiếp phụ thuộc board cũ, nên nếu overwrite 0/1 ngay, neighbor sau sẽ đọc state mới và kết quả sai.",
+      "derive": "Copy board giải dễ với O(mn) space. Quan sát mỗi cell chỉ cần encode old và new state cùng lúc bằng transitional values hoặc bits, rồi pass hai normalize về 0/1.",
+      "state": "Quy ước transitional codes phải cho phép hàm đếm neighbor vẫn suy ra old alive status. Invariant pass đầu: mọi cell dù đã marked vẫn giữ thông tin old state; pass hai mới commit final states.",
+      "trace": "Dry run một live cell sẽ chết: mark nó bằng code biểu diễn old=1,new=0; neighbor chưa xử lý vẫn phải đếm code đó như alive. Sau khi mọi decision xong mới convert code thành 0.",
+      "transfer": "Lỗi thường gặp là update trực tiếp hoặc đếm transitional code sai. Khi nào dùng: in-place simultaneous update thường cần encode old+new state hoặc tách decision pass và commit pass."
+    },
+    "290": {
+      "framing": "Pattern 'abba' và câu 'dog cat cat dog' khớp vì a luôn ứng với dog, b luôn ứng với cat và không word nào dùng chung cho hai pattern chars khác nhau.",
+      "derive": "Chỉ map char->word bỏ sót injectivity, giống Isomorphic Strings. Quan sát cần bijection giữa pattern symbols và words; dùng hai maps hoặc map plus used-word set.",
+      "state": "Mapping phải one-to-one trên prefix token đã xử lý. Trước hết số words phải bằng pattern length; mỗi vị trí hoặc xác nhận mapping cũ hoặc tạo mapping mới mà target word chưa thuộc symbol khác.",
+      "trace": "Dry run abba / dog cat cat dog: a->dog,b->cat, hai vị trí sau match reverse. Với abba / dog cat cat fish, a ở cuối đòi dog nhưng gặp fish nên false.",
+      "transfer": "Lỗi thường gặp là quên check token count hoặc uniqueness phía word. Khi nào dùng: pattern matching theo rename cần bijection, không chỉ frequency hay one-way mapping."
+    },
+    "383": {
+      "framing": "Ransom note có thể tạo từ magazine khi magazine cung cấp ít nhất số lượng mỗi char note cần. Đây là bài inventory: mỗi char magazine tăng stock, mỗi char note tiêu một unit.",
+      "derive": "Tìm và xóa từng char trong magazine gây search/shift lặp. Với alphabet nhỏ, frequency array tạo O(n+m) và O(1) space theo alphabet.",
+      "state": "count[c] là số copies còn khả dụng. Khi scan note, decrement; nếu count âm thì note yêu cầu nhiều hơn stock và có thể fail ngay. Invariant count phản ánh magazine minus prefix note.",
+      "trace": "Dry run note='aa', magazine='aab': stock a=2,b=1; consume a hai lần về0 nên true. Với magazine='ab', consume a đầu còn0, a thứ hai làm -1 nên false.",
+      "transfer": "Lỗi thường gặp là chỉ check character tồn tại mà không count duplicate. Khi nào dùng: construct-one-multiset-from-another thường là frequency inventory và early deficit detection."
+    },
+    "392": {
+      "framing": "Subsequence giữ thứ tự nhưng được bỏ ký tự. Ta chỉ cần pointer i cho ký tự tiếp theo của s cần match và scan t từ trái sang phải cho tới khi match hết s.",
+      "derive": "Recursion/DP có thể giải nhưng thừa cho một query đơn. Quan sát greedy match occurrence s[i] sớm nhất không làm hại tương lai, vì để lại suffix t lớn nhất cho các ký tự sau.",
+      "state": "i là độ dài prefix của s đã match. Invariant sau khi scan prefix t, i là số ký tự đầu s có thể match bằng greedy earliest occurrences; i chỉ tăng, không lùi.",
+      "trace": "Dry run s='abc', t='ahbgdc': a match ở0 -> i1; b match ở2 -> i2; c match ở5 -> i3 bằng s.length nên true.",
+      "transfer": "Lỗi thường gặp là yêu cầu chars liên tiếp như substring. Khi nào dùng: kiểm tra một sequence có xuất hiện theo thứ tự trong sequence khác thường là two pointers greedy."
+    }
+  }
+}
