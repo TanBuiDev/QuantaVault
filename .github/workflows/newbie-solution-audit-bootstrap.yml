@@ -6,7 +6,7 @@ on:
       - content/newbie-first-solutions-150
     paths:
       - tools/audit_newbie_solutions.py
-      - problems/**/meta.yml
+      - problems/**/meta.yaml
       - problems/**/solution.md
       - problems/**/Solution.java
       - .github/workflows/newbie-solution-audit-bootstrap.yml
