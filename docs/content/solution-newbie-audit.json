@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-29T01:19:35.002921+00:00",
+  "generatedAt": "2026-08-29T01:24:28.651580+00:00",
   "auditMethod": "deterministic structural baseline; semantic pedagogy still requires reviewer/Newbie Simulator review",
   "expectedProblemCount": 150,
   "actualProblemCount": 150,
@@ -24,18 +24,18 @@
   },
   "summary": {
     "classificationCounts": {
-      "Close": 95,
+      "Close": 94,
       "Critical": 1,
       "Model": 1,
-      "Partial": 53
+      "Partial": 54
     },
     "tierCounts": {
       "1": 37,
       "2": 94,
       "3": 19
     },
-    "averageScore": 8.79,
-    "goldenSetCount": 8
+    "averageScore": 8.78,
+    "goldenSetCount": 9
   },
   "sections": {
     "1d-dp": {
@@ -48,10 +48,10 @@
     },
     "array-string": {
       "count": 24,
-      "averageScore": 10.0,
+      "averageScore": 9.92,
       "critical": 0,
-      "partial": 3,
-      "close": 20,
+      "partial": 4,
+      "close": 19,
       "model": 1
     },
     "backtracking": {
@@ -803,19 +803,19 @@
       "section": "array-string",
       "path": "problems/array-string/0274-h-index",
       "tier": 2,
-      "score": 10,
-      "classification": "Close",
+      "score": 8,
+      "classification": "Partial",
       "scores": {
         "problem_framing": 2,
         "algorithm_derivation": 2,
         "state_and_structure_meaning": 1,
         "java_blockers": 1,
-        "dry_run_and_correctness": 2,
-        "transfer_and_mistakes": 2
+        "dry_run_and_correctness": 1,
+        "transfer_and_mistakes": 1
       },
       "blockers": [],
       "recommended_action": "explain variable/state/data-structure meaning before code; add focused Java API/syntax notes where comprehension blocks",
-      "golden_set": false
+      "golden_set": true
     },
     {
       "id": 380,

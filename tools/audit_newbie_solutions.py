@@ -83,6 +83,7 @@ TIER3_TITLES = {
 }
 GOLDEN_TITLES = {
     "Best Time to Buy and Sell Stock",
+    "H-Index",
     "Jump Game II",
     "Product of Array Except Self",
     "LRU Cache",

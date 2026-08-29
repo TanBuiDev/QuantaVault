@@ -7,10 +7,10 @@
 ## Baseline summary
 
 - Coverage: **150/150** canonical problems
-- Average structural score: **8.79/12**
-- Golden-set matches: **8/8**
+- Average structural score: **8.78/12**
+- Golden-set matches: **9/8**
 - Tier distribution: **T1 37 · T2 94 · T3 19**
-- Classification: **Critical 1** · **Partial 53** · **Close 95** · **Model 1**
+- Classification: **Critical 1** · **Partial 54** · **Close 94** · **Model 1**
 
 ## Scoring model
 
@@ -23,7 +23,7 @@ Classification: **Critical 0–4**, **Partial 5–8**, **Close 9–11**, **Model
 | Section | Count | Avg /12 | Critical | Partial | Close | Model |
 |---|---:|---:|---:|---:|---:|---:|
 | `1d-dp` | 5 | 8.6 | 0 | 1 | 4 | 0 |
-| `array-string` | 24 | 10.0 | 0 | 3 | 20 | 1 |
+| `array-string` | 24 | 9.92 | 0 | 4 | 19 | 1 |
 | `backtracking` | 7 | 8.0 | 0 | 4 | 3 | 0 |
 | `binary-search` | 7 | 8.57 | 0 | 1 | 6 | 0 |
 | `binary-search-tree` | 3 | 8.67 | 0 | 2 | 1 | 0 |
@@ -77,7 +77,7 @@ Classification: **Critical 0–4**, **Partial 5–8**, **Close 9–11**, **Model
 | 169 | `array-string` | Majority Element | Easy | 1 | 11 | **Close** | — |  |
 | 189 | `array-string` | Rotate Array | Medium | 2 | 11 | **Close** | — |  |
 | 238 | `array-string` | Product of Array Except Self | Medium | 2 | 5 | **Partial** | transfer_and_mistakes | ✓ |
-| 274 | `array-string` | H-Index | Medium | 2 | 10 | **Close** | — |  |
+| 274 | `array-string` | H-Index | Medium | 2 | 8 | **Partial** | — | ✓ |
 | 380 | `array-string` | Insert Delete GetRandom O(1) | Medium | 2 | 10 | **Close** | — |  |
 | 17 | `backtracking` | Letter Combinations of a Phone Number | Medium | 2 | 9 | **Close** | — |  |
 | 22 | `backtracking` | Generate Parentheses | Medium | 2 | 9 | **Close** | — |  |
