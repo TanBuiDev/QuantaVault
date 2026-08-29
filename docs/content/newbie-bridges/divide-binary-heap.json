@@ -1,0 +1,103 @@
+{
+  "group": "divide-binary-heap",
+  "problems": {
+    "23": {
+      "framing": "Merging k sorted lists luôn cần biết head nhỏ nhất hiện tại trong k candidates. Sau khi lấy node nhỏ nhất, chỉ head của list chứa node đó thay đổi; các lists khác giữ nguyên candidate.",
+      "derive": "Mỗi lần scan k heads cho min tốn O(Nk). Min-heap giữ đúng k heads và cho poll/offer O(log k), nên tổng O(N log k); alternative divide-and-conquer pairwise merge cũng đạt cùng bound.",
+      "state": "Heap chứa tối đa một next-unmerged node từ mỗi list đang còn dữ liệu. Invariant heap minimum là node nhỏ nhất toàn cục chưa merge; sau poll node x, chỉ offer x.next để đại diện phần còn lại list đó.",
+      "trace": "Dry run lists [1,4,5],[1,3,4],[2,6]: heap đầu 1,1,2; poll1(listA) rồi offer4; poll1(listB) offer3; poll2 offer6; output tăng dần tự nhiên.",
+      "transfer": "Lỗi thường gặp là push toàn bộ nodes ngay từ đầu làm heap lớn N hoặc quên offer next sau poll. Khi nào dùng: merge k sorted streams thường là heap giữ một frontier item mỗi stream hoặc divide-and-conquer pair merges."
+    },
+    "33": {
+      "framing": "Rotated sorted array như [4,5,6,7,0,1,2] vẫn có tính chất: tại bất kỳ mid, ít nhất một nửa [left..mid] hoặc [mid..right] còn sorted hoàn toàn. Ta dùng nửa sorted để biết target có nằm trong range giá trị đó không.",
+      "derive": "Linear scan O(n) bỏ phí gần-sorted structure. Binary search vẫn dùng được nhưng decision không dựa đơn thuần nums[mid] với target; phải xác định nửa nào sorted trước.",
+      "state": "Search interval [left,right] luôn chứa target nếu target tồn tại. Nếu left half sorted và target nằm trong [nums[left],nums[mid]), giữ left half; không thì bỏ nó. Symmetric cho right half.",
+      "trace": "Dry run target0: mid index3 value7, left half 4..7 sorted nhưng target0 không thuộc range nên left=4; mid5 value1, left half 0..1 sorted và target0 thuộc nên right=4; tìm0.",
+      "transfer": "Lỗi thường gặp là boundary inequalities làm mất target ở endpoints. Khi nào dùng: binary search trên rotated monotonic data thường nhận diện phần sorted chắc chắn rồi dùng range membership để loại nửa."
+    },
+    "34": {
+      "framing": "Sorted array có thể chứa một block target liên tiếp. Thay vì tìm target rồi scan trái/phải, ta có thể binary-search riêng boundary đầu tiên và boundary đầu tiên lớn hơn target.",
+      "derive": "Binary search một occurrence rồi linear expand có worst-case O(n) nếu tất cả values bằng target. Observation boundary condition monotonic: nums[i] >= target chuyển false→true tại first position; nums[i] > target chuyển ở after-last.",
+      "state": "Lower-bound search giữ answer boundary nhỏ nhất thỏa predicate trong [left,right]. Invariant các indices bị loại trái/phải đã biết chắc predicate state; second bound minus1 cho last occurrence.",
+      "trace": "Dry run [5,7,7,8,8,10], target8: lower bound tìm index3; upper bound first>8 tìm index5; result [3,4]. Nếu lower index ngoài array hoặc value khác target, trả [-1,-1].",
+      "transfer": "Lỗi thường gặp là chỉ tìm arbitrary occurrence hoặc infinite loop với left=mid. Khi nào dùng: first/last position trên sorted data thường là lower_bound/upper_bound predicates, không cần post-scan."
+    },
+    "35": {
+      "framing": "Search Insert Position hỏi index target nếu có, hoặc vị trí nhỏ nhất mà chèn target vẫn sorted. Đây chính là first index có value >= target, kể cả boundary n nếu mọi value nhỏ hơn target.",
+      "derive": "Linear scan O(n) đúng nhưng sorted order cho monotonic predicate nums[i]>=target. Binary search boundary này trong O(log n) và không cần special case target absent.",
+      "state": "Search half-open [left,right) hoặc inclusive tùy code; invariant answer luôn nằm trong interval. Khi nums[mid]<target, mid và mọi bên trái không thể là insertion point; ngược lại giữ/move về trái.",
+      "trace": "Dry run [1,3,5,6], target2: mid5 quá lớn dịch trái; compare1 nhỏ nên boundary tới index1, nơi value3 là first >=2. Target7 cuối cùng boundary n=4.",
+      "transfer": "Lỗi thường gặp là return -1 khi không found dù bài cần insertion boundary. Khi nào dùng: sorted 'find or insert' là lower bound, một binary-search boundary problem."
+    },
+    "74": {
+      "framing": "Matrix có rows sorted và first của row sau lớn hơn last row trước, nên nếu tưởng tượng nối các rows lại ta có một sorted array dài m*n mà không cần copy dữ liệu.",
+      "derive": "Binary search từng row hoặc scan O(m+n) được, nhưng stronger global ordering cho phép một binary search O(log(mn)). Index ảo idx map sang row=idx/n, col=idx%n.",
+      "state": "left/right là indices trên flattened sorted order. Invariant target nếu tồn tại nằm trong virtual interval; value(mid)=matrix[mid/n][mid%n] cho comparison giống array bình thường.",
+      "trace": "Dry run matrix 3x4, virtual indices0..11. mid5 map row1,col1; nếu value11<target16 thì left=6, không cần biết rows vật lý khi search.",
+      "transfer": "Lỗi thường gặp là chia/mod theo số rows thay vì columns. Khi nào dùng: multidimensional storage có global sorted linearization có thể binary-search qua index mapping mà không flatten thật."
+    },
+    "108": {
+      "framing": "Sorted array muốn BST height-balanced thì root nên là phần tử giữa để số elements hai phía gần nhau; left half dựng left subtree và right half dựng right subtree với cùng quy tắc.",
+      "derive": "Insert lần lượt sorted values vào BST sẽ tạo cây lệch O(n) height. Divide-and-conquer chọn midpoint biến sorted order trực tiếp thành balanced structure và mỗi element chỉ tạo một node.",
+      "state": "Recursive call build(left,right) chịu trách nhiệm đúng segment đó. mid là root; invariant inorder của subtree kết quả đúng nums[left..right] và hai subtree sizes chênh tối đa theo midpoint split.",
+      "trace": "Dry run [-10,-3,0,5,9]: chọn0 root; left segment [-10,-3] tạo -10/-3 tùy midpoint convention; right [5,9]; chiều cao hai phía cân bằng.",
+      "transfer": "Lỗi thường gặp là copy subarrays ở mỗi recursion làm O(n log n) extra work. Khi nào dùng: sorted sequence → balanced BST thường là midpoint divide-and-conquer với index bounds."
+    },
+    "148": {
+      "framing": "Linked list không random-access nên merge sort phù hợp hơn quicksort: dùng slow/fast tìm midpoint, cắt list thành hai halves, sort recursively rồi merge hai sorted lists bằng pointers.",
+      "derive": "Copy values ra array rồi sort dùng O(n) extra và không sort nodes trực tiếp. Merge sort đạt O(n log n), còn split/merge đều tự nhiên trên linked list mà không cần index access.",
+      "state": "Mỗi recursion nhận head của một list độc lập đã được cắt null ở midpoint. Contract trả sorted list chứa đúng các nodes ban đầu; merge dùng dummy/tail và giữ sorted invariant như bài Merge Two Sorted Lists.",
+      "trace": "Dry run 4->2->1->3: split [4,2] và [1,3]; sort thành [2,4] và [1,3]; merge chọn1,2,3,4 thành output sorted.",
+      "transfer": "Lỗi thường gặp là không cắt prevSlow.next=null gây recursion vô hạn hoặc split lệch. Khi nào dùng: sorting singly linked list với O(n log n) target thường chọn merge sort vì sequential merge O(1) pointer work."
+    },
+    "153": {
+      "framing": "Trong rotated sorted array không duplicates, minimum là điểm 'gãy'. So nums[mid] với nums[right] cho biết mid nằm ở high sorted portion hay low portion chứa minimum.",
+      "derive": "Linear min O(n) bỏ phí rotation structure. Nếu nums[mid] > nums[right], minimum chắc ở bên phải mid; nếu nums[mid] < nums[right], mid có thể chính là minimum nên giữ mid và dịch right=mid.",
+      "state": "Interval [left,right] luôn chứa minimum. Predicate nums[mid] > nums[right] chứng minh đoạn từ mid thuộc phía trước pivot nên bỏ through mid; ngược lại minimum nằm left..mid.",
+      "trace": "Dry run [4,5,6,7,0,1,2]: mid7>right2 nên left=4; mid1<=right2 nên right=5; mid0<=1 right=4, hội tụ index4 value0.",
+      "transfer": "Lỗi thường gặp là right=mid-1 khi mid có thể là minimum. Khi nào dùng: tìm pivot/min rotated sorted array là binary search giữ candidate mid ở nhánh đã sorted tới right."
+    },
+    "162": {
+      "framing": "Peak là vị trí lớn hơn neighbors; không cần tìm global maximum. Nhìn slope giữa nums[mid] và nums[mid+1]: nếu đang đi lên, chắc chắn có một peak ở bên phải; nếu đi xuống, có peak ở mid hoặc bên trái.",
+      "derive": "Linear scan O(n) dễ. Observation discrete slope tạo monotonic elimination dù array không sorted: đi theo hướng uphill và finite boundaries -∞ đảm bảo cuối cùng chạm peak.",
+      "state": "Search interval luôn chứa ít nhất một peak. Nếu nums[mid]<nums[mid+1], set left=mid+1; else right=mid. Khi left==right, point duy nhất đó là peak theo invariant.",
+      "trace": "Dry run [1,2,1,3,5,6,4]: tùy mids, slope up dẫn sang phải segment; cuối hội tụ index5 value6, nhưng index1 value2 cũng là peak hợp lệ nếu search path khác.",
+      "transfer": "Lỗi thường gặp là cố tìm maximum hoặc compare mid-1 gây boundary complexity. Khi nào dùng: local optimum existence với slope direction có thể binary-search bằng adjacent comparison."
+    },
+    "215": {
+      "framing": "Kth largest không cần sort toàn array nếu chỉ quan tâm k elements lớn nhất. Min-heap size k giữ đúng top-k hiện tại; heap root là phần tử nhỏ nhất trong top-k, tức kth largest sau khi scan hết.",
+      "derive": "Sort O(n log n) đúng. Heap size k cho O(n log k), hoặc quickselect average O(n). Heap dễ reasoning và ổn định: offer value, nếu size>k thì poll smallest.",
+      "state": "Invariant sau khi xử lý prefix: heap chứa k giá trị lớn nhất của prefix (hoặc tất cả nếu chưa đủ k). Vì root là nhỏ nhất trong heap, khi prefix hoàn chỉnh root chính là kth largest.",
+      "trace": "Dry run [3,2,1,5,6,4], k=2: heap giữ [2,3], gặp1 bị poll1; gặp5 poll2 -> [3,5]; gặp6 poll3 -> [5,6]; gặp4 bị poll4, root5.",
+      "transfer": "Lỗi thường gặp là dùng max-heap size k rồi root là largest chứ không kth. Khi nào dùng: streaming top-k thường là heap đối nghịch kích thước k để root đại diện boundary top-k."
+    },
+    "295": {
+      "framing": "Median stream cần hai nửa: lower half và upper half. Nếu giữ max-heap lower và min-heap upper, ta lấy ngay hai values gần center mà không sort lại toàn stream sau mỗi add.",
+      "derive": "Insert vào sorted list tốn O(n) shift hoặc sort lại O(n log n). Two heaps cho add O(log n), median O(1), miễn giữ size balance và ordering lower<=upper.",
+      "state": "maxHeap chứa nửa nhỏ, minHeap nửa lớn. Invariants: sizes chênh tối đa1 và mọi maxHeap value <= mọi minHeap value; thường maxHeap có cùng size hoặc nhiều hơn1.",
+      "trace": "Add1 -> lower[1]; add2 chuyển/balance lower[1], upper[2], median1.5; add3 vào lower/upper qua rebalance để lower có [2,1], upper[3], median2.",
+      "transfer": "Lỗi thường gặp là chỉ balance sizes mà không đảm bảo ordering, hoặc overflow khi average two ints. Khi nào dùng: dynamic median/quantile boundary thường tách data thành two heaps quanh center."
+    },
+    "373": {
+      "framing": "Hai arrays sorted; với mỗi nums1[i], pairs (nums1[i],nums2[0]), (..nums2[1])... có sums tăng dần. Ta cần merge k sorted 'pair streams' theo sum.",
+      "derive": "Sinh mọi m*n pairs rồi sort quá lớn. Min-heap khởi tạo pair đầu của một số rows i; khi poll (i,j), chỉ successor (i,j+1) cùng row stream cần được offer.",
+      "state": "Heap chứa frontier nhỏ nhất chưa dùng của mỗi active nums1 row. Invariant heap root là pair có sum nhỏ nhất toàn cục chưa output vì mọi stream riêng sorted theo j.",
+      "trace": "nums1=[1,7,11], nums2=[2,4,6]: heap (1,2),(7,2),(11,2); poll(1,2) offer(1,4); poll(1,4) offer(1,6); rồi candidates tiếp quyết định top k.",
+      "transfer": "Lỗi thường gặp là push toàn Cartesian product hoặc offer j+1 vượt bounds. Khi nào dùng: k smallest combinations từ sorted dimensions thường coi mỗi fixed-dimension slice là sorted stream và heap-merge frontiers."
+    },
+    "427": {
+      "framing": "Quad Tree chia square thành bốn quadrant. Nếu toàn vùng có cùng 0 hoặc1, một leaf node đủ; nếu mixed, node internal chứa bốn recursively built children.",
+      "derive": "Scan toàn submatrix ở mỗi recursion có thể lặp nhiều cells. Prefix sum có thể kiểm tra uniform region O(1), nhưng ngay cả direct scan vẫn minh họa divide-and-conquer: test leaf condition rồi chia halves.",
+      "state": "Recursive call đại diện region (row,col,size). Contract trả quad node biểu diễn chính xác region đó; nếu sum==0 hoặc size² thì leaf, ngược lại split size/2 thành TL,TR,BL,BR.",
+      "trace": "Vùng 2x2 [[1,1],[1,0]] không uniform nên root non-leaf; ba quadrant single-cell1 thành leaves true, quadrant cuối leaf0 false.",
+      "transfer": "Lỗi thường gặp là coordinate quadrants sai hoặc val của internal node bị coi semantic. Khi nào dùng: spatial region recursively uniform/nonuniform thường là divide region until homogeneous, tạo tree hierarchy."
+    },
+    "502": {
+      "framing": "Mỗi project có capital requirement và profit. Ở current capital w, chỉ projects requirement<=w là feasible; trong số feasible, chọn profit lớn nhất tăng capital nhiều nhất và không làm giảm lựa chọn tương lai.",
+      "derive": "Mỗi round scan toàn projects O(k*n). Sort projects theo capital rồi dùng max-heap profits: pointer đưa tất cả newly feasible projects vào heap một lần, mỗi round poll best profit.",
+      "state": "Pointer i phân chia sorted projects: trước i đã trở thành feasible/được heap xử lý; maxHeap chứa profits của feasible chưa chọn. Invariant heap top là project tốt nhất có thể chọn ngay với current capital.",
+      "trace": "k=2,w=0, capital[0,1,1], profits[1,2,3]: add project0 profit1, choose->w1; now add profits2,3, choose3 ->w4, final4.",
+      "transfer": "Lỗi thường gặp là push infeasible profits hoặc chọn lowest capital thay highest profit. Khi nào dùng: repeated choose-best-among-items-that-become-feasible = sort by eligibility + heap by reward."
+    }
+  }
+}
