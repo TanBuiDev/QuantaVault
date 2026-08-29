@@ -25,6 +25,9 @@ jobs:
       - name: Audit Java WHY comments
         run: python tools/audit_java_solution_comments.py
 
+      - name: Audit solution pedagogy structure
+        run: python tools/audit_solution_pedagogy.py
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
