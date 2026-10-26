@@ -1,0 +1,13 @@
+[
+  {
+    "id": "q-1",
+    "title": "Câu hỏi 1",
+    "category": "java-core",
+    "difficulty": "junior",
+    "tags": [
+      "Java"
+    ],
+    "summary": "Tóm tắt",
+    "answerMarkdown": "Trả lời"
+  }
+]
