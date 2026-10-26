@@ -1,5 +1,27 @@
 [
   {
+    "id": "q-3",
+    "title": "[Câu 3] Hãy giới thiệu bản thân và dự án CoVie. Cho biết CoVie giải quyết vấn đề gì? Khác gì một website thương mại điện tử thông thường?",
+    "category": "project-covie",
+    "difficulty": "junior",
+    "tags": [
+      "CoVie",
+      "Architecture",
+      "Backend",
+      "ModularMonolith"
+    ],
+    "companies": [
+      "ZaloPay",
+      "Viettel"
+    ],
+    "summary": "Dạ em chào anh/chị. Em tên là Bùi Lê Hoàng Tấn, vừa tốt nghiệp chuyên ngành Công nghệ Phần mềm và đang định hướng theo Java Backend.",
+    "answerMarkdown": "Dạ em chào anh. Em tên là Bùi Lê Hoàng Tấn, vừa tốt nghiệp chuyên ngành Công nghệ Phần mềm và đang định hướng theo Java Backend. Để rèn luyện kiến thức, em học và thực hành với Java, Spring Boot, REST API, cơ sở dữ liệu và kiểm thử thông qua dự án CoVie. Trong quá trình phát triển, em có dùng AI để hỗ trợ phân tích và viết code, nhưng luôn chú trọng đọc hiểu mã nguồn và kiểm tra kết quả thực tế.\n\nCoVie xuất phát từ những bất tiện khi mua bán trên mạng xã hội: bài đăng dễ bị trôi, thông tin giá và tồn kho không rõ ràng, người mua khó biết điểm bán ở đâu và có phục vụ khu vực của mình hay không. Dự án hướng tới tổ chức thông tin sản phẩm, điểm bán và phạm vi phục vụ thành dữ liệu rõ ràng để người dùng dễ tìm kiếm, trao đổi và đặt hàng hơn.\n\nĐiểm khác biệt CoVie muốn theo đuổi là giao dịch trong phạm vi gần, như một tòa chung cư, cụm dân cư hoặc khu phố. Từ quan sát hoạt động mua bán và giao nhận trong khu dân cư, em nhận thấy nhiều nhu cầu có thể được đáp ứng ngay bởi người bán ở gần. CoVie hướng tới giúp người mua tìm sản phẩm, dịch vụ, hàng thanh lý hoặc đăng nhu cầu “Cần mua”; các lựa chọn nhận hàng có thể gồm tự đến lấy hoặc phương án giao hàng phù hợp với người bán và người mua.\n\nCoVie không đặt mục tiêu cạnh tranh với Shopee hay Grab về quy mô hoặc mạng lưới giao hàng mà tập trung vào khả năng kết nối giao dịch tại địa phương. Về kỹ thuật, dự án dùng Next.js ở frontend, Java/Spring Boot ở backend, PostgreSQL, Redis và MinIO; backend được tổ chức theo Modular Monolith để các phần nghiệp vụ có trách nhiệm rõ ràng.",
+    "keyTakeaways": [
+      "Nắm vững luồng nghiệp vụ thực tế, ranh giới giữa Modular Monolith và kiểm tra dữ liệu authoritative tại backend.",
+      "Hiểu rõ ranh giới transaction và bảo đảm nhất quán giữa Cart, Checkout, Inventory và Orders."
+    ]
+  },
+  {
     "id": "q-1",
     "title": "Câu hỏi 1",
     "category": "java-core",
