@@ -86,6 +86,78 @@ interface QuestionItem {
   isDeleted?: boolean;
 }
 
+interface RateLimitEntry {
+  attempts: number;
+  lockedUntil: number;
+  lastAttempt: number;
+}
+
+const rateLimitStore = new Map<string, RateLimitEntry>();
+
+function getBackoffSeconds(attempts: number): number {
+  if (attempts <= 1) return 0;
+  if (attempts === 2) return 60; // 1 minute
+  if (attempts <= 4) return 600; // 10 minutes
+  return 3600; // 1 hour
+}
+
+function checkRateLimit(ip: string) {
+  const now = Date.now();
+  const entry = rateLimitStore.get(ip);
+  if (!entry) return { allowed: true, remainingAttempts: 2 };
+
+  if (entry.lockedUntil > now) {
+    const retryAfterSeconds = Math.ceil((entry.lockedUntil - now) / 1000);
+    return {
+      allowed: false,
+      retryAfterSeconds,
+      message: `Bạn đã nhập sai nhiều lần. Vui lòng chờ ${retryAfterSeconds} giây trước khi thử lại.`,
+    };
+  }
+
+  if (now - entry.lastAttempt > 15 * 60 * 1000) {
+    rateLimitStore.delete(ip);
+    return { allowed: true, remainingAttempts: 2 };
+  }
+
+  const remaining = Math.max(1, 2 - (entry.attempts % 2 || 2));
+  return { allowed: true, remainingAttempts: remaining };
+}
+
+function recordRateLimitFailure(ip: string) {
+  const now = Date.now();
+  const entry = rateLimitStore.get(ip) || { attempts: 0, lockedUntil: 0, lastAttempt: now };
+  entry.attempts += 1;
+  entry.lastAttempt = now;
+
+  const backoffSeconds = getBackoffSeconds(entry.attempts);
+  if (backoffSeconds > 0) {
+    entry.lockedUntil = now + backoffSeconds * 1000;
+    rateLimitStore.set(ip, entry);
+    const minutes = Math.round(backoffSeconds / 60);
+    return {
+      locked: true,
+      retryAfterSeconds: backoffSeconds,
+      remainingAttempts: 0,
+      message: `Bạn đã nhập sai ${entry.attempts} lần liên tiếp. Hệ thống tạm khóa trong ${
+        backoffSeconds >= 60 ? `${minutes} phút` : `${backoffSeconds} giây`
+      }.`,
+    };
+  }
+
+  rateLimitStore.set(ip, entry);
+  return {
+    locked: false,
+    retryAfterSeconds: 0,
+    remainingAttempts: 1,
+    message: "Mã OTP không chính xác. Bạn còn 1 lần thử trước khi bị tạm khóa 60 giây.",
+  };
+}
+
+function recordRateLimitSuccess(ip: string) {
+  rateLimitStore.delete(ip);
+}
+
 export async function onRequestPost(context: {
   request: Request;
   env: PagesFunctionEnv;
@@ -98,6 +170,31 @@ export async function onRequestPost(context: {
     "Access-Control-Allow-Headers": "Content-Type, X-Admin-Pin",
     "Content-Type": "application/json",
   };
+
+  const clientIp =
+    request.headers.get("CF-Connecting-IP") ||
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    "unknown-client";
+
+  // Rate Limiting Check
+  const rateCheck = checkRateLimit(clientIp);
+  if (!rateCheck.allowed) {
+    return new Response(
+      JSON.stringify({
+        success: false,
+        error: rateCheck.message,
+        retryAfterSeconds: rateCheck.retryAfterSeconds,
+        locked: true,
+      }),
+      {
+        status: 429,
+        headers: {
+          ...corsHeaders,
+          "Retry-After": String(rateCheck.retryAfterSeconds || 60),
+        },
+      }
+    );
+  }
 
   try {
     const body = (await request.json()) as {
@@ -123,15 +220,27 @@ export async function onRequestPost(context: {
     }
 
     if (!isAuthorized) {
+      const failInfo = recordRateLimitFailure(clientIp);
       return new Response(
         JSON.stringify({
           success: false,
-          error:
-            "Mã Google Authenticator (6 số) hoặc mã PIN quản trị không chính xác hoặc đã hết hạn. Vui lòng kiểm tra lại.",
+          error: failInfo.message,
+          remainingAttempts: failInfo.remainingAttempts,
+          retryAfterSeconds: failInfo.retryAfterSeconds,
+          locked: failInfo.locked,
         }),
-        { status: 401, headers: corsHeaders }
+        {
+          status: failInfo.locked ? 429 : 401,
+          headers: {
+            ...corsHeaders,
+            ...(failInfo.locked ? { "Retry-After": String(failInfo.retryAfterSeconds) } : {}),
+          },
+        }
       );
     }
+
+    // Reset rate limiter on successful verification
+    recordRateLimitSuccess(clientIp);
 
     if (!token) {
       return new Response(

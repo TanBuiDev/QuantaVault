@@ -3,9 +3,31 @@ import fs from "node:fs";
 import path from "node:path";
 import { executePublishToGithub, type PublishPayload } from "@/lib/interview/githubPublish";
 import { verifyTOTP, DEFAULT_TOTP_SECRET } from "@/lib/interview/totp";
+import { globalRateLimiter } from "@/lib/interview/rateLimiter";
 
 export async function POST(request: Request) {
   try {
+    const clientIp =
+      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      request.headers.get("x-real-ip") ||
+      "127.0.0.1";
+
+    const rateCheck = globalRateLimiter.check(clientIp);
+    if (!rateCheck.allowed) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: rateCheck.message,
+          retryAfterSeconds: rateCheck.retryAfterSeconds,
+          locked: true,
+        },
+        {
+          status: 429,
+          headers: { "Retry-After": String(rateCheck.retryAfterSeconds || 60) },
+        }
+      );
+    }
+
     const body = (await request.json()) as PublishPayload;
 
     const env = {
@@ -27,15 +49,25 @@ export async function POST(request: Request) {
     }
 
     if (!isAuthorized) {
+      const failInfo = globalRateLimiter.recordFailure(clientIp);
       return NextResponse.json(
         {
           success: false,
-          error:
-            "Mã Google Authenticator (6 số) hoặc mã PIN quản trị không chính xác hoặc đã hết hạn. Vui lòng kiểm tra lại.",
+          error: failInfo.message,
+          remainingAttempts: failInfo.remainingAttempts,
+          retryAfterSeconds: failInfo.retryAfterSeconds,
+          locked: failInfo.locked,
         },
-        { status: 401 }
+        {
+          status: failInfo.locked ? 429 : 401,
+          headers: failInfo.locked
+            ? { "Retry-After": String(failInfo.retryAfterSeconds) }
+            : undefined,
+        }
       );
     }
+
+    globalRateLimiter.recordSuccess(clientIp);
 
     // In local development, also immediately save to local disk files for convenience
     try {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
 import {
@@ -14,6 +14,7 @@ import {
   EyeOff,
   BookOpen,
   Plus,
+  Edit3,
 } from "lucide-react";
 import type { InterviewFilterState, InterviewQuestion } from "@/lib/interview/types";
 import { filterInterviewQuestions } from "@/lib/interview";
@@ -70,6 +71,59 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
     setPrevFilterKey(currentFilterKey);
     setCurrentPage(1);
   }
+
+  // Reader Mode by default, Editor Mode on demand (?edit=true or Ctrl+Shift+E)
+  const [isEditMode, setIsEditMode] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("edit") === "true" || urlParams.get("mode") === "editor") {
+      try {
+        localStorage.setItem("interview_edit_mode", "true");
+      } catch {}
+      return true;
+    }
+    try {
+      return localStorage.getItem("interview_edit_mode") === "true";
+    } catch {
+      return false;
+    }
+  });
+
+  // Shortcut Ctrl + Shift + E to toggle edit mode
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.ctrlKey && e.shiftKey && (e.key === "E" || e.key === "e")) {
+        e.preventDefault();
+        setIsEditMode((prev) => {
+          const next = !prev;
+          try {
+            if (next) {
+              localStorage.setItem("interview_edit_mode", "true");
+            } else {
+              localStorage.removeItem("interview_edit_mode");
+            }
+          } catch {}
+          return next;
+        });
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const handleToggleEditMode = () => {
+    setIsEditMode((prev) => {
+      const next = !prev;
+      try {
+        if (next) {
+          localStorage.setItem("interview_edit_mode", "true");
+        } else {
+          localStorage.removeItem("interview_edit_mode");
+        }
+      } catch {}
+      return next;
+    });
+  };
 
   // Draft management hook (Offline-first localStorage)
   const {
@@ -159,30 +213,47 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
           </p>
         </div>
 
-        {/* Action buttons: Add question & switch to LeetCode practice */}
+        {/* Action buttons: Add question (only in Edit mode) & switch to LeetCode practice */}
         <div className="flex flex-wrap items-center gap-2.5 self-start">
-          <button
-            type="button"
-            onClick={() => {
-              const newId = `q-${Date.now().toString().slice(-4)}`;
-              const newQ: InterviewQuestion = {
-                id: newId,
-                title: "[Mới] Tiêu đề câu hỏi phỏng vấn của bạn...",
-                category: "java-core",
-                difficulty: "junior",
-                tags: ["Java", "Interview"],
-                summary: "",
-                answerMarkdown: "### Trả lời chi tiết:\n\n",
-                keyTakeaways: ["Điểm mấu chốt 1"],
-              };
-              setEditingQuestion(newQ);
-              setIsEditModalOpen(true);
-            }}
-            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-indigo-600 px-5 text-xs sm:text-sm font-bold text-white shadow-md shadow-indigo-600/20 transition-all hover:bg-indigo-500 active:scale-95 cursor-pointer"
-          >
-            <Plus className="h-4 w-4" />
-            <span>Thêm câu hỏi</span>
-          </button>
+          {isEditMode ? (
+            <>
+              <div className="inline-flex min-h-11 items-center gap-2 rounded-2xl border border-indigo-500/30 bg-indigo-500/10 px-3.5 text-xs sm:text-sm font-semibold text-indigo-600 dark:text-indigo-400">
+                <Edit3 className="h-4 w-4" />
+                <span>Chế độ Biên tập</span>
+                <button
+                  type="button"
+                  onClick={handleToggleEditMode}
+                  className="ml-1 rounded bg-indigo-500/20 px-2 py-0.5 text-[11px] font-bold hover:bg-indigo-500/30 transition-colors cursor-pointer text-indigo-700 dark:text-indigo-300"
+                  title="Thoát chế độ biên tập và quay lại chế độ đọc"
+                >
+                  Thoát
+                </button>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  const newId = `q-${Date.now().toString().slice(-4)}`;
+                  const newQ: InterviewQuestion = {
+                    id: newId,
+                    title: "[Mới] Tiêu đề câu hỏi phỏng vấn của bạn...",
+                    category: "java-core",
+                    difficulty: "junior",
+                    tags: ["Java", "Interview"],
+                    summary: "",
+                    answerMarkdown: "### Trả lời chi tiết:\n\n",
+                    keyTakeaways: ["Điểm mấu chốt 1"],
+                  };
+                  setEditingQuestion(newQ);
+                  setIsEditModalOpen(true);
+                }}
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-indigo-600 px-5 text-xs sm:text-sm font-bold text-white shadow-md shadow-indigo-600/20 transition-all hover:bg-indigo-500 active:scale-95 cursor-pointer"
+              >
+                <Plus className="h-4 w-4" />
+                <span>Thêm câu hỏi</span>
+              </button>
+            </>
+          ) : null}
 
           <Link
             href="/problems"
@@ -332,12 +403,16 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
                   isReview={isReview(question.id)}
                   isBookmarked={isBookmarked(question.id)}
                   isDraft={isQuestionDraft}
-                  onEdit={() => {
-                    setEditingQuestion(question);
-                    setIsEditModalOpen(true);
-                  }}
+                  onEdit={
+                    isEditMode
+                      ? () => {
+                          setEditingQuestion(question);
+                          setIsEditModalOpen(true);
+                        }
+                      : undefined
+                  }
                   onDiscardDraft={
-                    isQuestionDraft ? () => removeDraft(question.id) : undefined
+                    isEditMode && isQuestionDraft ? () => removeDraft(question.id) : undefined
                   }
                   onToggleLearned={() => toggleLearned(question.id)}
                   onToggleReview={() => toggleReview(question.id)}
@@ -439,40 +514,52 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
           <div className="flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-indigo-500 shrink-0" />
             <span className="font-semibold text-[var(--foreground)]">
-              Dễ dàng mở rộng ngân hàng câu hỏi
+              {isEditMode ? "Chế độ Biên tập đang bật" : "Phương pháp ôn tập gợi nhớ chủ động (Active Recall)"}
             </span>
           </div>
           <span>
-            Bạn có thể chỉnh sửa câu hỏi trực tiếp trên Web với nút <code className="rounded bg-[var(--surface-hover)] px-1.5 py-0.5 font-mono text-[var(--foreground)]">✏️ Sửa</code> hoặc thêm câu hỏi mới, sau đó xuất bản 1 commit lên GitHub khi kết thúc buổi học.
+            {isEditMode ? (
+              <>
+                Bạn có thể sửa câu hỏi trực tiếp hoặc thêm câu mới, sau đó xuất bản 1 commit lên GitHub khi kết thúc buổi làm việc.
+              </>
+            ) : (
+              <>
+                Hãy thử tự trả lời hoặc tóm tắt ý chính trước khi bấm <code className="rounded bg-[var(--surface-hover)] px-1.5 py-0.5 font-mono text-[var(--foreground)]">Xem chi tiết</code> để tối đa hóa hiệu quả ghi nhớ dài hạn khi đi phỏng vấn.
+              </>
+            )}
           </span>
         </div>
       </aside>
 
-      {/* 6. Interview Edit Modal */}
-      <InterviewEditModal
-        isOpen={isEditModalOpen}
-        onClose={() => {
-          setIsEditModalOpen(false);
-          setEditingQuestion(null);
-        }}
-        question={editingQuestion}
-        canonicalQuestion={canonicalQuestion}
-        onSave={(updated, canonical) => {
-          saveDraft(updated, canonical);
-        }}
-        onDelete={(q) => {
-          markDeleted(q);
-        }}
-      />
+      {/* 6. Interview Edit Modal (Only active in Edit Mode) */}
+      {isEditMode && (
+        <InterviewEditModal
+          isOpen={isEditModalOpen}
+          onClose={() => {
+            setIsEditModalOpen(false);
+            setEditingQuestion(null);
+          }}
+          question={editingQuestion}
+          canonicalQuestion={canonicalQuestion}
+          onSave={(updated, canonical) => {
+            saveDraft(updated, canonical);
+          }}
+          onDelete={(q) => {
+            markDeleted(q);
+          }}
+        />
+      )}
 
-      {/* 7. Floating Bottom Publish Drawer */}
-      <PublishDrawer
-        drafts={drafts}
-        publishedCache={publishedCache}
-        canonicalQuestions={initialQuestions}
-        onClearAll={clearAllDrafts}
-        onPublishSuccess={commitDraftsToPublished}
-      />
+      {/* 7. Floating Bottom Publish Drawer (Only visible in Edit Mode) */}
+      {isEditMode && (
+        <PublishDrawer
+          drafts={drafts}
+          publishedCache={publishedCache}
+          canonicalQuestions={initialQuestions}
+          onClearAll={clearAllDrafts}
+          onPublishSuccess={commitDraftsToPublished}
+        />
+      )}
     </div>
   );
 }
