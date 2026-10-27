@@ -80,8 +80,25 @@ function subscribe(callback: () => void): () => void {
   };
 }
 
+function subscribeHydration(): () => void {
+  return () => undefined;
+}
+
+function getHydratedSnapshot(): boolean {
+  return true;
+}
+
+function getServerHydratedSnapshot(): boolean {
+  return false;
+}
+
 export function useInterviewProgress() {
   const state = useSyncExternalStore(subscribe, getBrowserSnapshot, getServerSnapshot);
+  const hydrated = useSyncExternalStore(
+    subscribeHydration,
+    getHydratedSnapshot,
+    getServerHydratedSnapshot
+  );
 
   const toggleLearned = useCallback(
     (questionId: string) => {
@@ -153,6 +170,7 @@ export function useInterviewProgress() {
 
   return {
     state,
+    hydrated,
     isLearned,
     isReview,
     isBookmarked,

@@ -11,30 +11,18 @@ interface SidebarContextValue {
 const SidebarContext = createContext<SidebarContextValue | null>(null);
 
 export function SidebarProvider({ children }: { children: ReactNode }) {
-  const [isOpen, setIsOpenState] = useState(true);
-  const [isMounted, setIsMounted] = useState(false);
+  const [isOpen, setIsOpenState] = useState<boolean>(() => {
+    if (typeof window === "undefined") return true;
+    if (window.innerWidth < 1024) return false;
+    try {
+      const saved = localStorage.getItem("sidebar_open_preference");
+      if (saved !== null) return saved === "true";
+    } catch {
+      // ignore
+    }
+    return true;
+  });
 
-  useEffect(() => {
-    const frame = window.requestAnimationFrame(() => {
-      setIsMounted(true);
-      try {
-        if (window.innerWidth < 1024) {
-          setIsOpenState(false);
-        } else {
-          const saved = localStorage.getItem("sidebar_open_preference");
-          if (saved !== null) {
-            setIsOpenState(saved === "true");
-          } else {
-            setIsOpenState(true);
-          }
-        }
-      } catch {
-        // ignore
-      }
-    });
-
-    return () => window.cancelAnimationFrame(frame);
-  }, []);
 
   useEffect(() => {
     function handleResize() {
@@ -72,7 +60,7 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <SidebarContext.Provider value={{ isOpen: isMounted ? isOpen : true, toggleSidebar, setSidebarOpen }}>
+    <SidebarContext.Provider value={{ isOpen, toggleSidebar, setSidebarOpen }}>
       {children}
     </SidebarContext.Provider>
   );

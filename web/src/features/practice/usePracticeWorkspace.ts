@@ -15,9 +15,27 @@ export function usePracticeWorkspace({ content, hints, previous, next, sectionNa
   const router = useRouter();
   const { getProgress, updateProblem } = useProgress();
   const progress = getProgress(content.id);
-  const [activeTab, setActiveTab] = useState<PracticeTab>("problem");
+  const [activeTab, setActiveTab] = useState<PracticeTab>(() => {
+    if (typeof window === "undefined" || !window.sessionStorage) return "problem";
+    const saved = window.sessionStorage.getItem(`active_tab_${content.id}`) as PracticeTab | null;
+    if (saved && ["problem", "hints", "solution", "interview", "notes"].includes(saved)) {
+      return saved;
+    }
+    return "problem";
+  });
   // Bottom console state
-  const [bottomTab, setBottomTab] = useState<"testcase" | "result">("testcase");
+  const [bottomTab, setBottomTab] = useState<"testcase" | "result">(() => {
+    if (typeof window === "undefined" || !window.sessionStorage) return "testcase";
+    const saved = window.sessionStorage.getItem(`bottom_tab_${content.id}`);
+    if (saved === "result" || saved === "testcase") return saved;
+    return "testcase";
+  });
+  const handleSetBottomTab = (tab: "testcase" | "result") => {
+    setBottomTab(tab);
+    if (typeof window !== "undefined" && window.sessionStorage) {
+      window.sessionStorage.setItem(`bottom_tab_${content.id}`, tab);
+    }
+  };
   // Parse Cases YAML
   const casesData = useMemo<CasesData | null>(() => {
     return parseCasesYaml(content.casesYaml);
@@ -58,8 +76,20 @@ export function usePracticeWorkspace({ content, hints, previous, next, sectionNa
     handleDeleteCodeVersion
   } = versions;
   const { isRunning, runResult, execute } = usePracticeExecution(content.id, userCode, updateProblem);
-  const handleRunCode = () => { setBottomTab("result"); return execute("run"); };
-  const handleSubmitCode = () => { setBottomTab("result"); return execute("submit"); };
+  const handleRunCode = () => {
+    setBottomTab("result");
+    if (typeof window !== "undefined" && window.sessionStorage) {
+      window.sessionStorage.setItem(`bottom_tab_${content.id}`, "result");
+    }
+    return execute("run");
+  };
+  const handleSubmitCode = () => {
+    setBottomTab("result");
+    if (typeof window !== "undefined" && window.sessionStorage) {
+      window.sessionStorage.setItem(`bottom_tab_${content.id}`, "result");
+    }
+    return execute("submit");
+  };
 
   // Shortcut key: Alt+Left / Alt+Right for navigation
   useEffect(() => {
@@ -128,7 +158,7 @@ export function usePracticeWorkspace({ content, hints, previous, next, sectionNa
     activeTab,
     layoutMode,
     bottomTab,
-    setBottomTab,
+    setBottomTab: handleSetBottomTab,
     casesData,
     starterCode,
     codeVersions,

@@ -36,6 +36,8 @@ import { InterviewEditModal } from "./InterviewEditModal";
 import { PublishDrawer } from "./PublishDrawer";
 import { InterviewRightRail } from "./InterviewRightRail";
 import { InterviewPresentationModal } from "./InterviewPresentationModal";
+import { getUrlParams, updateUrlParams } from "@/lib/utils/urlParams";
+import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 
 export interface InterviewListViewProps {
   initialQuestions: InterviewQuestion[];
@@ -68,18 +70,72 @@ function getPageList(currentPage: number, totalPages: number): (number | "...")[
 
 export function InterviewListView({ initialQuestions }: InterviewListViewProps) {
   const confirm = useConfirm();
-  const [filter, setFilter] = useState<InterviewFilterState>(DEFAULT_FILTER);
-  const [recallMode, setRecallMode] = useState<RecallMode>("hidden");
-  const [pageSize, setPageSize] = useState<number | "all">(15);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [prevFilterKey, setPrevFilterKey] = useState("");
+  const [filter, setFilter] = useState<InterviewFilterState>(() => {
+    if (typeof window === "undefined") return DEFAULT_FILTER;
+    const params = getUrlParams();
+    return {
+      search: params.get("search") || params.get("q") || "",
+      category: (params.get("category") as InterviewCategory) || "all",
+      difficulty: (params.get("difficulty") as InterviewFilterState["difficulty"]) || "all",
+      status: (params.get("status") as InterviewFilterState["status"]) || "all",
+      company: params.get("company") || "all",
+    };
+  });
+  const [recallMode, setRecallMode] = useState<RecallMode>(() => {
+    if (typeof window === "undefined") return "hidden";
+    const params = getUrlParams();
+    const mode = params.get("recall");
+    if (mode === "summaries" || mode === "answers" || mode === "hidden") return mode;
+    return "hidden";
+  });
+  const [pageSize, setPageSize] = useState<number | "all">(() => {
+    if (typeof window === "undefined") return 15;
+    const params = getUrlParams();
+    const size = params.get("size");
+    if (size === "all") return "all";
+    if (size) {
+      const num = parseInt(size, 10);
+      if (!isNaN(num) && [15, 30, 50].includes(num)) return num;
+    }
+    return 15;
+  });
+  const [currentPage, setCurrentPage] = useState<number>(() => {
+    if (typeof window === "undefined") return 1;
+    const params = getUrlParams();
+    const p = params.get("page");
+    if (p) {
+      const num = parseInt(p, 10);
+      if (!isNaN(num) && num > 0) return num;
+    }
+    return 1;
+  });
+
   const listTopRef = useRef<HTMLDivElement>(null);
 
   const currentFilterKey = `${filter.search}|${filter.category}|${filter.difficulty}|${filter.status}|${filter.company}|${pageSize}`;
+  const [prevFilterKey, setPrevFilterKey] = useState(currentFilterKey);
   if (prevFilterKey !== currentFilterKey) {
     setPrevFilterKey(currentFilterKey);
     setCurrentPage(1);
   }
+
+  // Synchronize URL search params with filter, pagination, and recall mode (debounced 250ms)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      updateUrlParams({
+        search: filter.search || null,
+        category: filter.category !== "all" ? filter.category : null,
+        difficulty: filter.difficulty !== "all" ? filter.difficulty : null,
+        status: filter.status !== "all" ? filter.status : null,
+        company: filter.company !== "all" ? filter.company : null,
+        page: currentPage > 1 ? currentPage : null,
+        size: pageSize !== 15 ? pageSize : null,
+        recall: recallMode !== "hidden" ? recallMode : null,
+      });
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [filter, currentPage, pageSize, recallMode]);
 
   // Reader Mode by default, Editor Mode on demand (?edit=true or Ctrl+Shift+E)
   const [isEditMode, setIsEditMode] = useState<boolean>(() => {
@@ -183,8 +239,20 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
     commitDraftsToPublished,
   } = useInterviewDrafts();
 
-  const [editingQuestion, setEditingQuestion] = useState<InterviewQuestion | null>(null);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingQuestion, setEditingQuestion] = useState<InterviewQuestion | null>(() => {
+    if (typeof window === "undefined") return null;
+    const editingId = sessionStorage.getItem("interview_editing_id") || getUrlParams().get("editQuestion");
+    if (!editingId) return null;
+    return initialQuestions.find((q) => q.id === editingId) || null;
+  });
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    const urlParams = new URLSearchParams(window.location.search);
+    const isEdit = urlParams.get("edit") === "true" || localStorage.getItem("interview_edit_mode") === "true";
+    if (!isEdit) return false;
+    const editingId = sessionStorage.getItem("interview_editing_id") || urlParams.get("editQuestion");
+    return Boolean(editingId);
+  });
 
   // Merge canonical initialQuestions with user drafts and published cache
   const mergedQuestions = useMemo(() => {
@@ -198,6 +266,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
 
   const {
     state: progress,
+    hydrated,
     isLearned,
     isReview,
     isBookmarked,
@@ -205,6 +274,29 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
     toggleReview,
     toggleBookmark,
   } = useInterviewProgress();
+
+  // Restore scroll position after progress is hydrated
+  useScrollRestoration("interview_list_scroll", hydrated);
+
+  const handleOpenEdit = (q: InterviewQuestion) => {
+    setEditingQuestion(q);
+    setIsEditModalOpen(true);
+    try {
+      sessionStorage.setItem("interview_editing_id", q.id);
+      updateUrlParams({ editQuestion: q.id });
+    } catch {}
+  };
+
+  const handleCloseEdit = () => {
+    setIsEditModalOpen(false);
+    setEditingQuestion(null);
+    try {
+      sessionStorage.removeItem("interview_editing_id");
+      updateUrlParams({ editQuestion: null });
+    } catch {}
+  };
+
+
 
   // Filter questions dynamically
   const filteredQuestions = useMemo(() => {
@@ -241,6 +333,9 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
     if (el) {
       el.scrollIntoView({ behavior: "smooth", block: "center" });
       el.classList.add("ring-2", "ring-indigo-500", "shadow-xl");
+      try {
+        window.history.replaceState(window.history.state, "", `#question-${id}`);
+      } catch {}
       setTimeout(() => {
         el.classList.remove("ring-2", "ring-indigo-500", "shadow-xl");
       }, 2000);
@@ -322,8 +417,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
                     answerMarkdown: "### Trả lời chi tiết:\n\n",
                     keyTakeaways: ["Điểm mấu chốt 1"],
                   };
-                  setEditingQuestion(newQ);
-                  setIsEditModalOpen(true);
+                  handleOpenEdit(newQ);
                 }}
                 className="inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-indigo-600 px-5 text-xs sm:text-sm font-bold text-white shadow-md shadow-indigo-600/20 transition-all hover:bg-indigo-500 active:scale-95 cursor-pointer"
               >
@@ -348,6 +442,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
         <InterviewStatsCard
           questions={initialQuestions}
           progress={progress}
+          hydrated={hydrated}
           activeStatusFilter={filter.status}
           onSelectStatusFilter={handleSelectStatusFilter}
         />
@@ -466,7 +561,16 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
             </div>
 
             {/* Cards or Empty State */}
-            {pagedQuestions.length > 0 ? (
+            {!hydrated && (filter.status === "learned" || filter.status === "review" || filter.status === "bookmarked") ? (
+              <div className="space-y-4">
+                {[1, 2, 3].map((i) => (
+                  <div
+                    key={i}
+                    className="h-36 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 animate-pulse"
+                  />
+                ))}
+              </div>
+            ) : pagedQuestions.length > 0 ? (
               <div className="space-y-4">
                 {pagedQuestions.map((question, idx) => {
                   const globalIndex =
@@ -486,10 +590,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
                       isDraft={isQuestionDraft}
                       onEdit={
                         isEditMode
-                          ? () => {
-                              setEditingQuestion(question);
-                              setIsEditModalOpen(true);
-                            }
+                          ? () => handleOpenEdit(question)
                           : undefined
                       }
                       onDiscardDraft={
@@ -649,17 +750,16 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
       {isEditMode && (
         <InterviewEditModal
           isOpen={isEditModalOpen}
-          onClose={() => {
-            setIsEditModalOpen(false);
-            setEditingQuestion(null);
-          }}
+          onClose={handleCloseEdit}
           question={editingQuestion}
           canonicalQuestion={canonicalQuestion}
           onSave={(updated, canonical) => {
             saveDraft(updated, canonical);
+            handleCloseEdit();
           }}
           onDelete={(q) => {
             markDeleted(q);
+            handleCloseEdit();
           }}
         />
       )}

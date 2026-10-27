@@ -8,6 +8,7 @@ import { CheckCircle2, RotateCcw, Bookmark, BookOpen } from "lucide-react";
 export interface InterviewStatsCardProps {
   questions: InterviewQuestion[];
   progress: InterviewProgressState;
+  hydrated?: boolean;
   activeStatusFilter: InterviewStatus | "bookmarked" | "all";
   onSelectStatusFilter: (status: InterviewStatus | "bookmarked" | "all") => void;
 }
@@ -15,6 +16,7 @@ export interface InterviewStatsCardProps {
 export function InterviewStatsCard({
   questions,
   progress,
+  hydrated = true,
   activeStatusFilter,
   onSelectStatusFilter,
 }: InterviewStatsCardProps) {
@@ -96,10 +98,19 @@ export function InterviewStatsCard({
                 </p>
               </div>
               <div className="mt-2 flex items-baseline gap-3">
-                <span className="text-5xl font-black tracking-tight sm:text-6xl">{stats.percent}%</span>
-                <span className="text-sm font-semibold text-indigo-200">
-                  {stats.learnedCount} / {stats.total} câu hỏi
-                </span>
+                {hydrated ? (
+                  <>
+                    <span className="text-5xl font-black tracking-tight sm:text-6xl">{stats.percent}%</span>
+                    <span className="text-sm font-semibold text-indigo-200">
+                      {stats.learnedCount} / {stats.total} câu hỏi
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className="inline-block h-12 w-20 bg-white/20 rounded-lg animate-pulse" />
+                    <span className="inline-block h-5 w-28 bg-white/20 rounded-md animate-pulse" />
+                  </>
+                )}
               </div>
               <p className="mt-3 max-w-lg text-sm leading-relaxed text-indigo-100/80">
                 Luyện tập phương pháp Active Recall: hãy đọc câu hỏi và thử tự trả lời trong đầu trước khi bấm mở đáp án.
@@ -116,7 +127,7 @@ export function InterviewStatsCard({
           <div className="mt-6 h-3 overflow-hidden rounded-full bg-black/30 ring-1 ring-white/15">
             <div
               className="h-full rounded-full bg-gradient-to-r from-emerald-400 via-teal-300 to-indigo-300 transition-all duration-500"
-              style={{ width: `${stats.percent}%` }}
+              style={{ width: `${hydrated ? stats.percent : 0}%` }}
             />
           </div>
         </CardContent>
@@ -147,7 +158,11 @@ export function InterviewStatsCard({
               </div>
 
               <div className="mt-2">
-                <p className="text-3xl font-black tracking-tight text-[var(--foreground)]">{c.value}</p>
+                {hydrated ? (
+                  <p className="text-3xl font-black tracking-tight text-[var(--foreground)]">{c.value}</p>
+                ) : (
+                  <div className="h-9 w-12 rounded-lg bg-[var(--surface-hover)] animate-pulse" />
+                )}
                 <p className="mt-1 text-xs text-[var(--muted)]">{c.detail}</p>
               </div>
             </button>

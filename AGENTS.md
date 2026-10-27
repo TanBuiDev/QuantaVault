@@ -79,3 +79,27 @@ function MyModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) 
 3. **Code Editor & Online Judge**:
    - Tích hợp **Monaco Editor** với template hàm rỗng chuẩn LeetCode.
    - Bố cục **Split Screen kéo thả** linh hoạt (`react-resizable-panels`) kết hợp thanh bên Mini-rail (`w-16` khi đóng, `w-72` khi mở).
+
+---
+
+## 💾 3. QUY TẮC QUẢN LÝ TRẠNG THÁI & BẢO TOÀN DỮ LIỆU KHI RELOAD (STATE PERSISTENCE RULES)
+
+Mọi tính năng có trạng thái tương tác cần tuân thủ **Kiến trúc quản lý trạng thái đa tầng (Multi-Tier State Persistence)** để đảm bảo người dùng F5 (Reload trang) không bị mất dữ liệu:
+
+### 1. Phân tầng lưu trữ chuẩn (Storage Tiers):
+- **Tier 1: URL Search Parameters (`window.location.search`)**:
+  - Dành cho các trạng thái điều hướng, có thể bookmark, chia sẻ hoặc dùng nút Back/Forward của trình duyệt: **Bộ lọc (category, difficulty, status, company)**, **Từ khóa tìm kiếm (search query - debounced 250ms)**, **Phân trang (page, size)**, **Chế độ xem (recallMode, editMode)**, **Neo phần tử (#question-xxx)**.
+  - Sử dụng hàm tiện ích `@/lib/utils/urlParams` (`getUrlParams()`, `updateUrlParams()`). Giá trị mặc định cần được ẩn khỏi URL để giữ URL sạch.
+- **Tier 2: `sessionStorage` (Theo phiên tab trình duyệt)**:
+  - Dành cho dữ liệu tạm thời theo từng tab duyệt web: **Bản nháp Form đang soạn dở trong Modal**, **Tab đang xem trong Workspace/Modal**, **Vị trí cuộn trang (scrollY)** thông qua hook `useScrollRestoration`.
+- **Tier 3: `localStorage` (Lâu dài / Đa tab)**:
+  - Dành cho cài đặt người dùng và tiến độ học tập: **Trạng thái thu gọn/mở rộng Sidebar**, **Tiến độ ôn tập (Learned, Review, Bookmark)**, **Bản nháp chưa xuất bản GitHub**.
+- **Tier 4: Hydration Safety Layer**:
+  - Khi đọc từ `localStorage`, bắt buộc sử dụng `useSyncExternalStore` hoặc flag `hydrated: boolean`. Không render nhấp nháy số liệu từ 0 lên số thực tế và không hiển thị Empty State giả trong khi đang hydrate dữ liệu.
+
+### 2. Quy tắc tự động lưu nháp (Auto-Save Form Draft Protocol):
+- Đối với mọi Modal nhập liệu Markdown hoặc Form phức tạp:
+  - Tự động lưu nháp ngầm (debounced 400ms) vào `sessionStorage` với key `interview_draft_${id}` hoặc tương đương.
+  - Khi Modal mở lên: nếu phát hiện có bản nháp chưa lưu, tự động nạp bản nháp và hiển thị banner thông báo màu hổ phách kèm nút *"Khôi phục bản gốc"*.
+  - Khi người dùng bấm **Lưu thay đổi** hoặc xác nhận xóa/hủy, tự động xóa bản nháp khỏi `sessionStorage`.
+

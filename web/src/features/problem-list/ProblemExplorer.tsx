@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
+import { getUrlParams, updateUrlParams } from "@/lib/utils/urlParams";
+import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -61,7 +63,34 @@ export interface ProblemExplorerProps {
 
 export function ProblemExplorer({ summaries, sections }: ProblemExplorerProps) {
   const { state, hydrated } = useProgress();
-  const [filters, setFilters] = useState<ProblemFilters>(INITIAL_FILTERS);
+  const [filters, setFilters] = useState<ProblemFilters>(() => {
+    if (typeof window === "undefined") return INITIAL_FILTERS;
+    const params = getUrlParams();
+    return {
+      query: params.get("q") || params.get("query") || "",
+      difficulty: (params.get("difficulty") as ProblemFilters["difficulty"]) || "all",
+      section: params.get("section") || "all",
+      topic: params.get("topic") || "all",
+      status: (params.get("status") as ProblemFilters["status"]) || "all",
+    };
+  });
+
+  useScrollRestoration("problems_list_scroll", hydrated);
+
+  // Synchronize URL search params with problem filters (debounced 250ms)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      updateUrlParams({
+        q: filters.query || null,
+        difficulty: filters.difficulty !== "all" ? filters.difficulty : null,
+        section: filters.section !== "all" ? filters.section : null,
+        topic: filters.topic !== "all" ? filters.topic : null,
+        status: filters.status !== "all" ? filters.status : null,
+      });
+    }, 250);
+
+    return () => clearTimeout(timer);
+  }, [filters]);
 
   const topics = useMemo(
     () => Array.from(new Set(summaries.flatMap((problem) => problem.topics))).sort(),
