@@ -7,12 +7,18 @@ interface MermaidRendererProps {
   chart: string;
 }
 
-// Module-level cache so we only load mermaid once across the entire application
-let mermaidPromise: Promise<any> | null = null;
+interface MermaidInstance {
+  initialize: (config: Record<string, unknown>) => void;
+  render: (id: string, text: string) => Promise<{ svg: string }>;
+}
 
-function getMermaid() {
+// Module-level cache so we only load mermaid once across the entire application
+let mermaidPromise: Promise<MermaidInstance> | null = null;
+
+function getMermaid(): Promise<MermaidInstance> {
   if (typeof window === "undefined") return Promise.reject(new Error("SSR"));
-  if ((window as any).mermaid) return Promise.resolve((window as any).mermaid);
+  const win = window as unknown as { mermaid?: MermaidInstance };
+  if (win.mermaid) return Promise.resolve(win.mermaid);
   if (!mermaidPromise) {
     mermaidPromise = (async () => {
       try {
@@ -20,14 +26,14 @@ function getMermaid() {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const mod = await import(/* webpackIgnore: true */ "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
-        const mermaid = mod.default || mod;
+        const mermaid = (mod.default || mod) as MermaidInstance;
         mermaid.initialize({
           startOnLoad: false,
           theme: document.documentElement.classList.contains("dark") ? "dark" : "default",
           securityLevel: "loose",
           fontFamily: "ui-sans-serif, system-ui, sans-serif",
         });
-        (window as any).mermaid = mermaid;
+        win.mermaid = mermaid;
         return mermaid;
       } catch (err) {
         mermaidPromise = null;
@@ -48,45 +54,54 @@ export function MermaidRenderer({ chart }: MermaidRendererProps) {
   const rawId = useId().replace(/:/g, "_");
   const uniqueId = `mermaid_${rawId}`;
 
-  const renderDiagram = async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const mermaid = await getMermaid();
-      // Re-initialize theme in case dark mode toggled
-      const isDark = document.documentElement.classList.contains("dark");
-      mermaid.initialize({
-        startOnLoad: false,
-        theme: isDark ? "dark" : "neutral",
-        themeVariables: isDark
-          ? {
-              primaryColor: "#312e81",
-              primaryTextColor: "#e2e8f0",
-              primaryBorderColor: "#6366f1",
-              lineColor: "#818cf8",
-              secondaryColor: "#064e3b",
-              tertiaryColor: "#1e293b",
-            }
-          : {
-              primaryColor: "#e0e7ff",
-              primaryTextColor: "#1e1b4b",
-              primaryBorderColor: "#6366f1",
-              lineColor: "#4f46e5",
-            },
-      });
-
-      const { svg } = await mermaid.render(uniqueId + "_" + Date.now(), chart);
-      setSvgContent(svg);
-    } catch (err: any) {
-      setError(err?.message || "Không thể vẽ sơ đồ Mermaid");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
+    let isMounted = true;
+    const renderDiagram = async () => {
+      try {
+        const mermaid = await getMermaid();
+        // Re-initialize theme in case dark mode toggled
+        const isDark = document.documentElement.classList.contains("dark");
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: isDark ? "dark" : "neutral",
+          themeVariables: isDark
+            ? {
+                primaryColor: "#312e81",
+                primaryTextColor: "#e2e8f0",
+                primaryBorderColor: "#6366f1",
+                lineColor: "#818cf8",
+                secondaryColor: "#064e3b",
+                tertiaryColor: "#1e293b",
+              }
+            : {
+                primaryColor: "#e0e7ff",
+                primaryTextColor: "#1e1b4b",
+                primaryBorderColor: "#6366f1",
+                lineColor: "#4f46e5",
+              },
+        });
+
+        const { svg } = await mermaid.render(uniqueId + "_" + Date.now(), chart);
+        if (isMounted) {
+          setSvgContent(svg);
+          setError(null);
+          setIsLoading(false);
+        }
+      } catch (err: unknown) {
+        if (isMounted) {
+          const message = err instanceof Error ? err.message : "Không thể vẽ sơ đồ Mermaid";
+          setError(message);
+          setIsLoading(false);
+        }
+      }
+    };
+
     renderDiagram();
-  }, [chart]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [chart, uniqueId]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(chart);
