@@ -382,7 +382,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
               setIsPresentationOpen(true);
             }}
             className="inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-indigo-500/40 bg-indigo-500/10 px-4 text-xs sm:text-sm font-bold text-indigo-600 dark:text-indigo-400 shadow-xs transition-all hover:bg-indigo-500/20 active:scale-95 cursor-pointer"
-            title="Mở chế độ trình chiếu tối ưu cho máy chiếu và hội trường (Phím P)"
+            title="Mở chế độ trình chiếu (Phím P)"
           >
             <Presentation className="h-4 w-4" />
             <span>Trình chiếu (P)</span>

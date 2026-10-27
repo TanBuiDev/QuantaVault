@@ -61,7 +61,7 @@ describe("InterviewPresentationModal Component", () => {
       />
     );
 
-    expect(screen.getByText("Chế Độ Trình Chiếu Hội Trường")).toBeDefined();
+    expect(screen.getByText("Chế Độ Trình Chiếu")).toBeDefined();
     expect(screen.getByText("Java Memory Model hoạt động thế nào?")).toBeDefined();
     expect(screen.getByText("Viettel")).toBeDefined();
     expect(screen.getByText(/Thời Gian Thảo Luận & Tự Trả Lời/i)).toBeDefined();

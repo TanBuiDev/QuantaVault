@@ -97,20 +97,20 @@ describe("InterviewListView Component", () => {
     const presentationBtn = screen.getByRole("button", { name: /Trình chiếu \(P\)/i });
     fireEvent.click(presentationBtn);
 
-    expect(screen.getByText("Chế Độ Trình Chiếu Hội Trường")).toBeDefined();
+    expect(screen.getByRole("dialog", { name: /Trình chiếu/i })).toBeDefined();
 
     // Close presentation mode with Escape
     fireEvent.keyDown(window, { key: "Escape" });
-    expect(screen.queryByText("Chế Độ Trình Chiếu Hội Trường")).toBeNull();
+    expect(screen.queryByRole("dialog", { name: /Trình chiếu/i })).toBeNull();
   });
 
   it("toggles presentation mode using key P", () => {
     render(<InterviewListView initialQuestions={mockQuestions} />);
 
     fireEvent.keyDown(window, { key: "p" });
-    expect(screen.getByText("Chế Độ Trình Chiếu Hội Trường")).toBeDefined();
+    expect(screen.getByRole("dialog", { name: /Trình chiếu/i })).toBeDefined();
 
     fireEvent.keyDown(window, { key: "p" });
-    expect(screen.queryByText("Chế Độ Trình Chiếu Hội Trường")).toBeNull();
+    expect(screen.queryByRole("dialog", { name: /Trình chiếu/i })).toBeNull();
   });
 });

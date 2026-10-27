@@ -261,7 +261,7 @@ export function InterviewPresentationModal({
           <div className="min-w-0">
             <div className="flex items-center gap-2">
               <span className="font-extrabold text-sm sm:text-base text-[var(--foreground)]">
-                Chế Độ Trình Chiếu Hội Trường
+                Chế Độ Trình Chiếu
               </span>
               <span className="hidden sm:inline-flex rounded-md bg-indigo-500/10 px-2 py-0.5 text-xs font-bold text-indigo-600 dark:text-indigo-400">
                 Active Recall
@@ -320,7 +320,7 @@ export function InterviewPresentationModal({
                   ? "bg-[var(--surface)] text-[var(--foreground)] shadow-xs"
                   : "text-[var(--muted)] hover:text-[var(--foreground)]"
               }`}
-              title="Cỡ chữ cực lớn (Dành cho hội trường lớn)"
+              title="Cỡ chữ cực lớn"
             >
               A++
             </button>
@@ -418,7 +418,7 @@ export function InterviewPresentationModal({
                   Thời Gian Thảo Luận & Tự Trả Lời
                 </h2>
                 <p className="mx-auto max-w-xl text-sm sm:text-base text-[var(--muted)] leading-relaxed">
-                  Hãy suy nghĩ và thử tự trả lời hoặc thảo luận cùng hội trường trước khi mở đáp án chi tiết.
+                  Hãy suy nghĩ và thử tự trả lời hoặc thảo luận trước khi mở đáp án chi tiết.
                 </p>
               </div>
 

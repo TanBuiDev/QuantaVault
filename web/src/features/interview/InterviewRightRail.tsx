@@ -105,7 +105,7 @@ export function InterviewRightRail({
               <Presentation className="h-4 w-4" />
             </span>
             <span className="text-xs font-bold uppercase tracking-wider text-indigo-200">
-              Màn Hình Lớn / Hội Trường
+              Chế Độ Trình Chiếu
             </span>
           </div>
 
@@ -114,7 +114,7 @@ export function InterviewRightRail({
               Chế Độ Trình Chiếu (P)
             </h3>
             <p className="mt-1 text-xs text-indigo-100/80 leading-relaxed">
-              Tối ưu cho máy chiếu: chữ to rõ nét, ẩn phiền nhiễu, tương tác mở đáp án từng câu hỏi.
+              Giao diện trực quan: chữ to rõ nét, ẩn phiền nhiễu, tương tác mở đáp án từng câu hỏi.
             </p>
           </div>
 
