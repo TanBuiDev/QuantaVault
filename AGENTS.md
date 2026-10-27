@@ -129,4 +129,25 @@ Mọi tính năng có trạng thái tương tác cần tuân thủ **Kiến trú
 5. **Non-blocking Preview Rendering**:
    - Khi có chế độ Xem trước song song (Split view), dữ liệu preview phải được bọc trong React `useDeferredValue` để ưu tiên hàng đầu cho tác vụ gõ và quét chọn chuột trên main thread.
 
+---
+
+## 🔒 5. QUY CHUẨN AN TOÀN KHI XUẤT BẢN & ĐỒNG BỘ GIT (DEPLOYMENT SECURITY PROTOCOL)
+
+Để vừa giải phóng người dùng khỏi việc gõ lệnh thủ công, vừa triệt tiêu 100% rủi ro rò rỉ dữ liệu hoặc hỏng production, mọi AI Agent trong mọi phiên chat bắt buộc tuân thủ mô hình **Human-in-the-Loop**:
+
+1. **Chặn rò rỉ dữ liệu nhạy cảm (Zero-Leak Deny List):**
+   - Tuyệt đối **KHÔNG ĐƯỢC** commit các tệp `.env*`, `.pem`, token cá nhân (`ghp_`, `cfat_`, `sk-`), mật khẩu, mã PIN, file log hay thư mục tạm `scratch/`.
+   - Chỉ commit các tệp mã nguồn sạch và nội dung câu hỏi/bài học công khai của dự án.
+2. **Kiểm thử chất lượng cục bộ trước (Pre-flight Quality Gate):**
+   - Bắt buộc chạy `npm test` và `npm run build:pages` trong `web/` để đảm bảo 100% bài test vượt qua thành công trước khi đề xuất xuất bản.
+3. **Cổng phê duyệt của người dùng (Explicit User Approval Gate):**
+   - Tuyệt đối **KHÔNG** tự ý deploy/push ngầm lên Production mà không xin phép.
+   - AI phải trình bày tóm tắt:
+     * Danh sách các file đã chỉnh sửa.
+     * Thông điệp commit dự kiến.
+     * Câu hỏi xin phép: *"Em đã chuẩn bị sẵn sàng và kiểm thử đạt 100%. Bạn có duyệt để em tự động đồng bộ lên GitHub và deploy lên Cloudflare không?"*
+4. **Tự động thực thi sau khi người dùng phê duyệt:**
+   - Khi người dùng phản hồi *"duyệt"*, *"ok"* hoặc *"có"*, AI **bắt buộc phải tự động chạy toàn bộ chuỗi lệnh deploy lên Cloudflare Pages (`quantavault`) và push lên GitHub (`TanBuiDev/QuantaVault`)*.
+   - **TUYỆT ĐỐI KHÔNG** bắt người dùng phải copy/paste hay tự tay gõ lệnh terminal thủ công!
+
 
