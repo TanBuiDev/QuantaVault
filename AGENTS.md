@@ -11,9 +11,11 @@ Tài liệu này chứa các nguyên tắc, tiêu chuẩn thiết kế UI/UX và
 - **KHÔNG ĐƯỢC** sử dụng `window.confirm()`, `confirm()`.
 - **KHÔNG ĐƯỢC** sử dụng `window.prompt()`, `prompt()`.
 
-### ✅ BẮT BUỘC SỬ DỤNG HỆ THỐNG CUSTOM MODAL CỦA ỨNG DỤNG:
-- **Thông báo nhanh (Toast Notification)**: Sử dụng hook `useToast()` (`success()`, `error()`, `info()`, `warning()`).
-- **Hộp thoại xác nhận (Confirmation Dialog)**: Sử dụng hook `useConfirm()` từ `@/components/ui/ConfirmDialog`.
+### ✅ BẮT BUỘC SỬ DỤNG HỆ THỐNG SHARED UI COMPONENT CỦA DỰ ÁN:
+Tất cả các tính năng mới hoặc nâng cấp giao diện bắt buộc phải dùng các component dùng chung (`@/components/ui/*`):
+1. **Thông báo nhanh (Toast Notification)**: Sử dụng hook `useToast()` từ `@/components/ui/Toast` (`success()`, `error()`, `info()`, `warning()`).
+2. **Hộp thoại xác nhận (Confirmation Dialog)**: Sử dụng hook `useConfirm()` từ `@/components/ui/ConfirmDialog`.
+3. **Cửa sổ Modal tương tác (Interactive Modal)**: Sử dụng component `<Modal />` từ `@/components/ui/Modal`.
 
 #### Cách sử dụng chuẩn của `useConfirm()`:
 ```tsx
@@ -24,8 +26,8 @@ function MyComponent() {
 
   const handleDelete = async () => {
     const isConfirmed = await confirm({
-      title: "Xác nhận xóa?",
-      message: "Hành động này không thể hoàn tác. Bạn có chắc chắn muốn tiếp tục?",
+      title: "Xác nhận xóa câu hỏi?",
+      message: "Hành động này sẽ đánh dấu xóa câu hỏi. Bạn có chắc chắn muốn tiếp tục?",
       confirmText: "Xóa ngay",
       cancelText: "Hủy",
       variant: "danger", // "danger" | "warning" | "primary" | "info"
@@ -37,6 +39,27 @@ function MyComponent() {
   };
 
   return <button onClick={handleDelete}>Xóa</button>;
+}
+```
+
+#### Cách sử dụng chuẩn của `<Modal />`:
+```tsx
+import { Modal } from "@/components/ui/Modal";
+
+function MyModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  return (
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="Tiêu đề Modal"
+      description="Mô tả phụ ngắn gọn"
+      maxWidth="md" // "sm" | "md" | "lg" | "xl" | "2xl" | "3xl"
+    >
+      <div className="space-y-4">
+        {/* Nội dung modal */}
+      </div>
+    </Modal>
+  );
 }
 ```
 

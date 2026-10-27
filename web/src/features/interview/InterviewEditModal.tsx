@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Modal } from "@/components/ui/Modal";
+import { useConfirm } from "@/components/ui/ConfirmDialog";
 import {
   FileText,
   Sliders,
@@ -57,6 +58,7 @@ interface FormProps {
 }
 
 function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, onDelete }: FormProps) {
+  const confirm = useConfirm();
   const [activeTab, setActiveTab] = useState<"content" | "metadata">("content");
   const [viewMode, setViewMode] = useState<"edit" | "preview" | "split">("edit");
 
@@ -555,14 +557,21 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
           {onDelete && (
             <button
               type="button"
-              onClick={() => {
-                if (window.confirm(`Bạn có chắc chắn muốn xóa câu hỏi "${title || question.title}" không?`)) {
+              onClick={async () => {
+                const isConfirmed = await confirm({
+                  title: "Xác nhận xóa câu hỏi?",
+                  message: `Bạn có chắc chắn muốn xóa câu hỏi "${title || question.title}" khỏi danh sách ôn luyện không? Thao tác này sẽ đánh dấu xóa câu hỏi.`,
+                  confirmText: "Xóa câu hỏi",
+                  cancelText: "Hủy bỏ",
+                  variant: "danger",
+                });
+                if (isConfirmed) {
                   onDelete(question);
                   onClose();
                 }
               }}
               title="Xóa câu hỏi này khỏi danh sách ôn luyện"
-              className="inline-flex items-center gap-1 rounded-xl border border-rose-500/30 bg-rose-500/10 px-3 py-2 text-xs font-bold text-rose-500 hover:bg-rose-500/20 transition-colors mr-1"
+              className="inline-flex items-center gap-1 rounded-xl border border-rose-500/30 bg-rose-500/10 px-3 py-2 text-xs font-bold text-rose-500 hover:bg-rose-500/20 transition-colors mr-1 cursor-pointer"
             >
               <Trash2 className="h-3.5 w-3.5" />
               <span>Xóa câu này</span>

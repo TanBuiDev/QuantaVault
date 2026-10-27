@@ -3,6 +3,7 @@
 import { useState, useMemo, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
+import { useConfirm } from "@/components/ui/ConfirmDialog";
 import {
   Sparkles,
   Code2,
@@ -66,6 +67,7 @@ function getPageList(currentPage: number, totalPages: number): (number | "...")[
 }
 
 export function InterviewListView({ initialQuestions }: InterviewListViewProps) {
+  const confirm = useConfirm();
   const [filter, setFilter] = useState<InterviewFilterState>(DEFAULT_FILTER);
   const [recallMode, setRecallMode] = useState<RecallMode>("hidden");
   const [pageSize, setPageSize] = useState<number | "all">(15);
@@ -491,7 +493,20 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
                           : undefined
                       }
                       onDiscardDraft={
-                        isEditMode && isQuestionDraft ? () => removeDraft(question.id) : undefined
+                        isEditMode && isQuestionDraft
+                          ? async () => {
+                              const isConfirmed = await confirm({
+                                title: "Hủy bản nháp?",
+                                message: `Bạn có chắc muốn hủy bỏ các chỉnh sửa nháp của câu hỏi "${question.title}"?`,
+                                confirmText: "Hủy bản nháp",
+                                cancelText: "Giữ lại",
+                                variant: "warning",
+                              });
+                              if (isConfirmed) {
+                                removeDraft(question.id);
+                              }
+                            }
+                          : undefined
                       }
                       onToggleLearned={() => toggleLearned(question.id)}
                       onToggleReview={() => toggleReview(question.id)}

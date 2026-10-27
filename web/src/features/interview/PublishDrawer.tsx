@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Modal } from "@/components/ui/Modal";
+import { useConfirm } from "@/components/ui/ConfirmDialog";
 import {
   GitCommit,
   ShieldCheck,
@@ -45,6 +46,21 @@ export function PublishDrawer({
     commitSha?: string;
     message?: string;
   } | null>(null);
+
+  const confirm = useConfirm();
+
+  const handleClearAllWithConfirm = async () => {
+    const isConfirmed = await confirm({
+      title: "Hủy bỏ toàn bộ thay đổi?",
+      message: `Bạn đang có ${draftCount} câu hỏi chỉnh sửa chưa xuất bản. Bạn có chắc chắn muốn hủy tất cả và quay về dữ liệu gốc?`,
+      confirmText: "Hủy tất cả thay đổi",
+      cancelText: "Giữ lại",
+      variant: "danger",
+    });
+    if (isConfirmed) {
+      onClearAll();
+    }
+  };
 
   const draftList = Object.values(drafts);
   const draftCount = draftList.length;
@@ -148,9 +164,9 @@ export function PublishDrawer({
           <div className="flex items-center gap-2 shrink-0">
             <button
               type="button"
-              onClick={onClearAll}
+              onClick={handleClearAllWithConfirm}
               title="Hủy bỏ tất cả thay đổi nháp và quay lại bản gốc"
-              className="rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] px-3 py-1.5 font-semibold text-[var(--muted-strong)] hover:text-rose-500 hover:border-rose-500/30 transition-colors"
+              className="rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] px-3 py-1.5 font-semibold text-[var(--muted-strong)] hover:text-rose-500 hover:border-rose-500/30 transition-colors cursor-pointer"
             >
               Hủy
             </button>

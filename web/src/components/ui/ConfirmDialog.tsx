@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useCallback, type ReactNode } from "react";
+import React, { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react";
 import { AlertTriangle, AlertCircle, HelpCircle, Info, X } from "lucide-react";
 import { Button } from "./Button";
 
@@ -24,25 +24,25 @@ function getVariantIcon(variant: ConfirmVariant) {
   switch (variant) {
     case "danger":
       return (
-        <div className="grid size-12 place-items-center rounded-2xl bg-rose-500/10 text-rose-500 dark:bg-rose-500/20">
+        <div className="grid size-12 place-items-center rounded-2xl bg-rose-500/15 text-rose-500 dark:bg-rose-500/25 ring-1 ring-rose-500/20 shadow-md shadow-rose-500/10">
           <AlertTriangle className="h-6 w-6" />
         </div>
       );
     case "warning":
       return (
-        <div className="grid size-12 place-items-center rounded-2xl bg-amber-500/10 text-amber-500 dark:bg-amber-500/20">
+        <div className="grid size-12 place-items-center rounded-2xl bg-amber-500/15 text-amber-500 dark:bg-amber-500/25 ring-1 ring-amber-500/20 shadow-md shadow-amber-500/10">
           <AlertCircle className="h-6 w-6" />
         </div>
       );
     case "info":
       return (
-        <div className="grid size-12 place-items-center rounded-2xl bg-sky-500/10 text-sky-500 dark:bg-sky-500/20">
+        <div className="grid size-12 place-items-center rounded-2xl bg-sky-500/15 text-sky-500 dark:bg-sky-500/25 ring-1 ring-sky-500/20 shadow-md shadow-sky-500/10">
           <Info className="h-6 w-6" />
         </div>
       );
     default:
       return (
-        <div className="grid size-12 place-items-center rounded-2xl bg-indigo-500/10 text-indigo-500 dark:bg-indigo-500/20">
+        <div className="grid size-12 place-items-center rounded-2xl bg-indigo-500/15 text-indigo-500 dark:bg-indigo-500/25 ring-1 ring-indigo-500/20 shadow-md shadow-indigo-500/10">
           <HelpCircle className="h-6 w-6" />
         </div>
       );
@@ -93,6 +93,33 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
   const { options, isOpen } = state;
   const variant = options.variant || "primary";
 
+  // Escape key support to cancel dialog
+  useEffect(() => {
+    if (!isOpen) return;
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        handleClose(false);
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, handleClose]);
+
+  // Prevent background scrolling while confirmation dialog is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   return (
     <ConfirmContext.Provider value={{ confirm }}>
       {children}
@@ -101,11 +128,11 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+          className="fixed inset-0 z-[80] flex items-center justify-center p-4 sm:p-6"
         >
           {/* Backdrop Glassmorphism */}
           <div
-            className="fixed inset-0 bg-slate-950/60 backdrop-blur-md transition-opacity animate-fade-in"
+            className="fixed inset-0 bg-slate-950/70 backdrop-blur-md transition-opacity animate-fade-in"
             onClick={() => handleClose(false)}
           />
 
