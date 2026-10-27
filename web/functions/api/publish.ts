@@ -402,11 +402,11 @@ export async function onRequestPost(context: {
       .join(", ");
     const extraCount =
       body.modifiedQuestions.length > 5
-        ? ` và ${body.modifiedQuestions.length - 5} câu khác`
+        ? ` and ${body.modifiedQuestions.length - 5} more`
         : "";
     const finalMsg =
       body.commitMessage?.trim() ||
-      `feat(interview): cập nhật ${body.modifiedQuestions.length} câu hỏi phỏng vấn (${idsSummary}${extraCount})`;
+      `feat(interview): update ${body.modifiedQuestions.length} interview questions (${idsSummary}${extraCount})`;
 
     const newCommitRes = await fetch(
       `https://api.github.com/repos/${owner}/${repo}/git/commits`,

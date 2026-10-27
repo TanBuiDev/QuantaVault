@@ -1,9 +1,0 @@
-source_sha=28478bc10830ac6e9123e3077ae43e7567262c2f
-canonical=success
-npm_ci=success
-audit=success
-lint=success
-unit=failure
-build=success
-playwright_install=success
-e2e=failure

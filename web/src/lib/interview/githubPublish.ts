@@ -198,10 +198,10 @@ export async function executePublishToGithub(
       .map((q) => q.id)
       .slice(0, 5)
       .join(", ");
-    const extraCount = modifiedQuestions.length > 5 ? ` và ${modifiedQuestions.length - 5} câu khác` : "";
+    const extraCount = modifiedQuestions.length > 5 ? ` and ${modifiedQuestions.length - 5} more` : "";
     const finalMsg =
       commitMessage?.trim() ||
-      `feat(interview): cập nhật ${modifiedQuestions.length} câu hỏi phỏng vấn (${idsSummary}${extraCount})`;
+      `feat(interview): update ${modifiedQuestions.length} interview questions (${idsSummary}${extraCount})`;
 
     const newCommitRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/commits`, {
       method: "POST",

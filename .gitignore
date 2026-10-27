@@ -1,6 +1,7 @@
 __pycache__/
 *.py[cod]
 
+# Node & Next.js builds
 web/.next/
 web/node_modules/
 web/next-env.d.ts
@@ -11,3 +12,20 @@ web/cloudflare-pages/
 web/.wrangler/
 .wrangler/
 *.tsbuildinfo
+
+# Backups and temporary files
+*.backup.json
+*.bak
+*.tmp
+*.log
+
+# Local Windows launcher scripts & internal AI rules
+KHOI-DONG.bat
+TAT-DU-AN.bat
+AGENTS.md
+web/AGENTS.md
+.agents/
+
+# Environment and scratch files
+.env*
+scratch/

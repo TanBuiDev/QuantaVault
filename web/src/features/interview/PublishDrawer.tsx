@@ -326,7 +326,7 @@ export function PublishDrawer({
                   type="text"
                   value={customMessage}
                   onChange={(e) => setCustomMessage(e.target.value)}
-                  placeholder={`feat(interview): cập nhật ${draftCount} câu hỏi phỏng vấn`}
+                  placeholder={`feat(interview): update ${draftCount} interview questions`}
                   className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs sm:text-sm text-[var(--foreground)] outline-none focus:border-[var(--focus)]"
                 />
               </div>

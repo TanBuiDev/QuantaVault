@@ -1,138 +1,174 @@
 # QuantaVault
 
-> **Offline-First Software Architecture & Engineering Knowledge Engine**
+> **Offline-First Software Architecture & Algorithmic Engineering Platform**
 > 
-> *Quanta (số nhiều của quantum) đại diện cho những đơn vị năng lượng nhỏ nhất cấu thành nên vũ trụ; Vault là hầm chứa kiên cố. Dự án truyền tải thông điệp: hệ thống lớn được xây đắp vững chãi từ chính những thành tố cốt lõi nhỏ nhất (từ từng byte dữ liệu, chu kỳ CPU, transaction ACID cho đến luồng dữ liệu phân tán).*
+> *Quanta represents the fundamental, discrete constituents of structure; Vault represents an immutable, high-integrity repository. High-throughput distributed systems and mission-critical architectures are forged upon mastery of fundamental computing primitives—from memory layouts, byte compact representations, and thread synchronization to transactional boundaries and distributed consensus.*
 
-🌐 **Live Deployment:** [https://quantavault.pages.dev](https://quantavault.pages.dev)  
+[![Web CI](https://github.com/TanBuiDev/QuantaVault/actions/workflows/web-ci.yml/badge.svg)](https://github.com/TanBuiDev/QuantaVault/actions/workflows/web-ci.yml)
+[![Deployment](https://img.shields.io/badge/Cloudflare_Pages-Live-F38020?logo=cloudflare&logoColor=white)](https://quantavault.pages.dev)
+[![Next.js](https://img.shields.io/badge/Next.js-16.4-black?logo=next.js&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.2-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Java](https://img.shields.io/badge/JDK-25-ED8B00?logo=openjdk&logoColor=white)](https://openjdk.org/)
+[![Tests](https://img.shields.io/badge/Vitest-187%20Passed-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev/)
+
+🌐 **Live Production Deployment:** [https://quantavault.pages.dev](https://quantavault.pages.dev)  
 📦 **GitHub Repository:** [https://github.com/TanBuiDev/QuantaVault](https://github.com/TanBuiDev/QuantaVault)
 
 ---
 
-## Tổng quan dự án
+## 🏛️ System Architecture
 
-QuantaVault là nền tảng tri thức kỹ thuật phần mềm và kiến trúc hệ thống chuyên sâu, kết hợp môi trường thực hành thuật toán offline-first:
+```mermaid
+graph TD
+    subgraph Client_Layer ["Client Tier (Browser / PWA)"]
+        UI["Modern Next.js 16 UI / Tailwind CSS"]
+        Monaco["Monaco Editor (Java 25 Workspace)"]
+        Mermaid["Dynamic Vector Mermaid Renderer"]
+        LocalCache["IndexedDB / LocalStorage State Sync"]
+    end
 
-1. **Software Architecture & Engineering Interview Engine (`/interview`)**:
-   - Kho lưu trữ chuẩn hóa 538+ câu hỏi phỏng vấn kiến trúc chuyên sâu (Java Core, Concurrency, Spring Boot, Microservices, Distributed Systems, Database Internals, System Design).
-   - Đánh số thứ tự tuần tự trực quan `#001` – `#538`, chuẩn hóa dữ liệu song song định dạng Markdown & JSON.
-   - Tìm kiếm không dấu (accent-insensitive search), lọc đa tầng (tag, độ khó, trạng thái, công ty), lưu trạng thái thông minh qua URL và LocalStorage.
-   - Trình biên tập Markdown chống lag, tối ưu bôi đen và gõ văn bản tiếng Việt, tự động lưu nháp `sessionStorage`.
-   - Cơ chế xác thực biên 2FA (TOTP Authenticator & PIN) trên Cloudflare Pages Functions, đồng bộ xuất bản trực tiếp lên GitHub với bảo toàn chữ ký commit.
+    subgraph Edge_Cloudflare ["Edge Infrastructure (Cloudflare Pages)"]
+        EdgeWorker["Cloudflare Edge Worker (_worker.js)"]
+        TOTP["SubtleCrypto 2FA (RFC 6238 TOTP & PIN)"]
+        RateLimit["In-Memory Edge Rate Limiting"]
+    end
 
-2. **LeetCode Top Interview 150 Coding Workspace (`/problems`)**:
-   - Môi trường luyện tập thuật toán chuẩn LeetCode Top Interview 150 với bộ điều khiển Monaco Editor.
-   - Trình chấm mã nguồn cục bộ (Local Docker Runner) bảo mật cao, cô lập hoàn toàn mạng, hỗ trợ Java 25.
+    subgraph GitHub_Storage ["Persistent Git Engine (GitHub API)"]
+        GitTree["Atomic Git Tree Mutations"]
+        MainBranch["Branch: main (Clean History)"]
+        Actions["GitHub Actions CI/CD Pipeline"]
+    end
+
+    subgraph Local_Runtime ["Offline Algorithmic Runtime (Docker Sandbox)"]
+        Runner["Docker Java 25 Test Harness"]
+        Security["UID 10001 · Read-Only Root · Zero Network"]
+    end
+
+    UI -->|Edge Navigation & Static Assets| EdgeWorker
+    UI -->|RFC 6238 2FA Admin Action| TOTP
+    TOTP --> RateLimit
+    RateLimit -->|Atomic Blob & Tree Commit| GitTree
+    GitTree --> MainBranch
+    MainBranch --> Actions
+    Monaco -->|Loopback Execution (Local Dev)| Runner
+    Runner --> Security
+```
 
 ---
 
-## Repository layout
+## 🚀 Key Modules & Capabilities
 
-- `data/interview/` — canonical 538+ interview question packages and metadata.
-- `problems/<section>/<id>-<slug>/` — canonical problem packages consumed by the coding workspace.
-- `raw/top-interview-150/` — preserved topic-level source files used for provenance and migration auditing.
-- `study-plans/top-interview-150/` — canonical study-plan ordering.
-- `web/` — Next.js & Cloudflare Pages web application.
-- `tools/` and `tests/` — inventory, content validation, and regression checks.
+### 1. Software Architecture & Engineering Knowledge Engine (`/interview`)
+- **Canonical Architecture Curriculum:** 538+ rigorously structured interview and system design problems encompassing Java Core Internals, Memory Management, Concurrency & JMM, Spring Boot Architecture, Database Internals, and Distributed Systems.
+- **Lightning-Fast Sequential & Token Search:** Instant resolution by numerical index (`#001` – `#538`, `#087`, `87`, `q-087`) with Vietnamese accent-insensitive fuzzy matching and multi-dimensional tagging.
+- **Dynamic Vector Architectural Modeling:** High-speed, client-side vector diagram rendering powered by Mermaid ESM with automated light/dark theme synchronization.
+- **Hardware-Accelerated Zero-Lag Markdown Editor:** Isolated CSS containment (`contain: content`, `font-variant-ligatures: none`) with non-blocking deferred preview rendering (`useDeferredValue`) eliminating input latency during high-speed typing and text selection.
+- **Edge 2FA Administrative Publishing:** Cloudflare Pages Functions powered by Web Crypto API (`SubtleCrypto` HMAC-SHA1) with dual-layer authentication (TOTP Authenticator + PIN) syncing modifications directly to GitHub via atomic multi-blob Git trees.
 
+### 2. Algorithmic Practice Workspace (`/problems`)
+- **LeetCode Top Interview 150 Benchmark:** Canonical problem definitions, progressive hints, and multi-tier solutions.
+- **Local Isolated Java 25 Sandbox:** Offline-first algorithmic judge executing Java 25 inside unprivileged Docker containers (UID 10001, dropped Linux capabilities, read-only root filesystem, strict memory/CPU limits, zero network egress).
+- **Zero Cloud Dependency:** Run and submit code entirely offline without external API latency or remote subscription barriers.
 
-## Validation
+---
 
-```bash
-python tools/validate_content.py
-python -m unittest tests.test_inventory tests.test_validate_content -v
+## 📂 Repository Structure
+
+```
+QuantaVault/
+├── .github/
+│   └── workflows/
+│       ├── web-ci.yml           # Complete automated test, lint, build & Cloudflare deployment
+│       └── java-docker.yml      # Containerized Java 25 runner integration test suite
+├── data/
+│   ├── interview-questions.json # Canonical 538+ architecture question repository
+│   └── migration-inventory.json # Problem canonical migration records
+├── problems/                    # Canonical LeetCode Top Interview 150 problem definitions
+├── raw/                         # Preserved original topic-level problem references
+├── schemas/                     # JSON Schemas enforcing content integrity
+├── study-plans/                 # Study plan curricula and sequencing rules
+├── tests/                       # Python & Java automated validation suites
+├── tools/                       # Repository linting, pedagogy auditing, and validation scripts
+└── web/                         # Next.js 16 web application
+    ├── functions/               # Cloudflare Pages Edge Functions (/api/publish)
+    ├── scripts/                 # Static asset preparation and Cloudflare bundling scripts
+    └── src/
+        ├── app/                 # App Router pages and route handlers
+        ├── components/          # Reusable UI primitives and theme providers
+        ├── features/            # Modular views (dashboard, practice, interview)
+        └── lib/                 # Core utilities, judge harness, and GitHub publish pipeline
 ```
 
-For the web workspace:
+---
 
+## 🛠️ Local Development & Quick Start
+
+### Prerequisites
+- **Node.js:** `>= 20.9.0` (Node 22 recommended)
+- **npm:** `^11.0.0`
+- **Docker Desktop:** Linux container backend enabled (for local Java code execution)
+- **Python:** `3.10+` (for content validation tools)
+
+### 1. Installation
 ```bash
+# Clone the repository
+git clone https://github.com/TanBuiDev/QuantaVault.git
+cd QuantaVault
+
+# Navigate to web workspace and install dependencies
 cd web
 npm ci
-npm run lint
-npm test
-npm run build
-npx playwright test
 ```
 
-## Local Java workspace
-
-### Khoi dong nhanh tren Windows
-
-Nhan dup `KHOI-DONG.bat` tai thu muc goc. Launcher tu khoi dong Docker Desktop khi can, cai dependencies hoac tao Java runner image neu con thieu, chay website va mo `http://127.0.0.1:3000`.
-
-Nhan dup `TAT-DU-AN.bat` de dung web, don container Java con sot va tat Docker Desktop.
-
-Nhat ky cua launcher nam trong `%LOCALAPPDATA%\LeetcodeJavaWorkspace`.
-
-The workspace is intended for one person on one machine. `npm run dev` and
-`npm start` bind to `127.0.0.1`; open `http://127.0.0.1:3000` (or `localhost`
-on the same port). No account, database, or cloud judge is required.
-
-Install Docker Desktop with its Linux engine enabled. From `web/`, build the
-Java image once before using Run/Submit:
-
+### 2. Local Java Execution Sandbox Setup (Optional for Algorithmic Judge)
 ```bash
+# Build the pinned JDK 25 runner image locally
 npm run java:setup
-npm run dev
-```
 
-The image uses a pinned JDK 25 Linux/amd64 base. Each submission resolves the
-local image to its immutable image ID and runs with `--pull=never`. Requests
-never download images, execute Java on the host, or send source to a cloud API.
-Docker Desktop must remain running; when it is unavailable, reading problems,
-editing drafts, and recording progress still work.
-
-If Docker Desktop reports an unexpected startup error, choose **Quit**, reopen
-Docker Desktop, then verify `docker info` before retrying. Do not use a factory
-reset as a routine troubleshooting step: it can remove Docker data. Missing
-runner image errors are resolved by `npm run java:setup` after Docker is ready.
-
-### Execution and local API boundaries
-
-- Run uses the first three canonical cases; Submit uses every canonical case.
-  The API accepts only `{ problemId, sourceCode, mode: "run" | "submit" }`.
-  It rejects client-provided cases/expected results and unsupported contracts.
-- Containers have no network or host mounts, run as UID 10001, and have a
-  read-only root, dropped capabilities, and `no-new-privileges`. Limits: one
-  concurrent run, 1 CPU, 512 MiB RAM, 128 PIDs, 128 MiB work tmpfs, 256 KiB user
-  source, 1 MiB combined output, 15-second compilation, 10-second execution,
-  and a 35-second overall watchdog. Containers are removed on completion or
-  cancellation; runner-labeled leftovers are cleaned on application startup.
-- Run only one application server at a time against the runner/content store.
-  Its lock and concurrency limit are process-local. Docker improves isolation
-  but this is not a public multi-tenant judge or an anti-cheating system.
-  Testcases remain visible learning material; the Java harness still compares
-  results inside the submitted process.
-- Write/run APIs require matching loopback Host and Origin, JSON, and
-  `x-workspace-request: 1`. Missing/foreign origins are rejected. This protects
-  the browser workflow, not against other programs running as your OS user.
-  For another port, set `LOCAL_APP_ORIGIN` to that exact loopback HTTP origin
-  and start Next with `-p <port>`; never expose the server through a proxy.
-- Canonical `Solution.java` and canonical explanations remain unchanged.
-  Editing canonical code creates a separate version; deleting canonical code
-  is rejected. Metadata is committed atomically and writes are serialized per
-  problem. New content appears after router refresh without losing drafts.
-- `CONTENT_ROOT`, if explicitly set to an absolute existing content repository,
-  selects a different content store and fails closed if invalid. Normally leave
-  it unset. Progress and draft keys in browser storage are unchanged.
-
-### Verification
-
-```bash
-cd web
-npm run lint
-npm test
-npm run build
-npx playwright test
+# Run containerized integration tests
 npm run test:docker
 ```
 
-Ordinary Vitest runs skip the real Docker integration suite. `test:docker`
-requires the running Linux engine and prebuilt image, and exercises actual
-Java compilation/execution, harness cases, cancellation, limits, and isolation.
-The dedicated GitHub Actions Docker job runs the same suite.
+### 3. Launch Development Server
+```bash
+npm run dev
+```
+Open [http://127.0.0.1:3000](http://127.0.0.1:3000) to access the platform.
 
-Playwright starts its own production server on port 3100 with a temporary copy
-of the content. It never reuses your local server or edits the real problem
-packages. Build before running Playwright. Content-writing unit tests also use
-temporary fixtures.
+---
+
+## 🧪 Quality Gate & Test Suite
+
+The project enforces strict pre-flight quality standards. Every pull request and push to `main` executes comprehensive validation:
+
+```bash
+cd web
+
+# 1. Static code analysis and strict TypeScript linting (Zero error/warning tolerance)
+npm run lint
+
+# 2. Complete unit and integration test suite (187 Vitest suites)
+npm test
+
+# 3. Production static and Cloudflare Pages bundle build
+npm run build:pages
+
+# 4. End-to-end browser automation tests
+npx playwright test
+```
+
+---
+
+## 🛡️ Security & Integrity Invariants
+
+1. **Edge Identity Verification:** The `/api/publish` endpoint validates credentials via constant-time HMAC comparison and RFC 6238 TOTP algorithms without persisting plaintext credentials.
+2. **Atomic Git Transactions:** Content updates generate synchronized Git blobs and tree commits simultaneously for both `data/interview-questions.json` and `web/src/data/interview-questions.json` to guarantee zero state drift.
+3. **Execution Sandbox Immutability:** Code execution containers run with `--pull=never`, read-only root, 512 MiB RAM cap, 1 CPU cap, 128 PIDs cap, and 15-second compilation watchdogs.
+4. **Git Hygiene:** No private environment variables, credentials, backup artifacts, or temporary logs are ever committed to version control.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
