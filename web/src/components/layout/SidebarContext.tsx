@@ -18,12 +18,15 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
     const frame = window.requestAnimationFrame(() => {
       setIsMounted(true);
       try {
-        const saved = localStorage.getItem("sidebar_open_preference");
-        if (saved !== null) {
-          setIsOpenState(saved === "true");
+        if (window.innerWidth < 1024) {
+          setIsOpenState(false);
         } else {
-          // Default: open on desktop (>=1024), closed on mobile
-          setIsOpenState(window.innerWidth >= 1024);
+          const saved = localStorage.getItem("sidebar_open_preference");
+          if (saved !== null) {
+            setIsOpenState(saved === "true");
+          } else {
+            setIsOpenState(true);
+          }
         }
       } catch {
         // ignore
@@ -33,13 +36,25 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
     return () => window.cancelAnimationFrame(frame);
   }, []);
 
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth < 1024) {
+        setIsOpenState(false);
+      }
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const toggleSidebar = useCallback(() => {
     setIsOpenState((prev) => {
       const next = !prev;
-      try {
-        localStorage.setItem("sidebar_open_preference", String(next));
-      } catch {
-        // ignore
+      if (typeof window !== "undefined" && window.innerWidth >= 1024) {
+        try {
+          localStorage.setItem("sidebar_open_preference", String(next));
+        } catch {
+          // ignore
+        }
       }
       return next;
     });
@@ -47,10 +62,12 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
 
   const setSidebarOpen = useCallback((open: boolean) => {
     setIsOpenState(open);
-    try {
-      localStorage.setItem("sidebar_open_preference", String(open));
-    } catch {
-      // ignore
+    if (typeof window !== "undefined" && window.innerWidth >= 1024) {
+      try {
+        localStorage.setItem("sidebar_open_preference", String(open));
+      } catch {
+        // ignore
+      }
     }
   }, []);
 

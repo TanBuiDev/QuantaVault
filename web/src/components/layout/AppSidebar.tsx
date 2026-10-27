@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -16,16 +17,25 @@ import { ProblemNavTree } from "./ProblemNavTree";
 
 export function AppSidebar() {
   const pathname = usePathname();
-  const { isOpen, toggleSidebar } = useSidebar();
+  const { isOpen, toggleSidebar, setSidebarOpen } = useSidebar();
 
   function openSearch() {
     window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", ctrlKey: true }));
   }
 
+  // Tự động đóng sidebar trên mobile khi chuyển trang
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.innerWidth < 1024) {
+      setSidebarOpen(false);
+    }
+  }, [pathname, setSidebarOpen]);
+
   return (
     <aside
       className={`fixed inset-y-0 left-0 z-40 flex flex-col border-r border-[var(--border)] bg-[var(--sidebar)] transition-all duration-300 ease-in-out ${
-        isOpen ? "w-72" : "w-16"
+        isOpen
+          ? "w-72 translate-x-0"
+          : "-translate-x-full lg:translate-x-0 lg:w-16"
       }`}
     >
       {/* 1. Header Bar: Brand & Burger Button */}
