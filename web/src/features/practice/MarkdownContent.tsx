@@ -232,7 +232,7 @@ export function MarkdownContent({
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeKatex]}
         components={{
-          code({ className, children, ...props }: any) {
+          code({ className, children, ...props }: React.ComponentPropsWithoutRef<"code">) {
             const match = /language-(\w+)/.exec(className || "");
             const isMermaid = match && match[1] === "mermaid";
             if (isMermaid) {
@@ -244,8 +244,12 @@ export function MarkdownContent({
               </code>
             );
           },
-          pre: (props: any) => {
-            const childProps = props.children?.props;
+          pre: (props: React.ComponentPropsWithoutRef<"pre">) => {
+            const child = props.children;
+            const childProps =
+              child && typeof child === "object" && "props" in child
+                ? (child as { props?: { className?: string } }).props
+                : undefined;
             if (
               childProps &&
               typeof childProps.className === "string" &&
