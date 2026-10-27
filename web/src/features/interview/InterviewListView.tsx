@@ -96,8 +96,30 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
     }
   });
 
+  // Synchronize URL search params with Edit Mode state
+  const syncEditUrl = (enable: boolean) => {
+    if (typeof window === "undefined") return;
+    try {
+      const url = new URL(window.location.href);
+      if (enable) {
+        url.searchParams.set("edit", "true");
+      } else {
+        url.searchParams.delete("edit");
+        url.searchParams.delete("mode");
+      }
+      window.history.replaceState({}, "", url.pathname + (url.search ? url.search : "") + url.hash);
+    } catch {}
+  };
+
   const [isPresentationOpen, setIsPresentationOpen] = useState(false);
   const [presentationStartIndex, setPresentationStartIndex] = useState(0);
+
+  // Sync URL on initial mount if already in edit mode
+  useEffect(() => {
+    if (isEditMode) {
+      syncEditUrl(true);
+    }
+  }, [isEditMode]);
 
   // Shortcut Ctrl + Shift + E to toggle edit mode, and P to toggle presentation mode
   useEffect(() => {
@@ -121,6 +143,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
               localStorage.removeItem("interview_edit_mode");
             }
           } catch {}
+          syncEditUrl(next);
           return next;
         });
       } else if (!e.ctrlKey && !e.metaKey && !e.altKey && (e.key === "p" || e.key === "P")) {
@@ -142,6 +165,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
           localStorage.removeItem("interview_edit_mode");
         }
       } catch {}
+      syncEditUrl(next);
       return next;
     });
   };
