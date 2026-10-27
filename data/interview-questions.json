@@ -1,7 +1,7 @@
 [
   {
-    "id": "q-3",
-    "title": "[Câu 3] Hãy giới thiệu bản thân và dự án CoVie. Cho biết CoVie giải quyết vấn đề gì? Khác gì một website thương mại điện tử thông thường?",
+    "id": "q-001",
+    "title": "Hãy giới thiệu bản thân và dự án CoVie. Cho biết CoVie giải quyết vấn đề gì? Khác gì một website thương mại điện tử thông thường?",
     "category": "project-covie",
     "difficulty": "junior",
     "tags": [
@@ -22,8 +22,8 @@
     ]
   },
   {
-    "id": "q-4",
-    "title": "[Câu 4] Bạn đảm nhận vai trò gì khi phát triển CoVie?",
+    "id": "q-002",
+    "title": "Bạn đảm nhận vai trò gì khi phát triển CoVie?",
     "category": "project-covie",
     "difficulty": "junior",
     "tags": [
@@ -45,8 +45,8 @@
     ]
   },
   {
-    "id": "q-5",
-    "title": "[Câu 5] CoVie có những module backend chính nào và chức năng của từng module là gì?",
+    "id": "q-003",
+    "title": "CoVie có những module backend chính nào và chức năng của từng module là gì?",
     "category": "project-covie",
     "difficulty": "junior",
     "tags": [
@@ -69,8 +69,8 @@
     ]
   },
   {
-    "id": "q-6",
-    "title": "[Câu 6] Trình bày kiến trúc tổng thể CoVie.",
+    "id": "q-004",
+    "title": "Trình bày kiến trúc tổng thể CoVie.",
     "category": "project-covie",
     "difficulty": "junior",
     "tags": [
@@ -91,8 +91,8 @@
     ]
   },
   {
-    "id": "q-covie-tech-stack",
-    "title": "[Câu BỔ SUNG] Hiện tại dự án CoVie đang sử dụng những công nghệ và kỹ năng Backend Engineering nào? Vai trò của từng công nghệ trong hệ thống là gì?",
+    "id": "q-005",
+    "title": "Hiện tại dự án CoVie đang sử dụng những công nghệ và kỹ năng Backend Engineering nào? Vai trò của từng công nghệ trong hệ thống là gì?",
     "category": "project-covie",
     "difficulty": "junior",
     "tags": [
@@ -114,8 +114,8 @@
     ]
   },
   {
-    "id": "q-7",
-    "title": "[Câu 7] Vì sao chọn Java để làm backend?",
+    "id": "q-006",
+    "title": "Vì sao chọn Java để làm backend?",
     "category": "project-covie",
     "difficulty": "junior",
     "tags": [
@@ -138,8 +138,8 @@
     ]
   },
   {
-    "id": "q-8",
-    "title": "[Câu 8] Spring Framework và Spring Boot khác nhau thế nào, và vì sao CoVie chọn Spring Boot?",
+    "id": "q-007",
+    "title": "Spring Framework và Spring Boot khác nhau thế nào, và vì sao CoVie chọn Spring Boot?",
     "category": "project-covie",
     "difficulty": "junior",
     "tags": [
@@ -160,8 +160,8 @@
     ]
   },
   {
-    "id": "q-9",
-    "title": "[Câu 9] Vì sao sử dụng PostgreSQL?",
+    "id": "q-008",
+    "title": "Vì sao sử dụng PostgreSQL?",
     "category": "project-covie",
     "difficulty": "junior",
     "tags": [
@@ -183,8 +183,8 @@
     ]
   },
   {
-    "id": "q-10",
-    "title": "[Câu 10] Vì sao CoVie chọn Redis?",
+    "id": "q-009",
+    "title": "Vì sao CoVie chọn Redis?",
     "category": "microservices",
     "difficulty": "junior",
     "tags": [
@@ -207,8 +207,8 @@
     ]
   },
   {
-    "id": "q-11",
-    "title": "[Câu 11] Vì sao dùng MinIO thay vì lưu ảnh trong database?",
+    "id": "q-010",
+    "title": "Vì sao dùng MinIO thay vì lưu ảnh trong database?",
     "category": "project-covie",
     "difficulty": "junior",
     "tags": [
@@ -229,8 +229,8 @@
     ]
   },
   {
-    "id": "q-12",
-    "title": "[Câu 12] Vì sao chọn REST API thay cho GraphQL?",
+    "id": "q-011",
+    "title": "Vì sao chọn REST API thay cho GraphQL?",
     "category": "project-covie",
     "difficulty": "junior",
     "tags": [
@@ -252,8 +252,8 @@
     ]
   },
   {
-    "id": "q-13",
-    "title": "[Câu 13] Frontend Next.js gửi request và nhận response từ backend Spring Boot như thế nào?",
+    "id": "q-012",
+    "title": "Frontend Next.js gửi request và nhận response từ backend Spring Boot như thế nào?",
     "category": "project-covie",
     "difficulty": "junior",
     "tags": [
@@ -276,8 +276,8 @@
     ]
   },
   {
-    "id": "q-14",
-    "title": "[Câu 14] Vì sao tách frontend và backend thành hai ứng dụng?",
+    "id": "q-013",
+    "title": "Vì sao tách frontend và backend thành hai ứng dụng?",
     "category": "project-covie",
     "difficulty": "junior",
     "tags": [
@@ -298,8 +298,8 @@
     ]
   },
   {
-    "id": "q-15",
-    "title": "[Câu 15] Hãy mô tả luồng xử lý từ khi người dùng đăng nhập đến khi hệ thống tạo đơn hàng thành công.",
+    "id": "q-014",
+    "title": "Hãy mô tả luồng xử lý từ khi người dùng đăng nhập đến khi hệ thống tạo đơn hàng thành công.",
     "category": "project-covie",
     "difficulty": "junior",
     "tags": [
@@ -321,8 +321,8 @@
     ]
   },
   {
-    "id": "q-16",
-    "title": "[Câu 16] Module phức tạp nhất của CoVie là gì? Vì sao?",
+    "id": "q-015",
+    "title": "Module phức tạp nhất của CoVie là gì? Vì sao?",
     "category": "project-covie",
     "difficulty": "junior",
     "tags": [
@@ -345,8 +345,8 @@
     ]
   },
   {
-    "id": "q-17",
-    "title": "[Câu 17] Hãy kể về một lỗi kỹ thuật thực tế bạn từng gặp trong CoVie và cách bạn giải quyết.",
+    "id": "q-016",
+    "title": "Hãy kể về một lỗi kỹ thuật thực tế bạn từng gặp trong CoVie và cách bạn giải quyết.",
     "category": "project-covie",
     "difficulty": "junior",
     "tags": [
@@ -367,8 +367,8 @@
     ]
   },
   {
-    "id": "q-21",
-    "title": "[Câu 21] CoVie dùng Modular Monolith hay Microservices? Giải thích.",
+    "id": "q-017",
+    "title": "CoVie dùng Modular Monolith hay Microservices? Giải thích.",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -391,8 +391,8 @@
     ]
   },
   {
-    "id": "q-22",
-    "title": "[Câu 22] Monolith và Microservices khác nhau thế nào?",
+    "id": "q-018",
+    "title": "Monolith và Microservices khác nhau thế nào?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -416,8 +416,8 @@
     ]
   },
   {
-    "id": "q-23",
-    "title": "[Câu 23] Modular Monolith có những giới hạn gì khi mở rộng và CoVie nên kiểm soát ra sao?",
+    "id": "q-019",
+    "title": "Modular Monolith có những giới hạn gì khi mở rộng và CoVie nên kiểm soát ra sao?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -439,8 +439,8 @@
     ]
   },
   {
-    "id": "q-24",
-    "title": "[Câu 24] Vì sao không dùng Microservices từ đầu?",
+    "id": "q-020",
+    "title": "Vì sao không dùng Microservices từ đầu?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -464,8 +464,8 @@
     ]
   },
   {
-    "id": "q-25",
-    "title": "[Câu 25] Giải thích các package api, application, model, persistence.",
+    "id": "q-021",
+    "title": "Giải thích các package api, application, model, persistence.",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -489,8 +489,8 @@
     ]
   },
   {
-    "id": "q-26",
-    "title": "[Câu 26] Controller chịu trách nhiệm gì?",
+    "id": "q-022",
+    "title": "Controller chịu trách nhiệm gì?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -512,8 +512,8 @@
     ]
   },
   {
-    "id": "q-27",
-    "title": "[Câu 27] Service chịu trách nhiệm gì?",
+    "id": "q-023",
+    "title": "Service chịu trách nhiệm gì?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -536,8 +536,8 @@
     ]
   },
   {
-    "id": "q-28",
-    "title": "[Câu 28] Repository chịu trách nhiệm gì?",
+    "id": "q-024",
+    "title": "Repository chịu trách nhiệm gì?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -561,8 +561,8 @@
     ]
   },
   {
-    "id": "q-29",
-    "title": "[Câu 29] Entity và DTO khác nhau thế nào?",
+    "id": "q-025",
+    "title": "Entity và DTO khác nhau thế nào?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -584,8 +584,8 @@
     ]
   },
   {
-    "id": "q-covie-dto-diff",
-    "title": "[Câu BỔ SUNG] Request DTO và Response DTO khác nhau thế nào? Vì sao nên sử dụng chúng khi thiết kế REST API trong Spring Boot?",
+    "id": "q-026",
+    "title": "Request DTO và Response DTO khác nhau thế nào? Vì sao nên sử dụng chúng khi thiết kế REST API trong Spring Boot?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -608,8 +608,8 @@
     ]
   },
   {
-    "id": "q-30",
-    "title": "[Câu 30] Vì sao không nên trả JPA Entity trực tiếp ra API?",
+    "id": "q-027",
+    "title": "Vì sao không nên trả JPA Entity trực tiếp ra API?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -633,8 +633,8 @@
     ]
   },
   {
-    "id": "q-31",
-    "title": "[Câu 31] Business Logic nên nằm ở Controller, Service hay Entity?",
+    "id": "q-028",
+    "title": "Business Logic nên nằm ở Controller, Service hay Entity?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -656,8 +656,8 @@
     ]
   },
   {
-    "id": "q-32",
-    "title": "[Câu 32] Quản lý dependency giữa các module thế nào?",
+    "id": "q-029",
+    "title": "Quản lý dependency giữa các module thế nào?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -680,8 +680,8 @@
     ]
   },
   {
-    "id": "q-33",
-    "title": "[Câu 33] Một module có nên truy cập thẳng bảng module khác không?",
+    "id": "q-030",
+    "title": "Một module có nên truy cập thẳng bảng module khác không?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -705,8 +705,8 @@
     ]
   },
   {
-    "id": "q-34",
-    "title": "[Câu 34] Separation of Concerns là gì?",
+    "id": "q-031",
+    "title": "Separation of Concerns là gì?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -728,8 +728,8 @@
     ]
   },
   {
-    "id": "q-35",
-    "title": "[Câu 35] Tight Coupling và Loose Coupling là gì?",
+    "id": "q-032",
+    "title": "Tight Coupling và Loose Coupling là gì?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -752,8 +752,8 @@
     ]
   },
   {
-    "id": "q-36",
-    "title": "[Câu 36] Cohesion là gì? High Cohesion có lợi ích gì?",
+    "id": "q-033",
+    "title": "Cohesion là gì? High Cohesion có lợi ích gì?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -777,8 +777,8 @@
     ]
   },
   {
-    "id": "q-37",
-    "title": "[Câu 37] Dependency Inversion Principle là gì?",
+    "id": "q-034",
+    "title": "Dependency Inversion Principle là gì?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -800,8 +800,8 @@
     ]
   },
   {
-    "id": "q-38",
-    "title": "[Câu 38] Khi nào nên tách một Service quá lớn?",
+    "id": "q-035",
+    "title": "Khi nào nên tách một Service quá lớn?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -825,8 +825,8 @@
     ]
   },
   {
-    "id": "q-39",
-    "title": "[Câu 39] Nếu Checkout phụ thuộc quá nhiều vào Inventory và Orders, xử lý sao?",
+    "id": "q-036",
+    "title": "Nếu Checkout phụ thuộc quá nhiều vào Inventory và Orders, xử lý sao?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -850,8 +850,8 @@
     ]
   },
   {
-    "id": "q-40",
-    "title": "[Câu 40] Nếu cần tách Order Service, bắt đầu từ đâu?",
+    "id": "q-037",
+    "title": "Nếu cần tách Order Service, bắt đầu từ đâu?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -873,8 +873,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be13",
-    "title": "[Câu BỔ SUNG BE13] Trong mã nguồn CoVie có những ví dụ nào thể hiện tư duy Design Pattern?",
+    "id": "q-038",
+    "title": "Trong mã nguồn CoVie có những ví dụ nào thể hiện tư duy Design Pattern?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -897,8 +897,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be60",
-    "title": "[Câu BỔ SUNG BE60] Clean Architecture là gì? Nó giúp tách Business Logic khỏi framework và database như thế nào?",
+    "id": "q-039",
+    "title": "Clean Architecture là gì? Nó giúp tách Business Logic khỏi framework và database như thế nào?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -922,8 +922,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be61",
-    "title": "[Câu BỔ SUNG BE61] Hexagonal Architecture là gì? Port và Adapter có vai trò gì?",
+    "id": "q-040",
+    "title": "Hexagonal Architecture là gì? Port và Adapter có vai trò gì?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -945,8 +945,8 @@
     ]
   },
   {
-    "id": "q-41",
-    "title": "[Câu 41] Java là gì, vì sao đa nền tảng?",
+    "id": "q-041",
+    "title": "Java là gì, vì sao đa nền tảng?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -970,8 +970,8 @@
     ]
   },
   {
-    "id": "q-42",
-    "title": "[Câu 42] JDK, JRE, JVM khác nhau thế nào?",
+    "id": "q-042",
+    "title": "JDK, JRE, JVM khác nhau thế nào?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -996,8 +996,8 @@
     ]
   },
   {
-    "id": "q-43",
-    "title": "[Câu 43] Bytecode là gì?",
+    "id": "q-043",
+    "title": "Bytecode là gì?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -1020,8 +1020,8 @@
     ]
   },
   {
-    "id": "q-44",
-    "title": "[Câu 44] Quá trình biên dịch và chạy Java thế nào?",
+    "id": "q-044",
+    "title": "Quá trình biên dịch và chạy Java thế nào?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -1045,8 +1045,8 @@
     ]
   },
   {
-    "id": "q-45",
-    "title": "[Câu 45] Java có thuần hướng đối tượng không?",
+    "id": "q-045",
+    "title": "Java có thuần hướng đối tượng không?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -1071,8 +1071,8 @@
     ]
   },
   {
-    "id": "q-46",
-    "title": "[Câu 46] Primitive và Reference Type khác nhau thế nào?",
+    "id": "q-046",
+    "title": "Primitive và Reference Type khác nhau thế nào?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -1095,8 +1095,8 @@
     ]
   },
   {
-    "id": "q-47",
-    "title": "[Câu 47] Java có những kiểu nguyên thủy nào?",
+    "id": "q-047",
+    "title": "Java có những kiểu nguyên thủy nào?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -1120,8 +1120,8 @@
     ]
   },
   {
-    "id": "q-48",
-    "title": "[Câu 48] int và Integer khác gì?",
+    "id": "q-048",
+    "title": "int và Integer khác gì?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -1146,8 +1146,8 @@
     ]
   },
   {
-    "id": "q-49",
-    "title": "[Câu 49] Autoboxing/Unboxing là gì?",
+    "id": "q-049",
+    "title": "Autoboxing/Unboxing là gì?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -1170,8 +1170,8 @@
     ]
   },
   {
-    "id": "q-50",
-    "title": "[Câu 50] Biến local, instance và static khác nhau thế nào?",
+    "id": "q-050",
+    "title": "Biến local, instance và static khác nhau thế nào?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -1195,8 +1195,8 @@
     ]
   },
   {
-    "id": "q-51",
-    "title": "[Câu 51] Java truyền tham số theo value hay reference?",
+    "id": "q-051",
+    "title": "Java truyền tham số theo value hay reference?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -1221,8 +1221,8 @@
     ]
   },
   {
-    "id": "q-52",
-    "title": "[Câu 52] final có những cách sử dụng nào?",
+    "id": "q-052",
+    "title": "final có những cách sử dụng nào?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -1246,8 +1246,8 @@
     ]
   },
   {
-    "id": "q-53",
-    "title": "[Câu 53] static được dùng khi nào?",
+    "id": "q-053",
+    "title": "static được dùng khi nào?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -1271,8 +1271,8 @@
     ]
   },
   {
-    "id": "q-54",
-    "title": "[Câu 54] \\== và equals() khác nhau thế nào?",
+    "id": "q-054",
+    "title": "\\== và equals() khác nhau thế nào?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -1297,8 +1297,8 @@
     ]
   },
   {
-    "id": "q-55",
-    "title": "[Câu 55] && và & khác nhau thế nào?",
+    "id": "q-055",
+    "title": "&& và & khác nhau thế nào?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -1321,8 +1321,8 @@
     ]
   },
   {
-    "id": "q-56",
-    "title": "[Câu 56] break, continue, return khác nhau thế nào?",
+    "id": "q-056",
+    "title": "break, continue, return khác nhau thế nào?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -1346,8 +1346,8 @@
     ]
   },
   {
-    "id": "q-57",
-    "title": "[Câu 57] Method Overloading là gì?",
+    "id": "q-057",
+    "title": "Method Overloading là gì?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -1372,8 +1372,8 @@
     ]
   },
   {
-    "id": "q-58",
-    "title": "[Câu 58] Constructor có thể overload không?",
+    "id": "q-058",
+    "title": "Constructor có thể overload không?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -1396,8 +1396,8 @@
     ]
   },
   {
-    "id": "q-59",
-    "title": "[Câu 59] Initialization Block và Static Initialization Block là gì?",
+    "id": "q-059",
+    "title": "Initialization Block và Static Initialization Block là gì?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -1421,8 +1421,8 @@
     ]
   },
   {
-    "id": "q-60",
-    "title": "[Câu 60] Vì sao Java không hỗ trợ đa kế thừa class trực tiếp?",
+    "id": "q-060",
+    "title": "Vì sao Java không hỗ trợ đa kế thừa class trực tiếp?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -1447,8 +1447,8 @@
     ]
   },
   {
-    "id": "q-61",
-    "title": "[Câu 61] ",
+    "id": "q-061",
+    "title": "Lập trình hướng đối tượng (OOP) là gì và các đặc tính cơ bản?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -1472,8 +1472,8 @@
     ]
   },
   {
-    "id": "q-62",
-    "title": "[Câu 62] Encapsulation là gì? Ví dụ CoVie.",
+    "id": "q-062",
+    "title": "Encapsulation là gì? Ví dụ CoVie.",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -1498,8 +1498,8 @@
     ]
   },
   {
-    "id": "q-63",
-    "title": "[Câu 63] Abstraction là gì?",
+    "id": "q-063",
+    "title": "Abstraction là gì?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -1525,8 +1525,8 @@
     ]
   },
   {
-    "id": "q-64",
-    "title": "[Câu 64] Inheritance là gì?",
+    "id": "q-064",
+    "title": "Inheritance là gì?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -1550,8 +1550,8 @@
     ]
   },
   {
-    "id": "q-65",
-    "title": "[Câu 65] Polymorphism là gì?",
+    "id": "q-065",
+    "title": "Polymorphism là gì?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -1576,8 +1576,8 @@
     ]
   },
   {
-    "id": "q-66",
-    "title": "[Câu 66] Compile-time và Runtime Polymorphism khác nhau thế nào?",
+    "id": "q-066",
+    "title": "Compile-time và Runtime Polymorphism khác nhau thế nào?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -1603,8 +1603,8 @@
     ]
   },
   {
-    "id": "q-67",
-    "title": "[Câu 67] Abstract Class và Interface khác nhau thế nào?",
+    "id": "q-067",
+    "title": "Abstract Class và Interface khác nhau thế nào?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -1628,8 +1628,8 @@
     ]
   },
   {
-    "id": "q-68",
-    "title": "[Câu 68] Khi nào nên dùng Interface? \\-\\> Có thể bỏ vì trùng câu 67",
+    "id": "q-068",
+    "title": "Khi nào nên dùng Interface? \\-\\> Có thể bỏ vì trùng câu 67",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -1658,8 +1658,8 @@
     ]
   },
   {
-    "id": "q-69",
-    "title": "[Câu 69] Interface có method có implementation được không?",
+    "id": "q-069",
+    "title": "Interface có method có implementation được không?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -1685,8 +1685,8 @@
     ]
   },
   {
-    "id": "q-70",
-    "title": "[Câu 70] Interface có static method được không?",
+    "id": "q-070",
+    "title": "Interface có static method được không?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -1710,8 +1710,8 @@
     ]
   },
   {
-    "id": "q-71",
-    "title": "[Câu 71] Abstract Class có constructor không?",
+    "id": "q-071",
+    "title": "Abstract Class có constructor không?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -1736,8 +1736,8 @@
     ]
   },
   {
-    "id": "q-72",
-    "title": "[Câu 72] Constructor có kế thừa được không?",
+    "id": "q-072",
+    "title": "Constructor có kế thừa được không?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -1763,8 +1763,8 @@
     ]
   },
   {
-    "id": "q-73",
-    "title": "[Câu 73] Có thể override static method không?",
+    "id": "q-073",
+    "title": "Có thể override static method không?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -1788,8 +1788,8 @@
     ]
   },
   {
-    "id": "q-74",
-    "title": "[Câu 74] Có thể override private method không?",
+    "id": "q-074",
+    "title": "Có thể override private method không?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -1814,8 +1814,8 @@
     ]
   },
   {
-    "id": "q-75",
-    "title": "[Câu 75] Upcasting và Downcasting là gì?",
+    "id": "q-075",
+    "title": "Upcasting và Downcasting là gì?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -1841,8 +1841,8 @@
     ]
   },
   {
-    "id": "q-76",
-    "title": "[Câu 76] instanceof có tác dụng gì?",
+    "id": "q-076",
+    "title": "instanceof có tác dụng gì?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -1866,8 +1866,8 @@
     ]
   },
   {
-    "id": "q-77",
-    "title": "[Câu 77] Composition và Inheritance khác nhau thế nào?",
+    "id": "q-077",
+    "title": "Composition và Inheritance khác nhau thế nào?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -1892,8 +1892,8 @@
     ]
   },
   {
-    "id": "q-78",
-    "title": "[Câu 78] Vì sao thường ưu tiên Composition hơn Inheritance?",
+    "id": "q-078",
+    "title": "Vì sao thường ưu tiên Composition hơn Inheritance?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -1919,8 +1919,8 @@
     ]
   },
   {
-    "id": "q-79",
-    "title": "[Câu 79] Nếu có nhiều cách tính phí vận chuyển, thiết kế class ra sao?",
+    "id": "q-079",
+    "title": "Nếu có nhiều cách tính phí vận chuyển, thiết kế class ra sao?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -1944,8 +1944,8 @@
     ]
   },
   {
-    "id": "q-80",
-    "title": "[Câu 80] Trong CoVie có thể áp dụng Polymorphism ở đâu?",
+    "id": "q-080",
+    "title": "Trong CoVie có thể áp dụng Polymorphism ở đâu?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -1970,8 +1970,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be03",
-    "title": "[Câu BỔ SUNG BE03] SOLID là gì? Vì sao năm nguyên lý này giúp mã nguồn dễ bảo trì?",
+    "id": "q-081",
+    "title": "SOLID là gì? Vì sao năm nguyên lý này giúp mã nguồn dễ bảo trì?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -1998,7 +1998,7 @@
   },
   {
     "id": "q-082",
-    "title": "BỔ SUNG",
+    "title": "Design Patterns là gì và các mẫu thiết kế cốt lõi trong Java?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -2022,8 +2022,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be09",
-    "title": "[Câu BỔ SUNG BE09] Singleton Design Pattern là gì? Khác gì Singleton Bean trong Spring?",
+    "id": "q-083",
+    "title": "Singleton Design Pattern là gì? Khác gì Singleton Bean trong Spring?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -2048,8 +2048,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be10",
-    "title": "[Câu BỔ SUNG BE10] Strategy Pattern là gì? Cách áp dụng trong Java?",
+    "id": "q-084",
+    "title": "Strategy Pattern là gì? Cách áp dụng trong Java?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -2075,8 +2075,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be11",
-    "title": "[Câu BỔ SUNG BE11] Observer Pattern là gì? Khi nào nên sử dụng?",
+    "id": "q-085",
+    "title": "Observer Pattern là gì? Khi nào nên sử dụng?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -2100,8 +2100,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be12",
-    "title": "[Câu BỔ SUNG BE12] Builder Pattern là gì? Khi nào tốt hơn Constructor nhiều tham số?",
+    "id": "q-086",
+    "title": "Builder Pattern là gì? Khi nào tốt hơn Constructor nhiều tham số?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -2126,8 +2126,8 @@
     ]
   },
   {
-    "id": "q-81",
-    "title": "[Câu 81] Vì sao String immutable?",
+    "id": "q-087",
+    "title": "Vì sao String immutable?",
     "category": "java-core",
     "difficulty": "middle",
     "tags": [
@@ -2157,8 +2157,8 @@
     ]
   },
   {
-    "id": "q-82",
-    "title": "[Câu 82] String, StringBuilder, StringBuffer khác nhau?",
+    "id": "q-088",
+    "title": "String, StringBuilder, StringBuffer khác nhau?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -2186,8 +2186,8 @@
     ]
   },
   {
-    "id": "q-83",
-    "title": "[Câu 83] String Pool là gì?",
+    "id": "q-089",
+    "title": "String Pool là gì?",
     "category": "java-core",
     "difficulty": "middle",
     "tags": [
@@ -2216,8 +2216,8 @@
     ]
   },
   {
-    "id": "q-84",
-    "title": "[Câu 84] new String(\"abc\") khác \"abc\" thế nào?",
+    "id": "q-090",
+    "title": "new String(\"abc\") khác \"abc\" thế nào?",
     "category": "java-core",
     "difficulty": "middle",
     "tags": [
@@ -2247,8 +2247,8 @@
     ]
   },
   {
-    "id": "q-85",
-    "title": "[Câu 85] equals() và hashCode() liên hệ thế nào?",
+    "id": "q-091",
+    "title": "equals() và hashCode() liên hệ thế nào?",
     "category": "java-core",
     "difficulty": "middle",
     "tags": [
@@ -2271,8 +2271,8 @@
     ]
   },
   {
-    "id": "q-86",
-    "title": "[Câu 86] Override equals() mà không override hashCode() gây gì?",
+    "id": "q-092",
+    "title": "Override equals() mà không override hashCode() gây gì?",
     "category": "java-core",
     "difficulty": "middle",
     "tags": [
@@ -2296,8 +2296,8 @@
     ]
   },
   {
-    "id": "q-87",
-    "title": "[Câu 87] toString() có vai trò gì?",
+    "id": "q-093",
+    "title": "toString() có vai trò gì?",
     "category": "java-core",
     "difficulty": "middle",
     "tags": [
@@ -2327,8 +2327,8 @@
     ]
   },
   {
-    "id": "q-88",
-    "title": "[Câu 88] Shallow Copy và Deep Copy khác nhau?",
+    "id": "q-094",
+    "title": "Shallow Copy và Deep Copy khác nhau?",
     "category": "java-core",
     "difficulty": "middle",
     "tags": [
@@ -2351,8 +2351,8 @@
     ]
   },
   {
-    "id": "q-89",
-    "title": "[Câu 89] Mutable và Immutable Object khác nhau?",
+    "id": "q-095",
+    "title": "Mutable và Immutable Object khác nhau?",
     "category": "java-core",
     "difficulty": "middle",
     "tags": [
@@ -2376,8 +2376,8 @@
     ]
   },
   {
-    "id": "q-90",
-    "title": "[Câu 90] Tạo một Immutable Class thế nào?",
+    "id": "q-096",
+    "title": "Tạo một Immutable Class thế nào?",
     "category": "java-core",
     "difficulty": "middle",
     "tags": [
@@ -2402,8 +2402,8 @@
     ]
   },
   {
-    "id": "q-91",
-    "title": "[Câu 91] Enum là gì, khi nào thay String?",
+    "id": "q-097",
+    "title": "Enum là gì, khi nào thay String?",
     "category": "java-core",
     "difficulty": "middle",
     "tags": [
@@ -2431,8 +2431,8 @@
     ]
   },
   {
-    "id": "q-92",
-    "title": "[Câu 92] Vì sao trạng thái Order nên dùng Enum?",
+    "id": "q-098",
+    "title": "Vì sao trạng thái Order nên dùng Enum?",
     "category": "java-core",
     "difficulty": "middle",
     "tags": [
@@ -2456,8 +2456,8 @@
     ]
   },
   {
-    "id": "q-93",
-    "title": "[Câu 93] Java Record là gì?",
+    "id": "q-099",
+    "title": "Java Record là gì?",
     "category": "java-core",
     "difficulty": "middle",
     "tags": [
@@ -2482,8 +2482,8 @@
     ]
   },
   {
-    "id": "q-94",
-    "title": "[Câu 94] Record khác Class thế nào?",
+    "id": "q-100",
+    "title": "Record khác Class thế nào?",
     "category": "java-core",
     "difficulty": "middle",
     "tags": [
@@ -2506,8 +2506,8 @@
     ]
   },
   {
-    "id": "q-95",
-    "title": "[Câu 95] Khi nào Record phù hợp làm DTO?",
+    "id": "q-101",
+    "title": "Khi nào Record phù hợp làm DTO?",
     "category": "java-core",
     "difficulty": "middle",
     "tags": [
@@ -2531,8 +2531,8 @@
     ]
   },
   {
-    "id": "q-96",
-    "title": "[Câu 96] Sealed Class là gì?",
+    "id": "q-102",
+    "title": "Sealed Class là gì?",
     "category": "java-core",
     "difficulty": "middle",
     "tags": [
@@ -2557,8 +2557,8 @@
     ]
   },
   {
-    "id": "q-97",
-    "title": "[Câu 97] Pattern Matching là gì?",
+    "id": "q-103",
+    "title": "Pattern Matching là gì?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -2581,8 +2581,8 @@
     ]
   },
   {
-    "id": "q-98",
-    "title": "[Câu 98] var có phải kiểu động không?",
+    "id": "q-104",
+    "title": "var có phải kiểu động không?",
     "category": "java-core",
     "difficulty": "middle",
     "tags": [
@@ -2606,8 +2606,8 @@
     ]
   },
   {
-    "id": "q-99",
-    "title": "[Câu 99] Các class java.time quan trọng?",
+    "id": "q-105",
+    "title": "Các class java.time quan trọng?",
     "category": "java-core",
     "difficulty": "middle",
     "tags": [
@@ -2632,8 +2632,8 @@
     ]
   },
   {
-    "id": "q-100",
-    "title": "[Câu 100] Vì sao tiền dùng BigDecimal thay double?",
+    "id": "q-106",
+    "title": "Vì sao tiền dùng BigDecimal thay double?",
     "category": "java-core",
     "difficulty": "middle",
     "tags": [
@@ -2656,8 +2656,8 @@
     ]
   },
   {
-    "id": "q-101",
-    "title": "[Câu 101] Collections Framework là gì?",
+    "id": "q-107",
+    "title": "Collections Framework là gì?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -2681,8 +2681,8 @@
     ]
   },
   {
-    "id": "q-102",
-    "title": "[Câu 102] List, Set, Map khác nhau?",
+    "id": "q-108",
+    "title": "List, Set, Map khác nhau?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -2707,8 +2707,8 @@
     ]
   },
   {
-    "id": "q-103",
-    "title": "[Câu 103] Array và ArrayList khác nhau?",
+    "id": "q-109",
+    "title": "Array và ArrayList khác nhau?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -2731,8 +2731,8 @@
     ]
   },
   {
-    "id": "q-104",
-    "title": "[Câu 104] ArrayList hoạt động nội bộ thế nào?",
+    "id": "q-110",
+    "title": "ArrayList hoạt động nội bộ thế nào?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -2756,8 +2756,8 @@
     ]
   },
   {
-    "id": "q-105",
-    "title": "[Câu 105] ArrayList và LinkedList khác nhau?",
+    "id": "q-111",
+    "title": "ArrayList và LinkedList khác nhau?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -2782,8 +2782,8 @@
     ]
   },
   {
-    "id": "q-106",
-    "title": "[Câu 106] HashMap hoạt động thế nào?",
+    "id": "q-112",
+    "title": "HashMap hoạt động thế nào?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -2810,8 +2810,8 @@
     ]
   },
   {
-    "id": "q-107",
-    "title": "[Câu 107] Hash Collision là gì?",
+    "id": "q-113",
+    "title": "Hash Collision là gì?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -2839,8 +2839,8 @@
     ]
   },
   {
-    "id": "q-108",
-    "title": "[Câu 108] HashMap giải quyết collision ra sao?",
+    "id": "q-114",
+    "title": "HashMap giải quyết collision ra sao?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -2869,8 +2869,8 @@
     ]
   },
   {
-    "id": "q-109",
-    "title": "[Câu 109] HashMap và TreeMap khác nhau?",
+    "id": "q-115",
+    "title": "HashMap và TreeMap khác nhau?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -2897,8 +2897,8 @@
     ]
   },
   {
-    "id": "q-110",
-    "title": "[Câu 110] HashSet lưu dữ liệu thế nào?",
+    "id": "q-116",
+    "title": "HashSet lưu dữ liệu thế nào?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -2922,8 +2922,8 @@
     ]
   },
   {
-    "id": "q-111",
-    "title": "[Câu 111] HashSet và LinkedHashSet khác nhau?",
+    "id": "q-117",
+    "title": "HashSet và LinkedHashSet khác nhau?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -2948,8 +2948,8 @@
     ]
   },
   {
-    "id": "q-112",
-    "title": "[Câu 112] Comparator và Comparable khác nhau?",
+    "id": "q-118",
+    "title": "Comparator và Comparable khác nhau?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -2972,8 +2972,8 @@
     ]
   },
   {
-    "id": "q-113",
-    "title": "[Câu 113] Iterator là gì?",
+    "id": "q-119",
+    "title": "Iterator là gì?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -2997,8 +2997,8 @@
     ]
   },
   {
-    "id": "q-114",
-    "title": "[Câu 114] Fail-fast Iterator là gì?",
+    "id": "q-120",
+    "title": "Fail-fast Iterator là gì?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3023,8 +3023,8 @@
     ]
   },
   {
-    "id": "q-115",
-    "title": "[Câu 115] ConcurrentModificationException khi nào xảy ra?",
+    "id": "q-121",
+    "title": "ConcurrentModificationException khi nào xảy ra?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3047,8 +3047,8 @@
     ]
   },
   {
-    "id": "q-116",
-    "title": "[Câu 116] HashMap và ConcurrentHashMap khác nhau?",
+    "id": "q-122",
+    "title": "HashMap và ConcurrentHashMap khác nhau?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3076,8 +3076,8 @@
     ]
   },
   {
-    "id": "q-117",
-    "title": "[Câu 117] Generic là gì và vì sao cần?",
+    "id": "q-123",
+    "title": "Generic là gì và vì sao cần?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3102,8 +3102,8 @@
     ]
   },
   {
-    "id": "q-118",
-    "title": "[Câu 118] List\\<?\\> và List\\<Object\\> có giống nhau?",
+    "id": "q-124",
+    "title": "List\\<?\\> và List\\<Object\\> có giống nhau?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3126,8 +3126,8 @@
     ]
   },
   {
-    "id": "q-119",
-    "title": "[Câu 119] ? extends T và ? super T khác nhau?",
+    "id": "q-125",
+    "title": "? extends T và ? super T khác nhau?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3151,8 +3151,8 @@
     ]
   },
   {
-    "id": "q-120",
-    "title": "[Câu 120] Lưu danh sách sản phẩm không trùng mã, chọn Collection nào?",
+    "id": "q-126",
+    "title": "Lưu danh sách sản phẩm không trùng mã, chọn Collection nào?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3181,8 +3181,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be01",
-    "title": "[Câu BỔ SUNG BE01] Big O là gì? Phân biệt O(1), O(n), O(n log n) và O(n²) bằng ví dụ Java.",
+    "id": "q-127",
+    "title": "Big O là gì? Phân biệt O(1), O(n), O(n log n) và O(n²) bằng ví dụ Java.",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3205,8 +3205,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be02",
-    "title": "[Câu BỔ SUNG BE02] Tree là cấu trúc dữ liệu gì? Khi nào nên sử dụng cây thay vì List hoặc HashMap?",
+    "id": "q-128",
+    "title": "Tree là cấu trúc dữ liệu gì? Khi nào nên sử dụng cây thay vì List hoặc HashMap?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3234,8 +3234,8 @@
     ]
   },
   {
-    "id": "q-121",
-    "title": "[Câu 121] Lambda Expression là gì?",
+    "id": "q-129",
+    "title": "Lambda Expression là gì?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3259,8 +3259,8 @@
     ]
   },
   {
-    "id": "q-122",
-    "title": "[Câu 122] Functional Interface là gì?",
+    "id": "q-130",
+    "title": "Functional Interface là gì?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3282,8 +3282,8 @@
     ]
   },
   {
-    "id": "q-123",
-    "title": "[Câu 123] @FunctionalInterface tác dụng gì?",
+    "id": "q-131",
+    "title": "@FunctionalInterface tác dụng gì?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3306,8 +3306,8 @@
     ]
   },
   {
-    "id": "q-124",
-    "title": "[Câu 124] Stream API là gì?",
+    "id": "q-132",
+    "title": "Stream API là gì?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3331,8 +3331,8 @@
     ]
   },
   {
-    "id": "q-125",
-    "title": "[Câu 125] Stream khác Collection thế nào?",
+    "id": "q-133",
+    "title": "Stream khác Collection thế nào?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3354,8 +3354,8 @@
     ]
   },
   {
-    "id": "q-126",
-    "title": "[Câu 126] map() và flatMap() khác nhau?",
+    "id": "q-134",
+    "title": "map() và flatMap() khác nhau?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3378,8 +3378,8 @@
     ]
   },
   {
-    "id": "q-127",
-    "title": "[Câu 127] filter() dùng để làm gì?",
+    "id": "q-135",
+    "title": "filter() dùng để làm gì?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3403,8 +3403,8 @@
     ]
   },
   {
-    "id": "q-128",
-    "title": "[Câu 128] reduce() hoạt động thế nào?",
+    "id": "q-136",
+    "title": "reduce() hoạt động thế nào?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3426,8 +3426,8 @@
     ]
   },
   {
-    "id": "q-129",
-    "title": "[Câu 129] collect() và toList() khác nhau?",
+    "id": "q-137",
+    "title": "collect() và toList() khác nhau?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3450,8 +3450,8 @@
     ]
   },
   {
-    "id": "q-130",
-    "title": "[Câu 130] forEach() khác for như thế nào?",
+    "id": "q-138",
+    "title": "forEach() khác for như thế nào?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3475,8 +3475,8 @@
     ]
   },
   {
-    "id": "q-131",
-    "title": "[Câu 131] Lazy Evaluation trong Stream là gì?",
+    "id": "q-139",
+    "title": "Lazy Evaluation trong Stream là gì?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3498,8 +3498,8 @@
     ]
   },
   {
-    "id": "q-132",
-    "title": "[Câu 132] Intermediate và Terminal Operation khác nhau?",
+    "id": "q-140",
+    "title": "Intermediate và Terminal Operation khác nhau?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3522,8 +3522,8 @@
     ]
   },
   {
-    "id": "q-133",
-    "title": "[Câu 133] findFirst() và findAny() khác nhau?",
+    "id": "q-141",
+    "title": "findFirst() và findAny() khác nhau?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3547,8 +3547,8 @@
     ]
   },
   {
-    "id": "q-134",
-    "title": "[Câu 134] distinct() xác định trùng lặp thế nào?",
+    "id": "q-142",
+    "title": "distinct() xác định trùng lặp thế nào?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3574,8 +3574,8 @@
     ]
   },
   {
-    "id": "q-135",
-    "title": "[Câu 135] Optional là gì, vì sao cần?",
+    "id": "q-143",
+    "title": "Optional là gì, vì sao cần?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3598,8 +3598,8 @@
     ]
   },
   {
-    "id": "q-136",
-    "title": "[Câu 136] orElse() và orElseGet() khác nhau?",
+    "id": "q-144",
+    "title": "orElse() và orElseGet() khác nhau?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3623,8 +3623,8 @@
     ]
   },
   {
-    "id": "q-137",
-    "title": "[Câu 137] Vì sao không nên gọi Optional.get() tùy tiện?",
+    "id": "q-145",
+    "title": "Vì sao không nên gọi Optional.get() tùy tiện?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3646,8 +3646,8 @@
     ]
   },
   {
-    "id": "q-138",
-    "title": "[Câu 138] Stream.toList() có thể sửa danh sách không?",
+    "id": "q-146",
+    "title": "Stream.toList() có thể sửa danh sách không?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3670,8 +3670,8 @@
     ]
   },
   {
-    "id": "q-139",
-    "title": "[Câu 139] Khi nào không nên dùng Parallel Stream?",
+    "id": "q-147",
+    "title": "Khi nào không nên dùng Parallel Stream?",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3695,8 +3695,8 @@
     ]
   },
   {
-    "id": "q-140",
-    "title": "[Câu 140] Dùng Stream nhóm sản phẩm theo danh mục và tính tổng số lượng.",
+    "id": "q-148",
+    "title": "Dùng Stream nhóm sản phẩm theo danh mục và tính tổng số lượng.",
     "category": "collections",
     "difficulty": "middle",
     "tags": [
@@ -3718,8 +3718,8 @@
     ]
   },
   {
-    "id": "q-141",
-    "title": "[Câu 141] Checked và Unchecked Exception khác nhau?",
+    "id": "q-149",
+    "title": "Checked và Unchecked Exception khác nhau?",
     "category": "jvm",
     "difficulty": "senior",
     "tags": [
@@ -3743,8 +3743,8 @@
     ]
   },
   {
-    "id": "q-142",
-    "title": "[Câu 142] Error và Exception khác nhau?",
+    "id": "q-150",
+    "title": "Error và Exception khác nhau?",
     "category": "jvm",
     "difficulty": "senior",
     "tags": [
@@ -3769,8 +3769,8 @@
     ]
   },
   {
-    "id": "q-143",
-    "title": "[Câu 143] throw và throws khác nhau?",
+    "id": "q-151",
+    "title": "throw và throws khác nhau?",
     "category": "jvm",
     "difficulty": "senior",
     "tags": [
@@ -3793,8 +3793,8 @@
     ]
   },
   {
-    "id": "q-144",
-    "title": "[Câu 144] finally có luôn chạy không?",
+    "id": "q-152",
+    "title": "finally có luôn chạy không?",
     "category": "jvm",
     "difficulty": "senior",
     "tags": [
@@ -3818,8 +3818,8 @@
     ]
   },
   {
-    "id": "q-145",
-    "title": "[Câu 145] Try-with-resources là gì?",
+    "id": "q-153",
+    "title": "Try-with-resources là gì?",
     "category": "jvm",
     "difficulty": "middle",
     "tags": [
@@ -3844,8 +3844,8 @@
     ]
   },
   {
-    "id": "q-146",
-    "title": "[Câu 146] Khi nào tạo Custom Exception?",
+    "id": "q-154",
+    "title": "Khi nào tạo Custom Exception?",
     "category": "jvm",
     "difficulty": "senior",
     "tags": [
@@ -3868,8 +3868,8 @@
     ]
   },
   {
-    "id": "q-147",
-    "title": "[Câu 147] Vì sao không catch(Exception) ở mọi nơi?",
+    "id": "q-155",
+    "title": "Vì sao không catch(Exception) ở mọi nơi?",
     "category": "jvm",
     "difficulty": "senior",
     "tags": [
@@ -3893,8 +3893,8 @@
     ]
   },
   {
-    "id": "q-148",
-    "title": "[Câu 148] Stack và Heap khác nhau?",
+    "id": "q-156",
+    "title": "Stack và Heap khác nhau?",
     "category": "jvm",
     "difficulty": "senior",
     "tags": [
@@ -3919,8 +3919,8 @@
     ]
   },
   {
-    "id": "q-149",
-    "title": "[Câu 149] Object được lưu ở đâu?",
+    "id": "q-157",
+    "title": "Object được lưu ở đâu?",
     "category": "jvm",
     "difficulty": "senior",
     "tags": [
@@ -3943,8 +3943,8 @@
     ]
   },
   {
-    "id": "q-150",
-    "title": "[Câu 150] Garbage Collection là gì?",
+    "id": "q-158",
+    "title": "Garbage Collection là gì?",
     "category": "jvm",
     "difficulty": "middle",
     "tags": [
@@ -3968,8 +3968,8 @@
     ]
   },
   {
-    "id": "q-151",
-    "title": "[Câu 151] Java có Memory Leak không?",
+    "id": "q-159",
+    "title": "Java có Memory Leak không?",
     "category": "jvm",
     "difficulty": "senior",
     "tags": [
@@ -3994,8 +3994,8 @@
     ]
   },
   {
-    "id": "q-152",
-    "title": "[Câu 152] StackOverflowError khi nào xảy ra?",
+    "id": "q-160",
+    "title": "StackOverflowError khi nào xảy ra?",
     "category": "jvm",
     "difficulty": "senior",
     "tags": [
@@ -4018,8 +4018,8 @@
     ]
   },
   {
-    "id": "q-153",
-    "title": "[Câu 153] OutOfMemoryError khi nào xảy ra?",
+    "id": "q-161",
+    "title": "OutOfMemoryError khi nào xảy ra?",
     "category": "jvm",
     "difficulty": "senior",
     "tags": [
@@ -4043,8 +4043,8 @@
     ]
   },
   {
-    "id": "q-154",
-    "title": "[Câu 154] GC có tự động đóng Database Connection không?",
+    "id": "q-162",
+    "title": "GC có tự động đóng Database Connection không?",
     "category": "jvm",
     "difficulty": "senior",
     "tags": [
@@ -4069,8 +4069,8 @@
     ]
   },
   {
-    "id": "q-155",
-    "title": "[Câu 155] ClassLoader là gì?",
+    "id": "q-163",
+    "title": "ClassLoader là gì?",
     "category": "jvm",
     "difficulty": "middle",
     "tags": [
@@ -4093,8 +4093,8 @@
     ]
   },
   {
-    "id": "q-156",
-    "title": "[Câu 156] JIT Compiler là gì?",
+    "id": "q-164",
+    "title": "JIT Compiler là gì?",
     "category": "jvm",
     "difficulty": "middle",
     "tags": [
@@ -4118,8 +4118,8 @@
     ]
   },
   {
-    "id": "q-157",
-    "title": "[Câu 157] Heap Dump là gì?",
+    "id": "q-165",
+    "title": "Heap Dump là gì?",
     "category": "jvm",
     "difficulty": "senior",
     "tags": [
@@ -4144,8 +4144,8 @@
     ]
   },
   {
-    "id": "q-158",
-    "title": "[Câu 158] Thread Dump là gì?",
+    "id": "q-166",
+    "title": "Thread Dump là gì?",
     "category": "jvm",
     "difficulty": "senior",
     "tags": [
@@ -4172,8 +4172,8 @@
     ]
   },
   {
-    "id": "q-159",
-    "title": "[Câu 159] Backend CoVie liên tục tăng RAM: điều tra sao?",
+    "id": "q-167",
+    "title": "Backend CoVie liên tục tăng RAM: điều tra sao?",
     "category": "jvm",
     "difficulty": "senior",
     "tags": [
@@ -4197,8 +4197,8 @@
     ]
   },
   {
-    "id": "q-160",
-    "title": "[Câu 160] API trả HTTP 500 vì NullPointerException: debug thế nào?",
+    "id": "q-168",
+    "title": "API trả HTTP 500 vì NullPointerException: debug thế nào?",
     "category": "jvm",
     "difficulty": "senior",
     "tags": [
@@ -4223,8 +4223,8 @@
     ]
   },
   {
-    "id": "q-161",
-    "title": "[Câu 161] Process và Thread khác nhau?",
+    "id": "q-169",
+    "title": "Process và Thread khác nhau?",
     "category": "concurrency",
     "difficulty": "senior",
     "tags": [
@@ -4252,8 +4252,8 @@
     ]
   },
   {
-    "id": "q-162",
-    "title": "[Câu 162] Có cách nào tạo Thread trong Java?",
+    "id": "q-170",
+    "title": "Có cách nào tạo Thread trong Java?",
     "category": "concurrency",
     "difficulty": "senior",
     "tags": [
@@ -4282,8 +4282,8 @@
     ]
   },
   {
-    "id": "q-163",
-    "title": "[Câu 163] Runnable và Callable khác nhau?",
+    "id": "q-171",
+    "title": "Runnable và Callable khác nhau?",
     "category": "concurrency",
     "difficulty": "senior",
     "tags": [
@@ -4309,8 +4309,8 @@
     ]
   },
   {
-    "id": "q-164",
-    "title": "[Câu 164] start() và run() khác nhau?",
+    "id": "q-172",
+    "title": "start() và run() khác nhau?",
     "category": "concurrency",
     "difficulty": "senior",
     "tags": [
@@ -4334,8 +4334,8 @@
     ]
   },
   {
-    "id": "q-165",
-    "title": "[Câu 165] sleep() và wait() khác nhau?",
+    "id": "q-173",
+    "title": "sleep() và wait() khác nhau?",
     "category": "concurrency",
     "difficulty": "senior",
     "tags": [
@@ -4360,8 +4360,8 @@
     ]
   },
   {
-    "id": "q-166",
-    "title": "[Câu 166] synchronized dùng để làm gì?",
+    "id": "q-174",
+    "title": "synchronized dùng để làm gì?",
     "category": "concurrency",
     "difficulty": "senior",
     "tags": [
@@ -4387,8 +4387,8 @@
     ]
   },
   {
-    "id": "q-167",
-    "title": "[Câu 167] Race Condition là gì?",
+    "id": "q-175",
+    "title": "Race Condition là gì?",
     "category": "concurrency",
     "difficulty": "middle",
     "tags": [
@@ -4412,8 +4412,8 @@
     ]
   },
   {
-    "id": "q-168",
-    "title": "[Câu 168] Deadlock là gì?",
+    "id": "q-176",
+    "title": "Deadlock là gì?",
     "category": "concurrency",
     "difficulty": "senior",
     "tags": [
@@ -4442,8 +4442,8 @@
     ]
   },
   {
-    "id": "q-169",
-    "title": "[Câu 169] Làm sao tránh Deadlock?",
+    "id": "q-177",
+    "title": "Làm sao tránh Deadlock?",
     "category": "concurrency",
     "difficulty": "senior",
     "tags": [
@@ -4473,8 +4473,8 @@
     ]
   },
   {
-    "id": "q-170",
-    "title": "[Câu 170] volatile tác dụng gì?",
+    "id": "q-178",
+    "title": "volatile tác dụng gì?",
     "category": "concurrency",
     "difficulty": "senior",
     "tags": [
@@ -4498,8 +4498,8 @@
     ]
   },
   {
-    "id": "q-171",
-    "title": "[Câu 171] AtomicInteger khác int thế nào?",
+    "id": "q-179",
+    "title": "AtomicInteger khác int thế nào?",
     "category": "concurrency",
     "difficulty": "senior",
     "tags": [
@@ -4524,8 +4524,8 @@
     ]
   },
   {
-    "id": "q-172",
-    "title": "[Câu 172] Thread-safe là gì?",
+    "id": "q-180",
+    "title": "Thread-safe là gì?",
     "category": "concurrency",
     "difficulty": "middle",
     "tags": [
@@ -4555,8 +4555,8 @@
     ]
   },
   {
-    "id": "q-173",
-    "title": "[Câu 173] ThreadLocal là gì?",
+    "id": "q-181",
+    "title": "ThreadLocal là gì?",
     "category": "concurrency",
     "difficulty": "middle",
     "tags": [
@@ -4584,8 +4584,8 @@
     ]
   },
   {
-    "id": "q-174",
-    "title": "[Câu 174] ExecutorService là gì?",
+    "id": "q-182",
+    "title": "ExecutorService là gì?",
     "category": "concurrency",
     "difficulty": "middle",
     "tags": [
@@ -4610,8 +4610,8 @@
     ]
   },
   {
-    "id": "q-175",
-    "title": "[Câu 175] Thread Pool có lợi ích gì?",
+    "id": "q-183",
+    "title": "Thread Pool có lợi ích gì?",
     "category": "concurrency",
     "difficulty": "senior",
     "tags": [
@@ -4641,8 +4641,8 @@
     ]
   },
   {
-    "id": "q-176",
-    "title": "[Câu 176] CompletableFuture là gì?",
+    "id": "q-184",
+    "title": "CompletableFuture là gì?",
     "category": "concurrency",
     "difficulty": "middle",
     "tags": [
@@ -4666,8 +4666,8 @@
     ]
   },
   {
-    "id": "q-177",
-    "title": "[Câu 177] Virtual Thread là gì, khi nào dùng?",
+    "id": "q-185",
+    "title": "Virtual Thread là gì, khi nào dùng?",
     "category": "concurrency",
     "difficulty": "senior",
     "tags": [
@@ -4696,8 +4696,8 @@
     ]
   },
   {
-    "id": "q-178",
-    "title": "[Câu 178] Khi nào tăng số Thread khiến hệ thống chậm đi?",
+    "id": "q-186",
+    "title": "Khi nào tăng số Thread khiến hệ thống chậm đi?",
     "category": "concurrency",
     "difficulty": "senior",
     "tags": [
@@ -4727,8 +4727,8 @@
     ]
   },
   {
-    "id": "q-179",
-    "title": "[Câu 179] Hai người cùng mua món cuối cùng: chống overselling thế nào?",
+    "id": "q-187",
+    "title": "Hai người cùng mua món cuối cùng: chống overselling thế nào?",
     "category": "concurrency",
     "difficulty": "senior",
     "tags": [
@@ -4752,8 +4752,8 @@
     ]
   },
   {
-    "id": "q-180",
-    "title": "[Câu 180] Hai request cập nhật cùng đơn hàng: đảm bảo nhất quán sao?",
+    "id": "q-188",
+    "title": "Hai request cập nhật cùng đơn hàng: đảm bảo nhất quán sao?",
     "category": "concurrency",
     "difficulty": "senior",
     "tags": [
@@ -4778,8 +4778,8 @@
     ]
   },
   {
-    "id": "q-181",
-    "title": "[Câu 181] Spring Framework là gì?",
+    "id": "q-189",
+    "title": "Spring Framework là gì?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -4805,8 +4805,8 @@
     ]
   },
   {
-    "id": "q-182",
-    "title": "[Câu 182] Spring AOP Proxy là gì và vì sao gọi nội bộ có thể khiến @Transactional không hoạt động?",
+    "id": "q-190",
+    "title": "Spring AOP Proxy là gì và vì sao gọi nội bộ có thể khiến @Transactional không hoạt động?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -4830,8 +4830,8 @@
     ]
   },
   {
-    "id": "q-183",
-    "title": "[Câu 183] Inversion of Control (IoC) là gì?",
+    "id": "q-191",
+    "title": "Inversion of Control (IoC) là gì?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -4856,8 +4856,8 @@
     ]
   },
   {
-    "id": "q-184",
-    "title": "[Câu 184] Dependency Injection (DI) là gì?",
+    "id": "q-192",
+    "title": "Dependency Injection (DI) là gì?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -4883,8 +4883,8 @@
     ]
   },
   {
-    "id": "q-185",
-    "title": "[Câu 185] Constructor Injection và Field Injection khác nhau?",
+    "id": "q-193",
+    "title": "Constructor Injection và Field Injection khác nhau?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -4908,8 +4908,8 @@
     ]
   },
   {
-    "id": "q-186",
-    "title": "[Câu 186] Vì sao thường khuyến khích Constructor Injection?",
+    "id": "q-194",
+    "title": "Vì sao thường khuyến khích Constructor Injection?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -4934,8 +4934,8 @@
     ]
   },
   {
-    "id": "q-187",
-    "title": "[Câu 187] Spring Bean là gì?",
+    "id": "q-195",
+    "title": "Spring Bean là gì?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -4961,8 +4961,8 @@
     ]
   },
   {
-    "id": "q-188",
-    "title": "[Câu 188] Spring IoC Container là gì?",
+    "id": "q-196",
+    "title": "Spring IoC Container là gì?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -4986,8 +4986,8 @@
     ]
   },
   {
-    "id": "q-189",
-    "title": "[Câu 189] Bean Lifecycle diễn ra thế nào?",
+    "id": "q-197",
+    "title": "Bean Lifecycle diễn ra thế nào?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5012,8 +5012,8 @@
     ]
   },
   {
-    "id": "q-190",
-    "title": "[Câu 190] Singleton Scope và Prototype Scope khác nhau?",
+    "id": "q-198",
+    "title": "Singleton Scope và Prototype Scope khác nhau?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -5039,8 +5039,8 @@
     ]
   },
   {
-    "id": "q-191",
-    "title": "[Câu 191] @Component, @Service, @Repository khác nhau?",
+    "id": "q-199",
+    "title": "@Component, @Service, @Repository khác nhau?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5064,8 +5064,8 @@
     ]
   },
   {
-    "id": "q-192",
-    "title": "[Câu 192] @Configuration có tác dụng gì?",
+    "id": "q-200",
+    "title": "@Configuration có tác dụng gì?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5090,8 +5090,8 @@
     ]
   },
   {
-    "id": "q-193",
-    "title": "[Câu 193] @Bean và @Component khác nhau?",
+    "id": "q-201",
+    "title": "@Bean và @Component khác nhau?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5117,8 +5117,8 @@
     ]
   },
   {
-    "id": "q-194",
-    "title": "[Câu 194] @Autowired hoạt động ra sao?",
+    "id": "q-202",
+    "title": "@Autowired hoạt động ra sao?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5142,8 +5142,8 @@
     ]
   },
   {
-    "id": "q-195",
-    "title": "[Câu 195] @Qualifier và @Primary để làm gì?",
+    "id": "q-203",
+    "title": "@Qualifier và @Primary để làm gì?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5168,8 +5168,8 @@
     ]
   },
   {
-    "id": "q-196",
-    "title": "[Câu 196] Circular Dependency là gì?",
+    "id": "q-204",
+    "title": "Circular Dependency là gì?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5195,8 +5195,8 @@
     ]
   },
   {
-    "id": "q-197",
-    "title": "[Câu 197] Spring Boot Auto Configuration là gì?",
+    "id": "q-205",
+    "title": "Spring Boot Auto Configuration là gì?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5220,8 +5220,8 @@
     ]
   },
   {
-    "id": "q-198",
-    "title": "[Câu 198] application.yml và application.properties khác nhau?",
+    "id": "q-206",
+    "title": "application.yml và application.properties khác nhau?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5246,8 +5246,8 @@
     ]
   },
   {
-    "id": "q-199",
-    "title": "[Câu 199] Spring Profiles là gì?",
+    "id": "q-207",
+    "title": "Spring Profiles là gì?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5273,8 +5273,8 @@
     ]
   },
   {
-    "id": "q-200",
-    "title": "[Câu 200] Hai Bean implement cùng Interface, Spring chọn Bean nào?",
+    "id": "q-208",
+    "title": "Hai Bean implement cùng Interface, Spring chọn Bean nào?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5298,8 +5298,8 @@
     ]
   },
   {
-    "id": "q-201",
-    "title": "[Câu 201] REST API là gì?",
+    "id": "q-209",
+    "title": "REST API là gì?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5324,8 +5324,8 @@
     ]
   },
   {
-    "id": "q-202",
-    "title": "[Câu 202] HTTP Request và HTTP Response gồm gì?",
+    "id": "q-210",
+    "title": "HTTP Request và HTTP Response gồm gì?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5351,8 +5351,8 @@
     ]
   },
   {
-    "id": "q-203",
-    "title": "[Câu 203] GET, POST, PUT, PATCH, DELETE khác nhau?",
+    "id": "q-211",
+    "title": "GET, POST, PUT, PATCH, DELETE khác nhau?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5376,8 +5376,8 @@
     ]
   },
   {
-    "id": "q-204",
-    "title": "[Câu 204] PUT và PATCH khác nhau?",
+    "id": "q-212",
+    "title": "PUT và PATCH khác nhau?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5402,8 +5402,8 @@
     ]
   },
   {
-    "id": "q-205",
-    "title": "[Câu 205] Idempotent HTTP Method là gì?",
+    "id": "q-213",
+    "title": "Idempotent HTTP Method là gì?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5429,8 +5429,8 @@
     ]
   },
   {
-    "id": "q-206",
-    "title": "[Câu 206] HTTP 200, 201, 204 khác nhau?",
+    "id": "q-214",
+    "title": "HTTP 200, 201, 204 khác nhau?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5454,8 +5454,8 @@
     ]
   },
   {
-    "id": "q-207",
-    "title": "[Câu 207] HTTP 400, 401, 403 khác nhau?",
+    "id": "q-215",
+    "title": "HTTP 400, 401, 403 khác nhau?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5480,8 +5480,8 @@
     ]
   },
   {
-    "id": "q-208",
-    "title": "[Câu 208] HTTP 404 và 409 dùng khi nào?",
+    "id": "q-216",
+    "title": "HTTP 404 và 409 dùng khi nào?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5507,8 +5507,8 @@
     ]
   },
   {
-    "id": "q-209",
-    "title": "[Câu 209] HTTP 422 có ý nghĩa gì?",
+    "id": "q-217",
+    "title": "HTTP 422 có ý nghĩa gì?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5532,8 +5532,8 @@
     ]
   },
   {
-    "id": "q-210",
-    "title": "[Câu 210] @RestController và @Controller khác nhau?",
+    "id": "q-218",
+    "title": "@RestController và @Controller khác nhau?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5558,8 +5558,8 @@
     ]
   },
   {
-    "id": "q-211",
-    "title": "[Câu 211] @RequestParam và @PathVariable khác nhau?",
+    "id": "q-219",
+    "title": "@RequestParam và @PathVariable khác nhau?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5585,8 +5585,8 @@
     ]
   },
   {
-    "id": "q-212",
-    "title": "[Câu 212] @RequestBody dùng để làm gì?",
+    "id": "q-220",
+    "title": "@RequestBody dùng để làm gì?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5610,8 +5610,8 @@
     ]
   },
   {
-    "id": "q-213",
-    "title": "[Câu 213] @Valid và @Validated khác nhau?",
+    "id": "q-221",
+    "title": "@Valid và @Validated khác nhau?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5636,8 +5636,8 @@
     ]
   },
   {
-    "id": "q-214",
-    "title": "[Câu 214] @ControllerAdvice và @ExceptionHandler là gì?",
+    "id": "q-222",
+    "title": "@ControllerAdvice và @ExceptionHandler là gì?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5663,8 +5663,8 @@
     ]
   },
   {
-    "id": "q-215",
-    "title": "[Câu 215] Thiết kế API error response nhất quán thế nào?",
+    "id": "q-223",
+    "title": "Thiết kế API error response nhất quán thế nào?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5688,8 +5688,8 @@
     ]
   },
   {
-    "id": "q-216",
-    "title": "[Câu 216] Offset và Cursor Pagination khác nhau?",
+    "id": "q-224",
+    "title": "Offset và Cursor Pagination khác nhau?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5714,8 +5714,8 @@
     ]
   },
   {
-    "id": "q-217",
-    "title": "[Câu 217] Sorting và Filtering trong REST API nên thiết kế thế nào?",
+    "id": "q-225",
+    "title": "Sorting và Filtering trong REST API nên thiết kế thế nào?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5745,8 +5745,8 @@
     ]
   },
   {
-    "id": "q-218",
-    "title": "[Câu 218] API Versioning là gì? Vì sao dùng /api/v1?",
+    "id": "q-226",
+    "title": "API Versioning là gì? Vì sao dùng /api/v1?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5770,8 +5770,8 @@
     ]
   },
   {
-    "id": "q-219",
-    "title": "[Câu 219] CORS là gì và vì sao browser chặn request?",
+    "id": "q-227",
+    "title": "CORS là gì và vì sao browser chặn request?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5796,8 +5796,8 @@
     ]
   },
   {
-    "id": "q-220",
-    "title": "[Câu 220] Thiết kế API danh sách đơn hàng có phân trang và lọc trạng thái.",
+    "id": "q-228",
+    "title": "Thiết kế API danh sách đơn hàng có phân trang và lọc trạng thái.",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5823,8 +5823,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be24",
-    "title": "[Câu BỔ SUNG BE24] gRPC là gì? Khi nào nên chọn gRPC thay vì REST API?",
+    "id": "q-229",
+    "title": "gRPC là gì? Khi nào nên chọn gRPC thay vì REST API?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5848,8 +5848,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be25",
-    "title": "[Câu BỔ SUNG BE25] Protocol Buffers (Protobuf) là gì? Vì sao thường được sử dụng cùng gRPC?",
+    "id": "q-230",
+    "title": "Protocol Buffers (Protobuf) là gì? Vì sao thường được sử dụng cùng gRPC?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5874,8 +5874,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be26",
-    "title": "[Câu BỔ SUNG BE26] Làm thế nào để thiết kế tên REST API endpoint theo tài nguyên và tránh sử dụng HTTP method sai ngữ nghĩa?",
+    "id": "q-231",
+    "title": "Làm thế nào để thiết kế tên REST API endpoint theo tài nguyên và tránh sử dụng HTTP method sai ngữ nghĩa?",
     "category": "spring",
     "difficulty": "middle",
     "tags": [
@@ -5901,8 +5901,8 @@
     ]
   },
   {
-    "id": "q-221",
-    "title": "[Câu 221] Authentication và Authorization khác nhau?",
+    "id": "q-232",
+    "title": "Authentication và Authorization khác nhau?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -5926,8 +5926,8 @@
     ]
   },
   {
-    "id": "q-222",
-    "title": "[Câu 222] Spring Security là gì?",
+    "id": "q-233",
+    "title": "Spring Security là gì?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -5952,8 +5952,8 @@
     ]
   },
   {
-    "id": "q-223",
-    "title": "[Câu 223] SecurityFilterChain là gì?",
+    "id": "q-234",
+    "title": "SecurityFilterChain là gì?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -5979,8 +5979,8 @@
     ]
   },
   {
-    "id": "q-224",
-    "title": "[Câu 224] Một request đi qua Spring Security thế nào?",
+    "id": "q-235",
+    "title": "Một request đi qua Spring Security thế nào?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6004,8 +6004,8 @@
     ]
   },
   {
-    "id": "q-225",
-    "title": "[Câu 225] Filter và Interceptor khác nhau?",
+    "id": "q-236",
+    "title": "Filter và Interceptor khác nhau?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6030,8 +6030,8 @@
     ]
   },
   {
-    "id": "q-226",
-    "title": "[Câu 226] SecurityContext là gì?",
+    "id": "q-237",
+    "title": "SecurityContext là gì?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6057,8 +6057,8 @@
     ]
   },
   {
-    "id": "q-227",
-    "title": "[Câu 227] Principal là gì?",
+    "id": "q-238",
+    "title": "Principal là gì?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6082,8 +6082,8 @@
     ]
   },
   {
-    "id": "q-228",
-    "title": "[Câu 228] UserDetails và UserDetailsService để làm gì?",
+    "id": "q-239",
+    "title": "UserDetails và UserDetailsService để làm gì?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6108,8 +6108,8 @@
     ]
   },
   {
-    "id": "q-229",
-    "title": "[Câu 229] Password Encoder là gì?",
+    "id": "q-240",
+    "title": "Password Encoder là gì?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6135,8 +6135,8 @@
     ]
   },
   {
-    "id": "q-230",
-    "title": "[Câu 230] Vì sao không lưu password dạng plain text?",
+    "id": "q-241",
+    "title": "Vì sao không lưu password dạng plain text?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6160,8 +6160,8 @@
     ]
   },
   {
-    "id": "q-231",
-    "title": "[Câu 231] BCrypt hoạt động theo nguyên tắc nào?",
+    "id": "q-242",
+    "title": "BCrypt hoạt động theo nguyên tắc nào?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6186,8 +6186,8 @@
     ]
   },
   {
-    "id": "q-232",
-    "title": "[Câu 232] BCrypt khác SHA-256 ở việc lưu password thế nào?",
+    "id": "q-243",
+    "title": "BCrypt khác SHA-256 ở việc lưu password thế nào?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6213,8 +6213,8 @@
     ]
   },
   {
-    "id": "q-233",
-    "title": "[Câu 233] Role và Permission khác nhau?",
+    "id": "q-244",
+    "title": "Role và Permission khác nhau?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6238,8 +6238,8 @@
     ]
   },
   {
-    "id": "q-234",
-    "title": "[Câu 234] RBAC là gì?",
+    "id": "q-245",
+    "title": "RBAC là gì?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6264,8 +6264,8 @@
     ]
   },
   {
-    "id": "q-235",
-    "title": "[Câu 235] Method-Level Security là gì?",
+    "id": "q-246",
+    "title": "Method-Level Security là gì?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6291,8 +6291,8 @@
     ]
   },
   {
-    "id": "q-236",
-    "title": "[Câu 236] @PreAuthorize có tác dụng gì?",
+    "id": "q-247",
+    "title": "@PreAuthorize có tác dụng gì?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6316,8 +6316,8 @@
     ]
   },
   {
-    "id": "q-237",
-    "title": "[Câu 237] CSRF là gì?",
+    "id": "q-248",
+    "title": "CSRF là gì?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6342,8 +6342,8 @@
     ]
   },
   {
-    "id": "q-238",
-    "title": "[Câu 238] XSS là gì?",
+    "id": "q-249",
+    "title": "XSS là gì?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6369,8 +6369,8 @@
     ]
   },
   {
-    "id": "q-239",
-    "title": "[Câu 239] Vì sao chỉ kiểm tra Role chưa đủ bảo vệ dữ liệu?",
+    "id": "q-250",
+    "title": "Vì sao chỉ kiểm tra Role chưa đủ bảo vệ dữ liệu?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6394,8 +6394,8 @@
     ]
   },
   {
-    "id": "q-240",
-    "title": "[Câu 240] Seller A đổi ID URL để xem Order Seller B: backend xử lý sao?",
+    "id": "q-251",
+    "title": "Seller A đổi ID URL để xem Order Seller B: backend xử lý sao?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6420,8 +6420,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be43",
-    "title": "[Câu BỔ SUNG BE43] SQL Injection là gì? Làm thế nào ngăn chặn trong Java Spring Boot?",
+    "id": "q-252",
+    "title": "SQL Injection là gì? Làm thế nào ngăn chặn trong Java Spring Boot?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6447,8 +6447,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be44",
-    "title": "[Câu BỔ SUNG BE44] Server-Side Request Forgery (SSRF) là gì? Backend cần làm gì để phòng tránh?",
+    "id": "q-253",
+    "title": "Server-Side Request Forgery (SSRF) là gì? Backend cần làm gì để phòng tránh?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6472,8 +6472,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be45",
-    "title": "[Câu BỔ SUNG BE45] OWASP Top 10 là gì? Vì sao Backend Engineer cần hiểu các nhóm lỗ hổng này?",
+    "id": "q-254",
+    "title": "OWASP Top 10 là gì? Vì sao Backend Engineer cần hiểu các nhóm lỗ hổng này?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6498,8 +6498,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be46",
-    "title": "[Câu BỔ SUNG BE46] Argon2 là gì? Khác BCrypt trong việc băm mật khẩu như thế nào?",
+    "id": "q-255",
+    "title": "Argon2 là gì? Khác BCrypt trong việc băm mật khẩu như thế nào?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6525,8 +6525,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be47",
-    "title": "[Câu BỔ SUNG BE47] HTTPS và TLS là gì? Chúng bảo vệ dữ liệu truyền giữa client và server như thế nào?",
+    "id": "q-256",
+    "title": "HTTPS và TLS là gì? Chúng bảo vệ dữ liệu truyền giữa client và server như thế nào?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6550,8 +6550,8 @@
     ]
   },
   {
-    "id": "q-241",
-    "title": "[Câu 241] JWT là gì? Gồm những phần nào?",
+    "id": "q-257",
+    "title": "JWT là gì? Gồm những phần nào?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6575,8 +6575,8 @@
     ]
   },
   {
-    "id": "q-242",
-    "title": "[Câu 242] JWT được ký như thế nào?",
+    "id": "q-258",
+    "title": "JWT được ký như thế nào?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -6601,8 +6601,8 @@
     ]
   },
   {
-    "id": "q-243",
-    "title": "[Câu 243] JWT có mã hóa payload không?",
+    "id": "q-259",
+    "title": "JWT có mã hóa payload không?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -6625,8 +6625,8 @@
     ]
   },
   {
-    "id": "q-244",
-    "title": "[Câu 244] Access Token và Refresh Token khác nhau?",
+    "id": "q-260",
+    "title": "Access Token và Refresh Token khác nhau?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -6650,8 +6650,8 @@
     ]
   },
   {
-    "id": "q-245",
-    "title": "[Câu 245] Vì sao CoVie dùng cả Access và Refresh Token?",
+    "id": "q-261",
+    "title": "Vì sao CoVie dùng cả Access và Refresh Token?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -6676,8 +6676,8 @@
     ]
   },
   {
-    "id": "q-246",
-    "title": "[Câu 246] Có nên lưu Access Token trong LocalStorage không?",
+    "id": "q-262",
+    "title": "Có nên lưu Access Token trong LocalStorage không?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -6700,8 +6700,8 @@
     ]
   },
   {
-    "id": "q-247",
-    "title": "[Câu 247] HttpOnly Cookie dùng để làm gì?",
+    "id": "q-263",
+    "title": "HttpOnly Cookie dùng để làm gì?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -6725,8 +6725,8 @@
     ]
   },
   {
-    "id": "q-248",
-    "title": "[Câu 248] Secure Cookie có tác dụng gì?",
+    "id": "q-264",
+    "title": "Secure Cookie có tác dụng gì?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -6751,8 +6751,8 @@
     ]
   },
   {
-    "id": "q-249",
-    "title": "[Câu 249] SameSite Cookie có những chế độ gì?",
+    "id": "q-265",
+    "title": "SameSite Cookie có những chế độ gì?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -6775,8 +6775,8 @@
     ]
   },
   {
-    "id": "q-250",
-    "title": "[Câu 250] CSRF Token và JWT có vai trò khác nhau thế nào?",
+    "id": "q-266",
+    "title": "CSRF Token và JWT có vai trò khác nhau thế nào?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -6800,8 +6800,8 @@
     ]
   },
   {
-    "id": "q-251",
-    "title": "[Câu 251] Cookie Authentication và Bearer Token khác nhau?",
+    "id": "q-267",
+    "title": "Cookie Authentication và Bearer Token khác nhau?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -6826,8 +6826,8 @@
     ]
   },
   {
-    "id": "q-252",
-    "title": "[Câu 252] JWT xác minh chữ ký thế nào?",
+    "id": "q-268",
+    "title": "JWT xác minh chữ ký thế nào?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -6850,8 +6850,8 @@
     ]
   },
   {
-    "id": "q-253",
-    "title": "[Câu 253] RS256 và HS256 khác nhau?",
+    "id": "q-269",
+    "title": "RS256 và HS256 khác nhau?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -6875,8 +6875,8 @@
     ]
   },
   {
-    "id": "q-254",
-    "title": "[Câu 254] Vì sao phải quản lý private key và public key khác nhau?",
+    "id": "q-270",
+    "title": "Vì sao phải quản lý private key và public key khác nhau?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -6901,8 +6901,8 @@
     ]
   },
   {
-    "id": "q-255",
-    "title": "[Câu 255] Nếu private key bị lộ, phải làm gì?",
+    "id": "q-271",
+    "title": "Nếu private key bị lộ, phải làm gì?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -6925,8 +6925,8 @@
     ]
   },
   {
-    "id": "q-256",
-    "title": "[Câu 256] JWT hết hạn frontend nên làm gì?",
+    "id": "q-272",
+    "title": "JWT hết hạn frontend nên làm gì?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -6950,8 +6950,8 @@
     ]
   },
   {
-    "id": "q-257",
-    "title": "[Câu 257] Refresh Token Rotation là gì?",
+    "id": "q-273",
+    "title": "Refresh Token Rotation là gì?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -6976,8 +6976,8 @@
     ]
   },
   {
-    "id": "q-258",
-    "title": "[Câu 258] Refresh Token Reuse Detection là gì?",
+    "id": "q-274",
+    "title": "Refresh Token Reuse Detection là gì?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -7000,8 +7000,8 @@
     ]
   },
   {
-    "id": "q-259",
-    "title": "[Câu 259] Logout khi JWT chưa hết hạn: backend từ chối thế nào?",
+    "id": "q-275",
+    "title": "Logout khi JWT chưa hết hạn: backend từ chối thế nào?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -7025,8 +7025,8 @@
     ]
   },
   {
-    "id": "q-260",
-    "title": "[Câu 260] Vì sao CoVie kiểm tra Active Session dù dùng JWT?",
+    "id": "q-276",
+    "title": "Vì sao CoVie kiểm tra Active Session dù dùng JWT?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -7051,8 +7051,8 @@
     ]
   },
   {
-    "id": "q-261",
-    "title": "[Câu 261] OAuth 2.0 là gì?",
+    "id": "q-277",
+    "title": "OAuth 2.0 là gì?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -7075,8 +7075,8 @@
     ]
   },
   {
-    "id": "q-262",
-    "title": "[Câu 262] OAuth 2.0 và OpenID Connect khác nhau?",
+    "id": "q-278",
+    "title": "OAuth 2.0 và OpenID Connect khác nhau?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -7100,8 +7100,8 @@
     ]
   },
   {
-    "id": "q-263",
-    "title": "[Câu 263] Authorization Code Flow hoạt động thế nào?",
+    "id": "q-279",
+    "title": "Authorization Code Flow hoạt động thế nào?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -7126,8 +7126,8 @@
     ]
   },
   {
-    "id": "q-264",
-    "title": "[Câu 264] Google OAuth Callback là gì?",
+    "id": "q-280",
+    "title": "Google OAuth Callback là gì?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -7150,8 +7150,8 @@
     ]
   },
   {
-    "id": "q-265",
-    "title": "[Câu 265] Vì sao phải đăng ký đúng Redirect URI?",
+    "id": "q-281",
+    "title": "Vì sao phải đăng ký đúng Redirect URI?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -7175,8 +7175,8 @@
     ]
   },
   {
-    "id": "q-266",
-    "title": "[Câu 266] OAuth state parameter làm gì?",
+    "id": "q-282",
+    "title": "OAuth state parameter làm gì?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -7201,8 +7201,8 @@
     ]
   },
   {
-    "id": "q-267",
-    "title": "[Câu 267] PKCE là gì?",
+    "id": "q-283",
+    "title": "PKCE là gì?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -7225,8 +7225,8 @@
     ]
   },
   {
-    "id": "q-268",
-    "title": "[Câu 268] ID Token khác Access Token thế nào?",
+    "id": "q-284",
+    "title": "ID Token khác Access Token thế nào?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -7250,8 +7250,8 @@
     ]
   },
   {
-    "id": "q-269",
-    "title": "[Câu 269] Google sub claim có ý nghĩa gì?",
+    "id": "q-285",
+    "title": "Google sub claim có ý nghĩa gì?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -7276,8 +7276,8 @@
     ]
   },
   {
-    "id": "q-270",
-    "title": "[Câu 270] Vì sao không dùng email làm định danh Google duy nhất?",
+    "id": "q-286",
+    "title": "Vì sao không dùng email làm định danh Google duy nhất?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -7300,8 +7300,8 @@
     ]
   },
   {
-    "id": "q-271",
-    "title": "[Câu 271] Người dùng đổi email Google, hệ thống nhận diện thế nào?",
+    "id": "q-287",
+    "title": "Người dùng đổi email Google, hệ thống nhận diện thế nào?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -7325,8 +7325,8 @@
     ]
   },
   {
-    "id": "q-272",
-    "title": "[Câu 272] Một tài khoản đăng nhập cả Google và password thế nào?",
+    "id": "q-288",
+    "title": "Một tài khoản đăng nhập cả Google và password thế nào?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -7351,8 +7351,8 @@
     ]
   },
   {
-    "id": "q-273",
-    "title": "[Câu 273] Xử lý email trùng khi liên kết Google thế nào?",
+    "id": "q-289",
+    "title": "Xử lý email trùng khi liên kết Google thế nào?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -7379,8 +7379,8 @@
     ]
   },
   {
-    "id": "q-274",
-    "title": "[Câu 274] Vì sao cần giới hạn số lần đăng nhập sai?",
+    "id": "q-290",
+    "title": "Vì sao cần giới hạn số lần đăng nhập sai?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -7404,8 +7404,8 @@
     ]
   },
   {
-    "id": "q-275",
-    "title": "[Câu 275] Brute Force Attack là gì?",
+    "id": "q-291",
+    "title": "Brute Force Attack là gì?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -7430,8 +7430,8 @@
     ]
   },
   {
-    "id": "q-276",
-    "title": "[Câu 276] Account Enumeration là gì?",
+    "id": "q-292",
+    "title": "Account Enumeration là gì?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -7454,8 +7454,8 @@
     ]
   },
   {
-    "id": "q-277",
-    "title": "[Câu 277] Session Fixation là gì?",
+    "id": "q-293",
+    "title": "Session Fixation là gì?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -7479,8 +7479,8 @@
     ]
   },
   {
-    "id": "q-278",
-    "title": "[Câu 278] Hai thiết bị dùng cùng refresh token: xử lý sao?",
+    "id": "q-294",
+    "title": "Hai thiết bị dùng cùng refresh token: xử lý sao?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -7505,8 +7505,8 @@
     ]
   },
   {
-    "id": "q-279",
-    "title": "[Câu 279] Vì sao reset password cần Action Ticket riêng?",
+    "id": "q-295",
+    "title": "Vì sao reset password cần Action Ticket riêng?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -7529,8 +7529,8 @@
     ]
   },
   {
-    "id": "q-280",
-    "title": "[Câu 280] Nếu tăng Access Token TTL 15 phút lên 24 giờ, có rủi ro gì?",
+    "id": "q-296",
+    "title": "Nếu tăng Access Token TTL 15 phút lên 24 giờ, có rủi ro gì?",
     "category": "security-auth",
     "difficulty": "senior",
     "tags": [
@@ -7554,8 +7554,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be42",
-    "title": "[Câu BỔ SUNG BE42] Attribute-Based Access Control (ABAC) là gì? Khác Role-Based Access Control (RBAC) như thế nào?",
+    "id": "q-297",
+    "title": "Attribute-Based Access Control (ABAC) là gì? Khác Role-Based Access Control (RBAC) như thế nào?",
     "category": "security-auth",
     "difficulty": "middle",
     "tags": [
@@ -7580,8 +7580,8 @@
     ]
   },
   {
-    "id": "q-281",
-    "title": "[Câu 281] ORM là gì?",
+    "id": "q-298",
+    "title": "ORM là gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -7605,8 +7605,8 @@
     ]
   },
   {
-    "id": "q-282",
-    "title": "[Câu 282] JPA và Hibernate khác nhau?",
+    "id": "q-299",
+    "title": "JPA và Hibernate khác nhau?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -7631,8 +7631,8 @@
     ]
   },
   {
-    "id": "q-283",
-    "title": "[Câu 283] Entity là gì?",
+    "id": "q-300",
+    "title": "Entity là gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -7658,8 +7658,8 @@
     ]
   },
   {
-    "id": "q-284",
-    "title": "[Câu 284] @Entity, @Table, @Id có tác dụng gì?",
+    "id": "q-301",
+    "title": "@Entity, @Table, @Id có tác dụng gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -7683,8 +7683,8 @@
     ]
   },
   {
-    "id": "q-285",
-    "title": "[Câu 285] @GeneratedValue để làm gì?",
+    "id": "q-302",
+    "title": "@GeneratedValue để làm gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -7709,8 +7709,8 @@
     ]
   },
   {
-    "id": "q-286",
-    "title": "[Câu 286] Entity Lifecycle gồm các trạng thái nào?",
+    "id": "q-303",
+    "title": "Entity Lifecycle gồm các trạng thái nào?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -7736,8 +7736,8 @@
     ]
   },
   {
-    "id": "q-287",
-    "title": "[Câu 287] Persistence Context là gì?",
+    "id": "q-304",
+    "title": "Persistence Context là gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -7761,8 +7761,8 @@
     ]
   },
   {
-    "id": "q-288",
-    "title": "[Câu 288] Dirty Checking là gì?",
+    "id": "q-305",
+    "title": "Dirty Checking là gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -7787,8 +7787,8 @@
     ]
   },
   {
-    "id": "q-289",
-    "title": "[Câu 289] save() và saveAndFlush() khác nhau?",
+    "id": "q-306",
+    "title": "save() và saveAndFlush() khác nhau?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -7814,8 +7814,8 @@
     ]
   },
   {
-    "id": "q-290",
-    "title": "[Câu 290] flush() và commit() khác nhau?",
+    "id": "q-307",
+    "title": "flush() và commit() khác nhau?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -7839,8 +7839,8 @@
     ]
   },
   {
-    "id": "q-291",
-    "title": "[Câu 291] Lazy Loading và Eager Loading là gì?",
+    "id": "q-308",
+    "title": "Lazy Loading và Eager Loading là gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -7865,8 +7865,8 @@
     ]
   },
   {
-    "id": "q-292",
-    "title": "[Câu 292] N+1 Query Problem là gì?",
+    "id": "q-309",
+    "title": "N+1 Query Problem là gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -7892,8 +7892,8 @@
     ]
   },
   {
-    "id": "q-293",
-    "title": "[Câu 293] Cách phát hiện và xử lý N+1?",
+    "id": "q-310",
+    "title": "Cách phát hiện và xử lý N+1?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -7917,8 +7917,8 @@
     ]
   },
   {
-    "id": "q-294",
-    "title": "[Câu 294] @OneToMany, @ManyToOne, @OneToOne khác nhau?",
+    "id": "q-311",
+    "title": "@OneToMany, @ManyToOne, @OneToOne khác nhau?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -7943,8 +7943,8 @@
     ]
   },
   {
-    "id": "q-295",
-    "title": "[Câu 295] Cascade Type có tác dụng gì?",
+    "id": "q-312",
+    "title": "Cascade Type có tác dụng gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -7970,8 +7970,8 @@
     ]
   },
   {
-    "id": "q-296",
-    "title": "[Câu 296] orphanRemoval=true để làm gì?",
+    "id": "q-313",
+    "title": "orphanRemoval=true để làm gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -7995,8 +7995,8 @@
     ]
   },
   {
-    "id": "q-297",
-    "title": "[Câu 297] JPQL và Native SQL khác nhau?",
+    "id": "q-314",
+    "title": "JPQL và Native SQL khác nhau?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8021,8 +8021,8 @@
     ]
   },
   {
-    "id": "q-298",
-    "title": "[Câu 298] @Query dùng khi nào?",
+    "id": "q-315",
+    "title": "@Query dùng khi nào?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8048,8 +8048,8 @@
     ]
   },
   {
-    "id": "q-299",
-    "title": "[Câu 299] JpaRepository khác CrudRepository thế nào?",
+    "id": "q-316",
+    "title": "JpaRepository khác CrudRepository thế nào?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8073,8 +8073,8 @@
     ]
   },
   {
-    "id": "q-300",
-    "title": "[Câu 300] Vì sao CoVie để spring.jpa.open-in-view=false?",
+    "id": "q-317",
+    "title": "Vì sao CoVie để spring.jpa.open-in-view=false?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8099,8 +8099,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be20",
-    "title": "[Câu BỔ SUNG BE20] Database Connection Pool là gì? HikariCP hoạt động và giúp ích như thế nào trong Spring Boot?",
+    "id": "q-318",
+    "title": "Database Connection Pool là gì? HikariCP hoạt động và giúp ích như thế nào trong Spring Boot?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8126,8 +8126,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be21",
-    "title": "[Câu BỔ SUNG BE21] MyBatis là gì? Khác JPA/Hibernate như thế nào?",
+    "id": "q-319",
+    "title": "MyBatis là gì? Khác JPA/Hibernate như thế nào?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8151,8 +8151,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be22",
-    "title": "[Câu BỔ SUNG BE22] Prisma ORM là gì? Khác gì với ORM thường dùng trong Java?",
+    "id": "q-320",
+    "title": "Prisma ORM là gì? Khác gì với ORM thường dùng trong Java?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8177,8 +8177,8 @@
     ]
   },
   {
-    "id": "q-301",
-    "title": "[Câu 301] SQL là gì?",
+    "id": "q-321",
+    "title": "SQL là gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8205,8 +8205,8 @@
     ]
   },
   {
-    "id": "q-302",
-    "title": "[Câu 302] SQL và NoSQL khác nhau?",
+    "id": "q-322",
+    "title": "SQL và NoSQL khác nhau?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8231,8 +8231,8 @@
     ]
   },
   {
-    "id": "q-303",
-    "title": "[Câu 303] DDL, DML, DCL, TCL là gì?",
+    "id": "q-323",
+    "title": "DDL, DML, DCL, TCL là gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8258,8 +8258,8 @@
     ]
   },
   {
-    "id": "q-304",
-    "title": "[Câu 304] Primary Key là gì?",
+    "id": "q-324",
+    "title": "Primary Key là gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8286,8 +8286,8 @@
     ]
   },
   {
-    "id": "q-305",
-    "title": "[Câu 305] Foreign Key là gì?",
+    "id": "q-325",
+    "title": "Foreign Key là gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8312,8 +8312,8 @@
     ]
   },
   {
-    "id": "q-306",
-    "title": "[Câu 306] Unique Constraint là gì?",
+    "id": "q-326",
+    "title": "Unique Constraint là gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8339,8 +8339,8 @@
     ]
   },
   {
-    "id": "q-307",
-    "title": "[Câu 307] NOT NULL Constraint làm gì?",
+    "id": "q-327",
+    "title": "NOT NULL Constraint làm gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8367,8 +8367,8 @@
     ]
   },
   {
-    "id": "q-308",
-    "title": "[Câu 308] INNER JOIN và LEFT JOIN khác nhau?",
+    "id": "q-328",
+    "title": "INNER JOIN và LEFT JOIN khác nhau?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8393,8 +8393,8 @@
     ]
   },
   {
-    "id": "q-309",
-    "title": "[Câu 309] RIGHT JOIN và FULL OUTER JOIN là gì?",
+    "id": "q-329",
+    "title": "RIGHT JOIN và FULL OUTER JOIN là gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8420,8 +8420,8 @@
     ]
   },
   {
-    "id": "q-310",
-    "title": "[Câu 310] WHERE và HAVING khác nhau?",
+    "id": "q-330",
+    "title": "WHERE và HAVING khác nhau?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8448,8 +8448,8 @@
     ]
   },
   {
-    "id": "q-311",
-    "title": "[Câu 311] GROUP BY dùng làm gì?",
+    "id": "q-331",
+    "title": "GROUP BY dùng làm gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8474,8 +8474,8 @@
     ]
   },
   {
-    "id": "q-312",
-    "title": "[Câu 312] COUNT(\\*) và COUNT(column) khác nhau?",
+    "id": "q-332",
+    "title": "COUNT(\\*) và COUNT(column) khác nhau?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8501,8 +8501,8 @@
     ]
   },
   {
-    "id": "q-313",
-    "title": "[Câu 313] Subquery là gì?",
+    "id": "q-333",
+    "title": "Subquery là gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8529,8 +8529,8 @@
     ]
   },
   {
-    "id": "q-314",
-    "title": "[Câu 314] CTE (WITH) là gì?",
+    "id": "q-334",
+    "title": "CTE (WITH) là gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8555,8 +8555,8 @@
     ]
   },
   {
-    "id": "q-315",
-    "title": "[Câu 315] UNION và UNION ALL khác nhau?",
+    "id": "q-335",
+    "title": "UNION và UNION ALL khác nhau?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8582,8 +8582,8 @@
     ]
   },
   {
-    "id": "q-316",
-    "title": "[Câu 316] Index là gì và vì sao tăng tốc?",
+    "id": "q-336",
+    "title": "Index là gì và vì sao tăng tốc?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8610,8 +8610,8 @@
     ]
   },
   {
-    "id": "q-317",
-    "title": "[Câu 317] Khi nào Index làm giảm hiệu năng?",
+    "id": "q-337",
+    "title": "Khi nào Index làm giảm hiệu năng?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8636,8 +8636,8 @@
     ]
   },
   {
-    "id": "q-318",
-    "title": "[Câu 318] B-Tree Index hoạt động thế nào?",
+    "id": "q-338",
+    "title": "B-Tree Index hoạt động thế nào?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8667,8 +8667,8 @@
     ]
   },
   {
-    "id": "q-319",
-    "title": "[Câu 319] ACID là gì?",
+    "id": "q-339",
+    "title": "ACID là gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8695,8 +8695,8 @@
     ]
   },
   {
-    "id": "q-320",
-    "title": "[Câu 320] Viết SQL lấy 10 sản phẩm bán chạy nhất.",
+    "id": "q-340",
+    "title": "Viết SQL lấy 10 sản phẩm bán chạy nhất.",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8721,8 +8721,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be14",
-    "title": "[Câu BỔ SUNG BE14] Database Normalization là gì? Chuẩn 1NF, 2NF và 3NF giải quyết vấn đề gì?",
+    "id": "q-341",
+    "title": "Database Normalization là gì? Chuẩn 1NF, 2NF và 3NF giải quyết vấn đề gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8748,8 +8748,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be64",
-    "title": "[Câu BỔ SUNG BE64] NoSQL là gì? Đặc điểm, ưu điểm, hạn chế và khi nào nên sử dụng NoSQL?",
+    "id": "q-342",
+    "title": "NoSQL là gì? Đặc điểm, ưu điểm, hạn chế và khi nào nên sử dụng NoSQL?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8776,8 +8776,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be65",
-    "title": "[Câu BỔ SUNG BE65] Có những loại cơ sở dữ liệu NoSQL phổ biến nào? Phân biệt Key-Value, Document, Wide-Column và Graph Database, kèm ví dụ và trường hợp sử dụng.",
+    "id": "q-343",
+    "title": "Có những loại cơ sở dữ liệu NoSQL phổ biến nào? Phân biệt Key-Value, Document, Wide-Column và Graph Database, kèm ví dụ và trường hợp sử dụng.",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8802,8 +8802,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be15",
-    "title": "[Câu BỔ SUNG BE15] MongoDB là gì? Khác PostgreSQL như thế nào?",
+    "id": "q-344",
+    "title": "MongoDB là gì? Khác PostgreSQL như thế nào?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8829,8 +8829,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be16",
-    "title": "[Câu BỔ SUNG BE16] Apache Cassandra là gì? Phù hợp với loại bài toán nào?",
+    "id": "q-345",
+    "title": "Apache Cassandra là gì? Phù hợp với loại bài toán nào?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8857,8 +8857,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be17",
-    "title": "[Câu BỔ SUNG BE17] Amazon DynamoDB là gì? Khi nào nên sử dụng?",
+    "id": "q-346",
+    "title": "Amazon DynamoDB là gì? Khi nào nên sử dụng?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8883,8 +8883,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be18",
-    "title": "[Câu BỔ SUNG BE18] CAP Theorem là gì? Consistency, Availability và Partition Tolerance có ý nghĩa gì?",
+    "id": "q-347",
+    "title": "CAP Theorem là gì? Consistency, Availability và Partition Tolerance có ý nghĩa gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8910,8 +8910,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be23",
-    "title": "[Câu BỔ SUNG BE23] PostgreSQL và MySQL có những điểm giống và khác nhau nào quan trọng đối với Backend Engineer?",
+    "id": "q-348",
+    "title": "PostgreSQL và MySQL có những điểm giống và khác nhau nào quan trọng đối với Backend Engineer?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8938,8 +8938,8 @@
     ]
   },
   {
-    "id": "q-321",
-    "title": "[Câu 321] Transaction là gì? Ý nghĩa của Transaction trong dự án thực tế như CoVie là gì?",
+    "id": "q-349",
+    "title": "Transaction là gì? Ý nghĩa của Transaction trong dự án thực tế như CoVie là gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -8962,8 +8962,8 @@
     ]
   },
   {
-    "id": "q-322",
-    "title": "[Câu 322] Commit và Rollback khác nhau?",
+    "id": "q-350",
+    "title": "Commit và Rollback khác nhau?",
     "category": "database",
     "difficulty": "senior",
     "tags": [
@@ -8987,8 +8987,8 @@
     ]
   },
   {
-    "id": "q-323",
-    "title": "[Câu 323] Transaction Isolation Level là gì?",
+    "id": "q-351",
+    "title": "Transaction Isolation Level là gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -9013,8 +9013,8 @@
     ]
   },
   {
-    "id": "q-324",
-    "title": "[Câu 324] Read Uncommitted, Read Committed, Repeatable Read, Serializable khác nhau?",
+    "id": "q-352",
+    "title": "Read Uncommitted, Read Committed, Repeatable Read, Serializable khác nhau?",
     "category": "database",
     "difficulty": "senior",
     "tags": [
@@ -9037,8 +9037,8 @@
     ]
   },
   {
-    "id": "q-325",
-    "title": "[Câu 325] Dirty Read là gì?",
+    "id": "q-353",
+    "title": "Dirty Read là gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -9062,8 +9062,8 @@
     ]
   },
   {
-    "id": "q-326",
-    "title": "[Câu 326] Non-repeatable Read là gì?",
+    "id": "q-354",
+    "title": "Non-repeatable Read là gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -9088,8 +9088,8 @@
     ]
   },
   {
-    "id": "q-327",
-    "title": "[Câu 327] Phantom Read là gì?",
+    "id": "q-355",
+    "title": "Phantom Read là gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -9112,8 +9112,8 @@
     ]
   },
   {
-    "id": "q-328",
-    "title": "[Câu 328] Optimistic Locking là gì?",
+    "id": "q-356",
+    "title": "Optimistic Locking là gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -9137,8 +9137,8 @@
     ]
   },
   {
-    "id": "q-329",
-    "title": "[Câu 329] Pessimistic Locking là gì?",
+    "id": "q-357",
+    "title": "Pessimistic Locking là gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -9163,8 +9163,8 @@
     ]
   },
   {
-    "id": "q-330",
-    "title": "[Câu 330] @Version trong JPA làm gì?",
+    "id": "q-358",
+    "title": "@Version trong JPA làm gì?",
     "category": "database",
     "difficulty": "senior",
     "tags": [
@@ -9187,8 +9187,8 @@
     ]
   },
   {
-    "id": "q-331",
-    "title": "[Câu 331] SELECT ... FOR UPDATE làm gì?",
+    "id": "q-359",
+    "title": "SELECT ... FOR UPDATE làm gì?",
     "category": "database",
     "difficulty": "senior",
     "tags": [
@@ -9212,8 +9212,8 @@
     ]
   },
   {
-    "id": "q-332",
-    "title": "[Câu 332] Database Deadlock xảy ra thế nào?",
+    "id": "q-360",
+    "title": "Database Deadlock xảy ra thế nào?",
     "category": "database",
     "difficulty": "senior",
     "tags": [
@@ -9242,8 +9242,8 @@
     ]
   },
   {
-    "id": "q-333",
-    "title": "[Câu 333] Vì sao thứ tự lấy Lock nhất quán giảm Deadlock?",
+    "id": "q-361",
+    "title": "Vì sao thứ tự lấy Lock nhất quán giảm Deadlock?",
     "category": "database",
     "difficulty": "senior",
     "tags": [
@@ -9270,8 +9270,8 @@
     ]
   },
   {
-    "id": "q-334",
-    "title": "[Câu 334] Vì sao CoVie chọn UUID? Ưu nhược?",
+    "id": "q-362",
+    "title": "Vì sao CoVie chọn UUID? Ưu nhược?",
     "category": "database",
     "difficulty": "senior",
     "tags": [
@@ -9295,8 +9295,8 @@
     ]
   },
   {
-    "id": "q-335",
-    "title": "[Câu 335] UUIDv7 khác UUIDv4 thế nào?",
+    "id": "q-363",
+    "title": "UUIDv7 khác UUIDv4 thế nào?",
     "category": "database",
     "difficulty": "senior",
     "tags": [
@@ -9321,8 +9321,8 @@
     ]
   },
   {
-    "id": "q-336",
-    "title": "[Câu 336] JSONB trong PostgreSQL phù hợp dữ liệu nào?",
+    "id": "q-364",
+    "title": "JSONB trong PostgreSQL phù hợp dữ liệu nào?",
     "category": "database",
     "difficulty": "senior",
     "tags": [
@@ -9345,8 +9345,8 @@
     ]
   },
   {
-    "id": "q-337",
-    "title": "[Câu 337] EXPLAIN ANALYZE dùng để làm gì?",
+    "id": "q-365",
+    "title": "EXPLAIN ANALYZE dùng để làm gì?",
     "category": "database",
     "difficulty": "senior",
     "tags": [
@@ -9370,8 +9370,8 @@
     ]
   },
   {
-    "id": "q-338",
-    "title": "[Câu 338] Migration và Flyway là gì?",
+    "id": "q-366",
+    "title": "Migration và Flyway là gì?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -9396,8 +9396,8 @@
     ]
   },
   {
-    "id": "q-339",
-    "title": "[Câu 339] Vì sao không sửa migration đã chạy trên môi trường chung?",
+    "id": "q-367",
+    "title": "Vì sao không sửa migration đã chạy trên môi trường chung?",
     "category": "database",
     "difficulty": "senior",
     "tags": [
@@ -9420,8 +9420,8 @@
     ]
   },
   {
-    "id": "q-340",
-    "title": "[Câu 340] Thêm cột bắt buộc vào bảng hàng triệu dòng tránh downtime thế nào?",
+    "id": "q-368",
+    "title": "Thêm cột bắt buộc vào bảng hàng triệu dòng tránh downtime thế nào?",
     "category": "database",
     "difficulty": "senior",
     "tags": [
@@ -9445,8 +9445,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be19",
-    "title": "[Câu BỔ SUNG BE19] Liquibase là gì? Khác Flyway như thế nào?",
+    "id": "q-369",
+    "title": "Liquibase là gì? Khác Flyway như thế nào?",
     "category": "database",
     "difficulty": "middle",
     "tags": [
@@ -9471,8 +9471,8 @@
     ]
   },
   {
-    "id": "q-341",
-    "title": "[Câu 341] CoVie tổ chức User, Merchant, Product, Service thế nào?",
+    "id": "q-370",
+    "title": "CoVie tổ chức User, Merchant, Product, Service thế nào?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -9495,8 +9495,8 @@
     ]
   },
   {
-    "id": "q-342",
-    "title": "[Câu 342] Merchant và Merchant Location khác nhau?",
+    "id": "q-371",
+    "title": "Merchant và Merchant Location khác nhau?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -9520,8 +9520,8 @@
     ]
   },
   {
-    "id": "q-343",
-    "title": "[Câu 343] Khi Merchant có nhiều Location, backend xác định điểm bán phục vụ đơn hàng thế nào?",
+    "id": "q-372",
+    "title": "Khi Merchant có nhiều Location, backend xác định điểm bán phục vụ đơn hàng thế nào?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -9546,8 +9546,8 @@
     ]
   },
   {
-    "id": "q-344",
-    "title": "[Câu 344] Product và Product Variant khác nhau?",
+    "id": "q-373",
+    "title": "Product và Product Variant khác nhau?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -9570,8 +9570,8 @@
     ]
   },
   {
-    "id": "q-345",
-    "title": "[Câu 345] SKU là gì?",
+    "id": "q-374",
+    "title": "SKU là gì?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -9595,8 +9595,8 @@
     ]
   },
   {
-    "id": "q-346",
-    "title": "[Câu 346] Vì sao một sản phẩm có nhiều biến thể?",
+    "id": "q-375",
+    "title": "Vì sao một sản phẩm có nhiều biến thể?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -9621,8 +9621,8 @@
     ]
   },
   {
-    "id": "q-347",
-    "title": "[Câu 347] Điều kiện sản phẩm được hiển thị công khai?",
+    "id": "q-376",
+    "title": "Điều kiện sản phẩm được hiển thị công khai?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -9645,8 +9645,8 @@
     ]
   },
   {
-    "id": "q-348",
-    "title": "[Câu 348] Vì sao tách Draft và Published?",
+    "id": "q-377",
+    "title": "Vì sao tách Draft và Published?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -9670,8 +9670,8 @@
     ]
   },
   {
-    "id": "q-349",
-    "title": "[Câu 349] Soft Delete là gì? Khi nào dùng?",
+    "id": "q-378",
+    "title": "Soft Delete là gì? Khi nào dùng?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -9696,8 +9696,8 @@
     ]
   },
   {
-    "id": "q-350",
-    "title": "[Câu 350] Làm sao không lộ sản phẩm bị moderation từ chối?",
+    "id": "q-379",
+    "title": "Làm sao không lộ sản phẩm bị moderation từ chối?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -9720,8 +9720,8 @@
     ]
   },
   {
-    "id": "q-351",
-    "title": "[Câu 351] Upload qua Presigned URL hoạt động thế nào?",
+    "id": "q-380",
+    "title": "Upload qua Presigned URL hoạt động thế nào?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -9745,8 +9745,8 @@
     ]
   },
   {
-    "id": "q-352",
-    "title": "[Câu 352] Vì sao không upload ảnh trực tiếp qua backend?",
+    "id": "q-381",
+    "title": "Vì sao không upload ảnh trực tiếp qua backend?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -9771,8 +9771,8 @@
     ]
   },
   {
-    "id": "q-353",
-    "title": "[Câu 353] Vì sao cần Complete Upload?",
+    "id": "q-382",
+    "title": "Vì sao cần Complete Upload?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -9795,8 +9795,8 @@
     ]
   },
   {
-    "id": "q-354",
-    "title": "[Câu 354] Kiểm tra quyền sở hữu media trước gắn vào Product thế nào?",
+    "id": "q-383",
+    "title": "Kiểm tra quyền sở hữu media trước gắn vào Product thế nào?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -9820,8 +9820,8 @@
     ]
   },
   {
-    "id": "q-355",
-    "title": "[Câu 355] Chặn file upload sai định dạng thế nào?",
+    "id": "q-384",
+    "title": "Chặn file upload sai định dạng thế nào?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -9846,8 +9846,8 @@
     ]
   },
   {
-    "id": "q-356",
-    "title": "[Câu 356] Object Storage khác File System?",
+    "id": "q-385",
+    "title": "Object Storage khác File System?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -9870,8 +9870,8 @@
     ]
   },
   {
-    "id": "q-357",
-    "title": "[Câu 357] PostGIS là gì?",
+    "id": "q-386",
+    "title": "PostGIS là gì?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -9895,8 +9895,8 @@
     ]
   },
   {
-    "id": "q-358",
-    "title": "[Câu 358] Geometry và Geography khác nhau?",
+    "id": "q-387",
+    "title": "Geometry và Geography khác nhau?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -9921,8 +9921,8 @@
     ]
   },
   {
-    "id": "q-359",
-    "title": "[Câu 359] Kiểm tra khách nằm trong vùng giao hàng thế nào?",
+    "id": "q-388",
+    "title": "Kiểm tra khách nằm trong vùng giao hàng thế nào?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -9945,8 +9945,8 @@
     ]
   },
   {
-    "id": "q-360",
-    "title": "[Câu 360] Khách đổi vị trí giao hàng giữa Cart và Checkout, xử lý sao?",
+    "id": "q-389",
+    "title": "Khách đổi vị trí giao hàng giữa Cart và Checkout, xử lý sao?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -9970,8 +9970,8 @@
     ]
   },
   {
-    "id": "q-361",
-    "title": "[Câu 361] Cart và Order khác nhau?",
+    "id": "q-390",
+    "title": "Cart và Order khác nhau?",
     "category": "project-covie",
     "difficulty": "senior",
     "tags": [
@@ -9995,8 +9995,8 @@
     ]
   },
   {
-    "id": "q-362",
-    "title": "[Câu 362] Vì sao thêm Cart chưa tạo Order?",
+    "id": "q-391",
+    "title": "Vì sao thêm Cart chưa tạo Order?",
     "category": "project-covie",
     "difficulty": "senior",
     "tags": [
@@ -10018,8 +10018,8 @@
     ]
   },
   {
-    "id": "q-363",
-    "title": "[Câu 363] Cart Item và Order Item nên lưu gì?",
+    "id": "q-392",
+    "title": "Cart Item và Order Item nên lưu gì?",
     "category": "project-covie",
     "difficulty": "senior",
     "tags": [
@@ -10042,8 +10042,8 @@
     ]
   },
   {
-    "id": "q-364",
-    "title": "[Câu 364] Vì sao kiểm tra lại giá ở Checkout?",
+    "id": "q-393",
+    "title": "Vì sao kiểm tra lại giá ở Checkout?",
     "category": "project-covie",
     "difficulty": "senior",
     "tags": [
@@ -10067,8 +10067,8 @@
     ]
   },
   {
-    "id": "q-365",
-    "title": "[Câu 365] Checkout Preview và Checkout Commit khác nhau?",
+    "id": "q-394",
+    "title": "Checkout Preview và Checkout Commit khác nhau?",
     "category": "project-covie",
     "difficulty": "senior",
     "tags": [
@@ -10090,8 +10090,8 @@
     ]
   },
   {
-    "id": "q-366",
-    "title": "[Câu 366] Checkout Session là gì?",
+    "id": "q-395",
+    "title": "Checkout Session là gì?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -10114,8 +10114,8 @@
     ]
   },
   {
-    "id": "q-367",
-    "title": "[Câu 367] Vì sao Checkout Session cần hết hạn?",
+    "id": "q-396",
+    "title": "Vì sao Checkout Session cần hết hạn?",
     "category": "project-covie",
     "difficulty": "senior",
     "tags": [
@@ -10139,8 +10139,8 @@
     ]
   },
   {
-    "id": "q-368",
-    "title": "[Câu 368] Checkout Session TTL 15 phút: hết hạn thì sao?",
+    "id": "q-397",
+    "title": "Checkout Session TTL 15 phút: hết hạn thì sao?",
     "category": "project-covie",
     "difficulty": "senior",
     "tags": [
@@ -10162,8 +10162,8 @@
     ]
   },
   {
-    "id": "q-369",
-    "title": "[Câu 369] Vì sao không tin giá tiền frontend gửi?",
+    "id": "q-398",
+    "title": "Vì sao không tin giá tiền frontend gửi?",
     "category": "project-covie",
     "difficulty": "senior",
     "tags": [
@@ -10186,8 +10186,8 @@
     ]
   },
   {
-    "id": "q-370",
-    "title": "[Câu 370] Người bán đổi giá sau Preview, xử lý gì?",
+    "id": "q-399",
+    "title": "Người bán đổi giá sau Preview, xử lý gì?",
     "category": "project-covie",
     "difficulty": "senior",
     "tags": [
@@ -10211,8 +10211,8 @@
     ]
   },
   {
-    "id": "q-371",
-    "title": "[Câu 371] Inventory Reservation là gì?",
+    "id": "q-400",
+    "title": "Inventory Reservation là gì?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -10234,8 +10234,8 @@
     ]
   },
   {
-    "id": "q-372",
-    "title": "[Câu 372] Available Stock và Reserved Stock khác nhau?",
+    "id": "q-401",
+    "title": "Available Stock và Reserved Stock khác nhau?",
     "category": "project-covie",
     "difficulty": "senior",
     "tags": [
@@ -10258,8 +10258,8 @@
     ]
   },
   {
-    "id": "q-373",
-    "title": "[Câu 373] Khi nào giữ hàng khi tạo Order?",
+    "id": "q-402",
+    "title": "Khi nào giữ hàng khi tạo Order?",
     "category": "project-covie",
     "difficulty": "senior",
     "tags": [
@@ -10283,8 +10283,8 @@
     ]
   },
   {
-    "id": "q-374",
-    "title": "[Câu 374] Hủy Order thì hoàn lại tồn kho ra sao?",
+    "id": "q-403",
+    "title": "Hủy Order thì hoàn lại tồn kho ra sao?",
     "category": "project-covie",
     "difficulty": "senior",
     "tags": [
@@ -10306,8 +10306,8 @@
     ]
   },
   {
-    "id": "q-375",
-    "title": "[Câu 375] Chuyển từ Reserved sang Sold thế nào?",
+    "id": "q-404",
+    "title": "Chuyển từ Reserved sang Sold thế nào?",
     "category": "project-covie",
     "difficulty": "senior",
     "tags": [
@@ -10330,8 +10330,8 @@
     ]
   },
   {
-    "id": "q-376",
-    "title": "[Câu 376] Vì sao lưu Inventory Movement History?",
+    "id": "q-405",
+    "title": "Vì sao lưu Inventory Movement History?",
     "category": "project-covie",
     "difficulty": "senior",
     "tags": [
@@ -10355,8 +10355,8 @@
     ]
   },
   {
-    "id": "q-377",
-    "title": "[Câu 377] Order State Machine là gì?",
+    "id": "q-406",
+    "title": "Order State Machine là gì?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -10378,8 +10378,8 @@
     ]
   },
   {
-    "id": "q-378",
-    "title": "[Câu 378] Các trạng thái Order được phép chuyển đổi thế nào?",
+    "id": "q-407",
+    "title": "Các trạng thái Order được phép chuyển đổi thế nào?",
     "category": "project-covie",
     "difficulty": "senior",
     "tags": [
@@ -10402,8 +10402,8 @@
     ]
   },
   {
-    "id": "q-379",
-    "title": "[Câu 379] Tạo Order xong nhưng giữ hàng thất bại thì sao?",
+    "id": "q-408",
+    "title": "Tạo Order xong nhưng giữ hàng thất bại thì sao?",
     "category": "project-covie",
     "difficulty": "senior",
     "tags": [
@@ -10427,8 +10427,8 @@
     ]
   },
   {
-    "id": "q-380",
-    "title": "[Câu 380] Người dùng bấm Đặt hàng hai lần: tránh tạo hai Order thế nào?",
+    "id": "q-409",
+    "title": "Người dùng bấm Đặt hàng hai lần: tránh tạo hai Order thế nào?",
     "category": "project-covie",
     "difficulty": "senior",
     "tags": [
@@ -10450,8 +10450,8 @@
     ]
   },
   {
-    "id": "q-381",
-    "title": "[Câu 381] Idempotency là gì?",
+    "id": "q-410",
+    "title": "Idempotency là gì?",
     "category": "microservices",
     "difficulty": "middle",
     "tags": [
@@ -10475,8 +10475,8 @@
     ]
   },
   {
-    "id": "q-382",
-    "title": "[Câu 382] Vì sao Checkout API cần Idempotency?",
+    "id": "q-411",
+    "title": "Vì sao Checkout API cần Idempotency?",
     "category": "microservices",
     "difficulty": "senior",
     "tags": [
@@ -10501,8 +10501,8 @@
     ]
   },
   {
-    "id": "q-383",
-    "title": "[Câu 383] Idempotency Key được dùng thế nào?",
+    "id": "q-412",
+    "title": "Idempotency Key được dùng thế nào?",
     "category": "microservices",
     "difficulty": "senior",
     "tags": [
@@ -10525,8 +10525,8 @@
     ]
   },
   {
-    "id": "q-384",
-    "title": "[Câu 384] Cùng key nhưng payload khác thì xử lý thế nào?",
+    "id": "q-413",
+    "title": "Cùng key nhưng payload khác thì xử lý thế nào?",
     "category": "microservices",
     "difficulty": "senior",
     "tags": [
@@ -10550,8 +10550,8 @@
     ]
   },
   {
-    "id": "q-385",
-    "title": "[Câu 385] Vì sao lưu Idempotency trong RAM không đủ?",
+    "id": "q-414",
+    "title": "Vì sao lưu Idempotency trong RAM không đủ?",
     "category": "microservices",
     "difficulty": "senior",
     "tags": [
@@ -10576,8 +10576,8 @@
     ]
   },
   {
-    "id": "q-386",
-    "title": "[Câu 386] Hai request đồng thời tránh cùng tạo Order ra sao?",
+    "id": "q-415",
+    "title": "Hai request đồng thời tránh cùng tạo Order ra sao?",
     "category": "microservices",
     "difficulty": "senior",
     "tags": [
@@ -10600,8 +10600,8 @@
     ]
   },
   {
-    "id": "q-387",
-    "title": "[Câu 387] Redis là gì, khác PostgreSQL thế nào?",
+    "id": "q-416",
+    "title": "Redis là gì, khác PostgreSQL thế nào?",
     "category": "microservices",
     "difficulty": "middle",
     "tags": [
@@ -10625,8 +10625,8 @@
     ]
   },
   {
-    "id": "q-388",
-    "title": "[Câu 388] Cache Aside Pattern là gì?",
+    "id": "q-417",
+    "title": "Cache Aside Pattern là gì?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -10651,8 +10651,8 @@
     ]
   },
   {
-    "id": "q-389",
-    "title": "[Câu 389] Cache Invalidation là gì?",
+    "id": "q-418",
+    "title": "Cache Invalidation là gì?",
     "category": "microservices",
     "difficulty": "middle",
     "tags": [
@@ -10675,8 +10675,8 @@
     ]
   },
   {
-    "id": "q-390",
-    "title": "[Câu 390] Rate Limiting và Token Bucket là gì?",
+    "id": "q-419",
+    "title": "Rate Limiting và Token Bucket là gì?",
     "category": "microservices",
     "difficulty": "middle",
     "tags": [
@@ -10700,8 +10700,8 @@
     ]
   },
   {
-    "id": "q-391",
-    "title": "[Câu 391] Redis Lua Script đảm bảo atomicity thế nào?",
+    "id": "q-420",
+    "title": "Redis Lua Script đảm bảo atomicity thế nào?",
     "category": "microservices",
     "difficulty": "senior",
     "tags": [
@@ -10726,8 +10726,8 @@
     ]
   },
   {
-    "id": "q-392",
-    "title": "[Câu 392] Fail-open và Fail-closed khi Redis lỗi khác nhau?",
+    "id": "q-421",
+    "title": "Fail-open và Fail-closed khi Redis lỗi khác nhau?",
     "category": "microservices",
     "difficulty": "senior",
     "tags": [
@@ -10750,8 +10750,8 @@
     ]
   },
   {
-    "id": "q-393",
-    "title": "[Câu 393] Transactional Outbox Pattern là gì?",
+    "id": "q-422",
+    "title": "Transactional Outbox Pattern là gì?",
     "category": "design-patterns",
     "difficulty": "middle",
     "tags": [
@@ -10775,8 +10775,8 @@
     ]
   },
   {
-    "id": "q-394",
-    "title": "[Câu 394] Vì sao không gửi thông báo trực tiếp sau commit thiếu bảo đảm?",
+    "id": "q-423",
+    "title": "Vì sao không gửi thông báo trực tiếp sau commit thiếu bảo đảm?",
     "category": "microservices",
     "difficulty": "senior",
     "tags": [
@@ -10801,8 +10801,8 @@
     ]
   },
   {
-    "id": "q-395",
-    "title": "[Câu 395] Outbox Worker làm gì?",
+    "id": "q-424",
+    "title": "Outbox Worker làm gì?",
     "category": "microservices",
     "difficulty": "senior",
     "tags": [
@@ -10825,8 +10825,8 @@
     ]
   },
   {
-    "id": "q-396",
-    "title": "[Câu 396] Retry và Exponential Backoff là gì?",
+    "id": "q-425",
+    "title": "Retry và Exponential Backoff là gì?",
     "category": "microservices",
     "difficulty": "middle",
     "tags": [
@@ -10850,8 +10850,8 @@
     ]
   },
   {
-    "id": "q-397",
-    "title": "[Câu 397] At-least-once Delivery là gì?",
+    "id": "q-426",
+    "title": "At-least-once Delivery là gì?",
     "category": "microservices",
     "difficulty": "middle",
     "tags": [
@@ -10876,8 +10876,8 @@
     ]
   },
   {
-    "id": "q-398",
-    "title": "[Câu 398] SSE và WebSocket khác nhau?",
+    "id": "q-427",
+    "title": "SSE và WebSocket khác nhau?",
     "category": "microservices",
     "difficulty": "senior",
     "tags": [
@@ -10900,8 +10900,8 @@
     ]
   },
   {
-    "id": "q-399",
-    "title": "[Câu 399] Vì sao SSE không phải nguồn dữ liệu chính thức?",
+    "id": "q-428",
+    "title": "Vì sao SSE không phải nguồn dữ liệu chính thức?",
     "category": "microservices",
     "difficulty": "senior",
     "tags": [
@@ -10925,8 +10925,8 @@
     ]
   },
   {
-    "id": "q-400",
-    "title": "[Câu 400] Order thành công nhưng worker lỗi: khôi phục thông báo thế nào?",
+    "id": "q-429",
+    "title": "Order thành công nhưng worker lỗi: khôi phục thông báo thế nào?",
     "category": "microservices",
     "difficulty": "senior",
     "tags": [
@@ -10951,8 +10951,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be27",
-    "title": "[Câu BỔ SUNG BE27] Memcached là gì? Khác Redis như thế nào?",
+    "id": "q-430",
+    "title": "Memcached là gì? Khác Redis như thế nào?",
     "category": "microservices",
     "difficulty": "middle",
     "tags": [
@@ -10975,8 +10975,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be28",
-    "title": "[Câu BỔ SUNG BE28] Write-through Cache là gì?",
+    "id": "q-431",
+    "title": "Write-through Cache là gì?",
     "category": "microservices",
     "difficulty": "middle",
     "tags": [
@@ -11000,8 +11000,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be29",
-    "title": "[Câu BỔ SUNG BE29] Write-back Cache là gì? Ưu điểm và rủi ro so với Write-through?",
+    "id": "q-432",
+    "title": "Write-back Cache là gì? Ưu điểm và rủi ro so với Write-through?",
     "category": "microservices",
     "difficulty": "middle",
     "tags": [
@@ -11026,8 +11026,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be30",
-    "title": "[Câu BỔ SUNG BE30] Cache Stampede là gì? Làm sao tránh nhiều request cùng truy vấn database khi cache hết hạn?",
+    "id": "q-433",
+    "title": "Cache Stampede là gì? Làm sao tránh nhiều request cùng truy vấn database khi cache hết hạn?",
     "category": "microservices",
     "difficulty": "middle",
     "tags": [
@@ -11050,8 +11050,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be31",
-    "title": "[Câu BỔ SUNG BE31] Cache Avalanche là gì? Khác Cache Stampede như thế nào?",
+    "id": "q-434",
+    "title": "Cache Avalanche là gì? Khác Cache Stampede như thế nào?",
     "category": "microservices",
     "difficulty": "middle",
     "tags": [
@@ -11075,8 +11075,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be32",
-    "title": "[Câu BỔ SUNG BE32] Cache Penetration là gì? Có thể phòng tránh bằng những cách nào?",
+    "id": "q-435",
+    "title": "Cache Penetration là gì? Có thể phòng tránh bằng những cách nào?",
     "category": "microservices",
     "difficulty": "middle",
     "tags": [
@@ -11101,8 +11101,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be33",
-    "title": "[Câu BỔ SUNG BE33] Cache Breakdown là gì? Vì sao dữ liệu được truy cập nhiều có thể gây quá tải database?",
+    "id": "q-436",
+    "title": "Cache Breakdown là gì? Vì sao dữ liệu được truy cập nhiều có thể gây quá tải database?",
     "category": "microservices",
     "difficulty": "middle",
     "tags": [
@@ -11125,8 +11125,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be34",
-    "title": "[Câu BỔ SUNG BE34] Session Storage là gì? Redis có thể được sử dụng để lưu phiên đăng nhập như thế nào?",
+    "id": "q-437",
+    "title": "Session Storage là gì? Redis có thể được sử dụng để lưu phiên đăng nhập như thế nào?",
     "category": "microservices",
     "difficulty": "middle",
     "tags": [
@@ -11150,8 +11150,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be35",
-    "title": "[Câu BỔ SUNG BE35] Distributed Lock là gì? Khi nào cần khóa phân tán bằng Redis?",
+    "id": "q-438",
+    "title": "Distributed Lock là gì? Khi nào cần khóa phân tán bằng Redis?",
     "category": "microservices",
     "difficulty": "senior",
     "tags": [
@@ -11176,8 +11176,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be36",
-    "title": "[Câu BỔ SUNG BE36] Leaky Bucket là gì? Khác Token Bucket như thế nào?",
+    "id": "q-439",
+    "title": "Leaky Bucket là gì? Khác Token Bucket như thế nào?",
     "category": "microservices",
     "difficulty": "middle",
     "tags": [
@@ -11200,8 +11200,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be37",
-    "title": "[Câu BỔ SUNG BE37] Message Queue là gì? Vì sao backend cần xử lý tác vụ bất đồng bộ?",
+    "id": "q-440",
+    "title": "Message Queue là gì? Vì sao backend cần xử lý tác vụ bất đồng bộ?",
     "category": "microservices",
     "difficulty": "middle",
     "tags": [
@@ -11225,8 +11225,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be38",
-    "title": "[Câu BỔ SUNG BE38] RabbitMQ là gì? Exchange, Queue và Consumer có vai trò gì?",
+    "id": "q-441",
+    "title": "RabbitMQ là gì? Exchange, Queue và Consumer có vai trò gì?",
     "category": "microservices",
     "difficulty": "middle",
     "tags": [
@@ -11251,8 +11251,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be39",
-    "title": "[Câu BỔ SUNG BE39] Apache Kafka là gì? Topic, Partition, Producer và Consumer là gì?",
+    "id": "q-442",
+    "title": "Apache Kafka là gì? Topic, Partition, Producer và Consumer là gì?",
     "category": "microservices",
     "difficulty": "middle",
     "tags": [
@@ -11275,8 +11275,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be40",
-    "title": "[Câu BỔ SUNG BE40] Message Queue và Event Streaming khác nhau như thế nào?",
+    "id": "q-443",
+    "title": "Message Queue và Event Streaming khác nhau như thế nào?",
     "category": "microservices",
     "difficulty": "senior",
     "tags": [
@@ -11300,8 +11300,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be41",
-    "title": "[Câu BỔ SUNG BE41] Saga Pattern là gì? Giúp xử lý giao dịch qua nhiều service như thế nào?",
+    "id": "q-444",
+    "title": "Saga Pattern là gì? Giúp xử lý giao dịch qua nhiều service như thế nào?",
     "category": "design-patterns",
     "difficulty": "senior",
     "tags": [
@@ -11326,8 +11326,8 @@
     ]
   },
   {
-    "id": "q-401",
-    "title": "[Câu 401] CoVie có những loại chiến dịch quảng cáo nào?",
+    "id": "q-445",
+    "title": "CoVie có những loại chiến dịch quảng cáo nào?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -11350,8 +11350,8 @@
     ]
   },
   {
-    "id": "q-402",
-    "title": "[Câu 402] Vì sao Seller không tự duyệt quảng cáo?",
+    "id": "q-446",
+    "title": "Vì sao Seller không tự duyệt quảng cáo?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -11375,8 +11375,8 @@
     ]
   },
   {
-    "id": "q-403",
-    "title": "[Câu 403] Giới hạn quyền quản lý Ads theo Merchant thế nào?",
+    "id": "q-447",
+    "title": "Giới hạn quyền quản lý Ads theo Merchant thế nào?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -11401,8 +11401,8 @@
     ]
   },
   {
-    "id": "q-404",
-    "title": "[Câu 404] Campaign Draft/Pending/Approved/Rejected khác nhau?",
+    "id": "q-448",
+    "title": "Campaign Draft/Pending/Approved/Rejected khác nhau?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -11425,8 +11425,8 @@
     ]
   },
   {
-    "id": "q-405",
-    "title": "[Câu 405] Vì sao sửa quảng cáo đã duyệt cần phê duyệt lại?",
+    "id": "q-449",
+    "title": "Vì sao sửa quảng cáo đã duyệt cần phê duyệt lại?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -11450,8 +11450,8 @@
     ]
   },
   {
-    "id": "q-406",
-    "title": "[Câu 406] Impression và Click là gì?",
+    "id": "q-450",
+    "title": "Impression và Click là gì?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -11476,8 +11476,8 @@
     ]
   },
   {
-    "id": "q-407",
-    "title": "[Câu 407] CTR được tính thế nào?",
+    "id": "q-451",
+    "title": "CTR được tính thế nào?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -11500,8 +11500,8 @@
     ]
   },
   {
-    "id": "q-408",
-    "title": "[Câu 408] Làm sao giảm click trùng lặp?",
+    "id": "q-452",
+    "title": "Làm sao giảm click trùng lặp?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -11529,8 +11529,8 @@
     ]
   },
   {
-    "id": "q-409",
-    "title": "[Câu 409] Vì sao analytics theo ngày chú ý timezone?",
+    "id": "q-453",
+    "title": "Vì sao analytics theo ngày chú ý timezone?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -11555,8 +11555,8 @@
     ]
   },
   {
-    "id": "q-410",
-    "title": "[Câu 410] Hai Admin cùng sửa chiến dịch: chống Lost Update thế nào?",
+    "id": "q-454",
+    "title": "Hai Admin cùng sửa chiến dịch: chống Lost Update thế nào?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -11579,8 +11579,8 @@
     ]
   },
   {
-    "id": "q-411",
-    "title": "[Câu 411] HTTP ETag và If-Match làm gì?",
+    "id": "q-455",
+    "title": "HTTP ETag và If-Match làm gì?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -11604,8 +11604,8 @@
     ]
   },
   {
-    "id": "q-412",
-    "title": "[Câu 412] Need Request giải quyết bài toán gì?",
+    "id": "q-456",
+    "title": "Need Request giải quyết bài toán gì?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -11630,8 +11630,8 @@
     ]
   },
   {
-    "id": "q-413",
-    "title": "[Câu 413] Seller được phản hồi Need khi nào?",
+    "id": "q-457",
+    "title": "Seller được phản hồi Need khi nào?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -11654,8 +11654,8 @@
     ]
   },
   {
-    "id": "q-414",
-    "title": "[Câu 414] Làm sao không gợi ý sản phẩm đã hết hàng?",
+    "id": "q-458",
+    "title": "Làm sao không gợi ý sản phẩm đã hết hàng?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -11679,8 +11679,8 @@
     ]
   },
   {
-    "id": "q-415",
-    "title": "[Câu 415] Matching Candidate khác phản hồi đã xác nhận?",
+    "id": "q-459",
+    "title": "Matching Candidate khác phản hồi đã xác nhận?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -11705,8 +11705,8 @@
     ]
   },
   {
-    "id": "q-416",
-    "title": "[Câu 416] Review Eligibility là gì?",
+    "id": "q-460",
+    "title": "Review Eligibility là gì?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -11729,8 +11729,8 @@
     ]
   },
   {
-    "id": "q-417",
-    "title": "[Câu 417] Ngăn người chưa mua đánh giá sản phẩm thế nào?",
+    "id": "q-461",
+    "title": "Ngăn người chưa mua đánh giá sản phẩm thế nào?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -11754,8 +11754,8 @@
     ]
   },
   {
-    "id": "q-418",
-    "title": "[Câu 418] Vì sao Reputation phải dùng dữ liệu đáng tin?",
+    "id": "q-462",
+    "title": "Vì sao Reputation phải dùng dữ liệu đáng tin?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -11780,8 +11780,8 @@
     ]
   },
   {
-    "id": "q-419",
-    "title": "[Câu 419] Moderation và Authorization khác nhau?",
+    "id": "q-463",
+    "title": "Moderation và Authorization khác nhau?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -11804,8 +11804,8 @@
     ]
   },
   {
-    "id": "q-420",
-    "title": "[Câu 420] Seller bị đình chỉ khi còn Order: làm gì?",
+    "id": "q-464",
+    "title": "Seller bị đình chỉ khi còn Order: làm gì?",
     "category": "project-covie",
     "difficulty": "middle",
     "tags": [
@@ -11829,8 +11829,8 @@
     ]
   },
   {
-    "id": "q-421",
-    "title": "[Câu 421] Unit Test là gì?",
+    "id": "q-465",
+    "title": "Unit Test là gì?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -11855,8 +11855,8 @@
     ]
   },
   {
-    "id": "q-422",
-    "title": "[Câu 422] Unit Test và Integration Test khác nhau?",
+    "id": "q-466",
+    "title": "Unit Test và Integration Test khác nhau?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -11879,8 +11879,8 @@
     ]
   },
   {
-    "id": "q-423",
-    "title": "[Câu 423] End-to-End Test là gì?",
+    "id": "q-467",
+    "title": "End-to-End Test là gì?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -11904,8 +11904,8 @@
     ]
   },
   {
-    "id": "q-424",
-    "title": "[Câu 424] Testing Pyramid là gì?",
+    "id": "q-468",
+    "title": "Testing Pyramid là gì?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -11930,8 +11930,8 @@
     ]
   },
   {
-    "id": "q-425",
-    "title": "[Câu 425] JUnit 5 dùng thế nào?",
+    "id": "q-469",
+    "title": "JUnit 5 dùng thế nào?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -11954,8 +11954,8 @@
     ]
   },
   {
-    "id": "q-426",
-    "title": "[Câu 426] @Test, @BeforeEach, @AfterEach làm gì?",
+    "id": "q-470",
+    "title": "@Test, @BeforeEach, @AfterEach làm gì?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -11979,8 +11979,8 @@
     ]
   },
   {
-    "id": "q-427",
-    "title": "[Câu 427] Assertion là gì?",
+    "id": "q-471",
+    "title": "Assertion là gì?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -12005,8 +12005,8 @@
     ]
   },
   {
-    "id": "q-428",
-    "title": "[Câu 428] Mockito là gì?",
+    "id": "q-472",
+    "title": "Mockito là gì?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -12029,8 +12029,8 @@
     ]
   },
   {
-    "id": "q-429",
-    "title": "[Câu 429] Mock và Stub khác nhau?",
+    "id": "q-473",
+    "title": "Mock và Stub khác nhau?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -12054,8 +12054,8 @@
     ]
   },
   {
-    "id": "q-430",
-    "title": "[Câu 430] @Mock và @InjectMocks làm gì?",
+    "id": "q-474",
+    "title": "@Mock và @InjectMocks làm gì?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -12080,8 +12080,8 @@
     ]
   },
   {
-    "id": "q-431",
-    "title": "[Câu 431] @SpringBootTest dùng để làm gì?",
+    "id": "q-475",
+    "title": "@SpringBootTest dùng để làm gì?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -12104,8 +12104,8 @@
     ]
   },
   {
-    "id": "q-432",
-    "title": "[Câu 432] @WebMvcTest làm gì?",
+    "id": "q-476",
+    "title": "@WebMvcTest làm gì?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -12129,8 +12129,8 @@
     ]
   },
   {
-    "id": "q-433",
-    "title": "[Câu 433] Testcontainers là gì?",
+    "id": "q-477",
+    "title": "Testcontainers là gì?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -12155,8 +12155,8 @@
     ]
   },
   {
-    "id": "q-434",
-    "title": "[Câu 434] Vì sao test Repository với PostgreSQL thật?",
+    "id": "q-478",
+    "title": "Vì sao test Repository với PostgreSQL thật?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -12179,8 +12179,8 @@
     ]
   },
   {
-    "id": "q-435",
-    "title": "[Câu 435] Test rollback khi Checkout lỗi giữa chừng thế nào?",
+    "id": "q-479",
+    "title": "Test rollback khi Checkout lỗi giữa chừng thế nào?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -12204,8 +12204,8 @@
     ]
   },
   {
-    "id": "q-436",
-    "title": "[Câu 436] Test Race Condition thế nào?",
+    "id": "q-480",
+    "title": "Test Race Condition thế nào?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -12230,8 +12230,8 @@
     ]
   },
   {
-    "id": "q-437",
-    "title": "[Câu 437] OpenAPI Specification là gì?",
+    "id": "q-481",
+    "title": "OpenAPI Specification là gì?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -12254,8 +12254,8 @@
     ]
   },
   {
-    "id": "q-438",
-    "title": "[Câu 438] Vì sao sinh TypeScript API Client từ OpenAPI?",
+    "id": "q-482",
+    "title": "Vì sao sinh TypeScript API Client từ OpenAPI?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -12279,8 +12279,8 @@
     ]
   },
   {
-    "id": "q-439",
-    "title": "[Câu 439] Contract Testing phát hiện lỗi gì?",
+    "id": "q-483",
+    "title": "Contract Testing phát hiện lỗi gì?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -12305,8 +12305,8 @@
     ]
   },
   {
-    "id": "q-440",
-    "title": "[Câu 440] Tất cả Unit Test pass nhưng Checkout thực tế lỗi: kiểm tra gì?",
+    "id": "q-484",
+    "title": "Tất cả Unit Test pass nhưng Checkout thực tế lỗi: kiểm tra gì?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -12329,8 +12329,8 @@
     ]
   },
   {
-    "id": "q-441",
-    "title": "[Câu 441] Docker là gì? Image và Container khác nhau?",
+    "id": "q-485",
+    "title": "Docker là gì? Image và Container khác nhau?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -12356,8 +12356,8 @@
     ]
   },
   {
-    "id": "q-442",
-    "title": "[Câu 442] Dockerfile là gì?",
+    "id": "q-486",
+    "title": "Dockerfile là gì?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -12384,8 +12384,8 @@
     ]
   },
   {
-    "id": "q-443",
-    "title": "[Câu 443] Docker Compose làm gì?",
+    "id": "q-487",
+    "title": "Docker Compose làm gì?",
     "category": "testing-devops",
     "difficulty": "senior",
     "tags": [
@@ -12410,8 +12410,8 @@
     ]
   },
   {
-    "id": "q-444",
-    "title": "[Câu 444] Vì sao chạy PostgreSQL, Redis, MinIO bằng Compose?",
+    "id": "q-488",
+    "title": "Vì sao chạy PostgreSQL, Redis, MinIO bằng Compose?",
     "category": "microservices",
     "difficulty": "senior",
     "tags": [
@@ -12437,8 +12437,8 @@
     ]
   },
   {
-    "id": "q-445",
-    "title": "[Câu 445] Docker Volume dùng làm gì?",
+    "id": "q-489",
+    "title": "Docker Volume dùng làm gì?",
     "category": "testing-devops",
     "difficulty": "senior",
     "tags": [
@@ -12465,8 +12465,8 @@
     ]
   },
   {
-    "id": "q-446",
-    "title": "[Câu 446] Port Mapping là gì?",
+    "id": "q-490",
+    "title": "Port Mapping là gì?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -12491,8 +12491,8 @@
     ]
   },
   {
-    "id": "q-447",
-    "title": "[Câu 447] Environment Variable khác hardcode thế nào?",
+    "id": "q-491",
+    "title": "Environment Variable khác hardcode thế nào?",
     "category": "testing-devops",
     "difficulty": "senior",
     "tags": [
@@ -12518,8 +12518,8 @@
     ]
   },
   {
-    "id": "q-448",
-    "title": "[Câu 448] Vì sao không commit .env.local và private key?",
+    "id": "q-492",
+    "title": "Vì sao không commit .env.local và private key?",
     "category": "testing-devops",
     "difficulty": "senior",
     "tags": [
@@ -12546,8 +12546,8 @@
     ]
   },
   {
-    "id": "q-449",
-    "title": "[Câu 449] Maven là gì? pom.xml làm gì?",
+    "id": "q-493",
+    "title": "Maven là gì? pom.xml làm gì?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -12572,8 +12572,8 @@
     ]
   },
   {
-    "id": "q-450",
-    "title": "[Câu 450] mvn clean/test/package/verify khác nhau?",
+    "id": "q-494",
+    "title": "mvn clean/test/package/verify khác nhau?",
     "category": "testing-devops",
     "difficulty": "senior",
     "tags": [
@@ -12599,8 +12599,8 @@
     ]
   },
   {
-    "id": "q-451",
-    "title": "[Câu 451] CI/CD là gì?",
+    "id": "q-495",
+    "title": "CI/CD là gì?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -12627,8 +12627,8 @@
     ]
   },
   {
-    "id": "q-452",
-    "title": "[Câu 452] GitHub Actions kiểm tra gì trước merge?",
+    "id": "q-496",
+    "title": "GitHub Actions kiểm tra gì trước merge?",
     "category": "testing-devops",
     "difficulty": "senior",
     "tags": [
@@ -12653,8 +12653,8 @@
     ]
   },
   {
-    "id": "q-453",
-    "title": "[Câu 453] CI test lỗi nhưng local chạy tốt: xử lý sao?",
+    "id": "q-497",
+    "title": "CI test lỗi nhưng local chạy tốt: xử lý sao?",
     "category": "testing-devops",
     "difficulty": "senior",
     "tags": [
@@ -12680,8 +12680,8 @@
     ]
   },
   {
-    "id": "q-454",
-    "title": "[Câu 454] Git Merge và Git Rebase khác nhau?",
+    "id": "q-498",
+    "title": "Git Merge và Git Rebase khác nhau?",
     "category": "testing-devops",
     "difficulty": "senior",
     "tags": [
@@ -12708,8 +12708,8 @@
     ]
   },
   {
-    "id": "q-455",
-    "title": "[Câu 455] Pull Request có vai trò gì?",
+    "id": "q-499",
+    "title": "Pull Request có vai trò gì?",
     "category": "testing-devops",
     "difficulty": "senior",
     "tags": [
@@ -12734,8 +12734,8 @@
     ]
   },
   {
-    "id": "q-456",
-    "title": "[Câu 456] Spring Boot Actuator là gì?",
+    "id": "q-500",
+    "title": "Spring Boot Actuator là gì?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -12761,8 +12761,8 @@
     ]
   },
   {
-    "id": "q-457",
-    "title": "[Câu 457] Health Check và Readiness Check khác nhau?",
+    "id": "q-501",
+    "title": "Health Check và Readiness Check khác nhau?",
     "category": "testing-devops",
     "difficulty": "senior",
     "tags": [
@@ -12789,8 +12789,8 @@
     ]
   },
   {
-    "id": "q-458",
-    "title": "[Câu 458] Log, Metrics và Traces khác nhau?",
+    "id": "q-502",
+    "title": "Log, Metrics và Traces khác nhau?",
     "category": "testing-devops",
     "difficulty": "senior",
     "tags": [
@@ -12815,8 +12815,8 @@
     ]
   },
   {
-    "id": "q-459",
-    "title": "[Câu 459] Flyway migrate production thất bại: xử lý sao?",
+    "id": "q-503",
+    "title": "Flyway migrate production thất bại: xử lý sao?",
     "category": "testing-devops",
     "difficulty": "senior",
     "tags": [
@@ -12842,8 +12842,8 @@
     ]
   },
   {
-    "id": "q-460",
-    "title": "[Câu 460] CoVie API chậm đột ngột: điều tra gì trước?",
+    "id": "q-504",
+    "title": "CoVie API chậm đột ngột: điều tra gì trước?",
     "category": "testing-devops",
     "difficulty": "senior",
     "tags": [
@@ -12870,8 +12870,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be48",
-    "title": "[Câu BỔ SUNG BE48] Docker Multi-stage Build là gì? Vì sao nên sử dụng để đóng gói ứng dụng Java?",
+    "id": "q-505",
+    "title": "Docker Multi-stage Build là gì? Vì sao nên sử dụng để đóng gói ứng dụng Java?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -12896,8 +12896,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be49",
-    "title": "[Câu BỔ SUNG BE49] Linux là gì? Những lệnh Linux cơ bản nào Backend Engineer thường dùng?",
+    "id": "q-506",
+    "title": "Linux là gì? Những lệnh Linux cơ bản nào Backend Engineer thường dùng?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -12923,8 +12923,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be50",
-    "title": "[Câu BỔ SUNG BE50] Linux quản lý process, port và quyền truy cập file như thế nào?",
+    "id": "q-507",
+    "title": "Linux quản lý process, port và quyền truy cập file như thế nào?",
     "category": "testing-devops",
     "difficulty": "senior",
     "tags": [
@@ -12951,8 +12951,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be51",
-    "title": "[Câu BỔ SUNG BE51] Nginx là gì? Reverse Proxy hoạt động như thế nào trong hệ thống CoVie?",
+    "id": "q-508",
+    "title": "Nginx là gì? Reverse Proxy hoạt động như thế nào trong hệ thống CoVie?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -12977,8 +12977,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be52",
-    "title": "[Câu BỔ SUNG BE52] Prometheus là gì? Nó thu thập và lưu trữ metrics như thế nào?",
+    "id": "q-509",
+    "title": "Prometheus là gì? Nó thu thập và lưu trữ metrics như thế nào?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -13004,8 +13004,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be53",
-    "title": "[Câu BỔ SUNG BE53] Grafana là gì? Nó khác Prometheus ở vai trò nào?",
+    "id": "q-510",
+    "title": "Grafana là gì? Nó khác Prometheus ở vai trò nào?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -13032,8 +13032,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be54",
-    "title": "[Câu BỔ SUNG BE54] Alertmanager là gì? Cảnh báo từ Prometheus được xử lý như thế nào?",
+    "id": "q-511",
+    "title": "Alertmanager là gì? Cảnh báo từ Prometheus được xử lý như thế nào?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -13058,8 +13058,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be55",
-    "title": "[Câu BỔ SUNG BE55] Structured Logging là gì? JSON Logs mang lại lợi ích gì khi tìm lỗi backend?",
+    "id": "q-512",
+    "title": "Structured Logging là gì? JSON Logs mang lại lợi ích gì khi tìm lỗi backend?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -13085,8 +13085,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be56",
-    "title": "[Câu BỔ SUNG BE56] OpenTelemetry là gì? Nó giúp thu thập telemetry như thế nào?",
+    "id": "q-513",
+    "title": "OpenTelemetry là gì? Nó giúp thu thập telemetry như thế nào?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -13113,8 +13113,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be57",
-    "title": "[Câu BỔ SUNG BE57] Jaeger là gì? Khi nào cần dùng Jaeger để truy vết request?",
+    "id": "q-514",
+    "title": "Jaeger là gì? Khi nào cần dùng Jaeger để truy vết request?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -13139,8 +13139,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be58",
-    "title": "[Câu BỔ SUNG BE58] Distributed Tracing là gì? Trace, Span và Trace ID có ý nghĩa gì?",
+    "id": "q-515",
+    "title": "Distributed Tracing là gì? Trace, Span và Trace ID có ý nghĩa gì?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -13166,8 +13166,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be59",
-    "title": "[Câu BỔ SUNG BE59] Database Backup, Restore, RPO và RTO là gì? Vì sao phải kiểm tra khả năng khôi phục dữ liệu?",
+    "id": "q-516",
+    "title": "Database Backup, Restore, RPO và RTO là gì? Vì sao phải kiểm tra khả năng khôi phục dữ liệu?",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -13194,8 +13194,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be63",
-    "title": "[Câu BỔ SUNG BE63] Load Testing là gì? Phân biệt Load Test, Stress Test và cách đánh giá thời gian phản hồi p95 của API.",
+    "id": "q-517",
+    "title": "Load Testing là gì? Phân biệt Load Test, Stress Test và cách đánh giá thời gian phản hồi p95 của API.",
     "category": "testing-devops",
     "difficulty": "middle",
     "tags": [
@@ -13220,8 +13220,8 @@
     ]
   },
   {
-    "id": "q-461",
-    "title": "[Câu 461] Viết hàm Java kiểm tra Palindrome.",
+    "id": "q-518",
+    "title": "Viết hàm Java kiểm tra Palindrome.",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -13249,8 +13249,8 @@
     ]
   },
   {
-    "id": "q-462",
-    "title": "[Câu 462] Đếm số lần xuất hiện từng ký tự String.",
+    "id": "q-519",
+    "title": "Đếm số lần xuất hiện từng ký tự String.",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -13280,8 +13280,8 @@
     ]
   },
   {
-    "id": "q-463",
-    "title": "[Câu 463] Tìm phần tử xuất hiện nhiều nhất trong List.",
+    "id": "q-520",
+    "title": "Tìm phần tử xuất hiện nhiều nhất trong List.",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -13308,8 +13308,8 @@
     ]
   },
   {
-    "id": "q-464",
-    "title": "[Câu 464] Loại bỏ trùng trong List mà vẫn giữ thứ tự.",
+    "id": "q-521",
+    "title": "Loại bỏ trùng trong List mà vẫn giữ thứ tự.",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -13337,8 +13337,8 @@
     ]
   },
   {
-    "id": "q-465",
-    "title": "[Câu 465] Sắp xếp sản phẩm theo giá tăng dần.",
+    "id": "q-522",
+    "title": "Sắp xếp sản phẩm theo giá tăng dần.",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -13367,8 +13367,8 @@
     ]
   },
   {
-    "id": "q-466",
-    "title": "[Câu 466] Dùng Stream lọc Order có tổng giá trị lớn.",
+    "id": "q-523",
+    "title": "Dùng Stream lọc Order có tổng giá trị lớn.",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -13391,8 +13391,8 @@
     ]
   },
   {
-    "id": "q-467",
-    "title": "[Câu 467] Nhóm Order theo trạng thái.",
+    "id": "q-524",
+    "title": "Nhóm Order theo trạng thái.",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -13416,8 +13416,8 @@
     ]
   },
   {
-    "id": "q-468",
-    "title": "[Câu 468] Viết REST Controller CRUD sản phẩm.",
+    "id": "q-525",
+    "title": "Viết REST Controller CRUD sản phẩm.",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -13442,8 +13442,8 @@
     ]
   },
   {
-    "id": "q-469",
-    "title": "[Câu 469] Viết Service cập nhật tồn kho có validation.",
+    "id": "q-526",
+    "title": "Viết Service cập nhật tồn kho có validation.",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -13466,8 +13466,8 @@
     ]
   },
   {
-    "id": "q-470",
-    "title": "[Câu 470] Viết SQL lấy Order mới nhất của từng khách hàng.",
+    "id": "q-527",
+    "title": "Viết SQL lấy Order mới nhất của từng khách hàng.",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -13491,8 +13491,8 @@
     ]
   },
   {
-    "id": "q-471",
-    "title": "[Câu 471] Viết SQL doanh thu theo tháng.",
+    "id": "q-528",
+    "title": "Viết SQL doanh thu theo tháng.",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -13517,8 +13517,8 @@
     ]
   },
   {
-    "id": "q-472",
-    "title": "[Câu 472] Viết SQL sản phẩm chưa từng được mua.",
+    "id": "q-529",
+    "title": "Viết SQL sản phẩm chưa từng được mua.",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -13541,8 +13541,8 @@
     ]
   },
   {
-    "id": "q-473",
-    "title": "[Câu 473] Viết Unit Test hủy Order và hoàn reservation.",
+    "id": "q-530",
+    "title": "Viết Unit Test hủy Order và hoàn reservation.",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -13566,8 +13566,8 @@
     ]
   },
   {
-    "id": "q-474",
-    "title": "[Câu 474] Thiết kế Checkout API chống tạo đơn trùng do retry.",
+    "id": "q-531",
+    "title": "Thiết kế Checkout API chống tạo đơn trùng do retry.",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -13596,8 +13596,8 @@
     ]
   },
   {
-    "id": "q-475",
-    "title": "[Câu 475] Làm gì khi gặp công nghệ chưa học?",
+    "id": "q-532",
+    "title": "Làm gì khi gặp công nghệ chưa học?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -13620,8 +13620,8 @@
     ]
   },
   {
-    "id": "q-476",
-    "title": "[Câu 476] Làm gì khi code review chỉ ra thiết kế sai?",
+    "id": "q-533",
+    "title": "Làm gì khi code review chỉ ra thiết kế sai?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -13645,8 +13645,8 @@
     ]
   },
   {
-    "id": "q-477",
-    "title": "[Câu 477] Bạn dùng AI để xây dựng CoVie như thế nào?",
+    "id": "q-534",
+    "title": "Bạn dùng AI để xây dựng CoVie như thế nào?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -13671,8 +13671,8 @@
     ]
   },
   {
-    "id": "q-478",
-    "title": "[Câu 478] AI sinh code mà bạn chưa hiểu: xử lý thế nào?",
+    "id": "q-535",
+    "title": "AI sinh code mà bạn chưa hiểu: xử lý thế nào?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -13695,8 +13695,8 @@
     ]
   },
   {
-    "id": "q-479",
-    "title": "[Câu 479] Người phỏng vấn mở class bất kỳ trên GitHub: giải thích ra sao?",
+    "id": "q-536",
+    "title": "Người phỏng vấn mở class bất kỳ trên GitHub: giải thích ra sao?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -13720,8 +13720,8 @@
     ]
   },
   {
-    "id": "q-480",
-    "title": "[Câu 480] Vì sao công ty nên tuyển bạn làm Java Fresher?",
+    "id": "q-537",
+    "title": "Vì sao công ty nên tuyển bạn làm Java Fresher?",
     "category": "java-core",
     "difficulty": "junior",
     "tags": [
@@ -13746,8 +13746,8 @@
     ]
   },
   {
-    "id": "q-bổ-sung-be62",
-    "title": "[Câu BỔ SUNG BE62] Root Cause Analysis (RCA) là gì? Quy trình tìm nguyên nhân gốc rễ của một lỗi backend gồm những bước nào?",
+    "id": "q-538",
+    "title": "Root Cause Analysis (RCA) là gì? Quy trình tìm nguyên nhân gốc rễ của một lỗi backend gồm những bước nào?",
     "category": "java-core",
     "difficulty": "senior",
     "tags": [

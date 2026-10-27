@@ -105,3 +105,23 @@ export interface InterviewProgressState {
   review: Record<string, boolean>;
   bookmarks: Record<string, boolean>;
 }
+
+/**
+ * Định dạng số thứ tự câu hỏi trực quan (#001, #002 ... #1000)
+ */
+export function formatQuestionNumber(num: number, totalQuestions = 538): string {
+  const minDigits = totalQuestions >= 1000 ? 4 : 3;
+  return `#${String(num).padStart(minDigits, "0")}`;
+}
+
+/**
+ * Định dạng mã kỹ thuật (vd: "q-001" -> "#001") để hiển thị đẹp trên giao diện
+ */
+export function formatQuestionBadge(id: string, totalQuestions = 538): string {
+  const match = id.match(/q-(\d+)/);
+  if (match) {
+    return formatQuestionNumber(Number(match[1]), totalQuestions);
+  }
+  return id;
+}
+

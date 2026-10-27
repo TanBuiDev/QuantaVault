@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { MarkdownContent } from "@/features/practice/MarkdownContent";
 import type { InterviewQuestion } from "@/lib/interview/types";
-import { INTERVIEW_CATEGORIES } from "@/lib/interview/types";
+import { INTERVIEW_CATEGORIES, formatQuestionNumber } from "@/lib/interview/types";
 
 export interface InterviewQuestionCardProps {
   question: InterviewQuestion;
@@ -98,7 +98,7 @@ export function InterviewQuestionCard({
             {/* Badges & Meta */}
             <div className="flex flex-wrap items-center gap-2 text-xs">
               <span className="font-mono font-bold text-[var(--muted)]">
-                #{String(index + 1).padStart(2, "0")}
+                {formatQuestionNumber(index + 1)}
               </span>
 
               {/* Category */}

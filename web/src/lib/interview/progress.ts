@@ -12,8 +12,26 @@ const EMPTY_STATE: InterviewProgressState = {
   bookmarks: {},
 };
 
+import legacyMap from "./legacyIdMap.json";
+
 let cachedRaw: string | null | undefined;
 let cachedState: InterviewProgressState = EMPTY_STATE;
+
+function migrateRecord(record: Record<string, boolean>): { updated: Record<string, boolean>; changed: boolean } {
+  const result: Record<string, boolean> = {};
+  let changed = false;
+  const map = legacyMap as Record<string, string>;
+
+  for (const [key, val] of Object.entries(record)) {
+    if (map[key] && map[key] !== key) {
+      result[map[key]] = val;
+      changed = true;
+    } else {
+      result[key] = val;
+    }
+  }
+  return { updated: result, changed };
+}
 
 function readStorage(): InterviewProgressState {
   if (typeof window === "undefined") return EMPTY_STATE;
@@ -21,11 +39,21 @@ function readStorage(): InterviewProgressState {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return EMPTY_STATE;
     const parsed = JSON.parse(raw);
-    return {
-      learned: typeof parsed.learned === "object" && parsed.learned ? parsed.learned : {},
-      review: typeof parsed.review === "object" && parsed.review ? parsed.review : {},
-      bookmarks: typeof parsed.bookmarks === "object" && parsed.bookmarks ? parsed.bookmarks : {},
+    const learnedRes = migrateRecord(typeof parsed.learned === "object" && parsed.learned ? parsed.learned : {});
+    const reviewRes = migrateRecord(typeof parsed.review === "object" && parsed.review ? parsed.review : {});
+    const bookmarksRes = migrateRecord(typeof parsed.bookmarks === "object" && parsed.bookmarks ? parsed.bookmarks : {});
+
+    const migratedState: InterviewProgressState = {
+      learned: learnedRes.updated,
+      review: reviewRes.updated,
+      bookmarks: bookmarksRes.updated,
     };
+
+    if (learnedRes.changed || reviewRes.changed || bookmarksRes.changed) {
+      writeStorage(migratedState);
+    }
+
+    return migratedState;
   } catch {
     return EMPTY_STATE;
   }

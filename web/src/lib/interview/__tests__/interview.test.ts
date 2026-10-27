@@ -25,7 +25,7 @@ describe("Interview Data Access and Filtering", () => {
   });
 
   it("finds a question by id", () => {
-    const question = getInterviewQuestionById("q-54");
+    const question = getInterviewQuestionById("q-054");
     expect(question).toBeDefined();
     expect(question?.title).toContain("equals()");
   });
@@ -56,7 +56,7 @@ describe("Interview Data Access and Filtering", () => {
 
     const results = filterInterviewQuestions(all, filter);
     expect(results.length).toBeGreaterThan(0);
-    expect(results.some((q) => q.id === "q-170")).toBe(true);
+    expect(results.some((q) => q.id === "q-178")).toBe(true);
   });
 
   it("filters questions by category", () => {
@@ -96,9 +96,9 @@ describe("Interview Data Access and Filtering", () => {
   it("filters questions by progress status", () => {
     const all = getAllInterviewQuestions();
     const mockProgress: InterviewProgressState = {
-      learned: { "q-3": true },
-      review: { "q-4": true },
-      bookmarks: { "q-170": true },
+      learned: { "q-001": true },
+      review: { "q-002": true },
+      bookmarks: { "q-178": true },
     };
 
     const learnedResults = filterInterviewQuestions(
@@ -106,20 +106,20 @@ describe("Interview Data Access and Filtering", () => {
       { search: "", category: "all", difficulty: "all", status: "learned", company: "all" },
       mockProgress
     );
-    expect(learnedResults.map((q) => q.id)).toEqual(["q-3"]);
+    expect(learnedResults.map((q) => q.id)).toEqual(["q-001"]);
 
     const reviewResults = filterInterviewQuestions(
       all,
       { search: "", category: "all", difficulty: "all", status: "review", company: "all" },
       mockProgress
     );
-    expect(reviewResults.map((q) => q.id)).toEqual(["q-4"]);
+    expect(reviewResults.map((q) => q.id)).toEqual(["q-002"]);
 
     const bookmarkResults = filterInterviewQuestions(
       all,
       { search: "", category: "all", difficulty: "all", status: "bookmarked", company: "all" },
       mockProgress
     );
-    expect(bookmarkResults.map((q) => q.id)).toEqual(["q-170"]);
+    expect(bookmarkResults.map((q) => q.id)).toEqual(["q-178"]);
   });
 });

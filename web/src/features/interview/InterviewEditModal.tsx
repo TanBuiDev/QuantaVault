@@ -20,7 +20,7 @@ import type {
   InterviewDifficulty,
   InterviewQuestion,
 } from "@/lib/interview/types";
-import { INTERVIEW_CATEGORIES } from "@/lib/interview/types";
+import { INTERVIEW_CATEGORIES, formatQuestionBadge } from "@/lib/interview/types";
 import { MarkdownContent } from "@/features/practice/MarkdownContent";
 import { MarkdownEditorToolbar } from "./MarkdownEditorToolbar";
 
@@ -280,7 +280,7 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
       <div className="flex flex-wrap items-center justify-between border-b border-[var(--border)] px-5 py-3.5 bg-[var(--surface)]">
         <div className="flex items-center gap-2.5 min-w-0">
           <span className="font-mono text-xs font-bold text-indigo-500 bg-indigo-500/10 px-2.5 py-1 rounded-lg">
-            {question.id}
+            {formatQuestionBadge(question.id)}
           </span>
           <h2 className="text-sm font-bold text-[var(--foreground)] truncate max-w-md sm:max-w-lg">
             Chỉnh sửa: {title || question.title}
