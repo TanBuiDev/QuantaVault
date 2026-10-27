@@ -42,7 +42,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: web
-        run: npm ci
+        run: npm ci || npm install
 
       - name: Audit production dependencies
         working-directory: web
