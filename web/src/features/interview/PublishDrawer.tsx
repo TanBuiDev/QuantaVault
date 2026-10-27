@@ -174,8 +174,7 @@ export function PublishDrawer({
           if (!isLoading) setIsModalOpen(false);
         }}
         maxWidth="md"
-        title="Xuất Bản Câu Hỏi Lên GitHub"
-        description="Gom toàn bộ các câu hỏi đã chỉnh sửa thành duy nhất 1 Git Commit nguyên tử."
+        title="Xuất Bản"
       >
         <div className="space-y-4 pt-1 text-xs sm:text-sm">
           {/* Success Notification */}
@@ -263,12 +262,12 @@ export function PublishDrawer({
                 </div>
               </div>
 
-              {/* Google Authenticator (TOTP) Only Input */}
+              {/* Google Authenticator Only Input */}
               <div className="space-y-2">
                 <label className="font-bold uppercase tracking-wider text-[var(--muted)] text-[11px] flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
                     <ShieldCheck className="h-3.5 w-3.5 text-indigo-500" />
-                    <span>Mã Google Authenticator (TOTP)</span>
+                    <span>Mã Google Authenticator</span>
                   </span>
                   <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
                     Bảo mật 2 lớp
@@ -300,11 +299,6 @@ export function PublishDrawer({
                     />
                   </div>
                 )}
-
-                <p className="text-[11px] text-[var(--muted)] flex items-center justify-between">
-                  <span>Mã OTP 6 số tự động đổi mới sau mỗi 30 giây</span>
-                  <span className="font-semibold text-indigo-500">RFC 6238</span>
-                </p>
               </div>
 
               {/* Optional Custom Commit Message */}
@@ -346,7 +340,7 @@ export function PublishDrawer({
                   ) : (
                     <>
                       <GitCommit className="h-4 w-4" />
-                      <span>Xác nhận & Xuất bản (1 Commit)</span>
+                      <span>Xác nhận & Xuất bản</span>
                     </>
                   )}
                 </button>
