@@ -30,9 +30,11 @@ export function MobileHeader() {
             href="/"
             className="flex items-center gap-2 rounded-xl"
           >
-            <span className="grid size-8 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 text-xs font-black text-white shadow-sm">
-              150
-            </span>
+            <img
+              src="/brand-logo.png"
+              alt="Logo Java"
+              className="size-8 rounded-xl object-cover shadow-xs"
+            />
             <span className="font-bold text-xs text-[var(--foreground)]">Top 150</span>
           </Link>
         </div>

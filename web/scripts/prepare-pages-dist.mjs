@@ -22,6 +22,13 @@ fs.mkdirSync(path.dirname(targetStatic), { recursive: true });
 fs.cpSync(distStatic, targetStatic, { recursive: true });
 console.log("Copied _next/static assets.");
 
+// Copy public assets (brand-logo, favicon, etc.)
+const publicDir = path.join(webRoot, "public");
+if (fs.existsSync(publicDir)) {
+  fs.cpSync(publicDir, targetDir, { recursive: true });
+  console.log("Copied public assets (brand-logo, favicon) -> cloudflare-pages/");
+}
+
 // Helper to copy file
 function copyFile(src, dest) {
   if (fs.existsSync(src)) {

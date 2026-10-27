@@ -46,9 +46,11 @@ export function AppSidebar() {
               href="/"
               className="group flex items-center gap-2.5 rounded-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus)] min-w-0"
             >
-              <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 text-xs font-black tracking-tight text-white shadow-md shadow-indigo-500/25 group-hover:scale-105 transition-transform">
-                150
-              </span>
+              <img
+                src="/brand-logo.png"
+                alt="Logo Java"
+                className="size-9 shrink-0 rounded-xl object-cover shadow-md shadow-indigo-500/25 group-hover:scale-105 transition-transform"
+              />
               <div className="min-w-0">
                 <span className="block truncate text-xs font-bold text-[var(--foreground)]">Top Interview 150</span>
                 <span className="block truncate text-[10px] font-medium text-[var(--muted)]">Study & Practice</span>
@@ -152,10 +154,14 @@ export function AppSidebar() {
             {/* Quick Logo to Home */}
             <Link
               href="/"
-              className="grid size-8 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 text-xs font-black text-white shadow-sm hover:scale-105 transition-transform"
+              className="flex size-9 items-center justify-center rounded-xl overflow-hidden shadow-sm hover:scale-105 transition-transform"
               title="Top Interview 150"
             >
-              150
+              <img
+                src="/brand-logo.png"
+                alt="Logo Java"
+                className="size-8 rounded-xl object-cover"
+              />
             </Link>
 
             {/* Mini Dashboard Icon */}

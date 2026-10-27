@@ -203,9 +203,16 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
             </span>
           </div>
 
-          <h1 className="text-3xl font-black tracking-[-0.035em] text-[var(--foreground)] sm:text-4xl xl:text-5xl">
-            Bộ Câu Hỏi Phỏng Vấn Java
-          </h1>
+          <div className="flex items-center gap-3.5">
+            <img
+              src="/brand-logo.png"
+              alt="Logo Java"
+              className="size-10 sm:size-12 rounded-2xl object-cover shadow-lg shadow-indigo-500/20 ring-1 ring-[var(--border)] shrink-0"
+            />
+            <h1 className="text-3xl font-black tracking-[-0.035em] text-[var(--foreground)] sm:text-4xl xl:text-5xl">
+              Bộ Câu Hỏi Phỏng Vấn Java
+            </h1>
+          </div>
 
           <p className="max-w-3xl text-sm leading-relaxed text-[var(--muted)] sm:text-base">
             Tổng hợp câu hỏi phỏng vấn thực tế từ các công ty công nghệ hàng đầu (FPT, Viettel, VNG, VNPay, Shopee, Techcombank).

@@ -29,6 +29,13 @@ export const metadata: Metadata = {
     template: "%s | Top Interview 150",
   },
   description: "A focused practice companion for LeetCode Top Interview 150.",
+  icons: {
+    icon: [
+      { url: "/brand-logo.png", sizes: "any" },
+      { url: "/favicon.ico" },
+    ],
+    apple: "/brand-logo.png",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
