@@ -56,7 +56,49 @@ const headersContent = `/*
 `;
 fs.writeFileSync(path.join(targetDir, "_headers"), headersContent, "utf-8");
 
-// 6. Copy Cloudflare Pages Functions
+// 6. Build Cloudflare Pages _worker.js for /api/* functions
+import esbuild from "esbuild";
+
+const workerEntry = `
+import { onRequestPost, onRequestOptions } from './functions/api/publish.ts';
+
+export default {
+  async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+    if (url.pathname === '/api/publish' || url.pathname === '/api/publish/') {
+      if (request.method === 'OPTIONS') {
+        return onRequestOptions();
+      }
+      if (request.method === 'POST') {
+        return onRequestPost({ request, env });
+      }
+      return new Response('Method Not Allowed', { status: 405 });
+    }
+    return env.ASSETS.fetch(request);
+  }
+};
+`;
+
+try {
+  esbuild.buildSync({
+    stdin: {
+      contents: workerEntry,
+      resolveDir: webRoot,
+      loader: 'ts',
+    },
+    outfile: path.join(targetDir, "_worker.js"),
+    bundle: true,
+    format: "esm",
+    platform: "browser",
+    target: "es2022",
+  });
+  console.log("Successfully built Cloudflare Pages _worker.js bundle.");
+} catch (err) {
+  console.error("Failed to build _worker.js:", err);
+  throw err;
+}
+
+// 7. Copy Cloudflare Pages Functions as fallback
 const functionsSrc = path.join(webRoot, "functions");
 const functionsDest = path.join(targetDir, "functions");
 if (fs.existsSync(functionsSrc)) {
@@ -65,3 +107,4 @@ if (fs.existsSync(functionsSrc)) {
 }
 
 console.log("Cloudflare Pages bundle ready at:", targetDir);
+
