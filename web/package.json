@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest",
+    "build:pages": "next build && node scripts/prepare-pages-dist.mjs",
     "java:setup": "node scripts/setup-java-runner.mjs",
     "test:docker": "node scripts/test-java-runner.mjs",
     "deploy:pages": "node scripts/prepare-pages-dist.mjs && npx wrangler pages deploy cloudflare-pages --project-name java-interview-v26106 --branch main --commit-dirty=true"

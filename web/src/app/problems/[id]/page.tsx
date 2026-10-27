@@ -24,7 +24,7 @@ export async function generateMetadata({
   if (!content) return { title: "Không tìm thấy bài tập" };
 
   return {
-    title: `Bài #${content.id}. ${content.title} | Top Interview 150`,
+    title: `Bài #${content.id}. ${content.title}`,
     description: `Giải thuật toán ${content.title} (${content.difficulty}) bằng Java. Giải thích trực quan, các cách tiếp cận và phân tích độ phức tạp thời gian/bộ nhớ.`,
   };
 }

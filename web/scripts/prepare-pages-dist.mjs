@@ -54,6 +54,10 @@ copyFile(path.join(distApp, "problems.html"), path.join(targetDir, "problems.htm
 // 4. 404
 copyFile(path.join(distApp, "_not-found.html"), path.join(targetDir, "404.html"));
 
+// 5. SEO: robots.txt and sitemap.xml
+copyFile(path.join(distApp, "robots.txt.body"), path.join(targetDir, "robots.txt"));
+copyFile(path.join(distApp, "sitemap.xml.body"), path.join(targetDir, "sitemap.xml"));
+
 // 5. Cloudflare _headers file
 const headersContent = `/*
   X-Content-Type-Options: nosniff
