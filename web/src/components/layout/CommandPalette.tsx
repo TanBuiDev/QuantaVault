@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/Badge";
+import { matchesSearch } from "@/lib/utils/stringUtils";
 
 interface MinimalProblem {
   id: number;
@@ -75,14 +76,14 @@ export function CommandPalette() {
   // Lọc bài tập
   const filtered = useMemo(() => {
     if (!query.trim()) return problems.slice(0, 8);
-    const q = query.toLowerCase().trim();
+    const q = query.trim();
     return problems
       .filter((p) => {
         return (
           String(p.id).includes(q) ||
-          p.title.toLowerCase().includes(q) ||
-          p.primarySection.toLowerCase().includes(q) ||
-          p.topics.some((t) => t.toLowerCase().includes(q))
+          matchesSearch(p.title, q) ||
+          matchesSearch(p.primarySection, q) ||
+          p.topics.some((t) => matchesSearch(t, q))
         );
       })
       .slice(0, 10);

@@ -1,4 +1,5 @@
 import rawQuestions from "@/data/interview-questions.json";
+import { matchesSearch } from "@/lib/utils/stringUtils";
 import type {
   InterviewFilterState,
   InterviewProgressState,
@@ -38,14 +39,15 @@ export function filterInterviewQuestions(
   progress?: InterviewProgressState
 ): InterviewQuestion[] {
   return questions.filter((q) => {
-    // 1. Search Query (Title, Summary, Tags, Answer)
+    // 1. Search Query (ID, Title, Summary, Tags, Companies with accent-insensitive support)
     if (filter.search.trim()) {
-      const term = filter.search.toLowerCase().trim();
-      const matchTitle = q.title.toLowerCase().includes(term);
-      const matchSummary = q.summary.toLowerCase().includes(term);
-      const matchTags = q.tags.some((t) => t.toLowerCase().includes(term));
-      const matchCompanies = q.companies?.some((c) => c.toLowerCase().includes(term)) ?? false;
-      if (!matchTitle && !matchSummary && !matchTags && !matchCompanies) {
+      const term = filter.search.trim();
+      const matchId = matchesSearch(q.id, term);
+      const matchTitle = matchesSearch(q.title, term);
+      const matchSummary = matchesSearch(q.summary, term);
+      const matchTags = q.tags.some((t) => matchesSearch(t, term));
+      const matchCompanies = q.companies?.some((c) => matchesSearch(c, term)) ?? false;
+      if (!matchId && !matchTitle && !matchSummary && !matchTags && !matchCompanies) {
         return false;
       }
     }

@@ -1,5 +1,6 @@
 import type { Difficulty, ProblemSummary } from "@/lib/content";
 import { getProblemProgress, type LearningStatus, type ProgressStateV1 } from "@/lib/progress";
+import { matchesSearch } from "@/lib/utils/stringUtils";
 
 export type ProblemStatusFilter = "all" | "not-started" | LearningStatus;
 
@@ -23,13 +24,15 @@ export function filterProblems(
   progress: ProgressStateV1,
   filters: ProblemFilters,
 ): ProblemSummary[] {
-  const query = filters.query.trim().toLocaleLowerCase();
+  const query = filters.query.trim();
 
   return problems.filter((problem) => {
     if (query) {
       const matchesId = String(problem.id).includes(query);
-      const matchesTitle = problem.title.toLocaleLowerCase().includes(query);
-      if (!matchesId && !matchesTitle) return false;
+      const matchesTitle = matchesSearch(problem.title, query);
+      const matchesSection = matchesSearch(problem.primarySection, query);
+      const matchesTopics = problem.topics.some((t) => matchesSearch(t, query));
+      if (!matchesId && !matchesTitle && !matchesSection && !matchesTopics) return false;
     }
 
     if (filters.difficulty !== "all" && problem.difficulty !== filters.difficulty) {

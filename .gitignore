@@ -6,4 +6,8 @@ web/node_modules/
 web/next-env.d.ts
 web/test-results/
 web/playwright-report/
+web/dist/
+web/cloudflare-pages/
+web/.wrangler/
+.wrangler/
 *.tsbuildinfo

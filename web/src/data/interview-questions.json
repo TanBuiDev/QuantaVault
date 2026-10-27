@@ -91,7 +91,7 @@
     ]
   },
   {
-    "id": "q-bổ-sung",
+    "id": "q-covie-tech-stack",
     "title": "[Câu BỔ SUNG] Hiện tại dự án CoVie đang sử dụng những công nghệ và kỹ năng Backend Engineering nào? Vai trò của từng công nghệ trong hệ thống là gì?",
     "category": "project-covie",
     "difficulty": "junior",
@@ -584,7 +584,7 @@
     ]
   },
   {
-    "id": "q-bổ-sung",
+    "id": "q-covie-dto-diff",
     "title": "[Câu BỔ SUNG] Request DTO và Response DTO khác nhau thế nào? Vì sao nên sử dụng chúng khi thiết kế REST API trong Spring Boot?",
     "category": "project-covie",
     "difficulty": "middle",

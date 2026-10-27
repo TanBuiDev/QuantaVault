@@ -7,10 +7,21 @@ const eslintConfig = defineConfig([
   ...nextTs,
   globalIgnores([
     ".next/**",
+    "dist/**",
+    "cloudflare-pages/**",
     "out/**",
     "build/**",
+    ".wrangler/**",
+    "test-results/**",
+    "scripts/**",
+    "functions/**",
     "next-env.d.ts",
   ]),
+  {
+    rules: {
+      "@next/next/no-img-element": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;
