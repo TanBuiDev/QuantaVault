@@ -1,5 +1,24 @@
 import type { CasesData, LanguageContractParameter } from "../cases";
 
+function objectLiteral(value: unknown): string {
+  if (Array.isArray(value)) return `new Object[]{${value.map(objectLiteral).join(", ")}}`;
+  return valueToJavaLiteral(value);
+}
+
+function javaCharLiteral(value: string): string {
+  const escaped: Record<string, string> = {
+    "\\": "\\\\",
+    "'": "\\'",
+    "\b": "\\b",
+    "\t": "\\t",
+    "\n": "\\n",
+    "\f": "\\f",
+    "\r": "\\r",
+  };
+  const char = escaped[value] ?? (value.charCodeAt(0) < 32 ? `\\u${value.charCodeAt(0).toString(16).padStart(4, "0")}` : value);
+  return `'${char}'`;
+}
+
 function valueToJavaLiteral(value: unknown, typeHint?: string): string {
   if (value === null || value === undefined) {
     if (typeHint?.startsWith("List") || typeHint?.includes("Node") || typeHint === "String") {
@@ -24,8 +43,7 @@ function valueToJavaLiteral(value: unknown, typeHint?: string): string {
 
   if (typeof value === "string") {
     if (typeHint === "char" || typeHint === "Character") {
-      const escaped = value.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
-      return `'${escaped}'`;
+      return javaCharLiteral(value);
     }
     const escaped = value
       .replace(/\\/g, "\\\\")
@@ -45,13 +63,13 @@ function valueToJavaLiteral(value: unknown, typeHint?: string): string {
       const elems = value.map((v) => (v === null ? "null" : `${v}`)).join(", ");
       return `TreeNode.fromArray(new Integer[]{${elems}})`;
     }
-    if (typeHint?.startsWith("List<List<")) {
-      const inner = value.map((v) => valueToJavaLiteral(v, "List<Integer>")).join(", ");
+    if (typeHint?.startsWith("List<")) {
+      const inner = value.map((v) => valueToJavaLiteral(v, typeHint.slice(5, -1))).join(", ");
       return `Arrays.asList(${inner})`;
     }
-    if (typeHint?.startsWith("List<")) {
-      const inner = value.map((v) => valueToJavaLiteral(v)).join(", ");
-      return `Arrays.asList(${inner})`;
+
+    if (typeHint?.endsWith("[]")) {
+      return `new ${typeHint}{${value.map(v => valueToJavaLiteral(v, typeHint.slice(0, -2))).join(", ")}}`;
     }
 
     if (value.length > 0 && Array.isArray(value[0])) {
@@ -70,7 +88,7 @@ function valueToJavaLiteral(value: unknown, typeHint?: string): string {
 
     // 1D Array
     if (typeHint === "char[]") {
-      return `new char[]{${value.map((c: string) => `'${c}'`).join(", ")}}`;
+      return `new char[]{${value.map((c: string) => javaCharLiteral(c)).join(", ")}}`;
     }
     if (typeHint === "String[]") {
       return `new String[]{${value.map((s: string) => `"${s.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`).join(", ")}}`;
@@ -110,6 +128,9 @@ function getFormatPrinter(type?: string): string {
 
 function getEqualityCheck(varActual: string, varExpected: string, type?: string): string {
   if (!type) return `Objects.equals(${varActual}, ${varExpected})`;
+  if (type === "double" || type === "float") {
+    return `(${varActual} == ${varExpected} || Math.abs(${varActual} - ${varExpected}) <= 1e-9 * Math.max(1.0, Math.abs(${varExpected})))`;
+  }
   if (["int", "long", "double", "float", "boolean", "char", "byte", "short"].includes(type)) {
     return `${varActual} == ${varExpected}`;
   }
@@ -237,14 +258,69 @@ class TreeNode {
         return t1.val == t2.val && equals(t1.left, t2.left) && equals(t1.right, t2.right);
     }
 }
+
+// Reflection represents a void operation as null and supports constructors with arguments.
+class OperationHarness {
+    static Object convert(Object value, Class<?> type) {
+        if (value == null) return null;
+        if (type == TreeNode.class) {
+            Object[] items = (Object[]) value;
+            Integer[] values = new Integer[items.length];
+            for (int i = 0; i < items.length; i++) values[i] = items[i] == null ? null : ((Number) items[i]).intValue();
+            return TreeNode.fromArray(values);
+        }
+        if (type.isArray()) {
+            Object[] items = (Object[]) value;
+            Object result = java.lang.reflect.Array.newInstance(type.getComponentType(), items.length);
+            for (int i = 0; i < items.length; i++) java.lang.reflect.Array.set(result, i, convert(items[i], type.getComponentType()));
+            return result;
+        }
+        if (value instanceof Number) {
+            Number n = (Number) value;
+            if (type == int.class || type == Integer.class) return n.intValue();
+            if (type == long.class || type == Long.class) return n.longValue();
+            if (type == double.class || type == Double.class) return n.doubleValue();
+        }
+        return value;
+    }
+    static Object[] arguments(Object[] values, Class<?>[] types) {
+        Object[] result = new Object[values.length];
+        for (int i = 0; i < values.length; i++) result[i] = convert(values[i], types[i]);
+        return result;
+    }
+    static Object construct(Class<?> type, Object[] args) throws Exception {
+        for (java.lang.reflect.Constructor<?> constructor : type.getDeclaredConstructors()) {
+            if (constructor.getParameterCount() != args.length) continue;
+            constructor.setAccessible(true);
+            return constructor.newInstance(arguments(args, constructor.getParameterTypes()));
+        }
+        throw new IllegalArgumentException("Unsupported constructor");
+    }
+    static Object invoke(Object instance, String name, Object[] args) throws Exception {
+        for (java.lang.reflect.Method method : instance.getClass().getDeclaredMethods()) {
+            if (!method.getName().equals(name) || method.getParameterCount() != args.length) continue;
+            method.setAccessible(true);
+            return method.invoke(instance, arguments(args, method.getParameterTypes()));
+        }
+        throw new IllegalArgumentException("Unsupported operation: " + name);
+    }
+    static boolean equal(Object actual, Object expected) {
+        if (actual instanceof Number && expected instanceof Number) return Double.compare(((Number) actual).doubleValue(), ((Number) expected).doubleValue()) == 0;
+        return Objects.deepEquals(actual, expected);
+    }
+}
 `;
 
   // Clean user code from any public class declarations so it doesn't collide with public class Main
-  const sanitizedUserCode = userCode.replace(/public\s+class\s+([A-Za-z0-9_]+)/g, "class $1");
+  const imports: string[] = [];
+  const sanitizedUserCode = userCode
+    .replace(/^\s*import\s+(?:static\s+)?[\w.*]+\s*;/gm, declaration => { imports.push(declaration.trim()); return ""; })
+    .replace(/public\s+class\s+([A-Za-z0-9_]+)/g, "class $1");
 
   if (!casesData || !casesData.cases || casesData.cases.length === 0) {
     return `import java.util.*;
 import java.io.*;
+${imports.join("\n")}
 
 ${helpers}
 
@@ -270,7 +346,7 @@ ${sanitizedUserCode}
       const expectedArr = tc.expected || [];
 
       testRunnerCode += `
-        // --- CASE ${idx}: ${tc.name} ---
+        // --- CASE ${idx} ---
         System.out.println("__CASE_START__ " + ${idx});
         long tStart${idx} = System.nanoTime();
         try {
@@ -278,11 +354,11 @@ ${sanitizedUserCode}
             List<Object> actualList = new ArrayList<>();
             ${ops
               .map((op, opIdx) => {
-                const callArgs = (argsList[opIdx] || []).map((a) => JSON.stringify(a)).join(", ");
+                const callArgs = (argsList[opIdx] || []).map(objectLiteral).join(", ");
                 if (op === className) {
-                  return `obj = new ${className}(${callArgs}); actualList.add(null);`;
+                  return `obj = (${className}) OperationHarness.construct(${className}.class, new Object[]{${callArgs}}); actualList.add(null);`;
                 }
-                return `actualList.add(obj.${op}(${callArgs}));`;
+                return `actualList.add(OperationHarness.invoke(obj, ${JSON.stringify(op)}, new Object[]{${callArgs}}));`;
               })
               .join("\n            ")}
 
@@ -290,10 +366,12 @@ ${sanitizedUserCode}
             double durationMs${idx} = (tEnd${idx} - tStart${idx}) / 1e6;
 
             String actualStr = actualList.toString();
-            String expectedStr = ${JSON.stringify(JSON.stringify(expectedArr))};
+            Object[] expectedValues = ${objectLiteral(expectedArr)};
+            String expectedStr = Arrays.deepToString(expectedValues);
             
             // Check equality
-            boolean pass = actualStr.replace(" ", "").equals(expectedStr.replace(" ", ""));
+            boolean pass = actualList.size() == expectedValues.length;
+            for (int i = 0; pass && i < expectedValues.length; i++) pass = OperationHarness.equal(actualList.get(i), expectedValues[i]);
             System.out.println("__STATUS__ " + (pass ? "PASS" : "FAIL"));
             System.out.println("__ACTUAL__ " + actualStr);
             System.out.println("__EXPECTED__ " + expectedStr);
@@ -309,6 +387,7 @@ ${sanitizedUserCode}
 
     return `import java.util.*;
 import java.io.*;
+${imports.join("\n")}
 
 ${helpers}
 
@@ -361,12 +440,16 @@ ${sanitizedUserCode}
       const expectedPrints: string[] = [];
 
       Object.entries(expectedMutation).forEach(([mutKey, mutVal]) => {
-        const paramDef = params.find((p) => p.name === mutKey);
-        const pType = paramDef?.type || "int[]";
+        const isReturn = mutKey === "return";
+        const isPrefix = mutKey.endsWith("_prefix");
+        const paramName = isPrefix ? mutKey.slice(0, -7) : mutKey;
+        const paramDef = params.find((p) => p.name === paramName);
+        const pType = isReturn ? returnType : paramDef?.type || "int[]";
+        const actualValue = isReturn ? "actual" : isPrefix ? `Arrays.copyOf(case${idx}_${paramName}, actual)` : `case${idx}_${paramName}`;
         const expectedLiteral = valueToJavaLiteral(mutVal, pType);
         const printer = getFormatPrinter(pType);
-        mutationChecks.push(getEqualityCheck(`case${idx}_${mutKey}`, expectedLiteral, pType));
-        formatPrints.push(`${printer}(case${idx}_${mutKey})`);
+        mutationChecks.push(getEqualityCheck(actualValue, expectedLiteral, pType));
+        formatPrints.push(`${printer}(${actualValue})`);
         expectedPrints.push(`${printer}(${expectedLiteral})`);
       });
 
@@ -379,7 +462,7 @@ ${sanitizedUserCode}
     } else {
       const expectedLiteral = valueToJavaLiteral(tc.expected, returnType);
       const printer = getFormatPrinter(returnType);
-      const equality = getEqualityCheck("actual", expectedLiteral, returnType);
+      const equality = getEqualityCheck("actual", "expected", returnType);
 
       checkLogic = `
             ${returnType} expected = ${expectedLiteral};
@@ -391,10 +474,11 @@ ${sanitizedUserCode}
     }
 
     testRunnerCode += `
-        // --- CASE ${idx}: ${tc.name} ---
+        // --- CASE ${idx} ---
         System.out.println("__CASE_START__ " + ${idx});
         long tStart${idx} = System.nanoTime();
         try {
+            ${targetClass} sol = new ${targetClass}();
             ${paramInits.join("\n            ")}
             ${invocation}
             long tEnd${idx} = System.nanoTime();
@@ -413,12 +497,12 @@ ${sanitizedUserCode}
 
   return `import java.util.*;
 import java.io.*;
+${imports.join("\n")}
 
 ${helpers}
 
 public class Main {
     public static void main(String[] args) {
-        ${targetClass} sol = new ${targetClass}();
         ${testRunnerCode}
     }
 }

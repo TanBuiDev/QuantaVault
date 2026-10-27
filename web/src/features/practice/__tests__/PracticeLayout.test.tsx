@@ -1,11 +1,13 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { ConfirmProvider } from "@/components/ui/ConfirmDialog";
 import { ToastProvider } from "@/components/ui/Toast";
 import { PracticeView } from "@/features/practice/PracticeView";
 import type { ProblemContent } from "@/lib/content";
 import { ProgressProvider } from "@/lib/progress/provider";
+
+vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: vi.fn(), push: vi.fn() }) }));
 
 const content: ProblemContent = {
   id: 121,

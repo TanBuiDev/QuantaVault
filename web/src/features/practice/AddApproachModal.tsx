@@ -36,7 +36,7 @@ export function AddApproachModal({ isOpen, onClose, problemId, onSuccess }: AddA
     try {
       const res = await fetch("/api/approaches", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-workspace-request": "1" },
         body: JSON.stringify({
           problemId,
           name: finalName,

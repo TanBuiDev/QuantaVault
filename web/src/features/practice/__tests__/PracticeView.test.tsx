@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { ConfirmProvider } from "@/components/ui/ConfirmDialog";
 import { ToastProvider } from "@/components/ui/Toast";
@@ -8,6 +8,9 @@ import { parseProblemId } from "@/features/practice/route";
 import type { ProblemContent } from "@/lib/content";
 import { PROGRESS_STORAGE_KEY } from "@/lib/progress";
 import { ProgressProvider } from "@/lib/progress/provider";
+
+vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: vi.fn(), push: vi.fn() }) }));
+vi.mock("../CodeEditorPanel", () => ({ CodeEditorPanel: ({ onRun, onSubmit }: { onRun: () => void; onSubmit: () => void }) => <div><button onClick={onRun}>Test Run</button><button onClick={onSubmit}>Test Submit</button></div> }));
 
 const problem121: ProblemContent = {
   id: 121,
@@ -192,4 +195,19 @@ describe("PracticeView", () => {
     expect(screen.getByRole("tab", { name: "Interview" })).toBeDisabled();
     expect(screen.getByText(/full problem source is not available/i)).toBeInTheDocument();
   });
+});
+
+it("sends only server judge identifiers and guards local requests", async () => {
+  localStorage.clear();
+  const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ overallStatus: "ACCEPTED", results: [], passedCases: 3, totalCases: 3 }) });
+  vi.stubGlobal("fetch", fetchMock);
+  renderPractice();
+  fireEvent.click(screen.getByText("Test Run"));
+  await waitFor(() => expect(fetchMock).toHaveBeenCalled());
+  const request = fetchMock.mock.calls[0][1];
+  expect(JSON.parse(request.body)).toEqual({ problemId: 121, sourceCode: expect.any(String), mode: "run" });
+  expect(request.headers["x-workspace-request"]).toBe("1");
+  expect(request.signal).toBeInstanceOf(AbortSignal);
+  expect(screen.queryByRole("button", { name: "Solved" })).not.toBeInTheDocument();
+  vi.unstubAllGlobals();
 });

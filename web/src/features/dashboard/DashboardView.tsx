@@ -47,13 +47,26 @@ export function DashboardView({ plan, orderedProblemIds }: DashboardViewProps) {
             Xây dựng tư duy thuật toán vững vàng từng bài một. Học bài, lưu phiên bản code và theo dõi tiến độ học tập trên LeetCode.
           </p>
         </div>
-        <Link
-          href="/problems"
-          aria-label="Browse problems"
-          className="inline-flex min-h-11 items-center justify-center gap-2 self-start rounded-2xl bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 text-sm font-bold text-white shadow-md shadow-indigo-500/20 transition-all hover:scale-105 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)]"
-        >
-          Browse problems <span aria-hidden="true">→</span>
-        </Link>
+        <div className="flex flex-wrap items-center gap-3 self-start">
+          <Link
+            href="/interview"
+            aria-label="Phỏng vấn Java"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-5 text-sm font-bold text-[var(--foreground)] shadow-xs transition-all hover:bg-[var(--surface-hover)] hover:border-indigo-500/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)]"
+          >
+            <span>Phỏng vấn Java</span>
+            <span className="rounded-md bg-indigo-500/15 px-1.5 py-0.5 text-[10px] font-bold text-indigo-600 dark:text-indigo-400">
+              Mới
+            </span>
+          </Link>
+
+          <Link
+            href="/problems"
+            aria-label="Browse problems"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 text-sm font-bold text-white shadow-md shadow-indigo-500/20 transition-all hover:scale-105 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)]"
+          >
+            Browse problems <span aria-hidden="true">→</span>
+          </Link>
+        </div>
       </header>
 
 

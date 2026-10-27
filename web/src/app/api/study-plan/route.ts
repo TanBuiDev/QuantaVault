@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getTopInterview150, getProblemSummary } from "@/lib/content";
+import { getAllProblemSummaries, getTopInterview150 } from "@/lib/content";
 
 export interface NavProblemItem {
   id: number;
@@ -23,10 +23,11 @@ export interface StudyPlanNavResponse {
 export async function GET() {
   try {
     const studyPlan = getTopInterview150();
+    const summaries = new Map(getAllProblemSummaries().map((summary) => [summary.id, summary]));
 
     const sections: NavSectionItem[] = studyPlan.sections.map((section) => {
       const problems: NavProblemItem[] = section.problemIds.map((id) => {
-        const summary = getProblemSummary(id);
+        const summary = summaries.get(id);
         return {
           id,
           title: summary?.title || `Problem ${id}`,

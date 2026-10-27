@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import type { RunCodeResponse } from "@/app/api/run-code/route";
+import type { RunCodeResponse } from "@/lib/judge/types";
 import type { CasesData } from "@/lib/cases";
 
 interface TestResultPanelProps {

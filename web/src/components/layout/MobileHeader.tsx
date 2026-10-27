@@ -1,13 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Menu, Search } from "lucide-react";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { useSidebar } from "./SidebarContext";
 
 export function MobileHeader() {
-  const pathname = usePathname();
   const { toggleSidebar } = useSidebar();
 
   function openSearch() {

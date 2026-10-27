@@ -56,7 +56,7 @@ export function CodeVersionModal({
     try {
       const res = await fetch("/api/code-versions", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "x-workspace-request": "1" },
         body: JSON.stringify({
           problemId,
           id: editingVersion?.id,

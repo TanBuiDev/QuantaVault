@@ -1,37 +1,20 @@
 import { NextResponse } from "next/server";
 import { saveSolutionApproach } from "@/lib/content/approachManager";
+import { apiErrorResponse, readLocalJson } from "@/lib/api/localGuard";
+import { booleanField, contentId, problemIdField, textField } from "@/lib/content/validation";
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { problemId, id, name, tag, timeComplexity, spaceComplexity, isDefault, solutionMarkdown, javaSource } = body;
-
-    if (!problemId || !name || !javaSource) {
-      return NextResponse.json(
-        { error: "Problem ID, Approach Name, and Java Source are required." },
-        { status: 400 }
-      );
-    }
-
+    const body = await readLocalJson(request);
     const result = await saveSolutionApproach({
-      problemId: Number(problemId),
-      id,
-      name,
-      tag,
-      timeComplexity,
-      spaceComplexity,
-      isDefault: Boolean(isDefault),
-      solutionMarkdown: solutionMarkdown || `# ${name}\n\n## Core idea\n\nExplain your approach here.`,
-      javaSource,
+      problemId: problemIdField(body.problemId), id: contentId(body.id),
+      name: textField(body.name, "name", 200)!, tag: textField(body.tag, "tag", 100, true, true),
+      timeComplexity: textField(body.timeComplexity, "timeComplexity", 200, true, true),
+      spaceComplexity: textField(body.spaceComplexity, "spaceComplexity", 200, true, true),
+      isDefault: booleanField(body.isDefault),
+      solutionMarkdown: textField(body.solutionMarkdown, "solutionMarkdown", 262144, false, true)!,
+      javaSource: textField(body.javaSource, "javaSource", 262144, false, true)!,
     });
-
-    if (!result.success) {
-      return NextResponse.json({ error: result.message }, { status: 500 });
-    }
-
-    return NextResponse.json({ message: result.message });
-  } catch (error: unknown) {
-    const errMsg = error instanceof Error ? error.message : "Internal Server Error";
-    return NextResponse.json({ error: errMsg }, { status: 500 });
-  }
+    return NextResponse.json(result);
+  } catch (error) { return apiErrorResponse(error); }
 }

@@ -8,7 +8,7 @@ import {
   LayoutDashboard,
   Search,
   Layers,
-  Menu,
+  GraduationCap,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { useSidebar } from "./SidebarContext";
@@ -91,7 +91,7 @@ export function AppSidebar() {
 
           {/* Navigation & Problem Accordion Tree */}
           <div className="flex-1 overflow-y-auto px-2 py-3 space-y-3">
-            <div className="px-1">
+            <div className="px-1 space-y-1">
               <Link
                 href="/"
                 aria-current={pathname === "/" ? "page" : undefined}
@@ -103,6 +103,22 @@ export function AppSidebar() {
               >
                 <LayoutDashboard className="h-4 w-4 shrink-0" />
                 <span>Dashboard Tổng Quan</span>
+              </Link>
+
+              <Link
+                href="/interview"
+                aria-current={pathname?.startsWith("/interview") ? "page" : undefined}
+                className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold transition-all ${
+                  pathname?.startsWith("/interview")
+                    ? "bg-[var(--primary)] text-white shadow-xs"
+                    : "text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
+                }`}
+              >
+                <GraduationCap className="h-4 w-4 shrink-0 text-indigo-400" />
+                <span>Phỏng vấn Java</span>
+                <span className="ml-auto rounded-md bg-indigo-500/15 px-1.5 py-0.5 text-[10px] font-bold text-indigo-600 dark:text-indigo-400">
+                  Mới
+                </span>
               </Link>
             </div>
 
@@ -143,6 +159,19 @@ export function AppSidebar() {
               title="Dashboard"
             >
               <LayoutDashboard className="h-4 w-4" />
+            </Link>
+
+            {/* Mini Interview Icon */}
+            <Link
+              href="/interview"
+              className={`flex size-9 items-center justify-center rounded-xl transition-colors ${
+                pathname?.startsWith("/interview")
+                  ? "bg-[var(--primary)] text-white shadow-xs"
+                  : "text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
+              }`}
+              title="Phỏng vấn Java"
+            >
+              <GraduationCap className="h-4 w-4" />
             </Link>
 
             {/* Mini Problems Icon (Click to open sidebar and browse tree) */}

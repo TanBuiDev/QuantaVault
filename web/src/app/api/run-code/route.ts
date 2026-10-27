@@ -1,184 +1,49 @@
 import { NextResponse } from "next/server";
+import { parse } from "yaml";
 import { executeCode } from "@/lib/piston";
+import { getProblemContent } from "@/lib/content";
+import { ApiError, readLocalJson } from "@/lib/api/localGuard";
 import { generateJavaSource } from "@/lib/wrappers/javaWrapper";
-import type { CasesData } from "@/lib/cases";
+import { parseExecution } from "@/lib/judge/parseExecution";
+import { UnsupportedCasesError, validateCases } from "@/lib/judge/validateCases";
+import type { RunCodeResponse } from "@/lib/judge/types";
 
-export interface SingleTestResult {
-  id: number;
-  name: string;
-  status: "PASS" | "FAIL" | "ERROR";
-  actual?: string;
-  expected?: string;
-  error?: string;
-  timeMs?: number;
-  stdout?: string;
-}
-
-export interface RunCodeResponse {
-  overallStatus: "ACCEPTED" | "WRONG_ANSWER" | "COMPILE_ERROR" | "RUNTIME_ERROR" | "TIMEOUT" | "SERVER_ERROR";
-  compileError?: string;
-  runtimeError?: string;
-  results: SingleTestResult[];
-  totalCases: number;
-  passedCases: number;
-  totalTimeMs: number;
-  rawStdout?: string;
-  rawStderr?: string;
-}
+export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { sourceCode, casesData, runAll = false } = body;
-
-    if (!sourceCode) {
-      return NextResponse.json({ error: "Source code is required" }, { status: 400 });
+    const body = await readLocalJson(req, 2 * 1024 * 1024);
+    if (Object.keys(body).some(key => !["problemId", "sourceCode", "mode"].includes(key)) ||
+        !Number.isSafeInteger(body.problemId) || (body.problemId as number) <= 0 ||
+        typeof body.sourceCode !== "string" || !body.sourceCode.trim() ||
+        Buffer.byteLength(body.sourceCode, "utf8") > 256 * 1024 ||
+        (body.mode !== "run" && body.mode !== "submit")) {
+      throw new ApiError(400, "INVALID_REQUEST", "Expected problemId, sourceCode (up to 256 KiB), and mode: run or submit.");
     }
-
-    const filteredCasesData: CasesData | null = casesData
-      ? {
-          ...casesData,
-          cases: runAll
-            ? casesData.cases
-            : (casesData.cases || []).slice(0, 3), // Run first 3 cases for "Run", all for "Submit"
-        }
-      : null;
-
-    // Generate Java file
-    const mainJavaSource = generateJavaSource(sourceCode, filteredCasesData);
-
-    // Call Piston API
+    const content = getProblemContent(body.problemId as number);
+    if (!content) throw new ApiError(404, "PROBLEM_NOT_FOUND", "Problem not found.");
+    let canonical;
+    try { canonical = validateCases(parse(content.casesYaml || ""), body.problemId as number); }
+    catch (error) { throw new ApiError(422, "UNSUPPORTED_CASES", error instanceof UnsupportedCasesError ? error.message : "Invalid canonical testcase data."); }
+    const selected = { ...canonical, cases: body.mode === "run" ? canonical.cases.slice(0, 3) : canonical.cases };
     const execution = await executeCode({
-      language: "java",
-      version: "15.0.2",
-      files: [
-        {
-          name: "Main.java",
-          content: mainJavaSource,
-        },
-      ],
-      run_timeout: 10000,
-      compile_timeout: 10000,
+      language: "java", files: [{ name: "Main.java", content: generateJavaSource(body.sourceCode, selected) }], signal: req.signal,
     });
-
-    // Check compilation errors
-    if (execution.compile && execution.compile.code !== 0) {
-      const compileErr = execution.compile.stderr || execution.compile.output || "Compilation failed";
-      // Filter out internal class helpers from error line numbers if needed
-      return NextResponse.json<RunCodeResponse>({
-        overallStatus: "COMPILE_ERROR",
-        compileError: compileErr,
-        results: [],
-        totalCases: filteredCasesData?.cases?.length || 0,
-        passedCases: 0,
-        totalTimeMs: 0,
-        rawStderr: execution.compile.stderr,
-      });
-    }
-
-    // Check runtime errors if code != 0
-    const rawStdout = execution.run.stdout || "";
-    const rawStderr = execution.run.stderr || "";
-
-    if (execution.run.code !== 0 && !rawStdout.includes("__CASE_START__")) {
-      return NextResponse.json<RunCodeResponse>({
-        overallStatus: execution.run.signal === "SIGKILL" ? "TIMEOUT" : "RUNTIME_ERROR",
-        runtimeError: rawStderr || execution.run.output || "Runtime execution failed",
-        results: [],
-        totalCases: filteredCasesData?.cases?.length || 0,
-        passedCases: 0,
-        totalTimeMs: 0,
-        rawStdout,
-        rawStderr,
-      });
-    }
-
-    // Parse structured stdout
-    const results: SingleTestResult[] = [];
-    const cases = filteredCasesData?.cases || [];
-    let passedCount = 0;
-    let totalTime = 0;
-
-    const caseRegex = /__CASE_START__\s+(\d+)[\r\n]+([\s\S]*?)__CASE_END__\s+\1/g;
-    let match;
-
-    while ((match = caseRegex.exec(rawStdout)) !== null) {
-      const caseIdx = parseInt(match[1], 10);
-      const caseBody = match[2];
-      const caseDef = cases[caseIdx] || { name: `Case ${caseIdx + 1}` };
-
-      const statusMatch = caseBody.match(/__STATUS__\s+(PASS|FAIL|ERROR)/);
-      const actualMatch = caseBody.match(/__ACTUAL__\s+([\s\S]*?)(?=(?:__EXPECTED__|__TIME_MS__|__ERROR__|$))/);
-      const expectedMatch = caseBody.match(/__EXPECTED__\s+([\s\S]*?)(?=(?:__TIME_MS__|__ERROR__|$))/);
-      const timeMatch = caseBody.match(/__TIME_MS__\s+([\d.]+)/);
-      const errorMatch = caseBody.match(/__ERROR__\s+([^\r\n]*)/);
-
-      const status = (statusMatch ? statusMatch[1] : "ERROR") as "PASS" | "FAIL" | "ERROR";
-      const actual = actualMatch ? actualMatch[1].trim() : undefined;
-      const expected = expectedMatch ? expectedMatch[1].trim() : undefined;
-      const timeMs = timeMatch ? parseFloat(timeMatch[1]) : 0;
-      const error = errorMatch ? errorMatch[1].trim() : undefined;
-
-      if (status === "PASS") {
-        passedCount++;
+    return NextResponse.json(parseExecution(execution, selected));
+  } catch (error) {
+    const known = error instanceof Error && "status" in error && typeof error.status === "number";
+    if (!known) console.error("API /api/run-code unexpected failure", error);
+    const code = error instanceof ApiError ? error.code : error instanceof Error && "errorCode" in error && typeof error.errorCode === "string" ? error.errorCode : "INTERNAL_ERROR";
+    let runtimeMsg = known ? error.message : "Unable to execute Java. Check the server logs.";
+    if (code === "DOCKER_NOT_INSTALLED" || code === "DOCKER_UNAVAILABLE") {
+      if (process.env.CF_PAGES || process.env.VERCEL) {
+        runtimeMsg = "Phiên bản Cloudflare Pages hiện tại chạy ở chế độ Showcase/Học tập. Tính năng Chấm code trực tiếp qua Cloud Runner sẽ được kết nối trong giai đoạn tiếp theo!";
       }
-      totalTime += timeMs;
-
-      results.push({
-        id: caseIdx,
-        name: caseDef.name || `Case ${caseIdx + 1}`,
-        status,
-        actual,
-        expected,
-        error,
-        timeMs,
-      });
     }
-
-    // If parsing found no markers but code ran, fallback
-    if (results.length === 0 && cases.length > 0) {
-      return NextResponse.json<RunCodeResponse>({
-        overallStatus: rawStderr ? "RUNTIME_ERROR" : "WRONG_ANSWER",
-        runtimeError: rawStderr || rawStdout,
-        results: [],
-        totalCases: cases.length,
-        passedCases: 0,
-        totalTimeMs: 0,
-        rawStdout,
-        rawStderr,
-      });
-    }
-
-    const isAllPass = passedCount === cases.length && cases.length > 0;
-    const hasError = results.some((r) => r.status === "ERROR");
-
-    let overallStatus: RunCodeResponse["overallStatus"] = "ACCEPTED";
-    if (!isAllPass) {
-      overallStatus = hasError ? "RUNTIME_ERROR" : "WRONG_ANSWER";
-    }
-
     return NextResponse.json<RunCodeResponse>({
-      overallStatus,
-      results,
-      totalCases: cases.length,
-      passedCases: passedCount,
-      totalTimeMs: Math.round(totalTime * 100) / 100,
-      rawStdout,
-      rawStderr,
-    });
-  } catch (error: unknown) {
-    console.error("API /api/run-code error:", error);
-    const message = error instanceof Error ? error.message : "Internal server error";
-    return NextResponse.json<RunCodeResponse>(
-      {
-        overallStatus: "SERVER_ERROR",
-        runtimeError: message,
-        results: [],
-        totalCases: 0,
-        passedCases: 0,
-        totalTimeMs: 0,
-      },
-      { status: 500 }
-    );
+      overallStatus: code === "TIMEOUT" ? "TIMEOUT" : code === "OUTPUT_LIMIT" ? "RUNTIME_ERROR" : "SERVER_ERROR",
+      errorCode: code, runtimeError: runtimeMsg,
+      results: [], totalCases: 0, passedCases: 0, totalTimeMs: 0,
+    }, { status: known ? error.status as number : 500 });
   }
 }

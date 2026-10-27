@@ -1,139 +1,57 @@
 import "server-only";
-
 import fs from "node:fs";
-import path from "node:path";
-import { parse, stringify } from "yaml";
-
-function findRepositoryRoot(): string {
-  let current = path.resolve(/* turbopackIgnore: true */ process.cwd());
-  for (;;) {
-    const studyPlanPath = path.join(current, "study-plans", "top-interview-150", "index.yaml");
-    const problemsPath = path.join(current, "problems");
-    if (fs.existsSync(studyPlanPath) && fs.existsSync(problemsPath)) {
-      return current;
-    }
-    const parent = path.dirname(current);
-    if (parent === current) break;
-    current = parent;
-  }
-  throw new Error("Unable to locate repository root.");
-}
-
-function findProblemDirectory(problemId: number): string | null {
-  const root = findRepositoryRoot();
-  const problemsDir = path.join(root, "problems");
-  const sections = fs.readdirSync(problemsDir);
-
-  for (const sec of sections) {
-    const secPath = path.join(problemsDir, sec);
-    if (!fs.statSync(secPath).isDirectory()) continue;
-    const problems = fs.readdirSync(secPath);
-    for (const prob of problems) {
-      const probPath = path.join(secPath, prob);
-      const metaPath = path.join(probPath, "meta.yaml");
-      if (fs.existsSync(metaPath)) {
-        try {
-          const raw = parse(fs.readFileSync(metaPath, "utf8")) as { id?: number };
-          if (raw.id === problemId) {
-            return probPath;
-          }
-        } catch {
-          // ignore
-        }
-      }
-    }
-  }
-  return null;
-}
+import { randomUUID } from "node:crypto";
+import { ApiError } from "@/lib/api/localGuard";
+import { atomicWrite, containedPath, findProblemDirectory, metadataEntries, readMetadata, withProblemLock, writeMetadata } from "./repository";
+import { booleanField, contentId, problemIdField, textField } from "./validation";
 
 export interface CreateApproachInput {
-  problemId: number;
-  id?: string;
-  name: string;
-  tag?: string;
-  timeComplexity?: string;
-  spaceComplexity?: string;
-  isDefault?: boolean;
-  solutionMarkdown: string;
-  javaSource: string;
+  problemId: number; id?: string; name: string; tag?: string;
+  timeComplexity?: string; spaceComplexity?: string; isDefault?: boolean;
+  solutionMarkdown: string; javaSource: string;
 }
 
-export async function saveSolutionApproach(input: CreateApproachInput): Promise<{ success: boolean; message: string }> {
-  const probDir = findProblemDirectory(input.problemId);
-  if (!probDir) {
-    return { success: false, message: `Cannot find problem directory for problem ID ${input.problemId}` };
-  }
-
-  const metaPath = path.join(probDir, "meta.yaml");
-  if (!fs.existsSync(metaPath)) {
-    return { success: false, message: "meta.yaml does not exist." };
-  }
-
-  const rawMeta = parse(fs.readFileSync(metaPath, "utf8")) as Record<string, unknown>;
-  const solutionsList = Array.isArray(rawMeta.solutions) ? [...rawMeta.solutions] : [];
-
-  // Nếu bài toán chưa từng khai báo `solutions:` trong meta.yaml,
-  // tự động đưa cách giải gốc (canonical solution trong Solution.java / solution.md) vào làm Approach 1
-  if (solutionsList.length === 0) {
-    solutionsList.push({
-      id: "canonical",
-      name: "Cách 1: Lời giải chuẩn (Canonical)",
-      tag: "Optimal",
-      time: typeof rawMeta.time_complexity === "string" ? rawMeta.time_complexity : "O(n)",
-      space: typeof rawMeta.space_complexity === "string" ? rawMeta.space_complexity : "O(1)",
-      default: !input.isDefault,
-    });
-  }
-
-  // Generate unique approach ID using crypto randomUUID
-  const uniqueId = input.id && input.id.trim() !== ""
-    ? input.id.trim().toLowerCase().replace(/[^a-z0-9_-]/g, "-")
-    : (typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID().slice(0, 8) : Date.now().toString(36));
-
-  const approachId = `approach-${uniqueId.replace(/^approach-/, "")}`;
-  const approachDirName = approachId;
-  const subDirPath = path.join(probDir, "solutions", approachDirName);
-
-  // 1. Create sub directory if needed
-  if (!fs.existsSync(subDirPath)) {
-    fs.mkdirSync(subDirPath, { recursive: true });
-  }
-
-  // 2. Write solution.md & Solution.java
-  fs.writeFileSync(path.join(subDirPath, "solution.md"), input.solutionMarkdown, "utf8");
-  fs.writeFileSync(path.join(subDirPath, "Solution.java"), input.javaSource, "utf8");
-
-  // 3. Update meta.yaml
-  // If isDefault is true, set others default to false
-  if (input.isDefault) {
-    for (const sol of solutionsList) {
-      if (typeof sol === "object" && sol !== null) {
-        (sol as Record<string, unknown>).default = false;
+export async function saveSolutionApproach(input: CreateApproachInput) {
+  problemIdField(input.problemId);
+  contentId(input.id);
+  textField(input.name, "name", 200);
+  textField(input.tag, "tag", 100, true, true);
+  textField(input.timeComplexity, "timeComplexity", 200, true, true);
+  textField(input.spaceComplexity, "spaceComplexity", 200, true, true);
+  textField(input.solutionMarkdown, "solutionMarkdown", 262144, false, true);
+  textField(input.javaSource, "javaSource", 262144, false, true);
+  booleanField(input.isDefault);
+  const directory = findProblemDirectory(input.problemId);
+  return withProblemLock(directory, () => {
+    const meta = readMetadata(directory);
+    const entries = metadataEntries(meta.solutions);
+    if (!entries.length) entries.push({ id: "canonical", name: "Lời giải chuẩn (Canonical)", tag: "Optimal", time: meta.time_complexity, space: meta.space_complexity, default: true });
+    const existing = input.id ? entries.find(entry => entry.id === input.id) : undefined;
+    if (input.id && !existing) throw new ApiError(404, "APPROACH_NOT_FOUND", "Approach not found.");
+    if (existing?.dir) containedPath(directory, String(existing.dir));
+    const createdCopy = Boolean(existing && (!existing.dir || existing.canonical || existing.id === "canonical"));
+    const id = existing && !createdCopy ? String(existing.id) : `approach-${randomUUID()}`;
+    const relative = `solutions/approach-${randomUUID()}`;
+    const destination = containedPath(directory, relative);
+    fs.mkdirSync(destination, { recursive: true });
+    const updated = { id, name: input.name, tag: input.tag || "Alternative", time: input.timeComplexity || "O(n)", space: input.spaceComplexity || "O(1)", default: input.isDefault ?? (createdCopy ? false : Boolean(existing?.default)), dir: relative };
+    if (updated.default) for (const entry of entries) entry.default = false;
+    if (existing && !createdCopy) entries[entries.indexOf(existing)] = updated;
+    else entries.push(updated);
+    meta.solutions = entries;
+    try {
+      atomicWrite(directory, `${relative}/solution.md`, input.solutionMarkdown);
+      atomicWrite(directory, `${relative}/Solution.java`, input.javaSource);
+      writeMetadata(directory, meta);
+    } catch (error) {
+      for (const filename of ["solution.md", "Solution.java"]) {
+        const file = containedPath(directory, `${relative}/${filename}`);
+        if (fs.existsSync(file)) fs.unlinkSync(file);
       }
+      fs.rmdirSync(destination);
+      throw error;
     }
-  }
-
-
-  const newEntry: Record<string, unknown> = {
-    id: approachId,
-    name: input.name,
-    tag: input.tag || "Alternative",
-    time: input.timeComplexity || "O(n)",
-    space: input.spaceComplexity || "O(1)",
-    default: Boolean(input.isDefault),
-    dir: `solutions/${approachDirName}`,
-  };
-
-  // Check if exists
-  const existingIdx = solutionsList.findIndex((s) => (s as Record<string, unknown>)?.id === approachId);
-  if (existingIdx >= 0) {
-    solutionsList[existingIdx] = newEntry;
-  } else {
-    solutionsList.push(newEntry);
-  }
-
-  rawMeta.solutions = solutionsList;
-  fs.writeFileSync(metaPath, stringify(rawMeta), "utf8");
-
-  return { success: true, message: `Successfully saved approach "${input.name}".` };
+    // Leave pre-existing approach directories intact; metadata selects the committed snapshot.
+    return { success: true, message: createdCopy ? "Saved a copy of the canonical approach." : "Approach saved.", id, createdCopy };
+  });
 }

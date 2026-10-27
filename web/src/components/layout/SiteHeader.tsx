@@ -3,6 +3,7 @@ import Link from "next/link";
 const navigation = [
   { href: "/", label: "Dashboard" },
   { href: "/problems", label: "Problems" },
+  { href: "/interview", label: "Phỏng vấn Java" },
 ] as const;
 
 export function SiteHeader() {

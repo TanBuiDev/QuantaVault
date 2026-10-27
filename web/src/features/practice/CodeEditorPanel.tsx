@@ -30,7 +30,6 @@ interface CodeEditorPanelProps {
 }
 
 export function CodeEditorPanel({
-  problemId,
   initialCode,
   code,
   onCodeChange,

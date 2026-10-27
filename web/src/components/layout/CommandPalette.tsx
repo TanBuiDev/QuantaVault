@@ -146,6 +146,22 @@ export function CommandPalette() {
 
         {/* List Results */}
         <div className="max-h-[60vh] overflow-y-auto p-2">
+          {/* Quick shortcut to Interview Hub */}
+          <button
+            type="button"
+            onClick={() => {
+              setIsOpen(false);
+              router.push("/interview");
+            }}
+            className="mb-2 flex w-full items-center justify-between gap-3 rounded-2xl border border-indigo-500/20 bg-indigo-500/5 px-4 py-2.5 text-left transition-all hover:bg-indigo-500/10"
+          >
+            <div className="flex items-center gap-2.5 text-xs font-bold text-indigo-600 dark:text-indigo-400">
+              <span className="grid size-6 place-items-center rounded-lg bg-indigo-500 text-white font-black text-[10px]">JV</span>
+              <span>Bộ câu hỏi Phỏng vấn Java</span>
+            </div>
+            <span className="text-[11px] font-medium text-[var(--muted)]">Xem ngay →</span>
+          </button>
+
           {loading ? (
             <div className="py-12 text-center text-sm text-[var(--muted)]">Đang tải danh sách bài tập...</div>
           ) : filtered.length === 0 ? (

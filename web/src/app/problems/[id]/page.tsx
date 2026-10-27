@@ -1,27 +1,22 @@
+import { connection } from "next/server";
 import { notFound } from "next/navigation";
 
 import { PracticeView } from "@/features/practice/PracticeView";
 import { parseProblemId } from "@/features/practice/route";
 import {
   getAdjacentProblemIds,
-  getOrderedProblemIds,
   getProblemContent,
   getProblemSummary,
   getTopInterview150,
   splitHints,
 } from "@/lib/content";
 
-export const dynamicParams = false;
-
-export function generateStaticParams() {
-  return getOrderedProblemIds().map((id) => ({ id: String(id) }));
-}
-
 export default async function ProblemPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
+  await connection();
   const { id: rawId } = await params;
   const id = parseProblemId(rawId);
   if (id === null) notFound();
@@ -38,6 +33,7 @@ export default async function ProblemPage({
 
   return (
     <PracticeView
+      key={content.id}
       content={content}
       hints={splitHints(content.hintsMarkdown)}
       previous={

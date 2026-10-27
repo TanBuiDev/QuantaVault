@@ -1,8 +1,8 @@
 import "server-only";
 
 import fs from "node:fs";
-import path from "node:path";
 import { parse } from "yaml";
+import { containedPath, findRepositoryRoot, problemDirectories } from "./repository";
 
 export type Difficulty = "Easy" | "Medium" | "Hard";
 export type ContentAvailability = "none" | "partial" | "complete";
@@ -113,9 +113,8 @@ interface ProblemRecord {
   media: ProblemMedia[];
 }
 
-let repositoryRootCache: string | null = null;
-let recordsCache: ProblemRecord[] | null = null;
-let studyPlanCache: StudyPlan | null = null;
+// Study-plan files are immutable during an app session; editable problem records are not cached.
+const studyPlanCache = new Map<string, StudyPlan>();
 
 function assertString(value: unknown, field: string): string {
   if (typeof value !== "string" || value.trim() === "") {
@@ -144,34 +143,6 @@ function assertEnum<T extends string>(
   return value as T;
 }
 
-function findRepositoryRoot(): string {
-  if (repositoryRootCache) return repositoryRootCache;
-
-  let current = path.resolve(/* turbopackIgnore: true */ process.cwd());
-  for (;;) {
-    const studyPlanPath = path.join(
-      current,
-      "study-plans",
-      "top-interview-150",
-      "index.yaml",
-    );
-    const problemsPath = path.join(current, "problems");
-
-    if (fs.existsSync(studyPlanPath) && fs.existsSync(problemsPath)) {
-      repositoryRootCache = current;
-      return current;
-    }
-
-    const parent = path.dirname(current);
-    if (parent === current) break;
-    current = parent;
-  }
-
-  throw new Error(
-    `Unable to locate repository root from ${process.cwd()}; expected study-plans/top-interview-150/index.yaml and problems/.`,
-  );
-}
-
 function parseMedia(value: unknown, metaPath: string): ProblemMedia[] {
   if (value === undefined) return [];
   if (!Array.isArray(value)) throw new Error(`Invalid canonical content: ${metaPath}: media must be an array.`);
@@ -190,11 +161,11 @@ function parseMedia(value: unknown, metaPath: string): ProblemMedia[] {
 }
 
 function readTextIfExists(filePath: string): string | null {
-  return fs.existsSync(filePath) ? fs.readFileSync(filePath, "utf8") : null;
+  return fs.existsSync(/* turbopackIgnore: true */ filePath) ? fs.readFileSync(/* turbopackIgnore: true */ filePath, "utf8") : null;
 }
 
 function parseProblemMeta(metaPath: string): { summary: ProblemSummary; media: ProblemMedia[] } {
-  const raw = parse(fs.readFileSync(metaPath, "utf8")) as RawMeta;
+  const raw = parse(fs.readFileSync(/* turbopackIgnore: true */ metaPath, "utf8")) as RawMeta;
 
   if (raw.schema_version !== 2) {
     throw new Error(`Invalid canonical content: ${metaPath} must use schema_version: 2.`);
@@ -266,7 +237,7 @@ function parseProblemMeta(metaPath: string): { summary: ProblemSummary; media: P
 function validateRequiredFiles(record: ProblemRecord): void {
   const { summary, directory } = record;
   const requireFile = (status: ContentAvailability, filename: string) => {
-    if (status === "complete" && !fs.existsSync(path.join(directory, filename))) {
+    if (status === "complete" && !fs.existsSync(containedPath(directory, filename))) {
       throw new Error(
         `Canonical content mismatch for problem ${summary.id}: content_status marks ${filename} complete but the file is missing.`,
       );
@@ -276,7 +247,7 @@ function validateRequiredFiles(record: ProblemRecord): void {
   if (
     summary.contentStatus.source === "full-source" &&
     summary.contentStatus.translation === "complete" &&
-    !fs.existsSync(path.join(directory, "problem.md"))
+    !fs.existsSync(containedPath(directory, "problem.md"))
   ) {
     throw new Error(
       `Canonical content mismatch for problem ${summary.id}: translation is complete but problem.md is missing.`,
@@ -290,7 +261,7 @@ function validateRequiredFiles(record: ProblemRecord): void {
 
   if (
     summary.contentStatus.solution === "complete" &&
-    !fs.existsSync(path.join(directory, "Solution.java"))
+    !fs.existsSync(containedPath(directory, "Solution.java"))
   ) {
     throw new Error(
       `Canonical content mismatch for problem ${summary.id}: solution is complete but Solution.java is missing.`,
@@ -299,26 +270,13 @@ function validateRequiredFiles(record: ProblemRecord): void {
 }
 
 function loadProblemRecords(): ProblemRecord[] {
-  if (recordsCache) return recordsCache;
-
-  const problemsRoot = path.join(findRepositoryRoot(), "problems");
   const records: ProblemRecord[] = [];
-
-  for (const sectionEntry of fs.readdirSync(problemsRoot, { withFileTypes: true })) {
-    if (!sectionEntry.isDirectory()) continue;
-    const sectionPath = path.join(problemsRoot, sectionEntry.name);
-
-    for (const problemEntry of fs.readdirSync(sectionPath, { withFileTypes: true })) {
-      if (!problemEntry.isDirectory()) continue;
-      const directory = path.join(sectionPath, problemEntry.name);
-      const metaPath = path.join(directory, "meta.yaml");
-      if (!fs.existsSync(metaPath)) continue;
-
-      const parsed = parseProblemMeta(metaPath);
-      const record = { ...parsed, directory };
-      validateRequiredFiles(record);
-      records.push(record);
-    }
+  for (const directory of problemDirectories()) {
+    const metaPath = containedPath(directory, "meta.yaml");
+    const parsed = parseProblemMeta(metaPath);
+    const record = { ...parsed, directory };
+    validateRequiredFiles(record);
+    records.push(record);
   }
 
   const seenIds = new Set<number>();
@@ -334,7 +292,6 @@ function loadProblemRecords(): ProblemRecord[] {
     seenSlugs.add(summary.slug);
   }
 
-  recordsCache = records;
   return records;
 }
 
@@ -343,15 +300,11 @@ function recordById(id: number): ProblemRecord | null {
 }
 
 export function getTopInterview150(): StudyPlan {
-  if (studyPlanCache) return studyPlanCache;
-
-  const studyPlanPath = path.join(
-    findRepositoryRoot(),
-    "study-plans",
-    "top-interview-150",
-    "index.yaml",
-  );
-  const raw = parse(fs.readFileSync(studyPlanPath, "utf8")) as RawStudyPlan;
+  const root = findRepositoryRoot();
+  const cached = studyPlanCache.get(root);
+  if (cached) return structuredClone(cached);
+  const studyPlanPath = containedPath(root, "study-plans/top-interview-150/index.yaml");
+  const raw = parse(fs.readFileSync(/* turbopackIgnore: true */ studyPlanPath, "utf8")) as RawStudyPlan;
   if (!Array.isArray(raw.sections)) {
     throw new Error(`Invalid canonical study plan: ${studyPlanPath} is missing sections.`);
   }
@@ -380,20 +333,22 @@ export function getTopInterview150(): StudyPlan {
   if (new Set(ids).size !== ids.length) {
     throw new Error("Invalid canonical study plan: duplicate problem IDs detected.");
   }
+  const records = new Set(loadProblemRecords().map(record => record.summary.id));
   for (const id of ids) {
-    if (!recordById(id)) {
+    if (!records.has(id)) {
       throw new Error(`Invalid canonical study plan: problem ${id} has no canonical package.`);
     }
   }
 
-  studyPlanCache = plan;
-  return plan;
+  studyPlanCache.set(root, plan);
+  return structuredClone(plan);
 }
 
 export function getAllProblemSummaries(): ProblemSummary[] {
   const orderedIds = getOrderedProblemIds();
+  const records = new Map(loadProblemRecords().map(record => [record.summary.id, record.summary]));
   return orderedIds.map((id) => {
-    const summary = getProblemSummary(id);
+    const summary = records.get(id);
     if (!summary) {
       throw new Error(`Canonical study plan problem ${id} could not be resolved.`);
     }
@@ -411,12 +366,12 @@ export function getProblemContent(id: number): ProblemContent | null {
   if (!record) return null;
 
   const { summary, directory } = record;
-  const metaPath = path.join(directory, "meta.yaml");
+  const metaPath = containedPath(directory, "meta.yaml");
   let approaches: SolutionApproach[] | undefined;
   let codeVersions: CodeVersionItem[] | undefined;
 
   try {
-    const raw = parse(fs.readFileSync(metaPath, "utf8")) as Record<string, unknown>;
+    const raw = parse(fs.readFileSync(/* turbopackIgnore: true */ metaPath, "utf8")) as Record<string, unknown>;
     
     // Load code_versions
     if (Array.isArray(raw.code_versions) && raw.code_versions.length > 0) {
@@ -430,7 +385,7 @@ export function getProblemContent(id: number): ProblemContent | null {
         return {
           id: vId,
           name: typeof v.name === "string" ? v.name : `Version ${idx + 1}`,
-          source: readTextIfExists(path.join(directory, vFile)) || "",
+          source: readTextIfExists(containedPath(directory, vFile)) || "",
           isCanonical: Boolean(v.is_canonical || vFile === "Solution.java"),
           isDefault: isDef,
         };
@@ -443,7 +398,7 @@ export function getProblemContent(id: number): ProblemContent | null {
       approaches = raw.solutions.map((item, idx) => {
         const sol = item as Record<string, unknown>;
         const approachId = assertString(sol.id || `approach-${idx + 1}`, `${metaPath}: solutions[${idx}].id`);
-        const subDir = sol.dir ? path.join(directory, String(sol.dir)) : null;
+        const subDir = sol.dir ? containedPath(directory, String(sol.dir)) : null;
 
         return {
           id: approachId,
@@ -453,11 +408,11 @@ export function getProblemContent(id: number): ProblemContent | null {
           spaceComplexity: typeof sol.space === "string" ? sol.space : undefined,
           isDefault: Boolean(sol.default || sol.canonical),
           solutionMarkdown: subDir
-            ? readTextIfExists(path.join(subDir, "solution.md"))
-            : readTextIfExists(path.join(directory, "solution.md")),
+            ? readTextIfExists(containedPath(subDir, "solution.md"))
+            : readTextIfExists(containedPath(directory, "solution.md")),
           javaSource: subDir
-            ? readTextIfExists(path.join(subDir, "Solution.java"))
-            : readTextIfExists(path.join(directory, "Solution.java")),
+            ? readTextIfExists(containedPath(subDir, "Solution.java"))
+            : readTextIfExists(containedPath(directory, "Solution.java")),
         };
       });
     }
@@ -465,9 +420,9 @@ export function getProblemContent(id: number): ProblemContent | null {
     // Fallback if parsing custom solutions fails
   }
 
-  const defaultJava = readTextIfExists(path.join(directory, "Solution.java"));
+  const defaultJava = readTextIfExists(containedPath(directory, "Solution.java"));
 
-  // Nếu chưa có codeVersions trong meta.yaml nhưng có Solution.java -> Khởi tạo version 1 mặc định
+  // Náº¿u chÆ°a cÃ³ codeVersions trong meta.yaml nhÆ°ng cÃ³ Solution.java -> Khá»Ÿi táº¡o version 1 máº·c Ä‘á»‹nh
   if (!codeVersions && defaultJava) {
     codeVersions = [
       {
@@ -483,12 +438,12 @@ export function getProblemContent(id: number): ProblemContent | null {
     ...summary,
     topics: [...summary.topics],
     patterns: [...summary.patterns],
-    problemMarkdown: readTextIfExists(path.join(directory, "problem.md")),
-    hintsMarkdown: readTextIfExists(path.join(directory, "hints.md")),
-    solutionMarkdown: readTextIfExists(path.join(directory, "solution.md")),
-    interviewMarkdown: readTextIfExists(path.join(directory, "interview.md")),
+    problemMarkdown: readTextIfExists(containedPath(directory, "problem.md")),
+    hintsMarkdown: readTextIfExists(containedPath(directory, "hints.md")),
+    solutionMarkdown: readTextIfExists(containedPath(directory, "solution.md")),
+    interviewMarkdown: readTextIfExists(containedPath(directory, "interview.md")),
     javaSource: defaultJava,
-    casesYaml: readTextIfExists(path.join(directory, "cases.yaml")),
+    casesYaml: readTextIfExists(containedPath(directory, "cases.yaml")),
     media: record.media.map((item) => ({ ...item })),
     approaches,
     codeVersions,

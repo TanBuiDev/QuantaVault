@@ -1,0 +1,28 @@
+name: Java Docker isolation
+permissions:
+  contents: read
+on:
+  pull_request:
+    paths: ["web/**", ".github/workflows/java-docker.yml"]
+  push:
+    branches: [main]
+    paths: ["web/**", ".github/workflows/java-docker.yml"]
+jobs:
+  java-docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - run: node scripts/setup-java-runner.mjs
+      - run: npx vitest run src/lib/runners/dockerJavaRunner.integration.test.ts
+        env:
+          JAVA_DOCKER_INTEGRATION: "1"
