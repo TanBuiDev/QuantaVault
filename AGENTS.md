@@ -103,3 +103,30 @@ Mọi tính năng có trạng thái tương tác cần tuân thủ **Kiến trú
   - Khi Modal mở lên: nếu phát hiện có bản nháp chưa lưu, tự động nạp bản nháp và hiển thị banner thông báo màu hổ phách kèm nút *"Khôi phục bản gốc"*.
   - Khi người dùng bấm **Lưu thay đổi** hoặc xác nhận xóa/hủy, tự động xóa bản nháp khỏi `sessionStorage`.
 
+---
+
+## ⚡ 4. TIÊU CHUẨN HIỆU NĂNG CHO Ô SOẠN THẢO VĂN BẢN (TEXTAREA PERFORMANCE & ANTI-LAG RULES)
+
+Để chống triệt để hiện tượng giật, lag và drop FPS khi người dùng bôi đen (drag selection) hoặc gõ văn bản tiếng Việt dài:
+1. **Vô hiệu hóa Spellcheck và chặn Extension can thiệp**:
+   - Tất cả các thẻ `<textarea>` bắt buộc khai báo:
+     ```tsx
+     spellCheck={false}
+     autoCorrect="off"
+     autoCapitalize="off"
+     autoComplete="off"
+     data-gramm="false"
+     data-gramm_editor="false"
+     data-enable-grammarly="false"
+     ```
+   - Điều này ngăn chặn việc trình duyệt tra từ điển chính tả tiếng Anh theo từng pixel di chuột và ngăn các tiện ích như Grammarly, LanguageTool, Google Translate inject DOM vào vùng soạn thảo.
+2. **Cô lập Layout (CSS Containment) & Tắt Ligatures**:
+   - Khai báo class `[contain:content]` và `[font-variant-ligatures:none]` trên `<textarea>` để trình duyệt không kích hoạt reflow ra ngoài container cha khi thay đổi vùng chọn.
+3. **Cô lập lớp đồ họa GPU (Compositor Layer Isolation) cho Modal**:
+   - Khung modal card phải có các thuộc tính `isolate transform-gpu` để tách biệt khỏi lớp làm mờ nền `backdrop-blur-md`, tránh hiện tượng paint invalidation xuyên tầng.
+4. **Hỗ trợ Font tiếng Việt đầy đủ cho Monospace**:
+   - Font `JetBrains_Mono` trong `layout.tsx` bắt buộc nạp tập ký tự `subsets: ["latin", "vietnamese"]` để tránh việc DirectWrite phải liên tục chạy Glyph Fallback thời gian thực khi quét chọn ký tự có dấu.
+5. **Non-blocking Preview Rendering**:
+   - Khi có chế độ Xem trước song song (Split view), dữ liệu preview phải được bọc trong React `useDeferredValue` để ưu tiên hàng đầu cho tác vụ gõ và quét chọn chuột trên main thread.
+
+
