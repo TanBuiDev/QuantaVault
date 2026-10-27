@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useDeferredValue } from "react";
 import { Modal } from "@/components/ui/Modal";
 import { useConfirm } from "@/components/ui/ConfirmDialog";
 import {
@@ -102,6 +102,7 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
   const [answerMarkdown, setAnswerMarkdown] = useState(
     initialDraft?.answerMarkdown ?? question.answerMarkdown ?? ""
   );
+  const deferredAnswerMarkdown = useDeferredValue(answerMarkdown);
   const [keyTakeaways, setKeyTakeaways] = useState<string[]>(
     initialDraft?.keyTakeaways
       ? [...initialDraft.keyTakeaways]
@@ -407,8 +408,15 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
                     rows={16}
                     value={answerMarkdown}
                     onChange={(e) => setAnswerMarkdown(e.target.value)}
+                    spellCheck={false}
+                    autoCorrect="off"
+                    autoCapitalize="off"
+                    autoComplete="off"
+                    data-gramm="false"
+                    data-gramm_editor="false"
+                    data-enable-grammarly="false"
                     placeholder="Nhập nội dung câu trả lời chi tiết bằng cú pháp Markdown..."
-                    className="w-full resize-none p-4 font-mono text-xs sm:text-sm leading-relaxed text-[var(--foreground)] bg-transparent outline-none focus:ring-0"
+                    className="w-full resize-none p-4 font-mono text-xs sm:text-sm leading-relaxed text-[var(--foreground)] bg-transparent outline-none focus:ring-0 [contain:content] [font-variant-ligatures:none]"
                   />
                 </div>
               )}
@@ -419,8 +427,8 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
                   <div className="text-[11px] font-bold uppercase tracking-wider text-[var(--muted)] mb-3 pb-2 border-b border-[var(--border)]">
                     Xem trước hiển thị thực tế:
                   </div>
-                  {answerMarkdown.trim() ? (
-                    <MarkdownContent markdown={answerMarkdown} fullWidth />
+                  {deferredAnswerMarkdown.trim() ? (
+                    <MarkdownContent markdown={deferredAnswerMarkdown} fullWidth />
                   ) : (
                     <p className="text-xs text-[var(--muted)] italic">
                       Chưa có nội dung xem trước...
@@ -504,8 +512,15 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
                 rows={2}
                 value={summary}
                 onChange={(e) => setSummary(e.target.value)}
+                spellCheck={false}
+                autoCorrect="off"
+                autoCapitalize="off"
+                autoComplete="off"
+                data-gramm="false"
+                data-gramm_editor="false"
+                data-enable-grammarly="false"
                 placeholder="Câu đúc kết 1-2 dòng quan trọng nhất mà ứng viên cần bật ra ngay..."
-                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3 text-xs sm:text-sm text-[var(--foreground)] outline-none focus:border-[var(--focus)] focus:bg-[var(--surface)] transition-all"
+                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3 text-xs sm:text-sm text-[var(--foreground)] outline-none focus:border-[var(--focus)] focus:bg-[var(--surface)] transition-all [contain:content]"
               />
             </div>
 

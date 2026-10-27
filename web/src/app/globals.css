@@ -3,7 +3,7 @@
 
 @theme {
   --font-sans: var(--font-sans), Inter, system-ui, sans-serif;
-  --font-mono: var(--font-mono), "JetBrains Mono", monospace;
+  --font-mono: var(--font-mono), "JetBrains Mono", Consolas, "Courier New", monospace;
   
   --animate-slide-up: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   --animate-fade-in: fadeIn 0.2s ease-out;
@@ -115,6 +115,12 @@ a {
 
 ::selection {
   background: color-mix(in srgb, var(--primary) 28%, transparent);
+}
+
+/* Performance optimizations for text editing & selection */
+textarea {
+  contain: content;
+  font-variant-ligatures: none;
 }
 
 /* Glassmorphism utility */

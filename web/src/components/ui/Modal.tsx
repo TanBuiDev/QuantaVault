@@ -71,7 +71,7 @@ export function Modal({
       {/* Modal Card Content */}
       <div
         className={classNames(
-          "relative flex max-h-[90vh] w-full flex-col rounded-3xl border border-[var(--border)] bg-[var(--surface)] shadow-2xl transition-all animate-scale-in",
+          "relative flex max-h-[90vh] w-full flex-col rounded-3xl border border-[var(--border)] bg-[var(--surface)] shadow-2xl transition-all animate-scale-in isolate transform-gpu",
           maxWidthClasses[maxWidth],
           className
         )}

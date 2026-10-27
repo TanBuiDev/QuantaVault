@@ -294,9 +294,16 @@ export function InterviewRightRail({
         <textarea
           value={scratchpad}
           onChange={(e) => handleScratchpadChange(e.target.value)}
+          spellCheck={false}
+          autoCorrect="off"
+          autoCapitalize="off"
+          autoComplete="off"
+          data-gramm="false"
+          data-gramm_editor="false"
+          data-enable-grammarly="false"
           placeholder="Ghi chú nhanh câu hỏi, checklist trọng tâm hoặc keyword cần tra cứu..."
           rows={4}
-          className="w-full resize-none rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)] p-3 text-xs leading-relaxed text-[var(--foreground)] placeholder:text-[var(--muted)] focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          className="w-full resize-none rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)] p-3 text-xs leading-relaxed text-[var(--foreground)] placeholder:text-[var(--muted)] focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 [contain:content]"
         />
 
         <div className="flex items-center justify-between text-[10px] text-[var(--muted)]">

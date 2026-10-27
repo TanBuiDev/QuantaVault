@@ -154,8 +154,15 @@ export function PracticeStudyContent(model: ReturnType<typeof usePracticeWorkspa
                   rows={10}
                   value={progress?.notes ?? ""}
                   onChange={(event) => updateProblem(content.id, { notes: event.target.value })}
+                  spellCheck={false}
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  autoComplete="off"
+                  data-gramm="false"
+                  data-gramm_editor="false"
+                  data-enable-grammarly="false"
                   placeholder="Ghi chú lại thuật toán, bẫy testcase, độ phức tạp..."
-                  className="w-full resize-y rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)] p-4 text-sm leading-relaxed text-[var(--foreground)] outline-none focus:border-[var(--focus)] focus:ring-2 focus:ring-indigo-500/15"
+                  className="w-full resize-y rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)] p-4 text-sm leading-relaxed text-[var(--foreground)] outline-none focus:border-[var(--focus)] focus:ring-2 focus:ring-indigo-500/15 [contain:content]"
                 />
               </div>
             ) : null}

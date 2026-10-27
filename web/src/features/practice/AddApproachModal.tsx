@@ -147,7 +147,14 @@ export function AddApproachModal({ isOpen, onClose, problemId, onSuccess }: AddA
             placeholder={`class Solution {\n    // Paste your Java implementation here\n}`}
             value={javaSource}
             onChange={(e) => setJavaSource(e.target.value)}
-            className="w-full font-mono text-xs leading-5 rounded-xl border border-[var(--border-strong)] bg-[var(--code-surface)] p-3 text-[var(--code-foreground)] outline-none focus:border-[var(--focus)] focus:ring-2 focus:ring-indigo-500/15"
+            spellCheck={false}
+            autoCorrect="off"
+            autoCapitalize="off"
+            autoComplete="off"
+            data-gramm="false"
+            data-gramm_editor="false"
+            data-enable-grammarly="false"
+            className="w-full font-mono text-xs leading-5 rounded-xl border border-[var(--border-strong)] bg-[var(--code-surface)] p-3 text-[var(--code-foreground)] outline-none focus:border-[var(--focus)] focus:ring-2 focus:ring-indigo-500/15 [contain:content] [font-variant-ligatures:none]"
           />
         </label>
 
@@ -158,7 +165,14 @@ export function AddApproachModal({ isOpen, onClose, problemId, onSuccess }: AddA
             placeholder="## 1. Core idea&#10;Giải thích thuật toán tại đây..."
             value={solutionMarkdown}
             onChange={(e) => setSolutionMarkdown(e.target.value)}
-            className="w-full text-sm leading-6 rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] p-3 text-[var(--foreground)] outline-none focus:border-[var(--focus)] focus:ring-2 focus:ring-indigo-500/15"
+            spellCheck={false}
+            autoCorrect="off"
+            autoCapitalize="off"
+            autoComplete="off"
+            data-gramm="false"
+            data-gramm_editor="false"
+            data-enable-grammarly="false"
+            className="w-full text-sm leading-6 rounded-xl border border-[var(--border-strong)] bg-[var(--surface)] p-3 text-[var(--foreground)] outline-none focus:border-[var(--focus)] focus:ring-2 focus:ring-indigo-500/15 [contain:content]"
           />
         </label>
 

@@ -132,7 +132,14 @@ export function CodeVersionModal({
             placeholder={`class Solution {\n    // Paste code Java tại đây\n}`}
             value={source}
             onChange={(e) => setSource(e.target.value)}
-            className="w-full font-mono text-xs leading-5 rounded-xl border border-[var(--border-strong)] bg-[var(--code-surface)] p-3.5 text-[var(--code-foreground)] outline-none focus:border-[var(--focus)] focus:ring-2 focus:ring-indigo-500/15"
+            spellCheck={false}
+            autoCorrect="off"
+            autoCapitalize="off"
+            autoComplete="off"
+            data-gramm="false"
+            data-gramm_editor="false"
+            data-enable-grammarly="false"
+            className="w-full font-mono text-xs leading-5 rounded-xl border border-[var(--border-strong)] bg-[var(--code-surface)] p-3.5 text-[var(--code-foreground)] outline-none focus:border-[var(--focus)] focus:ring-2 focus:ring-indigo-500/15 [contain:content] [font-variant-ligatures:none]"
           />
         </label>
 
