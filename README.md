@@ -1,16 +1,40 @@
-# LeetCode Top Interview 150
+# QuantaVault
 
-This repository stores the canonical Top Interview 150 study content in structured problem packages.
+> **Offline-First Software Architecture & Engineering Knowledge Engine**
+> 
+> *Quanta (số nhiều của quantum) đại diện cho những đơn vị năng lượng nhỏ nhất cấu thành nên vũ trụ; Vault là hầm chứa kiên cố. Dự án truyền tải thông điệp: hệ thống lớn được xây đắp vững chãi từ chính những thành tố cốt lõi nhỏ nhất (từ từng byte dữ liệu, chu kỳ CPU, transaction ACID cho đến luồng dữ liệu phân tán).*
+
+🌐 **Live Deployment:** [https://quantavault.pages.dev](https://quantavault.pages.dev)  
+📦 **GitHub Repository:** [https://github.com/TanBuiDev/QuantaVault](https://github.com/TanBuiDev/QuantaVault)
+
+---
+
+## Tổng quan dự án
+
+QuantaVault là nền tảng tri thức kỹ thuật phần mềm và kiến trúc hệ thống chuyên sâu, kết hợp môi trường thực hành thuật toán offline-first:
+
+1. **Software Architecture & Engineering Interview Engine (`/interview`)**:
+   - Kho lưu trữ chuẩn hóa 538+ câu hỏi phỏng vấn kiến trúc chuyên sâu (Java Core, Concurrency, Spring Boot, Microservices, Distributed Systems, Database Internals, System Design).
+   - Đánh số thứ tự tuần tự trực quan `#001` – `#538`, chuẩn hóa dữ liệu song song định dạng Markdown & JSON.
+   - Tìm kiếm không dấu (accent-insensitive search), lọc đa tầng (tag, độ khó, trạng thái, công ty), lưu trạng thái thông minh qua URL và LocalStorage.
+   - Trình biên tập Markdown chống lag, tối ưu bôi đen và gõ văn bản tiếng Việt, tự động lưu nháp `sessionStorage`.
+   - Cơ chế xác thực biên 2FA (TOTP Authenticator & PIN) trên Cloudflare Pages Functions, đồng bộ xuất bản trực tiếp lên GitHub với bảo toàn chữ ký commit.
+
+2. **LeetCode Top Interview 150 Coding Workspace (`/problems`)**:
+   - Môi trường luyện tập thuật toán chuẩn LeetCode Top Interview 150 với bộ điều khiển Monaco Editor.
+   - Trình chấm mã nguồn cục bộ (Local Docker Runner) bảo mật cao, cô lập hoàn toàn mạng, hỗ trợ Java 25.
+
+---
 
 ## Repository layout
 
-- `problems/<section>/<id>-<slug>/` — canonical problem packages consumed by the web app.
+- `data/interview/` — canonical 538+ interview question packages and metadata.
+- `problems/<section>/<id>-<slug>/` — canonical problem packages consumed by the coding workspace.
 - `raw/top-interview-150/` — preserved topic-level source files used for provenance and migration auditing.
 - `study-plans/top-interview-150/` — canonical study-plan ordering.
-- `web/` — Next.js study workspace.
+- `web/` — Next.js & Cloudflare Pages web application.
 - `tools/` and `tests/` — inventory, content validation, and regression checks.
 
-The legacy topic-level `.txt` files previously located at the repository root were consolidated into `raw/top-interview-150/`; do not add new source files at the repository root.
 
 ## Validation
 

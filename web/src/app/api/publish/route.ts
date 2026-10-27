@@ -35,7 +35,7 @@ export async function POST(request: Request) {
       TOTP_SECRET: process.env.TOTP_SECRET || DEFAULT_TOTP_SECRET,
       GITHUB_PAT: process.env.GITHUB_PAT,
       GITHUB_OWNER: process.env.GITHUB_OWNER || "TanBuiDev",
-      GITHUB_REPO: process.env.GITHUB_REPO || "leetcode",
+      GITHUB_REPO: process.env.GITHUB_REPO || "QuantaVault",
     };
 
     // 1. PIN / TOTP verification

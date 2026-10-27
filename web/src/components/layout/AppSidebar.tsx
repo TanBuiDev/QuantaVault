@@ -52,8 +52,8 @@ export function AppSidebar() {
                 className="size-9 shrink-0 rounded-xl object-cover shadow-md shadow-indigo-500/25 group-hover:scale-105 transition-transform"
               />
               <div className="min-w-0">
-                <span className="block truncate text-xs font-bold text-[var(--foreground)]">Top Interview 150</span>
-                <span className="block truncate text-[10px] font-medium text-[var(--muted)]">Study & Practice</span>
+                <span className="block truncate text-xs font-bold text-[var(--foreground)] tracking-tight">QuantaVault</span>
+                <span className="block truncate text-[10px] font-medium text-[var(--muted)]">Knowledge Engine</span>
               </div>
             </Link>
 
@@ -155,7 +155,7 @@ export function AppSidebar() {
             <Link
               href="/"
               className="flex size-9 items-center justify-center rounded-xl overflow-hidden shadow-sm hover:scale-105 transition-transform"
-              title="Top Interview 150"
+              title="QuantaVault"
             >
               <img
                 src="/brand-logo.png"

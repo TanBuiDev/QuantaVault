@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/"],
     },
-    sitemap: "https://java-interview-v26106.pages.dev/sitemap.xml",
+    sitemap: "https://quantavault.pages.dev/sitemap.xml",
   };
 }

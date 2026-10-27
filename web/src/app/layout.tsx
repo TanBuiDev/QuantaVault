@@ -25,10 +25,10 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Top Interview 150",
-    template: "%s | Top Interview 150",
+    default: "QuantaVault — Architecture & Engineering Knowledge Engine",
+    template: "%s | QuantaVault",
   },
-  description: "A focused practice companion for LeetCode Top Interview 150.",
+  description: "QuantaVault – Offline-First Software Architecture & Engineering Knowledge Engine. Củng cố kiến trúc phần mềm, Java Backend, Distributed Systems và 538+ bài toán kỹ thuật chuyên sâu.",
   icons: {
     icon: [
       { url: "/brand-logo.png", sizes: "any" },

@@ -1,5 +1,5 @@
 {
-  "name": "leetcode-top-interview-web",
+  "name": "quantavault",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -12,7 +12,7 @@
     "build:pages": "next build && node scripts/prepare-pages-dist.mjs",
     "java:setup": "node scripts/setup-java-runner.mjs",
     "test:docker": "node scripts/test-java-runner.mjs",
-    "deploy:pages": "node scripts/prepare-pages-dist.mjs && npx wrangler pages deploy cloudflare-pages --project-name java-interview-v26106 --branch main --commit-dirty=true"
+    "deploy:pages": "node scripts/prepare-pages-dist.mjs && npx wrangler pages deploy cloudflare-pages --project-name quantavault --branch main --commit-dirty=true"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",

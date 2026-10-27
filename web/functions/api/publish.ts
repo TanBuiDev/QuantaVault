@@ -207,7 +207,7 @@ export async function onRequestPost(context: {
     const totpSecret = (env.TOTP_SECRET || DEFAULT_TOTP_SECRET).trim();
     const token = env.GITHUB_PAT;
     const owner = env.GITHUB_OWNER || "TanBuiDev";
-    const repo = env.GITHUB_REPO || "leetcode";
+    const repo = env.GITHUB_REPO || "QuantaVault";
 
     // 1. PIN / TOTP verification
     const entered = (body.pin || "").trim();

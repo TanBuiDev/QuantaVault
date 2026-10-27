@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { getAllProblemSummaries } from "@/lib/content";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://java-interview-v26106.pages.dev";
+  const baseUrl = "https://quantavault.pages.dev";
   const problems = getAllProblemSummaries();
 
   const problemEntries: MetadataRoute.Sitemap = problems.map((problem) => ({

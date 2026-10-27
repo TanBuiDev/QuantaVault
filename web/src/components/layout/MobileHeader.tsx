@@ -35,7 +35,7 @@ export function MobileHeader() {
               alt="Logo Java"
               className="size-8 rounded-xl object-cover shadow-xs"
             />
-            <span className="font-bold text-xs text-[var(--foreground)]">Top 150</span>
+            <span className="font-bold text-xs text-[var(--foreground)] tracking-tight">QuantaVault</span>
           </Link>
         </div>
 

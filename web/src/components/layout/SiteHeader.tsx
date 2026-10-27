@@ -14,7 +14,7 @@ export function SiteHeader() {
           href="/"
           className="font-semibold tracking-tight text-slate-950 focus-visible:rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-slate-500"
         >
-          Top Interview 150
+          QuantaVault
         </Link>
         <nav aria-label="Primary navigation">
           <ul className="flex items-center gap-1 sm:gap-2">
