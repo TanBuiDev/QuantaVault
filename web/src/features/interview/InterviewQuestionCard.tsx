@@ -82,7 +82,8 @@ export function InterviewQuestionCard({
 
   return (
     <article
-      className={`rounded-3xl border transition-all duration-200 ${
+      id={`question-${question.id}`}
+      className={`rounded-3xl border transition-all duration-300 scroll-mt-24 ${
         isLearned
           ? "border-emerald-500/30 bg-emerald-500/[0.02]"
           : isReview

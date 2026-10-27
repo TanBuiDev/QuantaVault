@@ -90,4 +90,27 @@ describe("InterviewListView Component", () => {
 
     expect(screen.getByText("Không tìm thấy câu hỏi phù hợp")).toBeDefined();
   });
+
+  it("opens and closes presentation mode via header button", () => {
+    render(<InterviewListView initialQuestions={mockQuestions} />);
+
+    const presentationBtn = screen.getByRole("button", { name: /Trình chiếu \(P\)/i });
+    fireEvent.click(presentationBtn);
+
+    expect(screen.getByText("Chế Độ Trình Chiếu Hội Trường")).toBeDefined();
+
+    // Close presentation mode with Escape
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(screen.queryByText("Chế Độ Trình Chiếu Hội Trường")).toBeNull();
+  });
+
+  it("toggles presentation mode using key P", () => {
+    render(<InterviewListView initialQuestions={mockQuestions} />);
+
+    fireEvent.keyDown(window, { key: "p" });
+    expect(screen.getByText("Chế Độ Trình Chiếu Hội Trường")).toBeDefined();
+
+    fireEvent.keyDown(window, { key: "p" });
+    expect(screen.queryByText("Chế Độ Trình Chiếu Hội Trường")).toBeNull();
+  });
 });
