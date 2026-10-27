@@ -19,7 +19,8 @@
     "keyTakeaways": [
       "Nắm vững luồng nghiệp vụ thực tế, ranh giới giữa Modular Monolith và kiểm tra dữ liệu authoritative tại backend.",
       "Hiểu rõ ranh giới transaction và bảo đảm nhất quán giữa Cart, Checkout, Inventory và Orders."
-    ]
+    ],
+    "isDraft": false
   },
   {
     "id": "q-002",
