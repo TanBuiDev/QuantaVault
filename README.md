@@ -45,13 +45,13 @@ graph TD
         Security["UID 10001 · Read-Only Root · Zero Network"]
     end
 
-    UI -->|Edge Navigation & Static Assets| EdgeWorker
-    UI -->|RFC 6238 2FA Admin Action| TOTP
+    UI -->|"Edge Navigation & Static Assets"| EdgeWorker
+    UI -->|"RFC 6238 2FA Admin Action"| TOTP
     TOTP --> RateLimit
-    RateLimit -->|Atomic Blob & Tree Commit| GitTree
+    RateLimit -->|"Atomic Blob & Tree Commit"| GitTree
     GitTree --> MainBranch
     MainBranch --> Actions
-    Monaco -->|Loopback Execution (Local Dev)| Runner
+    Monaco -->|"Local Loopback Execution"| Runner
     Runner --> Security
 ```
 
