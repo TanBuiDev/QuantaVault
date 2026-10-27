@@ -60,7 +60,7 @@ export function InterviewFilterBar({
             type="text"
             value={filter.search}
             onChange={(e) => onFilterChange({ ...filter, search: e.target.value })}
-            placeholder="Tìm theo câu hỏi, từ khóa, công nghệ (ví dụ: equals, HashMap, volatile, AOP...)"
+            placeholder="Tìm theo câu hỏi (#087, 87), tiêu đề, từ khóa, công nghệ (HashMap, volatile, Redis...)"
             className="w-full rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)] py-2.5 pl-10 pr-10 text-sm text-[var(--foreground)] placeholder:text-[var(--muted)] focus:border-[var(--focus)] focus:bg-[var(--surface)] focus:outline-hidden transition-all"
           />
           {filter.search && (

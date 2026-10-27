@@ -59,6 +59,43 @@ describe("Interview Data Access and Filtering", () => {
     expect(results.some((q) => q.id === "q-178")).toBe(true);
   });
 
+  it("filters questions quickly by question number and badge (#087, 87, 087)", () => {
+    const all = getAllInterviewQuestions();
+    
+    // Search with #087
+    const byBadge = filterInterviewQuestions(all, {
+      search: "#087",
+      category: "all",
+      difficulty: "all",
+      status: "all",
+      company: "all",
+    });
+    expect(byBadge.length).toBeGreaterThan(0);
+    expect(byBadge[0].id).toBe("q-087");
+
+    // Search with plain number 87
+    const byPlainNum = filterInterviewQuestions(all, {
+      search: "87",
+      category: "all",
+      difficulty: "all",
+      status: "all",
+      company: "all",
+    });
+    expect(byPlainNum.length).toBeGreaterThan(0);
+    expect(byPlainNum[0].id).toBe("q-087");
+
+    // Search with unpadded badge #87
+    const byUnpaddedBadge = filterInterviewQuestions(all, {
+      search: "#87",
+      category: "all",
+      difficulty: "all",
+      status: "all",
+      company: "all",
+    });
+    expect(byUnpaddedBadge.length).toBeGreaterThan(0);
+    expect(byUnpaddedBadge[0].id).toBe("q-087");
+  });
+
   it("filters questions by category", () => {
     const all = getAllInterviewQuestions();
     const filter: InterviewFilterState = {
