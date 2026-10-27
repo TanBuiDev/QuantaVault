@@ -339,9 +339,30 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
       <div className="flex-1 overflow-y-auto p-5 space-y-4">
         {/* TAB 1: Markdown Content Editor */}
         {activeTab === "content" && (
-          <div className="space-y-3">
+          <div className="space-y-3.5">
+            {/* Question Title (2 rows) */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
+                Tiêu đề câu hỏi phỏng vấn
+              </label>
+              <textarea
+                rows={2}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                spellCheck={false}
+                autoCorrect="off"
+                autoCapitalize="off"
+                autoComplete="off"
+                data-gramm="false"
+                data-gramm_editor="false"
+                data-enable-grammarly="false"
+                placeholder="Ví dụ: [Câu 3] Hãy giải thích kiến trúc Modular Monolith..."
+                className="w-full resize-none rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3 text-xs sm:text-sm font-semibold leading-relaxed text-[var(--foreground)] outline-none focus:border-[var(--focus)] focus:bg-[var(--surface)] transition-all [contain:content]"
+              />
+            </div>
+
             {/* Top View Mode Controls */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between pt-0.5">
               <span className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
                 Soạn thảo câu trả lời (Markdown & Java Code)
               </span>
@@ -448,12 +469,19 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
               <label className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
                 Tiêu đề câu hỏi phỏng vấn
               </label>
-              <input
-                type="text"
+              <textarea
+                rows={2}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                spellCheck={false}
+                autoCorrect="off"
+                autoCapitalize="off"
+                autoComplete="off"
+                data-gramm="false"
+                data-gramm_editor="false"
+                data-enable-grammarly="false"
                 placeholder="Ví dụ: [Câu 3] Hãy giải thích kiến trúc Modular Monolith..."
-                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] px-3.5 py-2.5 text-sm text-[var(--foreground)] outline-none focus:border-[var(--focus)] focus:bg-[var(--surface)] transition-all"
+                className="w-full resize-none rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3 text-xs sm:text-sm font-semibold leading-relaxed text-[var(--foreground)] outline-none focus:border-[var(--focus)] focus:bg-[var(--surface)] transition-all [contain:content]"
               />
             </div>
 
