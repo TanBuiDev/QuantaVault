@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 500" width="100%" height="100%" style="background:#0b0f19; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+  <defs>
+    <linearGradient id="stackGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="heapGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#022c22" stop-opacity="0.7"/>
+    </linearGradient>
+    <linearGradient id="poolGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a8a" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#172554" stop-opacity="0.8"/>
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <filter id="glowCyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <marker id="arrowCyan" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M 0 1 L 7 4 L 0 7 z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arrowAmber" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M 0 1 L 7 4 L 0 7 z" fill="#fbbf24"/>
+    </marker>
+    <marker id="arrowEmerald" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M 0 1 L 7 4 L 0 7 z" fill="#34d399"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M 0 1 L 7 4 L 0 7 z" fill="#c084fc"/>
+    </marker>
+  </defs>
+
+  <!-- Title & Subtitle -->
+  <text x="30" y="38" fill="#f8fafc" font-size="20" font-weight="800" letter-spacing="-0.02em">QuantaVault — Java String Memory Architecture</text>
+  <text x="30" y="58" fill="#94a3b8" font-size="12">Under the Hood: Call Stack, Regular Heap Space &amp; String Constant Pool (SCP)</text>
+
+  <!-- CALL STACK CONTAINER -->
+  <g transform="translate(30, 80)">
+    <rect width="250" height="380" rx="16" fill="url(#stackGrad)" stroke="#312e81" stroke-width="1.5"/>
+    <rect x="0" y="0" width="250" height="42" rx="16" fill="#1e1b4b" opacity="0.6"/>
+    <text x="20" y="26" fill="#a5b4fc" font-size="13" font-weight="700">🧵 Thread Call Stack (main)</text>
+
+    <!-- Stack Variable: str1 -->
+    <rect x="18" y="58" width="214" height="60" rx="10" fill="url(#cardGrad)" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="30" y="82" fill="#38bdf8" font-size="13" font-weight="700">String str1 = "Hello";</text>
+    <text x="30" y="102" fill="#94a3b8" font-size="11">Pointer: <tspan fill="#38bdf8" font-weight="600">0x001 (SCP)</tspan></text>
+
+    <!-- Stack Variable: str2 -->
+    <rect x="18" y="130" width="214" height="60" rx="10" fill="url(#cardGrad)" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="30" y="154" fill="#38bdf8" font-size="13" font-weight="700">String str2 = "Hello";</text>
+    <text x="30" y="174" fill="#94a3b8" font-size="11">Pointer: <tspan fill="#38bdf8" font-weight="600">0x001 (Tái dùng SCP)</tspan></text>
+
+    <!-- Stack Variable: str3 -->
+    <rect x="18" y="202" width="214" height="60" rx="10" fill="url(#cardGrad)" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="30" y="226" fill="#fbbf24" font-size="13" font-weight="700">String str3 = new String(...);</text>
+    <text x="30" y="246" fill="#94a3b8" font-size="11">Pointer: <tspan fill="#fbbf24" font-weight="600">0x099 (Heap thường)</tspan></text>
+
+    <!-- Stack Variable: str4 -->
+    <rect x="18" y="274" width="214" height="60" rx="10" fill="url(#cardGrad)" stroke="#c084fc" stroke-width="1.5"/>
+    <text x="30" y="298" fill="#c084fc" font-size="13" font-weight="700">str4 = str1.concat(" World");</text>
+    <text x="30" y="318" fill="#94a3b8" font-size="11">Pointer: <tspan fill="#c084fc" font-weight="600">0x003 (Chuỗi mới)</tspan></text>
+
+    <text x="20" y="360" fill="#64748b" font-size="11" font-style="italic">Tự động giải phóng khi thoát Frame hàm</text>
+  </g>
+
+  <!-- JAVA HEAP CONTAINER -->
+  <g transform="translate(310, 80)">
+    <rect width="600" height="380" rx="16" fill="#0f172a" stroke="#1e293b" stroke-width="1.5"/>
+    <rect x="0" y="0" width="600" height="42" rx="16" fill="#1e293b" opacity="0.6"/>
+    <text x="20" y="26" fill="#34d399" font-size="13" font-weight="700">📦 Java Heap Space (Vùng nhớ dùng chung)</text>
+
+    <!-- REGULAR HEAP SECTION (NON-POOL) -->
+    <g transform="translate(20, 55)">
+      <rect width="240" height="305" rx="12" fill="url(#heapGrad)" stroke="#059669" stroke-width="1.2" stroke-dasharray="4 4"/>
+      <text x="16" y="26" fill="#6ee7b7" font-size="12" font-weight="700">Non-Pool Heap Space</text>
+      <text x="16" y="44" fill="#94a3b8" font-size="10">Chứa các object tạo bằng toán tử new</text>
+
+      <!-- New String Object card -->
+      <rect x="16" y="65" width="208" height="110" rx="10" fill="#0f172a" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="26" y="90" fill="#fbbf24" font-size="12" font-weight="700">String Object (0x099)</text>
+      <text x="26" y="110" fill="#cbd5e1" font-size="11">• type: java.lang.String</text>
+      <text x="26" y="128" fill="#cbd5e1" font-size="11">• hash: 69609650</text>
+      <text x="26" y="148" fill="#38bdf8" font-size="11">• value -&gt; <tspan font-weight="700">0x001 (SCP)</tspan></text>
+      <text x="26" y="165" fill="#f87171" font-size="10">⚠️ Lãng phí bộ nhớ Heap</text>
+
+      <!-- Note card below -->
+      <rect x="16" y="195" width="208" height="90" rx="8" fill="#1e293b" opacity="0.8"/>
+      <text x="26" y="218" fill="#fef08a" font-size="11" font-weight="700">So sánh Toán tử:</text>
+      <text x="26" y="238" fill="#94a3b8" font-size="11">str1 == str3 <tspan fill="#f87171" font-weight="700">false</tspan> (khác địa chỉ)</text>
+      <text x="26" y="256" fill="#94a3b8" font-size="11">str1.equals(str3) <tspan fill="#34d399" font-weight="700">true</tspan> (cùng trị)</text>
+      <text x="26" y="274" fill="#94a3b8" font-size="11">str3.intern() == str1 <tspan fill="#34d399" font-weight="700">true</tspan></text>
+    </g>
+
+    <!-- STRING CONSTANT POOL (SCP) SECTION -->
+    <g transform="translate(280, 55)">
+      <rect width="300" height="305" rx="12" fill="url(#poolGrad)" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="18" y="26" fill="#93c5fd" font-size="12" font-weight="700">String Constant Pool (SCP / Intern Pool)</text>
+      <text x="18" y="44" fill="#cbd5e1" font-size="10">Tái sử dụng duy nhất các String Literal</text>
+
+      <!-- Literal 1: "Hello" -->
+      <rect x="16" y="60" width="268" height="68" rx="10" fill="#0f172a" stroke="#38bdf8" stroke-width="1.8"/>
+      <text x="28" y="84" fill="#38bdf8" font-size="13" font-weight="700">Literal: "Hello" (Addr: 0x001)</text>
+      <text x="28" y="102" fill="#94a3b8" font-size="11">value: ['H','e','l','l','o'] | coder: LATIN1</text>
+      <text x="28" y="118" fill="#34d399" font-size="10 font-weight=600">✅ Cached hash: 69609650 (Tính 1 lần)</text>
+
+      <!-- Literal 2: " World" -->
+      <rect x="16" y="138" width="268" height="52" rx="10" fill="#0f172a" stroke="#64748b" stroke-width="1.2"/>
+      <text x="28" y="162" fill="#cbd5e1" font-size="12" font-weight="700">Literal: " World" (Addr: 0x002)</text>
+      <text x="28" y="180" fill="#94a3b8" font-size="11">value: [' ','W','o','r','l','d']</text>
+
+      <!-- Literal 3: "Hello World" -->
+      <rect x="16" y="200" width="268" height="68" rx="10" fill="#0f172a" stroke="#c084fc" stroke-width="1.8"/>
+      <text x="28" y="224" fill="#c084fc" font-size="13" font-weight="700">Literal: "Hello World" (Addr: 0x003)</text>
+      <text x="28" y="242" fill="#94a3b8" font-size="11">value: ['H','e','l','l','o',' ','W','o','r','l','d']</text>
+      <text x="28" y="258" fill="#a855f7" font-size="10">Sinh ra từ str1.concat(" World")</text>
+
+      <text x="20" y="292" fill="#60a5fa" font-size="11" font-style="italic">✨ Bất biến: Không thể bị ghi đè bởi bất kỳ luồng nào</text>
+    </g>
+  </g>
+
+  <!-- CONNECTOR ARROWS -->
+  <!-- str1 -> SCP "Hello" -->
+  <path d="M 262 168 C 360 168, 480 160, 606 160" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrowCyan)"/>
+  
+  <!-- str2 -> SCP "Hello" (Sharing) -->
+  <path d="M 262 240 C 340 240, 480 180, 606 175" fill="none" stroke="#38bdf8" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#arrowCyan)"/>
+
+  <!-- str3 -> Regular Heap 0x099 -->
+  <path d="M 262 312 C 285 312, 310 230, 346 230" fill="none" stroke="#fbbf24" stroke-width="2" marker-end="url(#arrowAmber)"/>
+
+  <!-- Regular Heap 0x099 -> SCP "Hello" -->
+  <path d="M 554 220 C 575 220, 585 190, 606 185" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 2" marker-end="url(#arrowCyan)"/>
+
+  <!-- str4 -> SCP "Hello World" -->
+  <path d="M 262 384 C 380 384, 500 315, 606 315" fill="none" stroke="#c084fc" stroke-width="2" marker-end="url(#arrowPurple)"/>
+</svg>

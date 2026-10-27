@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import { MermaidRenderer } from "@/components/ui/MermaidRenderer";
 
 function CodeBlockWithCopy({ children, className, ...props }: React.ComponentPropsWithoutRef<"pre">) {
   const [copied, setCopied] = useState(false);
@@ -231,14 +232,36 @@ export function MarkdownContent({
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeKatex]}
         components={{
-          pre: (props) => (
-            <CodeBlockWithCopy
-              {...props}
-              className={`max-w-full overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--code-surface)] p-4 text-sm leading-6 text-[var(--code-foreground)] ${
-                wordWrap ? "whitespace-pre-wrap break-words" : "whitespace-pre"
-              }`}
-            />
-          ),
+          code({ className, children, ...props }: any) {
+            const match = /language-(\w+)/.exec(className || "");
+            const isMermaid = match && match[1] === "mermaid";
+            if (isMermaid) {
+              return <MermaidRenderer chart={String(children).replace(/\n$/, "")} />;
+            }
+            return (
+              <code className={className} {...props}>
+                {children}
+              </code>
+            );
+          },
+          pre: (props: any) => {
+            const childProps = props.children?.props;
+            if (
+              childProps &&
+              typeof childProps.className === "string" &&
+              childProps.className.includes("language-mermaid")
+            ) {
+              return <>{props.children}</>;
+            }
+            return (
+              <CodeBlockWithCopy
+                {...props}
+                className={`max-w-full overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--code-surface)] p-4 text-sm leading-6 text-[var(--code-foreground)] ${
+                  wordWrap ? "whitespace-pre-wrap break-words" : "whitespace-pre"
+                }`}
+              />
+            );
+          },
         }}
       >
         {processedMarkdown}
