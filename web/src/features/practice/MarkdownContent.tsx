@@ -6,6 +6,7 @@ import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import { MermaidRenderer } from "@/components/ui/MermaidRenderer";
+import { SyntaxHighlighter } from "@/components/ui/SyntaxHighlighter";
 
 function CodeBlockWithCopy({ children, className, ...props }: React.ComponentPropsWithoutRef<"pre">) {
   const [copied, setCopied] = useState(false);
@@ -238,10 +239,37 @@ export function MarkdownContent({
             if (isMermaid) {
               return <MermaidRenderer chart={String(children).replace(/\n$/, "")} />;
             }
+            if (match) {
+              return (
+                <SyntaxHighlighter
+                  code={String(children).replace(/\n$/, "")}
+                  language={match[1]}
+                  className={className}
+                />
+              );
+            }
             return (
               <code className={className} {...props}>
                 {children}
               </code>
+            );
+          },
+          img({ src, alt, ...props }: React.ComponentPropsWithoutRef<"img">) {
+            return (
+              <span className="my-6 flex flex-col items-center justify-center text-center mx-auto">
+                <img
+                  src={src}
+                  alt={alt}
+                  className="max-h-[460px] w-auto max-w-full rounded-2xl border border-[var(--border)] bg-white dark:bg-slate-900/60 p-2.5 shadow-md mx-auto object-contain"
+                  loading="lazy"
+                  {...props}
+                />
+                {alt && (
+                  <span className="mt-2.5 block text-xs text-[var(--muted)] italic max-w-lg text-center">
+                    {alt}
+                  </span>
+                )}
+              </span>
             );
           },
           pre: (props: React.ComponentPropsWithoutRef<"pre">) => {
