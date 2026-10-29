@@ -13,13 +13,13 @@ import "./globals.css";
 
 const inter = Inter({
   subsets: ["latin", "vietnamese"],
-  variable: "--font-sans",
+  variable: "--font-next-sans",
   display: "swap",
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin", "vietnamese"],
-  variable: "--font-mono",
+  variable: "--font-next-mono",
   display: "swap",
 });
 
