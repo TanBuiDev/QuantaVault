@@ -42,5 +42,24 @@ describe("MarkdownContent math rendering", () => {
     const copyBtn = container.querySelector("button[aria-label='Copy code block']");
     expect(copyBtn).toBeInTheDocument();
   });
+
+  it("renders image inside centered container with caption", () => {
+    const markdown = "![Sample Diagram](https://example.com/diagram.png)";
+    const { container } = render(<MarkdownContent markdown={markdown} />);
+    const img = container.querySelector("img");
+    expect(img).toBeInTheDocument();
+    expect(img).toHaveAttribute("src", "https://example.com/diagram.png");
+    expect(img).toHaveAttribute("alt", "Sample Diagram");
+    const containerSpan = img?.closest("span.flex-col");
+    expect(containerSpan).toBeInTheDocument();
+    expect(containerSpan?.textContent).toContain("Sample Diagram");
+  });
+
+  it("renders code with syntax highlighting tokens for recognized languages", () => {
+    const markdown = "```java\nString s = \"test\";\n```";
+    const { container } = render(<MarkdownContent markdown={markdown} />);
+    const spans = container.querySelectorAll("code span");
+    expect(spans.length).toBeGreaterThan(0);
+  });
 });
 
