@@ -14,7 +14,6 @@ import {
   RotateCcw,
   Bookmark,
   Building2,
-  Lightbulb,
   Sparkles,
   Layers,
   HelpCircle,
@@ -442,28 +441,11 @@ export function InterviewPresentationModal({
                 <div className="rounded-3xl border border-indigo-500/30 bg-indigo-500/[0.05] p-6 sm:p-7 shadow-xs">
                   <div className="flex items-center gap-2.5 mb-3 text-indigo-600 dark:text-indigo-400 font-extrabold text-sm sm:text-base">
                     <Sparkles className="h-5 w-5" />
-                    <span>Tóm tắt cốt lõi để trả lời phỏng vấn:</span>
+                    <span>Trọng tâm cốt lõi (Key Takeaways):</span>
                   </div>
                   <p className={`font-medium text-[var(--foreground)] ${summaryClass}`}>
                     {currentQ.summary}
                   </p>
-                </div>
-              )}
-
-              {/* Key Takeaways */}
-              {currentQ.keyTakeaways && currentQ.keyTakeaways.length > 0 && (
-                <div className="rounded-3xl border border-amber-500/30 bg-amber-500/[0.05] p-6 sm:p-7 shadow-xs space-y-3">
-                  <div className="flex items-center gap-2.5 text-amber-600 dark:text-amber-400 font-extrabold text-sm sm:text-base">
-                    <Lightbulb className="h-5 w-5" />
-                    <span>Điểm mấu chốt ghi điểm (Key Takeaways):</span>
-                  </div>
-                  <ul className="space-y-2.5 pl-5 list-disc text-[var(--foreground)] font-medium">
-                    {currentQ.keyTakeaways.map((item, i) => (
-                      <li key={i} className={summaryClass}>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
                 </div>
               )}
 
