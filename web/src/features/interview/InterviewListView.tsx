@@ -12,7 +12,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Eye,
-  EyeOff,
   BookOpen,
   Plus,
   Edit3,
@@ -51,7 +50,7 @@ const DEFAULT_FILTER: InterviewFilterState = {
   company: "all",
 };
 
-export type RecallMode = "hidden" | "summaries" | "answers";
+export type RecallMode = "summaries" | "answers";
 
 function getPageList(currentPage: number, totalPages: number): (number | "...")[] {
   if (totalPages <= 7) {
@@ -82,11 +81,11 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
     };
   });
   const [recallMode, setRecallMode] = useState<RecallMode>(() => {
-    if (typeof window === "undefined") return "hidden";
+    if (typeof window === "undefined") return "summaries";
     const params = getUrlParams();
     const mode = params.get("recall");
-    if (mode === "summaries" || mode === "answers" || mode === "hidden") return mode;
-    return "hidden";
+    if (mode === "answers") return "answers";
+    return "summaries";
   });
   const [pageSize, setPageSize] = useState<number | "all">(() => {
     if (typeof window === "undefined") return 15;
@@ -130,7 +129,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
         company: filter.company !== "all" ? filter.company : null,
         page: currentPage > 1 ? currentPage : null,
         size: pageSize !== 15 ? pageSize : null,
-        recall: recallMode !== "hidden" ? recallMode : null,
+        recall: recallMode !== "summaries" ? recallMode : null,
       });
     }, 250);
 
@@ -510,34 +509,20 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
                   </select>
                 </div>
 
-                {/* Bulk Active Recall Mode Switcher */}
+                {/* Bulk View Mode Switcher: Tóm tắt & Đầy đủ */}
                 {filteredQuestions.length > 0 && (
                   <div className="inline-flex rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-0.5 shadow-2xs">
                     <button
                       type="button"
-                      onClick={() => setRecallMode("hidden")}
-                      title="Chế độ Tự nhẩm: Ẩn tóm tắt và lời giải để bạn tự trả lời trong đầu"
-                      className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-bold transition-all cursor-pointer ${
-                        recallMode === "hidden"
-                          ? "bg-[var(--surface)] text-[var(--foreground)] shadow-xs"
-                          : "text-[var(--muted)] hover:text-[var(--foreground)]"
-                      }`}
-                    >
-                      <EyeOff className="h-3 w-3" />
-                      <span>Tự nhẩm</span>
-                    </button>
-
-                    <button
-                      type="button"
                       onClick={() => setRecallMode("summaries")}
                       title="Hiện tóm tắt cốt lõi của tất cả câu hỏi"
-                      className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-bold transition-all cursor-pointer ${
+                      className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1 text-xs font-bold transition-all cursor-pointer ${
                         recallMode === "summaries"
                           ? "bg-[var(--surface)] text-[var(--foreground)] shadow-xs"
                           : "text-[var(--muted)] hover:text-[var(--foreground)]"
                       }`}
                     >
-                      <Eye className="h-3 w-3" />
+                      <Eye className="h-3.5 w-3.5" />
                       <span>Tóm tắt</span>
                     </button>
 
@@ -545,13 +530,13 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
                       type="button"
                       onClick={() => setRecallMode("answers")}
                       title="Mở bung toàn bộ lời giải chi tiết"
-                      className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-bold transition-all cursor-pointer ${
+                      className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1 text-xs font-bold transition-all cursor-pointer ${
                         recallMode === "answers"
                           ? "bg-[var(--surface)] text-[var(--foreground)] shadow-xs"
                           : "text-[var(--muted)] hover:text-[var(--foreground)]"
                       }`}
                     >
-                      <BookOpen className="h-3 w-3" />
+                      <BookOpen className="h-3.5 w-3.5" />
                       <span>Đầy đủ</span>
                     </button>
                   </div>
@@ -612,9 +597,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
                       onToggleReview={() => toggleReview(question.id)}
                       onToggleBookmark={() => toggleBookmark(question.id)}
                       defaultExpanded={recallMode === "answers"}
-                      defaultShowSummary={
-                        recallMode === "summaries" || recallMode === "answers"
-                      }
+                      defaultShowSummary={true}
                     />
                   );
                 })}
