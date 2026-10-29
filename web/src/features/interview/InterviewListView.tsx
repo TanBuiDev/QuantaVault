@@ -415,7 +415,6 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
                     tags: ["Java", "Interview"],
                     summary: "",
                     answerMarkdown: "### Trả lời chi tiết:\n\n",
-                    keyTakeaways: ["Điểm mấu chốt 1"],
                   };
                   handleOpenEdit(newQ);
                 }}
