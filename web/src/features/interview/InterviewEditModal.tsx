@@ -9,7 +9,6 @@ import {
   Eye,
   Edit3,
   Columns,
-  Plus,
   Trash2,
   Sparkles,
   Save,
@@ -75,9 +74,6 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
     question.answerMarkdown ?? ""
   );
   const deferredAnswerMarkdown = useDeferredValue(answerMarkdown);
-  const [keyTakeaways, setKeyTakeaways] = useState<string[]>(
-    question.keyTakeaways ? [...question.keyTakeaways] : []
-  );
   const [companies, setCompanies] = useState<string[]>(
     question.companies ? [...question.companies] : []
   );
@@ -119,7 +115,6 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
       difficulty,
       summary: summary.trim(),
       answerMarkdown: answerMarkdown.trim(),
-      keyTakeaways: keyTakeaways.map((k) => k.trim()).filter((k) => k.length > 0),
       companies: companies.length > 0 ? companies : undefined,
       tags: tags.length > 0 ? tags : ["Java"],
       relatedProblems:
@@ -150,21 +145,6 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
-
-  // Add / remove takeaways
-  function handleAddTakeaway() {
-    setKeyTakeaways((prev) => [...prev, ""]);
-  }
-  function handleUpdateTakeaway(index: number, val: string) {
-    setKeyTakeaways((prev) => {
-      const next = [...prev];
-      next[index] = val;
-      return next;
-    });
-  }
-  function handleRemoveTakeaway(index: number) {
-    setKeyTakeaways((prev) => prev.filter((_, idx) => idx !== index));
-  }
 
   // Add / remove company tags
   function handleAddCompany(companyName: string) {
@@ -435,13 +415,14 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
               </div>
             </div>
 
-            {/* Core Summary */}
+            {/* Core Summary / Key Takeaways (Single Source of Truth) */}
             <div className="space-y-1.5">
-              <label className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
-                Tóm tắt cốt lõi (Hiển thị trong chế độ Active Recall)
+              <label className="text-xs font-bold uppercase tracking-wider text-[var(--muted)] flex items-center gap-1.5">
+                <Sparkles className="h-3.5 w-3.5 text-indigo-500" />
+                <span>Trọng tâm cốt lõi (Key Takeaways / Active Recall)</span>
               </label>
               <textarea
-                rows={2}
+                rows={3}
                 value={summary}
                 onChange={(e) => setSummary(e.target.value)}
                 spellCheck={false}
@@ -451,51 +432,9 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
                 data-gramm="false"
                 data-gramm_editor="false"
                 data-enable-grammarly="false"
-                placeholder="Câu đúc kết 1-2 dòng quan trọng nhất mà ứng viên cần bật ra ngay..."
+                placeholder="Câu đúc kết 1-2 dòng quan trọng nhất hoặc các ý trọng tâm mà ứng viên cần bật ra ngay khi phỏng vấn..."
                 className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3 text-xs sm:text-sm text-[var(--foreground)] outline-none focus:border-[var(--focus)] focus:bg-[var(--surface)] transition-all [contain:content]"
               />
-            </div>
-
-            {/* Key Takeaways */}
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <label className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
-                  Điểm mấu chốt cần nhớ khi phỏng vấn ({keyTakeaways.length})
-                </label>
-                <button
-                  type="button"
-                  onClick={handleAddTakeaway}
-                  className="inline-flex items-center gap-1 rounded-lg bg-indigo-500/10 px-2.5 py-1 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/20 transition-colors"
-                >
-                  <Plus className="h-3.5 w-3.5" />
-                  <span>Thêm điểm</span>
-                </button>
-              </div>
-
-              <div className="space-y-2">
-                {keyTakeaways.map((point, idx) => (
-                  <div key={idx} className="flex items-center gap-2">
-                    <span className="font-mono text-xs text-[var(--muted)] shrink-0 w-5">
-                      #{idx + 1}
-                    </span>
-                    <input
-                      type="text"
-                      value={point}
-                      onChange={(e) => handleUpdateTakeaway(idx, e.target.value)}
-                      placeholder={`Điểm lưu ý #${idx + 1}...`}
-                      className="flex-1 rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] px-3 py-1.5 text-xs sm:text-sm text-[var(--foreground)] outline-none focus:border-[var(--focus)] focus:bg-[var(--surface)]"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveTakeaway(idx)}
-                      className="rounded-lg p-2 text-rose-500 hover:bg-rose-500/10 transition-colors"
-                      title="Xóa điểm này"
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </button>
-                  </div>
-                ))}
-              </div>
             </div>
 
             {/* Companies Tags */}
