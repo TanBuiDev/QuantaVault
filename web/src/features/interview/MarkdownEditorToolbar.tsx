@@ -17,12 +17,16 @@ export interface MarkdownEditorToolbarProps {
   textareaRef: RefObject<HTMLTextAreaElement | null>;
   value: string;
   onChange: (val: string) => void;
+  fontMode?: "sans" | "mono";
+  onToggleFontMode?: () => void;
 }
 
 export function MarkdownEditorToolbar({
   textareaRef,
   value,
   onChange,
+  fontMode = "sans",
+  onToggleFontMode,
 }: MarkdownEditorToolbarProps) {
   function insertFormatting(prefix: string, suffix = "", defaultText = "") {
     const el = textareaRef.current;
@@ -144,6 +148,17 @@ export function MarkdownEditorToolbar({
       >
         <Table className="h-4 w-4" />
       </button>
+
+      {onToggleFontMode && (
+        <button
+          type="button"
+          onClick={onToggleFontMode}
+          title={fontMode === "mono" ? "Đổi sang phông Sans (chữ chuẩn dễ đọc)" : "Đổi sang phông Mono (lập trình JetBrains Mono)"}
+          className="ml-auto inline-flex items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-bold text-[var(--muted-strong)] hover:bg-[var(--surface)] hover:text-[var(--foreground)] transition-colors border border-[var(--border)]"
+        >
+          <span>{fontMode === "mono" ? "Phông: Mono" : "Phông: Sans"}</span>
+        </button>
+      )}
     </div>
   );
 }
