@@ -86,7 +86,7 @@ describe("InterviewPresentationModal Component", () => {
     fireEvent.click(revealBtn);
 
     expect(screen.getByText("JMM quy định cách các luồng giao tiếp qua bộ nhớ chia sẻ.")).toBeDefined();
-    expect(screen.getByText("Happens-before relationship.")).toBeDefined();
+    expect(screen.getByText(/Trọng tâm cốt lõi/i)).toBeDefined();
   });
 
   it("navigates between questions using Next and Prev buttons", () => {
