@@ -130,6 +130,16 @@ export function PublishDrawer({
 
       // Clear drafts on frontend and trigger notification
       setTimeout(() => {
+        if (typeof window !== "undefined" && window.sessionStorage) {
+          try {
+            for (let i = sessionStorage.length - 1; i >= 0; i--) {
+              const key = sessionStorage.key(i);
+              if (key && key.startsWith("interview_draft_")) {
+                sessionStorage.removeItem(key);
+              }
+            }
+          } catch {}
+        }
         onPublishSuccess();
         setIsModalOpen(false);
         setSuccessResult(null);
