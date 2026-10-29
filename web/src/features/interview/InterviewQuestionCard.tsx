@@ -8,7 +8,7 @@ import {
   CheckCircle2,
   RotateCcw,
   Bookmark,
-  Lightbulb,
+  Sparkles,
   ExternalLink,
   Copy,
   Check,
@@ -220,7 +220,10 @@ export function InterviewQuestionCard({
           ) : (
             <div className="rounded-2xl border border-indigo-500/20 bg-indigo-500/[0.04] p-3.5">
               <div className="flex items-center justify-between text-xs font-bold text-indigo-600 dark:text-indigo-400 mb-1">
-                <span>⚡ Tóm tắt cốt lõi:</span>
+                <span className="flex items-center gap-1.5">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  <span>Trọng tâm cốt lõi (Key Takeaways):</span>
+                </span>
                 {!isExpanded && (
                   <button
                     type="button"
@@ -233,7 +236,7 @@ export function InterviewQuestionCard({
                 )}
               </div>
               <p className="text-xs sm:text-sm leading-relaxed text-[var(--foreground)]/90">
-                {question.summary.replace(/^Tóm tắt cốt lõi:\s*/i, "")}
+                {question.summary.replace(/^(Tóm tắt cốt lõi|Trọng tâm cốt lõi):\s*/i, "")}
               </p>
             </div>
           )}
@@ -242,23 +245,6 @@ export function InterviewQuestionCard({
         {/* 3. Deep Dive / Expandable Answer Section */}
         {isExpanded && (
           <div className="mt-5 space-y-5 border-t border-[var(--border)] pt-5 animate-fade-in">
-            {/* Key Takeaways */}
-            {question.keyTakeaways && question.keyTakeaways.length > 0 && (
-              <div className="rounded-2xl border border-amber-500/30 bg-amber-500/5 p-4">
-                <div className="flex items-center gap-2 text-xs font-bold text-amber-600 dark:text-amber-400">
-                  <Lightbulb className="h-4 w-4" />
-                  <span>Điểm mấu chốt cần nhớ khi phỏng vấn:</span>
-                </div>
-                <ul className="mt-2.5 space-y-1.5 text-xs sm:text-sm text-[var(--foreground)]/90 pl-5 list-disc">
-                  {question.keyTakeaways.map((point, idx) => (
-                    <li key={idx} className="leading-relaxed">
-                      {point}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
             {/* Markdown Detailed Answer */}
             <div className="prose prose-sm dark:prose-invert max-w-none w-full">
               <MarkdownContent markdown={question.answerMarkdown} fullWidth />
