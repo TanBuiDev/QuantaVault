@@ -58,17 +58,16 @@ describe("InterviewListView Component", () => {
     expect(screen.queryByText("Sự khác biệt giữa equals() và hashCode()?")).toBeNull();
   });
 
-  it("shows active recall quick summary on demand", () => {
+  it("shows summary by default and allows toggling full answers", () => {
     render(<InterviewListView initialQuestions={mockQuestions} />);
 
-    // Initially summary is hidden or prompt button is shown
-    const recallButtons = screen.getAllByText(/Xem tóm tắt nhanh/i);
-    expect(recallButtons.length).toBeGreaterThan(0);
-
-    fireEvent.click(recallButtons[0]);
-
-    // Now summary text is visible
+    // Summary text is visible by default
     expect(screen.getByText(/equals so sánh ngữ nghĩa/i)).toBeDefined();
+
+    // Toggle full answers mode
+    const fullModeBtn = screen.getByRole("button", { name: /Đầy đủ/i });
+    fireEvent.click(fullModeBtn);
+    expect(screen.getAllByText(/Chi tiết câu trả lời/i).length).toBeGreaterThan(0);
   });
 
   it("toggles full answer expansion", () => {
