@@ -57,70 +57,37 @@ interface FormProps {
   onDelete?: (question: InterviewQuestion) => void;
 }
 
-interface ModalFormDraft {
-  title?: string;
-  category?: InterviewCategory;
-  difficulty?: InterviewDifficulty;
-  summary?: string;
-  answerMarkdown?: string;
-  keyTakeaways?: string[];
-  companies?: string[];
-  tags?: string[];
-  relatedProblems?: string;
-  activeTab?: "content" | "metadata";
-  viewMode?: "edit" | "preview" | "split";
-  timestamp?: number;
-}
-
-function loadFormDraft(questionId: string): ModalFormDraft | null {
-  if (typeof window === "undefined" || !window.sessionStorage) return null;
-  try {
-    const raw = sessionStorage.getItem(`interview_draft_${questionId}`);
-    if (!raw) return null;
-    return JSON.parse(raw);
-  } catch {
-    return null;
-  }
-}
-
 function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, onDelete }: FormProps) {
   const confirm = useConfirm();
-  const [initialDraft] = useState(() => loadFormDraft(question.id));
-  const [hasRestoredDraft, setHasRestoredDraft] = useState(() => Boolean(initialDraft));
-  const [activeTab, setActiveTab] = useState<"content" | "metadata">(initialDraft?.activeTab || "content");
-  const [viewMode, setViewMode] = useState<"edit" | "preview" | "split">(initialDraft?.viewMode || "edit");
+  const [activeTab, setActiveTab] = useState<"content" | "metadata">("content");
+  const [viewMode, setViewMode] = useState<"edit" | "preview" | "split">("edit");
 
-  // Initializing state with draft fallback if available
-  const [title, setTitle] = useState(initialDraft?.title ?? question.title ?? "");
+  // Initializing state directly from active question (Single Source of Truth)
+  const [title, setTitle] = useState(question.title ?? "");
   const [category, setCategory] = useState<InterviewCategory>(
-    initialDraft?.category ?? question.category ?? "java-core"
+    question.category ?? "java-core"
   );
   const [difficulty, setDifficulty] = useState<InterviewDifficulty>(
-    initialDraft?.difficulty ?? question.difficulty ?? "junior"
+    question.difficulty ?? "junior"
   );
-  const [summary, setSummary] = useState(initialDraft?.summary ?? question.summary ?? "");
+  const [summary, setSummary] = useState(question.summary ?? "");
   const [answerMarkdown, setAnswerMarkdown] = useState(
-    initialDraft?.answerMarkdown ?? question.answerMarkdown ?? ""
+    question.answerMarkdown ?? ""
   );
   const deferredAnswerMarkdown = useDeferredValue(answerMarkdown);
   const [keyTakeaways, setKeyTakeaways] = useState<string[]>(
-    initialDraft?.keyTakeaways
-      ? [...initialDraft.keyTakeaways]
-      : (question.keyTakeaways ? [...question.keyTakeaways] : [])
+    question.keyTakeaways ? [...question.keyTakeaways] : []
   );
   const [companies, setCompanies] = useState<string[]>(
-    initialDraft?.companies
-      ? [...initialDraft.companies]
-      : (question.companies ? [...question.companies] : [])
+    question.companies ? [...question.companies] : []
   );
   const [tags, setTags] = useState<string[]>(
-    initialDraft?.tags ? [...initialDraft.tags] : (question.tags ? [...question.tags] : [])
+    question.tags ? [...question.tags] : []
   );
   const [relatedProblems, setRelatedProblems] = useState<string>(
-    initialDraft?.relatedProblems ??
-      (question.relatedProblems && question.relatedProblems.length > 0
-        ? question.relatedProblems.join(", ")
-        : "")
+    question.relatedProblems && question.relatedProblems.length > 0
+      ? question.relatedProblems.join(", ")
+      : ""
   );
   const [companyInput, setCompanyInput] = useState("");
   const [tagInput, setTagInput] = useState("");
@@ -128,68 +95,14 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Auto-save form draft to sessionStorage (debounced 400ms)
+  // Clear any legacy sessionStorage draft for this question to prevent ghost data
   useEffect(() => {
-    if (typeof window === "undefined" || !window.sessionStorage) return;
-    const timer = setTimeout(() => {
+    if (typeof window !== "undefined" && window.sessionStorage) {
       try {
-        const draft: ModalFormDraft = {
-          title,
-          category,
-          difficulty,
-          summary,
-          answerMarkdown,
-          keyTakeaways,
-          companies,
-          tags,
-          relatedProblems,
-          activeTab,
-          viewMode,
-          timestamp: Date.now(),
-        };
-        sessionStorage.setItem(`interview_draft_${question.id}`, JSON.stringify(draft));
-      } catch {
-        // Ignore sessionStorage write errors
-      }
-    }, 400);
-
-    return () => clearTimeout(timer);
-  }, [
-    question.id,
-    title,
-    category,
-    difficulty,
-    summary,
-    answerMarkdown,
-    keyTakeaways,
-    companies,
-    tags,
-    relatedProblems,
-    activeTab,
-    viewMode,
-  ]);
-
-  // Handle Discard Draft and reset to canonical/question values
-  function handleDiscardDraft() {
-    const base = canonicalQuestion || question;
-    setTitle(base.title || "");
-    setCategory(base.category || "java-core");
-    setDifficulty(base.difficulty || "junior");
-    setSummary(base.summary || "");
-    setAnswerMarkdown(base.answerMarkdown || "");
-    setKeyTakeaways(base.keyTakeaways ? [...base.keyTakeaways] : []);
-    setCompanies(base.companies ? [...base.companies] : []);
-    setTags(base.tags ? [...base.tags] : []);
-    setRelatedProblems(
-      base.relatedProblems && base.relatedProblems.length > 0 ? base.relatedProblems.join(", ") : ""
-    );
-    setActiveTab("content");
-    setViewMode("edit");
-    setHasRestoredDraft(false);
-    try {
-      sessionStorage.removeItem(`interview_draft_${question.id}`);
-    } catch {}
-  }
+        sessionStorage.removeItem(`interview_draft_${question.id}`);
+      } catch {}
+    }
+  }, [question.id]);
 
   // Handle Save
   function handleSave() {
@@ -212,9 +125,6 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
         parsedRelatedProblems.length > 0 ? parsedRelatedProblems : undefined,
     };
 
-    try {
-      sessionStorage.removeItem(`interview_draft_${question.id}`);
-    } catch {}
     onSave(updated, canonicalQuestion);
     setSavedSuccess(true);
     setTimeout(() => {
@@ -318,22 +228,6 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
         </div>
       </div>
 
-      {/* Draft Recovery Banner */}
-      {hasRestoredDraft && (
-        <div className="flex items-center justify-between gap-3 bg-amber-500/10 border-b border-amber-500/25 px-5 py-2.5 text-xs text-amber-700 dark:text-amber-300">
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-amber-500 shrink-0" />
-            <span>Đã tự động khôi phục nội dung bạn đang gõ dở từ phiên làm việc trước.</span>
-          </div>
-          <button
-            type="button"
-            onClick={handleDiscardDraft}
-            className="font-bold underline hover:text-amber-800 dark:hover:text-amber-200 transition-colors cursor-pointer"
-          >
-            Khôi phục bản gốc
-          </button>
-        </div>
-      )}
 
       {/* 2. Modal Body */}
       <div className="flex-1 overflow-y-auto p-5 space-y-4">
