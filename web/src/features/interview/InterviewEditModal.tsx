@@ -92,6 +92,7 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
   const [companyInput, setCompanyInput] = useState("");
   const [tagInput, setTagInput] = useState("");
   const [savedSuccess, setSavedSuccess] = useState(false);
+  const [editorFont, setEditorFont] = useState<"sans" | "mono">("sans");
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -133,17 +134,22 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
     }, 600);
   }
 
+  const handleSaveRef = useRef(handleSave);
+  useEffect(() => {
+    handleSaveRef.current = handleSave;
+  });
+
   // Keyboard shortcut Ctrl+S or Ctrl+Enter to save
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       if ((e.ctrlKey || e.metaKey) && (e.key === "s" || e.key === "S" || e.key === "Enter")) {
         e.preventDefault();
-        handleSave();
+        handleSaveRef.current();
       }
     }
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  });
+  }, []);
 
   // Add / remove takeaways
   function handleAddTakeaway() {
@@ -317,6 +323,8 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
                     textareaRef={textareaRef}
                     value={answerMarkdown}
                     onChange={setAnswerMarkdown}
+                    fontMode={editorFont}
+                    onToggleFontMode={() => setEditorFont((f) => (f === "sans" ? "mono" : "sans"))}
                   />
                   <textarea
                     ref={textareaRef}
@@ -331,7 +339,9 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
                     data-gramm_editor="false"
                     data-enable-grammarly="false"
                     placeholder="Nhập nội dung câu trả lời chi tiết bằng cú pháp Markdown..."
-                    className="w-full resize-none p-4 font-mono text-xs sm:text-sm leading-relaxed text-[var(--foreground)] bg-transparent outline-none focus:ring-0 [contain:content] [font-variant-ligatures:none]"
+                    className={`w-full resize-none p-4 ${
+                      editorFont === "mono" ? "font-mono" : "font-sans"
+                    } text-xs sm:text-sm leading-relaxed text-[var(--foreground)] bg-transparent outline-none focus:ring-0 [contain:content] [font-variant-ligatures:none] [text-rendering:optimizeSpeed]`}
                   />
                 </div>
               )}
