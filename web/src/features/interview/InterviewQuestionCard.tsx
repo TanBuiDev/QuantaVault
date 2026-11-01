@@ -80,6 +80,20 @@ export function InterviewQuestionCard({
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleCollapse = () => {
+    setIsExpanded(false);
+    if (typeof window !== "undefined") {
+      const cardElem = document.getElementById(`question-${question.id}`);
+      if (cardElem) {
+        const rect = cardElem.getBoundingClientRect();
+        // If the top of the card has scrolled above the visible viewport (or under sticky navigation)
+        if (rect.top < 80) {
+          cardElem.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+    }
+  };
+
   return (
     <article
       id={`question-${question.id}`}
@@ -145,8 +159,25 @@ export function InterviewQuestionCard({
               )}
             </div>
 
-            {/* Question Title */}
-            <h2 className="text-base sm:text-lg font-bold leading-snug tracking-tight text-[var(--foreground)]">
+            {/* Question Title - Clickable Accordion Header */}
+            <h2
+              onClick={() => (isExpanded ? handleCollapse() : setIsExpanded(true))}
+              className="text-base sm:text-lg font-bold leading-snug tracking-tight text-[var(--foreground)] cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors select-none"
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  if (isExpanded) {
+                    handleCollapse();
+                  } else {
+                    setIsExpanded(true);
+                  }
+                }
+              }}
+              aria-expanded={isExpanded}
+              title={isExpanded ? "Bấm vào tiêu đề để thu gọn đáp án" : "Bấm vào tiêu đề để xem đáp án chi tiết"}
+            >
               {question.title}
             </h2>
 
@@ -165,6 +196,22 @@ export function InterviewQuestionCard({
 
           {/* Quick Study Action Buttons */}
           <div className="flex items-center gap-1.5 self-start shrink-0 pt-1">
+            {/* Header Expand/Collapse Toggle */}
+            <button
+              type="button"
+              onClick={() => (isExpanded ? handleCollapse() : setIsExpanded(true))}
+              title={isExpanded ? "Thu gọn đáp án" : "Xem đáp án chi tiết"}
+              className={`rounded-xl p-2 transition-all ${
+                isExpanded
+                  ? "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/20"
+                  : "text-[var(--muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
+              }`}
+              aria-label={isExpanded ? "Thu gọn đáp án" : "Xem đáp án chi tiết"}
+              aria-expanded={isExpanded}
+            >
+              {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+            </button>
+
             {/* Edit button */}
             {onEdit && (
               <button
@@ -305,7 +352,13 @@ export function InterviewQuestionCard({
           {/* Expand / Collapse Answer Button */}
           <button
             type="button"
-            onClick={() => setIsExpanded(!isExpanded)}
+            onClick={() => {
+              if (isExpanded) {
+                handleCollapse();
+              } else {
+                setIsExpanded(true);
+              }
+            }}
             className="inline-flex items-center gap-1.5 rounded-xl bg-[var(--surface-hover)] px-3 py-1.5 text-xs font-bold text-[var(--foreground)] hover:bg-[var(--border)] transition-colors ml-auto"
           >
             <span>{isExpanded ? "Thu gọn đáp án" : "Xem đáp án chi tiết"}</span>
