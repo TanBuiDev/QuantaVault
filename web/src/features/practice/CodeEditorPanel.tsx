@@ -17,6 +17,7 @@ import {
 import { useToast } from "@/components/ui/Toast";
 import { useConfirm } from "@/components/ui/ConfirmDialog";
 import { formatJavaSource } from "@/lib/javaFormatter";
+import { isStaticStudy, STATIC_JUDGE_MESSAGE } from "@/lib/studyMode";
 
 interface CodeEditorPanelProps {
   problemId: number;
@@ -170,7 +171,7 @@ export function CodeEditorPanel({
             <Code2 className="h-4 w-4 text-indigo-500" />
             <span className="rounded bg-indigo-500/10 px-2 py-0.5 text-indigo-600 dark:text-indigo-400">Java</span>
           </div>
-          <span className="text-[11px] text-[var(--muted)]">OpenJDK 15</span>
+          <span className="text-[11px] text-[var(--muted)]">Java 25</span>
         </div>
 
         {/* Action Tools: Run, Submit, Format, Copy, Reset, Maximize */}
@@ -179,7 +180,7 @@ export function CodeEditorPanel({
           <button
             type="button"
             onClick={onRun}
-            disabled={isRunning}
+            disabled={isRunning || isStaticStudy()}
             title="Chạy thử code (Ctrl + ')"
             className="flex h-7 w-7 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--surface-hover)] transition hover:bg-[var(--border)] active:scale-95 disabled:opacity-50 cursor-pointer"
           >
@@ -194,7 +195,7 @@ export function CodeEditorPanel({
           <button
             type="button"
             onClick={onSubmit}
-            disabled={isRunning}
+            disabled={isRunning || isStaticStudy()}
             title="Nộp bài chấm điểm (Ctrl + Enter)"
             className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-600 text-white shadow-xs transition hover:bg-emerald-500 active:scale-95 disabled:opacity-50 cursor-pointer"
           >
@@ -257,6 +258,7 @@ export function CodeEditorPanel({
         </div>
       </div>
 
+      {isStaticStudy() ? <p role="status" className="border-b border-[var(--border)] px-4 py-2 text-xs text-[var(--muted)]">{STATIC_JUDGE_MESSAGE}</p> : null}
       {/* Monaco Editor Container */}
       <div className="flex-1 overflow-hidden">
         <Editor

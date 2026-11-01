@@ -236,21 +236,38 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
     markDeleted,
     clearAllDrafts,
     commitDraftsToPublished,
-  } = useInterviewDrafts();
+    hydrated: draftsHydrated,
+    publishedConflicts,
+  } = useInterviewDrafts(initialQuestions);
+
+  const [restoredEditingId] = useState(() => {
+    if (typeof window === "undefined") return null;
+    try { return sessionStorage.getItem("interview_editing_id") || getUrlParams().get("editQuestion"); }
+    catch { return getUrlParams().get("editQuestion"); }
+  });
 
   const [editingQuestion, setEditingQuestion] = useState<InterviewQuestion | null>(() => {
     if (typeof window === "undefined") return null;
-    const editingId = sessionStorage.getItem("interview_editing_id") || getUrlParams().get("editQuestion");
-    if (!editingId) return null;
-    return initialQuestions.find((q) => q.id === editingId) || null;
+    try {
+      const editingId = sessionStorage.getItem("interview_editing_id") || getUrlParams().get("editQuestion");
+      if (!editingId) return null;
+      const canonical = initialQuestions.find((q) => q.id === editingId);
+      if (canonical) return canonical;
+      // An unsaved new question has no canonical row yet; allow the recovery prompt to open.
+      return sessionStorage.getItem(`interview_draft_${editingId}`) ? {
+        id: editingId, title: "Câu hỏi chưa lưu", category: "java-core", difficulty: "junior", summary: "", answerMarkdown: "", tags: [],
+      } : null;
+    } catch { return null; }
   });
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(() => {
     if (typeof window === "undefined") return false;
-    const urlParams = new URLSearchParams(window.location.search);
-    const isEdit = urlParams.get("edit") === "true" || localStorage.getItem("interview_edit_mode") === "true";
-    if (!isEdit) return false;
-    const editingId = sessionStorage.getItem("interview_editing_id") || urlParams.get("editQuestion");
-    return Boolean(editingId);
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const isEdit = urlParams.get("edit") === "true" || localStorage.getItem("interview_edit_mode") === "true";
+      if (!isEdit) return false;
+      const editingId = sessionStorage.getItem("interview_editing_id") || urlParams.get("editQuestion");
+      return Boolean(editingId);
+    } catch { return false; }
   });
 
   // Merge canonical initialQuestions with user drafts and published cache
@@ -258,10 +275,13 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
     return mergeQuestionsWithDrafts(initialQuestions, drafts, publishedCache);
   }, [initialQuestions, drafts, publishedCache]);
 
+  const effectiveEditingId = editingQuestion?.id ?? restoredEditingId;
+  const effectiveEditingQuestion = draftsHydrated ? mergedQuestions.find(q => q.id === effectiveEditingId) ??
+    (effectiveEditingId && !drafts[effectiveEditingId]?.isDeleted && !publishedCache[effectiveEditingId]?.question.isDeleted ? editingQuestion : null) : null;
+
   const canonicalQuestion = useMemo(() => {
-    if (!editingQuestion) return undefined;
-    return initialQuestions.find((q) => q.id === editingQuestion.id);
-  }, [initialQuestions, editingQuestion]);
+    return initialQuestions.find((q) => q.id === effectiveEditingId);
+  }, [initialQuestions, effectiveEditingId]);
 
   const {
     state: progress,
@@ -436,6 +456,11 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
       </header>
 
       {/* 2. Progress Overview Stats Card */}
+      {publishedConflicts.length > 0 && (
+        <div role="status" className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-[var(--foreground)]">
+          Dữ liệu website khác nội dung vừa xuất bản ở {publishedConflicts.length} câu hỏi. Bản đã xuất bản vẫn được giữ trên máy để bạn đối chiếu; hãy sao lưu trước khi xử lý xung đột.
+        </div>
+      )}
       <section aria-label="Thống kê tiến độ ôn luyện">
         <InterviewStatsCard
           questions={initialQuestions}
@@ -729,19 +754,17 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
       </div>
 
       {/* 6. Interview Edit Modal (Only active in Edit Mode) */}
-      {isEditMode && (
+      {isEditMode && draftsHydrated && (
         <InterviewEditModal
           isOpen={isEditModalOpen}
           onClose={handleCloseEdit}
-          question={editingQuestion}
+          question={effectiveEditingQuestion}
           canonicalQuestion={canonicalQuestion}
           onSave={(updated, canonical) => {
             saveDraft(updated, canonical);
-            handleCloseEdit();
           }}
           onDelete={(q) => {
-            markDeleted(q);
-            handleCloseEdit();
+            markDeleted(q, canonicalQuestion);
           }}
         />
       )}
@@ -753,7 +776,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
           publishedCache={publishedCache}
           canonicalQuestions={initialQuestions}
           onClearAll={clearAllDrafts}
-          onPublishSuccess={commitDraftsToPublished}
+          onPublishSuccess={(submitted) => commitDraftsToPublished(submitted, initialQuestions)}
         />
       )}
 

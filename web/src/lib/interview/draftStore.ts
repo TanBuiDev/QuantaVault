@@ -1,7 +1,8 @@
 "use client";
 
-import { useSyncExternalStore, useCallback, useMemo } from "react";
+import { useSyncExternalStore, useCallback, useMemo, useEffect } from "react";
 import type { InterviewQuestion } from "./types";
+import { questionVersion } from "./questionVersion";
 
 const DRAFTS_STORAGE_KEY = "interview_drafts_v1";
 const DRAFTS_CHANGE_EVENT = "interview-drafts:change";
@@ -12,6 +13,7 @@ export const PUBLISHED_CACHE_TTL_MS = 15 * 60 * 1000; // 15 phút
 
 export interface DraftQuestion extends InterviewQuestion {
   isDeleted?: boolean;
+  baseVersion?: string;
 }
 
 export type DraftMap = Record<string, DraftQuestion>;
@@ -19,6 +21,7 @@ export type DraftMap = Record<string, DraftQuestion>;
 export interface PublishedCacheItem {
   question: DraftQuestion;
   publishedAt: number;
+  baseVersion?: string;
 }
 
 export type PublishedCacheMap = Record<string, PublishedCacheItem>;
@@ -79,15 +82,11 @@ export function getDrafts(): DraftMap {
 
 function writeDrafts(drafts: DraftMap): void {
   if (typeof window === "undefined") return;
-  try {
-    const raw = JSON.stringify(drafts);
-    window.localStorage.setItem(DRAFTS_STORAGE_KEY, raw);
-    cachedRaw = raw;
-    cachedDrafts = drafts;
-    window.dispatchEvent(new Event(DRAFTS_CHANGE_EVENT));
-  } catch (error) {
-    console.error("Failed to persist interview drafts to localStorage:", error);
-  }
+  const raw = JSON.stringify(drafts);
+  window.localStorage.setItem(DRAFTS_STORAGE_KEY, raw);
+  cachedRaw = raw;
+  cachedDrafts = drafts;
+  window.dispatchEvent(new Event(DRAFTS_CHANGE_EVENT));
 }
 
 export function getPublishedCache(): PublishedCacheMap {
@@ -107,15 +106,11 @@ export function getPublishedCache(): PublishedCacheMap {
 
 export function writePublishedCache(cache: PublishedCacheMap): void {
   if (typeof window === "undefined") return;
-  try {
-    const raw = JSON.stringify(cache);
-    window.localStorage.setItem(PUBLISHED_CACHE_STORAGE_KEY, raw);
-    cachedPublishedRaw = raw;
-    cachedPublished = cache;
-    window.dispatchEvent(new Event(PUBLISHED_CHANGE_EVENT));
-  } catch (error) {
-    console.error("Failed to persist published cache to localStorage:", error);
-  }
+  const raw = JSON.stringify(cache);
+  window.localStorage.setItem(PUBLISHED_CACHE_STORAGE_KEY, raw);
+  cachedPublishedRaw = raw;
+  cachedPublished = cache;
+  window.dispatchEvent(new Event(PUBLISHED_CHANGE_EVENT));
 }
 
 export function clearAllPublishedCache(): void {
@@ -125,22 +120,31 @@ export function clearAllPublishedCache(): void {
 /**
  * Chuyển toàn bộ bản nháp hiện tại sang Published Cache và dọn sạch drafts
  */
-export function commitDraftsToPublished(): void {
+export function commitDraftsToPublished(submitted: DraftMap = getDrafts(), baseQuestions?: InterviewQuestion[]): void {
   const currentDrafts = getDrafts();
-  if (Object.keys(currentDrafts).length === 0) return;
+  if (Object.keys(submitted).length === 0) return;
 
   const currentPublished = { ...getPublishedCache() };
   const now = Date.now();
 
-  for (const [id, draft] of Object.entries(currentDrafts)) {
+  const remaining = { ...currentDrafts };
+  for (const [id, draft] of Object.entries(submitted)) {
     currentPublished[id] = {
       question: draft,
       publishedAt: now,
+      baseVersion: draft.baseVersion ?? (baseQuestions ? questionVersion(baseQuestions.find(q => q.id === id) ?? null) : undefined),
     };
+    const current = currentDrafts[id];
+    if (current && areQuestionsEqual(current, draft) && Boolean(current.isDeleted) === Boolean(draft.isDeleted)) {
+      delete remaining[id];
+    } else if (current) {
+      // Further edits are based on the version that has just been published.
+      remaining[id] = { ...current, baseVersion: questionVersion(draft.isDeleted ? null : draft) };
+    }
   }
 
   writePublishedCache(currentPublished);
-  clearAllDrafts();
+  writeDrafts(remaining);
 }
 
 /**
@@ -152,8 +156,10 @@ export function saveDraft(
   question: DraftQuestion,
   canonicalQuestion?: InterviewQuestion
 ): boolean {
-  if (canonicalQuestion && !question.isDeleted) {
-    if (areQuestionsEqual(question, canonicalQuestion)) {
+  const published = getPublishedCache()[question.id];
+  const effectiveBase = published ? (published.question.isDeleted ? undefined : published.question) : canonicalQuestion;
+  if (effectiveBase && !question.isDeleted) {
+    if (areQuestionsEqual(question, effectiveBase)) {
       removeDraft(question.id);
       return false; // Đã hoàn tác về gốc, không cần lưu nháp
     }
@@ -162,7 +168,11 @@ export function saveDraft(
   const current = getDrafts();
   const next = {
     ...current,
-    [question.id]: question,
+    [question.id]: {
+      ...question,
+      baseVersion: current[question.id]?.baseVersion ?? question.baseVersion ??
+        questionVersion(published ? (published.question.isDeleted ? null : published.question) : canonicalQuestion ?? null),
+    },
   };
   writeDrafts(next);
   return true;
@@ -171,11 +181,11 @@ export function saveDraft(
 /**
  * Đánh dấu một câu hỏi là đã xóa (Delete / Archive draft)
  */
-export function markQuestionDeleted(question: InterviewQuestion): void {
+export function markQuestionDeleted(question: InterviewQuestion, canonicalQuestion?: InterviewQuestion): void {
   saveDraft({
     ...question,
     isDeleted: true,
-  });
+  }, canonicalQuestion);
 }
 
 export function removeDraft(id: string): void {
@@ -186,13 +196,27 @@ export function removeDraft(id: string): void {
   writeDrafts(next);
 }
 
+/** Apply a reviewed remote baseline without replacing edited content. */
+export function rebaseDraft(id: string, expected: DraftQuestion, remote: InterviewQuestion | null): void {
+  const drafts = getDrafts();
+  const current = drafts[id];
+  if (!current || current.id !== id || expected.id !== id || (remote && remote.id !== id) ||
+    questionVersion(current) !== questionVersion(expected) || current.isDeleted !== expected.isDeleted ||
+    current.baseVersion !== expected.baseVersion) {
+    throw new Error("Bản nháp đã thay đổi trong lúc đối chiếu. Hãy mở lại phần đối chiếu trước khi cập nhật phiên bản nền.");
+  }
+  writeDrafts({ ...drafts, [id]: { ...current, baseVersion: questionVersion(remote) } });
+}
+
 export function clearAllDrafts(): void {
   writeDrafts({});
 }
 
 function getBrowserSnapshot(): DraftMap {
   if (typeof window === "undefined") return EMPTY_DRAFTS;
-  const raw = window.localStorage.getItem(DRAFTS_STORAGE_KEY);
+  let raw: string | null;
+  try { raw = window.localStorage.getItem(DRAFTS_STORAGE_KEY); }
+  catch { return cachedDrafts; }
   if (raw === cachedRaw) return cachedDrafts;
 
   cachedRaw = raw;
@@ -216,7 +240,9 @@ function subscribe(callback: () => void): () => void {
 
 function getPublishedBrowserSnapshot(): PublishedCacheMap {
   if (typeof window === "undefined") return EMPTY_PUBLISHED;
-  const raw = window.localStorage.getItem(PUBLISHED_CACHE_STORAGE_KEY);
+  let raw: string | null;
+  try { raw = window.localStorage.getItem(PUBLISHED_CACHE_STORAGE_KEY); }
+  catch { return cachedPublished; }
   if (raw === cachedPublishedRaw) return cachedPublished;
 
   cachedPublishedRaw = raw;
@@ -243,44 +269,35 @@ export interface MergedInterviewQuestion extends InterviewQuestion {
   isDeleted?: boolean;
 }
 
+/** Pure reconciliation; callers persist the result outside React render. */
+export function reconcilePublishedCache(canonicalQuestions: InterviewQuestion[], cache: PublishedCacheMap): PublishedCacheMap {
+  const next = { ...cache };
+  let changed = false;
+  for (const [id, item] of Object.entries(cache)) {
+    const canonical = canonicalQuestions.find(q => q.id === id);
+    if (item.question.isDeleted ? !canonical : canonical && areQuestionsEqual(canonical, item.question)) {
+      delete next[id];
+      changed = true;
+    }
+  }
+  return changed ? next : cache;
+}
+
+export function getPublishedConflicts(canonicalQuestions: InterviewQuestion[], cache: PublishedCacheMap): string[] {
+  return Object.entries(cache).filter(([id, item]) => {
+    const canonical = canonicalQuestions.find(q => q.id === id) ?? null;
+    const matchesPublished = item.question.isDeleted ? canonical === null : canonical && areQuestionsEqual(canonical, item.question);
+    return !matchesPublished && item.baseVersion !== undefined && questionVersion(canonical) !== item.baseVersion;
+  }).map(([id]) => id);
+}
+
 export function mergeQuestionsWithDrafts(
   canonicalQuestions: InterviewQuestion[],
   drafts: DraftMap,
   publishedCache?: PublishedCacheMap
 ): MergedInterviewQuestion[] {
   const currentPublished = publishedCache ?? getPublishedCache();
-  const now = Date.now();
   const activePublished = { ...currentPublished };
-  let hasReconciledChanges = false;
-
-  // 1. Smart Reconciliation & TTL Purge
-  for (const [id, item] of Object.entries(activePublished)) {
-    // A. TTL check
-    if (now - item.publishedAt > PUBLISHED_CACHE_TTL_MS) {
-      delete activePublished[id];
-      hasReconciledChanges = true;
-      continue;
-    }
-
-    // B. Reconciliation check with canonicalQuestions from Cloudflare
-    const canonical = canonicalQuestions.find((q) => q.id === id);
-
-    if (item.question.isDeleted) {
-      // If deleted and no longer present in canonical -> Cloudflare has applied deletion!
-      if (!canonical) {
-        delete activePublished[id];
-        hasReconciledChanges = true;
-      }
-    } else if (canonical && areQuestionsEqual(canonical, item.question)) {
-      // Canonical now matches cached question 100% -> Cloudflare build finished!
-      delete activePublished[id];
-      hasReconciledChanges = true;
-    }
-  }
-
-  if (hasReconciledChanges) {
-    writePublishedCache(activePublished);
-  }
 
   // 2. 3-Layer Merging: drafts > publishedCache > canonical
   const draftIds = new Set(Object.keys(drafts));
@@ -359,7 +376,12 @@ export function downloadQuestionsBackup(
   URL.revokeObjectURL(url);
 }
 
-export function useInterviewDrafts() {
+const subscribeHydration = () => () => {};
+const browserHydrated = () => true;
+const serverHydrated = () => false;
+
+export function useInterviewDrafts(canonicalQuestions?: InterviewQuestion[]) {
+  const hydrated = useSyncExternalStore(subscribeHydration, browserHydrated, serverHydrated);
   const drafts = useSyncExternalStore(subscribe, getBrowserSnapshot, getServerSnapshot);
   const publishedCache = useSyncExternalStore(
     subscribePublished,
@@ -369,6 +391,17 @@ export function useInterviewDrafts() {
 
   const draftList = useMemo(() => Object.values(drafts), [drafts]);
   const draftCount = Object.keys(drafts).length;
+
+  useEffect(() => {
+    if (!canonicalQuestions || !hydrated) return;
+    const current = getPublishedCache();
+    const reconciled = reconcilePublishedCache(canonicalQuestions, current);
+    if (reconciled !== current) {
+      try { writePublishedCache(reconciled); } catch { /* Keep the cache when storage is unavailable. */ }
+    }
+  }, [canonicalQuestions, hydrated, publishedCache]);
+
+  const publishedConflicts = useMemo(() => canonicalQuestions ? getPublishedConflicts(canonicalQuestions, publishedCache) : [], [canonicalQuestions, publishedCache]);
 
   const handleSaveDraft = useCallback(
     (question: DraftQuestion, canonicalQuestion?: InterviewQuestion) => {
@@ -381,29 +414,36 @@ export function useInterviewDrafts() {
     removeDraft(id);
   }, []);
 
+  const handleRebaseDraft = useCallback((id: string, expected: DraftQuestion, remote: InterviewQuestion | null) => {
+    rebaseDraft(id, expected, remote);
+  }, []);
+
   const handleClearAllDrafts = useCallback(() => {
     clearAllDrafts();
   }, []);
 
-  const handleCommitDraftsToPublished = useCallback(() => {
-    commitDraftsToPublished();
+  const handleCommitDraftsToPublished = useCallback((submitted?: DraftMap, baseQuestions?: InterviewQuestion[]) => {
+    commitDraftsToPublished(submitted, baseQuestions);
   }, []);
 
   const handleClearAllPublishedCache = useCallback(() => {
     clearAllPublishedCache();
   }, []);
 
-  const handleMarkDeleted = useCallback((question: InterviewQuestion) => {
-    markQuestionDeleted(question);
+  const handleMarkDeleted = useCallback((question: InterviewQuestion, canonicalQuestion?: InterviewQuestion) => {
+    markQuestionDeleted(question, canonicalQuestion);
   }, []);
 
   return {
+    hydrated,
+    publishedConflicts,
     drafts,
     draftList,
     draftCount,
     publishedCache,
     saveDraft: handleSaveDraft,
     removeDraft: handleRemoveDraft,
+    rebaseDraft: handleRebaseDraft,
     markDeleted: handleMarkDeleted,
     clearAllDrafts: handleClearAllDrafts,
     commitDraftsToPublished: handleCommitDraftsToPublished,

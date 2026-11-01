@@ -109,7 +109,7 @@ export interface InterviewProgressState {
 /**
  * Định dạng số thứ tự câu hỏi trực quan (#001, #002 ... #1000)
  */
-export function formatQuestionNumber(num: number, totalQuestions = 538): string {
+export function formatQuestionNumber(num: number, totalQuestions = 0): string {
   const minDigits = totalQuestions >= 1000 ? 4 : 3;
   return `#${String(num).padStart(minDigits, "0")}`;
 }
@@ -117,7 +117,7 @@ export function formatQuestionNumber(num: number, totalQuestions = 538): string 
 /**
  * Định dạng mã kỹ thuật (vd: "q-001" -> "#001") để hiển thị đẹp trên giao diện
  */
-export function formatQuestionBadge(id: string, totalQuestions = 538): string {
+export function formatQuestionBadge(id: string, totalQuestions = 0): string {
   const match = id.match(/q-(\d+)/);
   if (match) {
     return formatQuestionNumber(Number(match[1]), totalQuestions);

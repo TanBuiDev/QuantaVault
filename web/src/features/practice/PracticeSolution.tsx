@@ -1,5 +1,6 @@
 "use client";
 import { MediaGallery } from "./MediaGallery";
+import { isStaticStudy } from "@/lib/studyMode";
 
 import { ArrowRightLeft } from "lucide-react";
 
@@ -112,7 +113,7 @@ export function PracticeSolution(model: ReturnType<typeof usePracticeWorkspace>)
               </Button>
             ) : null}
 
-            <Button
+            {!isStaticStudy() ? <Button
               size="sm"
               variant="secondary"
               onClick={() => {
@@ -126,9 +127,9 @@ export function PracticeSolution(model: ReturnType<typeof usePracticeWorkspace>)
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
               </svg>
               <span>Thêm code</span>
-            </Button>
+            </Button> : null}
 
-            {currentCodeItem ? (
+            {currentCodeItem && !isStaticStudy() ? (
               <Button
                 size="sm"
                 variant="secondary"
@@ -146,7 +147,7 @@ export function PracticeSolution(model: ReturnType<typeof usePracticeWorkspace>)
               </Button>
             ) : null}
 
-            {currentCodeItem && !currentCodeItem.isCanonical && codeVersions.length > 1 ? (
+            {currentCodeItem && !isStaticStudy() && !currentCodeItem.isCanonical && codeVersions.length > 1 ? (
               <Button
                 size="sm"
                 variant="secondary"

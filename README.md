@@ -1,174 +1,80 @@
 # QuantaVault
 
-> **Offline-First Software Architecture & Algorithmic Engineering Platform**
-> 
-> *Quanta represents the fundamental, discrete constituents of structure; Vault represents an immutable, high-integrity repository. High-throughput distributed systems and mission-critical architectures are forged upon mastery of fundamental computing primitives—from memory layouts, byte compact representations, and thread synchronization to transactional boundaries and distributed consensus.*
+QuantaVault is a Java algorithm practice and interview study application. Canonical content lives in Git; personal progress and drafts live in the browser.
 
-[![Web CI](https://github.com/TanBuiDev/QuantaVault/actions/workflows/web-ci.yml/badge.svg)](https://github.com/TanBuiDev/QuantaVault/actions/workflows/web-ci.yml)
-[![Deployment](https://img.shields.io/badge/Cloudflare_Pages-Live-F38020?logo=cloudflare&logoColor=white)](https://quantavault.pages.dev)
-[![Next.js](https://img.shields.io/badge/Next.js-16.4-black?logo=next.js&logoColor=white)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19.2-61DAFB?logo=react&logoColor=black)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Java](https://img.shields.io/badge/JDK-25-ED8B00?logo=openjdk&logoColor=white)](https://openjdk.org/)
-[![Tests](https://img.shields.io/badge/Vitest-187%20Passed-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev/)
+[Web CI](https://github.com/TanBuiDev/QuantaVault/actions/workflows/web-ci.yml) · [Website](https://quantavault.pages.dev) · [Repository](https://github.com/TanBuiDev/QuantaVault)
 
-🌐 **Live Production Deployment:** [https://quantavault.pages.dev](https://quantavault.pages.dev)  
-📦 **GitHub Repository:** [https://github.com/TanBuiDev/QuantaVault](https://github.com/TanBuiDev/QuantaVault)
+## Website and local workspace
 
----
+| Capability | Static website on Cloudflare Pages | Local Next.js workspace |
+| --- | --- | --- |
+| Problems, hints, solutions, interview notes and illustrations | Available as prebuilt pages and assets | Available |
+| Search, filters, bookmarks and learning progress | Stored in the browser | Stored in the browser |
+| Monaco editor and personal code drafts | Available; Run/Submit disabled | Available |
+| Java execution | Planned for a later funded phase | Java 25 Docker sandbox |
+| Edit canonical algorithm approaches/code versions | Hidden | Local filesystem APIs |
+| Edit interview questions | Browser drafts; explicit publish | Browser drafts; explicit publish |
+| Publish interview questions | Worker API requiring PIN **and** OTP | Same shared publish service |
 
-## 🏛️ System Architecture
+The Top Interview 150 study plan is in `study-plans/top-interview-150/index.yaml`. Interview content is in `data/interview-questions.json` and its web copy. Counts shown by the application come from content; test totals and framework versions should be read from current command output and the dependency lockfile rather than badges.
 
-```mermaid
-graph TD
-    subgraph Client_Layer ["Client Tier (Browser / PWA)"]
-        UI["Modern Next.js 16 UI / Tailwind CSS"]
-        Monaco["Monaco Editor (Java 25 Workspace)"]
-        Mermaid["Dynamic Vector Mermaid Renderer"]
-        LocalCache["IndexedDB / LocalStorage State Sync"]
-    end
+## Architecture
 
-    subgraph Edge_Cloudflare ["Edge Infrastructure (Cloudflare Pages)"]
-        EdgeWorker["Cloudflare Edge Worker (_worker.js)"]
-        TOTP["SubtleCrypto 2FA (RFC 6238 TOTP & PIN)"]
-        RateLimit["In-Memory Edge Rate Limiting"]
-    end
+- **UI:** Next.js App Router, React, TypeScript, Tailwind CSS, shared Modal/ConfirmDialog/Toast components, Monaco and resizable panels.
+- **Canonical content:** YAML metadata and test cases, Markdown lessons, Java solutions and checked-in illustrations.
+- **Browser state:** URL parameters for navigation, session storage for unsaved form drafts, local storage for saved unpublished edits, personal code and progress.
+- **Publishing:** PIN and TOTP verification, schema checks, conflict detection and atomic GitHub tree/commit updates for both interview JSON files. A successful commit is distinct from a successful deployment.
+- **Local Java:** Docker without network access, non-root user, read-only root filesystem and CPU, memory, process, time and output limits.
+- **Diagrams:** Mermaid is bundled from a locked npm dependency, uses strict security and sanitizes generated SVG before insertion into the page.
 
-    subgraph GitHub_Storage ["Persistent Git Engine (GitHub API)"]
-        GitTree["Atomic Git Tree Mutations"]
-        MainBranch["Branch: main (Clean History)"]
-        Actions["GitHub Actions CI/CD Pipeline"]
-    end
+## Development
 
-    subgraph Local_Runtime ["Offline Algorithmic Runtime (Docker Sandbox)"]
-        Runner["Docker Java 25 Test Harness"]
-        Security["UID 10001 · Read-Only Root · Zero Network"]
-    end
+Use a supported Node.js version from `web/package.json` (Node 22 is the CI baseline), npm 11, and Python 3.10+ for content tooling. Docker Desktop with Linux containers is optional unless running Java.
 
-    UI -->|"Edge Navigation & Static Assets"| EdgeWorker
-    UI -->|"RFC 6238 2FA Admin Action"| TOTP
-    TOTP --> RateLimit
-    RateLimit -->|"Atomic Blob & Tree Commit"| GitTree
-    GitTree --> MainBranch
-    MainBranch --> Actions
-    Monaco -->|"Local Loopback Execution"| Runner
-    Runner --> Security
-```
-
----
-
-## 🚀 Key Modules & Capabilities
-
-### 1. Software Architecture & Engineering Knowledge Engine (`/interview`)
-- **Canonical Architecture Curriculum:** 538+ rigorously structured interview and system design problems encompassing Java Core Internals, Memory Management, Concurrency & JMM, Spring Boot Architecture, Database Internals, and Distributed Systems.
-- **Lightning-Fast Sequential & Token Search:** Instant resolution by numerical index (`#001` – `#538`, `#087`, `87`, `q-087`) with Vietnamese accent-insensitive fuzzy matching and multi-dimensional tagging.
-- **Dynamic Vector Architectural Modeling:** High-speed, client-side vector diagram rendering powered by Mermaid ESM with automated light/dark theme synchronization.
-- **Hardware-Accelerated Zero-Lag Markdown Editor:** Isolated CSS containment (`contain: content`, `font-variant-ligatures: none`) with non-blocking deferred preview rendering (`useDeferredValue`) eliminating input latency during high-speed typing and text selection.
-- **Edge 2FA Administrative Publishing:** Cloudflare Pages Functions powered by Web Crypto API (`SubtleCrypto` HMAC-SHA1) with dual-layer authentication (TOTP Authenticator + PIN) syncing modifications directly to GitHub via atomic multi-blob Git trees.
-
-### 2. Algorithmic Practice Workspace (`/problems`)
-- **LeetCode Top Interview 150 Benchmark:** Canonical problem definitions, progressive hints, and multi-tier solutions.
-- **Local Isolated Java 25 Sandbox:** Offline-first algorithmic judge executing Java 25 inside unprivileged Docker containers (UID 10001, dropped Linux capabilities, read-only root filesystem, strict memory/CPU limits, zero network egress).
-- **Zero Cloud Dependency:** Run and submit code entirely offline without external API latency or remote subscription barriers.
-
----
-
-## 📂 Repository Structure
-
-```
-QuantaVault/
-├── .github/
-│   └── workflows/
-│       ├── web-ci.yml           # Complete automated test, lint, build & Cloudflare deployment
-│       └── java-docker.yml      # Containerized Java 25 runner integration test suite
-├── data/
-│   ├── interview-questions.json # Canonical 538+ architecture question repository
-│   └── migration-inventory.json # Problem canonical migration records
-├── problems/                    # Canonical LeetCode Top Interview 150 problem definitions
-├── raw/                         # Preserved original topic-level problem references
-├── schemas/                     # JSON Schemas enforcing content integrity
-├── study-plans/                 # Study plan curricula and sequencing rules
-├── tests/                       # Python & Java automated validation suites
-├── tools/                       # Repository linting, pedagogy auditing, and validation scripts
-└── web/                         # Next.js 16 web application
-    ├── functions/               # Cloudflare Pages Edge Functions (/api/publish)
-    ├── scripts/                 # Static asset preparation and Cloudflare bundling scripts
-    └── src/
-        ├── app/                 # App Router pages and route handlers
-        ├── components/          # Reusable UI primitives and theme providers
-        ├── features/            # Modular views (dashboard, practice, interview)
-        └── lib/                 # Core utilities, judge harness, and GitHub publish pipeline
-```
-
----
-
-## 🛠️ Local Development & Quick Start
-
-### Prerequisites
-- **Node.js:** `>= 20.9.0` (Node 22 recommended)
-- **npm:** `^11.0.0`
-- **Docker Desktop:** Linux container backend enabled (for local Java code execution)
-- **Python:** `3.10+` (for content validation tools)
-
-### 1. Installation
-```bash
-# Clone the repository
-git clone https://github.com/TanBuiDev/QuantaVault.git
-cd QuantaVault
-
-# Navigate to web workspace and install dependencies
+```powershell
 cd web
 npm ci
+npm run dev
 ```
 
-### 2. Local Java Execution Sandbox Setup (Optional for Algorithmic Judge)
-```bash
-# Build the pinned JDK 25 runner image locally
-npm run java:setup
+Open [the local workspace](http://127.0.0.1:3000). To prepare the local Java runner:
 
-# Run containerized integration tests
+```powershell
+npm run java:setup
 npm run test:docker
 ```
 
-### 3. Launch Development Server
-```bash
-npm run dev
-```
-Open [http://127.0.0.1:3000](http://127.0.0.1:3000) to access the platform.
+## Verification and builds
 
----
+From `web/`:
 
-## 🧪 Quality Gate & Test Suite
-
-The project enforces strict pre-flight quality standards. Every pull request and push to `main` executes comprehensive validation:
-
-```bash
-cd web
-
-# 1. Static code analysis and strict TypeScript linting (Zero error/warning tolerance)
+```powershell
 npm run lint
-
-# 2. Complete unit and integration test suite (187 Vitest suites)
 npm test
-
-# 3. Production static and Cloudflare Pages bundle build
+npm run build
 npm run build:pages
-
-# 4. End-to-end browser automation tests
+npm run test:pages-build
+npm run test:pages
 npx playwright test
 ```
 
----
+`build` produces the local Next.js application. `build:pages` prepares an isolated static export and the publish Worker; it does not deploy. `test:pages-build` checks packaging and `test:pages` exercises the artifact in the local Pages runtime. The final Playwright command tests the local Next.js workspace. Java integration tests are conditional; report skipped tests separately from passed tests.
 
-## 🛡️ Security & Integrity Invariants
+From the repository root:
 
-1. **Edge Identity Verification:** The `/api/publish` endpoint validates credentials via constant-time HMAC comparison and RFC 6238 TOTP algorithms without persisting plaintext credentials.
-2. **Atomic Git Transactions:** Content updates generate synchronized Git blobs and tree commits simultaneously for both `data/interview-questions.json` and `web/src/data/interview-questions.json` to guarantee zero state drift.
-3. **Execution Sandbox Immutability:** Code execution containers run with `--pull=never`, read-only root, 512 MiB RAM cap, 1 CPU cap, 128 PIDs cap, and 15-second compilation watchdogs.
-4. **Git Hygiene:** No private environment variables, credentials, backup artifacts, or temporary logs are ever committed to version control.
+```powershell
+python tools/validate_content.py
+python -m unittest discover -s tests -p 'test_*.py'
+```
 
----
+## Storage, recovery and publishing
 
-## 📄 License
+Saving an interview edit keeps it in this browser until explicitly published. Unsaved modal content is a separate session draft: recovery requires a user choice and never silently replaces the current saved version. Publishing must preserve changes made while the request is running. A pending publication cache remains until the deployed canonical content confirms it; elapsed time alone is not proof of a completed deployment.
 
-This project is licensed under the MIT License.
+See [deployment and security](docs/deployment-security.md) for required runtime configuration, credential rotation and rollout checks. Never commit `.env*`, credentials, logs or temporary artifacts. Push and deployment require the explicit review gate in `AGENTS.md`.
+
+## Network and offline boundaries
+
+There is no service worker or installable PWA in this release. Static hosting does not mean the website is guaranteed to work without a network connection. Mermaid and site illustration assets are bundled locally; Monaco's default loader may fetch editor files from its CDN. `next/font` downloads Google font files during builds and serves the resulting files with the application. Canonical Markdown can contain external links or images. Installing npm packages, initial Java image setup and GitHub publishing also require network access.
+
+After dependencies and the Java image are installed, local Java execution does not use an external judge service. Full offline operation of every browser feature is not claimed.

@@ -1,0 +1,85 @@
+import { fireEvent, render, screen, act } from "@testing-library/react";
+import { beforeEach, afterEach, describe, expect, it, vi } from "vitest";
+import { InterviewEditModal } from "../InterviewEditModal";
+import { ToastProvider } from "@/components/ui/Toast";
+import { ConfirmProvider } from "@/components/ui/ConfirmDialog";
+import type { InterviewQuestion } from "@/lib/interview/types";
+
+vi.mock("@/features/practice/MarkdownContent", () => ({ MarkdownContent: () => null }));
+const question: InterviewQuestion = { id: "q-recovery", title: "Đã lưu mới nhất", category: "java-core", difficulty: "junior", summary: "", answerMarkdown: "Đáp án đã lưu", tags: ["Java"] };
+const key = `interview_draft_${question.id}`;
+const editor = () => screen.getByPlaceholderText("Nhập nội dung câu trả lời chi tiết bằng cú pháp Markdown...");
+function mount(onSave: (updated: InterviewQuestion, canonical?: InterviewQuestion) => void = vi.fn(), onClose = vi.fn()) {
+  return render(<ToastProvider><ConfirmProvider><InterviewEditModal isOpen question={question} canonicalQuestion={question} onSave={onSave} onClose={onClose} /></ConfirmProvider></ToastProvider>);
+}
+describe("InterviewEditModal draft safety", () => {
+  beforeEach(() => { sessionStorage.clear(); vi.useFakeTimers(); });
+  afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks(); });
+  it("giữ nháp cũ và chỉ khôi phục khi chọn, xác nhận nếu thiếu phiên bản nền", async () => {
+    sessionStorage.setItem(key, JSON.stringify({ ...question, answerMarkdown: "Nháp cũ" }));
+    mount();
+    expect(editor()).toHaveValue("Đáp án đã lưu");
+    expect(sessionStorage.getItem(key)).not.toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Khôi phục nháp" }));
+    expect(editor()).toHaveValue("Đáp án đã lưu");
+    await act(async () => { fireEvent.click(screen.getByRole("button", { name: "Dùng bản nháp" })); });
+    expect(editor()).toHaveValue("Nháp cũ");
+  });
+  it("tự lưu 400ms và giữ lại khi F5 rồi hỏi trước khi khôi phục", () => {
+    const view = mount();
+    fireEvent.change(editor(), { target: { value: "Đang soạn chưa lưu" } });
+    act(() => { vi.advanceTimersByTime(400); });
+    expect(sessionStorage.getItem(key)).toContain("Đang soạn chưa lưu");
+    view.unmount();
+    mount();
+    expect(editor()).toHaveValue("Đáp án đã lưu");
+    fireEvent.click(screen.getByRole("button", { name: "Khôi phục nháp" }));
+    expect(editor()).toHaveValue("Đang soạn chưa lưu");
+  });
+  it("ghi nốt nội dung mới khi pagehide trước hạn debounce", () => {
+    mount();
+    fireEvent.change(editor(), { target: { value: "Trước F5" } });
+    fireEvent(window, new Event("pagehide"));
+    expect(sessionStorage.getItem(key)).toContain("Trước F5");
+  });
+  it("Ctrl+S không bỏ qua yêu cầu chọn khôi phục hoặc bỏ nháp", () => {
+    const raw = JSON.stringify({ ...question, answerMarkdown: "Nháp cần giữ" });
+    sessionStorage.setItem(key, raw);
+    const save = vi.fn();
+    mount(save);
+    fireEvent.keyDown(window, { key: "s", ctrlKey: true });
+    expect(save).not.toHaveBeenCalled();
+    expect(sessionStorage.getItem(key)).toBe(raw);
+  });
+  it("lỗi lưu phải giữ form và không xóa nháp tạm", () => {
+    const close = vi.fn();
+    mount(() => { throw new DOMException("full", "QuotaExceededError"); }, close);
+    fireEvent.change(editor(), { target: { value: "Không được mất" } });
+    act(() => { vi.advanceTimersByTime(400); });
+    fireEvent.click(screen.getByRole("button", { name: "Lưu thay đổi" }));
+    expect(close).not.toHaveBeenCalled();
+    expect(editor()).toHaveValue("Không được mất");
+    expect(sessionStorage.getItem(key)).toContain("Không được mất");
+    expect(screen.getByText(/Không thể lưu thay đổi/)).toBeInTheDocument();
+  });
+  it("lưu thành công xóa nháp và không ghi lại sau khi đóng", () => {
+    const save = vi.fn();
+    const view = mount(save);
+    fireEvent.change(editor(), { target: { value: "Bản mới" } });
+    act(() => { vi.advanceTimersByTime(400); });
+    fireEvent.click(screen.getByRole("button", { name: "Lưu thay đổi" }));
+    expect(save).toHaveBeenCalledWith(expect.objectContaining({ answerMarkdown: "Bản mới" }), question);
+    expect(sessionStorage.getItem(key)).toBeNull();
+    view.unmount();
+    expect(sessionStorage.getItem(key)).toBeNull();
+  });
+  it("đóng form đã lưu không để timer cũ đóng một form mở sau đó", () => {
+    const close = vi.fn();
+    const view = mount(vi.fn(), close);
+    fireEvent.change(editor(), { target: { value: "Bản mới đã lưu" } });
+    fireEvent.click(screen.getByRole("button", { name: "Lưu thay đổi" }));
+    view.unmount();
+    act(() => { vi.advanceTimersByTime(600); });
+    expect(close).not.toHaveBeenCalled();
+  });
+});

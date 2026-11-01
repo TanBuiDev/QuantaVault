@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     default: "QuantaVault — Architecture & Engineering Knowledge Engine",
     template: "%s | QuantaVault",
   },
-  description: "QuantaVault – Offline-First Software Architecture & Engineering Knowledge Engine. Củng cố kiến trúc phần mềm, Java Backend, Distributed Systems và 538+ bài toán kỹ thuật chuyên sâu.",
+  description: "QuantaVault – Kho kiến thức kiến trúc phần mềm và luyện thuật toán Java. Củng cố Java Backend, Distributed Systems và kỹ năng phỏng vấn qua bài học, lời giải và workspace cục bộ.",
   icons: {
     icon: [
       { url: "/brand-logo.png", sizes: "any" },

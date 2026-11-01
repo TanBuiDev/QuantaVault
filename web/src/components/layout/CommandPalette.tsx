@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/Badge";
 import { matchesSearch } from "@/lib/utils/stringUtils";
+import { isStaticStudy } from "@/lib/studyMode";
 
 interface MinimalProblem {
   id: number;
@@ -42,7 +43,7 @@ export function CommandPalette() {
   useEffect(() => {
     if (isOpen && problems.length === 0) {
       const loadingTimer = window.setTimeout(() => setLoading(true), 0);
-      fetch("/api/problems")
+      fetch(isStaticStudy() ? "/content/problems.json" : "/api/problems")
         .then((res) => res.json())
         .then((data) => {
           if (Array.isArray(data)) {

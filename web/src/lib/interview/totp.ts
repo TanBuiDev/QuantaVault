@@ -91,7 +91,6 @@ export function getOtpAuthUrl(
   return `otpauth://totp/${encIssuer}:${encAccount}?secret=${secret}&issuer=${encIssuer}&algorithm=SHA1&digits=6&period=30`;
 }
 
-export const DEFAULT_TOTP_SECRET = "ACNDJOJFMRGAE3CKKU3UG3MZVSQXTBRJ";
 export const DEFAULT_TOTP_ISSUER = "Java Interview CMS";
 export const DEFAULT_TOTP_ACCOUNT = "admin";
 

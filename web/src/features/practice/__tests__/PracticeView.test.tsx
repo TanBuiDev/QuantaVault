@@ -74,6 +74,18 @@ describe("PracticeView", () => {
     sessionStorage.clear();
   });
 
+  it("keeps static reading and reference code without filesystem mutation controls", async () => {
+    vi.stubEnv("NEXT_PUBLIC_STUDY_MODE", "static");
+    try {
+      renderPractice();
+      fireEvent.click(screen.getByRole("tab", { name: "Solution" }));
+      await waitFor(() => expect(screen.getByRole("heading", { name: "Java solution" })).toBeInTheDocument());
+      expect(screen.queryByRole("button", { name: "Thêm code" })).not.toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "Sửa code" })).not.toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Copy Java" })).toBeInTheDocument();
+    } finally { vi.unstubAllEnvs(); }
+  });
+
   it("shows the problem tab first without rendering inactive tab content", async () => {
     renderPractice();
 

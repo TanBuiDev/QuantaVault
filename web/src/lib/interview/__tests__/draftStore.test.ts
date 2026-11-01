@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import {
   getDrafts,
   saveDraft,
@@ -12,8 +12,14 @@ import {
   areQuestionsEqual,
   markQuestionDeleted,
   PUBLISHED_CACHE_TTL_MS,
+  reconcilePublishedCache,
+  getPublishedConflicts,
+  useInterviewDrafts,
+  rebaseDraft,
 } from "../draftStore";
 import type { InterviewQuestion } from "../types";
+import { questionVersion } from "../questionVersion";
+import { renderHook, act } from "@testing-library/react";
 
 const mockQuestion1: InterviewQuestion = {
   id: "q-1",
@@ -222,11 +228,11 @@ describe("draftStore", () => {
       // Khi trang web render với canonical mới
       mergeQuestionsWithDrafts(cloudflareUpdatedCanonical, {});
 
-      // Cache tự động được dọn sạch vì dữ liệu đã đồng bộ 100%!
-      expect(getPublishedCache()["q-1"]).toBeUndefined();
+      // Rendering a merge must not write to storage; reconciliation happens in an effect.
+      expect(getPublishedCache()["q-1"]).toBeDefined();
     });
 
-    it("TỰ ĐỘNG XÓA BẢN GHI ĐÃ HẾT HẠN (TTL 15 phút)", () => {
+    it("giữ nội dung đã xuất bản khi deploy chưa cập nhật sau 15 phút", () => {
       // Đưa vào cache với timestamp cách đây 20 phút (> 15 phút)
       const oldTimestamp = Date.now() - (PUBLISHED_CACHE_TTL_MS + 5 * 60 * 1000);
       writePublishedCache({
@@ -236,10 +242,112 @@ describe("draftStore", () => {
         },
       });
 
-      mergeQuestionsWithDrafts([mockQuestion1, mockQuestion2], {});
+      const merged = mergeQuestionsWithDrafts([mockQuestion1, mockQuestion2], {});
 
-      // Phải tự động bị xóa vì quá hạn TTL
+      expect(getPublishedCache()["q-1"]).toBeDefined();
+      expect(merged[0].title).toBe("Nội dung quá cũ");
+    });
+
+    it("không xóa bản nháp đã sửa tiếp trong khi publish đang chạy", () => {
+      saveDraft({ ...mockQuestion1, title: "Đã gửi" }, mockQuestion1);
+      const submitted = getDrafts();
+      saveDraft({ ...mockQuestion1, title: "Sửa tiếp" }, mockQuestion1);
+      commitDraftsToPublished(submitted);
+      expect(getDrafts()["q-1"].title).toBe("Sửa tiếp");
+      expect(getPublishedCache()["q-1"].question.title).toBe("Đã gửi");
+    });
+
+    it("không coi draft xóa là cùng phiên bản với draft chưa xóa", () => {
+      saveDraft(mockQuestion1);
+      const submitted = getDrafts();
+      markQuestionDeleted(mockQuestion1);
+      commitDraftsToPublished(submitted);
+      expect(getDrafts()["q-1"].isDeleted).toBe(true);
+    });
+
+    it("báo lỗi nếu bộ nhớ đầy thay vì giả vờ lưu thành công", () => {
+      const write = vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => { throw new DOMException("full", "QuotaExceededError"); });
+      expect(() => saveDraft(mockQuestion1)).toThrow();
+      write.mockRestore();
+    });
+
+    it("giữ phiên bản nền ban đầu qua nhiều lần lưu", () => {
+      saveDraft({ ...mockQuestion1, title: "Lần 1" }, mockQuestion1);
+      saveDraft({ ...mockQuestion1, title: "Lần 2" }, { ...mockQuestion1, title: "Thay đổi ở server" });
+      expect(getDrafts()["q-1"].baseVersion).toBe(questionVersion(mockQuestion1));
+    });
+
+    it("cho phép sửa quay về nội dung cũ sau khi vừa publish nhưng website chưa cập nhật", () => {
+      const published = { ...mockQuestion1, title: "Vừa xuất bản" };
+      writePublishedCache({ "q-1": { question: published, publishedAt: Date.now() } });
+      expect(saveDraft(mockQuestion1, mockQuestion1)).toBe(true);
+      expect(getDrafts()["q-1"].title).toBe(mockQuestion1.title);
+      expect(getDrafts()["q-1"].baseVersion).toBe(questionVersion(published));
+    });
+
+    it("dọn cache trong effect khi website đã có nội dung xuất bản", () => {
+      const published = { ...mockQuestion1, title: "Đã triển khai" };
+      writePublishedCache({ "q-1": { question: published, publishedAt: Date.now() } });
+      renderHook(() => useInterviewDrafts([published, mockQuestion2]));
       expect(getPublishedCache()["q-1"]).toBeUndefined();
+    });
+
+    it("chỉ dọn cache xóa khi câu hỏi không còn trong canonical", () => {
+      const cache = { "q-1": { question: { ...mockQuestion1, isDeleted: true }, publishedAt: Date.now() } };
+      expect(reconcilePublishedCache([mockQuestion1], cache)).toBe(cache);
+      expect(reconcilePublishedCache([mockQuestion2], cache)).toEqual({});
+    });
+
+    it("phân biệt deploy đang chờ với website có phiên bản khác", () => {
+      const cache = { "q-1": { question: { ...mockQuestion1, title: "Đã gửi" }, publishedAt: Date.now(), baseVersion: questionVersion(mockQuestion1) } };
+      expect(getPublishedConflicts([mockQuestion1], cache)).toEqual([]);
+      expect(getPublishedConflicts([{ ...mockQuestion1, title: "Sửa từ nơi khác" }], cache)).toEqual(["q-1"]);
+      expect(getPublishedConflicts([{ ...mockQuestion1, title: "Đã gửi" }], cache)).toEqual([]);
+    });
+
+    it("nhận thay đổi ở tab khác qua storage event", () => {
+      const { result } = renderHook(() => useInterviewDrafts());
+      act(() => {
+        localStorage.setItem("interview_drafts_v1", JSON.stringify({ "q-1": { ...mockQuestion1, title: "Tab khác" } }));
+        window.dispatchEvent(new StorageEvent("storage", { key: "interview_drafts_v1" }));
+      });
+      expect(result.current.drafts["q-1"].title).toBe("Tab khác");
+    });
+
+    it("đối chiếu xong chỉ cập nhật baseline, giữ nguyên nội dung đã sửa", () => {
+      saveDraft({ ...mockQuestion1, title: "Nội dung đang giữ" }, mockQuestion1);
+      const expected = getDrafts()["q-1"];
+      const remote = { ...mockQuestion1, title: "Phiên bản trên GitHub" };
+      rebaseDraft("q-1", expected, remote);
+      expect(getDrafts()["q-1"]).toEqual({ ...expected, baseVersion: questionVersion(remote) });
+    });
+
+    it("hỗ trợ baseline câu hỏi bị xóa trên GitHub mà không xóa bản sửa local", () => {
+      saveDraft({ ...mockQuestion1, title: "Khôi phục với nội dung đã sửa" }, mockQuestion1);
+      const expected = getDrafts()["q-1"];
+      rebaseDraft("q-1", expected, null);
+      expect(getDrafts()["q-1"]).toEqual({ ...expected, baseVersion: questionVersion(null) });
+    });
+
+    it.each(["content", "deleted", "base", "missing"])("không rebase nếu snapshot %s đã thay đổi", (change) => {
+      saveDraft({ ...mockQuestion1, title: "Đã đối chiếu" }, mockQuestion1);
+      const expected = getDrafts()["q-1"];
+      if (change === "content") saveDraft({ ...expected, answerMarkdown: "Sửa tiếp" }, mockQuestion1);
+      if (change === "deleted") markQuestionDeleted(expected, mockQuestion1);
+      if (change === "base") localStorage.setItem("interview_drafts_v1", JSON.stringify({ "q-1": { ...expected, baseVersion: "another-version" } }));
+      if (change === "missing") removeDraft("q-1");
+      const before = getDrafts();
+      expect(() => rebaseDraft("q-1", expected, { ...mockQuestion1, title: "Phiên bản remote mới" })).toThrow();
+      expect(getDrafts()).toEqual(before);
+    });
+
+    it("không làm mất baseline cũ nếu lưu rebase thất bại", () => {
+      saveDraft({ ...mockQuestion1, title: "Cần giữ lại" }, mockQuestion1);
+      const expected = getDrafts()["q-1"];
+      const write = vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => { throw new DOMException("full", "QuotaExceededError"); });
+      expect(() => rebaseDraft("q-1", expected, { ...mockQuestion1, title: "Remote" })).toThrow();
+      write.mockRestore();
+      expect(getDrafts()["q-1"]).toEqual(expected);
     });
   });
 });

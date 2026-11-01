@@ -3,6 +3,7 @@
 import { useToast } from "@/components/ui/Toast";
 import type { RunCodeResponse } from "@/lib/judge/types";
 import { useEffect, useRef, useState } from "react";
+import { isStaticStudy, STATIC_JUDGE_MESSAGE } from "@/lib/studyMode";
 
 export function usePracticeExecution(problemId: number, sourceCode: string, updateProblem: (id: number, patch: { status: "solved"; }) => void) {
   const [state, setState] = useState<{ problemId: number; running: boolean; result: RunCodeResponse | null; }>({ problemId, running: false, result: null });
@@ -11,6 +12,7 @@ export function usePracticeExecution(problemId: number, sourceCode: string, upda
   useEffect(() => () => { pending.current?.abort(); pending.current = null; }, [problemId]);
 
   async function execute(mode: "run" | "submit") {
+    if (isStaticStudy()) { info(STATIC_JUDGE_MESSAGE); return; }
     if (pending.current) return;
     const controller = new AbortController();
     pending.current = controller;

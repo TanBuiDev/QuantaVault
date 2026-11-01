@@ -5,7 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown, ChevronRight, CheckCircle2, Clock, Circle, Layers } from "lucide-react";
 import { useProgress } from "@/lib/progress/provider";
-import type { StudyPlanNavResponse } from "@/app/api/study-plan/route";
+import type { StudyPlanNavResponse } from "@/lib/content/navigation";
+import { isStaticStudy } from "@/lib/studyMode";
 
 function difficultyColor(diff: "Easy" | "Medium" | "Hard") {
   if (diff === "Easy") return "text-emerald-600 dark:text-emerald-400";
@@ -34,7 +35,7 @@ export function ProblemNavTree() {
     let isMounted = true;
     async function loadData() {
       try {
-        const res = await fetch("/api/study-plan");
+        const res = await fetch(isStaticStudy() ? "/content/study-plan.json" : "/api/study-plan");
         if (!res.ok) throw new Error("Failed to fetch study plan");
         const data: StudyPlanNavResponse = await res.json();
         if (isMounted) {

@@ -1,7 +1,10 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, beforeEach } from "vitest";
+import { describe, expect, it, beforeEach, vi } from "vitest";
 import { InterviewListView } from "../InterviewListView";
 import type { InterviewQuestion } from "@/lib/interview/types";
+import { saveDraft } from "@/lib/interview/draftStore";
+
+vi.mock("@/components/ui/MermaidRenderer", () => ({ MermaidRenderer: () => null }));
 
 const mockQuestions: InterviewQuestion[] = [
   {
@@ -32,6 +35,8 @@ const mockQuestions: InterviewQuestion[] = [
 describe("InterviewListView Component", () => {
   beforeEach(() => {
     window.localStorage.clear();
+    window.sessionStorage.clear();
+    window.history.replaceState({}, "", "/interview");
   });
 
   it("renders the main heading and question count", () => {
@@ -111,5 +116,13 @@ describe("InterviewListView Component", () => {
 
     fireEvent.keyDown(window, { key: "p" });
     expect(screen.queryByRole("dialog", { name: /Trình chiếu/i })).toBeNull();
+  });
+
+  it("mở lại modal sau reload dùng phần đã lưu thay vì dữ liệu gốc", () => {
+    saveDraft({ ...mockQuestions[0], answerMarkdown: "Nội dung đã chỉnh sửa và lưu" }, mockQuestions[0]);
+    localStorage.setItem("interview_edit_mode", "true");
+    sessionStorage.setItem("interview_editing_id", mockQuestions[0].id);
+    render(<InterviewListView initialQuestions={mockQuestions} />);
+    expect(screen.getByPlaceholderText("Nhập nội dung câu trả lời chi tiết bằng cú pháp Markdown...")).toHaveValue("Nội dung đã chỉnh sửa và lưu");
   });
 });

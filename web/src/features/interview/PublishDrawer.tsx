@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "@/components/ui/Modal";
 import { useConfirm } from "@/components/ui/ConfirmDialog";
 import {
@@ -14,10 +14,13 @@ import {
   Lock,
 } from "lucide-react";
 import type { InterviewQuestion } from "@/lib/interview/types";
+import { canonicalQuestion, questionVersion } from "@/lib/interview/questionVersion";
+import type { PublishConflict } from "@/lib/interview/githubPublish";
 import {
   type DraftQuestion,
   downloadQuestionsBackup,
   type PublishedCacheMap,
+  rebaseDraft,
 } from "@/lib/interview/draftStore";
 
 export interface PublishDrawerProps {
@@ -25,7 +28,7 @@ export interface PublishDrawerProps {
   publishedCache?: PublishedCacheMap;
   canonicalQuestions?: InterviewQuestion[];
   onClearAll: () => void;
-  onPublishSuccess: () => void;
+  onPublishSuccess: (submitted: Record<string, DraftQuestion>) => void;
 }
 
 export function PublishDrawer({
@@ -37,9 +40,12 @@ export function PublishDrawer({
 }: PublishDrawerProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pin, setPin] = useState("");
+  const [otp, setOtp] = useState("");
   const [customMessage, setCustomMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [persistenceWarning, setPersistenceWarning] = useState<string | null>(null);
+  const [conflictReview, setConflictReview] = useState<{ conflicts: PublishConflict[]; submitted: Record<string, DraftQuestion> } | null>(null);
   const [retryCooldown, setRetryCooldown] = useState<number>(0);
   const [successResult, setSuccessResult] = useState<{
     commitUrl?: string;
@@ -65,47 +71,56 @@ export function PublishDrawer({
   const draftList = Object.values(drafts);
   const draftCount = draftList.length;
 
-  // Countdown timer for Rate Limiting lockout
-  useState(() => {
-    // initial mount check
-  });
+  useEffect(() => {
+    if (retryCooldown <= 0) return;
+    const timer = setTimeout(() => setRetryCooldown(value => Math.max(0, value - 1)), 1000);
+    return () => clearTimeout(timer);
+  }, [retryCooldown]);
 
-  const handleStartCooldown = (seconds: number) => {
-    setRetryCooldown(seconds);
-    const interval = setInterval(() => {
-      setRetryCooldown((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  };
+  if (draftCount === 0 && !successResult) return null;
 
-  if (draftCount === 0) return null;
+  async function reviewConflict(conflict: PublishConflict) {
+    const expected = conflictReview?.submitted[conflict.id];
+    if (!expected) return;
+    const confirmed = await confirm({ title: "Dùng phiên bản mới làm nền?", message: "Giữ nguyên nội dung bạn đã chỉnh sửa và cập nhật phiên bản nền theo nội dung GitHub vừa đối chiếu. Chỉ xuất bản khi bạn tiếp tục nhập PIN, OTP và xác nhận.", confirmText: "Dùng phiên bản mới làm nền", cancelText: "Tiếp tục đối chiếu", variant: "warning" });
+    if (!confirmed) return;
+    try {
+      rebaseDraft(conflict.id, expected, conflict.current);
+      setConflictReview(current => current ? { ...current, conflicts: current.conflicts.filter(item => item.id !== conflict.id) } : null);
+      setError(null); setPin(""); setOtp("");
+    } catch {
+      setError("Không thể cập nhật phiên bản nền: bản nháp có thể đã thay đổi ở tab khác hoặc bộ nhớ không khả dụng. Nội dung vẫn được giữ; hãy đối chiếu lại.");
+    }
+  }
 
   async function handlePublish() {
     if (retryCooldown > 0) return;
 
-    if (!pin.trim()) {
-      setError("Vui lòng nhập mã Google Authenticator (6 số) từ điện thoại.");
+    if (!pin.trim() || !/^\d{6}$/.test(otp.trim())) {
+      setError("Vui lòng nhập mã PIN quản trị và mã Google Authenticator gồm 6 số.");
       return;
     }
 
     setIsLoading(true);
     setError(null);
+    setPersistenceWarning(null);
+    setConflictReview(null);
+    const submitted = structuredClone(drafts);
+    const baseVersions = Object.fromEntries(Object.values(submitted).map(q => [q.id,
+      q.baseVersion ?? questionVersion(canonicalQuestions?.find(original => original.id === q.id) ?? null),
+    ]));
 
     try {
       const response = await fetch("/api/publish", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-Admin-Pin": pin.trim(),
         },
         body: JSON.stringify({
           pin: pin.trim(),
-          modifiedQuestions: draftList,
+          otp: otp.trim(),
+          baseVersions,
+          modifiedQuestions: Object.values(submitted).map(q => ({ ...canonicalQuestion(q), ...(q.isDeleted ? { isDeleted: true } : {}) })),
           commitMessage: customMessage.trim() || undefined,
         }),
       });
@@ -114,38 +129,26 @@ export function PublishDrawer({
 
       if (response.status === 429 || data.locked) {
         const waitSec = Number(data.retryAfterSeconds) || 60;
-        handleStartCooldown(waitSec);
+        setRetryCooldown(waitSec);
         throw new Error(data.error || `Bạn đã nhập sai nhiều lần. Vui lòng chờ ${waitSec} giây trước khi thử lại.`);
       }
 
       if (!response.ok || !data.success) {
+        if (response.status === 409 && Array.isArray(data.conflicts)) setConflictReview({ conflicts: data.conflicts, submitted });
         throw new Error(data.error || "Không thể xuất bản câu hỏi lên GitHub.");
       }
 
+      try { onPublishSuccess(submitted); }
+      catch { setPersistenceWarning("GitHub đã ghi thành công nhưng không thể cập nhật bộ nhớ trình duyệt. Bản nháp được giữ lại; hãy sao lưu và chờ website cập nhật, không cần xuất bản lại."); }
+      setPin("");
+      setOtp("");
+      setCustomMessage("");
       setSuccessResult({
         commitUrl: data.commitUrl,
         commitSha: data.commitSha,
         message: data.message,
       });
 
-      // Clear drafts on frontend and trigger notification
-      setTimeout(() => {
-        if (typeof window !== "undefined" && window.sessionStorage) {
-          try {
-            for (let i = sessionStorage.length - 1; i >= 0; i--) {
-              const key = sessionStorage.key(i);
-              if (key && key.startsWith("interview_draft_")) {
-                sessionStorage.removeItem(key);
-              }
-            }
-          } catch {}
-        }
-        onPublishSuccess();
-        setIsModalOpen(false);
-        setSuccessResult(null);
-        setPin("");
-        setCustomMessage("");
-      }, 2500);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
@@ -197,7 +200,7 @@ export function PublishDrawer({
       <Modal
         isOpen={isModalOpen}
         onClose={() => {
-          if (!isLoading) setIsModalOpen(false);
+          if (!isLoading) { setIsModalOpen(false); setSuccessResult(null); setConflictReview(null); setPin(""); setOtp(""); }
         }}
         maxWidth="md"
         title="Xuất Bản"
@@ -222,8 +225,10 @@ export function PublishDrawer({
                 </a>
               )}
               <p className="text-xs text-[var(--muted)]">
-                Cloudflare Pages đang bắt đầu tiến trình build lại trang web (~1 phút)...
+                Nội dung đã ghi lên GitHub. Website sẽ cập nhật sau khi quá trình build và triển khai thành công.
               </p>
+              {persistenceWarning && <p role="status" className="rounded-lg bg-amber-500/10 p-3 text-amber-700 dark:text-amber-300">{persistenceWarning}</p>}
+              <button type="button" onClick={() => { setSuccessResult(null); setIsModalOpen(false); }} className="rounded-lg border border-[var(--border)] px-4 py-2">Đóng</button>
             </div>
           ) : (
             <>
@@ -233,6 +238,24 @@ export function PublishDrawer({
                   <AlertCircle className="h-4 w-4 shrink-0" />
                   <span>{error}</span>
                 </div>
+              )}
+
+              {conflictReview && (
+                <section aria-label="Đối chiếu xung đột" className="space-y-3 rounded-xl border border-amber-500/30 bg-amber-500/10 p-3">
+                  <p className="font-semibold text-[var(--foreground)]">Đối chiếu nội dung trước khi xuất bản lại</p>
+                  {conflictReview.conflicts.length === 0 && <p>Đã cập nhật phiên bản nền. Nội dung chỉnh sửa vẫn được giữ; hãy kiểm tra và xác thực lại để xuất bản.</p>}
+                  {conflictReview.conflicts.map(conflict => {
+                    const local = conflictReview.submitted[conflict.id];
+                    return <div key={conflict.id} className="space-y-2 border-t border-[var(--border)] pt-2">
+                      <p className="font-mono font-bold">{conflict.id}</p>
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        <div><p className="font-semibold">Bản chỉnh sửa đã gửi</p><pre className="max-h-48 overflow-auto whitespace-pre-wrap text-xs">{local?.isDeleted ? "Đánh dấu xóa" : JSON.stringify(canonicalQuestion(local), null, 2)}</pre></div>
+                        <div><p className="font-semibold">Phiên bản trên GitHub</p>{conflict.current ? <><p>{conflict.current.title}</p><pre className="max-h-48 overflow-auto whitespace-pre-wrap text-xs">{conflict.current.answerMarkdown}</pre><details><summary>Xem toàn bộ dữ liệu</summary><pre className="max-h-48 overflow-auto whitespace-pre-wrap text-xs">{JSON.stringify(conflict.current, null, 2)}</pre></details></> : <p>Câu hỏi đã bị xóa trên GitHub.</p>}</div>
+                      </div>
+                      <button type="button" onClick={() => { void reviewConflict(conflict); }} className="rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-2 font-semibold text-[var(--foreground)]">Đã đối chiếu, dùng nền mới</button>
+                    </div>;
+                  })}
+                </section>
               )}
 
               {/* List of Modified Questions with Status Badges */}
@@ -288,9 +311,14 @@ export function PublishDrawer({
                 </div>
               </div>
 
-              {/* Google Authenticator Only Input */}
               <div className="space-y-2">
-                <label className="font-bold uppercase tracking-wider text-[var(--muted)] text-[11px] flex items-center justify-between">
+                <label htmlFor="publish-pin" className="font-bold text-[var(--muted)]">Mã PIN quản trị</label>
+                <input id="publish-pin" type="password" autoComplete="off" maxLength={256} value={pin} disabled={isLoading || retryCooldown > 0} onChange={e => setPin(e.target.value)} className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-[var(--foreground)]" />
+              </div>
+
+              {/* Independent second authentication factor */}
+              <div className="space-y-2">
+                <label htmlFor="publish-otp" className="font-bold uppercase tracking-wider text-[var(--muted)] text-[11px] flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
                     <ShieldCheck className="h-3.5 w-3.5 text-indigo-500" />
                     <span>Mã Google Authenticator</span>
@@ -315,11 +343,14 @@ export function PublishDrawer({
                     <ShieldCheck className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--muted)]" />
                     <input
                       type="text"
-                      autoFocus
-                      maxLength={32}
-                      value={pin}
+                      id="publish-otp"
+                      aria-label="Mã Google Authenticator"
+                      autoComplete="one-time-code"
+                      inputMode="numeric"
+                      maxLength={6}
+                      value={otp}
                       disabled={isLoading || retryCooldown > 0}
-                      onChange={(e) => setPin(e.target.value)}
+                      onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
                       placeholder="Nhập 6 số từ app Google Authenticator trên điện thoại..."
                       className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] py-2.5 pl-9 pr-3 text-sm text-[var(--foreground)] outline-none focus:border-[var(--focus)] transition-all font-mono tracking-wider disabled:opacity-50"
                     />
@@ -346,7 +377,7 @@ export function PublishDrawer({
                 <button
                   type="button"
                   disabled={isLoading}
-                  onClick={() => setIsModalOpen(false)}
+                  onClick={() => { setIsModalOpen(false); setConflictReview(null); setPin(""); setOtp(""); }}
                   className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-xs font-bold text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] transition-colors disabled:opacity-50 cursor-pointer"
                 >
                   Hủy

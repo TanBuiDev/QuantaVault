@@ -1,253 +1,148 @@
-import type { InterviewQuestion } from "./types";
-import { verifyTOTP, DEFAULT_TOTP_SECRET } from "./totp";
+import { INTERVIEW_CATEGORIES, type InterviewQuestion } from "./types";
+import { verifyTOTP } from "./totp";
+import { fromBase32 } from "./base32";
+import { canonicalQuestion, questionVersion } from "./questionVersion";
 
 export interface PublishEnv {
-  GITHUB_PAT?: string;
-  GITHUB_OWNER?: string;
-  GITHUB_REPO?: string;
-  ADMIN_PIN?: string;
-  TOTP_SECRET?: string;
+  GITHUB_PAT?: string; GITHUB_OWNER?: string; GITHUB_REPO?: string;
+  ADMIN_PIN?: string; TOTP_SECRET?: string; PUBLISH_ORIGINS?: string;
 }
-
 export type PublishQuestionItem = InterviewQuestion & { isDeleted?: boolean };
-
 export interface PublishPayload {
-  pin: string;
-  modifiedQuestions: PublishQuestionItem[];
-  commitMessage?: string;
+  pin: string; otp: string; modifiedQuestions: PublishQuestionItem[];
+  baseVersions: Record<string, string>; commitMessage?: string;
 }
-
 export interface PublishResult {
-  success: boolean;
-  commitSha?: string;
-  commitUrl?: string;
-  message?: string;
-  count?: number;
-  error?: string;
+  success: boolean; status?: number; code?: string; error?: string;
+  commitSha?: string; commitUrl?: string; message?: string; count?: number;
+  conflictingIds?: string[];
+  conflicts?: PublishConflict[];
+}
+export interface PublishConflict { id: string; current: InterviewQuestion | null }
+export class PublishError extends Error {
+  constructor(public status: number, public code: string, message: string) { super(message); }
+}
+const record = (v: unknown): v is Record<string, unknown> => !!v && typeof v === "object" && !Array.isArray(v);
+const text = (v: unknown, max: number, nonempty = false): v is string => typeof v === "string" && v.length <= max && (!nonempty || !!v.trim());
+const strings = (v: unknown) => Array.isArray(v) && v.length <= 100 && v.every(x => text(x, 1000));
+export function validQuestion(v: unknown): v is PublishQuestionItem {
+  if (!record(v)) return false;
+  return text(v.id, 100, true) && /^[a-zA-Z0-9][a-zA-Z0-9_-]*$/.test(v.id)
+    && text(v.title, 2000, true) && typeof v.category === "string" && Object.hasOwn(INTERVIEW_CATEGORIES, v.category)
+    && ["junior", "middle", "senior"].includes(v.difficulty as string)
+    && strings(v.tags) && (v.companies === undefined || strings(v.companies))
+    && text(v.summary, 20000) && text(v.answerMarkdown, 500000)
+    && (v.keyTakeaways === undefined || strings(v.keyTakeaways))
+    && (v.relatedProblems === undefined || (Array.isArray(v.relatedProblems) && v.relatedProblems.length <= 200 && v.relatedProblems.every(n => Number.isSafeInteger(n) && n > 0)))
+    && (v.isDeleted === undefined || typeof v.isDeleted === "boolean");
+}
+export function validatePublishPayload(value: unknown): PublishPayload {
+  if (!record(value) || !text(value.pin, 256, true) || !text(value.otp, 32, true)
+    || !Array.isArray(value.modifiedQuestions) || value.modifiedQuestions.length === 0 || value.modifiedQuestions.length > 1000
+    || !value.modifiedQuestions.every(validQuestion) || !record(value.baseVersions)
+    || (value.commitMessage !== undefined && !text(value.commitMessage, 2000))) {
+    throw new PublishError(400, "INVALID_PAYLOAD", "Dữ liệu xuất bản không hợp lệ hoặc thiếu phiên bản nền. Hãy cập nhật trang và kiểm tra bản nháp.");
+  }
+  const ids = value.modifiedQuestions.map(q => q.id);
+  if (new Set(ids).size !== ids.length || ids.some(id => !Object.hasOwn(value.baseVersions as object, id) || !text((value.baseVersions as Record<string, unknown>)[id], 600000, true))) {
+    throw new PublishError(400, "INVALID_PAYLOAD", "ID bị trùng hoặc thiếu phiên bản nền của câu hỏi.");
+  }
+  return value as unknown as PublishPayload;
+}
+export function validatePublishConfig(env: PublishEnv): void {
+  try {
+    if (!env.ADMIN_PIN?.trim() || !env.GITHUB_PAT?.trim() || !env.TOTP_SECRET?.trim()
+      || env.ADMIN_PIN.length > 256 || fromBase32(env.TOTP_SECRET).length < 20
+      || !/^[a-zA-Z0-9_.-]+$/.test(env.GITHUB_OWNER || "TanBuiDev")
+      || !/^[a-zA-Z0-9_.-]+$/.test(env.GITHUB_REPO || "QuantaVault")) throw new Error();
+  } catch {
+    throw new PublishError(503, "CONFIGURATION_MISSING", "Máy chủ chưa cấu hình đầy đủ thông tin xác thực xuất bản.");
+  }
+}
+async function constantTimeEqual(left: string, right: string): Promise<boolean> {
+  const encode = new TextEncoder();
+  const [a, b] = await Promise.all([left, right].map(value => crypto.subtle.digest("SHA-256", encode.encode(value))));
+  const av = new Uint8Array(a), bv = new Uint8Array(b);
+  let difference = 0;
+  for (let i = 0; i < av.length; i++) difference |= av[i] ^ bv[i];
+  return difference === 0;
+}
+export async function readBoundedJson(body: ReadableStream<Uint8Array> | null, limit: number): Promise<unknown> {
+  if (!body) throw new Error("Missing body");
+  const reader = body.getReader();
+  const decoder = new TextDecoder();
+  let size = 0, content = "";
+  try {
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > limit) {
+        void reader.cancel().catch(() => undefined);
+        throw new PublishError(413, "BODY_TOO_LARGE", "Dữ liệu vượt giới hạn cho phép.");
+      }
+      content += decoder.decode(value, { stream: true });
+    }
+    return JSON.parse(content + decoder.decode());
+  } finally { reader.releaseLock(); }
+}
+const failure = (status: number, code: string, error: string): PublishResult => ({ success: false, status, code, error });
+function sha(value: unknown): string {
+  if (typeof value !== "string" || !/^[a-f0-9]{40}$/.test(value)) throw new Error("Invalid SHA");
+  return value;
 }
 
-export async function executePublishToGithub(
-  payload: PublishPayload,
-  env: PublishEnv
-): Promise<PublishResult> {
-  const { pin, modifiedQuestions, commitMessage } = payload;
-
-  const adminPin = (env.ADMIN_PIN || "lehoang@2672#1508").trim();
-  const totpSecret = (env.TOTP_SECRET || DEFAULT_TOTP_SECRET).trim();
-  const token = env.GITHUB_PAT;
-  const owner = env.GITHUB_OWNER || "TanBuiDev";
-  const repo = env.GITHUB_REPO || "QuantaVault";
-
-  // 1. PIN / TOTP verification
-  const entered = (pin || "").trim();
-  let isAuthorized = false;
-
-  if (entered === adminPin) {
-    isAuthorized = true;
-  } else if (/^\d{6}$/.test(entered)) {
-    isAuthorized = await verifyTOTP(entered, totpSecret, { window: 1 });
-  }
-
-  if (!isAuthorized) {
-    return {
-      success: false,
-      error:
-        "Mã Google Authenticator (6 số) hoặc Mã PIN quản trị không chính xác hoặc đã hết hạn. Vui lòng kiểm tra lại.",
-    };
-  }
-
-  if (!token) {
-    return {
-      success: false,
-      error: "Hệ thống chưa cấu hình GITHUB_PAT. Vui lòng kiểm tra biến môi trường.",
-    };
-  }
-
-  if (!modifiedQuestions || modifiedQuestions.length === 0) {
-    return {
-      success: false,
-      error: "Không có câu hỏi nào trong danh sách cần xuất bản.",
-    };
-  }
-
-  const githubHeaders = {
-    Authorization: `Bearer ${token}`,
-    Accept: "application/vnd.github.v3+json",
-    "Content-Type": "application/json",
-    "User-Agent": "Cloudflare-Pages-Interview-CMS",
-  };
-
+export async function executePublishToGithub(value: unknown, env: PublishEnv): Promise<PublishResult> {
   try {
-    // 2. Lấy commit SHA mới nhất trên nhánh main
-    const refRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/ref/heads/main`, {
-      headers: githubHeaders,
-    });
-    if (!refRes.ok) {
-      const err = await refRes.text();
-      return { success: false, error: `Không thể đọc nhánh main: ${refRes.status} ${err}` };
-    }
-    const refData = await refRes.json();
-    const latestCommitSha = refData.object.sha;
+    validatePublishConfig(env);
+    const payload = validatePublishPayload(value);
+    const [pinValid, otpValid] = await Promise.all([
+      constantTimeEqual(payload.pin.trim(), env.ADMIN_PIN!.trim()),
+      /^\d{6}$/.test(payload.otp.trim()) ? verifyTOTP(payload.otp.trim(), env.TOTP_SECRET!.trim(), { window: 1 }) : Promise.resolve(false),
+    ]);
+    if (!pinValid || !otpValid) return failure(401, "AUTHENTICATION_FAILED", "Mã PIN hoặc OTP không hợp lệ. Cần xác thực cả hai yếu tố.");
 
-    // 3. Lấy base_tree SHA từ commit đó
-    const commitRes = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/git/commits/${latestCommitSha}`,
-      { headers: githubHeaders }
-    );
-    if (!commitRes.ok) {
-      const err = await commitRes.text();
-      return { success: false, error: `Không thể đọc commit: ${commitRes.status} ${err}` };
-    }
-    const commitData = await commitRes.json();
-    const baseTreeSha = commitData.tree.sha;
-
-    // 4. Lấy nội dung hiện tại của data/interview-questions.json
-    let currentQuestions: InterviewQuestion[] = [];
-    const rawRes = await fetch(
-      `https://raw.githubusercontent.com/${owner}/${repo}/main/data/interview-questions.json`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/vnd.github.v3.raw",
-        },
+    const owner = env.GITHUB_OWNER || "TanBuiDev", repo = env.GITHUB_REPO || "QuantaVault";
+    const api = `https://api.github.com/repos/${owner}/${repo}`;
+    const headers = { Authorization: `Bearer ${env.GITHUB_PAT}`, Accept: "application/vnd.github+json", "Content-Type": "application/json", "User-Agent": "QuantaVault-Publisher", "X-GitHub-Api-Version": "2026-03-10" };
+    async function github(endpoint: string, init: RequestInit = {}, raw = false): Promise<unknown> {
+      const res = await fetch(`${api}${endpoint}`, { ...init, headers: { ...headers, ...(raw ? { Accept: "application/vnd.github.raw+json" } : {}) }, signal: AbortSignal.timeout(20000) });
+      if (!res.ok) {
+        void res.body?.cancel().catch(() => undefined);
+        if (init.method === "PATCH" && (res.status === 409 || res.status === 422)) throw new PublishError(409, "CONFLICT", "Nhánh main đã thay đổi. Bản nháp vẫn được giữ; hãy tải dữ liệu mới để đối chiếu.");
+        throw new PublishError(502, "GITHUB_UNAVAILABLE", "Không thể hoàn tất thao tác GitHub. Bản nháp vẫn được giữ.");
       }
-    );
-    if (rawRes.ok) {
-      try {
-        currentQuestions = await rawRes.json();
-      } catch {
-        currentQuestions = [];
-      }
+      return readBoundedJson(res.body, 16 * 1024 * 1024);
     }
-
-    // 5. Hợp nhất (merge) các câu hỏi đã sửa vào mảng JSON gốc và loại bỏ câu bị xóa
-    const deletedIds = new Set(
-      modifiedQuestions.filter((q) => q.isDeleted).map((q) => q.id)
-    );
-    const activeModified = modifiedQuestions.filter((q) => !q.isDeleted);
-
-    const map = new Map<string, InterviewQuestion>();
-    for (const q of currentQuestions) {
-      if (!deletedIds.has(q.id)) {
-        map.set(q.id, q);
-      }
-    }
-    for (const q of activeModified) {
-      map.set(q.id, q);
-    }
-
-    // Giữ nguyên thứ tự câu hỏi gốc, cập nhật câu hỏi sửa, bỏ câu bị xóa
+    const ref = await github("/git/ref/heads/main") as { object?: { sha?: string } };
+    const head = sha(ref.object?.sha);
+    const commit = await github(`/git/commits/${head}`) as { tree?: { sha?: string } };
+    const baseTree = sha(commit.tree?.sha);
+    const current = await github(`/contents/data/interview-questions.json?ref=${head}`, {}, true);
+    if (!Array.isArray(current) || !current.every(validQuestion) || new Set(current.map(q => q.id)).size !== current.length) throw new Error("Invalid canonical data");
+    const currentMap = new Map<string, InterviewQuestion>(current.map(q => [q.id, q]));
+    const conflicts = payload.modifiedQuestions.filter(q => questionVersion(currentMap.get(q.id) ?? null) !== payload.baseVersions[q.id]).map(q => q.id);
+    if (conflicts.length) return { ...failure(409, "CONFLICT", "Có câu hỏi đã thay đổi trên GitHub. Hãy đối chiếu trước khi xuất bản lại."), conflictingIds: conflicts,
+      conflicts: conflicts.map(id => ({ id, current: currentMap.has(id) ? canonicalQuestion(currentMap.get(id)!) : null })) };
+    const modified = new Map(payload.modifiedQuestions.map(q => [q.id, q]));
     const finalQuestions: InterviewQuestion[] = [];
-    for (const q of currentQuestions) {
-      if (deletedIds.has(q.id)) continue;
-      finalQuestions.push(map.get(q.id) || q);
+    for (const q of current) {
+      const change = modified.get(q.id);
+      if (!change?.isDeleted) finalQuestions.push(canonicalQuestion(change ?? q));
     }
-
-    // Bổ sung các câu hỏi mới tạo (chưa có trong mảng gốc) lên đầu
-    const existingIds = new Set(currentQuestions.map((q) => q.id));
-    for (const q of activeModified) {
-      if (!existingIds.has(q.id)) {
-        finalQuestions.unshift(q);
-      }
-    }
-
-    // 6. Định dạng JSON chuẩn mực với thụt lề 2 spaces + xuống dòng cuối file (Git Hygiene)
-    const formattedContent = JSON.stringify(finalQuestions, null, 2) + "\n";
-
-    // 7. Tạo Git Tree mới chứa CẢ 2 FILE trong 1 request duy nhất (Atomic Multi-file)
-    const treeRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/trees`, {
-      method: "POST",
-      headers: githubHeaders,
-      body: JSON.stringify({
-        base_tree: baseTreeSha,
-        tree: [
-          {
-            path: "data/interview-questions.json",
-            mode: "100644",
-            type: "blob",
-            content: formattedContent,
-          },
-          {
-            path: "web/src/data/interview-questions.json",
-            mode: "100644",
-            type: "blob",
-            content: formattedContent,
-          },
-        ],
-      }),
-    });
-
-    if (!treeRes.ok) {
-      const err = await treeRes.text();
-      return { success: false, error: `Lỗi tạo Git Tree: ${treeRes.status} ${err}` };
-    }
-    const treeData = await treeRes.json();
-    const newTreeSha = treeData.sha;
-
-    // 8. Chống tạo commit rỗng: Nếu Tree SHA không đổi, không cần tạo commit
-    if (newTreeSha === baseTreeSha) {
-      return {
-        success: true,
-        count: 0,
-        message: "Dữ liệu hiện tại trên GitHub đã trùng khớp 100%, không cần tạo commit mới.",
-      };
-    }
-
-    // 9. Tạo Git Commit mới
-    const idsSummary = modifiedQuestions
-      .map((q) => q.id)
-      .slice(0, 5)
-      .join(", ");
-    const extraCount = modifiedQuestions.length > 5 ? ` and ${modifiedQuestions.length - 5} more` : "";
-    const finalMsg =
-      commitMessage?.trim() ||
-      `feat(interview): update ${modifiedQuestions.length} interview questions (${idsSummary}${extraCount})`;
-
-    const newCommitRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/git/commits`, {
-      method: "POST",
-      headers: githubHeaders,
-      body: JSON.stringify({
-        message: finalMsg,
-        tree: newTreeSha,
-        parents: [latestCommitSha],
-      }),
-    });
-
-    if (!newCommitRes.ok) {
-      const err = await newCommitRes.text();
-      return { success: false, error: `Lỗi tạo Commit: ${newCommitRes.status} ${err}` };
-    }
-    const newCommitData = await newCommitRes.json();
-    const newCommitSha = newCommitData.sha;
-
-    // 10. Cập nhật nhánh main trỏ tới commit mới
-    const updateRefRes = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/git/refs/heads/main`,
-      {
-        method: "PATCH",
-        headers: githubHeaders,
-        body: JSON.stringify({
-          sha: newCommitSha,
-        }),
-      }
-    );
-
-    if (!updateRefRes.ok) {
-      const err = await updateRefRes.text();
-      return { success: false, error: `Lỗi cập nhật nhánh main: ${updateRefRes.status} ${err}` };
-    }
-
-    const commitUrl = `https://github.com/${owner}/${repo}/commit/${newCommitSha}`;
-
-    return {
-      success: true,
-      commitSha: newCommitSha,
-      commitUrl,
-      count: modifiedQuestions.length,
-      message: `Đã xuất bản thành công ${modifiedQuestions.length} câu hỏi lên GitHub!`,
-    };
-  } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : String(err);
-    return { success: false, error: `Lỗi ngoại lệ khi giao tiếp với GitHub: ${msg}` };
+    for (const q of payload.modifiedQuestions) if (!currentMap.has(q.id) && !q.isDeleted) finalQuestions.unshift(canonicalQuestion(q));
+    // All metadata is removed, and both canonical copies use exactly the same bytes.
+    const formatted = JSON.stringify(finalQuestions, null, 2) + "\n";
+    const tree = await github("/git/trees", { method: "POST", body: JSON.stringify({ base_tree: baseTree, tree: ["data/interview-questions.json", "web/src/data/interview-questions.json"].map(path => ({ path, mode: "100644", type: "blob", content: formatted })) }) }) as { sha?: string };
+    const treeSha = sha(tree.sha);
+    if (treeSha === baseTree) return { success: true, count: 0, commitSha: head, message: "Nội dung đã khớp; không cần tạo commit mới." };
+    const created = await github("/git/commits", { method: "POST", body: JSON.stringify({ message: payload.commitMessage?.trim() || `feat(interview): update ${payload.modifiedQuestions.length} questions`, tree: treeSha, parents: [head] }) }) as { sha?: string };
+    const commitSha = sha(created.sha);
+    await github("/git/refs/heads/main", { method: "PATCH", body: JSON.stringify({ sha: commitSha, force: false }) });
+    return { success: true, commitSha, commitUrl: `https://github.com/${owner}/${repo}/commit/${commitSha}`, count: payload.modifiedQuestions.length, message: `Đã ghi ${payload.modifiedQuestions.length} câu hỏi lên GitHub; đang chờ website cập nhật.` };
+  } catch (error) {
+    if (error instanceof PublishError) return failure(error.status, error.code, error.message);
+    // Do not return upstream messages: they can contain headers or request content.
+    return failure(502, "GITHUB_UNAVAILABLE", "Không thể đọc dữ liệu gốc hoặc hoàn tất giao dịch GitHub. Bản nháp vẫn được giữ.");
   }
 }

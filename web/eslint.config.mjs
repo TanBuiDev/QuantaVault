@@ -9,6 +9,7 @@ const eslintConfig = defineConfig([
     ".next/**",
     "dist/**",
     "cloudflare-pages/**",
+    ".pages-stage-*/**",
     "out/**",
     "build/**",
     ".wrangler/**",

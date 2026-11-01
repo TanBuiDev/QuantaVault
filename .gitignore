@@ -9,6 +9,7 @@ web/test-results/
 web/playwright-report/
 web/dist/
 web/cloudflare-pages/
+web/.pages-stage-*/
 web/.wrangler/
 .wrangler/
 *.tsbuildinfo
@@ -25,6 +26,10 @@ TAT-DU-AN.bat
 AGENTS.md
 web/AGENTS.md
 .agents/
+PROMPT_*.md
+PROMPT_EXTRACT_LESSON.md
+PROJECT_CONTEXT.md
+*CONTEXT*.md
 
 # Environment and scratch files
 .env*

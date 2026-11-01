@@ -3,6 +3,7 @@ import "server-only";
 import fs from "node:fs";
 import { parse } from "yaml";
 import { containedPath, findRepositoryRoot, problemDirectories } from "./repository";
+import { rewriteMediaMarkdown } from "./mediaPaths";
 
 export type Difficulty = "Easy" | "Medium" | "Hard";
 export type ContentAvailability = "none" | "partial" | "complete";
@@ -372,7 +373,7 @@ export function getProblemContent(id: number): ProblemContent | null {
 
   try {
     const raw = parse(fs.readFileSync(/* turbopackIgnore: true */ metaPath, "utf8")) as Record<string, unknown>;
-    
+
     // Load code_versions
     if (Array.isArray(raw.code_versions) && raw.code_versions.length > 0) {
       const versionsList = raw.code_versions as Array<Record<string, unknown>>;
@@ -407,9 +408,9 @@ export function getProblemContent(id: number): ProblemContent | null {
           timeComplexity: typeof sol.time === "string" ? sol.time : undefined,
           spaceComplexity: typeof sol.space === "string" ? sol.space : undefined,
           isDefault: Boolean(sol.default || sol.canonical),
-          solutionMarkdown: subDir
+          solutionMarkdown: rewriteMediaMarkdown(subDir
             ? readTextIfExists(containedPath(subDir, "solution.md"))
-            : readTextIfExists(containedPath(directory, "solution.md")),
+            : readTextIfExists(containedPath(directory, "solution.md")), id),
           javaSource: subDir
             ? readTextIfExists(containedPath(subDir, "Solution.java"))
             : readTextIfExists(containedPath(directory, "Solution.java")),
@@ -438,10 +439,10 @@ export function getProblemContent(id: number): ProblemContent | null {
     ...summary,
     topics: [...summary.topics],
     patterns: [...summary.patterns],
-    problemMarkdown: readTextIfExists(containedPath(directory, "problem.md")),
-    hintsMarkdown: readTextIfExists(containedPath(directory, "hints.md")),
-    solutionMarkdown: readTextIfExists(containedPath(directory, "solution.md")),
-    interviewMarkdown: readTextIfExists(containedPath(directory, "interview.md")),
+    problemMarkdown: rewriteMediaMarkdown(readTextIfExists(containedPath(directory, "problem.md")), id),
+    hintsMarkdown: rewriteMediaMarkdown(readTextIfExists(containedPath(directory, "hints.md")), id),
+    solutionMarkdown: rewriteMediaMarkdown(readTextIfExists(containedPath(directory, "solution.md")), id),
+    interviewMarkdown: rewriteMediaMarkdown(readTextIfExists(containedPath(directory, "interview.md")), id),
     javaSource: defaultJava,
     casesYaml: readTextIfExists(containedPath(directory, "cases.yaml")),
     media: record.media.map((item) => ({ ...item })),

@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+export const dynamic = "force-static";
 import { getAllProblemSummaries } from "@/lib/content";
 
 export default function sitemap(): MetadataRoute.Sitemap {

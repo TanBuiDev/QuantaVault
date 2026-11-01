@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useId } from "react";
 import { Check, Copy, Code, Eye, RefreshCw } from "lucide-react";
+import DOMPurify from "dompurify";
 
 interface MermaidRendererProps {
   chart: string;
@@ -12,34 +13,17 @@ interface MermaidInstance {
   render: (id: string, text: string) => Promise<{ svg: string }>;
 }
 
-// Module-level cache so we only load mermaid once across the entire application
+// The dependency is bundled into the site, rather than fetched from a CDN at runtime.
 let mermaidPromise: Promise<MermaidInstance> | null = null;
+let renderQueue = Promise.resolve();
 
 function getMermaid(): Promise<MermaidInstance> {
   if (typeof window === "undefined") return Promise.reject(new Error("SSR"));
-  const win = window as unknown as { mermaid?: MermaidInstance };
-  if (win.mermaid) return Promise.resolve(win.mermaid);
   if (!mermaidPromise) {
-    mermaidPromise = (async () => {
-      try {
-        // Dynamic import from high-speed jsDelivr CDN
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const mod = await import(/* webpackIgnore: true */ "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
-        const mermaid = (mod.default || mod) as MermaidInstance;
-        mermaid.initialize({
-          startOnLoad: false,
-          theme: document.documentElement.classList.contains("dark") ? "dark" : "default",
-          securityLevel: "loose",
-          fontFamily: "ui-sans-serif, system-ui, sans-serif",
-        });
-        win.mermaid = mermaid;
-        return mermaid;
-      } catch (err) {
-        mermaidPromise = null;
-        throw err;
-      }
-    })();
+    mermaidPromise = import("mermaid").then((module) => module.default).catch((error) => {
+      mermaidPromise = null;
+      throw error;
+    });
   }
   return mermaidPromise;
 }
@@ -53,16 +37,31 @@ export function MermaidRenderer({ chart }: MermaidRendererProps) {
   const [copied, setCopied] = useState(false);
   const rawId = useId().replace(/:/g, "_");
   const uniqueId = `mermaid_${rawId}`;
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const updateTheme = () => setIsDark(document.documentElement.classList.contains("dark"));
+    updateTheme();
+    const observer = new MutationObserver(updateTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
     const renderDiagram = async () => {
       try {
         const mermaid = await getMermaid();
-        // Re-initialize theme in case dark mode toggled
-        const isDark = document.documentElement.classList.contains("dark");
+        if (!isMounted) return;
         mermaid.initialize({
           startOnLoad: false,
+          securityLevel: "strict",
+          // Keep diagram directives from overriding security and injecting CSS/HTML.
+          secure: ["secure", "securityLevel", "startOnLoad", "maxTextSize", "maxEdges", "suppressErrorRendering", "htmlLabels", "themeCSS", "themeVariables", "fontFamily", "dompurifyConfig", "flowchart"],
+          htmlLabels: false,
+          flowchart: { htmlLabels: false },
+          suppressErrorRendering: true,
+          fontFamily: "ui-sans-serif, system-ui, sans-serif",
           theme: isDark ? "dark" : "neutral",
           themeVariables: isDark
             ? {
@@ -83,7 +82,10 @@ export function MermaidRenderer({ chart }: MermaidRendererProps) {
 
         const { svg } = await mermaid.render(uniqueId + "_" + Date.now(), chart);
         if (isMounted) {
-          setSvgContent(svg);
+          setSvgContent(DOMPurify.sanitize(svg, {
+            USE_PROFILES: { svg: true, svgFilters: true },
+            FORBID_TAGS: ["a", "script", "foreignObject", "image", "iframe"],
+          }));
           setError(null);
           setIsLoading(false);
         }
@@ -96,12 +98,14 @@ export function MermaidRenderer({ chart }: MermaidRendererProps) {
       }
     };
 
-    renderDiagram();
+    // Mermaid has global configuration. Serialize config+render to avoid different
+    // cards changing each other's theme while rendering asynchronously.
+    renderQueue = renderQueue.then(renderDiagram, renderDiagram);
 
     return () => {
       isMounted = false;
     };
-  }, [chart, uniqueId]);
+  }, [chart, uniqueId, isDark]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(chart);
@@ -150,7 +154,7 @@ export function MermaidRenderer({ chart }: MermaidRendererProps) {
         </div>
       ) : error ? (
         <div className="space-y-2 rounded-xl bg-amber-500/10 p-3 text-xs text-amber-600 dark:text-amber-400">
-          <p className="font-semibold">⚠️ Không thể dựng đồ họa trực tiếp (Chế độ dự phòng mã nguồn):</p>
+          <p className="font-semibold">Không thể dựng đồ họa trực tiếp (Chế độ dự phòng mã nguồn):</p>
           <pre className="overflow-x-auto rounded-lg bg-[var(--code-surface)] p-3 text-xs text-[var(--code-foreground)]">
             <code>{chart}</code>
           </pre>

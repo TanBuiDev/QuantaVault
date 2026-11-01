@@ -1,7 +1,10 @@
 import { defineConfig, devices } from "@playwright/test";
+import os from "node:os";
+import path from "node:path";
 
 export default defineConfig({
   testDir: "./e2e",
+  outputDir: path.join(os.tmpdir(), `quantavault-local-results-${process.pid}`),
   fullyParallel: false,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 1 : 0,

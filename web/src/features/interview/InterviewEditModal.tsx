@@ -1,8 +1,11 @@
 "use client";
 
-import { useState, useEffect, useRef, useDeferredValue } from "react";
+import { useState, useEffect, useRef, useDeferredValue, type RefObject } from "react";
 import { Modal } from "@/components/ui/Modal";
 import { useConfirm } from "@/components/ui/ConfirmDialog";
+import { useToast } from "@/components/ui/Toast";
+import { questionVersion } from "@/lib/interview/questionVersion";
+import { editorDraftKey, readEditorDraft, writeEditorDraft, type EditorDraftValues } from "./editorDraft";
 import {
   FileText,
   Sliders,
@@ -54,10 +57,12 @@ interface FormProps {
   onClose: () => void;
   onSave: (updatedQuestion: InterviewQuestion, canonicalQuestion?: InterviewQuestion) => void;
   onDelete?: (question: InterviewQuestion) => void;
+  closeRef: RefObject<(() => void) | null>;
 }
 
-function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, onDelete }: FormProps) {
+function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, onDelete, closeRef }: FormProps) {
   const confirm = useConfirm();
+  const { error: showError, warning } = useToast();
   const [activeTab, setActiveTab] = useState<"content" | "metadata">("content");
   const [viewMode, setViewMode] = useState<"edit" | "preview" | "split">("edit");
 
@@ -91,18 +96,67 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
   const [editorFont, setEditorFont] = useState<"sans" | "mono">("sans");
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => { if (closeTimer.current) clearTimeout(closeTimer.current); }, []);
 
-  // Clear any legacy sessionStorage draft for this question to prevent ghost data
+  const [pendingDraft, setPendingDraft] = useState(() => readEditorDraft(question));
+  const [openedQuestion] = useState(question);
+  const baseVersion = questionVersion(openedQuestion);
+  const externalChanged = questionVersion(question) !== baseVersion;
+  const values: EditorDraftValues = { title, category, difficulty, summary, answerMarkdown, companies, tags, relatedProblems };
+  const initialValues = JSON.stringify({ title: openedQuestion.title ?? "", category: openedQuestion.category ?? "java-core", difficulty: openedQuestion.difficulty ?? "junior", summary: openedQuestion.summary ?? "", answerMarkdown: openedQuestion.answerMarkdown ?? "", companies: openedQuestion.companies ?? [], tags: openedQuestion.tags ?? [], relatedProblems: (openedQuestion.relatedProblems ?? []).join(", ") });
+  const dirty = JSON.stringify(values) !== initialValues;
+  const suppressed = useRef(false);
+  const latest = useRef({ values, dirty });
+  useEffect(() => { latest.current = { values, dirty }; });
+  const saveSessionRef = useRef(() => {});
   useEffect(() => {
-    if (typeof window !== "undefined" && window.sessionStorage) {
-      try {
-        sessionStorage.removeItem(`interview_draft_${question.id}`);
-      } catch {}
-    }
-  }, [question.id]);
+    saveSessionRef.current = () => {
+      if (!latest.current.dirty || suppressed.current) return;
+      try { writeEditorDraft(question.id, baseVersion, latest.current.values); }
+      catch { warning("Không thể tự lưu bản nháp trong tab này. Hãy lưu thay đổi trước khi rời trang."); }
+    };
+  }, [question.id, baseVersion, warning]);
+  useEffect(() => {
+    if (!dirty || suppressed.current || pendingDraft) return;
+    const timer = setTimeout(() => saveSessionRef.current(), 400);
+    return () => clearTimeout(timer);
+  }, [title, category, difficulty, summary, answerMarkdown, companies, tags, relatedProblems, dirty, pendingDraft]);
+  useEffect(() => {
+    const flush = () => { if (!pendingDraft) saveSessionRef.current(); };
+    window.addEventListener("pagehide", flush);
+    return () => { window.removeEventListener("pagehide", flush); flush(); };
+  }, [pendingDraft]);
+
+  const discardSession = () => {
+    sessionStorage.removeItem(editorDraftKey(question.id));
+    setPendingDraft(null);
+  };
+  const requestClose = async () => {
+    if (dirty && !await confirm({ title: "Hủy nội dung chưa lưu?", message: "Nội dung đang soạn sẽ bị bỏ. Phần đã lưu trước đó vẫn được giữ.", confirmText: "Hủy chỉnh sửa", cancelText: "Tiếp tục sửa", variant: "warning" })) return;
+    try { if (dirty) discardSession(); }
+    catch { showError("Không thể xóa nháp tạm. Nội dung được giữ lại."); return; }
+    suppressed.current = true;
+    onClose();
+  };
+  useEffect(() => {
+    closeRef.current = () => { void requestClose(); };
+    return () => { closeRef.current = null; };
+  });
+  const restoreDraft = async () => {
+    if (!pendingDraft?.values) return;
+    if (pendingDraft.baseVersion !== baseVersion && !await confirm({ title: "Bản nháp khác phiên bản hiện tại", message: "Dữ liệu nền đã thay đổi hoặc bản nháp cũ thiếu thông tin phiên bản. Bạn có muốn thay nội dung trong form bằng bản nháp này không?", confirmText: "Dùng bản nháp", cancelText: "Giữ nội dung hiện tại", variant: "warning" })) return;
+    const draft = pendingDraft.values;
+    setTitle(draft.title); setCategory(draft.category); setDifficulty(draft.difficulty);
+    setSummary(draft.summary); setAnswerMarkdown(draft.answerMarkdown);
+    setCompanies(draft.companies); setTags(draft.tags); setRelatedProblems(draft.relatedProblems);
+    setPendingDraft(null);
+  };
 
   // Handle Save
-  function handleSave() {
+  async function handleSave() {
+    if (pendingDraft || savedSuccess) return;
+    if (externalChanged && !await confirm({ title: "Nội dung đã thay đổi ở nơi khác", message: "Một phiên bản mới đã được lưu khi bạn đang mở form. Bạn có muốn thay phiên bản đó bằng nội dung đang soạn không?", confirmText: "Lưu nội dung đang soạn", cancelText: "Tiếp tục đối chiếu", variant: "warning" })) return;
     const parsedRelatedProblems = relatedProblems
       .split(",")
       .map((s) => Number(s.trim()))
@@ -121,9 +175,16 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
         parsedRelatedProblems.length > 0 ? parsedRelatedProblems : undefined,
     };
 
-    onSave(updated, canonicalQuestion);
+    try {
+      onSave(updated, canonicalQuestion);
+    } catch {
+      showError("Không thể lưu thay đổi. Hãy kiểm tra dung lượng bộ nhớ trình duyệt và thử lại; nội dung đang soạn vẫn được giữ.");
+      return;
+    }
+    suppressed.current = true;
+    try { discardSession(); } catch { warning("Đã lưu thay đổi nhưng chưa xóa được bản nháp tạm."); }
     setSavedSuccess(true);
-    setTimeout(() => {
+    closeTimer.current = setTimeout(() => {
       setSavedSuccess(false);
       onClose();
     }, 600);
@@ -172,6 +233,18 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
 
   return (
     <div className="flex flex-col max-h-[85vh]">
+      {pendingDraft && (
+        <div role="status" className="border-b border-amber-500/30 bg-amber-500/10 p-4 text-sm text-[var(--foreground)]">
+          <p>Có bản nháp chưa lưu. Nội dung đã lưu vẫn đang được hiển thị; bản nháp chỉ được nạp khi bạn chọn khôi phục.</p>
+          {!pendingDraft.values && <details className="mt-2"><summary>Xem dữ liệu nháp cũ</summary><pre className="max-h-32 overflow-auto whitespace-pre-wrap">{pendingDraft.raw}</pre></details>}
+          <div className="mt-2 flex gap-3">
+            {pendingDraft.values && <button type="button" onClick={() => { void restoreDraft(); }} className="font-semibold underline">Khôi phục nháp</button>}
+            <button type="button" onClick={() => { try { discardSession(); } catch { showError("Không thể xóa nháp tạm."); } }} className="font-semibold underline">Bỏ nháp</button>
+          </div>
+        </div>
+      )}
+      {externalChanged && !savedSuccess && <div role="status" className="border-b border-amber-500/30 bg-amber-500/10 p-4 text-sm text-[var(--foreground)]">Nội dung đã thay đổi ở nơi khác trong lúc form đang mở. Phần đang soạn được giữ nguyên; lưu thay thế sẽ cần xác nhận.</div>}
+      <fieldset disabled={Boolean(pendingDraft) || savedSuccess} className="contents">
       {/* 1. Header Bar */}
       <div className="flex flex-wrap items-center justify-between border-b border-[var(--border)] px-5 py-3.5 bg-[var(--surface)]">
         <div className="flex items-center gap-2.5 min-w-0">
@@ -576,8 +649,12 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
                   variant: "danger",
                 });
                 if (isConfirmed) {
-                  onDelete(question);
-                  onClose();
+                  try {
+                    onDelete(question);
+                    suppressed.current = true;
+                    discardSession();
+                    onClose();
+                  } catch { showError("Không thể xóa câu hỏi. Nội dung đang soạn vẫn được giữ."); }
                 }
               }}
               title="Xóa câu hỏi này khỏi danh sách ôn luyện"
@@ -590,7 +667,7 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
 
           <button
             type="button"
-            onClick={onClose}
+            onClick={() => { void requestClose(); }}
             className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-xs font-bold text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] transition-colors"
           >
             Hủy bỏ (Esc)
@@ -619,6 +696,7 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
           </button>
         </div>
       </div>
+      </fieldset>
     </div>
   );
 }
@@ -631,12 +709,13 @@ export function InterviewEditModal({
   onSave,
   onDelete,
 }: InterviewEditModalProps) {
+  const closeRef = useRef<(() => void) | null>(null);
   if (!isOpen || !question) return null;
 
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={() => { if (closeRef.current) closeRef.current(); else onClose(); }}
       maxWidth="3xl"
       className="max-w-4xl! p-0 overflow-hidden"
     >
@@ -647,6 +726,7 @@ export function InterviewEditModal({
         onClose={onClose}
         onSave={onSave}
         onDelete={onDelete}
+        closeRef={closeRef}
       />
     </Modal>
   );

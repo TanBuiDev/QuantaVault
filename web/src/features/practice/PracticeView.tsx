@@ -6,6 +6,7 @@ import { PracticeStudyContent } from "./PracticeStudyContent";
 import { PracticeToolbar } from "./PracticeToolbar";
 import type { PracticeViewProps } from "./practiceTypes";
 import { usePracticeWorkspace } from "./usePracticeWorkspace";
+import { isStaticStudy } from "@/lib/studyMode";
 export type { AdjacentProblemLink, PracticeViewProps } from "./practiceTypes";
 export function PracticeView(props: PracticeViewProps) {
   const model = usePracticeWorkspace(props);
@@ -13,7 +14,7 @@ export function PracticeView(props: PracticeViewProps) {
   return <div className="space-y-5">
     <PracticeToolbar {...model} />
     <PracticeLayout {...model} studyContent={<PracticeStudyContent {...model} />} />
-    <AddApproachModal
+    {!isStaticStudy() ? <><AddApproachModal
       isOpen={isAddModalOpen}
       onClose={() => setIsAddModalOpen(false)}
       problemId={content.id}
@@ -30,5 +31,6 @@ export function PracticeView(props: PracticeViewProps) {
       editingVersion={editingVersion}
       onSuccess={() => router.refresh()}
     />
+    </> : null}
   </div>;
 }

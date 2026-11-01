@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { connection } from "next/server";
 import { notFound } from "next/navigation";
+import { isStaticStudy } from "@/lib/studyMode";
 
 import { PracticeView } from "@/features/practice/PracticeView";
 import { parseProblemId } from "@/features/practice/route";
@@ -11,6 +12,12 @@ import {
   getTopInterview150,
   splitHints,
 } from "@/lib/content";
+
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return getTopInterview150().sections.flatMap(section => section.problemIds.map(id => ({ id: String(id) })));
+}
 
 export async function generateMetadata({
   params,
@@ -34,7 +41,7 @@ export default async function ProblemPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  await connection();
+  if (!isStaticStudy()) await connection();
   const { id: rawId } = await params;
   const id = parseProblemId(rawId);
   if (id === null) notFound();
