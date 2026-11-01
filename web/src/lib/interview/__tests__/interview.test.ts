@@ -132,10 +132,13 @@ describe("Interview Data Access and Filtering", () => {
 
   it("filters questions by progress status", () => {
     const all = getAllInterviewQuestions();
+    expect(all.length).toBeGreaterThanOrEqual(3);
+    const [q1, q2, q3] = all;
+
     const mockProgress: InterviewProgressState = {
-      learned: { "q-001": true },
-      review: { "q-002": true },
-      bookmarks: { "q-178": true },
+      learned: { [q1.id]: true },
+      review: { [q2.id]: true },
+      bookmarks: { [q3.id]: true },
     };
 
     const learnedResults = filterInterviewQuestions(
@@ -143,20 +146,20 @@ describe("Interview Data Access and Filtering", () => {
       { search: "", category: "all", difficulty: "all", status: "learned", company: "all" },
       mockProgress
     );
-    expect(learnedResults.map((q) => q.id)).toEqual(["q-001"]);
+    expect(learnedResults.map((q) => q.id)).toEqual([q1.id]);
 
     const reviewResults = filterInterviewQuestions(
       all,
       { search: "", category: "all", difficulty: "all", status: "review", company: "all" },
       mockProgress
     );
-    expect(reviewResults.map((q) => q.id)).toEqual(["q-002"]);
+    expect(reviewResults.map((q) => q.id)).toEqual([q2.id]);
 
     const bookmarkResults = filterInterviewQuestions(
       all,
       { search: "", category: "all", difficulty: "all", status: "bookmarked", company: "all" },
       mockProgress
     );
-    expect(bookmarkResults.map((q) => q.id)).toEqual(["q-178"]);
+    expect(bookmarkResults.map((q) => q.id)).toEqual([q3.id]);
   });
 });
