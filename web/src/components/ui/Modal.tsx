@@ -11,6 +11,8 @@ export interface ModalProps {
   children: ReactNode;
   maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
   className?: string;
+  contentClassName?: string;
+  fullScreen?: boolean;
 }
 
 const maxWidthClasses = {
@@ -30,6 +32,8 @@ export function Modal({
   children,
   maxWidth = "2xl",
   className,
+  contentClassName,
+  fullScreen = false,
 }: ModalProps) {
   // Đóng modal khi nhấn Escape
   useEffect(() => {
@@ -60,7 +64,10 @@ export function Modal({
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+      className={classNames(
+        "fixed inset-0 z-50 flex items-center justify-center",
+        fullScreen ? "p-0" : "p-4 sm:p-6"
+      )}
     >
       {/* Backdrop Glassmorphism */}
       <div
@@ -71,8 +78,10 @@ export function Modal({
       {/* Modal Card Content */}
       <div
         className={classNames(
-          "relative flex max-h-[90vh] w-full flex-col rounded-3xl border border-[var(--border)] bg-[var(--surface)] shadow-2xl transition-all animate-scale-in isolate transform-gpu",
-          maxWidthClasses[maxWidth],
+          "relative flex w-full flex-col bg-[var(--surface)] shadow-2xl transition-all animate-scale-in isolate transform-gpu",
+          fullScreen
+            ? "h-screen w-screen max-w-none max-h-none rounded-none border-0"
+            : classNames("max-h-[90vh] rounded-3xl border border-[var(--border)]", maxWidthClasses[maxWidth]),
           className
         )}
       >
@@ -95,7 +104,9 @@ export function Modal({
           </header>
         )}
 
-        <div className="flex-1 overflow-y-auto px-6 py-5 sm:px-7">{children}</div>
+        <div className={classNames("flex-1 overflow-y-auto", contentClassName ?? "px-6 py-5 sm:px-7")}>
+          {children}
+        </div>
       </div>
     </div>
   );

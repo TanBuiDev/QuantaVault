@@ -82,4 +82,19 @@ describe("InterviewEditModal draft safety", () => {
     act(() => { vi.advanceTimersByTime(600); });
     expect(close).not.toHaveBeenCalled();
   });
+  it("cho phép chuyển đổi giữa chế độ toàn màn hình và mặc định", () => {
+    mount();
+    const expandBtn = screen.getByRole("button", { name: "Mở rộng toàn màn hình" });
+    expect(expandBtn).toBeInTheDocument();
+    expect(expandBtn).toHaveAttribute("title", "Toàn màn hình");
+
+    fireEvent.click(expandBtn);
+
+    const shrinkBtn = screen.getByRole("button", { name: "Thu nhỏ cửa sổ" });
+    expect(shrinkBtn).toBeInTheDocument();
+    expect(shrinkBtn).toHaveAttribute("title", "Thu nhỏ (phím Esc hoặc click)");
+
+    fireEvent.click(shrinkBtn);
+    expect(screen.getByRole("button", { name: "Mở rộng toàn màn hình" })).toBeInTheDocument();
+  });
 });

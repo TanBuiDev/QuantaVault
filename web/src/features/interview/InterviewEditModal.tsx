@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useDeferredValue, type RefObject } from "react";
 import { Modal } from "@/components/ui/Modal";
+import { classNames } from "@/components/ui/classNames";
 import { useConfirm } from "@/components/ui/ConfirmDialog";
 import { useToast } from "@/components/ui/Toast";
 import { questionVersion } from "@/lib/interview/questionVersion";
@@ -16,6 +17,8 @@ import {
   Sparkles,
   Save,
   Check,
+  Maximize2,
+  Minimize2,
 } from "lucide-react";
 import type {
   InterviewCategory,
@@ -58,9 +61,20 @@ interface FormProps {
   onSave: (updatedQuestion: InterviewQuestion, canonicalQuestion?: InterviewQuestion) => void;
   onDelete?: (question: InterviewQuestion) => void;
   closeRef: RefObject<(() => void) | null>;
+  isFullscreen?: boolean;
+  onToggleFullscreen?: () => void;
 }
 
-function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, onDelete, closeRef }: FormProps) {
+function InterviewEditModalForm({
+  question,
+  canonicalQuestion,
+  onClose,
+  onSave,
+  onDelete,
+  closeRef,
+  isFullscreen = false,
+  onToggleFullscreen,
+}: FormProps) {
   const confirm = useConfirm();
   const { error: showError, warning } = useToast();
   const [activeTab, setActiveTab] = useState<"content" | "metadata">("content");
@@ -232,7 +246,7 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
   }
 
   return (
-    <div className="flex flex-col max-h-[85vh]">
+    <div className={classNames("flex flex-col", isFullscreen ? "h-full flex-1 min-h-0" : "max-h-[85vh]")}>
       {pendingDraft && (
         <div role="status" className="border-b border-amber-500/30 bg-amber-500/10 p-4 text-sm text-[var(--foreground)]">
           <p>Có bản nháp chưa lưu. Nội dung đã lưu vẫn đang được hiển thị; bản nháp chỉ được nạp khi bạn chọn khôi phục.</p>
@@ -246,12 +260,12 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
       {externalChanged && !savedSuccess && <div role="status" className="border-b border-amber-500/30 bg-amber-500/10 p-4 text-sm text-[var(--foreground)]">Nội dung đã thay đổi ở nơi khác trong lúc form đang mở. Phần đang soạn được giữ nguyên; lưu thay thế sẽ cần xác nhận.</div>}
       <fieldset disabled={Boolean(pendingDraft) || savedSuccess} className="contents">
       {/* 1. Header Bar */}
-      <div className="flex flex-wrap items-center justify-between border-b border-[var(--border)] px-5 py-3.5 bg-[var(--surface)]">
+      <div className="flex flex-wrap items-center justify-between border-b border-[var(--border)] px-5 py-3.5 bg-[var(--surface)] shrink-0">
         <div className="flex items-center gap-2.5 min-w-0">
           <span className="font-mono text-xs font-bold text-indigo-500 bg-indigo-500/10 px-2.5 py-1 rounded-lg">
             {formatQuestionBadge(question.id)}
           </span>
-          <h2 className="text-sm font-bold text-[var(--foreground)] truncate max-w-md sm:max-w-lg">
+          <h2 className={classNames("text-sm font-bold text-[var(--foreground)] truncate", isFullscreen ? "max-w-xl lg:max-w-3xl" : "max-w-md sm:max-w-lg")}>
             Chỉnh sửa: {title || question.title}
           </h2>
         </div>
@@ -284,17 +298,34 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
               <span>Thuộc tính</span>
             </button>
           </div>
+
+          {/* Fullscreen Toggle Button */}
+          {onToggleFullscreen && (
+            <button
+              type="button"
+              onClick={onToggleFullscreen}
+              title={isFullscreen ? "Thu nhỏ (phím Esc hoặc click)" : "Toàn màn hình"}
+              aria-label={isFullscreen ? "Thu nhỏ cửa sổ" : "Mở rộng toàn màn hình"}
+              className="inline-flex h-8 w-8 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)] transition-colors cursor-pointer shadow-2xs"
+            >
+              {isFullscreen ? (
+                <Minimize2 className="h-4 w-4" />
+              ) : (
+                <Maximize2 className="h-4 w-4" />
+              )}
+            </button>
+          )}
         </div>
       </div>
 
 
       {/* 2. Modal Body */}
-      <div className="flex-1 overflow-y-auto p-5 space-y-4">
+      <div className={classNames("overflow-y-auto p-5 space-y-4", isFullscreen ? "flex-1 min-h-0 flex flex-col" : "flex-1")}>
         {/* TAB 1: Markdown Content Editor */}
         {activeTab === "content" && (
-          <div className="space-y-3.5">
+          <div className={classNames("space-y-3.5", isFullscreen ? "flex-1 min-h-0 flex flex-col" : "")}>
             {/* Question Title (2 rows) */}
-            <div className="space-y-1.5">
+            <div className="space-y-1.5 shrink-0">
               <label className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
                 Tiêu đề câu hỏi phỏng vấn
               </label>
@@ -315,7 +346,7 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
             </div>
 
             {/* Top View Mode Controls */}
-            <div className="flex items-center justify-between pt-0.5">
+            <div className="flex items-center justify-between pt-0.5 shrink-0">
               <span className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
                 Soạn thảo câu trả lời (Markdown & Java Code)
               </span>
@@ -365,13 +396,20 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
 
             {/* Editor + Preview Area */}
             <div
-              className={`grid gap-4 ${
-                viewMode === "split" ? "md:grid-cols-2" : "grid-cols-1"
-              }`}
+              className={classNames(
+                "grid gap-4",
+                viewMode === "split" ? "md:grid-cols-2" : "grid-cols-1",
+                isFullscreen ? "flex-1 min-h-0" : ""
+              )}
             >
               {/* Editor Container */}
               {(viewMode === "edit" || viewMode === "split") && (
-                <div className="flex flex-col rounded-2xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden shadow-xs">
+                <div
+                  className={classNames(
+                    "flex flex-col rounded-2xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden shadow-xs",
+                    isFullscreen ? "h-full min-h-[350px]" : ""
+                  )}
+                >
                   <MarkdownEditorToolbar
                     textareaRef={textareaRef}
                     value={answerMarkdown}
@@ -381,7 +419,7 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
                   />
                   <textarea
                     ref={textareaRef}
-                    rows={16}
+                    rows={isFullscreen ? undefined : 16}
                     value={answerMarkdown}
                     onChange={(e) => setAnswerMarkdown(e.target.value)}
                     spellCheck={false}
@@ -392,16 +430,23 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
                     data-gramm_editor="false"
                     data-enable-grammarly="false"
                     placeholder="Nhập nội dung câu trả lời chi tiết bằng cú pháp Markdown..."
-                    className={`w-full resize-none p-4 ${
-                      editorFont === "mono" ? "font-mono" : "font-sans"
-                    } text-xs sm:text-sm leading-relaxed text-[var(--foreground)] bg-transparent outline-none focus:ring-0 [contain:content] [font-variant-ligatures:none] [text-rendering:optimizeSpeed]`}
+                    className={classNames(
+                      "w-full resize-none p-4 text-xs sm:text-sm leading-relaxed text-[var(--foreground)] bg-transparent outline-none focus:ring-0 [contain:content] [font-variant-ligatures:none] [text-rendering:optimizeSpeed]",
+                      editorFont === "mono" ? "font-mono" : "font-sans",
+                      isFullscreen ? "flex-1 min-h-0 h-full" : ""
+                    )}
                   />
                 </div>
               )}
 
               {/* Preview Container */}
               {(viewMode === "preview" || viewMode === "split") && (
-                <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 overflow-y-auto max-h-[500px] shadow-xs">
+                <div
+                  className={classNames(
+                    "rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 overflow-y-auto shadow-xs",
+                    isFullscreen ? "h-full min-h-[350px]" : "max-h-[500px]"
+                  )}
+                >
                   <div className="text-[11px] font-bold uppercase tracking-wider text-[var(--muted)] mb-3 pb-2 border-b border-[var(--border)]">
                     Xem trước hiển thị thực tế:
                   </div>
@@ -630,7 +675,7 @@ function InterviewEditModalForm({ question, canonicalQuestion, onClose, onSave, 
       </div>
 
       {/* 3. Footer Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--border)] px-5 py-3.5 bg-[var(--surface)]">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--border)] px-5 py-3.5 bg-[var(--surface)] shrink-0">
         <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
           <Sparkles className="h-4 w-4 text-amber-500" />
           <span>Lưu tạm vào bộ nhớ máy (<kbd className="rounded border px-1">Ctrl+S</kbd>)</span>
@@ -709,24 +754,41 @@ export function InterviewEditModal({
   onSave,
   onDelete,
 }: InterviewEditModalProps) {
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const closeRef = useRef<(() => void) | null>(null);
+
   if (!isOpen || !question) return null;
+
+  const handleModalClose = () => {
+    setIsFullscreen(false);
+    if (closeRef.current) closeRef.current();
+    else onClose();
+  };
+
+  const handleFormClose = () => {
+    setIsFullscreen(false);
+    onClose();
+  };
 
   return (
     <Modal
       isOpen={isOpen}
-      onClose={() => { if (closeRef.current) closeRef.current(); else onClose(); }}
+      onClose={handleModalClose}
       maxWidth="3xl"
-      className="max-w-4xl! p-0 overflow-hidden"
+      fullScreen={isFullscreen}
+      className={isFullscreen ? "h-screen w-screen rounded-none border-0 p-0 overflow-hidden" : "max-w-4xl! p-0 overflow-hidden"}
+      contentClassName={isFullscreen ? "p-0 flex flex-col h-full min-h-0 overflow-hidden" : undefined}
     >
       <InterviewEditModalForm
         key={question.id}
         question={question}
         canonicalQuestion={canonicalQuestion}
-        onClose={onClose}
+        onClose={handleFormClose}
         onSave={onSave}
         onDelete={onDelete}
         closeRef={closeRef}
+        isFullscreen={isFullscreen}
+        onToggleFullscreen={() => setIsFullscreen((prev) => !prev)}
       />
     </Modal>
   );
