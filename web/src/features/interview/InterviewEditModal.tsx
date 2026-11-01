@@ -260,17 +260,20 @@ function InterviewEditModalForm({
       {externalChanged && !savedSuccess && <div role="status" className="border-b border-amber-500/30 bg-amber-500/10 p-4 text-sm text-[var(--foreground)]">Nội dung đã thay đổi ở nơi khác trong lúc form đang mở. Phần đang soạn được giữ nguyên; lưu thay thế sẽ cần xác nhận.</div>}
       <fieldset disabled={Boolean(pendingDraft) || savedSuccess} className="contents">
       {/* 1. Header Bar */}
-      <div className="flex flex-wrap items-center justify-between border-b border-[var(--border)] px-5 py-3.5 bg-[var(--surface)] shrink-0">
-        <div className="flex items-center gap-2.5 min-w-0">
-          <span className="font-mono text-xs font-bold text-indigo-500 bg-indigo-500/10 px-2.5 py-1 rounded-lg">
+      <div className="flex items-center justify-between gap-3 border-b border-[var(--border)] px-5 py-3.5 bg-[var(--surface)] shrink-0">
+        <div className="flex items-center gap-2.5 min-w-0 flex-1 mr-2">
+          <span className="font-mono text-xs font-bold text-indigo-500 bg-indigo-500/10 px-2.5 py-1 rounded-lg shrink-0">
             {formatQuestionBadge(question.id)}
           </span>
-          <h2 className={classNames("text-sm font-bold text-[var(--foreground)] truncate", isFullscreen ? "max-w-xl lg:max-w-3xl" : "max-w-md sm:max-w-lg")}>
+          <h2
+            title={title || question.title}
+            className="text-sm font-bold text-[var(--foreground)] truncate min-w-0 flex-1"
+          >
             Chỉnh sửa: {title || question.title}
           </h2>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           {/* Tab switchers */}
           <div className="flex items-center rounded-xl bg-[var(--surface-hover)] p-0.5 text-xs font-semibold">
             <button
