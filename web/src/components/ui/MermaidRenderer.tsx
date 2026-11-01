@@ -65,18 +65,38 @@ export function MermaidRenderer({ chart }: MermaidRendererProps) {
           theme: isDark ? "dark" : "neutral",
           themeVariables: isDark
             ? {
+                darkMode: true,
+                background: "#0b0f19",
+                mainBkg: "#1e293b",
+                textColor: "#f8fafc",
                 primaryColor: "#312e81",
-                primaryTextColor: "#e2e8f0",
+                primaryTextColor: "#f8fafc",
                 primaryBorderColor: "#6366f1",
                 lineColor: "#818cf8",
                 secondaryColor: "#064e3b",
                 tertiaryColor: "#1e293b",
+                edgeLabelBackground: "#1e293b",
+                clusterBkg: "#0f172a",
+                clusterBorder: "#334155",
+                nodeBorder: "#6366f1",
+                nodeTextColor: "#f8fafc",
+                titleColor: "#f8fafc",
               }
             : {
+                darkMode: false,
+                background: "#ffffff",
+                mainBkg: "#ffffff",
+                textColor: "#0f172a",
                 primaryColor: "#e0e7ff",
-                primaryTextColor: "#1e1b4b",
+                primaryTextColor: "#0f172a",
                 primaryBorderColor: "#6366f1",
                 lineColor: "#4f46e5",
+                edgeLabelBackground: "#ffffff",
+                clusterBkg: "#f8fafc",
+                clusterBorder: "#cbd5e1",
+                nodeBorder: "#4f46e5",
+                nodeTextColor: "#0f172a",
+                titleColor: "#0f172a",
               },
         });
 
@@ -162,7 +182,14 @@ export function MermaidRenderer({ chart }: MermaidRendererProps) {
       ) : (
         <div
           ref={containerRef}
-          className="flex justify-center overflow-x-auto py-2 [&_svg]:max-w-full [&_svg]:h-auto"
+          className="flex justify-center overflow-x-auto py-2 [&_svg]:max-w-full [&_svg]:h-auto
+            dark:[&_.edgeLabel_rect]:fill-slate-900/95 dark:[&_.edgeLabel_rect]:stroke-slate-700/80
+            [&_.edgeLabel_rect]:fill-white/95 [&_.edgeLabel_rect]:stroke-slate-200
+            dark:[&_.edgeLabel_text]:!fill-slate-100 [&_.edgeLabel_text]:!fill-slate-900
+            dark:[&_.edgeLabel_tspan]:!fill-slate-100 [&_.edgeLabel_tspan]:!fill-slate-900
+            dark:[&_.cluster_text]:!fill-slate-100 [&_.cluster_text]:!fill-slate-900
+            dark:[&_.cluster_tspan]:!fill-slate-100 [&_.cluster_tspan]:!fill-slate-900
+            [&_.edgeLabel_text]:font-medium [&_.cluster_text]:font-semibold"
           dangerouslySetInnerHTML={{ __html: svgContent || "" }}
         />
       )}
