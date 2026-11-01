@@ -159,25 +159,8 @@ export function InterviewQuestionCard({
               )}
             </div>
 
-            {/* Question Title - Clickable Accordion Header */}
-            <h2
-              onClick={() => (isExpanded ? handleCollapse() : setIsExpanded(true))}
-              className="text-base sm:text-lg font-bold leading-snug tracking-tight text-[var(--foreground)] cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors select-none"
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  if (isExpanded) {
-                    handleCollapse();
-                  } else {
-                    setIsExpanded(true);
-                  }
-                }
-              }}
-              aria-expanded={isExpanded}
-              title={isExpanded ? "Bấm vào tiêu đề để thu gọn đáp án" : "Bấm vào tiêu đề để xem đáp án chi tiết"}
-            >
+            {/* Question Title */}
+            <h2 className="text-base sm:text-lg font-bold leading-snug tracking-tight text-[var(--foreground)] select-text selection:bg-indigo-500/20">
               {question.title}
             </h2>
 
