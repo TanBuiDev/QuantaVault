@@ -142,3 +142,14 @@ textarea {
   }
 }
 
+/* Mermaid Diagram Dark Mode Contrast Protection */
+.dark .mermaid-renderer .cluster rect,
+.dark svg[id^="mermaid"] .cluster rect {
+  fill-opacity: 0.08 !important;
+}
+
+.dark .mermaid-renderer .cluster text,
+.dark svg[id^="mermaid"] .cluster text {
+  fill: #f1f5f9 !important;
+  font-weight: 600 !important;
+}

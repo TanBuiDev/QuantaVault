@@ -17,6 +17,43 @@ interface MermaidInstance {
 let mermaidPromise: Promise<MermaidInstance> | null = null;
 let renderQueue = Promise.resolve();
 
+function isLightHex(hex: string): boolean {
+  const clean = hex.replace("#", "");
+  if (clean.length !== 6 && clean.length !== 3) return false;
+  const full = clean.length === 3 ? clean.split("").map((c) => c + c).join("") : clean;
+  const r = parseInt(full.slice(0, 2), 16);
+  const g = parseInt(full.slice(2, 4), 16);
+  const b = parseInt(full.slice(4, 6), 16);
+  const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return lum > 0.6;
+}
+
+export function adaptChartForDark(rawChart: string, isDark: boolean): string {
+  if (!isDark) return rawChart;
+
+  const subgraphIds = new Set<string>();
+  const subgraphRegex = /subgraph\s+([A-Za-z0-9_]+)/g;
+  let match: RegExpExecArray | null;
+  while ((match = subgraphRegex.exec(rawChart)) !== null) {
+    subgraphIds.add(match[1]);
+  }
+
+  return rawChart.replace(/style\s+([A-Za-z0-9_]+)\s+([^\n]+)/g, (fullLine, id, styleDefs) => {
+    if (styleDefs.includes("fill-opacity") || styleDefs.includes("color:")) {
+      return fullLine;
+    }
+    const fillMatch = styleDefs.match(/fill:\s*(#[0-9a-fA-F]{3,6})/);
+    if (!fillMatch) return fullLine;
+    const fillHex = fillMatch[1];
+    if (isLightHex(fillHex)) {
+      const isSubgraph = subgraphIds.has(id);
+      const targetOpacity = isSubgraph ? "0.06" : "0.2";
+      return `style ${id} ${styleDefs},fill-opacity:${targetOpacity}`;
+    }
+    return fullLine;
+  });
+}
+
 function getMermaid(): Promise<MermaidInstance> {
   if (typeof window === "undefined") return Promise.reject(new Error("SSR"));
   if (!mermaidPromise) {
@@ -100,7 +137,8 @@ export function MermaidRenderer({ chart }: MermaidRendererProps) {
               },
         });
 
-        const { svg } = await mermaid.render(uniqueId + "_" + Date.now(), chart);
+        const adaptedChart = adaptChartForDark(chart, isDark);
+        const { svg } = await mermaid.render(uniqueId + "_" + Date.now(), adaptedChart);
         if (isMounted) {
           setSvgContent(DOMPurify.sanitize(svg, {
             USE_PROFILES: { svg: true, svgFilters: true },
@@ -182,7 +220,7 @@ export function MermaidRenderer({ chart }: MermaidRendererProps) {
       ) : (
         <div
           ref={containerRef}
-          className="flex justify-center overflow-x-auto py-2 [&_svg]:max-w-full [&_svg]:h-auto
+          className="mermaid-renderer flex justify-center overflow-x-auto py-2 [&_svg]:max-w-full [&_svg]:h-auto
             dark:[&_.edgeLabel_rect]:fill-slate-900/95 dark:[&_.edgeLabel_rect]:stroke-slate-700/80
             [&_.edgeLabel_rect]:fill-white/95 [&_.edgeLabel_rect]:stroke-slate-200
             dark:[&_.edgeLabel_text]:!fill-slate-100 [&_.edgeLabel_text]:!fill-slate-900
