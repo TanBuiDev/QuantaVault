@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore, useCallback } from "react";
 import type { InterviewProgressState } from "./types";
+import { queueCloudProgress } from "./cloudSync";
 
 const STORAGE_KEY = "interview-prep-progress-v1";
 const CHANGE_EVENT = "interview-prep-progress:change";
@@ -146,6 +147,7 @@ export function useInterviewProgress() {
       }
 
       writeStorage(next);
+      queueCloudProgress(next);
     },
     []
   );
@@ -168,6 +170,7 @@ export function useInterviewProgress() {
       }
 
       writeStorage(next);
+      queueCloudProgress(next);
     },
     []
   );
@@ -188,6 +191,7 @@ export function useInterviewProgress() {
       }
 
       writeStorage(next);
+      queueCloudProgress(next);
     },
     []
   );
@@ -206,4 +210,12 @@ export function useInterviewProgress() {
     toggleReview,
     toggleBookmark,
   };
+}
+
+/** Read and explicitly replace progress without modifying stored question content. */
+export function readInterviewProgress(): InterviewProgressState {
+  return readStorage();
+}
+export function replaceInterviewProgress(next: InterviewProgressState) {
+  writeStorage(next);
 }

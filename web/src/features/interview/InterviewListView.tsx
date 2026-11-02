@@ -31,6 +31,7 @@ import {
   mergeQuestionsWithDrafts,
 } from "@/lib/interview/draftStore";
 import { InterviewStatsCard } from "./InterviewStatsCard";
+import { InterviewCloudSync } from "./InterviewCloudSync";
 import { InterviewFilterBar } from "./InterviewFilterBar";
 import { InterviewQuestionCard } from "./InterviewQuestionCard";
 import { InterviewEditModal } from "./InterviewEditModal";
@@ -477,6 +478,8 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
           onSelectStatusFilter={handleSelectStatusFilter}
         />
       </section>
+
+      <InterviewCloudSync />
 
       {/* 3. Filter Controls */}
       <section aria-label="Bộ lọc câu hỏi">

@@ -1,8 +1,10 @@
 import { onRequestPost, onRequestOptions } from "../functions/api/publish";
+import { handleInterviewProgress, type ProgressEnv } from "../functions/api/interview-progress";
 
 export default {
-  async fetch(request: Request, env: Parameters<typeof onRequestPost>[0]["env"]) {
+  async fetch(request: Request, env: Parameters<typeof onRequestPost>[0]["env"] & ProgressEnv) {
     const pathname = new URL(request.url).pathname.replace(/\/$/, "");
+    if (pathname === "/api/interview-progress") return handleInterviewProgress({ request, env });
     if (pathname === "/api/publish") {
       if (request.method === "OPTIONS") return onRequestOptions({ request, env });
       if (request.method === "POST") return onRequestPost({ request, env });
