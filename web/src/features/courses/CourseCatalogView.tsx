@@ -91,14 +91,20 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
                   </div>
 
                   {/* Chapters count & info */}
-                  <div className="flex items-center gap-4 text-xs text-[var(--muted)] pt-1">
+                  <div className="flex flex-wrap items-center gap-4 text-xs text-[var(--muted)] pt-1">
                     <span className="flex items-center gap-1.5">
                       <Layers className="h-3.5 w-3.5 text-indigo-500" />
-                      <span>{course.chapters.length} Phần</span>
+                      <span>{course.chapters.length} Chương</span>
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <BookOpen className="h-3.5 w-3.5 text-emerald-500" />
+                      <span>{course.totalLessons} Bài học</span>
                     </span>
                     <span className="flex items-center gap-1.5">
                       <Clock className="h-3.5 w-3.5 text-amber-500" />
-                      <span>{course.totalLessons} Bài học</span>
+                      <span>
+                        ~{(course.lessons.reduce((acc, l) => acc + (l.durationMinutes || 0), 0) / 60).toFixed(0)} giờ học & thực hành
+                      </span>
                     </span>
                   </div>
                 </div>
