@@ -177,7 +177,7 @@ export function CourseLessonView({
               </span>
               <span className="flex items-center gap-1.5 text-xs text-[var(--muted)]">
                 <Clock className="h-3.5 w-3.5" />
-                <span>Thời gian học dự kiến: ~{lesson.durationMinutes} phút (lý thuyết & thực hành)</span>
+                <span>{lesson.durationMinutes} phút học dự kiến</span>
               </span>
             </div>
 

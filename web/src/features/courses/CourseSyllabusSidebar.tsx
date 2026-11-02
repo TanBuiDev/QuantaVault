@@ -149,7 +149,7 @@ export function CourseSyllabusSidebar({
                             {lesson.title.replace(/^Bài \d+:\s*/i, "")}
                           </p>
                           <span className="text-[10px] font-normal text-[var(--muted)]">
-                            ~{lesson.durationMinutes} phút học
+                            {lesson.durationMinutes} phút học dự kiến
                           </span>
                         </div>
                       </Link>
