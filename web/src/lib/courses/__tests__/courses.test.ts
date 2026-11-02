@@ -9,7 +9,7 @@ describe("Courses Library", () => {
     const pgCourse = courses.find((c) => c.slug === "postgres-for-java");
     expect(pgCourse).toBeDefined();
     expect(pgCourse?.totalLessons).toBe(20);
-    expect(pgCourse?.chapters.length).toBe(5);
+    expect(pgCourse?.chapters.length).toBe(4);
   });
 
   it("retrieves a course by slug", () => {
@@ -29,7 +29,7 @@ describe("Courses Library", () => {
     expect(data).toBeDefined();
     expect(data?.lesson.id).toBe("lesson-01");
     expect(data?.lesson.number).toBe(1);
-    expect(data?.chapterTitle).toContain("Phần 1");
+    expect(data?.chapterTitle).toContain("Chương 1");
     expect(data?.prevLesson).toBeUndefined();
     expect(data?.nextLesson).toBeDefined();
     expect(data?.nextLesson?.id).toBe("lesson-02");
@@ -40,7 +40,7 @@ describe("Courses Library", () => {
     expect(data).toBeDefined();
     expect(data?.lesson.id).toBe("lesson-20");
     expect(data?.lesson.number).toBe(20);
-    expect(data?.chapterTitle).toContain("Phần 5");
+    expect(data?.chapterTitle).toContain("Chương 4");
     expect(data?.prevLesson).toBeDefined();
     expect(data?.prevLesson?.id).toBe("lesson-19");
     expect(data?.nextLesson).toBeUndefined();
@@ -51,3 +51,4 @@ describe("Courses Library", () => {
     expect(data).toBeUndefined();
   });
 });
+
