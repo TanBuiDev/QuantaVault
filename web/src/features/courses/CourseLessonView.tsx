@@ -175,9 +175,9 @@ export function CourseLessonView({
               <span className="rounded-md bg-indigo-500/10 px-2 py-0.5 text-xs font-bold text-indigo-600 dark:text-indigo-400">
                 {chapterTitle}
               </span>
-              <span className="flex items-center gap-1 text-xs text-[var(--muted)]">
+              <span className="flex items-center gap-1.5 text-xs text-[var(--muted)]">
                 <Clock className="h-3.5 w-3.5" />
-                <span>{lesson.durationMinutes} phút đọc</span>
+                <span>Thời gian học dự kiến: ~{lesson.durationMinutes} phút (lý thuyết & thực hành)</span>
               </span>
             </div>
 
