@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useMemo, useRef, useEffect } from "react";
+import { InterviewTextSizeControl } from "./InterviewTextSizeControl";
+import { useInterviewTextSize } from "./useInterviewTextSize";
 import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
 import { useConfirm } from "@/components/ui/ConfirmDialog";
@@ -69,6 +71,7 @@ function getPageList(currentPage: number, totalPages: number): (number | "...")[
 
 export function InterviewListView({ initialQuestions }: InterviewListViewProps) {
   const confirm = useConfirm();
+  const { textScale, changeTextScale } = useInterviewTextSize();
   const [filter, setFilter] = useState<InterviewFilterState>(() => {
     if (typeof window === "undefined") return DEFAULT_FILTER;
     const params = getUrlParams();
@@ -394,6 +397,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
 
         {/* Action buttons: Presentation, Add question (only in Edit mode) & switch to LeetCode practice */}
         <div className="flex flex-wrap items-center gap-2.5 self-start">
+          <InterviewTextSizeControl value={textScale} onChange={changeTextScale} />
           <button
             type="button"
             onClick={() => {
@@ -593,6 +597,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
                       key={`${question.id}-${recallMode}`}
                       question={question}
                       index={globalIndex}
+                      textScale={textScale}
                       isLearned={isLearned(question.id)}
                       isReview={isReview(question.id)}
                       isBookmarked={isBookmarked(question.id)}
@@ -760,6 +765,8 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
           onClose={handleCloseEdit}
           question={effectiveEditingQuestion}
           canonicalQuestion={canonicalQuestion}
+          textScale={textScale}
+          onTextScaleChange={changeTextScale}
           onSave={(updated, canonical) => {
             saveDraft(updated, canonical);
           }}

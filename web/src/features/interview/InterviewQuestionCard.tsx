@@ -24,6 +24,7 @@ import { INTERVIEW_CATEGORIES, formatQuestionNumber } from "@/lib/interview/type
 export interface InterviewQuestionCardProps {
   question: InterviewQuestion;
   index: number;
+  textScale?: number;
   isLearned: boolean;
   isReview: boolean;
   isBookmarked: boolean;
@@ -40,6 +41,7 @@ export interface InterviewQuestionCardProps {
 export function InterviewQuestionCard({
   question,
   index,
+  textScale = 100,
   isLearned,
   isReview,
   isBookmarked,
@@ -160,7 +162,10 @@ export function InterviewQuestionCard({
             </div>
 
             {/* Question Title */}
-            <h2 className="text-base sm:text-lg font-bold leading-snug tracking-tight text-[var(--foreground)] select-text selection:bg-indigo-500/20">
+            <h2
+              style={textScale === 100 ? undefined : { fontSize: `${18 * textScale / 100}px` }}
+              className="text-base sm:text-lg font-bold leading-snug tracking-tight text-[var(--foreground)] select-text selection:bg-indigo-500/20"
+            >
               {question.title}
             </h2>
 
@@ -265,7 +270,10 @@ export function InterviewQuestionCard({
                   </button>
                 )}
               </div>
-              <p className="text-xs sm:text-sm leading-relaxed text-[var(--foreground)]/90">
+              <p
+                style={textScale === 100 ? undefined : { fontSize: `${14 * textScale / 100}px` }}
+                className="text-xs sm:text-sm leading-relaxed text-[var(--foreground)]/90"
+              >
                 {question.summary.replace(/^(Tóm tắt cốt lõi|Trọng tâm cốt lõi):\s*/i, "")}
               </p>
             </div>
@@ -277,7 +285,7 @@ export function InterviewQuestionCard({
           <div className="mt-5 space-y-5 border-t border-[var(--border)] pt-5 animate-fade-in">
             {/* Markdown Detailed Answer */}
             <div className="prose prose-sm dark:prose-invert max-w-none w-full">
-              <MarkdownContent markdown={question.answerMarkdown} fullWidth />
+              <MarkdownContent markdown={question.answerMarkdown} fullWidth textScale={textScale} />
             </div>
 
             {/* Related LeetCode Problems Cross-link */}

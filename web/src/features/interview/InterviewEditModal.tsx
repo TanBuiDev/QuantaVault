@@ -28,6 +28,7 @@ import type {
 import { INTERVIEW_CATEGORIES, formatQuestionBadge } from "@/lib/interview/types";
 import { MarkdownContent } from "@/features/practice/MarkdownContent";
 import { MarkdownEditorToolbar } from "./MarkdownEditorToolbar";
+import { InterviewTextSizeControl } from "./InterviewTextSizeControl";
 
 export interface InterviewEditModalProps {
   isOpen: boolean;
@@ -36,6 +37,8 @@ export interface InterviewEditModalProps {
   canonicalQuestion?: InterviewQuestion;
   onSave: (updatedQuestion: InterviewQuestion, canonicalQuestion?: InterviewQuestion) => void;
   onDelete?: (question: InterviewQuestion) => void;
+  textScale?: number;
+  onTextScaleChange?: (value: number) => void;
 }
 
 const COMMON_COMPANIES = [
@@ -63,6 +66,8 @@ interface FormProps {
   closeRef: RefObject<(() => void) | null>;
   isFullscreen?: boolean;
   onToggleFullscreen?: () => void;
+  textScale: number;
+  onTextScaleChange?: (value: number) => void;
 }
 
 function InterviewEditModalForm({
@@ -74,6 +79,8 @@ function InterviewEditModalForm({
   closeRef,
   isFullscreen = false,
   onToggleFullscreen,
+  textScale,
+  onTextScaleChange,
 }: FormProps) {
   const confirm = useConfirm();
   const { error: showError, warning } = useToast();
@@ -344,17 +351,20 @@ function InterviewEditModalForm({
                 data-gramm_editor="false"
                 data-enable-grammarly="false"
                 placeholder="Ví dụ: [Câu 3] Hãy giải thích kiến trúc Modular Monolith..."
+                style={textScale === 100 ? undefined : { fontSize: `${14 * textScale / 100}px` }}
                 className="w-full resize-none rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3 text-xs sm:text-sm font-semibold leading-relaxed text-[var(--foreground)] outline-none focus:border-[var(--focus)] focus:bg-[var(--surface)] transition-all [contain:content]"
               />
             </div>
 
             {/* Top View Mode Controls */}
-            <div className="flex items-center justify-between pt-0.5 shrink-0">
+            <div className="flex flex-wrap items-center justify-between gap-2 pt-0.5 shrink-0">
               <span className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
                 Soạn thảo câu trả lời (Markdown & Java Code)
               </span>
 
-              <div className="flex items-center rounded-lg border border-[var(--border)] bg-[var(--surface)] p-0.5 text-xs">
+              <div className="flex flex-wrap items-center gap-2">
+                {onTextScaleChange && <InterviewTextSizeControl value={textScale} onChange={onTextScaleChange} />}
+                <div className="flex items-center rounded-lg border border-[var(--border)] bg-[var(--surface)] p-0.5 text-xs">
                 <button
                   type="button"
                   onClick={() => setViewMode("edit")}
@@ -394,6 +404,7 @@ function InterviewEditModalForm({
                   <Columns className="h-3.5 w-3.5" />
                   <span>Song song</span>
                 </button>
+                </div>
               </div>
             </div>
 
@@ -433,6 +444,7 @@ function InterviewEditModalForm({
                     data-gramm_editor="false"
                     data-enable-grammarly="false"
                     placeholder="Nhập nội dung câu trả lời chi tiết bằng cú pháp Markdown..."
+                    style={textScale === 100 ? undefined : { fontSize: `${14 * textScale / 100}px` }}
                     className={classNames(
                       "w-full resize-none p-4 text-xs sm:text-sm leading-relaxed text-[var(--foreground)] bg-transparent outline-none focus:ring-0 [contain:content] [font-variant-ligatures:none] [text-rendering:optimizeSpeed]",
                       editorFont === "mono" ? "font-mono" : "font-sans",
@@ -454,7 +466,7 @@ function InterviewEditModalForm({
                     Xem trước hiển thị thực tế:
                   </div>
                   {deferredAnswerMarkdown.trim() ? (
-                    <MarkdownContent markdown={deferredAnswerMarkdown} fullWidth />
+                    <MarkdownContent markdown={deferredAnswerMarkdown} fullWidth textScale={textScale} />
                   ) : (
                     <p className="text-xs text-[var(--muted)] italic">
                       Chưa có nội dung xem trước...
@@ -486,6 +498,7 @@ function InterviewEditModalForm({
                 data-gramm_editor="false"
                 data-enable-grammarly="false"
                 placeholder="Ví dụ: [Câu 3] Hãy giải thích kiến trúc Modular Monolith..."
+                style={textScale === 100 ? undefined : { fontSize: `${14 * textScale / 100}px` }}
                 className="w-full resize-none rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3 text-xs sm:text-sm font-semibold leading-relaxed text-[var(--foreground)] outline-none focus:border-[var(--focus)] focus:bg-[var(--surface)] transition-all [contain:content]"
               />
             </div>
@@ -756,6 +769,8 @@ export function InterviewEditModal({
   canonicalQuestion,
   onSave,
   onDelete,
+  textScale = 100,
+  onTextScaleChange,
 }: InterviewEditModalProps) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const closeRef = useRef<(() => void) | null>(null);
@@ -789,6 +804,8 @@ export function InterviewEditModal({
         onClose={handleFormClose}
         onSave={onSave}
         onDelete={onDelete}
+        textScale={textScale}
+        onTextScaleChange={onTextScaleChange}
         closeRef={closeRef}
         isFullscreen={isFullscreen}
         onToggleFullscreen={() => setIsFullscreen((prev) => !prev)}
