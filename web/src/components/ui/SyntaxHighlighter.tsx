@@ -23,10 +23,19 @@ interface Token {
 }
 
 // Tokenizer for Java and popular backend languages
-function tokenize(code: string): Token[] {
+function tokenize(code: string, language?: string): Token[] {
+  // SQL uses "--" for line comments; Java/JavaScript use "//".
+  // Choose the correct comment syntax so Java's i-- is not treated as a comment.
+  const isSql = /^(sql|postgres|postgresql|pgsql|plpgsql|mysql|sqlite|tsql|mssql)$/i.test(
+    language?.trim() ?? ""
+  );
+  const commentPattern = isSql
+    ? /(--[^\r\n]*|\/\*[\s\S]*?\*\/)/
+    : /(\/\/[^\r\n]*|\/\*[\s\S]*?\*\/|#[^\r\n]*)/;
+
   // Regex token definitions
   const patterns = [
-    { type: "comment", regex: /(\/\/.*$|\/\*[\s\S]*?\*\/|#.*$)/m },
+    { type: "comment", regex: commentPattern },
     { type: "string", regex: /("([^"\\]|\\.)*"|'([^'\\]|\\.)*'|`([^`\\]|\\.)*`)/ },
     { type: "annotation", regex: /@[A-Za-z0-9_]+/ },
     { type: "number", regex: /\b\d+(\.\d+)?([fFdDlL])?\b/ },
@@ -56,7 +65,7 @@ function tokenize(code: string): Token[] {
     const value = match[0];
     let tokenType: Token["type"] = "text";
 
-    if (/^(\/\/|\/\*|#)/.test(value)) {
+    if (/^(\/\/|\/\*|#)/.test(value) || (isSql && value.startsWith("--"))) {
       tokenType = "comment";
     } else if (/^["'`]/.test(value)) {
       tokenType = "string";
@@ -104,9 +113,10 @@ const tokenClasses: Record<Token["type"], string> = {
 
 export function SyntaxHighlighter({
   code,
+  language,
   className = "",
 }: SyntaxHighlighterProps) {
-  const tokens = useMemo(() => tokenize(code), [code]);
+  const tokens = useMemo(() => tokenize(code, language), [code, language]);
 
   return (
     <code className={`font-mono text-xs sm:text-[13px] leading-relaxed ${className}`}>
