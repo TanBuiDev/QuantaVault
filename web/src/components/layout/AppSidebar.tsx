@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -10,6 +10,11 @@ import {
   Search,
   Layers,
   GraduationCap,
+  BookOpen,
+  Database,
+  ChevronDown,
+  ChevronRight,
+  Code2
 } from "lucide-react";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { useSidebar } from "./SidebarContext";
@@ -18,6 +23,16 @@ import { ProblemNavTree } from "./ProblemNavTree";
 export function AppSidebar() {
   const pathname = usePathname();
   const { isOpen, toggleSidebar, setSidebarOpen } = useSidebar();
+
+  const isProblemsRoute = pathname?.startsWith("/problems");
+  const isCoursesRoute = pathname?.startsWith("/courses");
+  const isInterviewRoute = pathname?.startsWith("/interview");
+
+  // Accordion state for Top 150 algorithms tree
+  const [problemsTreeOpen, setProblemsTreeOpen] = useState(() => {
+    // Default open on problems route or home page, closed when actively on courses or interview
+    return !isCoursesRoute && !isInterviewRoute;
+  });
 
   function openSearch() {
     window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", ctrlKey: true }));
@@ -101,9 +116,10 @@ export function AppSidebar() {
             </button>
           </div>
 
-          {/* Navigation & Problem Accordion Tree */}
-          <div className="flex-1 overflow-y-auto px-2 py-3 space-y-3">
-            <div className="px-1 space-y-1">
+          {/* Navigation & 3 Pillars */}
+          <div className="flex-1 overflow-y-auto px-2 py-3 space-y-4">
+            {/* Top Dashboard Link */}
+            <div className="px-1">
               <Link
                 href="/"
                 aria-current={pathname === "/" ? "page" : undefined}
@@ -116,26 +132,107 @@ export function AppSidebar() {
                 <LayoutDashboard className="h-4 w-4 shrink-0" />
                 <span>Dashboard Tổng Quan</span>
               </Link>
+            </div>
+
+            {/* TRỤ CỘT 2: KHÓA HỌC & LỘ TRÌNH */}
+            <div className="space-y-1">
+              <div className="px-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-[var(--muted)] flex items-center gap-1.5">
+                <BookOpen className="h-3 w-3 text-emerald-500" />
+                <span>Khóa Học & Lộ Trình</span>
+              </div>
+
+              <Link
+                href="/courses"
+                aria-current={pathname === "/courses" ? "page" : undefined}
+                className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold transition-all ${
+                  pathname === "/courses"
+                    ? "bg-[var(--primary)] text-white shadow-xs"
+                    : "text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
+                }`}
+              >
+                <BookOpen className="h-4 w-4 shrink-0 text-emerald-500" />
+                <span>Tất cả khóa học</span>
+              </Link>
+
+              <Link
+                href="/courses/postgres-for-java/lesson-01"
+                aria-current={pathname?.startsWith("/courses/postgres-for-java") ? "page" : undefined}
+                className={`flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium transition-all ${
+                  pathname?.startsWith("/courses/postgres-for-java")
+                    ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-500/20 shadow-2xs"
+                    : "text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
+                }`}
+              >
+                <Database className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
+                <span className="truncate">PostgreSQL cho Java</span>
+                <span className="ml-auto rounded-md bg-emerald-500/15 px-1.5 py-0.5 text-[9px] font-bold text-emerald-600 dark:text-emerald-400">
+                  20 bài
+                </span>
+              </Link>
+            </div>
+
+            {/* TRỤ CỘT 3: CẨM NANG PHỎNG VẤN */}
+            <div className="space-y-1">
+              <div className="px-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-[var(--muted)] flex items-center gap-1.5">
+                <GraduationCap className="h-3 w-3 text-indigo-400" />
+                <span>Cẩm Nang Phỏng Vấn</span>
+              </div>
 
               <Link
                 href="/interview"
-                aria-current={pathname?.startsWith("/interview") ? "page" : undefined}
+                aria-current={isInterviewRoute ? "page" : undefined}
                 className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-semibold transition-all ${
-                  pathname?.startsWith("/interview")
+                  isInterviewRoute
                     ? "bg-[var(--primary)] text-white shadow-xs"
                     : "text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
                 }`}
               >
                 <GraduationCap className="h-4 w-4 shrink-0 text-indigo-400" />
-                <span>Phỏng vấn Java</span>
-                <span className="ml-auto rounded-md bg-indigo-500/15 px-1.5 py-0.5 text-[10px] font-bold text-indigo-600 dark:text-indigo-400">
-                  Mới
-                </span>
+                <span className="truncate">Phỏng vấn Java & Microservices</span>
               </Link>
             </div>
 
-            <div className="border-t border-[var(--border)] pt-2">
-              <ProblemNavTree />
+            {/* TRỤ CỘT 1: LUYỆN GIẢI THUẬT */}
+            <div className="space-y-1 border-t border-[var(--border)] pt-3">
+              <div className="px-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-[var(--muted)] flex items-center justify-between">
+                <span className="flex items-center gap-1.5">
+                  <Code2 className="h-3 w-3 text-blue-500" />
+                  <span>Luyện Giải Thuật</span>
+                </span>
+              </div>
+
+              {/* Collapsible Accordion Header */}
+              <button
+                type="button"
+                onClick={() => setProblemsTreeOpen((prev) => !prev)}
+                className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold transition-all ${
+                  isProblemsRoute && !problemsTreeOpen
+                    ? "bg-blue-500/15 text-blue-600 dark:text-blue-400 font-bold"
+                    : "text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
+                }`}
+              >
+                <div className="flex items-center gap-2 min-w-0">
+                  <Layers className="h-4 w-4 shrink-0 text-blue-500" />
+                  <span className="truncate">Top Interview 150</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span className="rounded-md bg-blue-500/15 px-1.5 py-0.5 text-[9px] font-bold text-blue-600 dark:text-blue-400">
+                    150 bài
+                  </span>
+                  {problemsTreeOpen ? (
+                    <ChevronDown className="h-3.5 w-3.5 text-[var(--muted)]" />
+                  ) : (
+                    <ChevronRight className="h-3.5 w-3.5 text-[var(--muted)]" />
+                  )}
+                </div>
+              </button>
+
+              {/* Collapsible Content */}
+              {problemsTreeOpen && (
+                <div className="pt-1">
+                  <ProblemNavTree />
+                </div>
+              )}
             </div>
           </div>
 
@@ -143,7 +240,7 @@ export function AppSidebar() {
           <div className="shrink-0 border-t border-[var(--border)] p-3 space-y-2">
             <ThemeToggle />
             <p className="px-1 text-[10px] leading-relaxed text-[var(--muted)]">
-              Tự tin làm chủ 150 thuật toán phỏng vấn hàng đầu.
+              QuantaVault • Nền tảng tri thức kỹ sư toàn diện.
             </p>
           </div>
         </>
@@ -172,37 +269,49 @@ export function AppSidebar() {
                   ? "bg-[var(--primary)] text-white shadow-xs"
                   : "text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
               }`}
-              title="Dashboard"
+              title="Dashboard Tổng Quan"
             >
               <LayoutDashboard className="h-4 w-4" />
+            </Link>
+
+            {/* Mini Courses Icon */}
+            <Link
+              href="/courses"
+              className={`flex size-9 items-center justify-center rounded-xl transition-colors ${
+                isCoursesRoute
+                  ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-bold"
+                  : "text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
+              }`}
+              title="Khóa Học & Lộ Trình"
+            >
+              <BookOpen className="h-4 w-4 text-emerald-500" />
             </Link>
 
             {/* Mini Interview Icon */}
             <Link
               href="/interview"
               className={`flex size-9 items-center justify-center rounded-xl transition-colors ${
-                pathname?.startsWith("/interview")
+                isInterviewRoute
                   ? "bg-[var(--primary)] text-white shadow-xs"
                   : "text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
               }`}
-              title="Phỏng vấn Java"
+              title="Phỏng Vấn Java"
             >
               <GraduationCap className="h-4 w-4" />
             </Link>
 
-            {/* Mini Problems Icon (Click to open sidebar and browse tree) */}
-            <button
-              type="button"
-              onClick={toggleSidebar}
+            {/* Mini Algorithms Icon */}
+            <Link
+              href="/problems"
               className={`flex size-9 items-center justify-center rounded-xl transition-colors ${
-                pathname?.startsWith("/problems")
-                  ? "bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 font-bold"
+                isProblemsRoute
+                  ? "bg-blue-500/15 text-blue-600 dark:text-blue-400 font-bold"
                   : "text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
               }`}
-              title="Danh sách 150 bài tập (Mở rộng)"
+              title="Luyện Giải Thuật 150"
             >
-              <Layers className="h-4 w-4" />
-            </button>
+              <Code2 className="h-4 w-4" />
+            </Link>
 
             {/* Mini Search Icon */}
             <button

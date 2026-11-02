@@ -1,0 +1,265 @@
+{
+  "id": "postgres-for-java",
+  "slug": "postgres-for-java",
+  "title": "Database & PostgreSQL cho Java Backend",
+  "tagline": "Lộ trình 20 bài chuyên sâu từ cơ bản đến master: Indexing B-Tree, MVCC, Concurrency Lock, HikariCP, JPA Optimization & Production Tuning",
+  "icon": "Database",
+  "badge": "Lộ trình 20 bài",
+  "level": "Intermediate - Advanced",
+  "author": "QuantaVault Engineering",
+  "totalLessons": 20,
+  "chapters": [
+    {
+      "id": "ch-01",
+      "title": "Phần 1: Kiến Trúc Cốt Lõi & Thiết Kế Schema",
+      "description": "Nắm vững nguyên lý lưu trữ trên đĩa, bộ nhớ đệm Shared Buffers, WAL và thiết kế lược đồ quan hệ hiệu năng cao.",
+      "lessonIds": ["lesson-01", "lesson-02", "lesson-03", "lesson-04"]
+    },
+    {
+      "id": "ch-02",
+      "title": "Phần 2: Chỉ Mục (Indexing) & Tối Ưu Hóa Truy Vấn",
+      "description": "Bản chất B-Tree, GIN, GiST, BRIN, kỹ thuật đọc EXPLAIN ANALYZE và loại bỏ bão Table Scan.",
+      "lessonIds": ["lesson-05", "lesson-06", "lesson-07", "lesson-08"]
+    },
+    {
+      "id": "ch-03",
+      "title": "Phần 3: Giao Dịch, MVCC & Khóa Đồng Thời",
+      "description": "Cơ chế đa phiên bản MVCC, 4 cấp độ cô lập giao dịch, khóa hàng / bảng, và giải quyết triệt để Deadlock.",
+      "lessonIds": ["lesson-09", "lesson-10", "lesson-11", "lesson-12"]
+    },
+    {
+      "id": "ch-04",
+      "title": "Phần 4: Tích Hợp & Tối Ưu Java Backend (Spring Boot & JPA)",
+      "description": "Cấu hình HikariCP, triệt tiêu thảm họa N+1 Query trong Hibernate, JDBC batching và cạm bẫy @Transactional.",
+      "lessonIds": ["lesson-13", "lesson-14", "lesson-15", "lesson-16"]
+    },
+    {
+      "id": "ch-05",
+      "title": "Phần 5: Vận Hành Hệ Thống, Mở Rộng & Production Tuning",
+      "description": "Table Partitioning, Master-Replica Read Splitting, Keyset Pagination và giám sát bằng pg_stat_statements.",
+      "lessonIds": ["lesson-17", "lesson-18", "lesson-19", "lesson-20"]
+    }
+  ],
+  "lessons": [
+    {
+      "id": "lesson-01",
+      "slug": "lesson-01",
+      "number": 1,
+      "chapterId": "ch-01",
+      "title": "Tổng quan Kiến trúc PostgreSQL, Bộ nhớ Shared Buffers & Cơ chế Ghi Log WAL",
+      "summary": "Khám phá mô hình kiến trúc tiến trình của PostgreSQL, vòng đời trang bộ nhớ trong Shared Buffers, nguyên lý ghi trước nhật ký Write-Ahead Logging (WAL) và tiến trình Checkpointer.",
+      "durationMinutes": 20,
+      "tags": ["PostgreSQL", "Architecture", "Shared Buffers", "WAL", "Checkpointer", "Storage Engine"],
+      "contentMarkdown": "## 1. Mô Hình Kiến Trúc Tiến Trình (Process-based Architecture)\n\nKhác với MySQL hay Microsoft SQL Server hoạt động theo mô hình đa luồng (Multi-threaded), **PostgreSQL vận hành theo mô hình đa tiến trình (Multi-process model)**:\n\n* **Postmaster Process (Main Daemon)**: Tiến trình cha lắng nghe cổng kết nối (mặc định port `5432`). Khi có một kết nối mới từ ứng dụng Java backend (ví dụ qua HikariCP), Postmaster sẽ gọi system call `fork()` để tạo ra một **Backend Process (Postgres Server Process)** độc lập phục vụ riêng cho kết nối đó.\n* **Shared Memory (Vùng nhớ dùng chung)**: Toàn bộ các Backend Process giao tiếp và chia sẻ tài nguyên thông qua vùng nhớ dùng chung bao gồm `Shared Buffers`, `WAL Buffers` và `Lock Space`.\n\n```mermaid\nflowchart TD\n    subgraph JavaApp[\"Java Backend Application\"]\n        Hikari[\"HikariCP Connection Pool (10-30 Connections)\"]\n    end\n\n    subgraph PGProcesses[\"PostgreSQL Multi-Process Engine\"]\n        PM[\"Postmaster Process (Listener: 5432)\"]\n        BP1[\"Backend Process 1\"]\n        BP2[\"Backend Process 2\"]\n        BP3[\"Backend Process N\"]\n    end\n\n    subgraph SharedMem[\"Shared Memory (RAM)\"]\n        SB[(\"Shared Buffers (25% - 40% RAM)\")]\n        WB[(\"WAL Buffers (16MB)\")]\n        LS[(\"Lock Space\")]\n    end\n\n    subgraph BackgroundWorkers[\"Background Processes\"]\n        CP[\"Checkpointer\"]\n        BGW[\"Background Writer\"]\n        WALW[\"WAL Writer\"]\n        AV[\"Autovacuum Launcher\"]\n    end\n\n    Hikari -->|\"TCP Socket\"| PM\n    PM -->|\"fork()\"| BP1\n    PM -->|\"fork()\"| BP2\n    PM -->|\"fork()\"| BP3\n\n    BP1 <--> SB\n    BP2 <--> SB\n    BP3 <--> SB\n\n    BP1 --> WB\n    WB --> WALW\n    SB --> BGW\n    SB --> CP\n\n    style JavaApp fill:#6366f1,fill-opacity:0.06,stroke:#6366f1,stroke-width:1.5px\n    style SharedMem fill:#22c55e,fill-opacity:0.08,stroke:#22c55e,stroke-width:2px\n    style PGProcesses fill:#3b82f6,fill-opacity:0.06,stroke:#3b82f6,stroke-width:1.5px\n    style BackgroundWorkers fill:#f59e0b,fill-opacity:0.06,stroke:#f59e0b,stroke-width:1.5px\n```\n\n---\n\n## 2. Vùng Nhớ Shared Buffers: Trái Tim Caching Của PostgreSQL\n\n* **Kích thước trang chuẩn (Page Size)**: Dữ liệu bảng và index trong PostgreSQL được tổ chức thành các trang có kích thước cố định **8 KB**.\n* **Shared Buffers**: Là vùng nhớ RAM đệm chứa các trang dữ liệu (Data Pages) được đọc từ đĩa cứng. Khi ứng dụng Java gửi câu lệnh `SELECT`, Backend Process kiểm tra trước trong Shared Buffers:\n  * **Buffer Hit**: Trang dữ liệu đã có sẵn trong RAM -> Trả kết quả tức thì không tốn Disk I/O.\n  * **Buffer Miss**: Trang chưa có trong RAM -> Đọc 8KB từ Disk Cache/SSD vào Shared Buffers rồi mới xử lý.\n* **Khuyến nghị cấu hình Production**: Thiết lập `shared_buffers` thông thường ở mức **25% đến 40% tổng dung lượng RAM** của server (phần RAM còn lại nhường cho Linux OS File Page Cache).\n\n---\n\n## 3. Cơ Chế Bền Vững Write-Ahead Logging (WAL)\n\nĐể đảm bảo tính bền vững (Durability) trong chuẩn ACID mà không phải liên tục ghi 8KB trang dữ liệu phân tán xuống đĩa sau mỗi câu lệnh `INSERT`/`UPDATE` (gây nghẽn ngẫu nhiên I/O), PostgreSQL sử dụng kỹ thuật **Write-Ahead Logging (WAL)**:\n\n1. Khi có thao tác sửa đổi dữ liệu, PostgreSQL **chỉ ghi nhật ký thay đổi tuần tự (Append-only log)** vào file WAL trên đĩa và đánh dấu trang trong Shared Buffers là trang bẩn (*Dirty Page*).\n2. Khi transaction gọi `COMMIT`, chỉ cần file WAL được `fsync` thành công xuống đĩa là transaction được xem là an toàn 100%.\n3. Nếu server đột ngột mất điện, khi khởi động lại, PostgreSQL chỉ cần đọc lại các bản ghi WAL gần nhất (REDO) để khôi phục trạng thái bảng hoàn chỉnh.\n\n---\n\n## 4. Checkpointer & Background Writer\n\n* **Checkpointer**: Định kỳ (mặc định sau mỗi 5 phút hoặc khi dung lượng WAL đạt ngưỡng `max_wal_size = 1GB`), tiến trình Checkpointer sẽ ghi toàn bộ các Dirty Pages trong Shared Buffers xuống đĩa cứng và tạo một mốc kiểm tra (*Checkpoint*). Nhờ mốc Checkpoint, khi phục hồi sau sự cố, PostgreSQL không cần đọc lại toàn bộ lịch sử WAL từ thuở sơ khai.\n* **Background Writer (bgwriter)**: Chạy liên tục để đẩy các dirty pages ít dùng xuống đĩa, dọn sạch chỗ trong Shared Buffers để các Backend Process mới luôn có sẵn buffer trống.\n\n---\n\n## 5. Kinh Nghiệm Thực Chiến Cho Kỹ Sư Java Backend\n\n> [!TIP]\n> **Tại sao bắt buộc phải dùng Connection Pool (HikariCP) với PostgreSQL?**\n> Vì mỗi kết nối đến PostgreSQL là một **tiến trình độc lập (Process)** ngốn từ **5 MB đến 20 MB RAM** và tốn chi phí gọi lệnh `fork()` của hệ điều hành. Nếu ứng dụng Java mở kết nối tự do mà không qua HikariCP (ví dụ mở 1,000 kết nối), server PostgreSQL sẽ nhanh chóng cạn kiệt RAM và sập vì OOM (Out Of Memory). Mức thiết lập tối ưu cho `maximumPoolSize` của HikariCP thường chỉ từ **10 đến 30 connections**!"
+    },
+    {
+      "id": "lesson-02",
+      "slug": "lesson-02",
+      "number": 2,
+      "chapterId": "ch-01",
+      "title": "Thiết Kế Relational Schema: Chuẩn Hóa 3NF vs Phản Chuẩn Hóa (Denormalization)",
+      "summary": "Nắm vững ranh giới giữa chuẩn hóa dữ liệu 3NF chống dư thừa và kỹ thuật phản chuẩn hóa có chủ đích để tăng tốc đọc cho các hệ thống quy mô lớn, kết hợp với các công cụ migration như Flyway / Liquibase.",
+      "durationMinutes": 25,
+      "tags": ["Database Design", "3NF", "Denormalization", "Schema Migration", "Flyway"],
+      "contentMarkdown": "## 1. Chuẩn Hóa Dữ Liệu (Normalization) Trong Thực Tế\n\nTrong thiết kế cơ sở dữ liệu quan hệ, **3 Dạng Chuẩn Đầu Tiên (1NF, 2NF, 3NF)** giúp triệt tiêu hiện tượng dư thừa dữ liệu (Data Redundancy) và bảo vệ tính toàn vẹn khi cập nhật:\n\n* **1NF (First Normal Form)**: Mỗi cột chỉ chứa giá trị nguyên tử (Atomic values), không chứa danh sách hay mảng nhiều giá trị trong một ô.\n* **2NF (Second Normal Form)**: Đạt 1NF và mọi thuộc tính không khóa phải phụ thuộc hoàn toàn vào toàn bộ khóa chính (loại bỏ phụ thuộc một phần vào khóa chính phức hợp).\n* **3NF (Third Normal Form)**: Đạt 2NF và không có thuộc tính không khóa nào phụ thuộc bắc cầu vào khóa chính (A -> B -> C).\n\n```mermaid\nerDiagram\n    CUSTOMERS ||--o{ ORDERS : places\n    ORDERS ||--|{ ORDER_ITEMS : contains\n    PRODUCTS ||--o{ ORDER_ITEMS : \"included in\"\n\n    CUSTOMERS {\n        uuid id PK\n        varchar email UK\n        varchar full_name\n        timestamptz created_at\n    }\n    ORDERS {\n        uuid id PK\n        uuid customer_id FK\n        varchar status\n        numeric total_amount\n        timestamptz ordered_at\n    }\n    ORDER_ITEMS {\n        uuid id PK\n        uuid order_id FK\n        uuid product_id FK\n        int quantity\n        numeric unit_price\n    }\n    PRODUCTS {\n        uuid id PK\n        varchar sku UK\n        varchar title\n        numeric price\n    }\n```\n\n---\n\n## 2. Khi Nào Cần Phản Chuẩn Hóa (Denormalization)?\n\nChuẩn hóa cao (3NF) rất tốt cho các thao tác ghi (Write-heavy) vì không sợ mâu thuẫn dữ liệu. Tuy nhiên, khi hệ thống phát triển với hàng triệu đơn hàng, việc thực hiện `JOIN` qua 4-5 bảng để hiển thị một trang danh sách đơn hàng sẽ gây ngốn CPU và Disk I/O nặng nề.\n\n* **Kỹ thuật lưu trữ Snapshot**: Bảng `order_items` lưu trực tiếp giá tại thời điểm mua (`unit_price`) và tên sản phẩm (`product_name`), thay vì chỉ lưu `product_id`. Điều này vừa giúp truy vấn nhanh không cần JOIN, vừa giữ đúng lịch sử giá khi sản phẩm gốc đổi giá trong tương lai.\n* **Biến đếm / Tổng tổng hợp sẵn (Aggregated Columns)**: Lưu cột `total_items` hoặc `total_amount` trên bảng `orders` và cập nhật thông qua Trigger hoặc logic Service nguyên tử, giúp câu lệnh xem danh sách đơn hàng không cần thực hiện `SUM(quantity * price)` trên bảng con.\n\n---\n\n## 3. Quản Lý Migration Bằng Flyway Trong Dự Án Spring Boot\n\nTuyệt đối không sử dụng `spring.jpa.hibernate.ddl-auto=update` trên môi trường Production! Thay vào đó, toàn bộ thay đổi schema phải được kiểm soát phiên bản qua **Flyway**:\n\n```sql\n-- V1__init_schema.sql\nCREATE TABLE customers (\n    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\n    email VARCHAR(255) NOT NULL UNIQUE,\n    full_name VARCHAR(150) NOT NULL,\n    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE orders (\n    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\n    customer_id UUID NOT NULL REFERENCES customers(id) ON DELETE RESTRICT,\n    status VARCHAR(50) NOT NULL DEFAULT 'PENDING',\n    total_amount NUMERIC(12, 2) NOT NULL DEFAULT 0.00,\n    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE INDEX idx_orders_customer_created ON orders (customer_id, created_at DESC);\n```"
+    },
+    {
+      "id": "lesson-03",
+      "slug": "lesson-03",
+      "number": 3,
+      "chapterId": "ch-01",
+      "title": "Hệ Thống Kiểu Dữ Liệu Chuyên Sâu: JSONB, UUIDv7, Arrays & Timestamptz",
+      "summary": "Tận dụng các kiểu dữ liệu độc quyền của PostgreSQL để tăng hiệu năng lưu trữ: lưu schema động với JSONB, dùng UUIDv7 tăng tốc chỉ mục B-Tree, quản lý múi giờ với TIMESTAMPTZ.",
+      "durationMinutes": 22,
+      "tags": ["PostgreSQL", "Data Types", "JSONB", "UUID", "Timestamptz", "Performance"],
+      "contentMarkdown": "## 1. JSON vs JSONB: Lựa Chọn Nào Cho Java Backend?\n\nPostgreSQL hỗ trợ 2 kiểu dữ liệu JSON với cơ chế lưu trữ khác biệt hoàn toàn:\n\n| Tiêu chí | `JSON` (Text thuần) | `JSONB` (Binary format) | Khuyên dùng |\n| :--- | :--- | :--- | :--- |\n| **Định dạng lưu trữ** | Lưu chuỗi văn bản nguyên bản | Chuyển đổi và nén thành cây nhị phân nhị phân | **JSONB** |\n| **Tốc độ ghi (Insert/Update)** | Rất nhanh (chỉ kiểm tra cú pháp) | Chậm hơn đôi chút do phải phân tích & nén | Cân bằng |\n| **Tốc độ truy vấn (Query)** | Chậm (phải đọc lại chuỗi từ đầu) | Siêu tốc (truy cập trực tiếp theo key O(1)) | **JSONB** |\n| **Hỗ trợ Index** | Không hỗ trợ index sâu | Hỗ trợ chỉ mục **GIN Index** mạnh mẽ | **JSONB** |\n\n* **Cú pháp truy vấn JSONB trong PostgreSQL**:\n```sql\n-- Lấy thuộc tính 'color' trong cột metadata\nSELECT id, metadata->>'color' AS product_color\nFROM products\nWHERE metadata @> '{\"in_stock\": true}';\n```\n\n---\n\n## 2. UUID v4 vs UUID v7: Vấn Đề Phân Mảnh B-Tree Index\n\n* **Vấn đề của UUID v4**: Là chuỗi ngẫu nhiên hoàn toàn (Random). Khi dùng UUID v4 làm khóa chính `PRIMARY KEY`, mỗi bản ghi mới chèn vào sẽ có giá trị ngẫu nhiên, buộc cây **B-Tree Index phải liên tục phân tách trang (Page Splits)** và gây phân mảnh dữ liệu nghiêm trọng trong RAM và đĩa cứng.\n* **Giải pháp UUID v7 (Time-ordered UUID)**: UUID v7 kết hợp **Timestamp (mili-giây) ở 48 bit đầu** và phần ngẫu nhiên ở các bit sau. Nhờ đó, các giá trị UUID v7 tự động sắp xếp tăng dần theo thời gian, giúp thao tác `INSERT` luôn ghi vào cuối cây B-Tree tương tự như `BIGSERIAL` tự tăng, nhưng vẫn đảm bảo tính độc nhất toàn cầu không bị đụng độ giữa các microservices.\n\n---\n\n## 3. Luôn Dùng TIMESTAMPTZ Thay Vì TIMESTAMP\n\n* `TIMESTAMP`: Lưu ngày giờ cục bộ nhưng **không lưu thông tin múi giờ (Timezone)**.\n* `TIMESTAMPTZ`: PostgreSQL tự động chuyển đổi thời gian đầu vào sang chuẩn giờ quốc tế **UTC** để lưu trên đĩa, và tự động chuyển về múi giờ của client khi truy vấn.\n* **Quy tắc vàng cho Java Backend**: Luôn dùng `TIMESTAMPTZ` trong PostgreSQL và ánh xạ sang `java.time.Instant` hoặc `java.time.OffsetDateTime` trong Spring Data JPA để tránh sai lệch giờ khi server và database đặt ở các quốc gia khác nhau."
+    },
+    {
+      "id": "lesson-04",
+      "slug": "lesson-04",
+      "number": 4,
+      "chapterId": "ch-01",
+      "title": "Ràng Buộc Dữ Liệu (Constraints), Khóa Ngoại & Toàn Vẹn Thực Thể",
+      "summary": "Sử dụng NOT NULL, UNIQUE, CHECK constraint và chiến lược ON DELETE RESTRICT vs CASCADE để bảo vệ dữ liệu ở tầng thấp nhất.",
+      "durationMinutes": 18,
+      "tags": ["Constraints", "Foreign Key", "Data Integrity", "Cascade"],
+      "contentMarkdown": "## Đề cương bài học\n\n*Bài học đang sẵn sàng. Nội dung chi tiết sẽ được tự động đồng bộ từ file ZIP bài học của bạn.*"
+    },
+    {
+      "id": "lesson-05",
+      "slug": "lesson-05",
+      "number": 5,
+      "chapterId": "ch-02",
+      "title": "Bản Chất Cấu Trúc B-Tree Index & Cách Phân Tích EXPLAIN (ANALYZE, BUFFERS)",
+      "summary": "Khám phá cấu trúc cây B-Tree, cơ chế tìm kiếm O(log N) và giải mã toàn diện các chỉ số trong bảng EXPLAIN ANALYZE.",
+      "durationMinutes": 25,
+      "tags": ["B-Tree", "Indexing", "EXPLAIN ANALYZE", "Buffers", "Query Optimization"],
+      "contentMarkdown": "## Đề cương bài học\n\n*Bài học đang sẵn sàng. Nội dung chi tiết sẽ được tự động đồng bộ từ file ZIP bài học của bạn.*"
+    },
+    {
+      "id": "lesson-06",
+      "slug": "lesson-06",
+      "number": 6,
+      "chapterId": "ch-02",
+      "title": "Các Loại Index Chuyên Biệt: Hash, GiST, GIN cho JSONB & BRIN cho Dữ Liệu Lớn",
+      "summary": "Khi nào nên dùng GIN cho JSONB, GiST cho tọa độ địa lý (GIS) và BRIN để tiết kiệm 99% RAM cho bảng hàng tỷ dòng.",
+      "durationMinutes": 22,
+      "tags": ["GIN", "GiST", "BRIN", "Hash Index", "Big Data"],
+      "contentMarkdown": "## Đề cương bài học\n\n*Bài học đang sẵn sàng. Nội dung chi tiết sẽ được tự động đồng bộ từ file ZIP bài học của bạn.*"
+    },
+    {
+      "id": "lesson-07",
+      "slug": "lesson-07",
+      "number": 7,
+      "chapterId": "ch-02",
+      "title": "Composite Index, Index Bao Phủ (Covering Index / INCLUDE) & Bẫy Index Scan",
+      "summary": "Quy tắc tiền tố bên trái (Left-prefix rule), Index-Only Scan và cách loại bỏ các bẫy ngầm khiến Database không thèm dùng Index.",
+      "durationMinutes": 20,
+      "tags": ["Composite Index", "Covering Index", "INCLUDE", "Index-Only Scan"],
+      "contentMarkdown": "## Đề cương bài học\n\n*Bài học đang sẵn sàng. Nội dung chi tiết sẽ được tự động đồng bộ từ file ZIP bài học của bạn.*"
+    },
+    {
+      "id": "lesson-08",
+      "slug": "lesson-08",
+      "number": 8,
+      "chapterId": "ch-02",
+      "title": "Tối Ưu Hóa Truy Vấn Phức Tạp: Subquery vs JOIN, CTEs & Window Functions",
+      "summary": "Tối ưu hóa các truy vấn báo cáo, phân biệt Correlated Subquery và cách dùng Window Functions phân trang xếp hạng siêu tốc.",
+      "durationMinutes": 24,
+      "tags": ["JOIN", "CTEs", "Window Functions", "Query Tuning"],
+      "contentMarkdown": "## Đề cương bài học\n\n*Bài học đang sẵn sàng. Nội dung chi tiết sẽ được tự động đồng bộ từ file ZIP bài học của bạn.*"
+    },
+    {
+      "id": "lesson-09",
+      "slug": "lesson-09",
+      "number": 9,
+      "chapterId": "ch-03",
+      "title": "Bản Chất ACID & Cơ Chế Đa Phiên Bản MVCC (Multi-Version Concurrency Control)",
+      "summary": "Khám phá cách PostgreSQL đọc và ghi đồng thời không chặn nhau nhờ xmin, xmax và kiến trúc Multi-Version Concurrency Control.",
+      "durationMinutes": 25,
+      "tags": ["ACID", "MVCC", "xmin", "xmax", "Concurrency"],
+      "contentMarkdown": "## Đề cương bài học\n\n*Bài học đang sẵn sàng. Nội dung chi tiết sẽ được tự động đồng bộ từ file ZIP bài học của bạn.*"
+    },
+    {
+      "id": "lesson-10",
+      "slug": "lesson-10",
+      "number": 10,
+      "chapterId": "ch-03",
+      "title": "4 Cấp Độ Cô Lập Giao Dịch & Các Hiện Tượng Bất Thường (Dirty Read, Non-repeatable Read, Phantom Read)",
+      "summary": "Phân tích Read Committed, Repeatable Read, Serializable và hiện tượng Serialization Failure trong Java backend.",
+      "durationMinutes": 22,
+      "tags": ["Isolation Levels", "Dirty Read", "Phantom Read", "Serializable"],
+      "contentMarkdown": "## Đề cương bài học\n\n*Bài học đang sẵn sàng. Nội dung chi tiết sẽ được tự động đồng bộ từ file ZIP bài học của bạn.*"
+    },
+    {
+      "id": "lesson-11",
+      "slug": "lesson-11",
+      "number": 11,
+      "chapterId": "ch-03",
+      "title": "Khóa Trong PostgreSQL: Row Locks (FOR UPDATE), Table Locks, Advisory Locks & Chống Deadlock",
+      "summary": "Cách áp dụng Pessimistic Locking trong Spring Boot (@Lock), giải phóng khóa nhanh chóng và mẹo sắp xếp thứ tự tránh Deadlock.",
+      "durationMinutes": 24,
+      "tags": ["Locks", "FOR UPDATE", "Advisory Lock", "Deadlock", "Pessimistic Lock"],
+      "contentMarkdown": "## Đề cương bài học\n\n*Bài học đang sẵn sàng. Nội dung chi tiết sẽ được tự động đồng bộ từ file ZIP bài học của bạn.*"
+    },
+    {
+      "id": "lesson-12",
+      "slug": "lesson-12",
+      "number": 12,
+      "chapterId": "ch-03",
+      "title": "Tiến Trình Dọn Rác VACUUM, Autovacuum & Hiện Tượng Phình To Bảng (Table Bloat)",
+      "summary": "Tại sao câu lệnh DELETE trong PostgreSQL không lập tức giải phóng đĩa, nguyên lý Dead Tuples và cách chỉnh thông số Autovacuum.",
+      "durationMinutes": 20,
+      "tags": ["VACUUM", "Autovacuum", "Table Bloat", "Dead Tuples", "Maintenance"],
+      "contentMarkdown": "## Đề cương bài học\n\n*Bài học đang sẵn sàng. Nội dung chi tiết sẽ được tự động đồng bộ từ file ZIP bài học của bạn.*"
+    },
+    {
+      "id": "lesson-13",
+      "slug": "lesson-13",
+      "number": 13,
+      "chapterId": "ch-04",
+      "title": "Cấu Hình & Tối Ưu Connection Pool HikariCP Cho Ứng Dụng Spring Boot",
+      "summary": "Công thức tính toán số lượng kết nối tối ưu (Pool Size = Connections = 2 * CPU cores + Disk Count), timeout settings và leak detection.",
+      "durationMinutes": 22,
+      "tags": ["HikariCP", "Connection Pool", "Spring Boot", "Performance Tuning"],
+      "contentMarkdown": "## Đề cương bài học\n\n*Bài học đang sẵn sàng. Nội dung chi tiết sẽ được tự động đồng bộ từ file ZIP bài học của bạn.*"
+    },
+    {
+      "id": "lesson-14",
+      "slug": "lesson-14",
+      "number": 14,
+      "chapterId": "ch-04",
+      "title": "Spring Data JPA & Hibernate: Giải Quyết Triệt Để Thảm Họa N+1 Query",
+      "summary": "So sánh FetchType.LAZY vs EAGER, phân biệt JOIN FETCH vs @EntityGraph và cơ chế Dynamic Batch Fetching.",
+      "durationMinutes": 25,
+      "tags": ["Spring Data JPA", "Hibernate", "N+1 Query", "EntityGraph", "JOIN FETCH"],
+      "contentMarkdown": "## Đề cương bài học\n\n*Bài học đang sẵn sàng. Nội dung chi tiết sẽ được tự động đồng bộ từ file ZIP bài học của bạn.*"
+    },
+    {
+      "id": "lesson-15",
+      "slug": "lesson-15",
+      "number": 15,
+      "chapterId": "ch-04",
+      "title": "Tối Ưu Batch Insert / Update Hàng Loạt Với JDBC Batch & Hibernate batch_size",
+      "summary": "Tăng tốc chèn 100,000 bản ghi từ 30 giây xuống 1.5 giây bằng cơ chế reWriteBatchedInserts=true và tối ưu sequence generation.",
+      "durationMinutes": 22,
+      "tags": ["Batch Insert", "JDBC", "Hibernate Batching", "High Throughput"],
+      "contentMarkdown": "## Đề cương bài học\n\n*Bài học đang sẵn sàng. Nội dung chi tiết sẽ được tự động đồng bộ từ file ZIP bài học của bạn.*"
+    },
+    {
+      "id": "lesson-16",
+      "slug": "lesson-16",
+      "number": 16,
+      "chapterId": "ch-04",
+      "title": "Quản Lý Giao Dịch @Transactional: Propagation, Isolation, Rollback Rules & Cạm Bẫy Proxies",
+      "summary": "Bản chất AOP Proxy trong Spring, tại sao gọi private method hoặc tự gọi nội bộ (self-invocation) làm mất tác dụng @Transactional.",
+      "durationMinutes": 25,
+      "tags": ["Spring", "@Transactional", "AOP Proxy", "Rollback", "Propagation"],
+      "contentMarkdown": "## Đề cương bài học\n\n*Bài học đang sẵn sàng. Nội dung chi tiết sẽ được tự động đồng bộ từ file ZIP bài học của bạn.*"
+    },
+    {
+      "id": "lesson-17",
+      "slug": "lesson-17",
+      "number": 17,
+      "chapterId": "ch-05",
+      "title": "Phân Vùng Bảng (Table Partitioning): Declarative Range, List & Hash Partitioning",
+      "summary": "Kỹ thuật chia nhỏ bảng hàng trăm triệu dòng theo tháng/năm, Partition Pruning và tối ưu câu lệnh truy vấn báo cáo.",
+      "durationMinutes": 25,
+      "tags": ["Table Partitioning", "Range Partitioning", "Big Data", "Scalability"],
+      "contentMarkdown": "## Đề cương bài học\n\n*Bài học đang sẵn sàng. Nội dung chi tiết sẽ được tự động đồng bộ từ file ZIP bài học của bạn.*"
+    },
+    {
+      "id": "lesson-18",
+      "slug": "lesson-18",
+      "number": 18,
+      "chapterId": "ch-05",
+      "title": "Streaming Replication & Thiết Lập Mô Hình Master - Read Replica Cho Java Backend",
+      "summary": "Đồng bộ dữ liệu bất đồng bộ sang Replica, định tuyến luồng đọc/ghi với AbstractRoutingDataSource trong Spring Boot.",
+      "durationMinutes": 25,
+      "tags": ["Replication", "Read Replica", "High Availability", "Spring Routing"],
+      "contentMarkdown": "## Đề cương bài học\n\n*Bài học đang sẵn sàng. Nội dung chi tiết sẽ được tự động đồng bộ từ file ZIP bài học của bạn.*"
+    },
+    {
+      "id": "lesson-19",
+      "slug": "lesson-19",
+      "number": 19,
+      "chapterId": "ch-05",
+      "title": "Chiến Lược Phân Trang Hiệu Năng Cao: Offset Pagination vs Keyset (Cursor-based) Pagination",
+      "summary": "Tại sao OFFSET 1000000 LIMIT 20 làm chết database, và cách chuyển đổi sang Keyset Pagination để đạt thời gian phản hồi O(1).",
+      "durationMinutes": 20,
+      "tags": ["Pagination", "OFFSET", "Keyset Pagination", "Cursor-based", "Performance"],
+      "contentMarkdown": "## Đề cương bài học\n\n*Bài học đang sẵn sàng. Nội dung chi tiết sẽ được tự động đồng bộ từ file ZIP bài học của bạn.*"
+    },
+    {
+      "id": "lesson-20",
+      "slug": "lesson-20",
+      "number": 20,
+      "chapterId": "ch-05",
+      "title": "Giám Sát Production: pg_stat_statements, Tối Ưu Kernel, Phát Hiện Connection Leaks & Checklist Vận Hành",
+      "summary": "Khai thác pg_stat_statements để săn tìm câu lệnh SQL chậm nhất, phát hiện rò rỉ kết nối và checklist 10 điều bắt buộc khi đưa PostgreSQL lên production.",
+      "durationMinutes": 30,
+      "tags": ["Monitoring", "pg_stat_statements", "Production Checklist", "DevOps"],
+      "contentMarkdown": "## Đề cương bài học\n\n*Bài học đang sẵn sàng. Nội dung chi tiết sẽ được tự động đồng bộ từ file ZIP bài học của bạn.*"
+    }
+  ]
+}
