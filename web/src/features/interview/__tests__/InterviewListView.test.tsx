@@ -46,6 +46,18 @@ describe("InterviewListView Component", () => {
     expect(screen.getByText(/2 câu hỏi chọn lọc/i)).toBeDefined();
   });
 
+  it("shows text size controls inside the right study rail and keeps a smaller-screen fallback", () => {
+    const { container } = render(<InterviewListView initialQuestions={mockQuestions} />);
+    const rail = container.querySelector("aside.sticky");
+    expect(rail).toBeInTheDocument();
+    expect(rail?.textContent).toContain("Cỡ chữ bài học");
+    expect(rail?.querySelector('[role="group"][aria-label="Điều chỉnh cỡ chữ"]')).toBeInTheDocument();
+
+    const headerFallback = container.querySelector("header .\\32 xl\\:hidden");
+    expect(headerFallback).toBeInTheDocument();
+    expect(headerFallback?.querySelector('[role="group"][aria-label="Điều chỉnh cỡ chữ"]')).toBeInTheDocument();
+  });
+
   it("renders all initial question cards", () => {
     render(<InterviewListView initialQuestions={mockQuestions} />);
 

@@ -397,7 +397,10 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
 
         {/* Action buttons: Presentation, Add question (only in Edit mode) & switch to LeetCode practice */}
         <div className="flex flex-wrap items-center gap-2.5 self-start">
-          <InterviewTextSizeControl value={textScale} onChange={changeTextScale} />
+          {/* Compact fallback when the sticky right rail is hidden. */}
+          <div className="2xl:hidden">
+            <InterviewTextSizeControl value={textScale} onChange={changeTextScale} />
+          </div>
           <button
             type="button"
             onClick={() => {
@@ -742,6 +745,8 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
         {/* Right Sticky Rail (Visible on 2xl+ / 27" screens) */}
         <aside className="hidden 2xl:block sticky top-6 space-y-6">
           <InterviewRightRail
+            textScale={textScale}
+            onTextScaleChange={changeTextScale}
             questions={pagedQuestions}
             allQuestions={mergedQuestions}
             progress={progress}

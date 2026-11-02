@@ -13,8 +13,11 @@ import type { InterviewProgressState, InterviewQuestion } from "@/lib/interview/
 import { INTERVIEW_CATEGORIES } from "@/lib/interview/types";
 import { useToast } from "@/components/ui/Toast";
 import { useConfirm } from "@/components/ui/ConfirmDialog";
+import { InterviewTextSizeControl } from "./InterviewTextSizeControl";
 
 export interface InterviewRightRailProps {
+  textScale: number;
+  onTextScaleChange: (value: number) => void;
   questions: InterviewQuestion[];
   allQuestions: InterviewQuestion[];
   progress: InterviewProgressState;
@@ -25,6 +28,8 @@ export interface InterviewRightRailProps {
 }
 
 export function InterviewRightRail({
+  textScale,
+  onTextScaleChange,
   questions,
   allQuestions,
   progress,
@@ -126,6 +131,12 @@ export function InterviewRightRail({
             <Presentation className="h-3.5 w-3.5" />
             <span>Bật Trình Chiếu Ngay</span>
           </button>
+
+          {/* Text size stays accessible in the sticky right rail while studying. */}
+          <div className="flex items-center justify-between gap-3 border-t border-white/15 pt-3">
+            <span className="text-xs font-semibold text-indigo-100">Cỡ chữ bài học</span>
+            <InterviewTextSizeControl value={textScale} onChange={onTextScaleChange} />
+          </div>
         </div>
 
         {/* Ambient background glow */}
