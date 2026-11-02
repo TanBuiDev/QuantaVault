@@ -61,11 +61,28 @@ describe("CourseLessonView", () => {
     expect(screen.getAllByText("Chương 1: Nền tảng").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("Tóm tắt bài 1")).toBeInTheDocument();
     expect(screen.getByText("Bài 2: Nâng cao")).toBeInTheDocument();
+    expect(screen.getByText("Bản đồ 2 bài học")).toBeInTheDocument();
+    expect(screen.getByText("#01")).toBeInTheDocument();
+    expect(screen.getByText("#02")).toBeInTheDocument();
 
     const markBtn = screen.getByRole("button", { name: /đánh dấu đã học/i });
     expect(markBtn).toBeInTheDocument();
 
     fireEvent.click(markBtn);
     expect(screen.getByRole("button", { name: /đã học xong/i })).toBeInTheDocument();
+  });
+
+  it("renders text size controls in both right rail and mobile bar", () => {
+    const { container } = render(
+      <CourseLessonView
+        course={mockCourse}
+        lesson={mockCourse.lessons[0]}
+        chapterTitle="Chương 1: Nền tảng"
+      />
+    );
+
+    const controls = container.querySelectorAll('[role="group"][aria-label="Điều chỉnh cỡ chữ"]');
+    expect(controls.length).toBeGreaterThanOrEqual(1);
+    expect(container.textContent).toContain("Cỡ chữ bài học");
   });
 });

@@ -41,3 +41,4 @@ export interface AllCoursesProgressState {
   version: 1;
   courses: Record<string, CourseProgressRecord>;
 }
+

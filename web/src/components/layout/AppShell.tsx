@@ -14,9 +14,19 @@ export interface AppShellProps {
 function AppShellContent({ children }: { children: ReactNode }) {
   const { isOpen, toggleSidebar, setSidebarOpen } = useSidebar();
 
-  // Keyboard shortcut: Ctrl + B to toggle sidebar
+  // Keyboard shortcut: Ctrl + B to toggle sidebar (only when not typing in form controls)
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
+      const target = e.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+
       if (e.ctrlKey && (e.key === "b" || e.key === "B")) {
         e.preventDefault();
         toggleSidebar();

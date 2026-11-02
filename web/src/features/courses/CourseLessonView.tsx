@@ -15,6 +15,8 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { MarkdownContent } from "@/features/practice/MarkdownContent";
+import { InterviewTextSizeControl } from "@/features/interview/InterviewTextSizeControl";
+import { useInterviewTextSize } from "@/features/interview/useInterviewTextSize";
 import type { CourseLesson, CourseManifest } from "@/lib/courses";
 import { useCourseProgress } from "@/lib/courses/useCourseProgress";
 import { CourseSyllabusSidebar } from "./CourseSyllabusSidebar";
@@ -36,6 +38,7 @@ export function CourseLessonView({
 }: CourseLessonViewProps) {
   const [mobileSyllabusOpen, setMobileSyllabusOpen] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
+  const { textScale, changeTextScale } = useInterviewTextSize();
 
   const {
     hydrated,
@@ -53,33 +56,29 @@ export function CourseLessonView({
 
   const handleShare = () => {
     if (typeof window !== "undefined") {
-      navigator.clipboard.writeText(window.location.href);
+      void navigator.clipboard.writeText(window.location.href);
       setCopiedLink(true);
       setTimeout(() => setCopiedLink(false), 2000);
     }
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] relative w-full bg-[var(--background)]">
-      {/* 1. Desktop Syllabus Sidebar (fixed width on desktop) */}
-      <div className="hidden lg:block w-80 shrink-0 border-r border-[var(--border)] sticky top-0 h-[calc(100vh-4rem)]">
-        <CourseSyllabusSidebar course={course} currentLessonId={lesson.id} />
-      </div>
-
-      {/* 2. Mobile Syllabus Drawer Overlay */}
+    <div className="mx-auto w-full max-w-5xl xl:max-w-6xl 2xl:max-w-[1720px] space-y-8 lg:space-y-10 animate-fade-in">
+      {/* Mobile Syllabus Drawer Overlay */}
       {mobileSyllabusOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden flex">
+        <div className="fixed inset-0 z-50 xl:hidden flex">
           <div
             className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
             onClick={() => setMobileSyllabusOpen(false)}
           />
-          <div className="relative w-80 max-w-[85vw] bg-[var(--surface)] h-full shadow-2xl flex flex-col z-10 animate-slide-in-left">
-            <div className="flex items-center justify-between p-3 border-b border-[var(--border)]">
+          <div className="relative w-84 max-w-[85vw] bg-[var(--surface)] h-full shadow-2xl flex flex-col z-10 animate-slide-in-left">
+            <div className="flex items-center justify-between p-3.5 border-b border-[var(--border)]">
               <span className="text-xs font-bold text-[var(--foreground)]">Mục Lục Khóa Học</span>
               <button
                 type="button"
                 onClick={() => setMobileSyllabusOpen(false)}
-                className="p-1 rounded-lg text-[var(--muted)] hover:bg-[var(--surface-hover)]"
+                className="p-1 rounded-lg text-[var(--muted)] hover:bg-[var(--surface-hover)] cursor-pointer"
+                aria-label="Đóng mục lục"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -89,22 +88,24 @@ export function CourseLessonView({
                 course={course}
                 currentLessonId={lesson.id}
                 onLessonSelect={() => setMobileSyllabusOpen(false)}
+                className="flex flex-col h-full bg-[var(--surface)] overflow-hidden"
               />
             </div>
           </div>
         </div>
       )}
 
-      {/* 3. Main Lesson Reading View */}
-      <main className="flex-1 min-w-0 flex flex-col justify-between">
-        <div className="max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
-          {/* Top Bar for Mobile & Breadcrumbs */}
+      {/* Two-Column Responsive Layout on Desktop / Large Screens */}
+      <div className="xl:grid xl:grid-cols-[1fr_340px] 2xl:grid-cols-[1fr_380px] xl:gap-8 xl:items-start">
+        {/* Left / Center Column: Lesson Article (Fluid 1fr) */}
+        <div className="space-y-8 min-w-0">
+          {/* 1. Top Navigation & Action Bar */}
           <div className="flex items-center justify-between gap-3 pb-4 border-b border-[var(--border)]">
             <div className="flex items-center gap-2 min-w-0">
               <button
                 type="button"
                 onClick={() => setMobileSyllabusOpen(true)}
-                className="lg:hidden flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-bold text-[var(--foreground)] hover:bg-[var(--surface-hover)] shadow-2xs"
+                className="xl:hidden flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-bold text-[var(--foreground)] hover:bg-[var(--surface-hover)] shadow-2xs cursor-pointer"
               >
                 <Menu className="h-4 w-4 text-indigo-500" />
                 <span>Mục lục</span>
@@ -124,11 +125,16 @@ export function CourseLessonView({
             </div>
 
             <div className="flex items-center gap-2 shrink-0">
+              {/* Fallback Text Size Control on screens where the Right Rail is hidden */}
+              <div className="xl:hidden">
+                <InterviewTextSizeControl value={textScale} onChange={changeTextScale} />
+              </div>
+
               {/* Share link button */}
               <button
                 type="button"
                 onClick={handleShare}
-                className="flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-medium text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)] transition-all"
+                className="flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-medium text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)] transition-all cursor-pointer shadow-2xs"
                 title="Sao chép liên kết bài học"
               >
                 {copiedLink ? (
@@ -148,7 +154,7 @@ export function CourseLessonView({
               <button
                 type="button"
                 onClick={() => toggleLessonCompleted(course.id, lesson.id)}
-                className={`flex items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all ${
+                className={`flex items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all cursor-pointer ${
                   isCompleted
                     ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20"
                     : "bg-[var(--primary)] text-white hover:brightness-110 shadow-sm active:scale-95"
@@ -169,7 +175,7 @@ export function CourseLessonView({
             </div>
           </div>
 
-          {/* Lesson Header */}
+          {/* 2. Lesson Header */}
           <header className="space-y-4">
             <div className="flex flex-wrap items-center gap-2">
               <span className="rounded-md bg-indigo-500/10 px-2 py-0.5 text-xs font-bold text-indigo-600 dark:text-indigo-400">
@@ -207,59 +213,70 @@ export function CourseLessonView({
             )}
           </header>
 
-          {/* Markdown Content Area */}
-          <article className="prose dark:prose-invert max-w-none text-[var(--foreground)] space-y-6">
-            <MarkdownContent markdown={lesson.contentMarkdown} />
-          </article>
+          {/* 3. Markdown Content Area */}
+          <section aria-label="Nội dung bài học" className="prose dark:prose-invert max-w-none text-[var(--foreground)] space-y-6">
+            <MarkdownContent markdown={lesson.contentMarkdown} fullWidth textScale={textScale} />
+          </section>
+
+          {/* 4. Footer Navigation Bar */}
+          <footer className="pt-6 border-t border-[var(--border)]">
+            <div className="flex items-center justify-between gap-4">
+              {prevLesson ? (
+                <Link
+                  href={`/courses/${course.slug}/${prevLesson.id}`}
+                  className="group flex items-center gap-2.5 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-left hover:border-indigo-500/40 hover:shadow-xs transition-all max-w-[48%]"
+                >
+                  <ChevronLeft className="h-5 w-5 shrink-0 text-[var(--muted)] group-hover:text-indigo-500 transition-colors" />
+                  <div className="min-w-0">
+                    <span className="block text-[10px] font-semibold text-[var(--muted)] uppercase tracking-wider">
+                      Bài trước
+                    </span>
+                    <span className="block text-xs font-bold text-[var(--foreground)] truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                      {prevLesson.title}
+                    </span>
+                  </div>
+                </Link>
+              ) : (
+                <div />
+              )}
+
+              {nextLesson ? (
+                <Link
+                  href={`/courses/${course.slug}/${nextLesson.id}`}
+                  className="group flex items-center justify-end gap-2.5 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-right hover:border-indigo-500/40 hover:shadow-xs transition-all max-w-[48%]"
+                >
+                  <div className="min-w-0">
+                    <span className="block text-[10px] font-semibold text-[var(--muted)] uppercase tracking-wider">
+                      Bài tiếp theo
+                    </span>
+                    <span className="block text-xs font-bold text-[var(--foreground)] truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                      {nextLesson.title}
+                    </span>
+                  </div>
+                  <ChevronRight className="h-5 w-5 shrink-0 text-[var(--muted)] group-hover:text-indigo-500 transition-colors" />
+                </Link>
+              ) : (
+                <div className="text-right">
+                  <span className="text-xs font-bold text-emerald-500">
+                    🎉 Chúc mừng bạn đã hoàn thành khóa học!
+                  </span>
+                </div>
+              )}
+            </div>
+          </footer>
         </div>
 
-        {/* Footer Navigation Bar */}
-        <footer className="mt-12 border-t border-[var(--border)] bg-[var(--surface)] p-4 sm:p-6">
-          <div className="max-w-4xl mx-auto flex items-center justify-between gap-4">
-            {prevLesson ? (
-              <Link
-                href={`/courses/${course.slug}/${prevLesson.id}`}
-                className="group flex items-center gap-2.5 rounded-2xl border border-[var(--border)] bg-[var(--background)] px-4 py-3 text-left hover:border-indigo-500/40 hover:shadow-sm transition-all max-w-[45%]"
-              >
-                <ChevronLeft className="h-5 w-5 shrink-0 text-[var(--muted)] group-hover:text-indigo-500 transition-colors" />
-                <div className="min-w-0">
-                  <span className="block text-[10px] font-semibold text-[var(--muted)] uppercase tracking-wider">
-                    Bài trước
-                  </span>
-                  <span className="block text-xs font-bold text-[var(--foreground)] truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                    {prevLesson.title}
-                  </span>
-                </div>
-              </Link>
-            ) : (
-              <div />
-            )}
-
-            {nextLesson ? (
-              <Link
-                href={`/courses/${course.slug}/${nextLesson.id}`}
-                className="group flex items-center justify-end gap-2.5 rounded-2xl border border-[var(--border)] bg-[var(--background)] px-4 py-3 text-right hover:border-indigo-500/40 hover:shadow-sm transition-all max-w-[45%]"
-              >
-                <div className="min-w-0">
-                  <span className="block text-[10px] font-semibold text-[var(--muted)] uppercase tracking-wider">
-                    Bài tiếp theo
-                  </span>
-                  <span className="block text-xs font-bold text-[var(--foreground)] truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                    {nextLesson.title}
-                  </span>
-                </div>
-                <ChevronRight className="h-5 w-5 shrink-0 text-[var(--muted)] group-hover:text-indigo-500 transition-colors" />
-              </Link>
-            ) : (
-              <div className="text-right">
-                <span className="text-xs font-bold text-emerald-500">
-                  🎉 Chúc mừng bạn đã hoàn thành khóa học!
-                </span>
-              </div>
-            )}
+        {/* Right Sticky Column: Right Rail on Desktop / Large Screens (xl+) */}
+        <aside className="hidden xl:block sticky top-6 space-y-4">
+          {/* Sticky Text Zoom Control */}
+          <div className="flex items-center justify-between gap-3 rounded-3xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 shadow-2xs">
+            <span className="text-xs font-semibold text-[var(--foreground)]">Cỡ chữ bài học</span>
+            <InterviewTextSizeControl value={textScale} onChange={changeTextScale} />
           </div>
-        </footer>
-      </main>
+
+          <CourseSyllabusSidebar course={course} currentLessonId={lesson.id} />
+        </aside>
+      </div>
     </div>
   );
 }

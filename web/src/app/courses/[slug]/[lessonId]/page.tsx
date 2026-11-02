@@ -60,3 +60,4 @@ export default async function CourseLessonPage({ params }: LessonPageProps) {
     />
   );
 }
+

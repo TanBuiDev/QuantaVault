@@ -12,3 +12,4 @@ export default function CoursesPage() {
   const courses = getAllCourses();
   return <CourseCatalogView courses={courses} />;
 }
+

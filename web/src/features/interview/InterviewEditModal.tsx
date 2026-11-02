@@ -216,6 +216,37 @@ function InterviewEditModalForm({
     handleSaveRef.current = handleSave;
   });
 
+  const handleFormatShortcut = (prefix: string, suffix = "", defaultText = "") => {
+    const el = textareaRef.current;
+    if (!el) return;
+
+    const savedScrollTop = el.scrollTop;
+    const savedScrollLeft = el.scrollLeft;
+
+    const start = el.selectionStart ?? 0;
+    const end = el.selectionEnd ?? 0;
+    const selected = answerMarkdown.slice(start, end);
+    const contentToWrap = selected.length > 0 ? selected : defaultText;
+
+    const before = answerMarkdown.slice(0, start);
+    const after = answerMarkdown.slice(end);
+    const newValue = `${before}${prefix}${contentToWrap}${suffix}${after}`;
+
+    setAnswerMarkdown(newValue);
+
+    const cursorStart = start + prefix.length;
+    const cursorEnd = cursorStart + contentToWrap.length;
+
+    requestAnimationFrame(() => {
+      if (!textareaRef.current) return;
+      const target = textareaRef.current;
+      target.focus({ preventScroll: true });
+      target.setSelectionRange(cursorStart, cursorEnd);
+      target.scrollTop = savedScrollTop;
+      target.scrollLeft = savedScrollLeft;
+    });
+  };
+
   // Keyboard shortcut Ctrl+S or Ctrl+Enter to save
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
@@ -436,6 +467,23 @@ function InterviewEditModalForm({
                     rows={isFullscreen ? undefined : 16}
                     value={answerMarkdown}
                     onChange={(e) => setAnswerMarkdown(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.ctrlKey || e.metaKey) {
+                        if (e.key === "b" || e.key === "B") {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleFormatShortcut("**", "**", "in đậm");
+                        } else if (e.key === "i" || e.key === "I") {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleFormatShortcut("*", "*", "in nghiêng");
+                        } else if (e.key === "`") {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleFormatShortcut("`", "`", "code");
+                        }
+                      }
+                    }}
                     spellCheck={false}
                     autoCorrect="off"
                     autoCapitalize="off"

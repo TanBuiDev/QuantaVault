@@ -25,3 +25,4 @@ export default async function CourseDetailPage({ params }: CoursePageProps) {
   const firstLessonId = course.lessons[0]?.id || "lesson-01";
   redirect(`/courses/${course.slug}/${firstLessonId}`);
 }
+

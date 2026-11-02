@@ -373,7 +373,7 @@ export function getProblemContent(id: number): ProblemContent | null {
 
   try {
     const raw = parse(fs.readFileSync(/* turbopackIgnore: true */ metaPath, "utf8")) as Record<string, unknown>;
-
+    
     // Load code_versions
     if (Array.isArray(raw.code_versions) && raw.code_versions.length > 0) {
       const versionsList = raw.code_versions as Array<Record<string, unknown>>;
