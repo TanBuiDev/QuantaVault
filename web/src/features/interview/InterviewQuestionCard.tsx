@@ -18,6 +18,7 @@ import {
   Edit3,
 } from "lucide-react";
 import { MarkdownContent } from "@/features/practice/MarkdownContent";
+import { InterviewSummaryMarkdown } from "./InterviewSummaryMarkdown";
 import type { InterviewQuestion } from "@/lib/interview/types";
 import { INTERVIEW_CATEGORIES, formatQuestionNumber } from "@/lib/interview/types";
 
@@ -270,12 +271,10 @@ export function InterviewQuestionCard({
                   </button>
                 )}
               </div>
-              <p
-                style={textScale === 100 ? undefined : { fontSize: `${14 * textScale / 100}px` }}
-                className="text-xs sm:text-sm leading-relaxed text-[var(--foreground)]/90"
-              >
-                {question.summary.replace(/^(Tóm tắt cốt lõi|Trọng tâm cốt lõi):\s*/i, "")}
-              </p>
+              <InterviewSummaryMarkdown
+                markdown={question.summary.replace(/^(Tóm tắt cốt lõi|Trọng tâm cốt lõi):\s*/i, "")}
+                textScale={textScale}
+              />
             </div>
           )}
         </div>
