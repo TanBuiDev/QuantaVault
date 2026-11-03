@@ -82,6 +82,26 @@ describe("InterviewEditModal draft safety", () => {
     act(() => { vi.advanceTimersByTime(600); });
     expect(close).not.toHaveBeenCalled();
   });
+  it("fullscreen được neo vào viewport, không áp dụng transform của popup và giữ các vùng cuộn", () => {
+    mount();
+    const dialog = screen.getByRole("dialog");
+    expect(dialog).toHaveClass("fixed", "inset-0");
+
+    fireEvent.click(screen.getByRole("button", { name: "Mở rộng toàn màn hình" }));
+    const card = dialog.children[1] as HTMLElement;
+    expect(card).toHaveClass("absolute", "inset-0", "min-h-0", "overflow-hidden");
+    expect(card).not.toHaveClass("h-screen", "animate-scale-in", "transform-gpu");
+    const body = card.children[0] as HTMLElement;
+    expect(body).toHaveClass("min-h-0", "overflow-hidden");
+    const input = editor();
+    expect(input).toBeInTheDocument();
+    expect(input.closest(".rounded-2xl")).toHaveClass("min-h-0");
+
+    fireEvent.click(screen.getByRole("button", { name: "Thu nhỏ cửa sổ" }));
+    expect(card).not.toHaveClass("absolute");
+    expect(card).toHaveClass("relative", "animate-scale-in", "transform-gpu");
+    expect(editor()).toBeInTheDocument();
+  });
   it("cho phép chuyển đổi giữa chế độ toàn màn hình và mặc định", () => {
     mount();
     const expandBtn = screen.getByRole("button", { name: "Mở rộng toàn màn hình" });

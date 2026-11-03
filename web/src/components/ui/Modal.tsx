@@ -78,10 +78,10 @@ export function Modal({
       {/* Modal Card Content */}
       <div
         className={classNames(
-          "relative flex w-full flex-col bg-[var(--surface)] shadow-2xl transition-all animate-scale-in isolate transform-gpu",
+          "flex w-full flex-col bg-[var(--surface)] shadow-2xl isolate",
           fullScreen
-            ? "h-screen w-screen max-w-none max-h-none rounded-none border-0"
-            : classNames("max-h-[90vh] rounded-3xl border border-[var(--border)]", maxWidthClasses[maxWidth]),
+            ? "absolute inset-0 min-h-0 max-h-none max-w-none rounded-none border-0"
+            : classNames("relative max-h-[90vh] rounded-3xl border border-[var(--border)] transition-all animate-scale-in transform-gpu", maxWidthClasses[maxWidth]),
           className
         )}
       >
@@ -104,7 +104,7 @@ export function Modal({
           </header>
         )}
 
-        <div className={classNames("flex-1 overflow-y-auto", contentClassName ?? "px-6 py-5 sm:px-7")}>
+        <div className={classNames("flex-1 min-h-0", fullScreen ? "overflow-hidden" : "overflow-y-auto", contentClassName ?? "px-6 py-5 sm:px-7")}>
           {children}
         </div>
       </div>

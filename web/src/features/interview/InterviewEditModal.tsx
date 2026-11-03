@@ -452,7 +452,7 @@ function InterviewEditModalForm({
                 <div
                   className={classNames(
                     "flex flex-col rounded-2xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden shadow-xs",
-                    isFullscreen ? "h-full min-h-[350px]" : ""
+                    isFullscreen ? "h-full min-h-0" : ""
                   )}
                 >
                   <MarkdownEditorToolbar
@@ -507,7 +507,7 @@ function InterviewEditModalForm({
                 <div
                   className={classNames(
                     "rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 overflow-y-auto shadow-xs",
-                    isFullscreen ? "h-full min-h-[350px]" : "max-h-[500px]"
+                    isFullscreen ? "h-full min-h-0" : "max-h-[500px]"
                   )}
                 >
                   <div className="text-[11px] font-bold uppercase tracking-wider text-[var(--muted)] mb-3 pb-2 border-b border-[var(--border)]">
@@ -842,7 +842,7 @@ export function InterviewEditModal({
       onClose={handleModalClose}
       maxWidth="3xl"
       fullScreen={isFullscreen}
-      className={isFullscreen ? "h-screen w-screen rounded-none border-0 p-0 overflow-hidden" : "max-w-4xl! p-0 overflow-hidden"}
+      className={isFullscreen ? "min-h-0 rounded-none border-0 p-0 overflow-hidden" : "max-w-4xl! p-0 overflow-hidden"}
       contentClassName={isFullscreen ? "p-0 flex flex-col h-full min-h-0 overflow-hidden" : undefined}
     >
       <InterviewEditModalForm

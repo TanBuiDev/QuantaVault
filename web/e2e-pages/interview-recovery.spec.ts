@@ -30,3 +30,29 @@ test("saved interview content survives reopening and reload; unsaved recovery re
   await expect(editor).toHaveValue(unsaved);
   await expect(page.getByRole("button", { name: "Khôi phục nháp", exact: true })).toHaveCount(0);
 });
+
+test("fullscreen interview editor aligns exactly with the viewport and keeps footer visible", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 800 });
+  await page.goto("/interview/?edit=true&editQuestion=q-001");
+  const editor = page.getByPlaceholder("Nhập nội dung câu trả lời chi tiết bằng cú pháp Markdown...");
+  await expect(editor).toBeVisible();
+
+  await page.getByRole("button", { name: "Mở rộng toàn màn hình" }).click();
+  await expect(page.getByRole("button", { name: "Thu nhỏ cửa sổ" })).toBeVisible();
+
+  const bounds = await page.getByRole("dialog").evaluate(dialog => {
+    const card = dialog.children[1].getBoundingClientRect();
+    return { top: card.top, left: card.left, right: card.right, bottom: card.bottom, width: window.innerWidth, height: window.innerHeight };
+  });
+  expect(Math.abs(bounds.top)).toBeLessThanOrEqual(1);
+  expect(Math.abs(bounds.left)).toBeLessThanOrEqual(1);
+  expect(Math.abs(bounds.right - bounds.width)).toBeLessThanOrEqual(1);
+  expect(Math.abs(bounds.bottom - bounds.height)).toBeLessThanOrEqual(1);
+
+  const save = page.getByRole("button", { name: "Lưu thay đổi", exact: true });
+  await expect(save).toBeInViewport();
+  await expect(editor).toBeInViewport();
+
+  await page.getByRole("button", { name: "Thu nhỏ cửa sổ" }).click();
+  await expect(page.getByRole("button", { name: "Mở rộng toàn màn hình" })).toBeVisible();
+});
