@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import type { CourseNavigationItem } from "@/lib/courses";
 import { useEffect } from "react";
 import { SidebarProvider, useSidebar } from "./SidebarContext";
 import { AppSidebar } from "./AppSidebar";
@@ -9,9 +10,10 @@ import { CommandPalette } from "./CommandPalette";
 
 export interface AppShellProps {
   children: ReactNode;
+  courses?: CourseNavigationItem[];
 }
 
-function AppShellContent({ children }: { children: ReactNode }) {
+function AppShellContent({ children, courses }: { children: ReactNode; courses: CourseNavigationItem[] }) {
   const { isOpen, toggleSidebar, setSidebarOpen } = useSidebar();
 
   // Keyboard shortcut: Ctrl + B to toggle sidebar (only when not typing in form controls)
@@ -54,7 +56,7 @@ function AppShellContent({ children }: { children: ReactNode }) {
         />
       )}
 
-      <AppSidebar />
+      <AppSidebar courses={courses} />
       <MobileHeader />
       <CommandPalette />
 
@@ -75,10 +77,10 @@ function AppShellContent({ children }: { children: ReactNode }) {
   );
 }
 
-export function AppShell({ children }: AppShellProps) {
+export function AppShell({ children, courses = [] }: AppShellProps) {
   return (
     <SidebarProvider>
-      <AppShellContent>{children}</AppShellContent>
+      <AppShellContent courses={courses}>{children}</AppShellContent>
     </SidebarProvider>
   );
 }
