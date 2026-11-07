@@ -299,6 +299,8 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
                           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 group-hover:scale-105 transition-transform">
                             {course.icon === "Database" ? (
                               <Database className="h-6 w-6" />
+                            ) : course.icon === "Server" ? (
+                              <Server className="h-6 w-6" />
                             ) : (
                               <BookOpen className="h-6 w-6" />
                             )}
@@ -469,71 +471,42 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
             )}
           </div>
 
-          {/* 2. Java Backend Milestones Map */}
+          {/* Published courses: show actual per-course progress instead of a hardcoded checkmark. */}
           <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 space-y-4 shadow-xs">
             <div className="flex items-center gap-2 border-b border-[var(--border)] pb-3">
               <Compass className="h-4 w-4 text-emerald-500" />
               <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--foreground)]">
-                Lộ Trình Kỹ Sư Java Backend
+                Khóa học hiện có ({courses.length})
               </h3>
             </div>
-
-            <div className="space-y-3">
-              <div className="flex items-start gap-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 p-3">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-emerald-500 text-white text-[11px] font-bold">
-                  ✓
-                </span>
-                <div className="min-w-0">
-                  <span className="block text-xs font-bold text-emerald-700 dark:text-emerald-300">
-                    Chặng 01: PostgreSQL & DB
-                  </span>
-                  <span className="text-[11px] text-[var(--muted)]">
-                    20 bài học · B-Tree, MVCC, Lock, JPA
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 rounded-2xl bg-[var(--surface-hover)]/60 border border-[var(--border)] p-3 opacity-80">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[var(--border)] text-[var(--muted)] text-[11px] font-bold">
-                  2
-                </span>
-                <div className="min-w-0">
-                  <span className="block text-xs font-bold text-[var(--foreground)]">
-                    Chặng 02: Spring Boot 3 Core
-                  </span>
-                  <span className="text-[11px] text-[var(--muted)]">
-                    IoC, AOP, Transactional, Security
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 rounded-2xl bg-[var(--surface-hover)]/60 border border-[var(--border)] p-3 opacity-80">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[var(--border)] text-[var(--muted)] text-[11px] font-bold">
-                  3
-                </span>
-                <div className="min-w-0">
-                  <span className="block text-xs font-bold text-[var(--foreground)]">
-                    Chặng 03: Kafka & Microservices
-                  </span>
-                  <span className="text-[11px] text-[var(--muted)]">
-                    Event-driven, SAGA, Outbox Pattern
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 rounded-2xl bg-[var(--surface-hover)]/60 border border-[var(--border)] p-3 opacity-80">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[var(--border)] text-[var(--muted)] text-[11px] font-bold">
-                  4
-                </span>
-                <div className="min-w-0">
-                  <span className="block text-xs font-bold text-[var(--foreground)]">
-                    Chặng 04: Docker & Kubernetes
-                  </span>
-                  <span className="text-[11px] text-[var(--muted)]">
-                    Cloud deployment, Monitoring, CI/CD
-                  </span>
-                </div>
-              </div>
+            <div className="max-h-[340px] space-y-2 overflow-y-auto">
+              {courses.map((course) => {
+                const record = hydrated ? getCourseRecord(course.id) : null;
+                const { completedCount, totalLessons, percentage } = hydrated
+                  ? getCourseCompletion(course.id, course.totalLessons)
+                  : { completedCount: 0, totalLessons: course.totalLessons, percentage: 0 };
+                const completed = totalLessons > 0 && completedCount >= totalLessons;
+                const started = completedCount > 0 || Boolean(record?.lastAccessedLessonId);
+                const target = record?.lastAccessedLessonId
+                  && course.lessons.some((lesson) => lesson.id === record.lastAccessedLessonId)
+                  ? record.lastAccessedLessonId : course.lessons[0]?.id || "lesson-01";
+                return (
+                  <Link key={course.id} href={`/courses/${course.slug}/${target}`}
+                    className="block space-y-2 rounded-2xl border border-[var(--border)] p-3 hover:border-indigo-500/40 hover:bg-[var(--surface-hover)]/50">
+                    <div className="flex items-start justify-between gap-2">
+                      <span className="min-w-0 text-xs font-semibold leading-relaxed text-[var(--foreground)]">{course.title}</span>
+                      <span className="shrink-0 text-[10px] font-semibold text-indigo-600 dark:text-indigo-400">
+                        {completed ? "Hoàn thành" : started ? "Đang học" : "Chưa học"}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between text-[11px] text-[var(--muted)]">
+                      <span>{completedCount}/{totalLessons} bài</span>
+                      <span>{percentage}%</span>
+                    </div>
+                    <ProgressBar value={percentage} max={100} />
+                  </Link>
+                );
+              })}
             </div>
           </div>
 
