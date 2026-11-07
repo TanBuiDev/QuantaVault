@@ -111,6 +111,47 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
               </h2>
             </div>
 
+            {/* Search and status filters support large catalogs without changing saved progress. */}
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <label className="relative block min-w-0 flex-1">
+                <Search aria-hidden="true" className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--muted)]" />
+                <input
+                  type="search"
+                  aria-label="Tìm kiếm khóa học"
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  placeholder="Tìm theo tên, chủ đề khóa học..."
+                  className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] py-2.5 pl-10 pr-3 text-sm text-[var(--foreground)] outline-none focus:border-indigo-500"
+                />
+              </label>
+              <label className="flex shrink-0 items-center gap-2 text-xs font-medium text-[var(--muted-strong)]">
+                <span>Trạng thái</span>
+                <select
+                  aria-label="Lọc trạng thái khóa học"
+                  value={statusFilter}
+                  onChange={(event) => setStatusFilter(event.target.value as typeof statusFilter)}
+                  className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-sm text-[var(--foreground)] outline-none focus:border-indigo-500"
+                >
+                  <option value="all">Tất cả</option>
+                  <option value="studying">Đang học</option>
+                  <option value="completed">Hoàn thành</option>
+                  <option value="not-started">Chưa bắt đầu</option>
+                </select>
+              </label>
+              <span role="status" className="shrink-0 text-xs text-[var(--muted)]">{matchingCourses.length}/{courses.length} khóa</span>
+            </div>
+
+            {matchingCourses.length === 0 && (
+              <div role="status" className="rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface)] px-6 py-10 text-center">
+                <p className="font-semibold text-[var(--foreground)]">Không tìm thấy khóa học phù hợp</p>
+                <p className="mt-1 text-xs text-[var(--muted)]">Thử từ khóa hoặc trạng thái khác.</p>
+                <button type="button" onClick={() => { setSearchQuery(""); setStatusFilter("all"); }}
+                  className="mt-3 rounded-lg border border-[var(--border)] px-3 py-2 text-xs font-semibold hover:bg-[var(--surface-hover)]">
+                  Xóa bộ lọc
+                </button>
+              </div>
+            )}
+
             {/* Courses Showcase */}
             {courses.length === 1 && matchingCourses.length === 1 && primaryCourse ? (
               // Featured Hero Course Card for single primary course
