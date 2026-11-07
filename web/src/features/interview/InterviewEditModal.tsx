@@ -28,6 +28,7 @@ import type {
 import { INTERVIEW_CATEGORIES, formatQuestionBadge } from "@/lib/interview/types";
 import { MarkdownContent } from "@/features/practice/MarkdownContent";
 import { MarkdownEditorToolbar } from "./MarkdownEditorToolbar";
+import { formatMarkdownTextarea } from "./markdownFormatting";
 import { InterviewTextSizeControl } from "./InterviewTextSizeControl";
 
 export interface InterviewEditModalProps {
@@ -217,33 +218,8 @@ function InterviewEditModalForm({
   });
 
   const handleFormatShortcut = (prefix: string, suffix = "", defaultText = "") => {
-    const el = textareaRef.current;
-    if (!el) return;
-
-    const savedScrollTop = el.scrollTop;
-    const savedScrollLeft = el.scrollLeft;
-
-    const start = el.selectionStart ?? 0;
-    const end = el.selectionEnd ?? 0;
-    const selected = answerMarkdown.slice(start, end);
-    const contentToWrap = selected.length > 0 ? selected : defaultText;
-
-    const before = answerMarkdown.slice(0, start);
-    const after = answerMarkdown.slice(end);
-    const newValue = `${before}${prefix}${contentToWrap}${suffix}${after}`;
-
-    setAnswerMarkdown(newValue);
-
-    const cursorStart = start + prefix.length;
-    const cursorEnd = cursorStart + contentToWrap.length;
-
-    requestAnimationFrame(() => {
-      if (!textareaRef.current) return;
-      const target = textareaRef.current;
-      target.focus({ preventScroll: true });
-      target.setSelectionRange(cursorStart, cursorEnd);
-      target.scrollTop = savedScrollTop;
-      target.scrollLeft = savedScrollLeft;
+    formatMarkdownTextarea(textareaRef.current, answerMarkdown, setAnswerMarkdown, {
+      prefix, suffix, defaultText
     });
   };
 
@@ -472,11 +448,15 @@ function InterviewEditModalForm({
                         if (e.key === "b" || e.key === "B") {
                           e.preventDefault();
                           e.stopPropagation();
-                          handleFormatShortcut("**", "**", "in đậm");
+                          formatMarkdownTextarea(textareaRef.current, answerMarkdown, setAnswerMarkdown, {
+                            kind: "bold", defaultText: "in đậm"
+                          });
                         } else if (e.key === "i" || e.key === "I") {
                           e.preventDefault();
                           e.stopPropagation();
-                          handleFormatShortcut("*", "*", "in nghiêng");
+                          formatMarkdownTextarea(textareaRef.current, answerMarkdown, setAnswerMarkdown, {
+                            kind: "italic", defaultText: "in nghiêng"
+                          });
                         } else if (e.key === "`") {
                           e.preventDefault();
                           e.stopPropagation();
