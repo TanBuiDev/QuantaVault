@@ -1,0 +1,195 @@
+{
+  "id": "redis-for-java",
+  "slug": "redis-for-java",
+  "title": "Redis từ cơ bản đến thực chiến với Java Spring Boot",
+  "tagline": "Lộ trình 10 bài học: Data Types, Caching, Lua Rate Limiting, Persistence, Cluster và Redis Production cho Java Backend.",
+  "icon": "Server",
+  "badge": "Lộ trình 10 bài",
+  "level": "Fresher / Junior",
+  "author": "QuantaVault",
+  "totalLessons": 10,
+  "chapters": [
+    {
+      "id": "chapter-1",
+      "title": "Chương 1: Redis Foundation",
+      "description": "Khái niệm, cấu trúc dữ liệu và vòng đời key",
+      "lessonIds": [
+        "lesson-01",
+        "lesson-02",
+        "lesson-03"
+      ]
+    },
+    {
+      "id": "chapter-2",
+      "title": "Chương 2: Redis Caching với Java",
+      "description": "Spring Boot, cache consistency và tải cao",
+      "lessonIds": [
+        "lesson-04",
+        "lesson-05"
+      ]
+    },
+    {
+      "id": "chapter-3",
+      "title": "Chương 3: Concurrency & Data Safety",
+      "description": "Atomicity, Lua, rate limiting và persistence",
+      "lessonIds": [
+        "lesson-06",
+        "lesson-07",
+        "lesson-08"
+      ]
+    },
+    {
+      "id": "chapter-4",
+      "title": "Chương 4: Scaling & Production",
+      "description": "Replication, Cluster, Streams và vận hành",
+      "lessonIds": [
+        "lesson-09",
+        "lesson-10"
+      ]
+    }
+  ],
+  "lessons": [
+    {
+      "id": "lesson-01",
+      "slug": "lesson-01",
+      "number": 1,
+      "chapterId": "chapter-1",
+      "title": "Bài 01: Redis là gì? Vì sao dùng Redis với PostgreSQL?",
+      "summary": "Hiểu Redis in-memory, so sánh với RDBMS/Memcached và cài Redis bằng Docker.",
+      "durationMinutes": 45,
+      "tags": [
+        "Redis",
+        "Docker"
+      ],
+      "contentMarkdown": "> **Kiến thức từ bộ 40 câu Redis:** các chủ đề số 1, 2, 15, 26. Nội dung đã biên soạn lại và điều chỉnh những khẳng định quá tuyệt đối.\n\n## 1. Redis giải quyết vấn đề gì?\n\n**Redis** là hệ thống lưu trữ cấu trúc dữ liệu chủ yếu trên RAM. Redis cung cấp truy cập theo key và nhiều kiểu value, phù hợp cache, session, counter, rate limiting, Pub/Sub và Streams.\n\nTốc độ cao đến từ kiến trúc lưu trữ trong bộ nhớ và xử lý lệnh hiệu quả; **không có mức mili-giây hay số request/giây nào được bảo đảm cho mọi máy, mạng và workload**.\n\n| Vấn đề | Redis | PostgreSQL / MySQL |\n|---|---|---|\n| Truy vấn thông dụng | Theo key, cấu trúc dữ liệu | SQL, JOIN, ràng buộc quan hệ |\n| Dữ liệu | Chủ yếu RAM, tùy chọn persistence | Cơ chế lưu trữ và transaction DB |\n| Điển hình | Cache, rate limiting | Orders, Inventory, Payments |\n| Trade-off | RAM, expiry, eviction, consistency | Index, transaction, lưu trữ |\n\n**Ví dụ CoVie:** PostgreSQL là nguồn dữ liệu đơn hàng và tồn kho; Redis bổ trợ các tác vụ cache và rate limiting. Không quyết định bán hàng dựa vào một bản cache có thể lỗi thời.\n\n## 2. So với Memcached và khi nào không dùng Redis?\n\nMemcached tập trung vào key-value caching đơn giản. Redis phù hợp khi cần thêm Hash, Sorted Set, Stream, scripting hoặc persistence. Chọn theo yêu cầu và vận hành, không nên nói Redis luôn nhanh hơn.\n\n**Không phù hợp:** cold data dung lượng rất lớn, báo cáo JOIN phức tạp, hoặc dữ liệu nghiệp vụ cần ACID/constraint. Redis có thể hỗ trợ persistence nhưng không tự động thay PostgreSQL.\n\n## 3. Cài Redis để thực hành\n\nCần Docker đang chạy. Chỉ bind cổng vào localhost, không public cổng 6379 ra Internet.\n\n```bash\ndocker run --name qv-redis -d -p 127.0.0.1:6379:6379 redis:7\ndocker exec -it qv-redis redis-cli PING\n# PONG\ndocker exec -it qv-redis redis-cli SET lab:hello \"Java Backend\"\ndocker exec -it qv-redis redis-cli GET lab:hello\n# \"Java Backend\"\n```\n\nDừng lab bằng lệnh docker stop qv-redis. Không xóa volume hay chạy FLUSHALL ở instance có dữ liệu thật.\n\n## 4. Redis vận hành ra sao?\n\nỨng dụng Java dùng Redis client (thường là Lettuce/Jedis) gửi lệnh qua TCP. Redis chủ yếu xử lý lệnh dữ liệu theo event loop, có thêm các cơ chế I/O/background tùy phiên bản. Lệnh như INCR có tính nguyên tử **ở cấp một lệnh**; hai lệnh GET rồi SET không tự tạo transaction.\n\n## 5. Tự kiểm tra\n\n1. Redis là gì và giúp ích gì cho Backend?\n2. Vì sao Redis không giống MySQL/PostgreSQL?\n3. Khi nào Redis không phải lựa chọn hợp lý?\n4. Khi nào nên chọn Redis thay cho Memcached?\n\n**Thực hành:** Nêu ba loại dữ liệu CoVie có thể cache và hai loại dữ liệu nên lấy từ PostgreSQL tại bước Checkout.\n\n**Tham khảo:** https://redis.io/docs/latest/develop/get-started/\n"
+    },
+    {
+      "id": "lesson-02",
+      "slug": "lesson-02",
+      "number": 2,
+      "chapterId": "chapter-1",
+      "title": "Bài 02: Cấu trúc dữ liệu Redis và thiết kế key",
+      "summary": "String, Hash, List, Set, ZSet, Stream, Bitmap, HyperLogLog và cách đặt tên key.",
+      "durationMinutes": 55,
+      "tags": [
+        "Data Types",
+        "CLI"
+      ],
+      "contentMarkdown": "> **Kiến thức từ bộ 40 câu Redis:** các chủ đề số 3, 10, 11, 25, 39. Nội dung đã biên soạn lại và điều chỉnh những khẳng định quá tuyệt đối.\n\n## 1. Redis không chỉ lưu String\n\n| Cấu trúc | Lệnh | Ứng dụng |\n|---|---|---|\n| String | SET, GET, INCR | Counter, cache text/JSON |\n| Hash | HSET, HGET, HINCRBY | Field của profile |\n| List | LPUSH, RPOP | Queue đơn giản |\n| Set | SADD, SISMEMBER | Tập phần tử không trùng |\n| Sorted Set | ZADD, ZRANGE | Leaderboard |\n| Stream | XADD, XREADGROUP | Event log, consumer group |\n| Bitmap | SETBIT, BITCOUNT | Trạng thái boolean |\n| HyperLogLog | PFADD, PFCOUNT | Ước lượng lượng truy cập duy nhất |\n\nBitmap thực chất là thao tác bit trên kiểu String; HyperLogLog cho kết quả **ước lượng**, không phải số đếm chính xác. Redis có các kiểu dữ liệu mới/extension tùy phiên bản nên đừng khẳng định cố định “chỉ có tám loại”.\n\n## 2. Thực hành Redis CLI\n\n```text\nSET cache:product:101 \"coffee\" EX 60\nGET cache:product:101\nHSET user:1001 name Nam views 0\nHINCRBY user:1001 views 1\nHGET user:1001 name\nSADD tags:product:101 coffee local\nSISMEMBER tags:product:101 local\nZADD ranking 10 user:1001\nZRANGE ranking 0 -1 WITHSCORES\nPFADD visitors:today u1 u2 u1\nPFCOUNT visitors:today\n```\n\nCác dòng trên dùng trong redis-cli. Chú ý kiểm tra output và thử GET trên key không tồn tại.\n\n## 3. Quy tắc thiết kế key\n\nĐặt namespace rõ: covie:cache:product:101; covie:rl:login:user:42. Không đưa password/token nguyên văn hay thông tin nhạy cảm vào tên key vì key có thể xuất hiện trong log.\n\n- Đặt TTL cho dữ liệu tạm thời khi cần.\n- Tránh big key gây tốn RAM và độ trễ.\n- Không dùng KEYS * để quét toàn bộ dữ liệu production lớn; dùng SCAN theo cursor.\n- Phân biệt giới hạn kỹ thuật với kích thước nên dùng: Redis có thể lưu value lớn nhưng không nên lưu file ảnh/video ở đây.\n\n## 4. Hash và JSON String\n\nHash hỗ trợ sửa từng field mà không phải đọc/ghi toàn bộ object; String chứa JSON dễ lấy nguyên object. Chọn cấu trúc theo truy cập thực tế và serializer của client Java.\n\n```text\nHSET cart:demo product:1 2 product:2 1\nHINCRBY cart:demo product:1 1\nHGETALL cart:demo\n```\n\n## 5. Phỏng vấn và bài tập\n\n- Hash khác String JSON thế nào?\n- Liệt kê các kiểu dữ liệu phổ biến và use case.\n- Quy tắc đặt tên key tránh lỗi vận hành?\n- Tại sao không nên tạo key/value khổng lồ?\n- Bitmap khác HyperLogLog như thế nào?\n\n**Bài tập:** Thiết kế 3 key cho giỏ hàng, leaderboard và cache sản phẩm; chọn kiểu dữ liệu và TTL phù hợp.\n\n**Tham khảo:** https://redis.io/docs/latest/develop/data-types/\n"
+    },
+    {
+      "id": "lesson-03",
+      "slug": "lesson-03",
+      "number": 3,
+      "chapterId": "chapter-1",
+      "title": "Bài 03: TTL, Expiration, Eviction và Memory",
+      "summary": "Phân biệt thời gian sống của key, chính sách loại bỏ key và cách giám sát RAM.",
+      "durationMinutes": 45,
+      "tags": [
+        "TTL",
+        "Eviction"
+      ],
+      "contentMarkdown": "> **Kiến thức từ bộ 40 câu Redis:** các chủ đề số 12, 13, 28, 29, 38. Nội dung đã biên soạn lại và điều chỉnh những khẳng định quá tuyệt đối.\n\n## 1. TTL và Eviction không giống nhau\n\n**TTL:** thời gian sống của key. Khi hết hạn, key không còn hợp lệ. **Expiration** dùng kiểm tra thụ động khi truy cập và dọn dẹp chủ động. Redis không tạo một timer riêng cho mỗi key và không nhất thiết trả RAM ngay đúng mili-giây TTL đạt 0.\n\n**Eviction:** Redis chủ động chọn key để loại bỏ khi đạt giới hạn maxmemory. Key có thể bị evict ngay cả khi TTL chưa hết.\n\n```text\nSET otp:demo 123456 EX 120\nTTL otp:demo\nPTTL otp:demo\nEXPIRE otp:demo 30\nTTL otp:demo\nDEL otp:demo\nTTL otp:demo\n```\n\nTTL bằng -1 nghĩa là tồn tại nhưng không có expire; -2 nghĩa là key không tồn tại.\n\n## 2. Chính sách bộ nhớ\n\n| Chính sách | Ý nghĩa |\n|---|---|\n| noeviction | Từ chối một số lệnh ghi khi hết bộ nhớ |\n| allkeys-lru | Ưu tiên loại key lâu chưa truy cập |\n| allkeys-lfu | Ưu tiên loại key ít truy cập |\n| volatile-lru | Chỉ xét key có TTL |\n| volatile-ttl | Ưu tiên key có TTL gần hết |\n\nĐừng dùng allkeys-lru theo thói quen cho Redis chứa rate-limit counters hoặc locks: eviction nhầm các key này có thể ảnh hưởng đến tính đúng đắn và bảo mật.\n\n## 3. Kiểm tra RAM\n\n```text\nINFO memory\nINFO stats\nMEMORY USAGE cache:product:101\n```\n\nTheo dõi used_memory, RSS, fragmentation, số evictions và latency. Một giá trị fragmentation ratio cao không tự động kết luận Redis đang có lỗi: cần xét allocator, tải và môi trường.\n\n## 4. TTL jitter và vòng đời dữ liệu\n\nVới cache nhiều sản phẩm, đặt TTL khác nhau đôi chút (jitter) để giảm khả năng tất cả key cùng hết hạn. TTL không thay thế cache invalidation khi giá thay đổi.\n\nRedis có thể giữ key không TTL; chỉ dùng loại key này khi đã có chiến lược thu hồi/bộ nhớ rõ ràng.\n\n## 5. Phỏng vấn và bài tập\n\n- Eviction là gì? Các chính sách có ý nghĩa gì?\n- Redis quản lý bộ nhớ ra sao?\n- TTL dùng để làm gì?\n- EXPIRE, PEXPIRE, TTL, PTTL khác nhau thế nào?\n- Expiration thụ động và chủ động hoạt động ra sao?\n\n**Bài tập:** Đặt TTL 10 giây và quan sát; sau đó đề xuất eviction policy cho hệ thống chỉ dùng Redis làm cache (không có rate limiter).\n\n**Tham khảo:** https://redis.io/docs/latest/commands/expire/\n"
+    },
+    {
+      "id": "lesson-04",
+      "slug": "lesson-04",
+      "number": 4,
+      "chapterId": "chapter-2",
+      "title": "Bài 04: Caching với Java Spring Boot",
+      "summary": "Cache hit/miss, Spring Cache, Cache-Aside, invalidation và cách không làm sai giá/tồn kho.",
+      "durationMinutes": 65,
+      "tags": [
+        "Spring Boot",
+        "Caching"
+      ],
+      "contentMarkdown": "> **Kiến thức từ bộ 40 câu Redis:** các chủ đề số 19, 30, 31, 32. Nội dung đã biên soạn lại và điều chỉnh những khẳng định quá tuyệt đối.\n\n## 1. Cache hit, miss và Cache-Aside\n\n**Hit:** có dữ liệu hợp lệ trong Redis. **Miss:** chưa có, đã hết TTL hoặc bị eviction; ứng dụng cần lấy dữ liệu nguồn và nạp lại cache.\n\n```mermaid\nflowchart TD\n    A[\"Client request\"] --> B[\"Redis lookup\"]\n    B -->|Hit| C[\"Return cached data\"]\n    B -->|Miss| D[\"Read PostgreSQL\"]\n    D --> E[\"Set Redis TTL\"]\n    E --> F[\"Return result\"]\n```\n\n**Cache-Aside** cho ứng dụng quyết định khi nào nạp cache. Khi dữ liệu DB thay đổi, cache cần được xóa/làm mới theo chiến lược nhất quán.\n\n## 2. Kết nối Spring Boot\n\nStarter thường sử dụng: Spring Data Redis cùng Spring Cache. Cần lấy phiên bản tương thích từ Spring Boot dependency management.\n\n```xml\n<dependency>\n  <groupId>org.springframework.boot</groupId>\n  <artifactId>spring-boot-starter-data-redis</artifactId>\n</dependency>\n<dependency>\n  <groupId>org.springframework.boot</groupId>\n  <artifactId>spring-boot-starter-cache</artifactId>\n</dependency>\n```\n\n```properties\nspring.data.redis.host=127.0.0.1\nspring.data.redis.port=6379\nspring.cache.type=redis\nspring.cache.redis.time-to-live=10m\n```\n\n## 3. Spring Cache trong Java\n\n```java\n@Configuration\n@EnableCaching\nclass CacheConfig {}\n\n@Service\nclass ProductQueryService {\n    private final ProductRepository repository;\n\n    ProductQueryService(ProductRepository repository) {\n        this.repository = repository;\n    }\n\n    @Cacheable(cacheNames = \"products\", key = \"#productId\")\n    public ProductDto getProduct(UUID productId) {\n        return repository.findById(productId)\n                .map(ProductDto::from)\n                .orElseThrow();\n    }\n}\n```\n\nSpring Cache thường chạy qua proxy: gọi method có annotation từ **bên trong cùng bean** có thể bỏ qua cache advice (self-invocation). Không giả định cache được áp dụng trong mọi cách gọi.\n\n## 4. Cache Invalidation và dữ liệu đúng\n\nNếu giá sản phẩm thay đổi trong PostgreSQL nhưng Redis còn giá cũ, API có thể trả sai. Một cách xử lý: sau **commit DB thành công** thì evict key cache; cần xét retry khi Redis lỗi hoặc nhiều backend instance.\n\nCác kiểu ghi thông dụng:\n- Cache-Aside: ứng dụng đọc DB khi miss, chủ động nạp cache.\n- Write-Through: cập nhật cache và nguồn dữ liệu đồng bộ theo quy trình thiết kế.\n- Write-Behind: ghi cache trước rồi đồng bộ DB sau, có nguy cơ mất thay đổi khi gặp sự cố.\n- Write-Around: ghi DB, cache nạp ở lần đọc tiếp theo.\n\nKhông có chiến lược nào tự cho consistency tuyệt đối.\n\n**CoVie:** Redis có thể cache dữ liệu hiển thị; Checkout Commit vẫn phải kiểm tra lại giá/tồn kho từ PostgreSQL trong transaction nghiệp vụ.\n\n## 5. Phỏng vấn và bài tập\n\n- Shared cache giữa nhiều instance có vấn đề gì?\n- Cache Hit/Miss và Hit Ratio là gì?\n- Cache Invalidation khi cập nhật DB?\n- So sánh Cache-Aside, Write-Through, Write-Behind và Write-Around.\n\n**Bài tập:** Thiết kế cache product detail TTL 5 phút; mô tả thời điểm evict khi đổi giá và Redis không kết nối được.\n\n**Tham khảo:** https://docs.spring.io/spring-boot/reference/io/caching.html\n"
+    },
+    {
+      "id": "lesson-05",
+      "slug": "lesson-05",
+      "number": 5,
+      "chapterId": "chapter-2",
+      "title": "Bài 05: Cache ở tải cao: Stampede, Avalanche, Penetration",
+      "summary": "Ngăn cache-miss hàng loạt, giảm network round trip và phân biệt hashing với Redis Cluster.",
+      "durationMinutes": 55,
+      "tags": [
+        "Performance",
+        "System Design"
+      ],
+      "contentMarkdown": "> **Kiến thức từ bộ 40 câu Redis:** các chủ đề số 23, 24, 34, 35. Nội dung đã biên soạn lại và điều chỉnh những khẳng định quá tuyệt đối.\n\n## 1. Ba sự cố quan trọng\n\n| Sự cố | Dấu hiệu | Giảm thiểu |\n|---|---|---|\n| Cache Stampede | Nhiều request cùng miss một hot key | Single-flight, refresh sớm, giới hạn tải DB |\n| Cache Avalanche | Nhiều key hết TTL cùng lúc hoặc Redis lỗi | TTL jitter, staggered refresh, fallback |\n| Cache Penetration | Liên tục truy vấn ID không tồn tại | Validation, negative cache ngắn, rate limit |\n\nNhững biện pháp này **giảm rủi ro**, không bảo đảm DB không bao giờ quá tải.\n\n## 2. Ví dụ CoVie\n\nKhi một sản phẩm giảm giá được hàng nghìn người xem, key cache hết TTL: nếu mỗi request đều đọc PostgreSQL, DB sẽ chịu đột biến tải.\n\n**Single-flight** phối hợp để một request nạp dữ liệu, các request khác tái sử dụng kết quả. Với nhiều backend instance, phải thiết kế cơ chế phối hợp phân tán thích hợp, timeout và fallback. Không dùng cache để quyết định tồn kho khi Checkout.\n\n## 3. Batch và Pipelining\n\n**Pipelining** gửi nhiều lệnh liên tiếp trước khi đợi từng phản hồi, giảm số lần chờ mạng (RTT). Pipelining **không biến cả batch thành transaction nguyên tử**.\n\n```text\nMSET demo:p:1 A demo:p:2 B demo:p:3 C\nMGET demo:p:1 demo:p:2 demo:p:3\n```\n\nMGET/MSET là lệnh nhiều key; pipelining là cách gửi nhiều lệnh. Tránh batch khổng lồ làm tăng latency và bộ nhớ.\n\n## 4. Read-heavy workload và Consistent Hashing\n\n- Đo P95/P99 latency, cache hit rate, Redis memory, DB queries trước khi scale.\n- Tối ưu serializer, key size, TTL và hot key.\n- Replicas có thể tăng năng lực đọc nhưng thường bất đồng bộ, có stale reads.\n- **Consistent Hashing** chia key theo vòng băm trong một số hệ phân tán. **Redis Cluster sử dụng 16.384 hash slots**, không phải trực tiếp thuật toán vòng băm này.\n\n## 5. Phỏng vấn và bài tập\n\n- Tối ưu cache khi lưu lượng đọc rất cao?\n- Pipelining giải quyết chi phí gì?\n- Consistent Hashing là gì?\n- Cache Stampede khác Avalanche và Penetration thế nào?\n\n**Bài tập:** Thiết kế test 100 request cùng miss key hot; đo số truy vấn DB trước/sau khi áp dụng request coalescing.\n\n**Tham khảo:** https://redis.io/docs/latest/develop/use/\n"
+    },
+    {
+      "id": "lesson-06",
+      "slug": "lesson-06",
+      "number": 6,
+      "chapterId": "chapter-3",
+      "title": "Bài 06: Redis Concurrency: Atomic Operations, MULTI/EXEC và Lua",
+      "summary": "Phân biệt atomic một lệnh với nhiều lệnh, WATCH và điều kiện thực thi script.",
+      "durationMinutes": 60,
+      "tags": [
+        "Concurrency",
+        "Lua",
+        "Transactions"
+      ],
+      "contentMarkdown": "> **Kiến thức từ bộ 40 câu Redis:** các chủ đề số 4, 7, 18. Nội dung đã biên soạn lại và điều chỉnh những khẳng định quá tuyệt đối.\n\n## 1. Redis có phục vụ nhiều luồng Java không?\n\nCó. Nhiều Java threads/client có thể gửi lệnh đồng thời. Redis chủ yếu xử lý lệnh dữ liệu bằng event loop, nhưng có các I/O/background threads tùy phiên bản. **Không nên kết luận cả Redis chỉ có đúng một OS thread**.\n\nMột lệnh INCR là nguyên tử; hai lệnh GET rồi SET từ client **không tự nguyên tử**. Hai client cùng GET 0, tính +1, SET 1 có thể mất một lần tăng.\n\n```text\nSET counter:demo 0\nINCR counter:demo\nINCR counter:demo\nGET counter:demo\n```\n\n## 2. MULTI/EXEC và WATCH\n\n```text\nMULTI\nINCR counter:demo\nINCR counter:demo\nEXEC\n```\n\nMULTI xếp hàng lệnh; EXEC thực thi tuần tự không bị lệnh client khác chen ngang trong nhóm. **Nếu một lệnh runtime lỗi, Redis không tự rollback các lệnh hợp lệ đã chạy**, khác ACID transaction của PostgreSQL.\n\nWATCH giám sát key để kiểm soát cạnh tranh kiểu optimistic: nếu key thay đổi, EXEC có thể thất bại và client phải quyết định retry.\n\n## 3. Lua scripting\n\nLua chạy logic check-then-act phía Redis, giảm round trip và ngăn lệnh khác chen vào giữa quá trình script thực thi.\n\n```lua\nlocal current = tonumber(redis.call(\"GET\", KEYS[1]) or \"0\")\nlocal limit = tonumber(ARGV[1])\nif current >= limit then\n    return 0\nend\nreturn redis.call(\"INCR\", KEYS[1])\n```\n\n**Chú ý:** Script cần ngắn, kiểm tra input trước mutation và tránh vòng lặp nặng. Atomic execution không có nghĩa Lua tự rollback mọi thao tác nếu script gặp lỗi ở giữa.\n\n## 4. Ứng dụng Java Backend\n\nRedis Lua phù hợp rate limiting; PostgreSQL row lock/transaction phù hợp bảo đảm tồn kho. Không dùng Redis lock thay thế transactional constraints của Database.\n\n## 5. Phỏng vấn và bài tập\n\n- Redis xử lý concurrency thế nào?\n- MULTI/EXEC có rollback như PostgreSQL không?\n- Lua có lợi gì và rủi ro gì?\n\n**Bài tập:** Mô phỏng hai client GET/SET gây lost update; viết test chuyển sang INCR; giải thích khi nào cần WATCH hoặc Lua.\n\n**Tham khảo:** https://redis.io/docs/latest/develop/interact/transactions/\n"
+    },
+    {
+      "id": "lesson-07",
+      "slug": "lesson-07",
+      "number": 7,
+      "chapterId": "chapter-3",
+      "title": "Bài 07: Rate Limiting Lua và Distributed Lock",
+      "summary": "Xây dựng Token Bucket; biết giới hạn của lock TTL, Redlock và best practices.",
+      "durationMinutes": 65,
+      "tags": [
+        "Rate Limiting",
+        "Security"
+      ],
+      "contentMarkdown": "> **Kiến thức từ bộ 40 câu Redis:** các chủ đề số 36, 40. Nội dung đã biên soạn lại và điều chỉnh những khẳng định quá tuyệt đối.\n\n## 1. Token Bucket bảo vệ API\n\nToken Bucket có capacity (sức chứa), refill rate (tốc độ nạp token). Mỗi request tiêu hao một token. Nếu không đủ token thì từ chối (thường HTTP 429).\n\nNhiều Spring Boot instance có thể dùng Redis Lua để kiểm tra và cập nhật tokens **trong một lần thực thi nguyên tử**.\n\n```mermaid\nflowchart LR\n    A[\"API request\"] --> B[\"Spring Boot\"]\n    B --> C[\"Redis Lua Token Bucket\"]\n    C -->|Allowed| D[\"Business API\"]\n    C -->|Denied| E[\"HTTP 429\"]\n```\n\n## 2. Lua Token Bucket minh họa\n\nTham số capacity và rate phải dương, kiểm tra trong script. Dùng thời gian Redis server thay vì đồng hồ client không đáng tin cậy.\n\n```lua\nlocal capacity = tonumber(ARGV[1])\nlocal rate = tonumber(ARGV[2])\nif not capacity or not rate or capacity <= 0 or rate <= 0 then\n    return redis.error_reply(\"invalid rate/capacity\")\nend\nlocal nowParts = redis.call(\"TIME\")\nlocal now = tonumber(nowParts[1]) + tonumber(nowParts[2]) / 1000000\nlocal values = redis.call(\"HMGET\", KEYS[1], \"tokens\", \"last\")\nlocal tokens = tonumber(values[1]) or capacity\nlocal last = tonumber(values[2]) or now\ntokens = math.min(capacity, tokens + math.max(0, now - last) * rate)\nlocal allowed = 0\nif tokens >= 1 then\n    tokens = tokens - 1\n    allowed = 1\nend\nredis.call(\"HSET\", KEYS[1], \"tokens\", tokens, \"last\", now)\nredis.call(\"EXPIRE\", KEYS[1], math.max(1, math.ceil(2 * capacity / rate)))\nreturn allowed\n```\n\nCần tích hợp qua RedisScript/StringRedisTemplate, xử lý timeout/retry và chọn chính sách fail-open/fail-closed theo endpoint. Đây là ví dụ học tập, **không phải khuyến nghị copy thẳng vào production trước khi load-test**.\n\n## 3. Distributed Lock và giới hạn\n\n```text\nSET lock:demo unique-owner-token NX PX 30000\n```\n\nNX chỉ tạo khi chưa có; PX đặt TTL mili-giây. Khi giải phóng, phải so sánh token chủ sở hữu với giá trị đang lưu rồi mới DEL (dùng Lua hoặc primitive tương ứng).\n\n**Bẫy:** Khi một client dừng quá lâu, TTL có thể hết và client khác chiếm khóa, trong khi client cũ vẫn tiếp tục chạy. Do đó lock TTL không tự bảo đảm tính đúng đắn với tài nguyên ngoài Redis; cân nhắc fencing tokens và DB constraints.\n\n**Redlock** dùng nhiều node độc lập, có giả định và tranh luận về an toàn; không xem là giải pháp mặc định thay PostgreSQL transaction cho inventory/financial ledger.\n\n## 4. Checklist vận hành\n\n- Network isolation, ACL/TLS, không public cổng Redis.\n- Chọn memory policy/TTL theo workload, không eviction nhầm key bảo vệ.\n- Monitoring latency, errors, giới hạn retry.\n- Dùng SCAN thay KEYS * trên kho lớn.\n- Kiểm thử đồng thời và lỗi kết nối, không chỉ happy path.\n\n## 5. Phỏng vấn và bài tập\n\n- Distributed lock khác khóa DB thế nào? Khi nào dùng TTL/fencing?\n- Production Redis cần chú ý những gì?\n\n**Bài tập:** Capacity=5, refill=1 token/s; mô phỏng 7 request cùng đến; giải thích vì sao tối đa 5 được nhận ban đầu.\n\n**Tham khảo:** https://redis.io/docs/latest/develop/use/\n"
+    },
+    {
+      "id": "lesson-08",
+      "slug": "lesson-08",
+      "number": 8,
+      "chapterId": "chapter-3",
+      "title": "Bài 08: Redis Persistence: RDB, AOF và Durability",
+      "summary": "Hiểu snapshot/log, fsync, Copy-On-Write và rủi ro mất dữ liệu sau crash.",
+      "durationMinutes": 50,
+      "tags": [
+        "Persistence",
+        "RDB",
+        "AOF"
+      ],
+      "contentMarkdown": "> **Kiến thức từ bộ 40 câu Redis:** các chủ đề số 6, 8, 20. Nội dung đã biên soạn lại và điều chỉnh những khẳng định quá tuyệt đối.\n\n## 1. Redis có thể ghi dữ liệu xuống đĩa\n\n| Cách | Hoạt động | Trade-off |\n|---|---|---|\n| RDB | Snapshot định kỳ | Khôi phục thuận tiện, có thể mất dữ liệu sau snapshot |\n| AOF | Log các lệnh ghi | Tăng durability, thêm I/O |\n| RDB + AOF | Kết hợp | Phải cấu hình, kiểm thử và giám sát |\n| Không persistence | Dùng cache có thể dựng lại | Chấp nhận mất cache khi sự cố |\n\nTính bền vững của Redis không giống tự động có rollback/constraint như PostgreSQL.\n\n## 2. RDB và Copy-On-Write\n\nBGSAVE tạo snapshot từ tiến trình con; hệ điều hành sử dụng Copy-On-Write. Fork hoặc áp lực RAM có thể làm latency tăng.\n\n```text\nINFO persistence\nBGSAVE\nLASTSAVE\n```\n\nSAVE thực hiện snapshot blocking, không phù hợp gọi tùy tiện trên Redis có tải production.\n\n## 3. AOF và fsync\n\n- **always:** đồng bộ đĩa thường xuyên, tăng durability nhưng tốn I/O.\n- **everysec:** cân bằng hiệu năng/durability; vẫn có nguy cơ mất thay đổi khi crash.\n- **no:** để hệ điều hành quyết định thời điểm flush.\n\nKhông khẳng định AOF everysec *luôn mất tối đa đúng 1 giây* trong mọi lỗi phần cứng, filesystem hoặc failover.\n\n## 4. Thử khôi phục an toàn\n\nTrên **container Redis lab riêng**: cấu hình persistence, ghi key, kiểm tra INFO persistence, restart, so sánh dữ liệu trước/sau. Không tắt cưỡng bức instance thật hoặc chạy lệnh xóa dữ liệu khi chưa có backup.\n\nCoVie cần xác định cache nào có thể rebuild từ PostgreSQL và thành phần nào phải có RPO/RTO rõ ràng.\n\n## 5. Phỏng vấn và bài tập\n\n- Redis Persistence có những cơ chế nào?\n- RDB so với AOF: tốc độ, recovery, rủi ro dữ liệu?\n- Cấu hình persistence ảnh hưởng hiệu năng ra sao?\n\n**Bài tập:** Đề xuất lựa chọn khi Redis chỉ làm product cache và khi Redis lưu trạng thái tạm quan trọng.\n\n**Tham khảo:** https://redis.io/docs/latest/operate/oss_and_stack/management/persistence/\n"
+    },
+    {
+      "id": "lesson-09",
+      "slug": "lesson-09",
+      "number": 9,
+      "chapterId": "chapter-4",
+      "title": "Bài 09: Replication, Sentinel, Cluster và Scaling",
+      "summary": "Phân biệt đọc nhiều, High Availability, sharding 16384 slots và tính nhất quán replica.",
+      "durationMinutes": 55,
+      "tags": [
+        "Scaling",
+        "HA"
+      ],
+      "contentMarkdown": "> **Kiến thức từ bộ 40 câu Redis:** các chủ đề số 9, 14, 21, 37. Nội dung đã biên soạn lại và điều chỉnh những khẳng định quá tuyệt đối.\n\n## 1. Scale-up, Replication và Cluster\n\n- **Scale-up:** nâng RAM/CPU một node.\n- **Replication:** sao chép dữ liệu primary sang replicas để phục vụ HA hoặc một số tải đọc.\n- **Cluster:** phân tán dữ liệu theo nhiều primary để tăng khả năng lưu trữ và tải ghi.\n\nThêm replica không làm primary xử lý ghi nhanh hơn. Redis replication thường bất đồng bộ nên có nguy cơ replica chưa nhận kịp ghi mới.\n\n## 2. Redis Sentinel\n\nSentinel giám sát primary và replicas, thực hiện phát hiện lỗi và phối hợp failover cho mô hình replication không sharding. Client cần tự kết nối lại đến primary mới.\n\n```mermaid\nflowchart TD\n    A[\"Java Client\"] --> B[\"Sentinel discovery\"]\n    B --> C[\"Primary\"]\n    C --> D[\"Replica\"]\n    C -.->|\"Failure\"| E[\"Failover\"]\n    E --> D\n```\n\nSentinel không hứa zero downtime/zero data loss, vì failover và replication có thể có độ trễ.\n\n## 3. Redis Cluster\n\nRedis Cluster có **16.384 hash slots** phân phối cho các primary. Slot được tính bằng CRC16 với quy tắc hash tag khi key sử dụng dấu ngoặc nhọn hợp lệ. Các thao tác nhiều key và Lua scripts có thể cần key ở cùng slot.\n\n**Lưu ý:** Redis Cluster không đồng nghĩa Consistent Hashing vòng băm. Client Redis phải hỗ trợ cluster redirection và điều kiện multi-key.\n\n## 4. Chọn kiến trúc\n\n| Mục tiêu | Hướng đi |\n|---|---|\n| Hệ thống nhỏ | Redis một node + monitoring và backup phù hợp |\n| Cần failover, không sharding | Replication + Sentinel |\n| Dung lượng/tải ghi vượt một node | Redis Cluster |\n| Cần tăng tải đọc | Cân nhắc replicas, chấp nhận stale read |\n\nKhông bật Cluster chỉ vì thấy là “production best practice”; chi phí vận hành và test failure là đáng kể.\n\n## 5. Phỏng vấn và bài tập\n\n- Redis mở rộng theo cách nào?\n- Redis Cluster là gì?\n- Sentinel phục vụ vai trò nào?\n- Replication khác Cluster thế nào?\n\n**Bài tập:** Mô tả kịch bản client vừa SET dữ liệu vào primary, failover xảy ra trước khi replica kịp sync.\n\n**Tham khảo:** https://redis.io/docs/latest/operate/oss_and_stack/management/scaling/\n"
+    },
+    {
+      "id": "lesson-10",
+      "slug": "lesson-10",
+      "number": 10,
+      "chapterId": "chapter-4",
+      "title": "Bài 10: Pub/Sub, Streams, Security và Production",
+      "summary": "Từ messaging đến giám sát: XACK, consumer group, ACL, SLOWLOG, latency.",
+      "durationMinutes": 65,
+      "tags": [
+        "Messaging",
+        "Operations"
+      ],
+      "contentMarkdown": "> **Kiến thức từ bộ 40 câu Redis:** các chủ đề số 5, 16, 17, 22, 27, 33. Nội dung đã biên soạn lại và điều chỉnh những khẳng định quá tuyệt đối.\n\n## 1. Redis Pub/Sub\n\nPublisher PUBLISH tới channel, các subscriber đang kết nối sẽ nhận được sự kiện. Subscriber offline không tự đọc lại thông điệp đã bỏ lỡ; đây không phải queue bền vững.\n\n```text\nSUBSCRIBE demo:orders\n```\n\nTrong terminal redis-cli khác:\n\n```text\nPUBLISH demo:orders ORDER_CREATED\n```\n\n## 2. Streams và Consumer Groups\n\nStreams lưu record kèm ID, hỗ trợ consumer group và ACK. Ví dụ:\n\n```text\nXGROUP CREATE demo:events workers 0 MKSTREAM\nXADD demo:events * type ORDER_CREATED orderId 101\nXREADGROUP GROUP workers worker-1 COUNT 1 STREAMS demo:events >\n```\n\nSau khi xử lý thành công, dùng XACK với ID message do XREADGROUP trả về. Consumer crash có thể khiến message pending hoặc được xử lý lại. **Idempotency** cần được thiết kế ở phía consumer; ACK không bảo đảm exactly-once.\n\n| | Pub/Sub | Streams |\n|---|---|---|\n| Replay record | Không | Có khi record còn lưu |\n| Consumer group | Không | Có |\n| XACK | Không | Có |\n| Dùng khi | Broadcast realtime | Event/log xử lý nền |\n\n## 3. Redis Modules và khả năng mở rộng\n\nRedis có cơ chế module/tính năng bổ sung như JSON, search hoặc Bloom Filter, tùy phiên bản và bản phân phối. Không mặc định Redis instance nào cũng đã cài các module đó.\n\n## 4. Bảo mật và quan sát\n\n- Không public cổng Redis ra Internet.\n- Dùng ACL với quyền tối thiểu và TLS khi phù hợp.\n- Tránh log secrets, tokens hoặc payload nhạy cảm.\n- Theo dõi memory, latency, cache hit/miss, số kết nối, lỗi và retry.\n- Kiểm thử backup/restore và failure scenarios.\n\n```text\nPING\nINFO stats\nINFO memory\nINFO persistence\nSLOWLOG GET 10\nLATENCY DOCTOR\nSCAN 0 MATCH covie:* COUNT 100\n```\n\nSCAN là cursor-based iteration; một lần gọi không bảo đảm liệt kê hết. Không dùng KEYS * tùy tiện trên kho dữ liệu lớn.\n\n## 5. Bài thực hành cuối khóa Java Backend\n\n1. Spring Boot API đọc product từ PostgreSQL và cache Redis.\n2. Khi sửa sản phẩm, invalidation đúng thời điểm sau commit.\n3. Bảo vệ endpoint tìm kiếm bằng Lua Token Bucket.\n4. Giả lập Redis outage, đo sự khác nhau giữa cache fallback và rate-limit fail-closed.\n5. Kiểm tra metrics và chứng minh Checkout không dùng cache để quyết định tồn kho.\n\n## 6. Phỏng vấn và bài tập\n\n- Redis Pub/Sub dùng khi nào?\n- Giám sát và điều tra độ trễ ra sao?\n- Cần làm gì để Redis an toàn?\n- Redis Modules là gì?\n- Redis Streams dùng để làm gì?\n- Pub/Sub khác Streams ra sao?\n\n**Tài liệu:** https://redis.io/docs/latest/develop/data-types/streams/\n"
+    }
+  ]
+}
