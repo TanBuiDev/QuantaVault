@@ -164,6 +164,8 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
                   primaryCourse.lessons.reduce((acc, l) => acc + (l.durationMinutes || 0), 0) /
                   60
                 ).toFixed(0);
+                const mermaidCount = primaryCourse.lessons.reduce((sum, lesson) => sum + (lesson.contentMarkdown.match(/```mermaid\b/g) || []).length, 0);
+                const codeCount = primaryCourse.lessons.reduce((sum, lesson) => sum + (lesson.contentMarkdown.match(/```(?:sql|java|bash|shell|json|yaml|xml)\b/g) || []).length, 0);
 
                 return (
                   <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-8 space-y-6 shadow-xs hover:border-indigo-500/40 transition-all">
@@ -171,7 +173,7 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
                     <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                       <div className="flex items-start gap-4">
                         <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 shadow-xs ring-1 ring-indigo-500/20">
-                          <Database className="h-7 w-7" />
+                          {primaryCourse.icon === "Server" ? <Server className="h-7 w-7" /> : <Database className="h-7 w-7" />}
                         </div>
                         <div className="space-y-1.5">
                           <div className="flex flex-wrap items-center gap-2">
@@ -183,7 +185,7 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
                             </span>
                             <span className="flex items-center gap-1 rounded-md bg-amber-500/10 px-2.5 py-0.5 text-xs font-semibold text-amber-600 dark:text-amber-400">
                               <ShieldCheck className="h-3.5 w-3.5" />
-                              <span>Đã kiểm duyệt v2</span>
+                              <span>Nội dung thực hành</span>
                             </span>
                           </div>
                           <h3 className="text-2xl font-black text-[var(--foreground)] tracking-tight">
@@ -197,7 +199,7 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
                         href={`/courses/${primaryCourse.slug}/${primaryTargetLessonId}`}
                         className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--primary)] px-6 py-3 text-xs sm:text-sm font-bold text-white shadow-md hover:brightness-110 active:scale-98 transition-all shrink-0 self-start"
                       >
-                        <span>{percentage > 0 ? "Vào Học Tiếp" : "Bắt Đầu Học Ngay"}</span>
+                        <span>{percentage > 0 || Boolean(primaryRecord?.lastAccessedLessonId) ? "Vào Học Tiếp" : "Bắt Đầu Học Ngay"}</span>
                         <ChevronRight className="h-4 w-4" />
                       </Link>
                     </div>
@@ -228,16 +230,16 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
                       </div>
                       <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)]/40 p-3.5 text-center">
                         <span className="block text-xl font-black text-emerald-600 dark:text-emerald-400">
-                          17 sơ đồ
+                          {mermaidCount} sơ đồ
                         </span>
-                        <span className="text-xs text-[var(--muted)] font-medium">Mermaid & 56 SQL Lab</span>
+                        <span className="text-xs text-[var(--muted)] font-medium">Mermaid & {codeCount} khối mã</span>
                       </div>
                     </div>
 
                     {/* Chapter Breakdown Pills */}
                     <div className="space-y-3 pt-2">
                       <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
-                        Tổng quan 4 chương trong khóa học:
+                        Tổng quan {primaryCourse.chapters.length} chương trong khóa học:
                       </h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         {primaryCourse.chapters.map((chapter, idx) => (
@@ -357,7 +359,7 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
                           href={`/courses/${course.slug}/${targetLessonId}`}
                           className="flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-4 py-2.5 text-xs font-bold text-white shadow-sm hover:brightness-110 active:scale-[0.99] transition-all"
                         >
-                          <span>{percentage > 0 ? "Vào Học Tiếp" : "Bắt Đầu Học Ngay"}</span>
+                          <span>{percentage > 0 || Boolean(record?.lastAccessedLessonId) ? "Vào Học Tiếp" : "Bắt Đầu Học Ngay"}</span>
                           <ChevronRight className="h-4 w-4" />
                         </Link>
                       </div>
@@ -456,7 +458,7 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
             {primaryCourse && primaryTargetLesson && (
               <div className="rounded-2xl border border-indigo-500/20 bg-indigo-500/[0.04] p-3.5 space-y-2">
                 <span className="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 block">
-                  {totalCompletedLessons > 0 ? "Tiếp tục bài đang học:" : "Bắt đầu bài đầu tiên:"}
+                  {primaryRecord?.lastAccessedLessonId ? "Tiếp tục bài đang học:" : "Bắt đầu bài đầu tiên:"}
                 </span>
                 <Link
                   href={`/courses/${primaryCourse.slug}/${primaryTargetLessonId}`}
