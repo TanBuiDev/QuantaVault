@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import { Inter, JetBrains_Mono } from "next/font/google";
 
 import { AppShell } from "@/components/layout/AppShell";
+import { getAllCourses } from "@/lib/courses";
+import type { CourseNavigationItem } from "@/lib/courses";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { ProgressProvider } from "@/lib/progress/provider";
 import { ToastProvider } from "@/components/ui/Toast";
@@ -39,6 +41,16 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
+  // Serialize only minimal navigation metadata to the client, never course lesson content.
+  const courseNavigation: CourseNavigationItem[] = getAllCourses().map((course) => ({
+    id: course.id,
+    slug: course.slug,
+    title: course.title,
+    icon: course.icon,
+    totalLessons: course.totalLessons,
+    firstLessonId: course.lessons[0]?.id ?? "lesson-01",
+    lessonIds: course.lessons.map((lesson) => lesson.id)
+  }));
   return (
     <html lang="vi" suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="font-sans antialiased">
@@ -46,7 +58,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
           <ProgressProvider>
             <ToastProvider>
               <ConfirmProvider>
-                <AppShell>{children}</AppShell>
+                <AppShell courses={courseNavigation}>{children}</AppShell>
               </ConfirmProvider>
             </ToastProvider>
           </ProgressProvider>
