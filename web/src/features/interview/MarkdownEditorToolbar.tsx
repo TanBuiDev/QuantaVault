@@ -1,6 +1,7 @@
 "use client";
 
 import type { RefObject } from "react";
+import { formatMarkdownTextarea } from "./markdownFormatting";
 import {
   Bold,
   Italic,
@@ -29,36 +30,13 @@ export function MarkdownEditorToolbar({
   onToggleFontMode,
 }: MarkdownEditorToolbarProps) {
   function insertFormatting(prefix: string, suffix = "", defaultText = "") {
-    const el = textareaRef.current;
-    if (!el) return;
+    formatMarkdownTextarea(textareaRef.current, value, onChange, { prefix, suffix, defaultText });
+  }
 
-    // Preserve exact scroll position so the editor never jumps to bottom
-    const savedScrollTop = el.scrollTop;
-    const savedScrollLeft = el.scrollLeft;
-
-    const start = el.selectionStart ?? 0;
-    const end = el.selectionEnd ?? 0;
-    const selected = value.slice(start, end);
-    const contentToWrap = selected.length > 0 ? selected : defaultText;
-
-    const before = value.slice(0, start);
-    const after = value.slice(end);
-    const newValue = `${before}${prefix}${contentToWrap}${suffix}${after}`;
-
-    onChange(newValue);
-
-    // Calculate updated cursor selection
-    const cursorStart = start + prefix.length;
-    const cursorEnd = cursorStart + contentToWrap.length;
-
-    // Reposition cursor and restore exact scroll position without triggering parent scroll
-    requestAnimationFrame(() => {
-      if (!textareaRef.current) return;
-      const target = textareaRef.current;
-      target.focus({ preventScroll: true });
-      target.setSelectionRange(cursorStart, cursorEnd);
-      target.scrollTop = savedScrollTop;
-      target.scrollLeft = savedScrollLeft;
+  function toggleFormatting(kind: "bold" | "italic") {
+    formatMarkdownTextarea(textareaRef.current, value, onChange, {
+      kind,
+      defaultText: kind === "bold" ? "in đậm" : "in nghiêng"
     });
   }
 
@@ -67,7 +45,7 @@ export function MarkdownEditorToolbar({
       <button
         type="button"
         onMouseDown={(e) => e.preventDefault()}
-        onClick={() => insertFormatting("**", "**", "in đậm")}
+        onClick={() => toggleFormatting("bold")}
         title="In đậm (Ctrl+B)"
         className="rounded-lg p-1.5 text-[var(--muted-strong)] hover:bg-[var(--surface)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
       >
@@ -77,7 +55,7 @@ export function MarkdownEditorToolbar({
       <button
         type="button"
         onMouseDown={(e) => e.preventDefault()}
-        onClick={() => insertFormatting("*", "*", "in nghiêng")}
+        onClick={() => toggleFormatting("italic")}
         title="In nghiêng (Ctrl+I)"
         className="rounded-lg p-1.5 text-[var(--muted-strong)] hover:bg-[var(--surface)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
       >
