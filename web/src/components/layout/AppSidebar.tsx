@@ -12,6 +12,7 @@ import {
   GraduationCap,
   BookOpen,
   Database,
+  Server,
   ChevronDown,
   ChevronRight,
   Code2
@@ -19,14 +20,31 @@ import {
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { useSidebar } from "./SidebarContext";
 import { ProblemNavTree } from "./ProblemNavTree";
+import type { CourseNavigationItem } from "@/lib/courses";
+import { useCourseProgress } from "@/lib/courses/useCourseProgress";
 
-export function AppSidebar() {
+const MAX_VISIBLE_COURSES = 4;
+
+export function AppSidebar({ courses = [] }: { courses?: CourseNavigationItem[] }) {
   const pathname = usePathname();
   const { isOpen, toggleSidebar, setSidebarOpen } = useSidebar();
+  const { hydrated, getCourseRecord } = useCourseProgress();
+  const [coursesExpanded, setCoursesExpanded] = useState(false);
 
   const isProblemsRoute = pathname?.startsWith("/problems");
   const isCoursesRoute = pathname?.startsWith("/courses");
   const isInterviewRoute = pathname?.startsWith("/interview");
+
+  // Keep the current course visible; then prefer the most recently studied courses.
+  // Names, links and lesson counts all come from the course registry in root layout.
+  const orderedCourses = [...courses].sort((a, b) => {
+    const activeA = pathname === `/courses/${a.slug}` || pathname?.startsWith(`/courses/${a.slug}/`) ? 1 : 0;
+    const activeB = pathname === `/courses/${b.slug}` || pathname?.startsWith(`/courses/${b.slug}/`) ? 1 : 0;
+    if (activeA !== activeB) return activeB - activeA;
+    if (!hydrated) return 0;
+    return (getCourseRecord(b.id).updatedAt || "").localeCompare(getCourseRecord(a.id).updatedAt || "");
+  });
+  const visibleCourses = coursesExpanded ? orderedCourses : orderedCourses.slice(0, MAX_VISIBLE_COURSES);
 
   // Accordion state for Top 150 algorithms tree
   const [problemsTreeOpen, setProblemsTreeOpen] = useState(() => {
@@ -154,21 +172,49 @@ export function AppSidebar() {
                 <span>Tất cả khóa học</span>
               </Link>
 
-              <Link
-                href="/courses/postgres-for-java/lesson-01"
-                aria-current={pathname?.startsWith("/courses/postgres-for-java") ? "page" : undefined}
-                className={`flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium transition-all ${
-                  pathname?.startsWith("/courses/postgres-for-java")
-                    ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-500/20 shadow-2xs"
-                    : "text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
-                }`}
-              >
-                <Database className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
-                <span className="truncate">PostgreSQL cho Java</span>
-                <span className="ml-auto rounded-md bg-emerald-500/15 px-1.5 py-0.5 text-[9px] font-bold text-emerald-600 dark:text-emerald-400">
-                  20 bài
-                </span>
-              </Link>
+              <nav aria-label="Danh sách khóa học" className="space-y-1">
+                {visibleCourses.map((course) => {
+                  const active = pathname === `/courses/${course.slug}`
+                    || pathname?.startsWith(`/courses/${course.slug}/`);
+                  const record = hydrated ? getCourseRecord(course.id) : null;
+                  const nextLesson = record?.lastAccessedLessonId
+                    && course.lessonIds.includes(record.lastAccessedLessonId)
+                    ? record.lastAccessedLessonId : course.firstLessonId;
+                  const Icon = course.icon === "Database" ? Database
+                    : course.icon === "Server" ? Server : BookOpen;
+
+                  return (
+                    <Link
+                      key={course.id}
+                      href={`/courses/${course.slug}/${nextLesson}`}
+                      title={course.title}
+                      aria-current={active ? "page" : undefined}
+                      className={`flex min-w-0 items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium transition-all ${
+                        active
+                          ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-500/20 shadow-2xs"
+                          : "text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
+                      }`}
+                    >
+                      <Icon className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
+                      <span className="min-w-0 flex-1 line-clamp-2 leading-relaxed">{course.title}</span>
+                      <span className="ml-auto shrink-0 rounded-md bg-emerald-500/15 px-1.5 py-0.5 text-[9px] font-bold text-emerald-600 dark:text-emerald-400">
+                        {course.totalLessons} bài
+                      </span>
+                    </Link>
+                  );
+                })}
+                {courses.length > MAX_VISIBLE_COURSES && (
+                  <button
+                    type="button"
+                    onClick={() => setCoursesExpanded((prev) => !prev)}
+                    aria-expanded={coursesExpanded}
+                    className="flex w-full items-center justify-center gap-1 rounded-lg px-3 py-1.5 text-[11px] font-semibold text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
+                  >
+                    {coursesExpanded ? "Thu gọn" : `Xem thêm ${courses.length - MAX_VISIBLE_COURSES} khóa`}
+                    {coursesExpanded ? <ChevronDown className="h-3 w-3 rotate-180" /> : <ChevronDown className="h-3 w-3" />}
+                  </button>
+                )}
+              </nav>
             </div>
 
             {/* TRỤ CỘT 3: CẨM NANG PHỎNG VẤN */}

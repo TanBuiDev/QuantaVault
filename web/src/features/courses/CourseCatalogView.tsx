@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import {
   Database,
   BookOpen,
@@ -15,7 +16,8 @@ import {
   Compass,
   Cpu,
   Server,
-  Container
+  Container,
+  Search
 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { ProgressBar } from "@/components/ui/ProgressBar";
@@ -28,6 +30,23 @@ interface CourseCatalogViewProps {
 
 export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
   const { hydrated, getCourseCompletion, getCourseRecord } = useCourseProgress();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<"all" | "studying" | "completed" | "not-started">("all");
+
+  const matchingCourses = courses.filter((course) => {
+    const query = searchQuery.trim().toLocaleLowerCase("vi");
+    const found = !query || [course.title, course.tagline, course.level, ...course.chapters.map((ch) => ch.title)]
+      .some((part) => part.toLocaleLowerCase("vi").includes(query));
+    if (!found) return false;
+    if (statusFilter === "all" || !hydrated) return true;
+    const record = getCourseRecord(course.id);
+    const { completedCount, totalLessons } = getCourseCompletion(course.id, course.totalLessons);
+    const completed = totalLessons > 0 && completedCount >= totalLessons;
+    const studying = !completed && (completedCount > 0 || Boolean(record.lastAccessedLessonId));
+    if (statusFilter === "completed") return completed;
+    if (statusFilter === "studying") return studying;
+    return !completed && !studying;
+  });
 
   // Aggregate stats across all courses
   const totalAllLessons = courses.reduce((acc, c) => acc + c.totalLessons, 0);
@@ -39,11 +58,20 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
   const overallPercentage =
     totalAllLessons > 0 ? Math.round((totalCompletedLessons / totalAllLessons) * 100) : 0;
 
-  // Find the primary active course (PostgreSQL)
-  const primaryCourse = courses[0];
+  // Resume the most recently visited course instead of always PostgreSQL.
+  const recentCourse = hydrated
+    ? [...courses]
+        .filter((course) => {
+          const id = getCourseRecord(course.id).lastAccessedLessonId;
+          return Boolean(id && course.lessons.some((lesson) => lesson.id === id));
+        })
+        .sort((a, b) => (getCourseRecord(b.id).updatedAt || "").localeCompare(getCourseRecord(a.id).updatedAt || ""))[0]
+    : undefined;
+  const primaryCourse = recentCourse || courses[0];
   const primaryRecord = hydrated && primaryCourse ? getCourseRecord(primaryCourse.id) : null;
   const primaryTargetLessonId =
-    primaryRecord?.lastAccessedLessonId || primaryCourse?.lessons[0]?.id || "lesson-01";
+    (primaryRecord?.lastAccessedLessonId && primaryCourse?.lessons.some((lesson) => lesson.id === primaryRecord.lastAccessedLessonId)
+      ? primaryRecord.lastAccessedLessonId : primaryCourse?.lessons[0]?.id) || "lesson-01";
 
   const primaryTargetLesson = primaryCourse?.lessons.find(
     (l) => l.id === primaryTargetLessonId
@@ -83,8 +111,49 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
               </h2>
             </div>
 
+            {/* Search and status filters support large catalogs without changing saved progress. */}
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <label className="relative block min-w-0 flex-1">
+                <Search aria-hidden="true" className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--muted)]" />
+                <input
+                  type="search"
+                  aria-label="Tìm kiếm khóa học"
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  placeholder="Tìm theo tên, chủ đề khóa học..."
+                  className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] py-2.5 pl-10 pr-3 text-sm text-[var(--foreground)] outline-none focus:border-indigo-500"
+                />
+              </label>
+              <label className="flex shrink-0 items-center gap-2 text-xs font-medium text-[var(--muted-strong)]">
+                <span>Trạng thái</span>
+                <select
+                  aria-label="Lọc trạng thái khóa học"
+                  value={statusFilter}
+                  onChange={(event) => setStatusFilter(event.target.value as typeof statusFilter)}
+                  className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-sm text-[var(--foreground)] outline-none focus:border-indigo-500"
+                >
+                  <option value="all">Tất cả</option>
+                  <option value="studying">Đang học</option>
+                  <option value="completed">Hoàn thành</option>
+                  <option value="not-started">Chưa bắt đầu</option>
+                </select>
+              </label>
+              <span role="status" className="shrink-0 text-xs text-[var(--muted)]">{matchingCourses.length}/{courses.length} khóa</span>
+            </div>
+
+            {matchingCourses.length === 0 && (
+              <div role="status" className="rounded-2xl border border-dashed border-[var(--border)] bg-[var(--surface)] px-6 py-10 text-center">
+                <p className="font-semibold text-[var(--foreground)]">Không tìm thấy khóa học phù hợp</p>
+                <p className="mt-1 text-xs text-[var(--muted)]">Thử từ khóa hoặc trạng thái khác.</p>
+                <button type="button" onClick={() => { setSearchQuery(""); setStatusFilter("all"); }}
+                  className="mt-3 rounded-lg border border-[var(--border)] px-3 py-2 text-xs font-semibold hover:bg-[var(--surface-hover)]">
+                  Xóa bộ lọc
+                </button>
+              </div>
+            )}
+
             {/* Courses Showcase */}
-            {courses.length === 1 && primaryCourse ? (
+            {courses.length === 1 && matchingCourses.length === 1 && primaryCourse ? (
               // Featured Hero Course Card for single primary course
               (() => {
                 const { completedCount, totalLessons, percentage } = hydrated
@@ -95,6 +164,8 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
                   primaryCourse.lessons.reduce((acc, l) => acc + (l.durationMinutes || 0), 0) /
                   60
                 ).toFixed(0);
+                const mermaidCount = primaryCourse.lessons.reduce((sum, lesson) => sum + (lesson.contentMarkdown.match(/```mermaid\b/g) || []).length, 0);
+                const codeCount = primaryCourse.lessons.reduce((sum, lesson) => sum + (lesson.contentMarkdown.match(/```(?:sql|java|bash|shell|json|yaml|xml)\b/g) || []).length, 0);
 
                 return (
                   <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-8 space-y-6 shadow-xs hover:border-indigo-500/40 transition-all">
@@ -102,7 +173,7 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
                     <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                       <div className="flex items-start gap-4">
                         <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 shadow-xs ring-1 ring-indigo-500/20">
-                          <Database className="h-7 w-7" />
+                          {primaryCourse.icon === "Server" ? <Server className="h-7 w-7" /> : <Database className="h-7 w-7" />}
                         </div>
                         <div className="space-y-1.5">
                           <div className="flex flex-wrap items-center gap-2">
@@ -114,7 +185,7 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
                             </span>
                             <span className="flex items-center gap-1 rounded-md bg-amber-500/10 px-2.5 py-0.5 text-xs font-semibold text-amber-600 dark:text-amber-400">
                               <ShieldCheck className="h-3.5 w-3.5" />
-                              <span>Đã kiểm duyệt v2</span>
+                              <span>Nội dung thực hành</span>
                             </span>
                           </div>
                           <h3 className="text-2xl font-black text-[var(--foreground)] tracking-tight">
@@ -128,7 +199,7 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
                         href={`/courses/${primaryCourse.slug}/${primaryTargetLessonId}`}
                         className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--primary)] px-6 py-3 text-xs sm:text-sm font-bold text-white shadow-md hover:brightness-110 active:scale-98 transition-all shrink-0 self-start"
                       >
-                        <span>{percentage > 0 ? "Vào Học Tiếp" : "Bắt Đầu Học Ngay"}</span>
+                        <span>{percentage > 0 || Boolean(primaryRecord?.lastAccessedLessonId) ? "Vào Học Tiếp" : "Bắt Đầu Học Ngay"}</span>
                         <ChevronRight className="h-4 w-4" />
                       </Link>
                     </div>
@@ -159,16 +230,16 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
                       </div>
                       <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)]/40 p-3.5 text-center">
                         <span className="block text-xl font-black text-emerald-600 dark:text-emerald-400">
-                          17 sơ đồ
+                          {mermaidCount} sơ đồ
                         </span>
-                        <span className="text-xs text-[var(--muted)] font-medium">Mermaid & 56 SQL Lab</span>
+                        <span className="text-xs text-[var(--muted)] font-medium">Mermaid & {codeCount} khối mã</span>
                       </div>
                     </div>
 
                     {/* Chapter Breakdown Pills */}
                     <div className="space-y-3 pt-2">
                       <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
-                        Tổng quan 4 chương trong khóa học:
+                        Tổng quan {primaryCourse.chapters.length} chương trong khóa học:
                       </h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         {primaryCourse.chapters.map((chapter, idx) => (
@@ -209,26 +280,29 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
               })()
             ) : (
               // Multi-courses grid if multiple courses exist
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {courses.map((course) => {
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                {matchingCourses.map((course) => {
                   const { completedCount, totalLessons, percentage } = hydrated
                     ? getCourseCompletion(course.id, course.totalLessons)
                     : { completedCount: 0, totalLessons: course.totalLessons, percentage: 0 };
 
                   const record = hydrated ? getCourseRecord(course.id) : null;
                   const targetLessonId =
-                    record?.lastAccessedLessonId || course.lessons[0]?.id || "lesson-01";
+                    (record?.lastAccessedLessonId && course.lessons.some((lesson) => lesson.id === record.lastAccessedLessonId)
+                      ? record.lastAccessedLessonId : course.lessons[0]?.id) || "lesson-01";
 
                   return (
                     <div
                       key={course.id}
-                      className="group relative flex flex-col justify-between rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 transition-all duration-200 hover:border-indigo-500/40 hover:shadow-lg hover:shadow-indigo-500/5"
+                      className="group relative flex min-w-0 flex-col justify-between rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6 transition-all duration-200 hover:border-indigo-500/40 hover:shadow-lg hover:shadow-indigo-500/5"
                     >
                       <div className="space-y-4">
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 group-hover:scale-105 transition-transform">
                             {course.icon === "Database" ? (
                               <Database className="h-6 w-6" />
+                            ) : course.icon === "Server" ? (
+                              <Server className="h-6 w-6" />
                             ) : (
                               <BookOpen className="h-6 w-6" />
                             )}
@@ -285,7 +359,7 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
                           href={`/courses/${course.slug}/${targetLessonId}`}
                           className="flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--primary)] px-4 py-2.5 text-xs font-bold text-white shadow-sm hover:brightness-110 active:scale-[0.99] transition-all"
                         >
-                          <span>{percentage > 0 ? "Vào Học Tiếp" : "Bắt Đầu Học Ngay"}</span>
+                          <span>{percentage > 0 || Boolean(record?.lastAccessedLessonId) ? "Vào Học Tiếp" : "Bắt Đầu Học Ngay"}</span>
                           <ChevronRight className="h-4 w-4" />
                         </Link>
                       </div>
@@ -384,7 +458,7 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
             {primaryCourse && primaryTargetLesson && (
               <div className="rounded-2xl border border-indigo-500/20 bg-indigo-500/[0.04] p-3.5 space-y-2">
                 <span className="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 block">
-                  {totalCompletedLessons > 0 ? "Tiếp tục bài đang học:" : "Bắt đầu bài đầu tiên:"}
+                  {primaryRecord?.lastAccessedLessonId ? "Tiếp tục bài đang học:" : "Bắt đầu bài đầu tiên:"}
                 </span>
                 <Link
                   href={`/courses/${primaryCourse.slug}/${primaryTargetLessonId}`}
@@ -399,71 +473,42 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
             )}
           </div>
 
-          {/* 2. Java Backend Milestones Map */}
+          {/* Published courses: show actual per-course progress instead of a hardcoded checkmark. */}
           <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 space-y-4 shadow-xs">
             <div className="flex items-center gap-2 border-b border-[var(--border)] pb-3">
               <Compass className="h-4 w-4 text-emerald-500" />
               <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--foreground)]">
-                Lộ Trình Kỹ Sư Java Backend
+                Khóa học hiện có ({courses.length})
               </h3>
             </div>
-
-            <div className="space-y-3">
-              <div className="flex items-start gap-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 p-3">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-emerald-500 text-white text-[11px] font-bold">
-                  ✓
-                </span>
-                <div className="min-w-0">
-                  <span className="block text-xs font-bold text-emerald-700 dark:text-emerald-300">
-                    Chặng 01: PostgreSQL & DB
-                  </span>
-                  <span className="text-[11px] text-[var(--muted)]">
-                    20 bài học · B-Tree, MVCC, Lock, JPA
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 rounded-2xl bg-[var(--surface-hover)]/60 border border-[var(--border)] p-3 opacity-80">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[var(--border)] text-[var(--muted)] text-[11px] font-bold">
-                  2
-                </span>
-                <div className="min-w-0">
-                  <span className="block text-xs font-bold text-[var(--foreground)]">
-                    Chặng 02: Spring Boot 3 Core
-                  </span>
-                  <span className="text-[11px] text-[var(--muted)]">
-                    IoC, AOP, Transactional, Security
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 rounded-2xl bg-[var(--surface-hover)]/60 border border-[var(--border)] p-3 opacity-80">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[var(--border)] text-[var(--muted)] text-[11px] font-bold">
-                  3
-                </span>
-                <div className="min-w-0">
-                  <span className="block text-xs font-bold text-[var(--foreground)]">
-                    Chặng 03: Kafka & Microservices
-                  </span>
-                  <span className="text-[11px] text-[var(--muted)]">
-                    Event-driven, SAGA, Outbox Pattern
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 rounded-2xl bg-[var(--surface-hover)]/60 border border-[var(--border)] p-3 opacity-80">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[var(--border)] text-[var(--muted)] text-[11px] font-bold">
-                  4
-                </span>
-                <div className="min-w-0">
-                  <span className="block text-xs font-bold text-[var(--foreground)]">
-                    Chặng 04: Docker & Kubernetes
-                  </span>
-                  <span className="text-[11px] text-[var(--muted)]">
-                    Cloud deployment, Monitoring, CI/CD
-                  </span>
-                </div>
-              </div>
+            <div className="max-h-[340px] space-y-2 overflow-y-auto">
+              {courses.map((course) => {
+                const record = hydrated ? getCourseRecord(course.id) : null;
+                const { completedCount, totalLessons, percentage } = hydrated
+                  ? getCourseCompletion(course.id, course.totalLessons)
+                  : { completedCount: 0, totalLessons: course.totalLessons, percentage: 0 };
+                const completed = totalLessons > 0 && completedCount >= totalLessons;
+                const started = completedCount > 0 || Boolean(record?.lastAccessedLessonId);
+                const target = record?.lastAccessedLessonId
+                  && course.lessons.some((lesson) => lesson.id === record.lastAccessedLessonId)
+                  ? record.lastAccessedLessonId : course.lessons[0]?.id || "lesson-01";
+                return (
+                  <Link key={course.id} href={`/courses/${course.slug}/${target}`}
+                    className="block space-y-2 rounded-2xl border border-[var(--border)] p-3 hover:border-indigo-500/40 hover:bg-[var(--surface-hover)]/50">
+                    <div className="flex items-start justify-between gap-2">
+                      <span className="min-w-0 text-xs font-semibold leading-relaxed text-[var(--foreground)]">{course.title}</span>
+                      <span className="shrink-0 text-[10px] font-semibold text-indigo-600 dark:text-indigo-400">
+                        {completed ? "Hoàn thành" : started ? "Đang học" : "Chưa học"}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between text-[11px] text-[var(--muted)]">
+                      <span>{completedCount}/{totalLessons} bài</span>
+                      <span>{percentage}%</span>
+                    </div>
+                    <ProgressBar value={percentage} max={100} />
+                  </Link>
+                );
+              })}
             </div>
           </div>
 

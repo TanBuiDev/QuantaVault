@@ -31,6 +31,17 @@ export interface CourseManifest {
   lessons: CourseLesson[];
 }
 
+/** Lightweight public navigation metadata; never includes lesson Markdown. */
+export interface CourseNavigationItem {
+  id: string;
+  slug: string;
+  title: string;
+  icon: string;
+  totalLessons: number;
+  firstLessonId: string;
+  lessonIds: string[];
+}
+
 export interface CourseProgressRecord {
   completedLessonIds: string[];
   lastAccessedLessonId?: string;
