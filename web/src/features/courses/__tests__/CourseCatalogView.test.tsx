@@ -71,7 +71,7 @@ describe("CourseCatalogView: scalable course catalog", () => {
     const redis = realCourses.find((course) => course.slug === "redis-for-java")!;
     saveProgress(redis.id, redis.lessons[1].id);
     render(<CourseCatalogView courses={realCourses} />);
-    const resume = screen.getByRole("link", { name: /Bài 2: Redis Data Types/ });
+    const resume = screen.getByRole("link", { name: /Bài 2: Cấu trúc dữ liệu Redis/ });
     expect(resume).toHaveAttribute("href", "/courses/redis-for-java/lesson-02");
   });
 
