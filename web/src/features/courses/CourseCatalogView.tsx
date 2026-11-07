@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import {
   Database,
   BookOpen,
@@ -15,7 +16,8 @@ import {
   Compass,
   Cpu,
   Server,
-  Container
+  Container,
+  Search
 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { ProgressBar } from "@/components/ui/ProgressBar";
@@ -28,6 +30,23 @@ interface CourseCatalogViewProps {
 
 export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
   const { hydrated, getCourseCompletion, getCourseRecord } = useCourseProgress();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<"all" | "studying" | "completed" | "not-started">("all");
+
+  const matchingCourses = courses.filter((course) => {
+    const query = searchQuery.trim().toLocaleLowerCase("vi");
+    const found = !query || [course.title, course.tagline, course.level, ...course.chapters.map((ch) => ch.title)]
+      .some((part) => part.toLocaleLowerCase("vi").includes(query));
+    if (!found) return false;
+    if (statusFilter === "all" || !hydrated) return true;
+    const record = getCourseRecord(course.id);
+    const { completedCount, totalLessons } = getCourseCompletion(course.id, course.totalLessons);
+    const completed = totalLessons > 0 && completedCount >= totalLessons;
+    const studying = !completed && (completedCount > 0 || Boolean(record.lastAccessedLessonId));
+    if (statusFilter === "completed") return completed;
+    if (statusFilter === "studying") return studying;
+    return !completed && !studying;
+  });
 
   // Aggregate stats across all courses
   const totalAllLessons = courses.reduce((acc, c) => acc + c.totalLessons, 0);
@@ -39,11 +58,20 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
   const overallPercentage =
     totalAllLessons > 0 ? Math.round((totalCompletedLessons / totalAllLessons) * 100) : 0;
 
-  // Find the primary active course (PostgreSQL)
-  const primaryCourse = courses[0];
+  // Resume the most recently visited course instead of always PostgreSQL.
+  const recentCourse = hydrated
+    ? [...courses]
+        .filter((course) => {
+          const id = getCourseRecord(course.id).lastAccessedLessonId;
+          return Boolean(id && course.lessons.some((lesson) => lesson.id === id));
+        })
+        .sort((a, b) => (getCourseRecord(b.id).updatedAt || "").localeCompare(getCourseRecord(a.id).updatedAt || ""))[0]
+    : undefined;
+  const primaryCourse = recentCourse || courses[0];
   const primaryRecord = hydrated && primaryCourse ? getCourseRecord(primaryCourse.id) : null;
   const primaryTargetLessonId =
-    primaryRecord?.lastAccessedLessonId || primaryCourse?.lessons[0]?.id || "lesson-01";
+    (primaryRecord?.lastAccessedLessonId && primaryCourse?.lessons.some((lesson) => lesson.id === primaryRecord.lastAccessedLessonId)
+      ? primaryRecord.lastAccessedLessonId : primaryCourse?.lessons[0]?.id) || "lesson-01";
 
   const primaryTargetLesson = primaryCourse?.lessons.find(
     (l) => l.id === primaryTargetLessonId
@@ -84,7 +112,7 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
             </div>
 
             {/* Courses Showcase */}
-            {courses.length === 1 && primaryCourse ? (
+            {courses.length === 1 && matchingCourses.length === 1 && primaryCourse ? (
               // Featured Hero Course Card for single primary course
               (() => {
                 const { completedCount, totalLessons, percentage } = hydrated
@@ -209,20 +237,21 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
               })()
             ) : (
               // Multi-courses grid if multiple courses exist
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {courses.map((course) => {
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                {matchingCourses.map((course) => {
                   const { completedCount, totalLessons, percentage } = hydrated
                     ? getCourseCompletion(course.id, course.totalLessons)
                     : { completedCount: 0, totalLessons: course.totalLessons, percentage: 0 };
 
                   const record = hydrated ? getCourseRecord(course.id) : null;
                   const targetLessonId =
-                    record?.lastAccessedLessonId || course.lessons[0]?.id || "lesson-01";
+                    (record?.lastAccessedLessonId && course.lessons.some((lesson) => lesson.id === record.lastAccessedLessonId)
+                      ? record.lastAccessedLessonId : course.lessons[0]?.id) || "lesson-01";
 
                   return (
                     <div
                       key={course.id}
-                      className="group relative flex flex-col justify-between rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 transition-all duration-200 hover:border-indigo-500/40 hover:shadow-lg hover:shadow-indigo-500/5"
+                      className="group relative flex min-w-0 flex-col justify-between rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6 transition-all duration-200 hover:border-indigo-500/40 hover:shadow-lg hover:shadow-indigo-500/5"
                     >
                       <div className="space-y-4">
                         <div className="flex items-start justify-between gap-3">
