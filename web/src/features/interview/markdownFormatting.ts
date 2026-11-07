@@ -85,7 +85,14 @@ export function toggleMarkdownInline(
   const selected = value.slice(start, end);
 
   // The selected range includes its delimiters (e.g. select "**text**").
-  if (selected.length >= size * 2 && selected.startsWith(marker) && selected.endsWith(marker)) {
+  // Italic is present only when the surrounding asterisk run is odd:
+  // **text** is bold (not italic), while ***text*** is both styles.
+  const selectedLeftStars = selected.match(/^\*+/)?.[0].length ?? 0;
+  const selectedRightStars = selected.match(/\*+$/)?.[0].length ?? 0;
+  const insideStyle = kind === "bold"
+    ? selectedLeftStars >= 2 && selectedRightStars >= 2
+    : selectedLeftStars % 2 === 1 && selectedRightStars % 2 === 1;
+  if (selected.length >= size * 2 && insideStyle) {
     const inner = selected.slice(size, -size);
     return {
       value: value.slice(0, start) + inner + value.slice(end),
@@ -96,9 +103,13 @@ export function toggleMarkdownInline(
 
   // Most common after the first Ctrl+B: the selection covers only the text,
   // while the surrounding ** delimiters are immediately outside the selection.
-  const surrounded = start >= size
-    && value.slice(start - size, start) === marker
-    && value.slice(end, end + size) === marker;
+  let leftStars = 0;
+  for (let i = start - 1; i >= 0 && value[i] === "*"; i--) leftStars++;
+  let rightStars = 0;
+  for (let i = end; i < value.length && value[i] === "*"; i++) rightStars++;
+  const surrounded = kind === "bold"
+    ? leftStars >= 2 && rightStars >= 2
+    : leftStars % 2 === 1 && rightStars % 2 === 1;
   if (surrounded) {
     return {
       value: value.slice(0, start - size) + selected + value.slice(end + size),
