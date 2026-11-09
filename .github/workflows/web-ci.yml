@@ -23,6 +23,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Check generated English course and practice data
+        run: python data/courses/english-job-interview/tools/rebuild_course.py --check
+
       - name: Validate canonical content
         run: python tools/validate_content.py
 

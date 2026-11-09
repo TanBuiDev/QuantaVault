@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 import {
-  Database,
   BookOpen,
+  Server,
   Clock,
   ChevronRight,
   Sparkles,
