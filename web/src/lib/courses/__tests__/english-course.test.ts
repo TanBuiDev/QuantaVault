@@ -72,7 +72,8 @@ describe("English job interview: original PDF -> Markdown -> website", () => {
       expect(lesson.title.length).toBeGreaterThan(10);
       expect(lesson.summary.length).toBeGreaterThan(25);
       expect(questionIndex.some((q) => q.lessonId === lesson.id && q.chapterId === lesson.chapterId)).toBe(true);
-      expect(lesson.contentMarkdown).not.toMatch(/``[^\n]*\bid\s*=/);
+      const unsafeFence = new RegExp(String.fromCharCode(96).repeat(3) + "[^\\n]*\\bid\\s*=", "i");
+      expect(lesson.contentMarkdown).not.toMatch(unsafeFence);
       return count + (lesson.contentMarkdown.match(/^## /gm) || []).length;
     }, 0);
     expect(headings).toBe(155);
