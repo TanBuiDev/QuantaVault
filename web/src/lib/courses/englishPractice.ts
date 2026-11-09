@@ -1,3 +1,7 @@
+"use client";
+
+import { useSyncExternalStore } from "react";
+
 import rawPractice from "@/data/courses/english-job-interview/practice.json";
 
 export type PracticeKind = "question" | "answer";
@@ -57,6 +61,10 @@ export function getPracticeCards(lessonId: string, kind: PracticeKind): Practice
 }
 
 const STORAGE_KEY = "quantavault-english-practice:v1";
+const CHANGE_EVENT = "quantavault-english-practice:change";
+const EMPTY_SCORES: Record<string, PracticeStatus> = {};
+let cachedRaw: string | null = null;
+let cachedScores: Record<string, PracticeStatus> = EMPTY_SCORES;
 
 export function practiceScoreKey(cardId: string, direction: PracticeDirection): string {
   return cardId + ":" + direction;
@@ -79,10 +87,45 @@ export function readPracticeScores(): Record<string, PracticeStatus> {
   }
 }
 
+function getSnapshot(): Record<string, PracticeStatus> {
+  if (typeof window === "undefined") return EMPTY_SCORES;
+  let raw: string | null = null;
+  try {
+    raw = window.localStorage.getItem(STORAGE_KEY);
+  } catch {
+    return EMPTY_SCORES;
+  }
+  if (raw === cachedRaw) return cachedScores;
+  cachedRaw = raw;
+  cachedScores = readPracticeScores();
+  return cachedScores;
+}
+
+function subscribe(callback: () => void): () => void {
+  if (typeof window === "undefined") return () => {};
+  const onStorage = (event: StorageEvent) => {
+    if (event.key === STORAGE_KEY || event.key === null) callback();
+  };
+  window.addEventListener("storage", onStorage);
+  window.addEventListener(CHANGE_EVENT, callback);
+  return () => {
+    window.removeEventListener("storage", onStorage);
+    window.removeEventListener(CHANGE_EVENT, callback);
+  };
+}
+
+export function useEnglishPracticeScores(): Record<string, PracticeStatus> {
+  return useSyncExternalStore(subscribe, getSnapshot, () => EMPTY_SCORES);
+}
+
 export function writePracticeScores(scores: Record<string, PracticeStatus>): void {
   if (typeof window === "undefined") return;
   try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ version: 1, scores }));
+    const raw = JSON.stringify({ version: 1, scores });
+    window.localStorage.setItem(STORAGE_KEY, raw);
+    cachedRaw = raw;
+    cachedScores = scores;
+    window.dispatchEvent(new Event(CHANGE_EVENT));
   } catch {
     // Private browsing or exhausted quota must not prevent practicing.
   }

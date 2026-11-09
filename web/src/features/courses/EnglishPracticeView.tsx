@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Eye, EyeOff, Languages, RotateCcw } from "lucide-react";
 import { ProgressBar } from "@/components/ui/ProgressBar";
@@ -8,7 +8,7 @@ import { SegmentedToggle } from "@/components/ui/SegmentedToggle";
 import {
   getPracticeCards,
   practiceScoreKey,
-  readPracticeScores,
+  useEnglishPracticeScores,
   writePracticeScores,
   type PracticeDirection,
   type PracticeKind,
@@ -29,15 +29,7 @@ export function EnglishPracticeView({ lessons }: { lessons: PracticeLessonOption
   const [cardIndex, setCardIndex] = useState(0);
   const [answer, setAnswer] = useState("");
   const [revealed, setRevealed] = useState(false);
-  const [scores, setScores] = useState<Record<string, PracticeStatus>>({});
-
-  useEffect(() => {
-    setScores(readPracticeScores());
-    const requestedLesson = new URLSearchParams(window.location.search).get("lesson");
-    if (requestedLesson && lessons.some((lesson) => lesson.id === requestedLesson)) {
-      setLessonId(requestedLesson);
-    }
-  }, [lessons]);
+  const scores = useEnglishPracticeScores();
 
   const cards = useMemo(() => getPracticeCards(lessonId, kind), [lessonId, kind]);
   const activeIndex = cards.length ? Math.min(cardIndex, cards.length - 1) : 0;
@@ -83,7 +75,6 @@ export function EnglishPracticeView({ lessons }: { lessons: PracticeLessonOption
   const mark = (status: PracticeStatus) => {
     if (!active || !revealed) return;
     const next = { ...scores, [practiceScoreKey(active.id, direction)]: status };
-    setScores(next);
     writePracticeScores(next);
   };
 
