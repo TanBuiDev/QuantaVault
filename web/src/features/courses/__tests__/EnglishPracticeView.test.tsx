@@ -114,12 +114,12 @@ describe("EnglishPracticeView", () => {
     fireEvent.click(screen.getByRole("button", { name: "Cần ôn" }));
 
     // Filter by "Cần ôn"
-    const filterGroup = screen.getByRole("group", { name: "Bộ lọc trạng thái ghi nhớ" });
-    fireEvent.click(within(filterGroup).getByRole("button", { name: /Cần ôn/ }));
+    const filterGroup = screen.getByRole("tablist", { name: "Bộ lọc trạng thái ghi nhớ" });
+    fireEvent.click(within(filterGroup).getByRole("tab", { name: /Cần ôn/ }));
     expect(screen.getByText("Thẻ 1/1")).toBeInTheDocument();
 
     // Filter by "Đã nhớ" -> shows friendly empty state
-    fireEvent.click(within(filterGroup).getByRole("button", { name: /Đã nhớ/ }));
+    fireEvent.click(within(filterGroup).getByRole("tab", { name: /Đã nhớ/ }));
     expect(screen.getByText(/Không có thẻ nào trong mục.*Đã nhớ/)).toBeInTheDocument();
 
     // Reset back to all

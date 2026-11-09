@@ -290,7 +290,7 @@ export function EnglishPracticeView({ lessons }: { lessons: PracticeLessonOption
         {/* Smart Status Filter */}
         <div className="space-y-2">
           <span className="block text-xs font-bold text-[var(--foreground)]">Lọc theo trạng thái</span>
-          <div role="group" aria-label="Bộ lọc trạng thái ghi nhớ" className="flex flex-wrap gap-2">
+          <div role="tablist" aria-label="Bộ lọc trạng thái ghi nhớ" className="flex flex-wrap gap-2">
             {[
               { id: "all", label: "Tất cả", count: allCards.length },
               { id: "review", label: "Cần ôn", count: reviewCount },
@@ -302,6 +302,8 @@ export function EnglishPracticeView({ lessons }: { lessons: PracticeLessonOption
                 <button
                   key={tab.id}
                   type="button"
+                  role="tab"
+                  aria-selected={isSelected}
                   onClick={() => selectStatusFilter(tab.id as PracticeStatusFilter)}
                   className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-semibold transition-all cursor-pointer ${
                     isSelected
