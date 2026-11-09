@@ -66,7 +66,7 @@ describe("English job interview: original PDF -> Markdown -> website", () => {
     expect(flattenedChapters).toEqual(lessonIds);
     const headings = course!.lessons.reduce((count, lesson) => {
       const file = readFileSync(resolve(sourceRoot, "lessons", lesson.id + ".md"), "utf8");
-      expect(file).toBe(lesson.contentMarkdown);
+      expect(file.replace(/\r\n/g, "\n")).toBe(lesson.contentMarkdown.replace(/\r\n/g, "\n"));
       expect(lesson.contentMarkdown.length).toBeGreaterThan(1000);
       expect(lesson.title.length).toBeGreaterThan(10);
       expect(lesson.summary.length).toBeGreaterThan(25);

@@ -4,12 +4,14 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { getCourseBySlug } from "../index";
 import {
+  filterPracticeCards,
   getPracticeCards,
   practiceQuestions,
   practiceScoreKey,
   readPracticeScores,
   writePracticeScores
 } from "../englishPractice";
+import { cleanTextForSpeech } from "../speech";
 
 const root = resolve(process.cwd(), "..", "data", "courses", "english-job-interview");
 const manifest = getCourseBySlug("english-job-interview")!;
@@ -70,5 +72,24 @@ describe("English interview practice: canonical source, bilingual UX and safe pr
   it("recovers gracefully from corrupted practice-only localStorage", () => {
     localStorage.setItem("quantavault-english-practice:v1", "not-json");
     expect(readPracticeScores()).toEqual({});
+  });
+
+  it("filters practice cards by status cleanly without mutating original array", () => {
+    const cards = getPracticeCards("lesson-01", "question");
+    const scores = {
+      [practiceScoreKey(cards[0].id, "vi-en")]: "remembered" as const,
+      [practiceScoreKey(cards[1].id, "vi-en")]: "review" as const
+    };
+    expect(filterPracticeCards(cards, "vi-en", scores, "all")).toHaveLength(cards.length);
+    expect(filterPracticeCards(cards, "vi-en", scores, "remembered")).toHaveLength(1);
+    expect(filterPracticeCards(cards, "vi-en", scores, "review")).toHaveLength(1);
+    expect(filterPracticeCards(cards, "vi-en", scores, "unreviewed")).toHaveLength(cards.length - 2);
+  });
+
+  it("cleans markdown and formatting symbols before text-to-speech utterance", () => {
+    expect(cleanTextForSpeech("### Question 1: What is **OOP**?")).toBe("Question 1: What is OOP?");
+    expect(cleanTextForSpeech("Visit [link](https://example.com) for `code` details.")).toBe(
+      "Visit link for code details."
+    );
   });
 });

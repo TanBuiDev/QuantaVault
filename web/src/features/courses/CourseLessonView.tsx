@@ -13,7 +13,9 @@ import {
   Share2,
   Check,
   BookOpen,
-  Languages
+  Languages,
+  Volume2,
+  ArrowRight
 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { MarkdownContent } from "@/features/practice/MarkdownContent";
@@ -21,6 +23,7 @@ import { InterviewTextSizeControl } from "@/features/interview/InterviewTextSize
 import { useInterviewTextSize } from "@/features/interview/useInterviewTextSize";
 import type { CourseLesson, CourseManifest } from "@/lib/courses";
 import { useCourseProgress } from "@/lib/courses/useCourseProgress";
+import { useEnglishSpeech } from "@/lib/courses/speech";
 import { CourseSyllabusSidebar } from "./CourseSyllabusSidebar";
 
 interface CourseLessonViewProps {
@@ -41,6 +44,7 @@ export function CourseLessonView({
   const [mobileSyllabusOpen, setMobileSyllabusOpen] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const { textScale, changeTextScale } = useInterviewTextSize();
+  const { speak, isSpeaking } = useEnglishSpeech();
   const isEnglish = course.slug === "english-job-interview";
   const visibleMarkdown = isEnglish
     ? lesson.contentMarkdown.replace(/^# Lesson [^\n]*\n\n\*\*Tiếng Việt:\*\*[^\n]*\n\n---\n\n/, "")
@@ -206,11 +210,49 @@ export function CourseLessonView({
               </span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[var(--foreground)] tracking-tight leading-snug">
-              {isEnglish && lesson.titleEn ? lesson.titleEn : lesson.title}
-            </h1>
+            <div className="flex flex-wrap items-center gap-3">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[var(--foreground)] tracking-tight leading-snug">
+                {isEnglish && lesson.titleEn ? lesson.titleEn : lesson.title}
+              </h1>
+              {isEnglish && lesson.titleEn && (
+                <button
+                  type="button"
+                  onClick={() => speak(lesson.titleEn!)}
+                  title="Nghe phát âm chuẩn tiêu đề tiếng Anh"
+                  aria-label="Nghe phát âm tiêu đề tiếng Anh"
+                  className={`inline-flex items-center justify-center p-2 rounded-xl border border-indigo-500/30 transition-all cursor-pointer ${
+                    isSpeaking(lesson.titleEn)
+                      ? "bg-indigo-600 text-white animate-pulse"
+                      : "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/20"
+                  }`}
+                >
+                  <Volume2 className="h-5 w-5" />
+                </button>
+              )}
+            </div>
             {isEnglish && lesson.titleEn && (
               <p className="text-base sm:text-lg text-[var(--muted-strong)] font-medium">{lesson.title}</p>
+            )}
+
+            {/* Quick practice card for English lessons */}
+            {isEnglish && (
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-indigo-500/30 bg-indigo-500/5 p-4 shadow-2xs">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-indigo-500/15 text-indigo-600 dark:text-indigo-400">
+                    <Languages className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-[var(--foreground)]">Luyện nghe, dịch & phản xạ cho bài này</h4>
+                    <p className="text-xs text-[var(--muted-strong)]">Gõ dịch hai chiều, nghe phát âm bản xứ và tự đánh giá khả năng ghi nhớ.</p>
+                  </div>
+                </div>
+                <Link
+                  href={`/courses/english-job-interview/practice?lesson=${lesson.id}`}
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-3.5 py-2 text-xs font-bold text-white hover:bg-indigo-700 transition-all shadow-xs cursor-pointer"
+                >
+                  Luyện tập ngay <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
             )}
 
             {/* Tags */}
