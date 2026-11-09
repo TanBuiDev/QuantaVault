@@ -1,6 +1,6 @@
-# Bài 07: Vị trí công việc và phong cách quản lý
+# Lesson 07: Job Roles and Management Styles
 
-> Nội dung gồm 8 mục câu hỏi từ PDF gốc; thứ tự câu hỏi và các mẫu trả lời được bảo toàn.
+**Tiếng Việt:** Bài 07: Vị trí công việc và phong cách quản lý
 
 ---
 
@@ -40,8 +40,6 @@ I worked as a translator for the King County court house. Afterwards, I worked a
 
 Tôi làm việc như một phiên dịch cho tòa án quận King. Sau đó, tôi làm việc như một phiên dịch cho các bệnh viện. Vị trí cuối cùng của tôi là dịch các tài liệu trợ giúp cho một công ty phần mềm.
 
-*Nguồn: PDF trang 36 (số trang in trên sách: 38).*
-
 ---
 
 ## Tell me about your last position? What did you do and how did you do it? Include the people you worked for and the people you worked with.
@@ -79,8 +77,6 @@ I was a program manager for a manufacturing company. I was in charge of cost ana
 **Tiếng Việt:**
 
 Tôi là một người quản lý chương trình cho một công ty sản xuất. Tôi phụ trách phân tích chi phí liên quan đến các số lượng khác nhau của sản xuất. Tôi cũng đã làm việc về quy hoạch thủ tục cho các phân phôi tiếp theo.
-
-*Nguồn: PDF trang 36, 37 (số trang in trên sách: 38, 39).*
 
 ---
 
@@ -120,8 +116,6 @@ I believe in setting an example. My favorite managers in the past were the ones 
 
 Tôi tin vào việc nêu gương. Những vị giám đốc yêu thích nhất của tôi trong quá khứ là những người làm việc thông minh và hiệu quả. Tôi đã học được rất nhiều và nhận ra rằng, việc nêu gương là cách làm có sức ảnh hưởng lớn và trực tiếp đến việc làm việc siêng năng.
 
-*Nguồn: PDF trang 37, 38 (số trang in trên sách: 39, 40).*
-
 ---
 
 ## What was your favorite job?
@@ -159,8 +153,6 @@ My favorite job was the last position I held in the marketing department. That's
 **Tiếng Việt:**
 
 Công việc yêu thích nhất mà tôi từng làm là vị trí cuối cùng tôi làm trong bộ phận marketing (tiếp thị). Đó là lý do vì sao tôi nộp đơn ứng tuyển vào vị trí này. Nó có nhiều điểm tương đồng với vị trí trước đây tôi từng làm nên tôi thật sự thích nó. Dù tôi rất thích công việc của mình, tôi muốn trải nghiệm một công việc tương tự cho công ty lớn hơn. Đó là lý do chính để tôi muốn rời khỏi công việc hiện tại.
-
-*Nguồn: PDF trang 38, 39 (số trang in trên sách: 40, 41).*
 
 ---
 
@@ -200,8 +192,6 @@ I had a manager that worked efficiently. Instead of bossing everyone around, he 
 
 Tôi từng làm việc cùng một người giám đốc làm việc rất hiệu quả. Thay vì ra vẻ ta đây với mọi người, ông thật sự là tấm gương để mọi người noi theo trong việc làm việc chăm chỉ. Tôi rất coi trọng tính cách này và đã học tập theo ông ấy thông qua việc làm việc một cách thông minh hơn.
 
-*Nguồn: PDF trang 39, 40 (số trang in trên sách: 41, 42).*
-
 ---
 
 ## Tell me about the worst manager you ever had.
@@ -239,8 +229,6 @@ One manager didn't like talking to people. He always had his office door closed 
 **Tiếng Việt:**
 
 Một người giám đốc không thích trò chuyện cùng mọi người. Ông ấy luôn đóng kín cửa văn phòng của mình và mỗi khi có ai hỏi gì đó thì ông dường như rất khó chịu. Ông ấy thông minh và có thể làm việc đạt khối lượng rất lớn nhưng với tư cách một giám đốc, tôi tin là ông ấy nên là người mà các cấp dưới trực tiếp dễ dàng tiếp cận.
-
-*Nguồn: PDF trang 40, 41 (số trang in trên sách: 42, 43).*
 
 ---
 
@@ -280,8 +268,6 @@ One of my managers gave too much criticism. I value criticism, but hearing somet
 
 Một trong những giám đốc của tôi rất hay đưa ra những lời chỉ trích. Tôi coi trọng sự phê bình nhưng phải nghe điều gì đó không hay ngày này qua ngày khác thật sự là rất khó. Tôi nghĩ, tôi có thể nói về chuyện sự phê bình này ảnh hưởng đến tôi thế nào để có thể cải thiện mối quan hệ giữa chúng tôi.
 
-*Nguồn: PDF trang 41 (số trang in trên sách: 43).*
-
 ---
 
 ## What were the most memorable accomplishments in your last position or in your last career?
@@ -319,7 +305,5 @@ The most memorable accomplishment I had as a sales associate for a software comp
 **Tiếng Việt:**
 
 Thành tựu đáng nhớ nhất là tôi đã làm cộng tác viên bán hàng cho một công ty phần mềm, đã bán được một hợp đồng trị giá gần 17 triệu đô la. Đây là lần đặt hàng lớn thứ hai mà công ty chúng tôi từng có và nó làm cho tôi cảm thấy như đã thắng một cú rất đậm.
-
-*Nguồn: PDF trang 42 (số trang in trên sách: 44).*
 
 ---

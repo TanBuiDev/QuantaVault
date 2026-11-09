@@ -1,6 +1,6 @@
-# Bài 08: Chuyển việc và kinh nghiệm trước đây
+# Lesson 08: Changing Jobs and Previous Experience
 
-> Nội dung gồm 8 mục câu hỏi từ PDF gốc; thứ tự câu hỏi và các mẫu trả lời được bảo toàn.
+**Tiếng Việt:** Bài 08: Chuyển việc và kinh nghiệm trước đây
 
 ---
 
@@ -40,8 +40,6 @@ Our family moved to live near a better school district for our children. This ar
 
 Gia đình chúng tôi chuyển đến gần một trường học quận để bọn trẻ có thể học tốt hơn. Khu vực này rất tuyệt và tôi muốn tìm một công việc gần với nhà mới của chúng tôi. Công việc trước đây ở quá xa nơi chúng ta đang sống.
 
-*Nguồn: PDF trang 42, 43 (số trang in trên sách: 44, 45).*
-
 ---
 
 ## Where did you tell your boss you were going?
@@ -66,8 +64,6 @@ I wasn't required to tell my boss because I used one of my vacation days to be h
 
 Tôi không cần phải báo với sếp vì tôi dùng ngày nghỉ phép của mình để có mặt ở đây. Tôi thật sự rất hứng khởi khi có cơ hội nhận cuộc phỏng vấn này và dùng ngày nghỉ của mình là hoàn toàn xứng đáng.
 
-*Nguồn: PDF trang 43, 44 (số trang in trên sách: 45, 46).*
-
 ---
 
 ## Are you currently employed at the last place listed on your resume?
@@ -85,8 +81,6 @@ No, I'm not currently employed.
 **Tiếng Việt:**
 
 Không ạ, hiện tại tôi đang không có việc làm.
-
-*Nguồn: PDF trang 44 (số trang in trên sách: 46).*
 
 ---
 
@@ -126,8 +120,6 @@ My manager had the title Test Manager. She was in charge of delivering high qual
 
 Giám đốc của tôi có chức danh là Giám đốc kiểm tra. Bà ấy chịu trách nhiệm mang đến các tính năng có chất lượng cao nhất cho mỗi phần mềm ứng dụng. Bà ấy lên kế hoạch cho mỗi dự án, đưa ra khung thời gian hoàn thành công việc, làm việc với các quản lý từ nhiều nhóm khác nhau và cảm kết rằng chất lượng phải được đảm bảo, và bà ấy cũng điều hành nhóm 20 nhân viên kiểm tra của chúng tôi.
 
-*Nguồn: PDF trang 44, 45 (số trang in trên sách: 46, 47).*
-
 ---
 
 ## In your previous position, how much time did you spend on the phone or in meetings or working by yourself or in a team?
@@ -145,8 +137,6 @@ In my last position, we had large projects that involved multiple people. We had
 **Tiếng Việt:**
 
 Trong vị trí trước đây, chúng tôi có những dự án lớn liên quan đến rất nhiều người. Chúng tôi có những buổi họp để thảo luận về dự án và làm việc nhóm bất kỳ khi nào một tính năng cần phải được hoàn thành do 2 người/bộ phận. Sau các buổi họp và làm việc nhóm, tôi được yêu cầu tự mình hoàn thành công việc. Vậy nên với tôi, khá cân bằng về thời gian giữa họp hành, làm việc nhóm và làm việc cá nhân.
-
-*Nguồn: PDF trang 45 (số trang in trên sách: 47).*
 
 ---
 
@@ -186,8 +176,6 @@ I'm a very proactive person and I'll continue to do my job well. I'll always loo
 
 Tôi là một người rất chủ động và tôi sẽ tiếp tục làm tốt công việc của tôi. Tôi sẽ luôn luôn tìm kiếm cơ hội và thậm chí tạo ra những nơi mà tôi có thể cải thiện công việc của tôi. Vì vậy, hy vọng trong vài năm nữa, tôi sẽ đang quản lý những người đang ở vị trí hiện tại của tôi bây giờ.
 
-*Nguồn: PDF trang 45, 46 (số trang in trên sách: 47, 48).*
-
 ---
 
 ## If you're very happy with your current job, why do you want to leave?
@@ -226,8 +214,6 @@ I love to learn new things and after several years in my current position, I rea
 
 Tôi thích học hỏi những điều mới và sau nhiều năm ở vị trí hiện tại của tôi, tôi nhận ra là hầu hết thời gian tôi đều làm cùng một công việc hết lần này đến lần khác. Vì vậy, lý do duy nhất tôi muốn rời bỏ công việc hiện tại là để mở rộng kiến thức của tôi bằng cách có được những trải nghiệm khác.
 
-*Nguồn: PDF trang 46, 47 (số trang in trên sách: 48, 49).*
-
 ---
 
 ## If you have problems or complaints with your current job, why haven't you brought it to their attention?
@@ -265,7 +251,5 @@ After working the night shift for a couple of years, I wanted normal working hou
 **Tiếng Việt:**
 
 Sau khi làm việc ca đêm cho một vài năm, tôi muốn làm việc theo giờ hành chánh/bình thường. Tôi đã nói với người quản lý của tôi về việc này, nhưng không có vị trí làm việc theo ca giờ bình thường.
-
-*Nguồn: PDF trang 47, 48 (số trang in trên sách: 49, 50).*
 
 ---

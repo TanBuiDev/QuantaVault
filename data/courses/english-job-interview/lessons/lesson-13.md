@@ -1,6 +1,6 @@
-# Bài 13: Quản lý nhóm và môi trường làm việc
+# Lesson 13: Team Management and the Work Environment
 
-> Nội dung gồm 10 mục câu hỏi từ PDF gốc; thứ tự câu hỏi và các mẫu trả lời được bảo toàn.
+**Tiếng Việt:** Bài 13: Quản lý nhóm và môi trường làm việc
 
 ---
 
@@ -40,8 +40,6 @@ It's hard to deal with a worker that puts in great effort but slows down the tea
 
 Để làm việc được với một người chỉ biết làm chậm tiến độ của cả đội thay vì cố gắng nỗ lực là một điều khó khăn. Theo tôi, tốt nhất là phải nhận biết vấn đề này sớm. Một cách mà tôi cho rằng có hiệu quả đó chính là trở nên kiên quyết hơn. Bằng cách này, dự án vẫn tiếp tục được thực hiện mà không có quá nhiều những sự ngưng trệ vì những cuộc tranh cãi nhỏ.
 
-*Nguồn: PDF trang 81, 82 (số trang in trên sách: 83, 84).*
-
 ---
 
 ## When do you know enough is enough when dealing with a subordinate that doesn't seem to be helping?
@@ -59,8 +57,6 @@ I know enough is enough when I've exhausted all measures to help this employee g
 **Tiếng Việt:**
 
 Tôi nhận biết sao là đủ khi tôi đã vắt kiệt sức mình với mọi biện pháp để giúp người nhân viên ấy phát triển. Tôi sẽ làm bổn phận của mình qua việc khuyến khích, đưa ra thêm các chỉ dẫn, hướng dẫn, và phân công nhiều loại công việc khác nhau. Nếu tôi đã thử hết tất cả mọi biện pháp trên, và tôi biết rằng mình không thể làm gì thêm nữa thì đó là lúc đủ rồi.
-
-*Nguồn: PDF trang 82 (số trang in trên sách: 84).*
 
 ---
 
@@ -90,8 +86,6 @@ If I had to choose just one, then... I would probably choose to work alone.
 
 Nếu buộc phải chọn một, thì... tôi sẽ chọn làm một mình.
 
-*Nguồn: PDF trang 82, 83 (số trang in trên sách: 84, 85).*
-
 ---
 
 ## How do you get along with your subordinates?
@@ -109,8 +103,6 @@ My relationship with my directs is very good. They're very open and honest with 
 **Tiếng Việt:**
 
 Quan hệ của tôi với những người làm việc trực tiếp cùng tôi rất tốt đẹp. Họ rất cởi mở và thành thật với tôi nên tôi chắc rằng họ cảm thấy họ có thể tìm đến tôi mỗi khi có vấn đề gì.
-
-*Nguồn: PDF trang 83 (số trang in trên sách: 85).*
 
 ---
 
@@ -130,8 +122,6 @@ I've always had an easy time getting along with different types of people. So I 
 
 Tôi luôn dễ dàng tạo mối quan hệ tốt với nhiều kiểu người khác nhau. Nên tôi khôg bao giờ gặp khó khăn trong chuyện tạo mối quan hệ với đồng nghiệp. Tôi xem nhiều người trong số những đồng nghiệp này là bạn của tôi.
 
-*Nguồn: PDF trang 83, 84 (số trang in trên sách: 85, 86).*
-
 ---
 
 ## How do you get along with your superiors?
@@ -149,8 +139,6 @@ I've had my share of great managers and mediocre managers, but I've always gotte
 **Tiếng Việt:**
 
 Tôi đã có những chia sẻ với những nhà quản lý tài giỏi và những nhà quản lý thuộc hạng thường, nhưng tôi luôn hòa hợp rất tốt với họ. Tôi hiếm khi có xung đột với họ và nếu có một vấn đề, tôi luôn luôn nói chuyện với với họ.
-
-*Nguồn: PDF trang 84 (số trang in trên sách: 86).*
 
 ---
 
@@ -190,8 +178,6 @@ I play for a co-ed softball team. It's fun and it gives me a little exercise.
 
 Tôi chơi cho một đội bóng chày nam nữ đấu chung. Nó rất thú vị và nó giúp tôi vận động nhẹ.
 
-*Nguồn: PDF trang 84, 85 (số trang in trên sách: 86, 87).*
-
 ---
 
 ## What do you like to do when you're not in the office?
@@ -219,8 +205,6 @@ Well, I like the piano so I have piano lessons on a weekly basis. I also like ga
 **Tiếng Việt:**
 
 Tôi thích piano nên mỗi tuần tôi đều học piano. Tôi cũng thích làm vườn, nên tôi rất hay chăm sóc mảnh vườn của tôi. Nhưng nếu muốn thư giãn, tôi thích xem phim vào buổi tối.
-
-*Nguồn: PDF trang 85 (số trang in trên sách: 87).*
 
 ---
 
@@ -250,8 +234,6 @@ I have a strong interest in World War II, so I was reading a book about Hitler. 
 
 Tôi rất quan tâm về Chiến Tranh thế giới lần II, vì vậy tôi đã đọc một cuốn sách về Hitler. Nó khá thú vị khi biết được ông ta đã lớn lên như thế nào và những gì dẫn ông đến mối hận thù đối với người Do Thái.
 
-*Nguồn: PDF trang 85, 86 (số trang in trên sách: 87, 88).*
-
 ---
 
 ## What is the most recent movie you saw?
@@ -279,7 +261,5 @@ Oh gosh... it's been a while since I've seen a movie. I think it was Spider Man.
 **Tiếng Việt:**
 
 Ôi trời ... từ lúc tôi coi một bộ phim tới nay cũng khá lâu rồi. Tôi nghĩ đó là phim Spider Man (Người Nhện). Tôi muốn dành nhiều thời gian ở bên ngoài, vì vậy tôi không xem phim thường .
-
-*Nguồn: PDF trang 86 (số trang in trên sách: 88).*
 
 ---

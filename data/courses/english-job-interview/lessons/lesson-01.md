@@ -1,6 +1,6 @@
-# Bài 01: Bản thân, điểm mạnh và điểm yếu
+# Lesson 01: About Yourself, Strengths and Weaknesses
 
-> Nội dung gồm 9 mục câu hỏi từ PDF gốc; thứ tự câu hỏi và các mẫu trả lời được bảo toàn.
+**Tiếng Việt:** Bài 01: Bản thân, điểm mạnh và điểm yếu
 
 ---
 
@@ -60,8 +60,6 @@ I've always liked being balanced. When I work, I want to work hard. And outside 
 
 Tôi luôn luôn muốn ở trạng thái cân bằng. Khi tôi làm việc, tôi muốn làm việc chăm chỉ. Và khi không làm việc, tôi thích tham gia vào các hoạt động cá nhân của tôi chẳng hạn như chơi gôn và câu cá.
 
-*Nguồn: PDF trang 1, 2 (số trang in trên sách: 3, 4).*
-
 ---
 
 ## What are your strengths?
@@ -109,8 +107,6 @@ My strongest trait is in customer service. I listen and pay close attention to m
 **Tiếng Việt:**
 
 Điểm mạnh nhất của tôi là về dịch vụ khách hàng. Tôi lắng nghe và chú ý kỹ tới nhu cầu khách hàng của tôi và tôi chắc chắn rằng họ còn hơn cả hài lòng.
-
-*Nguồn: PDF trang 2 (số trang in trên sách: 4).*
 
 ---
 
@@ -160,8 +156,6 @@ The weakest trait I struggled with was not asking for help. I always try to solv
 
 Điểm yếu nhất mà tôi phải đấu tranh là không yêu cầu sự giúp đỡ. Tôi luôn cố gắng tự giải quyết các vấn đề của mình thay vì hỏi đồng nghiệp người có thể biết câu trả lời. Điều này sẽ tiết kiệm được nhiều thời gian hơn và tôi sẽ làm việc hiệu quả hơn. Tôi đang cố gắng tìm hiểu khi nào thì sẽ có lợi khi nhờ giúp đỡ.
 
-*Nguồn: PDF trang 3 (số trang in trên sách: 5).*
-
 ---
 
 ## What are your short term goals?
@@ -209,8 +203,6 @@ My goal is to always perform at an exceptional level. But a short term goal I ha
 **Tiếng Việt:**
 
 Mục tiêu của tôi là luôn hoàn thành ở mức độ nổi bật. Tuy nhiên, mục tiêu ngắn hạn mà tôi đã đặt ra cho bản thân tôi là thực hiện việc làm tăng hiệu quả công việc.
-
-*Nguồn: PDF trang 3, 4 (số trang in trên sách: 5, 6).*
 
 ---
 
@@ -260,8 +252,6 @@ I want to become a valued employee of a company. I want to make a difference and
 
 Tôi muốn trở thành một nhân viên được quý trọng của một công ty. Tôi muốn tạo nên sự khác biệt và tôi sẵn sàng làm việc chăm chỉ để đạt được mục tiêu này. Tôi không muốn có một sự nghiệp bình thường, tôi muốn có một sự nghiệp đặc biệt mà tôi có thể tự hào.
 
-*Nguồn: PDF trang 4, 5 (số trang in trên sách: 6, 7).*
-
 ---
 
 ## What do you want to be doing five years from now?
@@ -309,8 +299,6 @@ Although I really enjoy working hands on as a mechanical engineer, I want to eve
 **Tiếng Việt:**
 
 Mặc dù tôi thực sự thích làm việc bằng tay như một kỹ sư cơ khí, nhưng cuối cùng tôi muốn trở thành một người quản lý. Tôi muốn tiếp tục tích lũy kinh nghiệm, và sau khi thấu hiểu được nhiều khía cạnh khác nhau, tôi hình dung bản thân mình nằm trong ban quản lý.
-
-*Nguồn: PDF trang 5, 6 (số trang in trên sách: 7, 8).*
 
 ---
 
@@ -360,8 +348,6 @@ I would like to be more of an extrovert. I'm a little quiet and a little closer 
 
 Tôi muốn trở thành một người hướng ngoại nhiều hơn. Tôi hơi trầm lặng và hơi nhút nhát. Tôi muốn thay đổi điều này bởi vì tôi sẽ trở nên thân thiện hơn.
 
-*Nguồn: PDF trang 6, 7 (số trang in trên sách: 8, 9).*
-
 ---
 
 ## What does success mean to you?
@@ -410,8 +396,6 @@ Success to me is knowing that my contributions positively impacted my company.
 
 Theo tôi thành công là biết được những đóng góp của tôi ảnh hưởng tích cực đối với công ty của tôi.
 
-*Nguồn: PDF trang 7, 8 (số trang in trên sách: 9, 10).*
-
 ---
 
 ## What does failure mean to you?
@@ -449,7 +433,5 @@ I think failure is not reaching your potential. If you do not use the resources 
 **Tiếng Việt:**
 
 Tôi nghĩ rằng thất bại là không đạt tới tiềm năng của bạn. Nếu bạn không sử dụng các nguồn lực mà bạn có và các nguồn lực xung quanh bạn, đó là thất bại bởi vì công việc hay mục tiêu có thể đã được thực hiện tốt hơn.
-
-*Nguồn: PDF trang 8, 9 (số trang in trên sách: 10, 11).*
 
 ---

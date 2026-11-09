@@ -1,6 +1,6 @@
-# Bài 11: Thích nghi và tác phong nghề nghiệp
+# Lesson 11: Adaptability and Professional Conduct
 
-> Nội dung gồm 11 mục câu hỏi từ PDF gốc; thứ tự câu hỏi và các mẫu trả lời được bảo toàn.
+**Tiếng Việt:** Bài 11: Thích nghi và tác phong nghề nghiệp
 
 ---
 
@@ -40,8 +40,6 @@ In my next job, I want more opportunities to write automation. In my previous po
 
 Trong công việc tiếp theo của tôi, tôi muốn thêm nhiều cơ hội để viết tự động. Ở vị trí trước đây của tôi, chúng tôi không có những cơ hội này bởi vì chúng tôi khoán cho các nhóm khác.
 
-*Nguồn: PDF trang 64, 65 (số trang in trên sách: 66, 67).*
-
 ---
 
 ## What aspects of this job interest you the most?
@@ -80,8 +78,6 @@ I like the fact that this position requires someone who is detail oriented. Beca
 
 Tôi thích công việc này ở khía cạnh nó đòi hỏi một người phải chú trọng vào các chi tiết. Vì làm việc với các số liệu có tính nhạy cảm, nên tất cả mọi thông tin cần phải hoàn hảo là điều quan trọng. Loại thử thách dạng này luôn làm cho tôi cảm thấy hứng thú.
 
-*Nguồn: PDF trang 65, 66 (số trang in trên sách: 67, 68).*
-
 ---
 
 ## If you are given work from your manager that is boring and tedious, what will you do?
@@ -119,8 +115,6 @@ I don't mind doing boring and tedious work. As long as I don't have to do it for
 **Tiếng Việt:**
 
 Tôi không ngại làm các công việc nhàm chán hay buồn tẻ. Chỉ cần tôi không phải làm nó trong một khoảng thời gian dài như sáu tháng chẳng hạn, thì tôi sẽ không gặp phải bất kỳ vấn đề gì.
-
-*Nguồn: PDF trang 66 (số trang in trên sách: 68).*
 
 ---
 
@@ -170,8 +164,6 @@ One of my goals is to obtain a position in this company. I know that once I star
 
 Một trong những mục tiêu của tôi là giành được một vị trí làm việc tại quý công ty. Tôi biết rằng một khi tôi bắt đầu làm việc ở đây, tôi sẽ làm việc trong một thời gian dài.
 
-*Nguồn: PDF trang 66, 67 (số trang in trên sách: 68, 69).*
-
 ---
 
 ## How do you explain the fact that you frequently change jobs? I see that you haven't stayed with a company for more than 2 years.
@@ -210,8 +202,6 @@ I want to work for a large company that has many opportunities. I didn't receive
 
 Tôi muốn làm việc cho một công ty lớn có nhiều cơ hội. Tôi không có được điều này tại những công ty trước đây vì chúng nhỏ hơn, nhưng tôi biết được rằng quý công ty có rất nhiều công việc tuyệt vời để làm và rất nhiều cơ hội khác.
 
-*Nguồn: PDF trang 67, 68 (số trang in trên sách: 69, 70).*
-
 ---
 
 ## Tell me about a time you had a big disagreement with your boss. What did you do and what was the outcome?
@@ -239,8 +229,6 @@ I had a disagreement with my boss on how to do an assignment. It was easy to res
 **Tiếng Việt:**
 
 Tôi gặp bất đồng với sếp về cách làm việc. Việc này được giải quyết dễ dàng chỉ bằng cách thảo luận về những lợi điểm và bất lời của cả hai cách làm. Chúng tôi không đưa ra được kết luận cuối cùng rằng cách nào là cách tốt hơn và tôi cuối cùng đã thực hiện công việc theo cách mà giám đốc muốn. Sở dĩ tôi làm vầy là vì trong trường hợp tôi không thể hoàn thành công việc, ông ấy sẽ dễ dàng làm tiếp phần còn lại.
-
-*Nguồn: PDF trang 68, 69 (số trang in trên sách: 70, 71).*
 
 ---
 
@@ -290,8 +278,6 @@ When I have no direct work, I always find side projects such as thinking about a
 
 Khi tôi không có công việc trực tiếp, tôi thường tìm các dự án phụ như tìm cách cho ra một quy trình hoặc cái gì đó tương tự để giúp việc công ty hiệu quả hơn. Có một lần, tôi đã tạo ra một công cụ nhỏ dùng MS Word để giúp đội chúng tôi rút ngắn quy trình gửi mail.
 
-*Nguồn: PDF trang 69, 70 (số trang in trên sách: 71, 72).*
-
 ---
 
 ## What do you do when there are too many things to do?
@@ -340,8 +326,6 @@ I believe in hard work. A lot can get accomplished by working diligently. In a s
 
 Tôi tin vào việc làm việc chăm chỉ. Có rất nhiều có thể đạt được nhờ vào làm việc siêng năng. Trong một tình huống khi có nhiều việc cần phải làm, tôi sẽ sắp xếp lại thứ tự ưu tiên trong công việc, lên kế hoạch và tổ chức mọi việc nhiều nhất có thể vào làm việc chăm chỉ.
 
-*Nguồn: PDF trang 70, 71 (số trang in trên sách: 72, 73).*
-
 ---
 
 ## What do you do when you feel burned out?
@@ -379,8 +363,6 @@ I usually use the weekends to engage in my personal hobbies to prevent me from b
 **Tiếng Việt:**
 
 Tôi thường dùng cuối tuần của mình cho các sở thích cá nhân và giúp tôi không bị mệt lả. Tôi thích chơi quần vợt và gôn, và những hoạt động này giúp tôi có năng lượng về tinh thần để làm việc chăm chỉ ở công sở.
-
-*Nguồn: PDF trang 71, 72 (số trang in trên sách: 73, 74).*
 
 ---
 
@@ -426,8 +408,6 @@ Well, during the day while my kids are in school, I like to work. And in the eve
 
 Trong ngày khi bọn trẻ đi học, tôi thích làm việc. Còn vào buổi chiều, chúng tôi cùng nhau làm bài tập về nhà. tôi thật sự thích việc mình bận rộn và quán xuyến nhiều việc trong cuộc sống của mình.
 
-*Nguồn: PDF trang 72, 73 (số trang in trên sách: 74, 75).*
-
 ---
 
 ## You've been with one company your entire career. Don't you think you will have a tough time adjusting to a new environment?
@@ -465,7 +445,5 @@ I don't think it will be very difficult. I learned that this company is very div
 **Tiếng Việt:**
 
 Tôi không nghĩ đó là điều rất khó khăn. Tôi tìm hiểu được rằng quý công ty rất đa dạng và có một môi trường làm việc tuyệt vời. Tôi cảm thấy mình sẽ hòa nhập được và có được sự đóng góp vững chắc cho công ty.
-
-*Nguồn: PDF trang 73 (số trang in trên sách: 75).*
 
 ---

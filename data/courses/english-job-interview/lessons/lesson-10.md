@@ -1,6 +1,6 @@
-# Bài 10: Hiểu nhà tuyển dụng và tìm việc
+# Lesson 10: Understanding Employers and Job Searching
 
-> Nội dung gồm 11 mục câu hỏi từ PDF gốc; thứ tự câu hỏi và các mẫu trả lời được bảo toàn.
+**Tiếng Việt:** Bài 10: Hiểu nhà tuyển dụng và tìm việc
 
 ---
 
@@ -40,8 +40,6 @@ Microsoft is competing with many different companies because Microsoft provides 
 
 Microsoft đang phải cạnh tranh với nhiều công ty khác nhau, vì Microsoft cung cấp nhiều loại phần mềm khác nhau. MSN đang tăng trưởng và AOL là số một trong những đối thủ cạnh tranh đối với ngành kinh doanh này, trong khi OS Microsoft đang bị Linux thách thức bởi vì nó miễn phí.
 
-*Nguồn: PDF trang 55, 56 (số trang in trên sách: 57, 58).*
-
 ---
 
 ## Why do you like sales?
@@ -79,8 +77,6 @@ I like sales because it fits my personality. I enjoying working with all s orts 
 **Tiếng Việt:**
 
 Tôi thích bán hàng vì nó phù hợp với tính cách của tôi. Tôi thích làm việc với tất cả mọi nhóm người và tôi thích mang đến một dịch vụ chăm sóc khách hàng tuyệt với bằng cách trả lời các câu hỏi về sản phẩm một cách chuyên nghiệp.
-
-*Nguồn: PDF trang 56 (số trang in trên sách: 58).*
 
 ---
 
@@ -120,8 +116,6 @@ This stapler has the best value. With a 15% lower sticker price, it provides ide
 
 Dập ghim này có giá trị tốt nhất. Với một mức giá 15% thấp hơn giá niêm yết, nó cung cấp đủ các chức năng giống hệt với thương hiệu đắt tiền hơn. Nó bền và các ghim dập xuyên qua giấy nhiều hơn so với các thương hiệu khác.
 
-*Nguồn: PDF trang 56, 57 (số trang in trên sách: 58, 59).*
-
 ---
 
 ## How long have you been looking for a job?
@@ -159,8 +153,6 @@ It's been about 2 months now. I wasn't as aggressive in the beginning because I 
 **Tiếng Việt:**
 
 Đã được 2 tháng rồi. Tôi không thật sự chú tấm trong giai đoạn đầu vì khi đó tôi còn đang tham gia vài lớp học, nhưng giờ khi tôi đã hoàn thành các lớp học, tôi thật sự đang rất cố gắng tìm việc lúc này.
-
-*Nguồn: PDF trang 57, 58 (số trang in trên sách: 59, 60).*
 
 ---
 
@@ -226,8 +218,6 @@ Most of the jobs I have been applying for require more experience than I have. A
 
 Hầu hết mọi công việc tôi ứng tuyển đều yêu cầu kinh nghiệm nhiều hơn tôi có. Ngoài ra, vì thị trường nghề nghiệp hiện đang khó khăn nên cuộc cạnh tranh lại càng trở nên khắc nghiệt. Nhưng tôi dự định sẽ liên tục học hỏi và tôi biết rằng bằng việc siêng năng tôi sẽ sớm tìm được một công việc.
 
-*Nguồn: PDF trang 58, 59 (số trang in trên sách: 60, 61).*
-
 ---
 
 ## If you don't understand your assignment and you can't reach your boss, what would you do?
@@ -265,8 +255,6 @@ I would first see what the deadline is and if my manager will be back before the
 **Tiếng Việt:**
 
 Trước tiên tôi sẽ xem khi nào là hạn chót và liệu giám đốc có kịp về trước thời hạn này không. Nếu không, tôi sẽ để lại tin nhắn thoại cho giám đốc. Sau đó, tôi sẽ hỏi đồng nghiệp hoặc c ác vị giám đốc khác để xem có ai biết về công việc này không. Tôi tin là tìm hiểu sâu hơn về công việc sẽ giúp tôi hiểu được nó.
-
-*Nguồn: PDF trang 59, 60 (số trang in trên sách: 61, 62).*
 
 ---
 
@@ -306,8 +294,6 @@ I'll study as much as I can to fit into a group of veterans. I know I'll have ma
 
 Tôi sẽ học hỏi nhiều nhất có thể để có thể hòa hợp với các đồng nghiệp lâu năm. Tôi biết, tôi sẽ có rất nhiều câu hỏi trong quá trình này, nhưng việc chăm chú lắng nghe và kết hợp thông tin lại với nhau sẽ cho phép tôi bắt kịp nhanh chóng. Tôi biết mình có thể trở thành một đồng đội hiệu quả trong một thời gian ngắn bằng cách này.
 
-*Nguồn: PDF trang 60, 61 (số trang in trên sách: 62, 63).*
-
 ---
 
 ## How do you intend to learn what you need to know to perform well for this job?
@@ -345,8 +331,6 @@ The first couple weeks are important. I think it's important to study the correc
 **Tiếng Việt:**
 
 Những tuần đầu tiên là cực kỳ quan trọng. Tôi nghĩ việc nghiên cứu những tài liệu đúng, hỏi những câu hỏi phù hợp, và bỏ ra nhiều công sức để học những điều tôi cần biết là điều quan trọng. Đây là việc tôi thường làm để chắc rằng mình biểu hiện tốt trong công việc.
-
-*Nguồn: PDF trang 61, 62 (số trang in trên sách: 63, 64).*
 
 ---
 
@@ -386,8 +370,6 @@ I'll suggest a different method and ask my supervisor if I can do this work the 
 
 Tôi sẽ gợi ý một cách thức khác và hỏi ý cấp trên xem tôi có thể làm theo cách này hay không. Nếu kết quả vẫn không thay đổi nhưng có thể giúp tiết kiệm thời gian hơn, tôi tin là giám đốc sẽ cho phép. Tuy nhiên nếu giám đốc vẫn muốn làm theo cách kia vì lý do nào đó, tôi sẽ làm theo chỉ dẫn của ông ấy/bà ấy.
 
-*Nguồn: PDF trang 62, 63 (số trang in trên sách: 64, 65).*
-
 ---
 
 ## If you're told to do something that you feel is illegal, what would you do?
@@ -426,8 +408,6 @@ I wouldn't jump to any conclusions. I would rather question my manager to verify
 
 Tôi sẽ không đưa ra bất kỳ quyết định nào một cách vội vã. Tôi thích đi hỏi giám đốc của mình để tìm hiểu xem việc đó có hợp pháp hay không. Nếu giám đốc không thuyết phục được tôi bằng các dữ liệu thực tế, tôi sẽ tìm hiểu qua những cách khác. Nếu tôi tìm ra đó là việc bất hợp pháp, tôi sẽ không làm và báo với bộ phận nhân sự về chuyện này.
 
-*Nguồn: PDF trang 63 (số trang in trên sách: 65).*
-
 ---
 
 ## If you were unfairly criticized, what would you do?
@@ -465,7 +445,5 @@ I usually use all criticism to help me grow. If I was criticized unfairly, there
 **Tiếng Việt:**
 
 Tôi thường dùng tất cả mọi sự phê bình để làm mình trưởng thành lên. Nếu tôi bị chỉ trích một cách bất công, thì vẫn có một chút sự thật nào đó trong lời chỉ trích này. Tôi sẽ học từ nó nhiều nhất có thể, nhưng nếu nó hoàn toàn sai sự thật thì tôi sẽ tìm đến người đó và yêu cầu giải thích.
-
-*Nguồn: PDF trang 63, 64 (số trang in trên sách: 65, 66).*
 
 ---

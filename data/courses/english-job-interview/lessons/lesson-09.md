@@ -1,6 +1,6 @@
-# Bài 09: Kỳ vọng và năng lực quản lý
+# Lesson 09: Expectations and Management Skills
 
-> Nội dung gồm 8 mục câu hỏi từ PDF gốc; thứ tự câu hỏi và các mẫu trả lời được bảo toàn.
+**Tiếng Việt:** Bài 09: Kỳ vọng và năng lực quản lý
 
 ---
 
@@ -46,8 +46,6 @@ We provide many different brochures for our clients, and when we get low on a sp
 
 Chúng tôi cung ứng nhiều tập quảng cáo nhỏ khác nhau cho khách hàng của chúng tôi, và khi mỗi loại tập quảng cáo chỉ còn lại số lượng ít, chúng ta phải đặt mỗi loại riêng biệt. Tôi tạo ra một công cụ nhỏ cho tự động hóa quá trình này và tiết kiệm được khoảng 30 phút làm việc mỗi lần chúng tôi đặt các tập quảng cáo. Đó chỉ là một việc làm nhỏ, nhưng quản lý của tôi đã đánh giá cao nó.
 
-*Nguồn: PDF trang 48, 49 (số trang in trên sách: 50, 51).*
-
 ---
 
 ## What do you feel an employer owes an employee?
@@ -85,8 +83,6 @@ I believe an employer should provide an environment where everyone can succeed. 
 **Tiếng Việt:**
 
 Tôi tin rằng người chủ nên cung cấp một môi trường mà tại đó mọi người đều có thể thành công. Tôi cũng tin rằng các cơ hội phát triển và thăng tiến cũng là điều mà người chủ nên mang lại cho nhân viên.
-
-*Nguồn: PDF trang 49, 50 (số trang in trên sách: 51, 52).*
 
 ---
 
@@ -126,8 +122,6 @@ I expect my manager to be a smart person who works hard. If my manager is settin
 
 Tôi mong giám đốc là một người thông mình và làm việc chăm chỉ. Nếu giám đốc của tôi là một tấm gương tốt, tôi tin rằng mình cũng sẽ có động lực để làm việc chăm chỉ hơn. Có một giám đốc chỉ biết thúc ép mọi người mà không chịu động tay vào việc gì thì thật sự làm tôi mất đi ý chí. Vì vậy tôi mong giám đốc của mình có thể nêu gương.
 
-*Nguồn: PDF trang 50 (số trang in trên sách: 52).*
-
 ---
 
 ## Would you like to have your boss's job?
@@ -165,8 +159,6 @@ Yes. I have several years of experience and I also took on projects to learn mor
 **Tiếng Việt:**
 
 Có. Tôi có nhiều năm kinh nghiệm và tôi cũng đã nhận nhiều dự án để học hỏi thêm về việ c quản lý. Không nhất thiết phải thay vị trí của giám đốc, nhưng tôi muốn học hỏi nhiều hơn về việc quản lý để tôi có thể sẵn sàng khi vị trí đó cần.
-
-*Nguồn: PDF trang 51 (số trang in trên sách: 53).*
 
 ---
 
@@ -216,8 +208,6 @@ I read on your website that ABC Company provides accounting services to small an
 
 Tôi đọc trên trang web của các anh rằng Công ty ABC cung cấp các dịch vụ kế toán cho các công ty quy mô vừa và nhỏ. Tôi cũng biết rằng Công ty ABC là đơn vị dẫn đầu trong các dịch vụ thuế trong khu vực này. Đó là lý do tại sao tôi rất vui khi có cơ hội để gia nhập công ty này.
 
-*Nguồn: PDF trang 51, 52 (số trang in trên sách: 53, 54).*
-
 ---
 
 ## What do you know about our product?
@@ -261,8 +251,6 @@ I hear this group has several functions. It has an incubation team that grows ne
 **Tiếng Việt:**
 
 Tôi nghe thấy đội này có một số nhiệm vụ. Đội có một nhóm phát triển những ý tưởng mới và nếu sản phẩm này có tiềm năng thì một sản phẩm mới sẽ được hình thành. Tôi cũng nghe nói đội này cũng tạo ra các giải pháp cho các công ty để lôi kéo họ mua nhiều sản phẩm của Microsoft.
-
-*Nguồn: PDF trang 52, 53 (số trang in trên sách: 54, 55).*
 
 ---
 
@@ -312,8 +300,6 @@ I didn't hold a management position, but I was in charge of several projects whe
 
 Tôi đã không giữ chức vụ quản lý, nhưng tôi chịu trách nhiệm một số dự án ở nơi mà tôi đã phải quản lý một nhóm 4 công nhân để hoàn thành trong thời hạn ba tháng mỗi một dự án. Các dự án này đã cho tôi nhiều kinh nghiệm trong việc quản lý con người.
 
-*Nguồn: PDF trang 53, 54 (số trang in trên sách: 55, 56).*
-
 ---
 
 ## What types of people do you have trouble getting along with?
@@ -341,7 +327,5 @@ I'm very understanding of different people and different work styles, but I have
 **Tiếng Việt:**
 
 Tôi rất hiểu những người khác nhau và phong cách làm việc khác nhau, nhưng tôi khó chịu đối với những người chỉ làm những công việc được ban quản lý nhìn thấy. Có quá nhiều công việc cần phải được thực hiện và không phải mọi thứ đều được người quản lý nhìn thấy. Vì vậy, tôi cảm thấy buồn khi những công việc này bị bỏ bê.
-
-*Nguồn: PDF trang 54, 55 (số trang in trên sách: 56, 57).*
 
 ---

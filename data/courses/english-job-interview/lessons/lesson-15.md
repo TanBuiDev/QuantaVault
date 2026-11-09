@@ -1,6 +1,6 @@
-# Bài 15: Điều kiện, đề nghị và câu hỏi cuối buổi
+# Lesson 15: Job Offers, Conditions and Closing Questions
 
-> Nội dung gồm 8 mục câu hỏi từ PDF gốc; thứ tự câu hỏi và các mẫu trả lời được bảo toàn.
+**Tiếng Việt:** Bài 15: Điều kiện, đề nghị và câu hỏi cuối buổi
 
 ---
 
@@ -20,8 +20,6 @@ Yes. Do you have their contact information?
 
 Vâng được. Ông/Bà có thông tin liên hệ chưa?
 
-*Nguồn: PDF trang 90, 91 (số trang in trên sách: 92, 93).*
-
 ---
 
 ## May I contact your references?
@@ -39,8 +37,6 @@ Sure. After the interview, I can email or fax you a list of references. Will tha
 **Tiếng Việt:**
 
 Chắc chắn là được. Sau buổi phỏng vấn, tôi có thể gởi email hoặc fax danh sách những người giới thiệu của tôi. Vậy được không ạ?
-
-*Nguồn: PDF trang 91 (số trang in trên sách: 93).*
 
 ---
 
@@ -75,8 +71,6 @@ One final trait that I have that would be perfect for this position is my organi
 **Tiếng Việt:**
 
 Một lợi điểm cuối cùng mà tôi có giúp tôi phù hợp với vị trí này đó chính là kỹ năng tổ chức. Tôi là một người chú trọng tiểu tiết và rất giỏi trong việc lên kế hoạch.
-
-*Nguồn: PDF trang 91, 92 (số trang in trên sách: 93, 94).*
 
 ---
 
@@ -122,8 +116,6 @@ The job description says that the salary will be around 45,000 to 53,000. I thin
 
 Bản mô tả công việc nói rằng mức lương sẽ từ 45 ngàn đến 53 ngàn. Tôi nghĩ đó là một mức thỏa đáng.
 
-*Nguồn: PDF trang 92 (số trang in trên sách: 94).*
-
 ---
 
 ## That's a high salary for this position! Where did you come up with that figure?
@@ -141,8 +133,6 @@ I have three more years of experience that will help a lot. I also have a colleg
 **Tiếng Việt:**
 
 Tôi có ba năm kinh nghiệm làm việc và điều này sẽ giúp ích rất nhiều. Tôi còn có bằng cao đẳng dù điều này không được đề cập như một yêu cầu phải có. Nhưng nếu con số này quá cao, tôi sẽ suy nghĩ lại một con số thấp hơn một chút.
-
-*Nguồn: PDF trang 92, 93 (số trang in trên sách: 94, 95).*
 
 ---
 
@@ -172,8 +162,6 @@ I received 27.50 an hour at my last position.
 
 Ở công việc trước, tôi nhận 27.50 đô một giờ làm.
 
-*Nguồn: PDF trang 93 (số trang in trên sách: 95).*
-
 ---
 
 ## When are you able to start?
@@ -201,8 +189,6 @@ I have to give my current employer a two week notice so I could start immediatel
 **Tiếng Việt:**
 
 Tôi phải báo nghỉ trước hai tuần với công ty hiện tại nên tôi có thể bắt đầu ngay sau hai tuần nữa.
-
-*Nguồn: PDF trang 93, 94 (số trang in trên sách: 95, 96).*
 
 ---
 
@@ -241,7 +227,5 @@ I'm thinking about an offer I have, but I want to keep my options open.
 **Tiếng Việt:**
 
 Tôi đang nghĩ về một lời mời tuyển dụng, nhưng tôi muốn các lựa chọn của tôi không bị bó buộc.
-
-*Nguồn: PDF trang 94 (số trang in trên sách: 96).*
 
 ---
