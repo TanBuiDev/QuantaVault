@@ -9,6 +9,8 @@ test("English bilingual interview course is available alongside existing study c
   await expect(page.getByText("Tell me a little about yourself.").first()).toBeVisible();
   await expect(page.getByRole("heading", { name: "About Yourself, Strengths and Weaknesses" })).toBeVisible();
   await expect(page.getByText("Bài 01: Bản thân, điểm mạnh và điểm yếu").first()).toBeVisible();
+  await expect(page.getByText("Mẫu trả lời 1").first()).toBeVisible();
+  await expect(page.getByRole("button", { name: "Nghe câu hỏi 1" })).toBeVisible();
   await expect(page.getByText(/Tóm tắt bài học:/)).toHaveCount(0);
   await expect(page.getByText(/Nguồn: PDF/)).toHaveCount(0);
   await expect(page).toHaveURL(/\/courses\/english-job-interview\/lesson-01\/?$/);

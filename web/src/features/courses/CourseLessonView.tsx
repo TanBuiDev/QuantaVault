@@ -25,6 +25,7 @@ import type { CourseLesson, CourseManifest } from "@/lib/courses";
 import { useCourseProgress } from "@/lib/courses/useCourseProgress";
 import { useEnglishSpeech } from "@/lib/courses/speech";
 import { CourseSyllabusSidebar } from "./CourseSyllabusSidebar";
+import { EnglishLessonContent } from "./EnglishLessonContent";
 
 interface CourseLessonViewProps {
   course: CourseManifest;
@@ -278,10 +279,20 @@ export function CourseLessonView({
             )}
           </header>
 
-          {/* 3. Markdown Content Area */}
-          <section aria-label="Nội dung bài học" className="prose dark:prose-invert max-w-none text-[var(--foreground)] space-y-6">
-            <MarkdownContent markdown={visibleMarkdown} fullWidth textScale={textScale} />
-          </section>
+          {/* 3. Content Area */}
+          {isEnglish ? (
+            <section aria-label="Nội dung bài học tiếng Anh">
+              <EnglishLessonContent
+                lessonId={lesson.id}
+                textScale={textScale}
+                fallbackMarkdown={visibleMarkdown}
+              />
+            </section>
+          ) : (
+            <section aria-label="Nội dung bài học" className="prose dark:prose-invert max-w-none text-[var(--foreground)] space-y-6">
+              <MarkdownContent markdown={visibleMarkdown} fullWidth textScale={textScale} />
+            </section>
+          )}
 
           {/* 4. Footer Navigation Bar */}
           <footer className="pt-6 border-t border-[var(--border)]">
