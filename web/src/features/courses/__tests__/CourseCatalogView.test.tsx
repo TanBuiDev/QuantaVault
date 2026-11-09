@@ -25,12 +25,13 @@ describe("CourseCatalogView: scalable course catalog", () => {
     localStorage.clear();
   });
 
-  it("renders PostgreSQL and Redis in a two-course grid", () => {
+  it("renders every registered course in the scalable catalog", () => {
     render(<CourseCatalogView courses={realCourses} />);
     const section = screen.getByRole("region", { name: "Danh sách lộ trình học tập" });
-    expect(within(section).getByText("Lộ Trình Hiện Có (2)")).toBeInTheDocument();
+    expect(within(section).getByText(`Lộ Trình Hiện Có (${realCourses.length})`)).toBeInTheDocument();
     expect(within(section).getByRole("heading", { name: /Database & PostgreSQL/ })).toBeInTheDocument();
     expect(within(section).getByRole("heading", { name: /Redis từ cơ bản/ })).toBeInTheDocument();
+    expect(within(section).getByRole("heading", { name: /Tiếng Anh Phỏng Vấn/ })).toBeInTheDocument();
     expect(within(section).getByRole("searchbox", { name: "Tìm kiếm khóa học" })).toBeInTheDocument();
   });
 
