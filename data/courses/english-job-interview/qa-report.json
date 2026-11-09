@@ -1,0 +1,33 @@
+{
+  "source": "500 hỏi phỏng vấn tiếng Anh thông dụng nhất - kèm câu trả lời.pdf",
+  "pdfPages": 99,
+  "totalQuestions": 155,
+  "partI": 128,
+  "partII": 27,
+  "sourceDuplicatePrintedNumbers": [
+    "I.52 (2 occurrences)"
+  ],
+  "chapters": 8,
+  "lessons": 18,
+  "answerPairs": 348,
+  "englishQuestionVariants": 172,
+  "questionFiles": 155,
+  "lessonFiles": 18,
+  "qaFlagCounts": {
+    "source_duplicate_number_52": 2,
+    "question_color_in_pdf_is_answer_green": 1,
+    "no_answer_in_source": 1
+  },
+  "normalizationCounts": {
+    "corrupt-glyph": 113,
+    "corrupt-kz": 28,
+    "font-ellipsis": 6
+  },
+  "questionMissingAnswers": [
+    "interview-en-i-117"
+  ],
+  "questionsWithUnexpectedPDFColor": [
+    "interview-en-i-101"
+  ],
+  "sourcePdfSha256": "988aa982d2a6ba983a4a5323e511cd080f779ca9ebe0790c0b3cff17a75c3f3d"
+}
