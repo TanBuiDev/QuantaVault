@@ -7,11 +7,11 @@ import {
   ChevronRight,
   CheckCircle2,
   Circle,
-  Database,
   ArrowLeft,
   Compass
 } from "lucide-react";
 import { ProgressBar } from "@/components/ui/ProgressBar";
+import { CourseIcon } from "@/components/ui/CourseIcon";
 import type { CourseManifest } from "@/lib/courses";
 import { useCourseProgress } from "@/lib/courses/useCourseProgress";
 
@@ -72,7 +72,7 @@ export function CourseSyllabusSidebar({
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-500">
-              <Database className="h-4 w-4" />
+              <CourseIcon name={course.icon} className="h-4 w-4" />
             </span>
             <h2 className="text-sm font-bold text-[var(--foreground)] truncate tracking-tight">
               {course.title}
@@ -223,6 +223,7 @@ export function CourseSyllabusSidebar({
                               </span>
                               {l.title.replace(/^Bài \d+:\s*/i, "")}
                             </p>
+                            {l.titleEn && <span className="block mt-0.5 text-[10px] leading-relaxed font-normal text-[var(--muted)]">{l.titleEn}</span>}
                             <span className="text-[10px] font-normal text-[var(--muted)]">
                               {l.durationMinutes} phút học dự kiến
                             </span>

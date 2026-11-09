@@ -11,7 +11,9 @@ import {
   ChevronRight,
   Clock,
   Share2,
-  Check
+  Check,
+  BookOpen,
+  Languages
 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { MarkdownContent } from "@/features/practice/MarkdownContent";
@@ -39,15 +41,21 @@ export function CourseLessonView({
   const [mobileSyllabusOpen, setMobileSyllabusOpen] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const { textScale, changeTextScale } = useInterviewTextSize();
+  const isEnglish = course.slug === "english-job-interview";
+  const visibleMarkdown = isEnglish
+    ? lesson.contentMarkdown.replace(/^# Lesson [^\n]*\n\n\*\*Tiếng Việt:\*\*[^\n]*\n\n---\n\n/, "")
+    : lesson.contentMarkdown;
 
   const {
     hydrated,
     isLessonCompleted,
     toggleLessonCompleted,
-    recordLastAccessed
+    recordLastAccessed,
+    getCourseCompletion
   } = useCourseProgress();
 
   const isCompleted = hydrated ? isLessonCompleted(course.id, lesson.id) : false;
+  const courseCompleted = hydrated && getCourseCompletion(course.id, course.totalLessons).completedCount === course.totalLessons;
 
   // Record this lesson as last visited
   useEffect(() => {
@@ -130,6 +138,17 @@ export function CourseLessonView({
                 <InterviewTextSizeControl value={textScale} onChange={changeTextScale} />
               </div>
 
+              {isEnglish && (
+                <Link
+                  href="/courses/english-job-interview/practice"
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-indigo-500/30 bg-indigo-500/10 px-2.5 py-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/20"
+                  aria-label="Mở chế độ luyện tập tiếng Anh"
+                >
+                  <Languages className="h-4 w-4" />
+                  <span className="hidden sm:inline">Luyện tập</span>
+                </Link>
+              )}
+
               {/* Share link button */}
               <button
                 type="button"
@@ -188,8 +207,11 @@ export function CourseLessonView({
             </div>
 
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[var(--foreground)] tracking-tight leading-snug">
-              {lesson.title}
+              {isEnglish && lesson.titleEn ? lesson.titleEn : lesson.title}
             </h1>
+            {isEnglish && lesson.titleEn && (
+              <p className="text-base sm:text-lg text-[var(--muted-strong)] font-medium">{lesson.title}</p>
+            )}
 
             {/* Tags */}
             {lesson.tags && lesson.tags.length > 0 && (
@@ -203,10 +225,11 @@ export function CourseLessonView({
             )}
 
             {/* Summary Box */}
-            {lesson.summary && (
+            {!isEnglish && lesson.summary && (
               <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)]/60 p-4 sm:p-5 text-xs sm:text-sm text-[var(--muted-strong)] leading-relaxed shadow-2xs">
                 <span className="font-bold text-[var(--foreground)] block mb-1">
-                  🎯 Tóm tắt bài học:
+                  <BookOpen className="mr-1.5 inline-block h-4 w-4" aria-hidden="true" />
+                  Tóm tắt bài học:
                 </span>
                 {lesson.summary}
               </div>
@@ -215,7 +238,7 @@ export function CourseLessonView({
 
           {/* 3. Markdown Content Area */}
           <section aria-label="Nội dung bài học" className="prose dark:prose-invert max-w-none text-[var(--foreground)] space-y-6">
-            <MarkdownContent markdown={lesson.contentMarkdown} fullWidth textScale={textScale} />
+            <MarkdownContent markdown={visibleMarkdown} fullWidth textScale={textScale} />
           </section>
 
           {/* 4. Footer Navigation Bar */}
@@ -258,7 +281,7 @@ export function CourseLessonView({
               ) : (
                 <div className="text-right">
                   <span className="text-xs font-bold text-emerald-500">
-                    🎉 Chúc mừng bạn đã hoàn thành khóa học!
+                    {courseCompleted ? "Chúc mừng bạn đã hoàn thành khóa học!" : "Đây là bài học cuối của khóa học."}
                   </span>
                 </div>
               )}

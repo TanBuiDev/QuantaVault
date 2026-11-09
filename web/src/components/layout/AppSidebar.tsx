@@ -11,13 +11,12 @@ import {
   Layers,
   GraduationCap,
   BookOpen,
-  Database,
-  Server,
   ChevronDown,
   ChevronRight,
   Code2
 } from "lucide-react";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import { CourseIcon } from "@/components/ui/CourseIcon";
 import { useSidebar } from "./SidebarContext";
 import { ProblemNavTree } from "./ProblemNavTree";
 import type { CourseNavigationItem } from "@/lib/courses";
@@ -180,8 +179,6 @@ export function AppSidebar({ courses = [] }: { courses?: CourseNavigationItem[] 
                   const nextLesson = record?.lastAccessedLessonId
                     && course.lessonIds.includes(record.lastAccessedLessonId)
                     ? record.lastAccessedLessonId : course.firstLessonId;
-                  const Icon = course.icon === "Database" ? Database
-                    : course.icon === "Server" ? Server : BookOpen;
 
                   return (
                     <Link
@@ -195,7 +192,7 @@ export function AppSidebar({ courses = [] }: { courses?: CourseNavigationItem[] 
                           : "text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
                       }`}
                     >
-                      <Icon className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
+                      <CourseIcon name={course.icon} className="h-3.5 w-3.5 shrink-0 text-emerald-500" />
                       <span className="min-w-0 flex-1 line-clamp-2 leading-relaxed">{course.title}</span>
                       <span className="ml-auto shrink-0 rounded-md bg-emerald-500/15 px-1.5 py-0.5 text-[9px] font-bold text-emerald-600 dark:text-emerald-400">
                         {course.totalLessons} bài
