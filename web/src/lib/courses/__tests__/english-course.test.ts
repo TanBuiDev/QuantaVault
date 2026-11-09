@@ -1,6 +1,5 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { getAllCourses, getCourseBySlug, getCourseLesson } from "../index";
 
@@ -15,8 +14,8 @@ type SourceQuestion = {
   pages: number[];
 };
 
-const sourceRoot = fileURLToPath(new URL("../../../../../data/courses/english-job-interview/", import.meta.url));
-const webManifestPath = fileURLToPath(new URL("../../../data/courses/english-job-interview/course.json", import.meta.url));
+const sourceRoot = resolve(process.cwd(), "..", "data", "courses", "english-job-interview");
+const webManifestPath = resolve(process.cwd(), "src", "data", "courses", "english-job-interview", "course.json");
 const sourceManifestPath = resolve(sourceRoot, "course.json");
 const questionIndex = JSON.parse(readFileSync(resolve(sourceRoot, "question-index.json"), "utf8")) as SourceQuestion[];
 const course = getCourseBySlug("english-job-interview");
