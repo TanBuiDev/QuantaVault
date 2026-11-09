@@ -1,12 +1,14 @@
 import postgresCourseData from "@/data/courses/postgres-for-java/course.json";
 import redisCourseData from "@/data/courses/redis-for-java/course.json";
+import englishCourseData from "@/data/courses/english-job-interview/course.json";
 import type { CourseLesson, CourseManifest } from "./types";
 
 export * from "./types";
 
 const ALL_COURSES: CourseManifest[] = [
   postgresCourseData as unknown as CourseManifest,
-  redisCourseData as unknown as CourseManifest
+  redisCourseData as unknown as CourseManifest,
+  englishCourseData as unknown as CourseManifest
 ];
 
 export function getAllCourses(): CourseManifest[] {
