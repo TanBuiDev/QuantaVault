@@ -1,6 +1,6 @@
-# Bài 12: Quan hệ đồng nghiệp và xử lý khó khăn
+# Lesson 12: Colleague Relationships and Handling Challenges
 
-> Nội dung gồm 9 mục câu hỏi từ PDF gốc; thứ tự câu hỏi và các mẫu trả lời được bảo toàn.
+**Tiếng Việt:** Bài 12: Quan hệ đồng nghiệp và xử lý khó khăn
 
 ---
 
@@ -40,8 +40,6 @@ Hmmm... I read up on this company thoroughly and even spoke with a friend who wo
 
 Hmmm, tôi đã đọc về công ty và thậm chí đã nói chuyện với một người bạn đang làm việc tại đây. Tôi không nghe bất kỳ điều tiêu cực nào về công ty ABC cả. Liệu có điều gì tôi cần biết trước khi làm việc tại đây hay không?
 
-*Nguồn: PDF trang 74 (số trang in trên sách: 76).*
-
 ---
 
 ## Do you want to work for a small or large company and why?
@@ -79,8 +77,6 @@ I want to work for a small company because I feel I'll have more opportunities t
 **Tiếng Việt:**
 
 Tôi muốn làm việc cho một công ty nhỏ vì tôi cảm thấy tôi sẽ có nhiều cơ hội để gặt hái những kinh nghiệm có giá trị. Tôi có một vài người bạn làm việc tại các công ty lớn và họ có vai trò cụ thể và bị giới hạn trong về những việc họ có thể làm. Tôi hi vọng rằng một công ty nhỏ sẽ mang lại cho các nhân viên sự đa dạng và thử thách.
-
-*Nguồn: PDF trang 74, 75 (số trang in trên sách: 76, 77).*
 
 ---
 
@@ -120,8 +116,6 @@ I always do my best solving difficult problems. If I have trouble, I'll use reso
 
 Tôi luôn cố hết sức để giải quyết các vấn đề khó. Nếu tôi gặp rắc rối, tôi sẽ sử dụng các nguồn lực xung quan tôi như tìm kiếm trên mạng Internet, hỏi đồng nghiệp, hỏi cấp trên hoặc đọc sách.
 
-*Nguồn: PDF trang 75, 76 (số trang in trên sách: 77, 78).*
-
 ---
 
 ## What do you do when you have a problem with a direct?
@@ -160,8 +154,6 @@ I believe feedback is important to solve problems with a direct. I meet with my 
 
 Tôi tin rằng phản hồi là rất quan trọng để giải quyết vấn đề với một vị giám đốc. Tôi gặp các giám đốc thường xuyên và luôn luôn đưa ra các gợi ý về cách để cải thiện. Tôi cũng sử dụng thời gian này để giải quyết những vấn đề mà chúng tôi có thể gặp phải. Để các giám đốc của tôi biết nơi tôi đang đứng là rất quan trọng, để họ không phải giả định gì cả.
 
-*Nguồn: PDF trang 76, 77 (số trang in trên sách: 78, 79).*
-
 ---
 
 ## What do you do when you have a problem with your boss?
@@ -199,8 +191,6 @@ I deal with different types of people very well, but if I have a problem that af
 **Tiếng Việt:**
 
 Tôi giỏi trong việc đối nhân xử thế, nhưng nếu tôi gặp vấn đề ảnh hưởng đến công việc của mình, tôi sẽ nói chuyện thẳng thắn với giám đốc của mình và lý do làm tôi cảm thấy không hài lòng.
-
-*Nguồn: PDF trang 77 (số trang in trên sách: 79).*
 
 ---
 
@@ -250,8 +240,6 @@ Whether I'm happy or unhappy, I'll always do my best work. If the problem I have
 
 Dù vui hay không vui, tôi luôn làm tốt công việc của mình. Nếu vấn đề tôi gặp phải gây ảnh hưởng đến chất lượng công việc, tôi sẽ xác định rõ vấn đề và rồi từng bước tìm ra giải pháp.
 
-*Nguồn: PDF trang 78 (số trang in trên sách: 80).*
-
 ---
 
 ## What do you do when you have a problem with a co-worker?
@@ -289,8 +277,6 @@ I've always been told that I'm a great person to work with, but if I were in a s
 **Tiếng Việt:**
 
 Ai cũng nói rằng tôi là người đồng đội tuyệt vời, nhưng nếu tôi rơi vào trường hợp gặp phải vấn đề, tôi tin mình sẽ giải quyết vấn đề trong mối quan hệ với đồng nghiệp bằng cách trở nên thấu hiểu hơn
-
-*Nguồn: PDF trang 79 (số trang in trên sách: 81).*
 
 ---
 
@@ -330,8 +316,6 @@ Whenever I'm confronted with a conflict, I always follow a simple process. I thi
 
 bất kỳ khi nào tôi phải đương đầu với mâu thuẫn, tôi luôn làm theo một quy trình đơn giản. Tôi nghĩ xem mâu thuẫn hiện tại là gì, nghĩ đến vài cách thức tôi có thể dùng để xử lý mâu thuẫn và rồi thực hiện theo cách tốt nhất sau khi hoàn thành mọi việc phân tích.
 
-*Nguồn: PDF trang 79, 80 (số trang in trên sách: 81, 82).*
-
 ---
 
 ## Have you fired anyone? And if so, why?
@@ -369,7 +353,5 @@ The only time I had to fire someone was when an employee was continually late. W
 **Tiếng Việt:**
 
 Lần duy nhất tôi sa thải nhân viên đó là khi họ liên tục đi trễ. Công ty chúng tôi có chính sách đưa ra lời cảnh báo cho 3 lần sai phạm đầu tiên, nếu vẫn tiếp tục sai phạm sẽ có văn bản nhắc nhở. Tôi đã thảo luận vấn đề này rất nhiều với người nhân viên này, nhưng không có gì thay đổi cả. Và cuối cùng, chúng tôi đã phải để anh ta ra đi.
-
-*Nguồn: PDF trang 80, 81 (số trang in trên sách: 82, 83).*
 
 ---

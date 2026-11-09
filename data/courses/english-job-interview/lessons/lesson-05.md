@@ -1,6 +1,6 @@
-# Bài 05: Học vấn và môn học
+# Lesson 05: Education and Academic Subjects
 
-> Nội dung gồm 8 mục câu hỏi từ PDF gốc; thứ tự câu hỏi và các mẫu trả lời được bảo toàn.
+**Tiếng Việt:** Bài 05: Học vấn và môn học
 
 ---
 
@@ -50,8 +50,6 @@ I was involved with a group that helped awareness of environmental problems such
 
 Tôi đã tham gia vào nhóm giúp cải thiện nhận thức những vấn đề về môi trường chẳng hạn như ô nhiễm. Tôi đã ở một đội dạy người ta về sự lựa chọn các khả năng lái xe, ví dụ như giữa việc dùng xe buýt và việc dùng chung một xe hơi.
 
-*Nguồn: PDF trang 23, 24 (số trang in trên sách: 25, 26).*
-
 ---
 
 ## Why did you choose your major?
@@ -100,8 +98,6 @@ I majored in Biology because I initially wanted to go to med school. Although I 
 
 Tôi chuyên về Sinh vật học vì lúc đầu tôi muốn học trường Y. Mặc dù tôi đã quyết định không học trường Y, nhưng tôi vẫn muốn hoàn tất bằng cử nhân của mình.
 
-*Nguồn: PDF trang 24, 25 (số trang in trên sách: 26, 27).*
-
 ---
 
 ## If you redo college again, what would you major in?
@@ -149,8 +145,6 @@ I would choose to major in Marketing in the Business School. I really enjoy this
 **Tiếng Việt:**
 
 Tôi sẽ chọn chuyên ngành tiếp thị ở trường Kinh doanh. Tôi rất thích loại công việc này và việc có nhiều kinh nghiệm hơn ắc hẳn đã làm cho tôi nổi trội hơn.
-
-*Nguồn: PDF trang 25 (số trang in trên sách: 27).*
 
 ---
 
@@ -206,8 +200,6 @@ My favorite subject was applied science. I really enjoyed learning different way
 
 Môn học yêu thích mà tôi đã đăng ký là khoa học. Tôi rất thích học các cách ứng dụng khoa học khác nhau vào những thứ thông thường.
 
-*Nguồn: PDF trang 26 (số trang in trên sách: 28).*
-
 ---
 
 ## What course did you like the least?
@@ -262,8 +254,6 @@ I disliked my geography class. It wasn't difficult, but I simply didn't find it 
 
 Tôi không thích giờ địa lý. Nó không khó, nhưng chỉ là là tôi không thấy nó thú vị.
 
-*Nguồn: PDF trang 26, 27 (số trang in trên sách: 28, 29).*
-
 ---
 
 ## How will your performance in your worst class affect your performance on this job?
@@ -291,8 +281,6 @@ My performance in my worst class will positively impact my performance on this j
 **Tiếng Việt:**
 
 Thành tích trong giờ học tệ nhất của tôi sẽ tác động một cách tích cực vào hiệu suất làm công việc này. Tôi đã vật lộn trong giờ học môn luận lý học, nhưng tôi đã học chăm chỉ hơn, tìm kiếm nhiều thông tin hơn và tôi chưa bao giờ đầu hàng.
-
-*Nguồn: PDF trang 27, 28 (số trang in trên sách: 29, 30).*
 
 ---
 
@@ -332,8 +320,6 @@ My best friend would probably say that I'm warm, friendly, and understanding.
 
 Bạn thân nhất của tôi có lẽ nói rằng tôi thân thiện, nhiệt tình và hiểu biết.
 
-*Nguồn: PDF trang 28, 29 (số trang in trên sách: 30, 31).*
-
 ---
 
 ## How would your professor describe you?
@@ -371,7 +357,5 @@ My professor always told me that I was very creative. He liked my papers because
 **Tiếng Việt:**
 
 Giáo sư của tôi luôn nói với tôi rằng tôi rất sáng tạo. Ông thích các bài làm của tôi vì chúng cho ông thấy tôi đã thật sự suy nghĩ đến vấn đề và đã giải quyết nó theo một phương cách khác.
-
-*Nguồn: PDF trang 29 (số trang in trên sách: 31).*
 
 ---

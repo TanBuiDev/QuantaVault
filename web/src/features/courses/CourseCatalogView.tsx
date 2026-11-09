@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 import {
-  Database,
   BookOpen,
+  Server,
   Clock,
   ChevronRight,
   Sparkles,
@@ -15,12 +15,12 @@ import {
   ShieldCheck,
   Compass,
   Cpu,
-  Server,
   Container,
   Search
 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { ProgressBar } from "@/components/ui/ProgressBar";
+import { CourseIcon } from "@/components/ui/CourseIcon";
 import type { CourseManifest } from "@/lib/courses";
 import { useCourseProgress } from "@/lib/courses/useCourseProgress";
 
@@ -35,7 +35,7 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
 
   const matchingCourses = courses.filter((course) => {
     const query = searchQuery.trim().toLocaleLowerCase("vi");
-    const found = !query || [course.title, course.tagline, course.level, ...course.chapters.map((ch) => ch.title)]
+    const found = !query || [course.title, course.tagline, course.level, ...course.chapters.flatMap((ch) => [ch.title, ch.titleEn || ""]), ...course.lessons.map((lesson) => lesson.titleEn || "")]
       .some((part) => part.toLocaleLowerCase("vi").includes(query));
     if (!found) return false;
     if (statusFilter === "all" || !hydrated) return true;
@@ -173,7 +173,7 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
                     <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                       <div className="flex items-start gap-4">
                         <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 shadow-xs ring-1 ring-indigo-500/20">
-                          {primaryCourse.icon === "Server" ? <Server className="h-7 w-7" /> : <Database className="h-7 w-7" />}
+                          <CourseIcon name={primaryCourse.icon} className="h-7 w-7" />
                         </div>
                         <div className="space-y-1.5">
                           <div className="flex flex-wrap items-center gap-2">
@@ -254,6 +254,7 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
                               <span className="block text-xs font-bold text-[var(--foreground)] truncate">
                                 {chapter.title}
                               </span>
+                              {chapter.titleEn && <span className="block truncate text-[11px] text-[var(--muted)]">{chapter.titleEn}</span>}
                               <span className="text-[11px] text-[var(--muted)]">
                                 {chapter.lessonIds.length} bài học chuyên đề
                               </span>
@@ -299,13 +300,7 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
                       <div className="space-y-4">
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 group-hover:scale-105 transition-transform">
-                            {course.icon === "Database" ? (
-                              <Database className="h-6 w-6" />
-                            ) : course.icon === "Server" ? (
-                              <Server className="h-6 w-6" />
-                            ) : (
-                              <BookOpen className="h-6 w-6" />
-                            )}
+                            <CourseIcon name={course.icon} className="h-6 w-6" />
                           </div>
                           <div className="flex flex-wrap items-center gap-1.5 justify-end">
                             <span className="rounded-md bg-emerald-500/15 px-2 py-0.5 text-[11px] font-bold text-emerald-600 dark:text-emerald-400">

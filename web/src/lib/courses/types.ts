@@ -4,6 +4,8 @@ export interface CourseLesson {
   number: number;
   chapterId: string;
   title: string;
+  /** Optional English title for bilingual lessons. */
+  titleEn?: string;
   summary: string;
   durationMinutes: number;
   tags?: string[];
@@ -13,6 +15,7 @@ export interface CourseLesson {
 export interface CourseChapter {
   id: string;
   title: string;
+  titleEn?: string;
   description?: string;
   lessonIds: string[];
 }

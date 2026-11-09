@@ -1,6 +1,6 @@
-# Bài 03: Kể chuyện kinh nghiệm và quyết định
+# Lesson 03: Sharing Experiences and Making Decisions
 
-> Nội dung gồm 6 mục câu hỏi từ PDF gốc; thứ tự câu hỏi và các mẫu trả lời được bảo toàn.
+**Tiếng Việt:** Bài 03: Kể chuyện kinh nghiệm và quyết định
 
 ---
 
@@ -19,8 +19,6 @@ I was given a project to complete in a week. I understood the project, but I mis
 **Tiếng Việt:**
 
 Tôi được giao cho một dự án phải hoàn thành trong vòng một tuần.Tôi nắm được dự án đó nhưng lại hiểu sai 1 phần dự án. Sau khi hoàn thành dự án, người quản lý của tôi đã nói với tôi dự án đã hoàn thành không đúng. Tôi thật sự mắc sai lầm do đã giả định sai một trong các phần của dự án thay vì hỏi để được giải thích chi tiết. Tôi nhận ra là không được giả định thông qua sai lầm mà tôi đã mắc phải.
-
-*Nguồn: PDF trang 17, 18 (số trang in trên sách: 19, 20).*
 
 ---
 
@@ -46,8 +44,6 @@ During my last project, we ran into a difficult problem. This was high priority 
 
 Trong lúc làm dự án cuối cùng của tôi, chúng tôi đã trải qua một vấn đề gay go. Đây là ưu tiên hàng đầu, vì vậy mọi người được chỉ thị tìm ra một cách giải quyết. Tôi bắt đầu tìm kiếm nhiều thông tin trên mạng hơn, thậm chí thảo luận với quản lý của một đội khác. Việc này đã cải thiện được tình hình rất tốt và rắc rối của chúng tôi đã được giải quyết. Tôi đã quyết định sử dùng mọi nguồn lực mà tôi có thể tìm thấy, và cuối cùng, việc đó đã giải quyết được rắc rối.
 
-*Nguồn: PDF trang 18 (số trang in trên sách: 20).*
-
 ---
 
 ## Tell me about a time you made a poor decision.
@@ -65,8 +61,6 @@ When I was doing an audit for a small company, there was a problem with one of t
 **Tiếng Việt:**
 
 Khi tôi còn là kiểm toán cho một công ty nhỏ, có vấn đề đối với một trong các sổ sách kế toán. Tôi đã cố liên hệ với công ty để hỏi, nhưng họ không có ở đó. Tôi quyết định tiếp tục tìm kiếm câu trả lời. Sau bốn tiếng, họ gọi lại cho tôi và tôi nhận ra đó là tại lỗi đánh máy. Tôi đã lãng phí 4 giờ đồng hồ của tôi vào ngày hôm đó. Trong trường hợp này tôi đã quá nhạy cảm với các chi tiết. Vì vậy tôi nhận ra rằng không nên quá tỉ mỉ và cầu kỳ.
-
-*Nguồn: PDF trang 18, 19 (số trang in trên sách: 20, 21).*
 
 ---
 
@@ -96,8 +90,6 @@ Our company was down sizing and I had to let two people go. It's easier when a p
 
 Công ty của tôi có đợt cắt giảm biên chế và tôi đã phải sa thải 2 nhân viên. Sẽ dễ dàng sa thải hơn khi người đó làm việc không tốt, nhưng nếu mọi người đều làm tốt công việc của họ thì khó hơn nhiều. Tôi đã phải chọn 2 nhân viên cấp thấp nhất và giải thích cho họ lý do vì sao họ lại bị nghỉ việc.
 
-*Nguồn: PDF trang 19 (số trang in trên sách: 21).*
-
 ---
 
 ## Tell me about a time you hired someone.
@@ -116,8 +108,6 @@ I received a resumé but it didn't have all our requirements. I initially though
 
 Tôi nhận được một bản sơ yếu lý lịch nhưng trong đó không có tất cả những yêu cầu của chúng tôi Ban đầu tôi nghĩ rằng cô ấy không phải là một người phù hợp, nhưng sau khi xem qua nền tảng kiến thức và kinh nghiệm làm việc trước đây, tôi nghĩ rằng người này sẽ có nhiều tiềm năng hơn các ứng viên khác. Sau khi phỏng vấn cô ấy, chúng tôi đã đưa ra lời đề nghị. Cô ấy là người tiếp thu rất nhanh và thể hiện được sự vượt trội. Đôi khi nhìn thấy được tiềm năng là điều quan trọng và trong trường hợp này, đó là một người làm thuê tuyệt vời.
 
-*Nguồn: PDF trang 19, 20 (số trang in trên sách: 21, 22).*
-
 ---
 
 ## Tell me about a time you failed to complete an assignment on time.
@@ -135,7 +125,5 @@ One time, I had a project that was due on Tuesday. On Friday I analyzed our prog
 **Tiếng Việt:**
 
 Một lần, tôi có một dự án phải hoàn thành vào thứ Ba. Thứ Sáu trước đó, tôi đã phân tích tiến trình làm việc của chúng tôi và tôi đã đi trước so với thời hạn đã định. Tôi đã không phải làm việc vào những ngày cuối tuần để hoàn thành nhiệm vụ. Vào thứ Hai, quản lý của tôi bị ốm thế là tôi phải tham dự vài cuộc họp diễn ra suốt cả ngày. Vì lý do đó tôi đã không hoàn thành nhiệm vu của mình mãi cho đến thứ 4. Bây giờ thì tôi luôn cố gắng hoàn thành nhiệm vụ của mình sớm trước một ngày hoặc nửa ngày, bởi vì một chuyện gì đó có thể xảy ra mà m ình không ngờ tới.
-
-*Nguồn: PDF trang 20 (số trang in trên sách: 22).*
 
 ---

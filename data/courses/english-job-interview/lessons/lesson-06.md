@@ -1,6 +1,6 @@
-# Bài 06: Lựa chọn nghề nghiệp và thực tập
+# Lesson 06: Career Choices and Internships
 
-> Nội dung gồm 8 mục câu hỏi từ PDF gốc; thứ tự câu hỏi và các mẫu trả lời được bảo toàn.
+**Tiếng Việt:** Bài 06: Lựa chọn nghề nghiệp và thực tập
 
 ---
 
@@ -39,8 +39,6 @@ My mother told me I was always smart. When I was younger, she was surprised to s
 **Tiếng Việt:**
 
 Mẹ tôi nói tôi lúc nào cũng thông minh. Khi còn bé, mẹ rất ngạc nhiên khi thấy điểm A trong phiếu điểm của mình. Một thời gian ngắn sau, bà ngạc nhiên khi tôi không được điểm A.
-
-*Nguồn: PDF trang 29, 30 (số trang in trên sách: 31, 32).*
 
 ---
 
@@ -85,8 +83,6 @@ I was planning on going to Dental School so I majored in Biology. After working 
 **Tiếng Việt:**
 
 Tôi đã dự định học trường Nha, vì vậy tôi đã chọn chuyên ngành Sinh vật học. Sau khi làm việc về lĩnh vực máy vi tính, tôi nhận ra công việc này hết sức thú vị và đầy thách thức. Do đó tôi đã học thêm về máy vi tính vì tôi muốn có một sự nghiệp làm việc về máy tính.
-
-*Nguồn: PDF trang 30, 31 (số trang in trên sách: 32, 33).*
 
 ---
 
@@ -136,8 +132,6 @@ My first two summers, I had to work to save money for tuition. But after saving 
 
 Hai mùa hè đầu, tôi đã phải làm việc để để dành tiền đóng học phí. Nhưng sau khi để dành đủ tiền học phí, tôi đã có một mùa hè không phải làm gì hết. Thật ra tôi đã học xong vài khóa về vi tính để sẵn sàng cho lĩnh vực kinh doanh. Ngày nay, đòi hỏi phải có kiến thức về vi tính, vì vậy tôi đã chuẩn bị điều đó.
 
-*Nguồn: PDF trang 31, 32 (số trang in trên sách: 33, 34).*
-
 ---
 
 ## What did you learn from your internship?
@@ -155,8 +149,6 @@ In my final summer vacation, I had the opportunity to work as an intern for a pu
 **Tiếng Việt:**
 
 Trong kỳ nghỉ hè cuối cùng, tôi đã có cơ hội để làm việc như một thực tập cho một công ty kế toán công cộng. Chỉ trong vòng 3 tháng, nhưng tôi đã học được rất nhiều về thực hiện các dịch vụ thuế hàng quý cho các công ty cỡ vừa và nhỏ. Tôi cũng đã học được cách đối phó với áp lực thời gian và đã học cách làm thế nào để ưu tiên công việc được hiệu quả hơn. Đó là một kinh nghiệm tuyệt vời mà tôi biết sẽ giúp tôi khi tôi bắt đầu sự nghiệp của tôi.
-
-*Nguồn: PDF trang 32 (số trang in trên sách: 34).*
 
 ---
 
@@ -195,8 +187,6 @@ I love to travel and I realized that when I start my career, I won't be able to 
 **Tiếng Việt:**
 
 Tôi thích đi du lịch và tôi nhận ra là khi bắt đầu sự nghiệp, tôi sẽ không thể đi thực hiện được những chuyến đi nhiều ngày. Vì vậy tôi dùng các kỳ nghỉ hè để đi du lịch nhiều nơi. Tôi đã trải qua một kỳ hè ở Châu Âu khoảng hai tháng. Tôi đã trải qua một kỳ hè để đi du lịch giữa Trung quốc và vài nước Đông Nam Á, và cuối cùng, tôi đã thực hiện một chuyến đi xuyên Mỹ.
-
-*Nguồn: PDF trang 32, 33 (số trang in trên sách: 34, 35).*
 
 ---
 
@@ -242,8 +232,6 @@ I want to learn the different ways to market globally. In my marketing team, I l
 
 Tôi muốn tìm hiểu các cách khác nhau để tiếp thị toàn cầu. Trong đội ngũ tiếp thị của tôi, tôi đã học được tất cả mọi thứ về tiếp thị ở cấp địa phương, nhưng tôi thực sự rất thích tìm hiểu về tiếp thị tới các nước khác nhau.
 
-*Nguồn: PDF trang 33, 34 (số trang in trên sách: 35, 36).*
-
 ---
 
 ## If you could start your career over again, what would you do differently?
@@ -271,8 +259,6 @@ I didn't know how much I liked working with computers until I finished college. 
 **Tiếng Việt:**
 
 Tôi đã không biết tôi rất thích làm việc với máy tính cho đến khi tôi học xong đại học. Nếu tôi biết sớm hơn, chắc hẳn là tôi đã thích làm việc với máy tính sớm hơn trong sự nghiệp của tôi.
-
-*Nguồn: PDF trang 34, 35 (số trang in trên sách: 36, 37).*
 
 ---
 
@@ -311,7 +297,5 @@ My manager told me that I should send more updates. He told me I did my projects
 **Tiếng Việt:**
 
 Quản lý của tôi nói với tôi rằng tôi nên gửi thêm các thông tin cập nhật. Ông nói với tôi, tôi đã làm tốt các dự án, và rằng tôi chưa bao giờ muộn, nhưng ông muốn biết thêm thông tin cập nhật để ông có thể báo cáo với sếp của ông.
-
-*Nguồn: PDF trang 35 (số trang in trên sách: 37).*
 
 ---

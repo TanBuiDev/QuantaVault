@@ -1,6 +1,6 @@
-# Bài 02: Thói quen làm việc và định hướng
+# Lesson 02: Work Habits and Career Direction
 
-> Nội dung gồm 9 mục câu hỏi từ PDF gốc; thứ tự câu hỏi và các mẫu trả lời được bảo toàn.
+**Tiếng Việt:** Bài 02: Thói quen làm việc và định hướng
 
 ---
 
@@ -50,8 +50,6 @@ Organization has always come easy to me. I naturally organize things like my des
 
 Đối với tôi, tổ chức không khó. Tôi tự động sắp xếp mọi thứ như bàn làm việc, thời gian, các nhiệm vụ, và công việc mà không cần suy nghĩ về chúng. Điều này giúp tôi rất nhiều trong những lần mà tôi sắp đến thời hạn chót.
 
-*Nguồn: PDF trang 9, 10 (số trang in trên sách: 11, 12).*
-
 ---
 
 ## In what ways are you organized and disorganized?
@@ -89,8 +87,6 @@ I organize my schedule the best. I'm used to many meetings so it's important for
 **Tiếng Việt:**
 
 Tôi giỏi nhất trong việc sắp xếp thời gian biểu của mình. Tôi đã quen với việc có nhiều cuộc họp, vì vậy đối với tôi điều quan trọng là lịch trình và giờ giấc cần phải được sắp xếp. Nơi tôi cần cải thiện có lẽ là tủ đựng tài liệu của tôi. Tôi đã phân loại các thứ theo chữ cái, nhưng khi bận quá, tôi bắt đầu bỏ mọi thứ vào đó. Bắt đầu khó tìm các thứ, nhưng đây là việc mà tôi sẽ sửa chữa.
-
-*Nguồn: PDF trang 10 (số trang in trên sách: 12).*
 
 ---
 
@@ -135,8 +131,6 @@ I manage my time well by planning out what I have to do for the whole week. It k
 **Tiếng Việt:**
 
 Tôi quản lý thời gian của mình tốt bằng cách lập kế hoạch cho những việc tôi phải làm trong cả tuần. Nó giữ cho tôi theo dõi việc việc đang làm và thậm chí giúp tôi đạt hiệu quả cao hơn.
-
-*Nguồn: PDF trang 10, 11 (số trang in trên sách: 12, 13).*
 
 ---
 
@@ -192,8 +186,6 @@ I handle changes smoothly. Whenever there's a change of any sort, I analyze the 
 
 Tôi đối phó với những sự thay đổi một cách trơn tru. Bất cứ khi nào có một sự thay đổi về bất cứ thứ gì, tôi cũng đều phân tích tình hình và lúc nào cũng cố gắng tìm ra các phương cách để cải thiện sự thay đổi đó theo một hướng tích cực.
 
-*Nguồn: PDF trang 11, 12 (số trang in trên sách: 13, 14).*
-
 ---
 
 ## How do you make important decisions?
@@ -242,8 +234,6 @@ Important decisions are made by knowledge through information and wisdom through
 
 Những quyết định quan trọng được đưa ra bằng sự hiểu biết thông qua thông tin và bằng sự sáng suốt thông qua kinh nghiệm. Tôi sẽ thu thập tất cả các thông tin mà tôi có thể tìm thấy và sau đó áp dụng kinh nghiệm của mình trong lúc phân tích các thông tin này. Bằng sự kết hợp này, tôi tin là tôi sẽ đưa ra được các quyết định quan trọng đúng.
 
-*Nguồn: PDF trang 12, 13 (số trang in trên sách: 14, 15).*
-
 ---
 
 ## Do you work well under pressure?
@@ -291,8 +281,6 @@ During times of pressure, I try to prioritize and plan as much as I can. After I
 **Tiếng Việt:**
 
 Trong những lần bị áp lực, tôi cố gắng ưu tiên lập kế hoạch nhiều đến mức tối đa. Sau khi tôi sắp xếp xong, thực ra tôi chỉ cần vùi đầu vào làm việc chăm chỉ theo một cách thông minh. Tôi không để áp lực ảnh hưởng đến tôi. Vì vậy, tôi tin rằng tôi làm việc tốt khi bị áp lực.
-
-*Nguồn: PDF trang 13, 14 (số trang in trên sách: 15, 16).*
 
 ---
 
@@ -352,8 +340,6 @@ I'm good at dealing with problems, so I'm a person who reacts to a problem well.
 
 Tôi giỏi đối phó với những rắc rối, vì vậy tôi là người phản ứng lại một rắc rối giỏi.
 
-*Nguồn: PDF trang 14, 15 (số trang in trên sách: 16, 17).*
-
 ---
 
 ## Are you a risk taker or do you like to stay away from risks?
@@ -401,8 +387,6 @@ I take risks because through planning and working smart, it's possible to reduce
 **Tiếng Việt:**
 
 Tôi đương đầu với những rủi ro vì qua sự hoạch định và làm việc thông minh, rủi ro có thể được giảm thiểu. Vì vậy nếu có cơ hội thành công hợp lý, tôi sẽ nắm lấy cơ hội đó.
-
-*Nguồn: PDF trang 15, 16 (số trang in trên sách: 17, 18).*
 
 ---
 
@@ -461,7 +445,5 @@ This position requires someone that will work well without supervision. I know h
 **Tiếng Việt:**
 
 Vị trí này yêu cầu một người nào đó phải làm tốt công việc mà không cần sự giám sát . Tôi biết quản lý thời gian của tôi, và có khả năng tổ chức tốt công việc của mình. Vì vậy, tôi tự tin cho rằng tôi sẽ là ứng cử viên tốt nhất cho vị trí này.
-
-*Nguồn: PDF trang 16, 17 (số trang in trên sách: 18, 19).*
 
 ---

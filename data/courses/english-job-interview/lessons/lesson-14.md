@@ -1,6 +1,6 @@
-# Bài 14: Điều kiện làm việc và tính linh hoạt
+# Lesson 14: Working Conditions and Flexibility
 
-> Nội dung gồm 10 mục câu hỏi từ PDF gốc; thứ tự câu hỏi và các mẫu trả lời được bảo toàn.
+**Tiếng Việt:** Bài 14: Điều kiện làm việc và tính linh hoạt
 
 ---
 
@@ -30,8 +30,6 @@ A little bit. I didn't realize that there was another building back here, so I d
 
 Một chút. Tôi đã không nhận ra rằng có một tòa nhà khác ở đây, nên tôi đã vài lần chạy qua luôn, nhưng không sao, cuối cùng tôi đã tìm thấy nơi này.
 
-*Nguồn: PDF trang 86, 87 (số trang in trên sách: 88, 89).*
-
 ---
 
 ## Will working on weekends be a problem?
@@ -49,8 +47,6 @@ It shouldn't be a problem at all. I frequently worked on weekends in my other po
 **Tiếng Việt:**
 
 Không vấn đề gì cả. Ở vị trí công việc khác, tôi thường làm việc cuối tuần, nhất là trong thời gian khai thuế. Trung bình, bao lâu thì ở đây đòi hỏi phải làm việc cuối tuần?
-
-*Nguồn: PDF trang 87 (số trang in trên sách: 89).*
 
 ---
 
@@ -70,8 +66,6 @@ I don't mind working overtime at all. I know during busy times people are expect
 
 Tôi không ngại làm thêm giờ đâu. Tôi biết trong những lúc có nhiều việc, công ty hy vọng mọi người làm việc ngoài giờ, và giờ giấc của tôi rất linh hoạt vì vậy tôi sẽ không có vấn đề gì.
 
-*Nguồn: PDF trang 87 (số trang in trên sách: 89).*
-
 ---
 
 ## Have you filed for bankruptcy?
@@ -89,8 +83,6 @@ No. I'm very responsible with money and I have great credit.
 **Tiếng Việt:**
 
 Không. Tôi rất có trách nhiệm với tiền bạc của mình và tôi có tín dụng tốt.
-
-*Nguồn: PDF trang 87, 88 (số trang in trên sách: 89, 90).*
 
 ---
 
@@ -119,8 +111,6 @@ I'm renting right now, but I'll probably buy a house when I get married.
 **Tiếng Việt:**
 
 Tôi hiện đang ở nhà thuê, nhưng có lẽ tôi sẽ mua một ngôi nhà khi tôi kết hôn.
-
-*Nguồn: PDF trang 88 (số trang in trên sách: 90).*
 
 ---
 
@@ -160,8 +150,6 @@ No. I do not.
 
 Không, tôi không có.
 
-*Nguồn: PDF trang 88, 89 (số trang in trên sách: 90, 91).*
-
 ---
 
 ## Do you earn any income from investments or hobbies?
@@ -200,17 +188,11 @@ I have some investments in the stock market.
 
 Tôi có một số khoản đầu tư vào thị trường chứng khoán.
 
-*Nguồn: PDF trang 89 (số trang in trên sách: 91).*
-
 ---
 
 ## Are you able to make frequent business trips?
 
 **Tiếng Việt:** Anh/Chị có thể đi công tác thường xuyên được không?
-
-> **Lưu ý nguồn:** Mục này không có mẫu trả lời trong bản PDF được cung cấp.
-
-*Nguồn: PDF trang 89 (số trang in trên sách: 91).*
 
 ---
 
@@ -240,8 +222,6 @@ I don't have any problems with traveling.
 
 Tôi không có vấn đề gì với việc đi lại (đi công tác) cả.
 
-*Nguồn: PDF trang 89, 90 (số trang in trên sách: 91, 92).*
-
 ---
 
 ## Are you willing to relocate?
@@ -269,7 +249,5 @@ I love change and I'd definitely be willing to relocate.
 **Tiếng Việt:**
 
 Tôi thích sự thay đổi và ắt hẳn là tôi sẵn lòng chuyển nơi ở rồi.
-
-*Nguồn: PDF trang 90 (số trang in trên sách: 92).*
 
 ---

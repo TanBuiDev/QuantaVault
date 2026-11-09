@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: LessonPageProps): Promise<Met
   }
 
   return {
-    title: `${data.lesson.title} | ${data.course.title} | QuantaVault`,
+    title: (data.lesson.titleEn ? data.lesson.titleEn + " | " : "") + data.lesson.title + " | " + data.course.title + " | QuantaVault",
     description: data.lesson.summary
   };
 }
