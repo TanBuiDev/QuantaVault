@@ -1,0 +1,2413 @@
+[
+  {
+    "id": "interview-en-i-001",
+    "part": "I",
+    "number": 1,
+    "code": "001",
+    "pos": 1,
+    "pages": [
+      1,
+      2
+    ],
+    "filepath": "questions/part-01/q-001.md",
+    "chapterId": "chapter-01",
+    "lessonId": "lesson-01",
+    "questionEnglish": "Tell me a little about yourself.",
+    "answerExamples": 5
+  },
+  {
+    "id": "interview-en-i-002",
+    "part": "I",
+    "number": 2,
+    "code": "002",
+    "pos": 2,
+    "pages": [
+      2
+    ],
+    "filepath": "questions/part-01/q-002.md",
+    "chapterId": "chapter-01",
+    "lessonId": "lesson-01",
+    "questionEnglish": "What are your strengths?",
+    "answerExamples": 4
+  },
+  {
+    "id": "interview-en-i-003",
+    "part": "I",
+    "number": 3,
+    "code": "003",
+    "pos": 3,
+    "pages": [
+      3
+    ],
+    "filepath": "questions/part-01/q-003.md",
+    "chapterId": "chapter-01",
+    "lessonId": "lesson-01",
+    "questionEnglish": "What are your weaknesses?",
+    "answerExamples": 4
+  },
+  {
+    "id": "interview-en-i-004",
+    "part": "I",
+    "number": 4,
+    "code": "004",
+    "pos": 4,
+    "pages": [
+      3,
+      4
+    ],
+    "filepath": "questions/part-01/q-004.md",
+    "chapterId": "chapter-01",
+    "lessonId": "lesson-01",
+    "questionEnglish": "What are your short term goals?",
+    "answerExamples": 4
+  },
+  {
+    "id": "interview-en-i-005",
+    "part": "I",
+    "number": 5,
+    "code": "005",
+    "pos": 5,
+    "pages": [
+      4,
+      5
+    ],
+    "filepath": "questions/part-01/q-005.md",
+    "chapterId": "chapter-01",
+    "lessonId": "lesson-01",
+    "questionEnglish": "What are your long term goals?",
+    "answerExamples": 4
+  },
+  {
+    "id": "interview-en-i-006",
+    "part": "I",
+    "number": 6,
+    "code": "006",
+    "pos": 6,
+    "pages": [
+      5,
+      6
+    ],
+    "filepath": "questions/part-01/q-006.md",
+    "chapterId": "chapter-01",
+    "lessonId": "lesson-01",
+    "questionEnglish": "What do you want to be doing five years from now?",
+    "answerExamples": 4
+  },
+  {
+    "id": "interview-en-i-007",
+    "part": "I",
+    "number": 7,
+    "code": "007",
+    "pos": 7,
+    "pages": [
+      6,
+      7
+    ],
+    "filepath": "questions/part-01/q-007.md",
+    "chapterId": "chapter-01",
+    "lessonId": "lesson-01",
+    "questionEnglish": "If you could change one thing about your personality, what would it be and why?",
+    "answerExamples": 4
+  },
+  {
+    "id": "interview-en-i-008",
+    "part": "I",
+    "number": 8,
+    "code": "008",
+    "pos": 8,
+    "pages": [
+      7,
+      8
+    ],
+    "filepath": "questions/part-01/q-008.md",
+    "chapterId": "chapter-01",
+    "lessonId": "lesson-01",
+    "questionEnglish": "What does success mean to you?",
+    "answerExamples": 4
+  },
+  {
+    "id": "interview-en-i-009",
+    "part": "I",
+    "number": 9,
+    "code": "009",
+    "pos": 9,
+    "pages": [
+      8,
+      9
+    ],
+    "filepath": "questions/part-01/q-009.md",
+    "chapterId": "chapter-01",
+    "lessonId": "lesson-01",
+    "questionEnglish": "What does failure mean to you?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-010",
+    "part": "I",
+    "number": 10,
+    "code": "010",
+    "pos": 10,
+    "pages": [
+      9,
+      10
+    ],
+    "filepath": "questions/part-01/q-010.md",
+    "chapterId": "chapter-01",
+    "lessonId": "lesson-02",
+    "questionEnglish": "Are you an organized person?",
+    "answerExamples": 4
+  },
+  {
+    "id": "interview-en-i-011",
+    "part": "I",
+    "number": 11,
+    "code": "011",
+    "pos": 11,
+    "pages": [
+      10
+    ],
+    "filepath": "questions/part-01/q-011.md",
+    "chapterId": "chapter-01",
+    "lessonId": "lesson-02",
+    "questionEnglish": "In what ways are you organized and disorganized?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-012",
+    "part": "I",
+    "number": 12,
+    "code": "012",
+    "pos": 12,
+    "pages": [
+      10,
+      11
+    ],
+    "filepath": "questions/part-01/q-012.md",
+    "chapterId": "chapter-01",
+    "lessonId": "lesson-02",
+    "questionEnglish": "Do you manage your time well?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-013",
+    "part": "I",
+    "number": 13,
+    "code": "013",
+    "pos": 13,
+    "pages": [
+      11,
+      12
+    ],
+    "filepath": "questions/part-01/q-013.md",
+    "chapterId": "chapter-01",
+    "lessonId": "lesson-02",
+    "questionEnglish": "How do you handle change?",
+    "answerExamples": 4
+  },
+  {
+    "id": "interview-en-i-014",
+    "part": "I",
+    "number": 14,
+    "code": "014",
+    "pos": 14,
+    "pages": [
+      12,
+      13
+    ],
+    "filepath": "questions/part-01/q-014.md",
+    "chapterId": "chapter-01",
+    "lessonId": "lesson-02",
+    "questionEnglish": "How do you make important decisions?",
+    "answerExamples": 4
+  },
+  {
+    "id": "interview-en-i-015",
+    "part": "I",
+    "number": 15,
+    "code": "015",
+    "pos": 15,
+    "pages": [
+      13,
+      14
+    ],
+    "filepath": "questions/part-01/q-015.md",
+    "chapterId": "chapter-01",
+    "lessonId": "lesson-02",
+    "questionEnglish": "Do you work well under pressure?",
+    "answerExamples": 4
+  },
+  {
+    "id": "interview-en-i-016",
+    "part": "I",
+    "number": 16,
+    "code": "016",
+    "pos": 16,
+    "pages": [
+      14,
+      15
+    ],
+    "filepath": "questions/part-01/q-016.md",
+    "chapterId": "chapter-01",
+    "lessonId": "lesson-02",
+    "questionEnglish": "Which category do you fall under? A person who anticipates a problem well, or a person who reacts to a problem well?",
+    "answerExamples": 5
+  },
+  {
+    "id": "interview-en-i-017",
+    "part": "I",
+    "number": 17,
+    "code": "017",
+    "pos": 17,
+    "pages": [
+      15,
+      16
+    ],
+    "filepath": "questions/part-01/q-017.md",
+    "chapterId": "chapter-01",
+    "lessonId": "lesson-02",
+    "questionEnglish": "Are you a risk taker or do you like to stay away from risks?",
+    "answerExamples": 4
+  },
+  {
+    "id": "interview-en-i-018",
+    "part": "I",
+    "number": 18,
+    "code": "018",
+    "pos": 18,
+    "pages": [
+      16,
+      17
+    ],
+    "filepath": "questions/part-01/q-018.md",
+    "chapterId": "chapter-01",
+    "lessonId": "lesson-02",
+    "questionEnglish": "Why should I hire you?",
+    "answerExamples": 5
+  },
+  {
+    "id": "interview-en-i-019",
+    "part": "I",
+    "number": 19,
+    "code": "019",
+    "pos": 19,
+    "pages": [
+      17,
+      18
+    ],
+    "filepath": "questions/part-01/q-019.md",
+    "chapterId": "chapter-02",
+    "lessonId": "lesson-03",
+    "questionEnglish": "Tell me about Q's... / Tell me about a time you made a mistake",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-020",
+    "part": "I",
+    "number": 20,
+    "code": "020",
+    "pos": 20,
+    "pages": [
+      18
+    ],
+    "filepath": "questions/part-01/q-020.md",
+    "chapterId": "chapter-02",
+    "lessonId": "lesson-03",
+    "questionEnglish": "Tell me about a time you made a good decision.",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-021",
+    "part": "I",
+    "number": 21,
+    "code": "021",
+    "pos": 21,
+    "pages": [
+      18,
+      19
+    ],
+    "filepath": "questions/part-01/q-021.md",
+    "chapterId": "chapter-02",
+    "lessonId": "lesson-03",
+    "questionEnglish": "Tell me about a time you made a poor decision.",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-022",
+    "part": "I",
+    "number": 22,
+    "code": "022",
+    "pos": 22,
+    "pages": [
+      19
+    ],
+    "filepath": "questions/part-01/q-022.md",
+    "chapterId": "chapter-02",
+    "lessonId": "lesson-03",
+    "questionEnglish": "Tell me about a time you fired someone.",
+    "answerExamples": 2
+  },
+  {
+    "id": "interview-en-i-023",
+    "part": "I",
+    "number": 23,
+    "code": "023",
+    "pos": 23,
+    "pages": [
+      19,
+      20
+    ],
+    "filepath": "questions/part-01/q-023.md",
+    "chapterId": "chapter-02",
+    "lessonId": "lesson-03",
+    "questionEnglish": "Tell me about a time you hired someone.",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-024",
+    "part": "I",
+    "number": 24,
+    "code": "024",
+    "pos": 24,
+    "pages": [
+      20
+    ],
+    "filepath": "questions/part-01/q-024.md",
+    "chapterId": "chapter-02",
+    "lessonId": "lesson-03",
+    "questionEnglish": "Tell me about a time you failed to complete an assignment on time.",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-025",
+    "part": "I",
+    "number": 25,
+    "code": "025",
+    "pos": 25,
+    "pages": [
+      21
+    ],
+    "filepath": "questions/part-01/q-025.md",
+    "chapterId": "chapter-02",
+    "lessonId": "lesson-04",
+    "questionEnglish": "Tell me about a time you found a solution to save the company money.",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-026",
+    "part": "I",
+    "number": 26,
+    "code": "026",
+    "pos": 26,
+    "pages": [
+      21
+    ],
+    "filepath": "questions/part-01/q-026.md",
+    "chapterId": "chapter-02",
+    "lessonId": "lesson-04",
+    "questionEnglish": "Tell me about a time you aimed too high.",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-027",
+    "part": "I",
+    "number": 27,
+    "code": "027",
+    "pos": 27,
+    "pages": [
+      21,
+      22
+    ],
+    "filepath": "questions/part-01/q-027.md",
+    "chapterId": "chapter-02",
+    "lessonId": "lesson-04",
+    "questionEnglish": "Tell me about a time you aimed too low.",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-028",
+    "part": "I",
+    "number": 28,
+    "code": "028",
+    "pos": 28,
+    "pages": [
+      22
+    ],
+    "filepath": "questions/part-01/q-028.md",
+    "chapterId": "chapter-02",
+    "lessonId": "lesson-04",
+    "questionEnglish": "Tell me about a time you made a great sale.",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-029",
+    "part": "I",
+    "number": 29,
+    "code": "029",
+    "pos": 29,
+    "pages": [
+      22,
+      23
+    ],
+    "filepath": "questions/part-01/q-029.md",
+    "chapterId": "chapter-02",
+    "lessonId": "lesson-04",
+    "questionEnglish": "Tell me about a time you went over budget.",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-030",
+    "part": "I",
+    "number": 30,
+    "code": "030",
+    "pos": 30,
+    "pages": [
+      23,
+      24
+    ],
+    "filepath": "questions/part-01/q-030.md",
+    "chapterId": "chapter-03",
+    "lessonId": "lesson-05",
+    "questionEnglish": "What extracurricular activities were you involved in?",
+    "answerExamples": 4
+  },
+  {
+    "id": "interview-en-i-031",
+    "part": "I",
+    "number": 31,
+    "code": "031",
+    "pos": 31,
+    "pages": [
+      24,
+      25
+    ],
+    "filepath": "questions/part-01/q-031.md",
+    "chapterId": "chapter-03",
+    "lessonId": "lesson-05",
+    "questionEnglish": "Why did you choose your major?",
+    "answerExamples": 4
+  },
+  {
+    "id": "interview-en-i-032",
+    "part": "I",
+    "number": 32,
+    "code": "032",
+    "pos": 32,
+    "pages": [
+      25
+    ],
+    "filepath": "questions/part-01/q-032.md",
+    "chapterId": "chapter-03",
+    "lessonId": "lesson-05",
+    "questionEnglish": "If you redo college again, what would you major in?",
+    "answerExamples": 4
+  },
+  {
+    "id": "interview-en-i-033",
+    "part": "I",
+    "number": 33,
+    "code": "033",
+    "pos": 33,
+    "pages": [
+      26
+    ],
+    "filepath": "questions/part-01/q-033.md",
+    "chapterId": "chapter-03",
+    "lessonId": "lesson-05",
+    "questionEnglish": "What course did you like the most?",
+    "answerExamples": 4
+  },
+  {
+    "id": "interview-en-i-034",
+    "part": "I",
+    "number": 34,
+    "code": "034",
+    "pos": 34,
+    "pages": [
+      26,
+      27
+    ],
+    "filepath": "questions/part-01/q-034.md",
+    "chapterId": "chapter-03",
+    "lessonId": "lesson-05",
+    "questionEnglish": "What course did you like the least?",
+    "answerExamples": 4
+  },
+  {
+    "id": "interview-en-i-035",
+    "part": "I",
+    "number": 35,
+    "code": "035",
+    "pos": 35,
+    "pages": [
+      27,
+      28
+    ],
+    "filepath": "questions/part-01/q-035.md",
+    "chapterId": "chapter-03",
+    "lessonId": "lesson-05",
+    "questionEnglish": "How will your performance in your worst class affect your performance on this job?",
+    "answerExamples": 2
+  },
+  {
+    "id": "interview-en-i-036",
+    "part": "I",
+    "number": 36,
+    "code": "036",
+    "pos": 36,
+    "pages": [
+      28,
+      29
+    ],
+    "filepath": "questions/part-01/q-036.md",
+    "chapterId": "chapter-03",
+    "lessonId": "lesson-05",
+    "questionEnglish": "How would your best friend describe you?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-037",
+    "part": "I",
+    "number": 37,
+    "code": "037",
+    "pos": 37,
+    "pages": [
+      29
+    ],
+    "filepath": "questions/part-01/q-037.md",
+    "chapterId": "chapter-03",
+    "lessonId": "lesson-05",
+    "questionEnglish": "How would your professor describe you?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-038",
+    "part": "I",
+    "number": 38,
+    "code": "038",
+    "pos": 38,
+    "pages": [
+      29,
+      30
+    ],
+    "filepath": "questions/part-01/q-038.md",
+    "chapterId": "chapter-03",
+    "lessonId": "lesson-06",
+    "questionEnglish": "How would your mother describe you?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-039",
+    "part": "I",
+    "number": 39,
+    "code": "039",
+    "pos": 39,
+    "pages": [
+      30,
+      31
+    ],
+    "filepath": "questions/part-01/q-039.md",
+    "chapterId": "chapter-03",
+    "lessonId": "lesson-06",
+    "questionEnglish": "Why are you applying for a job that you didn't major in?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-040",
+    "part": "I",
+    "number": 40,
+    "code": "040",
+    "pos": 40,
+    "pages": [
+      31,
+      32
+    ],
+    "filepath": "questions/part-01/q-040.md",
+    "chapterId": "chapter-03",
+    "lessonId": "lesson-06",
+    "questionEnglish": "During college, how did you spend your summer vacations?",
+    "answerExamples": 4
+  },
+  {
+    "id": "interview-en-i-041",
+    "part": "I",
+    "number": 41,
+    "code": "041",
+    "pos": 41,
+    "pages": [
+      32
+    ],
+    "filepath": "questions/part-01/q-041.md",
+    "chapterId": "chapter-03",
+    "lessonId": "lesson-06",
+    "questionEnglish": "What did you learn from your internship?",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-042",
+    "part": "I",
+    "number": 42,
+    "code": "042",
+    "pos": 42,
+    "pages": [
+      32,
+      33
+    ],
+    "filepath": "questions/part-01/q-042.md",
+    "chapterId": "chapter-03",
+    "lessonId": "lesson-06",
+    "questionEnglish": "Did you do any internships?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-043",
+    "part": "I",
+    "number": 43,
+    "code": "043",
+    "pos": 43,
+    "pages": [
+      33,
+      34
+    ],
+    "filepath": "questions/part-01/q-043.md",
+    "chapterId": "chapter-03",
+    "lessonId": "lesson-06",
+    "questionEnglish": "If you could learn something such as a new skill, what would it be?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-044",
+    "part": "I",
+    "number": 44,
+    "code": "044",
+    "pos": 44,
+    "pages": [
+      34,
+      35
+    ],
+    "filepath": "questions/part-01/q-044.md",
+    "chapterId": "chapter-03",
+    "lessonId": "lesson-06",
+    "questionEnglish": "If you could start your career over again, what would you do differently?",
+    "answerExamples": 2
+  },
+  {
+    "id": "interview-en-i-045",
+    "part": "I",
+    "number": 45,
+    "code": "045",
+    "pos": 45,
+    "pages": [
+      35
+    ],
+    "filepath": "questions/part-01/q-045.md",
+    "chapterId": "chapter-03",
+    "lessonId": "lesson-06",
+    "questionEnglish": "During your performance reviews, what criticism do you hear the most?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-046",
+    "part": "I",
+    "number": 46,
+    "code": "046",
+    "pos": 46,
+    "pages": [
+      36
+    ],
+    "filepath": "questions/part-01/q-046.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-07",
+    "questionEnglish": "Tell me about your last three positions?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-047",
+    "part": "I",
+    "number": 47,
+    "code": "047",
+    "pos": 47,
+    "pages": [
+      36,
+      37
+    ],
+    "filepath": "questions/part-01/q-047.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-07",
+    "questionEnglish": "Tell me about your last position? What did you do and how did you do it? Include the people you worked for and the people you worked with.",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-048",
+    "part": "I",
+    "number": 48,
+    "code": "048",
+    "pos": 48,
+    "pages": [
+      37,
+      38
+    ],
+    "filepath": "questions/part-01/q-048.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-07",
+    "questionEnglish": "What is your management philosophy?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-049",
+    "part": "I",
+    "number": 49,
+    "code": "049",
+    "pos": 49,
+    "pages": [
+      38,
+      39
+    ],
+    "filepath": "questions/part-01/q-049.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-07",
+    "questionEnglish": "What was your favorite job?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-050",
+    "part": "I",
+    "number": 50,
+    "code": "050",
+    "pos": 50,
+    "pages": [
+      39,
+      40
+    ],
+    "filepath": "questions/part-01/q-050.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-07",
+    "questionEnglish": "Tell me about the best manager you ever had.",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-051",
+    "part": "I",
+    "number": 51,
+    "code": "051",
+    "pos": 51,
+    "pages": [
+      40,
+      41
+    ],
+    "filepath": "questions/part-01/q-051.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-07",
+    "questionEnglish": "Tell me about the worst manager you ever had.",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-052a",
+    "part": "I",
+    "number": 52,
+    "code": "052a",
+    "pos": 52,
+    "pages": [
+      41
+    ],
+    "filepath": "questions/part-01/q-052a.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-07",
+    "questionEnglish": "What could you have done to improve your relationship with a manager you didn't like?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-052b",
+    "part": "I",
+    "number": 52,
+    "code": "052b",
+    "pos": 53,
+    "pages": [
+      42
+    ],
+    "filepath": "questions/part-01/q-052b.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-07",
+    "questionEnglish": "What were the most memorable accomplishments in your last position or in your last career?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-053",
+    "part": "I",
+    "number": 53,
+    "code": "053",
+    "pos": 54,
+    "pages": [
+      42,
+      43
+    ],
+    "filepath": "questions/part-01/q-053.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-08",
+    "questionEnglish": "Why do you want to leave your current job?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-054",
+    "part": "I",
+    "number": 54,
+    "code": "054",
+    "pos": 55,
+    "pages": [
+      43,
+      44
+    ],
+    "filepath": "questions/part-01/q-054.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-08",
+    "questionEnglish": "Where did you tell your boss you were going?",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-055",
+    "part": "I",
+    "number": 55,
+    "code": "055",
+    "pos": 56,
+    "pages": [
+      44
+    ],
+    "filepath": "questions/part-01/q-055.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-08",
+    "questionEnglish": "Are you currently employed at the last place listed on your resume?",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-056",
+    "part": "I",
+    "number": 56,
+    "code": "056",
+    "pos": 57,
+    "pages": [
+      44,
+      45
+    ],
+    "filepath": "questions/part-01/q-056.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-08",
+    "questionEnglish": "What is the title of the person you report to? What responsibilities does he or she have?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-057",
+    "part": "I",
+    "number": 57,
+    "code": "057",
+    "pos": 58,
+    "pages": [
+      45
+    ],
+    "filepath": "questions/part-01/q-057.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-08",
+    "questionEnglish": "In your previous position, how much time did you spend on the phone or in meetings or working by yourself or in a team?",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-058",
+    "part": "I",
+    "number": 58,
+    "code": "058",
+    "pos": 59,
+    "pages": [
+      45,
+      46
+    ],
+    "filepath": "questions/part-01/q-058.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-08",
+    "questionEnglish": "If you don't leave your current job, what do you imagine you will be doing in several years?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-059",
+    "part": "I",
+    "number": 59,
+    "code": "059",
+    "pos": 60,
+    "pages": [
+      46,
+      47
+    ],
+    "filepath": "questions/part-01/q-059.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-08",
+    "questionEnglish": "If you're very happy with your current job, why do you want to leave?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-060",
+    "part": "I",
+    "number": 60,
+    "code": "060",
+    "pos": 61,
+    "pages": [
+      47,
+      48
+    ],
+    "filepath": "questions/part-01/q-060.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-08",
+    "questionEnglish": "If you have problems or complaints with your current job, why haven't you brought it to their attention?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-061",
+    "part": "I",
+    "number": 61,
+    "code": "061",
+    "pos": 62,
+    "pages": [
+      48,
+      49
+    ],
+    "filepath": "questions/part-01/q-061.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-09",
+    "questionEnglish": "Give me a specific example at your last position where you increased revenue.",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-062",
+    "part": "I",
+    "number": 62,
+    "code": "062",
+    "pos": 63,
+    "pages": [
+      49,
+      50
+    ],
+    "filepath": "questions/part-01/q-062.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-09",
+    "questionEnglish": "What do you feel an employer owes an employee?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-063",
+    "part": "I",
+    "number": 63,
+    "code": "063",
+    "pos": 64,
+    "pages": [
+      50
+    ],
+    "filepath": "questions/part-01/q-063.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-09",
+    "questionEnglish": "What do you expect from your manager?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-064",
+    "part": "I",
+    "number": 64,
+    "code": "064",
+    "pos": 65,
+    "pages": [
+      51
+    ],
+    "filepath": "questions/part-01/q-064.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-09",
+    "questionEnglish": "Would you like to have your boss's job?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-065",
+    "part": "I",
+    "number": 65,
+    "code": "065",
+    "pos": 66,
+    "pages": [
+      51,
+      52
+    ],
+    "filepath": "questions/part-01/q-065.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-09",
+    "questionEnglish": "What did you hear about us?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-066",
+    "part": "I",
+    "number": 66,
+    "code": "066",
+    "pos": 67,
+    "pages": [
+      52,
+      53
+    ],
+    "filepath": "questions/part-01/q-066.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-09",
+    "questionEnglish": "What do you know about our product?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-067",
+    "part": "I",
+    "number": 67,
+    "code": "067",
+    "pos": 68,
+    "pages": [
+      53,
+      54
+    ],
+    "filepath": "questions/part-01/q-067.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-09",
+    "questionEnglish": "Have you managed people in any of the positions you've held?",
+    "answerExamples": 4
+  },
+  {
+    "id": "interview-en-i-068",
+    "part": "I",
+    "number": 68,
+    "code": "068",
+    "pos": 69,
+    "pages": [
+      54,
+      55
+    ],
+    "filepath": "questions/part-01/q-068.md",
+    "chapterId": "chapter-04",
+    "lessonId": "lesson-09",
+    "questionEnglish": "What types of people do you have trouble getting along with?",
+    "answerExamples": 2
+  },
+  {
+    "id": "interview-en-i-069",
+    "part": "I",
+    "number": 69,
+    "code": "069",
+    "pos": 70,
+    "pages": [
+      55,
+      56
+    ],
+    "filepath": "questions/part-01/q-069.md",
+    "chapterId": "chapter-05",
+    "lessonId": "lesson-10",
+    "questionEnglish": "Who do you think are our two major competitors?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-070",
+    "part": "I",
+    "number": 70,
+    "code": "070",
+    "pos": 71,
+    "pages": [
+      56
+    ],
+    "filepath": "questions/part-01/q-070.md",
+    "chapterId": "chapter-05",
+    "lessonId": "lesson-10",
+    "questionEnglish": "Why do you like sales?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-071",
+    "part": "I",
+    "number": 71,
+    "code": "071",
+    "pos": 72,
+    "pages": [
+      56,
+      57
+    ],
+    "filepath": "questions/part-01/q-071.md",
+    "chapterId": "chapter-05",
+    "lessonId": "lesson-10",
+    "questionEnglish": "Can you see that stapler? Convince me to buy it.",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-072",
+    "part": "I",
+    "number": 72,
+    "code": "072",
+    "pos": 73,
+    "pages": [
+      57,
+      58
+    ],
+    "filepath": "questions/part-01/q-072.md",
+    "chapterId": "chapter-05",
+    "lessonId": "lesson-10",
+    "questionEnglish": "How long have you been looking for a job?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-073",
+    "part": "I",
+    "number": 73,
+    "code": "073",
+    "pos": 74,
+    "pages": [
+      58,
+      59
+    ],
+    "filepath": "questions/part-01/q-073.md",
+    "chapterId": "chapter-05",
+    "lessonId": "lesson-10",
+    "questionEnglish": "Why haven't you received any offers so far?",
+    "answerExamples": 5
+  },
+  {
+    "id": "interview-en-i-074",
+    "part": "I",
+    "number": 74,
+    "code": "074",
+    "pos": 75,
+    "pages": [
+      59,
+      60
+    ],
+    "filepath": "questions/part-01/q-074.md",
+    "chapterId": "chapter-05",
+    "lessonId": "lesson-10",
+    "questionEnglish": "If you don't understand your assignment and you can't reach your boss, what would you do?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-075",
+    "part": "I",
+    "number": 75,
+    "code": "075",
+    "pos": 76,
+    "pages": [
+      60,
+      61
+    ],
+    "filepath": "questions/part-01/q-075.md",
+    "chapterId": "chapter-05",
+    "lessonId": "lesson-10",
+    "questionEnglish": "If everyone on the team is a veteran, what will you do to fit in and be a beneficial team member instead of a person who appears to be in training?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-076",
+    "part": "I",
+    "number": 76,
+    "code": "076",
+    "pos": 77,
+    "pages": [
+      61,
+      62
+    ],
+    "filepath": "questions/part-01/q-076.md",
+    "chapterId": "chapter-05",
+    "lessonId": "lesson-10",
+    "questionEnglish": "How do you intend to learn what you need to know to perform well for this job?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-077",
+    "part": "I",
+    "number": 77,
+    "code": "077",
+    "pos": 78,
+    "pages": [
+      62,
+      63
+    ],
+    "filepath": "questions/part-01/q-077.md",
+    "chapterId": "chapter-05",
+    "lessonId": "lesson-10",
+    "questionEnglish": "If your supervisor tells you to do something that you believe can be done in a different way, what would you do?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-078",
+    "part": "I",
+    "number": 78,
+    "code": "078",
+    "pos": 79,
+    "pages": [
+      63
+    ],
+    "filepath": "questions/part-01/q-078.md",
+    "chapterId": "chapter-05",
+    "lessonId": "lesson-10",
+    "questionEnglish": "If you're told to do something that you feel is illegal, what would you do?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-079",
+    "part": "I",
+    "number": 79,
+    "code": "079",
+    "pos": 80,
+    "pages": [
+      63,
+      64
+    ],
+    "filepath": "questions/part-01/q-079.md",
+    "chapterId": "chapter-05",
+    "lessonId": "lesson-10",
+    "questionEnglish": "If you were unfairly criticized, what would you do?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-080",
+    "part": "I",
+    "number": 80,
+    "code": "080",
+    "pos": 81,
+    "pages": [
+      64,
+      65
+    ],
+    "filepath": "questions/part-01/q-080.md",
+    "chapterId": "chapter-05",
+    "lessonId": "lesson-11",
+    "questionEnglish": "What are you looking to gain from your next job?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-081",
+    "part": "I",
+    "number": 81,
+    "code": "081",
+    "pos": 82,
+    "pages": [
+      65,
+      66
+    ],
+    "filepath": "questions/part-01/q-081.md",
+    "chapterId": "chapter-05",
+    "lessonId": "lesson-11",
+    "questionEnglish": "What aspects of this job interest you the most?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-082",
+    "part": "I",
+    "number": 82,
+    "code": "082",
+    "pos": 83,
+    "pages": [
+      66
+    ],
+    "filepath": "questions/part-01/q-082.md",
+    "chapterId": "chapter-05",
+    "lessonId": "lesson-11",
+    "questionEnglish": "If you are given work from your manager that is boring and tedious, what will you do?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-083",
+    "part": "I",
+    "number": 83,
+    "code": "083",
+    "pos": 84,
+    "pages": [
+      66,
+      67
+    ],
+    "filepath": "questions/part-01/q-083.md",
+    "chapterId": "chapter-05",
+    "lessonId": "lesson-11",
+    "questionEnglish": "How long do you plan on staying with this company?",
+    "answerExamples": 4
+  },
+  {
+    "id": "interview-en-i-084",
+    "part": "I",
+    "number": 84,
+    "code": "084",
+    "pos": 85,
+    "pages": [
+      67,
+      68
+    ],
+    "filepath": "questions/part-01/q-084.md",
+    "chapterId": "chapter-05",
+    "lessonId": "lesson-11",
+    "questionEnglish": "How do you explain the fact that you frequently change jobs? I see that you haven't stayed with a company for more than 2 years.",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-085",
+    "part": "I",
+    "number": 85,
+    "code": "085",
+    "pos": 86,
+    "pages": [
+      68,
+      69
+    ],
+    "filepath": "questions/part-01/q-085.md",
+    "chapterId": "chapter-05",
+    "lessonId": "lesson-11",
+    "questionEnglish": "Tell me about a time you had a big disagreement with your boss. What did you do and what was the outcome?",
+    "answerExamples": 2
+  },
+  {
+    "id": "interview-en-i-086",
+    "part": "I",
+    "number": 86,
+    "code": "086",
+    "pos": 87,
+    "pages": [
+      69,
+      70
+    ],
+    "filepath": "questions/part-01/q-086.md",
+    "chapterId": "chapter-05",
+    "lessonId": "lesson-11",
+    "questionEnglish": "What do you do when there is no work to do?",
+    "answerExamples": 4
+  },
+  {
+    "id": "interview-en-i-087",
+    "part": "I",
+    "number": 87,
+    "code": "087",
+    "pos": 88,
+    "pages": [
+      70,
+      71
+    ],
+    "filepath": "questions/part-01/q-087.md",
+    "chapterId": "chapter-05",
+    "lessonId": "lesson-11",
+    "questionEnglish": "What do you do when there are too many things to do?",
+    "answerExamples": 4
+  },
+  {
+    "id": "interview-en-i-088",
+    "part": "I",
+    "number": 88,
+    "code": "088",
+    "pos": 89,
+    "pages": [
+      71,
+      72
+    ],
+    "filepath": "questions/part-01/q-088.md",
+    "chapterId": "chapter-05",
+    "lessonId": "lesson-11",
+    "questionEnglish": "What do you do when you feel burned out?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-089",
+    "part": "I",
+    "number": 89,
+    "code": "089",
+    "pos": 90,
+    "pages": [
+      72,
+      73
+    ],
+    "filepath": "questions/part-01/q-089.md",
+    "chapterId": "chapter-05",
+    "lessonId": "lesson-11",
+    "questionEnglish": "How do you manage having so many things to do such as work, family, and school?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-090",
+    "part": "I",
+    "number": 90,
+    "code": "090",
+    "pos": 91,
+    "pages": [
+      73
+    ],
+    "filepath": "questions/part-01/q-090.md",
+    "chapterId": "chapter-05",
+    "lessonId": "lesson-11",
+    "questionEnglish": "You've been with one company your entire career. Don't you think you will have a tough time adjusting to a new environment?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-091",
+    "part": "I",
+    "number": 91,
+    "code": "091",
+    "pos": 92,
+    "pages": [
+      74
+    ],
+    "filepath": "questions/part-01/q-091.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-12",
+    "questionEnglish": "What have you heard about our company that you didn't like?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-092",
+    "part": "I",
+    "number": 92,
+    "code": "092",
+    "pos": 93,
+    "pages": [
+      74,
+      75
+    ],
+    "filepath": "questions/part-01/q-092.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-12",
+    "questionEnglish": "Do you want to work for a small or large company and why?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-093",
+    "part": "I",
+    "number": 93,
+    "code": "093",
+    "pos": 94,
+    "pages": [
+      75,
+      76
+    ],
+    "filepath": "questions/part-01/q-093.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-12",
+    "questionEnglish": "What do you do when you're having difficulty solving a problem?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-094",
+    "part": "I",
+    "number": 94,
+    "code": "094",
+    "pos": 95,
+    "pages": [
+      76,
+      77
+    ],
+    "filepath": "questions/part-01/q-094.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-12",
+    "questionEnglish": "What do you do when you have a problem with a direct?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-095",
+    "part": "I",
+    "number": 95,
+    "code": "095",
+    "pos": 96,
+    "pages": [
+      77
+    ],
+    "filepath": "questions/part-01/q-095.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-12",
+    "questionEnglish": "What do you do when you have a problem with your boss?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-096",
+    "part": "I",
+    "number": 96,
+    "code": "096",
+    "pos": 97,
+    "pages": [
+      78
+    ],
+    "filepath": "questions/part-01/q-096.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-12",
+    "questionEnglish": "What do you do when you have a problem with your job?",
+    "answerExamples": 4
+  },
+  {
+    "id": "interview-en-i-097",
+    "part": "I",
+    "number": 97,
+    "code": "097",
+    "pos": 98,
+    "pages": [
+      79
+    ],
+    "filepath": "questions/part-01/q-097.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-12",
+    "questionEnglish": "What do you do when you have a problem with a co-worker?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-098",
+    "part": "I",
+    "number": 98,
+    "code": "098",
+    "pos": 99,
+    "pages": [
+      79,
+      80
+    ],
+    "filepath": "questions/part-01/q-098.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-12",
+    "questionEnglish": "How do you handle conflict?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-099",
+    "part": "I",
+    "number": 99,
+    "code": "099",
+    "pos": 100,
+    "pages": [
+      80,
+      81
+    ],
+    "filepath": "questions/part-01/q-099.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-12",
+    "questionEnglish": "Have you fired anyone? And if so, why?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-100",
+    "part": "I",
+    "number": 100,
+    "code": "100",
+    "pos": 101,
+    "pages": [
+      81,
+      82
+    ],
+    "filepath": "questions/part-01/q-100.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-13",
+    "questionEnglish": "What do you do when a worker is giving the team more problems than helping?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-101",
+    "part": "I",
+    "number": 101,
+    "code": "101",
+    "pos": 102,
+    "pages": [
+      82
+    ],
+    "filepath": "questions/part-01/q-101.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-13",
+    "questionEnglish": "When do you know enough is enough when dealing with a subordinate that doesn't seem to be helping?",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-102",
+    "part": "I",
+    "number": 102,
+    "code": "102",
+    "pos": 103,
+    "pages": [
+      82,
+      83
+    ],
+    "filepath": "questions/part-01/q-102.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-13",
+    "questionEnglish": "Do you like to work by yourself or with others?",
+    "answerExamples": 2
+  },
+  {
+    "id": "interview-en-i-103",
+    "part": "I",
+    "number": 103,
+    "code": "103",
+    "pos": 104,
+    "pages": [
+      83
+    ],
+    "filepath": "questions/part-01/q-103.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-13",
+    "questionEnglish": "How do you get along with your subordinates?",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-104",
+    "part": "I",
+    "number": 104,
+    "code": "104",
+    "pos": 105,
+    "pages": [
+      83,
+      84
+    ],
+    "filepath": "questions/part-01/q-104.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-13",
+    "questionEnglish": "How do you get along with your co-workers?",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-105",
+    "part": "I",
+    "number": 105,
+    "code": "105",
+    "pos": 106,
+    "pages": [
+      84
+    ],
+    "filepath": "questions/part-01/q-105.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-13",
+    "questionEnglish": "How do you get along with your superiors?",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-106",
+    "part": "I",
+    "number": 106,
+    "code": "106",
+    "pos": 107,
+    "pages": [
+      84,
+      85
+    ],
+    "filepath": "questions/part-01/q-106.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-13",
+    "questionEnglish": "What do you do to stay in shape?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-107",
+    "part": "I",
+    "number": 107,
+    "code": "107",
+    "pos": 108,
+    "pages": [
+      85
+    ],
+    "filepath": "questions/part-01/q-107.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-13",
+    "questionEnglish": "What do you like to do when you're not in the office?",
+    "answerExamples": 2
+  },
+  {
+    "id": "interview-en-i-108",
+    "part": "I",
+    "number": 108,
+    "code": "108",
+    "pos": 109,
+    "pages": [
+      85,
+      86
+    ],
+    "filepath": "questions/part-01/q-108.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-13",
+    "questionEnglish": "What's the most recent book you read?",
+    "answerExamples": 2
+  },
+  {
+    "id": "interview-en-i-109",
+    "part": "I",
+    "number": 109,
+    "code": "109",
+    "pos": 110,
+    "pages": [
+      86
+    ],
+    "filepath": "questions/part-01/q-109.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-13",
+    "questionEnglish": "What is the most recent movie you saw?",
+    "answerExamples": 2
+  },
+  {
+    "id": "interview-en-i-110",
+    "part": "I",
+    "number": 110,
+    "code": "110",
+    "pos": 111,
+    "pages": [
+      86,
+      87
+    ],
+    "filepath": "questions/part-01/q-110.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-14",
+    "questionEnglish": "Did you have any trouble finding this place?",
+    "answerExamples": 2
+  },
+  {
+    "id": "interview-en-i-111",
+    "part": "I",
+    "number": 111,
+    "code": "111",
+    "pos": 112,
+    "pages": [
+      87
+    ],
+    "filepath": "questions/part-01/q-111.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-14",
+    "questionEnglish": "Will working on weekends be a problem?",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-112",
+    "part": "I",
+    "number": 112,
+    "code": "112",
+    "pos": 113,
+    "pages": [
+      87
+    ],
+    "filepath": "questions/part-01/q-112.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-14",
+    "questionEnglish": "How do you feel about overtime?",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-113",
+    "part": "I",
+    "number": 113,
+    "code": "113",
+    "pos": 114,
+    "pages": [
+      87,
+      88
+    ],
+    "filepath": "questions/part-01/q-113.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-14",
+    "questionEnglish": "Have you filed for bankruptcy?",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-114",
+    "part": "I",
+    "number": 114,
+    "code": "114",
+    "pos": 115,
+    "pages": [
+      88
+    ],
+    "filepath": "questions/part-01/q-114.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-14",
+    "questionEnglish": "Do you own or rent your home?",
+    "answerExamples": 2
+  },
+  {
+    "id": "interview-en-i-115",
+    "part": "I",
+    "number": 115,
+    "code": "115",
+    "pos": 116,
+    "pages": [
+      88,
+      89
+    ],
+    "filepath": "questions/part-01/q-115.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-14",
+    "questionEnglish": "Do you have any outside income?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-116",
+    "part": "I",
+    "number": 116,
+    "code": "116",
+    "pos": 117,
+    "pages": [
+      89
+    ],
+    "filepath": "questions/part-01/q-116.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-14",
+    "questionEnglish": "Do you earn any income from investments or hobbies?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-117",
+    "part": "I",
+    "number": 117,
+    "code": "117",
+    "pos": 118,
+    "pages": [
+      89
+    ],
+    "filepath": "questions/part-01/q-117.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-14",
+    "questionEnglish": "Are you able to make frequent business trips?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-i-118",
+    "part": "I",
+    "number": 118,
+    "code": "118",
+    "pos": 119,
+    "pages": [
+      89,
+      90
+    ],
+    "filepath": "questions/part-01/q-118.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-14",
+    "questionEnglish": "Are you willing to travel?",
+    "answerExamples": 2
+  },
+  {
+    "id": "interview-en-i-119",
+    "part": "I",
+    "number": 119,
+    "code": "119",
+    "pos": 120,
+    "pages": [
+      90
+    ],
+    "filepath": "questions/part-01/q-119.md",
+    "chapterId": "chapter-06",
+    "lessonId": "lesson-14",
+    "questionEnglish": "Are you willing to relocate?",
+    "answerExamples": 2
+  },
+  {
+    "id": "interview-en-i-120",
+    "part": "I",
+    "number": 120,
+    "code": "120",
+    "pos": 121,
+    "pages": [
+      90,
+      91
+    ],
+    "filepath": "questions/part-01/q-120.md",
+    "chapterId": "chapter-07",
+    "lessonId": "lesson-15",
+    "questionEnglish": "May I contact your current employer?",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-121",
+    "part": "I",
+    "number": 121,
+    "code": "121",
+    "pos": 122,
+    "pages": [
+      91
+    ],
+    "filepath": "questions/part-01/q-121.md",
+    "chapterId": "chapter-07",
+    "lessonId": "lesson-15",
+    "questionEnglish": "May I contact your references?",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-122",
+    "part": "I",
+    "number": 122,
+    "code": "122",
+    "pos": 123,
+    "pages": [
+      91,
+      92
+    ],
+    "filepath": "questions/part-01/q-122.md",
+    "chapterId": "chapter-07",
+    "lessonId": "lesson-15",
+    "questionEnglish": "Is there anything else I should know?",
+    "answerExamples": 2
+  },
+  {
+    "id": "interview-en-i-123",
+    "part": "I",
+    "number": 123,
+    "code": "123",
+    "pos": 124,
+    "pages": [
+      92
+    ],
+    "filepath": "questions/part-01/q-123.md",
+    "chapterId": "chapter-07",
+    "lessonId": "lesson-15",
+    "questionEnglish": "What kind of salary are you looking for?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-i-124",
+    "part": "I",
+    "number": 124,
+    "code": "124",
+    "pos": 125,
+    "pages": [
+      92,
+      93
+    ],
+    "filepath": "questions/part-01/q-124.md",
+    "chapterId": "chapter-07",
+    "lessonId": "lesson-15",
+    "questionEnglish": "That's a high salary for this position! Where did you come up with that figure?",
+    "answerExamples": 1
+  },
+  {
+    "id": "interview-en-i-125",
+    "part": "I",
+    "number": 125,
+    "code": "125",
+    "pos": 126,
+    "pages": [
+      93
+    ],
+    "filepath": "questions/part-01/q-125.md",
+    "chapterId": "chapter-07",
+    "lessonId": "lesson-15",
+    "questionEnglish": "How much do you currently get paid?",
+    "answerExamples": 2
+  },
+  {
+    "id": "interview-en-i-126",
+    "part": "I",
+    "number": 126,
+    "code": "126",
+    "pos": 127,
+    "pages": [
+      93,
+      94
+    ],
+    "filepath": "questions/part-01/q-126.md",
+    "chapterId": "chapter-07",
+    "lessonId": "lesson-15",
+    "questionEnglish": "When are you able to start?",
+    "answerExamples": 2
+  },
+  {
+    "id": "interview-en-i-127",
+    "part": "I",
+    "number": 127,
+    "code": "127",
+    "pos": 128,
+    "pages": [
+      94
+    ],
+    "filepath": "questions/part-01/q-127.md",
+    "chapterId": "chapter-07",
+    "lessonId": "lesson-15",
+    "questionEnglish": "Are you considering any other offers right now?",
+    "answerExamples": 3
+  },
+  {
+    "id": "interview-en-ii-001",
+    "part": "II",
+    "number": 1,
+    "code": "001",
+    "pos": 129,
+    "pages": [
+      94
+    ],
+    "filepath": "questions/part-02/q-001.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-16",
+    "questionEnglish": "Do you have any questions?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-002",
+    "part": "II",
+    "number": 2,
+    "code": "002",
+    "pos": 130,
+    "pages": [
+      95
+    ],
+    "filepath": "questions/part-02/q-002.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-16",
+    "questionEnglish": "Does this job usually lead to other positions at the company?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-003",
+    "part": "II",
+    "number": 3,
+    "code": "003",
+    "pos": 131,
+    "pages": [
+      95
+    ],
+    "filepath": "questions/part-02/q-003.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-16",
+    "questionEnglish": "Tell me some of the skills that you want in a candidate for this position.",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-004",
+    "part": "II",
+    "number": 4,
+    "code": "004",
+    "pos": 132,
+    "pages": [
+      95
+    ],
+    "filepath": "questions/part-02/q-004.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-16",
+    "questionEnglish": "What are the people I'll be working with like?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-005",
+    "part": "II",
+    "number": 5,
+    "code": "005",
+    "pos": 133,
+    "pages": [
+      95
+    ],
+    "filepath": "questions/part-02/q-005.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-16",
+    "questionEnglish": "How is this company doing in comparison with competitors?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-006",
+    "part": "II",
+    "number": 6,
+    "code": "006",
+    "pos": 134,
+    "pages": [
+      95
+    ],
+    "filepath": "questions/part-02/q-006.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-16",
+    "questionEnglish": "I know of products X and Y, does the company plan to introduce any new products?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-007",
+    "part": "II",
+    "number": 7,
+    "code": "007",
+    "pos": 135,
+    "pages": [
+      95,
+      96
+    ],
+    "filepath": "questions/part-02/q-007.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-16",
+    "questionEnglish": "What is the company doing to maintain its market strength?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-008",
+    "part": "II",
+    "number": 8,
+    "code": "008",
+    "pos": 136,
+    "pages": [
+      96
+    ],
+    "filepath": "questions/part-02/q-008.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-16",
+    "questionEnglish": "How many employees work for this company?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-009",
+    "part": "II",
+    "number": 9,
+    "code": "009",
+    "pos": 137,
+    "pages": [
+      96
+    ],
+    "filepath": "questions/part-02/q-009.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-16",
+    "questionEnglish": "What has been the company's layoff history in recent years?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-010",
+    "part": "II",
+    "number": 10,
+    "code": "010",
+    "pos": 138,
+    "pages": [
+      96
+    ],
+    "filepath": "questions/part-02/q-010.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-17",
+    "questionEnglish": "Do you know of any anticipated cutbacks in any departments in the near future?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-011",
+    "part": "II",
+    "number": 11,
+    "code": "011",
+    "pos": 139,
+    "pages": [
+      96
+    ],
+    "filepath": "questions/part-02/q-011.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-17",
+    "questionEnglish": "What major problems has the company recently faced?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-012",
+    "part": "II",
+    "number": 12,
+    "code": "012",
+    "pos": 140,
+    "pages": [
+      96
+    ],
+    "filepath": "questions/part-02/q-012.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-17",
+    "questionEnglish": "What type of training do you provide here?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-013",
+    "part": "II",
+    "number": 13,
+    "code": "013",
+    "pos": 141,
+    "pages": [
+      96,
+      97
+    ],
+    "filepath": "questions/part-02/q-013.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-17",
+    "questionEnglish": "What do you like best about this company?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-014",
+    "part": "II",
+    "number": 14,
+    "code": "014",
+    "pos": 142,
+    "pages": [
+      97
+    ],
+    "filepath": "questions/part-02/q-014.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-17",
+    "questionEnglish": "What position title will I be reporting to?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-015",
+    "part": "II",
+    "number": 15,
+    "code": "015",
+    "pos": 143,
+    "pages": [
+      97
+    ],
+    "filepath": "questions/part-02/q-015.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-17",
+    "questionEnglish": "What other departments does this department work closely with?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-016",
+    "part": "II",
+    "number": 16,
+    "code": "016",
+    "pos": 144,
+    "pages": [
+      97
+    ],
+    "filepath": "questions/part-02/q-016.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-17",
+    "questionEnglish": "What kind of training should I expect?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-017",
+    "part": "II",
+    "number": 17,
+    "code": "017",
+    "pos": 145,
+    "pages": [
+      97
+    ],
+    "filepath": "questions/part-02/q-017.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-17",
+    "questionEnglish": "How long is the training program?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-018",
+    "part": "II",
+    "number": 18,
+    "code": "018",
+    "pos": 146,
+    "pages": [
+      97
+    ],
+    "filepath": "questions/part-02/q-018.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-17",
+    "questionEnglish": "How did this position become available?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-019",
+    "part": "II",
+    "number": 19,
+    "code": "019",
+    "pos": 147,
+    "pages": [
+      97
+    ],
+    "filepath": "questions/part-02/q-019.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-18",
+    "questionEnglish": "Is a written job description available?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-020",
+    "part": "II",
+    "number": 20,
+    "code": "020",
+    "pos": 148,
+    "pages": [
+      98
+    ],
+    "filepath": "questions/part-02/q-020.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-18",
+    "questionEnglish": "Please describe a typical day for this position.",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-021",
+    "part": "II",
+    "number": 21,
+    "code": "021",
+    "pos": 149,
+    "pages": [
+      98
+    ],
+    "filepath": "questions/part-02/q-021.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-18",
+    "questionEnglish": "How long has this position been available?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-022",
+    "part": "II",
+    "number": 22,
+    "code": "022",
+    "pos": 150,
+    "pages": [
+      98
+    ],
+    "filepath": "questions/part-02/q-022.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-18",
+    "questionEnglish": "How many candidates have you interviewed for this position?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-023",
+    "part": "II",
+    "number": 23,
+    "code": "023",
+    "pos": 151,
+    "pages": [
+      98
+    ],
+    "filepath": "questions/part-02/q-023.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-18",
+    "questionEnglish": "How many total candidates will you be interviewing for this position?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-024",
+    "part": "II",
+    "number": 24,
+    "code": "024",
+    "pos": 152,
+    "pages": [
+      98
+    ],
+    "filepath": "questions/part-02/q-024.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-18",
+    "questionEnglish": "Do you interview a large number of people before making an offer to a person, or do you make an offer to the first person who is qualified?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-025",
+    "part": "II",
+    "number": 25,
+    "code": "025",
+    "pos": 153,
+    "pages": [
+      98
+    ],
+    "filepath": "questions/part-02/q-025.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-18",
+    "questionEnglish": "What type of hardware and software will I be working with?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-026",
+    "part": "II",
+    "number": 26,
+    "code": "026",
+    "pos": 154,
+    "pages": [
+      99
+    ],
+    "filepath": "questions/part-02/q-026.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-18",
+    "questionEnglish": "What will my workstation be like? Will it be an office, a cubicle, or a desk?",
+    "answerExamples": 0
+  },
+  {
+    "id": "interview-en-ii-027",
+    "part": "II",
+    "number": 27,
+    "code": "027",
+    "pos": 155,
+    "pages": [
+      99
+    ],
+    "filepath": "questions/part-02/q-027.md",
+    "chapterId": "chapter-08",
+    "lessonId": "lesson-18",
+    "questionEnglish": "What opportunities for advancement are available here?",
+    "answerExamples": 0
+  }
+]
