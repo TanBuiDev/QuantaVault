@@ -254,6 +254,7 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
                               <span className="block text-xs font-bold text-[var(--foreground)] truncate">
                                 {chapter.title}
                               </span>
+                              {chapter.titleEn && <span className="block truncate text-[11px] text-[var(--muted)]">{chapter.titleEn}</span>}
                               <span className="text-[11px] text-[var(--muted)]">
                                 {chapter.lessonIds.length} bài học chuyên đề
                               </span>

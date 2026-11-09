@@ -182,7 +182,10 @@ export function CourseSyllabusSidebar({
                     ) : (
                       <ChevronRight className="h-3.5 w-3.5 shrink-0 text-[var(--muted)]" />
                     )}
-                    <span className="truncate">{chapter.title}</span>
+                    <span className="min-w-0">
+                      <span className="block truncate">{chapter.title}</span>
+                      {chapter.titleEn && <span className="block truncate text-[10px] font-normal text-[var(--muted)]">{chapter.titleEn}</span>}
+                    </span>
                   </div>
                   <span className="shrink-0 text-[10px] font-semibold text-[var(--muted)] bg-[var(--surface-hover)] px-1.5 py-0.5 rounded-md">
                     {chapterCompletedCount}/{chapterLessons.length}

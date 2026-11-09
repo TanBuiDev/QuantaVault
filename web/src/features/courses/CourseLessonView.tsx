@@ -255,8 +255,9 @@ export function CourseLessonView({
                       Bài trước
                     </span>
                     <span className="block text-xs font-bold text-[var(--foreground)] truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                      {prevLesson.title}
+                      {prevLesson.titleEn || prevLesson.title}
                     </span>
+                    {prevLesson.titleEn && <span className="block truncate text-[11px] text-[var(--muted)]">{prevLesson.title}</span>}
                   </div>
                 </Link>
               ) : (
@@ -273,8 +274,9 @@ export function CourseLessonView({
                       Bài tiếp theo
                     </span>
                     <span className="block text-xs font-bold text-[var(--foreground)] truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                      {nextLesson.title}
+                      {nextLesson.titleEn || nextLesson.title}
                     </span>
+                    {nextLesson.titleEn && <span className="block truncate text-[11px] text-[var(--muted)]">{nextLesson.title}</span>}
                   </div>
                   <ChevronRight className="h-5 w-5 shrink-0 text-[var(--muted)] group-hover:text-indigo-500 transition-colors" />
                 </Link>
