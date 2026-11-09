@@ -140,7 +140,7 @@ export function CourseLessonView({
 
               {isEnglish && (
                 <Link
-                  href="/courses/english-job-interview/practice"
+                  href={`/courses/english-job-interview/practice?lesson=${lesson.id}`}
                   className="inline-flex items-center gap-1.5 rounded-xl border border-indigo-500/30 bg-indigo-500/10 px-2.5 py-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/20"
                   aria-label="Mở chế độ luyện tập tiếng Anh"
                 >

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Eye, EyeOff, Languages, RotateCcw } from "lucide-react";
 import { ProgressBar } from "@/components/ui/ProgressBar";
@@ -15,6 +15,17 @@ import {
   type PracticeStatus
 } from "@/lib/courses/englishPractice";
 
+function subscribeToLocation(callback: () => void): () => void {
+  if (typeof window === "undefined") return () => {};
+  window.addEventListener("popstate", callback);
+  return () => window.removeEventListener("popstate", callback);
+}
+
+function getRequestedLesson(): string {
+  if (typeof window === "undefined") return "all";
+  return new URLSearchParams(window.location.search).get("lesson") || "all";
+}
+
 interface PracticeLessonOption {
   id: string;
   number: number;
@@ -23,7 +34,10 @@ interface PracticeLessonOption {
 }
 
 export function EnglishPracticeView({ lessons }: { lessons: PracticeLessonOption[] }) {
-  const [lessonId, setLessonId] = useState("all");
+  const requestedLesson = useSyncExternalStore(subscribeToLocation, getRequestedLesson, () => "all");
+  const [selectedLessonId, setSelectedLessonId] = useState<string | null>(null);
+  const defaultLessonId = lessons.some((lesson) => lesson.id === requestedLesson) ? requestedLesson : "all";
+  const lessonId = selectedLessonId ?? defaultLessonId;
   const [kind, setKind] = useState<PracticeKind>("question");
   const [direction, setDirection] = useState<PracticeDirection>("vi-en");
   const [cardIndex, setCardIndex] = useState(0);
@@ -48,7 +62,7 @@ export function EnglishPracticeView({ lessons }: { lessons: PracticeLessonOption
   };
 
   const selectLesson = (value: string) => {
-    setLessonId(value);
+    setSelectedLessonId(value);
     setCardIndex(0);
     resetCard();
   };
@@ -95,7 +109,7 @@ export function EnglishPracticeView({ lessons }: { lessons: PracticeLessonOption
               Tự gõ bản dịch, xem câu tham khảo rồi đánh giá mức độ ghi nhớ. Bản dịch bạn gõ không được lưu lên hệ thống.
             </p>
           </div>
-          <Link href="/courses/english-job-interview/lesson-01"
+          <Link href={"/courses/english-job-interview/" + (lessonId === "all" ? "lesson-01" : lessonId)}
             className="inline-flex items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs font-semibold text-[var(--foreground)] hover:bg-[var(--surface-hover)]">
             <BookOpen className="h-4 w-4" aria-hidden="true" /> Chế độ học
           </Link>

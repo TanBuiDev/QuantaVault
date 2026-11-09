@@ -29,6 +29,7 @@
 
 ## 4. Thiết kế Luyện tập
 - Header có liên kết quay lại bài học và bộ đếm câu; chọn bài cụ thể hoặc toàn bộ khóa.
+- Khi mở luyện tập từ một bài đọc, URL mang `?lesson=lesson-XX` để chọn sẵn bài đó; nút Chế độ học quay lại đúng bài đã chọn.
 - Chọn **Câu hỏi** hoặc **Mẫu trả lời**; một câu hỏi có thể có nhiều mẫu (sẽ luyện từng mẫu).
 - Hai hướng: **Việt → Anh** (ẩn bản tiếng Anh); **Anh → Việt** (ẩn bản tiếng Việt).
 - Một thẻ/1 lượt: văn bản gợi ý → ô nhập → nút hiện/ẩn bản dịch mẫu → tự đánh giá Đã nhớ/Cần ôn → chuyển thẻ.

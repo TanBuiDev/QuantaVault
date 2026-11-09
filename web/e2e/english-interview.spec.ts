@@ -17,7 +17,8 @@ test("English bilingual interview course is available alongside existing study c
 test("English translation practice is a separate mode with concealed reference and two directions", async ({ page }) => {
   await page.goto("/courses/english-job-interview/lesson-01/");
   await page.getByRole("link", { name: "Mở chế độ luyện tập tiếng Anh" }).click();
-  await expect(page).toHaveURL(/\/courses\/english-job-interview\/practice\/?$/);
+  await expect(page).toHaveURL(/\/courses\/english-job-interview\/practice\?lesson=lesson-01$/);
+  await expect(page.getByRole("combobox", { name: "Chọn bài luyện tập" })).toHaveValue("lesson-01");
   await expect(page.getByRole("heading", { name: "Luyện dịch hai chiều" })).toBeVisible();
   await expect(page.getByText("Tell me a little about yourself.")).toHaveCount(0);
 
@@ -29,4 +30,13 @@ test("English translation practice is a separate mode with concealed reference a
   await expect(page.getByRole("textbox", { name: "Bản dịch của bạn" })).toHaveValue("");
   await page.getByRole("group", { name: "Hướng dịch" }).getByRole("button", { name: "Anh → Việt" }).click();
   await expect(page.getByText("Tell me a little about yourself.")).toBeVisible();
+});
+
+test("practice starts from the current lesson and returns there", async ({ page }) => {
+  await page.goto("/courses/english-job-interview/lesson-07/");
+  await page.getByRole("link", { name: "Mở chế độ luyện tập tiếng Anh" }).click();
+  await expect(page).toHaveURL(/practice\?lesson=lesson-07$/);
+  await expect(page.getByRole("combobox", { name: "Chọn bài luyện tập" })).toHaveValue("lesson-07");
+  await page.getByRole("link", { name: "Chế độ học" }).click();
+  await expect(page).toHaveURL(/\/courses\/english-job-interview\/lesson-07\/?$/);
 });
