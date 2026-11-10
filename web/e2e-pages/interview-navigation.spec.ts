@@ -26,7 +26,10 @@ test("split preview navigates precisely without editing content or creating extr
     "| banana | 3 |",
   ].join("\n");
   await editor.fill(markdown);
-  await expect.poll(() => page.evaluate(() => sessionStorage.getItem("interview_draft_q-001"))).toContain(markdown);
+  await expect.poll(() => page.evaluate(() => {
+    const raw = sessionStorage.getItem("interview_draft_q-001");
+    return raw ? JSON.parse(raw).values?.answerMarkdown : null;
+  })).toBe(markdown);
   const beforeDraft = await page.evaluate(() => sessionStorage.getItem("interview_draft_q-001"));
 
   await page.getByRole("button", { name: "Song song" }).click();
@@ -84,7 +87,10 @@ test("large Markdown document records browser navigation latency without mutatin
     "## Section " + i + "\n\n" + "This is a Java interview explanation containing multiple words. ".repeat(3),
   ).join("\n\n");
   await editor.fill(markdown);
-  await expect.poll(() => page.evaluate(() => sessionStorage.getItem("interview_draft_q-001"))).toContain(markdown);
+  await expect.poll(() => page.evaluate(() => {
+    const raw = sessionStorage.getItem("interview_draft_q-001");
+    return raw ? JSON.parse(raw).values?.answerMarkdown : null;
+  })).toBe(markdown);
   const baselineDraft = await page.evaluate(() => sessionStorage.getItem("interview_draft_q-001"));
   await page.getByRole("button", { name: "Song song" }).click();
   const lastHeading = page.locator(".md-source-navigation").getByRole("heading", { name: "Section 219" });
