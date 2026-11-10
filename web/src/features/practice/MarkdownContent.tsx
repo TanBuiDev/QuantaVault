@@ -1,19 +1,24 @@
 "use client";
 
-import { useState, type MouseEvent } from "react";
+import { useMemo, useState, type KeyboardEvent, type MouseEvent } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import { MermaidRenderer } from "@/components/ui/MermaidRenderer";
 import { SyntaxHighlighter } from "@/components/ui/SyntaxHighlighter";
-import { resolveMarkdownSourceLocation, type MarkdownAstPoint, type MarkdownSourceLocation } from "@/lib/markdownSourceNavigation";
+import { createMarkdownSourceResolver, type MarkdownAstPoint, type MarkdownSourceLocation } from "@/lib/markdownSourceNavigation";
 
 function CodeBlockWithCopy({ children, className, sourceOffset, ...props }: React.ComponentPropsWithoutRef<"pre"> & { sourceOffset?: number }) {
   const [copied, setCopied] = useState(false);
 
   return (
-    <div className="group relative my-4" {...(sourceOffset === undefined ? {} : { "data-md-source-offset": String(sourceOffset) })}>
+    <div className="group relative my-4" {...(sourceOffset === undefined ? {} : {
+      "data-md-source-offset": String(sourceOffset),
+      tabIndex: 0,
+      title: "Nhấn Enter để đến mã Markdown gốc",
+      "aria-keyshortcuts": "Enter",
+    })}>
       <button
         type="button"
         onClick={(e) => {
@@ -231,35 +236,58 @@ export function MarkdownContent({
   const processedMarkdown = filterMarkdownByLanguage(markdown, languageMode);
   // Coordinates from transformed language views are not offsets in the saved Markdown.
   const navigationEnabled = Boolean(onNavigateSource) && languageMode === "bilingual" && processedMarkdown === markdown;
+  // Index source lines once per editor value, not on read-only learning pages.
+  const resolveSource = useMemo(
+    () => navigationEnabled ? createMarkdownSourceResolver(markdown) : null,
+    [markdown, navigationEnabled],
+  );
   const sourceAttrs = (node?: { position?: { start?: MarkdownAstPoint } }) => {
-    if (!navigationEnabled) return {};
-    const location = resolveMarkdownSourceLocation(markdown, node?.position?.start);
-    return location ? { "data-md-source-offset": String(location.offset) } : {};
+    const location = resolveSource?.(node?.position?.start);
+    return location ? {
+      "data-md-source-offset": String(location.offset),
+      tabIndex: 0,
+      title: `Nhấn Enter để chỉnh sửa Markdown tại dòng ${location.line}`,
+      "aria-keyshortcuts": "Enter",
+    } : {};
+  };
+
+  const findNavigationTarget = (target: EventTarget | null, root: HTMLElement): MarkdownSourceLocation | null => {
+    if (!resolveSource || !(target instanceof Element)) return null;
+    // Preserve links, copy controls and editable descendants.
+    if (target.closest('a,button,input,select,textarea,[role="button"],[contenteditable="true"]')) return null;
+    const block = target.closest("[data-md-source-offset]");
+    if (!block || !root.contains(block)) return null;
+    const rawOffset = block.getAttribute("data-md-source-offset");
+    return rawOffset !== null && /^\\d+$/.test(rawOffset)
+      ? resolveSource({ offset: Number(rawOffset) })
+      : null;
   };
 
   const handlePreviewClick = (event: MouseEvent<HTMLDivElement>) => {
     if (!navigationEnabled || !onNavigateSource || event.defaultPrevented || event.button !== 0) return;
-    const target = event.target;
-    if (!(target instanceof Element)) return;
-    // Preserve links, copy buttons, controls and selecting text in the preview.
-    if (target.closest('a,button,input,select,textarea,[role="button"],[contenteditable="true"]')) return;
     const selection = window.getSelection();
     if (selection && !selection.isCollapsed && event.currentTarget.contains(selection.anchorNode)) return;
-    const block = target.closest("[data-md-source-offset]");
-    if (!block || !event.currentTarget.contains(block)) return;
-    const rawOffset = block.getAttribute("data-md-source-offset");
-    if (rawOffset === null || !/^\d+$/.test(rawOffset)) return;
-    const location = resolveMarkdownSourceLocation(markdown, { offset: Number(rawOffset) });
+    const location = findNavigationTarget(event.target, event.currentTarget);
     if (location) onNavigateSource(location, markdown);
+  };
+
+  const handlePreviewKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (!navigationEnabled || !onNavigateSource || event.key !== "Enter" || event.repeat ||
+        event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+    const location = findNavigationTarget(event.target, event.currentTarget);
+    if (!location || !(event.target instanceof HTMLElement) || !event.target.hasAttribute("data-md-source-offset")) return;
+    event.preventDefault();
+    onNavigateSource(location, markdown);
   };
 
   return (
     <div
       onClick={navigationEnabled ? handlePreviewClick : undefined}
+      onKeyDown={navigationEnabled ? handlePreviewKeyDown : undefined}
       style={textScale === 100 ? undefined : { zoom: textScale / 100 }}
       className={`max-w-none space-y-4 text-sm leading-7 text-[var(--muted-strong)] sm:text-[15.5px] sm:leading-7 [&_a]:font-semibold [&_a]:text-[var(--primary-strong)] [&_a]:underline [&_blockquote]:border-l-4 [&_blockquote]:border-[var(--border-strong)] [&_blockquote]:pl-4 [&_blockquote]:text-[var(--muted)] [&_code]:rounded-md [&_code]:bg-[var(--surface-hover)] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[var(--foreground)] [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-inherit [&_h1]:mt-2 [&_h1]:text-2xl [&_h1]:font-black [&_h1]:tracking-tight [&_h1]:text-[var(--foreground)] [&_h2]:mt-7 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-[var(--foreground)] [&_h3]:mt-6 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-[var(--foreground)] [&_li]:ml-5 [&_li]:list-disc [&_ol_li]:list-decimal ${
         fullWidth ? "[&_p]:max-w-none" : "[&_p]:max-w-[78ch]"
-      } [&_table]:w-full [&_table]:border-collapse [&_td]:border [&_td]:border-[var(--border)] [&_td]:p-2 [&_th]:border [&_th]:border-[var(--border)] [&_th]:bg-[var(--surface-hover)] [&_th]:p-2 [&_th]:text-[var(--foreground)] [&_.katex-display]:overflow-x-auto [&_.katex-display]:py-1 [&_.katex]:text-[1.05em] ${className}`}
+      } [&_table]:w-full [&_table]:border-collapse [&_td]:border [&_td]:border-[var(--border)] [&_td]:p-2 [&_th]:border [&_th]:border-[var(--border)] [&_th]:bg-[var(--surface-hover)] [&_th]:p-2 [&_th]:text-[var(--foreground)] [&_.katex-display]:overflow-x-auto [&_.katex-display]:py-1 [&_.katex]:text-[1.05em] ${className} ${navigationEnabled ? "md-source-navigation" : ""}`}
     >
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
@@ -337,7 +365,7 @@ export function MarkdownContent({
             return (
               <CodeBlockWithCopy
                 {...props}
-                sourceOffset={navigationEnabled ? resolveMarkdownSourceLocation(markdown, node?.position?.start)?.offset : undefined}
+                sourceOffset={resolveSource?.(node?.position?.start)?.offset}
                 className={`max-w-full overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--code-surface)] p-4 text-sm leading-6 text-[var(--code-foreground)] ${
                   wordWrap ? "whitespace-pre-wrap break-words" : "whitespace-pre"
                 }`}
