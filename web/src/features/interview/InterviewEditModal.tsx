@@ -120,14 +120,14 @@ function InterviewEditModalForm({
   const [editorFont, setEditorFont] = useState<"sans" | "mono">("sans");
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [sourceNavigationMessage, setSourceNavigationMessage] = useState("");
+  const sourceNavigationStatusRef = useRef<HTMLSpanElement>(null);
 
   const navigateToSource = (location: MarkdownSourceLocation, previewSource: string) => {
     const editor = textareaRef.current;
     // React uses deferred preview rendering; never navigate using old source offsets.
     if (!editor || previewSource !== answerMarkdown || editor.value !== answerMarkdown || pendingDraft || savedSuccess) return;
     if (!focusMarkdownTextareaAtOffset(editor, location.offset)) return;
-    setSourceNavigationMessage(`Đã chuyển đến dòng ${location.line} trong Markdown.`);
+    if (sourceNavigationStatusRef.current) sourceNavigationStatusRef.current.textContent = `Đã chuyển đến dòng ${location.line} trong Markdown.`;
   };
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => () => { if (closeTimer.current) clearTimeout(closeTimer.current); }, []);
@@ -505,9 +505,7 @@ function InterviewEditModalForm({
                     Xem trước hiển thị thực tế:
                     {viewMode === "split" && <span className="ml-2 font-normal normal-case">Nhấp vào nội dung hoặc dùng Tab + Enter để đến Markdown bên trái.</span>}
                   </div>
-                  {sourceNavigationMessage && viewMode === "split" && (
-                    <span role="status" className="sr-only">{sourceNavigationMessage}</span>
-                  )}
+                  {viewMode === "split" && <span ref={sourceNavigationStatusRef} role="status" className="sr-only" />}
                   {deferredAnswerMarkdown.trim() ? (
                     <MarkdownContent markdown={deferredAnswerMarkdown} fullWidth textScale={textScale} onNavigateSource={viewMode === "split" ? navigateToSource : undefined} />
                   ) : (
