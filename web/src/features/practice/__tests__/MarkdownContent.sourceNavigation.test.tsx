@@ -50,6 +50,7 @@ describe("MarkdownContent source location integration", () => {
     const navigate = vi.fn();
     render(<MarkdownContent markdown={source} onNavigateSource={navigate} />);
     const anchor = screen.getByRole("link", { name: "Docs" });
+    anchor.addEventListener("click", (event) => event.preventDefault());
     fireEvent.click(anchor, { button: 0 });
     expect(navigate).not.toHaveBeenCalled();
 
