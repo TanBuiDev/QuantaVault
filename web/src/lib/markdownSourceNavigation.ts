@@ -1,6 +1,6 @@
 /**
- * Read-only source coordinates for navigating from a rendered Markdown block
- * to the original Markdown textarea. Offsets are UTF-16 indices (String indices).
+ * Read-only UTF-16 source coordinates for Markdown preview navigation.
+ * Index original input once; do not normalize CRLF or alter persisted Markdown.
  */
 export type MarkdownAstPoint = {
   offset?: number;
@@ -14,69 +14,67 @@ export type MarkdownSourceLocation = {
   column: number;
 };
 
-function isPositiveInteger(value: unknown): value is number {
+function positiveInteger(value: unknown): value is number {
   return typeof value === "number" && Number.isSafeInteger(value) && value >= 1;
 }
 
-/** Compute the original source line/column without normalizing CRLF or Unicode. */
-export function markdownLocationAtOffset(source: string, offset: number): MarkdownSourceLocation | null {
-  if (!Number.isSafeInteger(offset) || offset < 0 || offset > source.length) return null;
-  let line = 1;
-  let column = 1;
-  for (let i = 0; i < offset; i++) {
-    if (source[i] === "\r") {
-      line++;
-      column = 1;
-      if (source[i + 1] === "\n" && i + 1 < offset) i++;
-    } else if (source[i] === "\n") {
-      // A CRLF pair is one line break, including when the offset falls between them.
-      if (i === 0 || source[i - 1] !== "\r") line++;
-      column = 1;
-    } else {
-      column++;
-    }
-  }
-  return { offset, line, column };
-}
-
-/** Convert a 1-based AST line/column to a UTF-16 offset in the unmodified input. */
-function sourceOffsetAtLineColumn(source: string, line: number, column: number): number | null {
-  if (!isPositiveInteger(line) || !isPositiveInteger(column)) return null;
-  let currentLine = 1;
-  let start = 0;
-  for (let i = 0; i < source.length && currentLine < line; i++) {
-    if (source[i] === "\r" || source[i] === "\n") {
-      if (source[i] === "\r" && source[i + 1] === "\n") i++;
-      currentLine++;
-      start = i + 1;
-    }
-  }
-  if (currentLine !== line) return null;
-  let end = start;
-  while (end < source.length && source[end] !== "\r" && source[end] !== "\n") end++;
-  const index = start + column - 1;
-  return index <= end ? index : null;
-}
-
 /**
- * Prefer the parser's original offset. If it is absent, use its original
- * line/column. Reject inconsistent coordinates rather than jumping somewhere
- * else. Never search for text: duplicate paragraphs must remain distinct.
+ * O(n) index construction, then O(log lines) lookup per Markdown AST block.
+ * CRLF is one logical line ending; offsets remain JavaScript UTF-16 indices.
  */
+export function createMarkdownSourceResolver(source: string) {
+  const lineStarts: number[] = [0];
+  for (let i = 0; i < source.length; i++) {
+    if (source[i] === "\r") {
+      if (source[i + 1] === "\n") i++;
+      lineStarts.push(i + 1);
+    } else if (source[i] === "\n") {
+      lineStarts.push(i + 1);
+    }
+  }
+
+  function locateOffset(offset: number): MarkdownSourceLocation | null {
+    if (!Number.isSafeInteger(offset) || offset < 0 || offset > source.length) return null;
+    let low = 0;
+    let high = lineStarts.length;
+    while (low < high) {
+      const middle = Math.floor((low + high) / 2);
+      if (lineStarts[middle] <= offset) low = middle + 1;
+      else high = middle;
+    }
+    const lineIndex = low - 1;
+    // The index is in original UTF-16 units, including emoji surrogate pairs.
+    return { offset, line: lineIndex + 1, column: offset - lineStarts[lineIndex] + 1 };
+  }
+
+  return (start?: MarkdownAstPoint | null): MarkdownSourceLocation | null => {
+    if (!start) return null;
+    let offset = start.offset;
+    if (offset === undefined) {
+      if (!positiveInteger(start.line) || !positiveInteger(start.column)) return null;
+      const lineStart = lineStarts[start.line - 1];
+      if (lineStart === undefined) return null;
+      const lineEnd = start.line < lineStarts.length
+        ? lineStarts[start.line] - (source[lineStarts[start.line] - 2] === "\r" ? 2 : 1)
+        : source.length;
+      offset = lineStart + start.column - 1;
+      if (offset > lineEnd) return null;
+    }
+    const location = locateOffset(offset);
+    if (!location) return null;
+    if (start.line !== undefined && (!positiveInteger(start.line) || start.line !== location.line)) return null;
+    if (start.column !== undefined && (!positiveInteger(start.column) || start.column !== location.column)) return null;
+    return location;
+  };
+}
+
+export function markdownLocationAtOffset(source: string, offset: number): MarkdownSourceLocation | null {
+  return createMarkdownSourceResolver(source)({ offset });
+}
+
 export function resolveMarkdownSourceLocation(
   source: string,
   start?: MarkdownAstPoint | null,
 ): MarkdownSourceLocation | null {
-  if (!start) return null;
-  let offset = start.offset;
-  if (offset === undefined) {
-    if (!isPositiveInteger(start.line) || !isPositiveInteger(start.column)) return null;
-    const inferred = sourceOffsetAtLineColumn(source, start.line, start.column);
-    if (inferred === null) return null;
-    offset = inferred;
-  }
-  const resolved = markdownLocationAtOffset(source, offset);
-  if (!resolved) return null;
-  if (start.line !== undefined && (!isPositiveInteger(start.line) || start.line !== resolved.line)) return null;
-  return resolved;
+  return createMarkdownSourceResolver(source)(start);
 }
