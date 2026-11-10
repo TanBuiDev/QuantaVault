@@ -73,3 +73,31 @@ test("wrapped paragraphs scroll to the actual target caret in fullscreen", async
     .toBeGreaterThan(0);
   await expect(editor).toHaveValue(markdown);
 });
+
+
+test("large Markdown document records browser navigation latency without mutating draft", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/interview/?edit=true&editQuestion=q-001");
+  const editor = page.getByPlaceholder(editorSelector);
+  await expect(editor).toBeVisible();
+  const markdown = Array.from({ length: 220 }, (_, i) =>
+    "## Section " + i + "\n\n" + "This is a Java interview explanation containing multiple words. ".repeat(3),
+  ).join("\n\n");
+  await editor.fill(markdown);
+  await expect.poll(() => page.evaluate(() => sessionStorage.getItem("interview_draft_q-001"))).toContain(markdown);
+  const baselineDraft = await page.evaluate(() => sessionStorage.getItem("interview_draft_q-001"));
+  await page.getByRole("button", { name: "Song song" }).click();
+  const lastHeading = page.locator(".md-source-navigation").getByRole("heading", { name: "Section 219" });
+  await expect(lastHeading).toBeVisible();
+  const start = Date.now();
+  await lastHeading.click();
+  await expect.poll(() => editor.evaluate((element) => (element as HTMLTextAreaElement).selectionStart))
+    .toBe(markdown.lastIndexOf("## Section 219"));
+  const latencyMs = Date.now() - start;
+  const jsBytes = await page.evaluate(() => performance.getEntriesByType("resource")
+    .filter((entry) => entry.name.includes(".js"))
+    .reduce((sum, entry) => sum + ((entry as PerformanceResourceTiming).encodedBodySize || 0), 0));
+  console.log("[navigation-benchmark] 220 sections, click-to-caret=" + latencyMs + "ms, loaded-JS=" + jsBytes + " bytes");
+  await expect(editor).toHaveValue(markdown);
+  expect(await page.evaluate(() => sessionStorage.getItem("interview_draft_q-001"))).toBe(baselineDraft);
+});
