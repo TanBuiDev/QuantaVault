@@ -27,7 +27,7 @@ describe("MarkdownContent source location integration", () => {
   });
 
   it("navigates from a code fence and Mermaid without changing the source", () => {
-    const source = "Before\n\n\`\`\`java\nreturn 42;\n\`\`\`\n\n\`\`\`mermaid\nflowchart TD\n A-->B\n\`\`\`\n";
+    const source = "Before\n\n```java\nreturn 42;\n```\n\n```mermaid\nflowchart TD\n A-->B\n```\n";
     const navigate = vi.fn();
     const { container } = render(<MarkdownContent markdown={source} onNavigateSource={navigate} />);
     const code = container.querySelector("pre code");
@@ -35,11 +35,11 @@ describe("MarkdownContent source location integration", () => {
     fireEvent.click(code!);
     expect(navigate).toHaveBeenCalled();
     expect(navigate.mock.lastCall?.[1]).toBe(source);
-    expect(navigate.mock.lastCall?.[0].offset).toBe(source.indexOf("\`\`\`java"));
+    expect(navigate.mock.lastCall?.[0].offset).toBe(source.indexOf("```java"));
 
     fireEvent.click(screen.getByTestId("mermaid-diagram"));
     expect(navigate.mock.lastCall?.[1]).toBe(source);
-    expect(navigate.mock.lastCall?.[0].offset).toBe(source.indexOf("\`\`\`mermaid"));
+    expect(navigate.mock.lastCall?.[0].offset).toBe(source.indexOf("```mermaid"));
   });
 
   it("does not hijack hyperlinks and disables navigation for transformed language views", () => {
