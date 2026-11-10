@@ -284,7 +284,9 @@ export function MarkdownContent({
             const match = /language-(\w+)/.exec(className || "");
             const isMermaid = match && match[1] === "mermaid";
             if (isMermaid) {
-              return <div {...sourceAttrs(node)}><MermaidRenderer chart={String(children).replace(/\n$/, "")} /></div>;
+              const diagram = <MermaidRenderer chart={String(children).replace(/\n$/, "")} />;
+              const attrs = sourceAttrs(node);
+              return "data-md-source-offset" in attrs ? <div {...attrs}>{diagram}</div> : diagram;
             }
             if (match) {
               return (
