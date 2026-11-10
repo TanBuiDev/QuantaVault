@@ -43,7 +43,7 @@ test("split preview navigates precisely without editing content or creating extr
 
   await preview.getByRole("cell", { name: "banana" }).click();
   await expect.poll(() => editor.evaluate((el) => (el as HTMLTextAreaElement).selectionStart))
-    .toBe(markdown.indexOf("banana"));
+    .toBe(markdown.indexOf("| banana"));
 
   const codeBlock = preview.locator('[data-md-source-offset]').filter({ has: page.locator("pre code") }).first();
   await codeBlock.focus();
