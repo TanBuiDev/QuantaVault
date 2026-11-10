@@ -18,7 +18,7 @@ Stages 1–3: protect draft/content, map Markdown AST positions to the original 
 ## Files in scope
 - `web/src/features/interview/InterviewEditModal.tsx`
 - `web/src/features/practice/MarkdownContent.tsx`
-- `web/src/features/interview/markdownSourceNavigation.ts` (new)
+- `web/src/lib/markdownSourceNavigation.ts` (new)
 - Related unit/integration tests.
 
 ## Acceptance (stages 1–3)
