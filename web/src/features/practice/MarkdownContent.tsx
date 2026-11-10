@@ -258,7 +258,7 @@ export function MarkdownContent({
     const block = target.closest("[data-md-source-offset]");
     if (!block || !root.contains(block)) return null;
     const rawOffset = block.getAttribute("data-md-source-offset");
-    return rawOffset !== null && /^\\d+$/.test(rawOffset)
+    return rawOffset !== null && /^\d+$/.test(rawOffset)
       ? resolveSource({ offset: Number(rawOffset) })
       : null;
   };
