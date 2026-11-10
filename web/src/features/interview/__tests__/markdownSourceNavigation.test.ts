@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { markdownLocationAtOffset, resolveMarkdownSourceLocation } from "../markdownSourceNavigation";
+import { markdownLocationAtOffset, resolveMarkdownSourceLocation } from "@/lib/markdownSourceNavigation";
 
 describe("Markdown preview source navigation", () => {
   it("uses original offsets, even when two blocks contain exactly the same text", () => {
