@@ -117,4 +117,13 @@ describe("InterviewEditModal draft safety", () => {
     fireEvent.click(shrinkBtn);
     expect(screen.getByRole("button", { name: "Mở rộng toàn màn hình" })).toBeInTheDocument();
   });
+  it("chuyển chế độ xem không làm đổi câu trả lời hoặc tạo bản nháp", () => {
+    mount();
+    fireEvent.click(screen.getByRole("button", { name: "Xem trước" }));
+    fireEvent.click(screen.getByRole("button", { name: "Song song" }));
+    expect(editor()).toHaveValue("Đáp án đã lưu");
+    act(() => { vi.advanceTimersByTime(450); });
+    expect(sessionStorage.getItem(key)).toBeNull();
+  });
+
 });
