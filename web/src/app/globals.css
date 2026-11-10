@@ -154,16 +154,15 @@ textarea {
   font-weight: 600 !important;
 }
 
-/* Opt-in Markdown preview navigation. Read-only views remain unchanged. */
+/* Preview navigation must not draw boxes around rendered Markdown.
+   Preserve the original reading appearance; only keyboard focus gets a
+   non-box text cue for accessibility. */
 .md-source-navigation [data-md-source-offset] {
   cursor: pointer;
-  border-radius: 0.25rem;
-}
-.md-source-navigation [data-md-source-offset]:hover {
-  outline: 1px solid color-mix(in srgb, var(--focus) 45%, transparent);
-  outline-offset: 2px;
 }
 .md-source-navigation [data-md-source-offset]:focus-visible {
-  outline: 2px solid var(--focus);
-  outline-offset: 3px;
+  outline: none;
+  text-decoration: underline;
+  text-decoration-color: var(--focus);
+  text-underline-offset: 0.2em;
 }
