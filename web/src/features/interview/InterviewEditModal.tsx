@@ -6,6 +6,8 @@ import { classNames } from "@/components/ui/classNames";
 import { useConfirm } from "@/components/ui/ConfirmDialog";
 import { useToast } from "@/components/ui/Toast";
 import { questionVersion } from "@/lib/interview/questionVersion";
+import type { MarkdownSourceLocation } from "@/lib/markdownSourceNavigation";
+import { focusMarkdownTextareaAtOffset } from "./markdownTextareaNavigation";
 import { editorDraftKey, readEditorDraft, writeEditorDraft, type EditorDraftValues } from "./editorDraft";
 import {
   FileText,
@@ -118,6 +120,15 @@ function InterviewEditModalForm({
   const [editorFont, setEditorFont] = useState<"sans" | "mono">("sans");
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const sourceNavigationStatusRef = useRef<HTMLSpanElement>(null);
+
+  const navigateToSource = (location: MarkdownSourceLocation, previewSource: string) => {
+    const editor = textareaRef.current;
+    // React uses deferred preview rendering; never navigate using old source offsets.
+    if (!editor || previewSource !== answerMarkdown || editor.value !== answerMarkdown || pendingDraft || savedSuccess) return;
+    if (!focusMarkdownTextareaAtOffset(editor, location.offset)) return;
+    if (sourceNavigationStatusRef.current) sourceNavigationStatusRef.current.textContent = `Đã chuyển đến dòng ${location.line} trong Markdown.`;
+  };
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => () => { if (closeTimer.current) clearTimeout(closeTimer.current); }, []);
 
@@ -492,9 +503,11 @@ function InterviewEditModalForm({
                 >
                   <div className="text-[11px] font-bold uppercase tracking-wider text-[var(--muted)] mb-3 pb-2 border-b border-[var(--border)]">
                     Xem trước hiển thị thực tế:
+                    {viewMode === "split" && <span className="ml-2 font-normal normal-case">Nhấp vào nội dung hoặc dùng Tab + Enter để đến Markdown bên trái.</span>}
                   </div>
+                  {viewMode === "split" && <span ref={sourceNavigationStatusRef} role="status" className="sr-only" />}
                   {deferredAnswerMarkdown.trim() ? (
-                    <MarkdownContent markdown={deferredAnswerMarkdown} fullWidth textScale={textScale} />
+                    <MarkdownContent markdown={deferredAnswerMarkdown} fullWidth textScale={textScale} onNavigateSource={viewMode === "split" ? navigateToSource : undefined} />
                   ) : (
                     <p className="text-xs text-[var(--muted)] italic">
                       Chưa có nội dung xem trước...

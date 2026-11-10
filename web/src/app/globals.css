@@ -153,3 +153,17 @@ textarea {
   fill: #f1f5f9 !important;
   font-weight: 600 !important;
 }
+
+/* Opt-in Markdown preview navigation. Read-only views remain unchanged. */
+.md-source-navigation [data-md-source-offset] {
+  cursor: pointer;
+  border-radius: 0.25rem;
+}
+.md-source-navigation [data-md-source-offset]:hover {
+  outline: 1px solid color-mix(in srgb, var(--focus) 45%, transparent);
+  outline-offset: 2px;
+}
+.md-source-navigation [data-md-source-offset]:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}

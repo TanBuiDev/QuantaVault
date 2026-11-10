@@ -1,18 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState, type KeyboardEvent, type MouseEvent } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import { MermaidRenderer } from "@/components/ui/MermaidRenderer";
 import { SyntaxHighlighter } from "@/components/ui/SyntaxHighlighter";
+import { createMarkdownSourceResolver, type MarkdownAstPoint, type MarkdownSourceLocation } from "@/lib/markdownSourceNavigation";
 
-function CodeBlockWithCopy({ children, className, ...props }: React.ComponentPropsWithoutRef<"pre">) {
+function CodeBlockWithCopy({ children, className, sourceOffset, ...props }: React.ComponentPropsWithoutRef<"pre"> & { sourceOffset?: number }) {
   const [copied, setCopied] = useState(false);
 
   return (
-    <div className="group relative my-4">
+    <div className="group relative my-4" {...(sourceOffset === undefined ? {} : {
+      "data-md-source-offset": String(sourceOffset),
+      tabIndex: 0,
+      title: "Nhấn Enter để đến mã Markdown gốc",
+      "aria-keyshortcuts": "Enter",
+    })}>
       <button
         type="button"
         onClick={(e) => {
@@ -73,6 +79,8 @@ export interface MarkdownContentProps {
   fullWidth?: boolean;
   /** Zoom the learning material without scaling navigation controls. */
   textScale?: number;
+  /** Optional, read-only navigation to original Markdown for the interview editor. */
+  onNavigateSource?: (location: MarkdownSourceLocation, source: string) => void;
 }
 
 function filterMarkdownByLanguage(text: string, mode: LanguageMode): string {
@@ -223,25 +231,90 @@ export function MarkdownContent({
   className = "",
   fullWidth = false,
   textScale = 100,
+  onNavigateSource,
 }: MarkdownContentProps) {
   const processedMarkdown = filterMarkdownByLanguage(markdown, languageMode);
+  // Coordinates from transformed language views are not offsets in the saved Markdown.
+  const navigationEnabled = Boolean(onNavigateSource) && languageMode === "bilingual" && processedMarkdown === markdown;
+  // Index source lines once per editor value, not on read-only learning pages.
+  const resolveSource = useMemo(
+    () => navigationEnabled ? createMarkdownSourceResolver(markdown) : null,
+    [markdown, navigationEnabled],
+  );
+  const sourceAttrs = (node?: { position?: { start?: MarkdownAstPoint } }) => {
+    const location = resolveSource?.(node?.position?.start);
+    return location ? {
+      "data-md-source-offset": String(location.offset),
+      tabIndex: 0,
+      title: `Nhấn Enter để chỉnh sửa Markdown tại dòng ${location.line}`,
+      "aria-keyshortcuts": "Enter",
+    } : {};
+  };
+
+  const findNavigationTarget = (target: EventTarget | null, root: HTMLElement): MarkdownSourceLocation | null => {
+    if (!resolveSource || !(target instanceof Element)) return null;
+    // Preserve links, copy controls and editable descendants.
+    if (target.closest('a,button,input,select,textarea,[role="button"],[contenteditable="true"]')) return null;
+    const block = target.closest("[data-md-source-offset]");
+    if (!block || !root.contains(block)) return null;
+    const rawOffset = block.getAttribute("data-md-source-offset");
+    return rawOffset !== null && /^\d+$/.test(rawOffset)
+      ? resolveSource({ offset: Number(rawOffset) })
+      : null;
+  };
+
+  const handlePreviewClick = (event: MouseEvent<HTMLDivElement>) => {
+    if (!navigationEnabled || !onNavigateSource || event.defaultPrevented || event.button !== 0) return;
+    const selection = window.getSelection();
+    if (selection && !selection.isCollapsed && event.currentTarget.contains(selection.anchorNode)) return;
+    const location = findNavigationTarget(event.target, event.currentTarget);
+    if (location) onNavigateSource(location, markdown);
+  };
+
+  const handlePreviewKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (!navigationEnabled || !onNavigateSource || event.key !== "Enter" || event.repeat ||
+        event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+    const location = findNavigationTarget(event.target, event.currentTarget);
+    if (!location || !(event.target instanceof HTMLElement) || !event.target.hasAttribute("data-md-source-offset")) return;
+    event.preventDefault();
+    onNavigateSource(location, markdown);
+  };
 
   return (
     <div
+      onClick={navigationEnabled ? handlePreviewClick : undefined}
+      onKeyDown={navigationEnabled ? handlePreviewKeyDown : undefined}
       style={textScale === 100 ? undefined : { zoom: textScale / 100 }}
       className={`max-w-none space-y-4 text-sm leading-7 text-[var(--muted-strong)] sm:text-[15.5px] sm:leading-7 [&_a]:font-semibold [&_a]:text-[var(--primary-strong)] [&_a]:underline [&_blockquote]:border-l-4 [&_blockquote]:border-[var(--border-strong)] [&_blockquote]:pl-4 [&_blockquote]:text-[var(--muted)] [&_code]:rounded-md [&_code]:bg-[var(--surface-hover)] [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[var(--foreground)] [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-inherit [&_h1]:mt-2 [&_h1]:text-2xl [&_h1]:font-black [&_h1]:tracking-tight [&_h1]:text-[var(--foreground)] [&_h2]:mt-7 [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-[var(--foreground)] [&_h3]:mt-6 [&_h3]:text-lg [&_h3]:font-bold [&_h3]:text-[var(--foreground)] [&_li]:ml-5 [&_li]:list-disc [&_ol_li]:list-decimal ${
         fullWidth ? "[&_p]:max-w-none" : "[&_p]:max-w-[78ch]"
-      } [&_table]:w-full [&_table]:border-collapse [&_td]:border [&_td]:border-[var(--border)] [&_td]:p-2 [&_th]:border [&_th]:border-[var(--border)] [&_th]:bg-[var(--surface-hover)] [&_th]:p-2 [&_th]:text-[var(--foreground)] [&_.katex-display]:overflow-x-auto [&_.katex-display]:py-1 [&_.katex]:text-[1.05em] ${className}`}
+      } [&_table]:w-full [&_table]:border-collapse [&_td]:border [&_td]:border-[var(--border)] [&_td]:p-2 [&_th]:border [&_th]:border-[var(--border)] [&_th]:bg-[var(--surface-hover)] [&_th]:p-2 [&_th]:text-[var(--foreground)] [&_.katex-display]:overflow-x-auto [&_.katex-display]:py-1 [&_.katex]:text-[1.05em] ${className} ${navigationEnabled ? "md-source-navigation" : ""}`}
     >
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeKatex]}
         components={{
-          code({ className, children, ...props }: React.ComponentPropsWithoutRef<"code">) {
+          h1({ node, ...props }) { return <h1 {...props} {...sourceAttrs(node)} />; },
+          h2({ node, ...props }) { return <h2 {...props} {...sourceAttrs(node)} />; },
+          h3({ node, ...props }) { return <h3 {...props} {...sourceAttrs(node)} />; },
+          h4({ node, ...props }) { return <h4 {...props} {...sourceAttrs(node)} />; },
+          h5({ node, ...props }) { return <h5 {...props} {...sourceAttrs(node)} />; },
+          h6({ node, ...props }) { return <h6 {...props} {...sourceAttrs(node)} />; },
+          p({ node, ...props }) { return <p {...props} {...sourceAttrs(node)} />; },
+          ul({ node, ...props }) { return <ul {...props} {...sourceAttrs(node)} />; },
+          ol({ node, ...props }) { return <ol {...props} {...sourceAttrs(node)} />; },
+          li({ node, ...props }) { return <li {...props} {...sourceAttrs(node)} />; },
+          blockquote({ node, ...props }) { return <blockquote {...props} {...sourceAttrs(node)} />; },
+          table({ node, ...props }) { return <table {...props} {...sourceAttrs(node)} />; },
+          th({ node, ...props }) { return <th {...props} {...sourceAttrs(node)} />; },
+          td({ node, ...props }) { return <td {...props} {...sourceAttrs(node)} />; },
+          hr({ node, ...props }) { return <hr {...props} {...sourceAttrs(node)} />; },
+          code({ className, children, node, ...props }: React.ComponentPropsWithoutRef<"code"> & { node?: { position?: { start?: MarkdownAstPoint } } }) {
             const match = /language-(\w+)/.exec(className || "");
             const isMermaid = match && match[1] === "mermaid";
             if (isMermaid) {
-              return <MermaidRenderer chart={String(children).replace(/\n$/, "")} />;
+              const diagram = <MermaidRenderer chart={String(children).replace(/\n$/, "")} />;
+              const attrs = sourceAttrs(node);
+              return "data-md-source-offset" in attrs ? <div {...attrs}>{diagram}</div> : diagram;
             }
             if (match) {
               return (
@@ -258,9 +331,9 @@ export function MarkdownContent({
               </code>
             );
           },
-          img({ src, alt, ...props }: React.ComponentPropsWithoutRef<"img">) {
+          img({ src, alt, node, ...props }: React.ComponentPropsWithoutRef<"img"> & { node?: { position?: { start?: MarkdownAstPoint } } }) {
             return (
-              <span className="my-6 flex flex-col items-center justify-center text-center mx-auto">
+              <span {...sourceAttrs(node)} className="my-6 flex flex-col items-center justify-center text-center mx-auto">
                 <img
                   src={src}
                   alt={alt}
@@ -276,7 +349,7 @@ export function MarkdownContent({
               </span>
             );
           },
-          pre: (props: React.ComponentPropsWithoutRef<"pre">) => {
+          pre: ({ node, ...props }: React.ComponentPropsWithoutRef<"pre"> & { node?: { position?: { start?: MarkdownAstPoint } } }) => {
             const child = props.children;
             const childProps =
               child && typeof child === "object" && "props" in child
@@ -292,6 +365,7 @@ export function MarkdownContent({
             return (
               <CodeBlockWithCopy
                 {...props}
+                sourceOffset={resolveSource?.(node?.position?.start)?.offset}
                 className={`max-w-full overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--code-surface)] p-4 text-sm leading-6 text-[var(--code-foreground)] ${
                   wordWrap ? "whitespace-pre-wrap break-words" : "whitespace-pre"
                 }`}
