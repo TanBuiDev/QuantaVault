@@ -94,7 +94,7 @@ describe("MarkdownContent source location integration", () => {
     fireEvent.click(screen.getByText("quoted text"));
     expect(navigate.mock.lastCall?.[0].offset).toBe(source.indexOf("quoted text"));
     fireEvent.click(screen.getByText("Alpha"));
-    expect(navigate.mock.lastCall?.[0].offset).toBe(source.indexOf("Alpha"));
+    expect(navigate.mock.lastCall?.[0].offset).toBe(source.indexOf("| Alpha"));
     const math = document.querySelector(".md-source-navigation .katex");
     expect(math).not.toBeNull();
     fireEvent.click(math!);
