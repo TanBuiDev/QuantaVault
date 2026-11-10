@@ -5,7 +5,23 @@ import { ToastProvider } from "@/components/ui/Toast";
 import { ConfirmProvider } from "@/components/ui/ConfirmDialog";
 import type { InterviewQuestion } from "@/lib/interview/types";
 
-vi.mock("@/features/practice/MarkdownContent", () => ({ MarkdownContent: () => null }));
+vi.mock("@/features/practice/MarkdownContent", () => ({
+  MarkdownContent: ({ markdown, onNavigateSource }: {
+    markdown: string;
+    onNavigateSource?: (location: { offset: number; line: number; column: number }, source: string) => void;
+  }) => (
+    <div>
+      <button type="button" data-testid="mock-preview-navigation"
+        onClick={() => onNavigateSource?.({ offset: 2, line: 1, column: 3 }, markdown)}>
+        Navigate preview
+      </button>
+      <button type="button" data-testid="mock-stale-preview-navigation"
+        onClick={() => onNavigateSource?.({ offset: 4, line: 1, column: 5 }, markdown + " stale")}>
+        Navigate stale preview
+      </button>
+    </div>
+  ),
+}));
 const question: InterviewQuestion = { id: "q-recovery", title: "Đã lưu mới nhất", category: "java-core", difficulty: "junior", summary: "", answerMarkdown: "Đáp án đã lưu", tags: ["Java"] };
 const key = `interview_draft_${question.id}`;
 const editor = () => screen.getByPlaceholderText("Nhập nội dung câu trả lời chi tiết bằng cú pháp Markdown...");
@@ -124,6 +140,30 @@ describe("InterviewEditModal draft safety", () => {
     expect(editor()).toHaveValue("Đáp án đã lưu");
     act(() => { vi.advanceTimersByTime(450); });
     expect(sessionStorage.getItem(key)).toBeNull();
+  });
+
+  it("nhấp Preview chuyển con trỏ mà không sửa answerMarkdown, lưu nháp hoặc gọi onSave", () => {
+    const save = vi.fn();
+    mount(save);
+    fireEvent.click(screen.getByRole("button", { name: "Song song" }));
+    const input = editor() as HTMLTextAreaElement;
+    expect(input.selectionStart).toBe(0);
+    fireEvent.click(screen.getByTestId("mock-preview-navigation"));
+    expect(input).toHaveFocus();
+    expect(input.selectionStart).toBe(2);
+    expect(input.selectionEnd).toBe(2);
+    expect(input.value).toBe("Đáp án đã lưu");
+    act(() => { vi.advanceTimersByTime(450); });
+    expect(sessionStorage.getItem(key)).toBeNull();
+    expect(save).not.toHaveBeenCalled();
+  });
+  it("không điều hướng khi dữ liệu Preview không trùng bản hiện tại", () => {
+    mount();
+    fireEvent.click(screen.getByRole("button", { name: "Song song" }));
+    const input = editor() as HTMLTextAreaElement;
+    fireEvent.click(screen.getByTestId("mock-stale-preview-navigation"));
+    expect(input.selectionStart).toBe(0);
+    expect(input.value).toBe("Đáp án đã lưu");
   });
 
 });
