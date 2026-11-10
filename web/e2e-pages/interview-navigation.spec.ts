@@ -107,3 +107,37 @@ test("large Markdown document records browser navigation latency without mutatin
   await expect(editor).toHaveValue(markdown);
   expect(await page.evaluate(() => sessionStorage.getItem("interview_draft_q-001"))).toBe(baselineDraft);
 });
+
+
+test("preview list retains original unboxed appearance while navigation remains functional", async ({ page }) => {
+  await page.goto("/interview/?edit=true&editQuestion=q-001");
+  const editor = page.getByPlaceholder(editorSelector);
+  await expect(editor).toBeVisible();
+  const markdown = [
+    "**Các bước thực hiện:**",
+    "",
+    "1. Khởi tạo `LinkedHashMap<String, Integer>` để lưu tần suất.",
+    "2. Duyệt từng phần tử trong List.",
+    "3. Nếu đã tồn tại thì tăng số đếm.",
+  ].join("\n");
+  await editor.fill(markdown);
+  await page.getByRole("button", { name: "Song song" }).click();
+
+  const preview = page.locator(".md-source-navigation");
+  const list = preview.locator("ol").first();
+  const firstItem = list.locator("li").first();
+  await expect(firstItem).toBeVisible();
+  await firstItem.hover();
+
+  for (const element of [list, firstItem]) {
+    expect(await element.evaluate(node => getComputedStyle(node).outlineStyle)).toBe("none");
+  }
+
+  // Keyboard access remains available, without the previous rectangular focus ring.
+  await firstItem.focus();
+  expect(await firstItem.evaluate(node => getComputedStyle(node).outlineStyle)).toBe("none");
+  await firstItem.press("Enter");
+  await expect.poll(() => editor.evaluate(node => (node as HTMLTextAreaElement).selectionStart))
+    .toBe(markdown.indexOf("1. Khởi tạo"));
+  await expect(editor).toHaveValue(markdown);
+});
