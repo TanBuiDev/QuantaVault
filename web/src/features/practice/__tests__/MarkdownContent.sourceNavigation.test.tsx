@@ -68,7 +68,7 @@ describe("MarkdownContent source location integration", () => {
     expect(container.querySelector("[data-md-source-offset]")).toBeNull();
   });
   it("supports Enter keyboard navigation while preserving heading semantics", () => {
-    const source = "## Accessible heading\\n\\nParagraph";
+    const source = "## Accessible heading\n\nParagraph";
     const navigate = vi.fn();
     render(<MarkdownContent markdown={source} onNavigateSource={navigate} />);
     const heading = screen.getByRole("heading", { name: "Accessible heading" });
@@ -86,7 +86,7 @@ describe("MarkdownContent source location integration", () => {
       "- first", "- second", "", "> quoted text", "",
       "| Name | Count |", "| --- | --- |", "| Alpha | 2 |", "",
       "Value $x^2$.",
-    ].join("\\n");
+    ].join("\n");
     const navigate = vi.fn();
     render(<MarkdownContent markdown={source} onNavigateSource={navigate} />);
     fireEvent.click(screen.getByText("second"));
@@ -102,7 +102,7 @@ describe("MarkdownContent source location integration", () => {
   });
 
   it("does not turn copy buttons or text selection into navigation", () => {
-    const source = "Paragraph text\\n\\n```java\\nreturn 1;\\n```\\n\\n```mermaid\\nflowchart TD\\nA-->B\\n```";
+    const source = "Paragraph text\n\n```java\nreturn 1;\n```\n\n```mermaid\nflowchart TD\nA-->B\n```";
     const navigate = vi.fn();
     const clipboardWrite = vi.fn().mockResolvedValue(undefined);
     Object.defineProperty(navigator, "clipboard", { configurable: true, value: { writeText: clipboardWrite } });
@@ -125,7 +125,7 @@ describe("MarkdownContent source location integration", () => {
   });
 
   it("keeps navigable markup opt-in for read-only pages", () => {
-    const { container } = render(<MarkdownContent markdown="# Title\\n\\nParagraph" />);
+    const { container } = render(<MarkdownContent markdown="# Title\n\nParagraph" />);
     expect(container.querySelector(".md-source-navigation")).toBeNull();
     expect(container.querySelector("[data-md-source-offset]")).toBeNull();
   });
