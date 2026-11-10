@@ -21,7 +21,7 @@ describe("Markdown preview source navigation", () => {
   });
 
   it("uses JavaScript UTF-16 source offsets after supplementary Unicode characters", () => {
-    const source = "😊 intro\n\n\`\`\`java\nreturn true;\n\`\`\`";
+    const source = "😊 intro\n\n```java\nreturn true;\n```";
     const offset = source.indexOf("return true");
     expect(resolveMarkdownSourceLocation(source, { offset, line: 4 })?.offset).toBe(offset);
     expect(markdownLocationAtOffset(source, offset)?.line).toBe(4);
