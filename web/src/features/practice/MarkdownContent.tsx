@@ -248,7 +248,7 @@ export function MarkdownContent({
     const block = target.closest("[data-md-source-offset]");
     if (!block || !event.currentTarget.contains(block)) return;
     const rawOffset = block.getAttribute("data-md-source-offset");
-    if (rawOffset === null || !/^\\d+$/.test(rawOffset)) return;
+    if (rawOffset === null || !/^\d+$/.test(rawOffset)) return;
     const location = resolveMarkdownSourceLocation(markdown, { offset: Number(rawOffset) });
     if (location) onNavigateSource(location, markdown);
   };
