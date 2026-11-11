@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { AlertTriangle, Download, GitCompareArrows, ShieldCheck } from "lucide-react";
 import { Modal } from "@/components/ui/Modal";
+import { PublishedConflictLineDiff } from "./PublishedConflictLineDiff";
 import { useConfirm } from "@/components/ui/ConfirmDialog";
 import type { InterviewQuestion } from "@/lib/interview/types";
 import { canonicalQuestion } from "@/lib/interview/questionVersion";
@@ -136,9 +137,9 @@ export function PublishedConflictReview({
         </button>
       </div>
 
-      <Modal isOpen={open} onClose={() => setOpen(false)} maxWidth="3xl" title="Đối chiếu phiên bản đã xuất bản" contentClassName="overflow-y-auto px-4 py-4 sm:px-6">
+      <Modal isOpen={open} onClose={() => setOpen(false)} maxWidth="3xl" className="max-w-6xl!" title="Đối chiếu phiên bản đã xuất bản" contentClassName="overflow-y-auto px-4 py-4 sm:px-6">
         <div className="space-y-4 text-sm text-[var(--foreground)]">
-          <p className="text-[var(--muted)]">Danh sách dưới đây so sánh dữ liệu website đang mở với bản Published Cache trong trình duyệt. Website có thể cập nhật sau GitHub nếu quá trình triển khai chưa hoàn tất.</p>
+          <p className="text-[var(--muted)]">Các đoạn thay đổi được tô màu giống Git diff: đỏ là nội dung trên máy không còn trong bản website, xanh là nội dung website thay thế hoặc bổ sung. Các dòng giống nhau được thu gọn để bạn tìm khác biệt nhanh. Website có thể cập nhật sau GitHub nếu triển khai chưa hoàn tất.</p>
           <div className="flex flex-wrap items-center gap-3 rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3">
             <button type="button" onClick={backup} className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-3 py-2 text-xs font-bold text-white hover:bg-indigo-700">
               <Download className="h-4 w-4" /> Tải JSON sao lưu đầy đủ
@@ -158,17 +159,25 @@ export function PublishedConflictReview({
                   {alreadyDraft && <span className="text-xs font-semibold text-amber-600">Đã có bản nháp riêng</span>}
                 </div>
                 <p className="text-xs text-[var(--muted)]">Khác biệt: {changed.length > 0 ? changed.join(", ") : "Khác biệt phiên bản nền / trạng thái xóa"}</p>
-                <div className="grid min-w-0 gap-3 md:grid-cols-2">
-                  <div className="min-w-0 space-y-2 rounded-xl border border-[var(--border)] p-3">
-                    <p className="text-xs font-bold uppercase text-[var(--muted)]">Đã xuất bản · Lưu trên máy</p>
-                    {item.question.isDeleted ? <p className="italic text-rose-600">Đã đánh dấu xóa câu hỏi</p> :
-                      <VersionContent question={item.question} missing="Không có bản cục bộ" />}
+                <PublishedConflictLineDiff
+                  local={item.question}
+                  website={website}
+                  localDeleted={Boolean(item.question.isDeleted)}
+                />
+                <details className="rounded-xl border border-[var(--border)] bg-[var(--surface-hover)]/50 p-3">
+                  <summary className="cursor-pointer text-xs font-bold text-[var(--muted-strong)]">Xem toàn bộ hai phiên bản và dữ liệu JSON (không tô màu)</summary>
+                  <div className="mt-3 grid min-w-0 gap-3 md:grid-cols-2">
+                    <div className="min-w-0 space-y-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3">
+                      <p className="text-xs font-bold uppercase text-[var(--muted)]">Đã xuất bản · Lưu trên máy</p>
+                      {item.question.isDeleted ? <p className="italic text-rose-600">Đã đánh dấu xóa câu hỏi</p> :
+                        <VersionContent question={item.question} missing="Không có bản cục bộ" />}
+                    </div>
+                    <div className="min-w-0 space-y-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3">
+                      <p className="text-xs font-bold uppercase text-[var(--muted)]">Dữ liệu website hiện tại</p>
+                      <VersionContent question={website} missing="Câu hỏi này không còn trên website." />
+                    </div>
                   </div>
-                  <div className="min-w-0 space-y-2 rounded-xl border border-[var(--border)] p-3">
-                    <p className="text-xs font-bold uppercase text-[var(--muted)]">Dữ liệu website hiện tại</p>
-                    <VersionContent question={website} missing="Câu hỏi này không còn trên website." />
-                  </div>
-                </div>
+                </details>
                 <div className="flex flex-wrap gap-2">
                   <button type="button" disabled={!backupRequested} onClick={() => { void resolve(id, "website"); }}
                     className="rounded-xl border border-[var(--border)] px-3 py-2 text-xs font-bold text-[var(--foreground)] hover:bg-[var(--surface-hover)] disabled:cursor-not-allowed disabled:opacity-50">
