@@ -1,5 +1,6 @@
-import { interviewMatchesCategory } from "@/lib/interview";
 "use client";
+
+import { interviewMatchesCategory } from "@/lib/interview";
 
 import { useState } from "react";
 import {
