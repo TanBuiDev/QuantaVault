@@ -3,6 +3,7 @@
 import { useSyncExternalStore, useCallback, useMemo, useEffect } from "react";
 import type { InterviewQuestion } from "./types";
 import { questionVersion } from "./questionVersion";
+import { isRetiredInterviewId } from "./questionIdMerge";
 
 const DRAFTS_STORAGE_KEY = "interview_drafts_v1";
 const DRAFTS_CHANGE_EVENT = "interview-drafts:change";
@@ -284,7 +285,11 @@ export function rebaseDraft(id: string, expected: DraftQuestion, remote: Intervi
 }
 
 export function clearAllDrafts(): void {
-  writeDrafts({});
+  // Do not silently delete recoverable drafts for questions retired by a merge.
+  const archived = Object.fromEntries(
+    Object.entries(getDrafts()).filter(([id]) => isRetiredInterviewId(id))
+  );
+  writeDrafts(archived);
 }
 
 function getBrowserSnapshot(): DraftMap {
@@ -350,6 +355,8 @@ export function reconcilePublishedCache(canonicalQuestions: InterviewQuestion[],
   let changed = false;
   for (const [id, item] of Object.entries(cache)) {
     const canonical = canonicalQuestions.find(q => q.id === id);
+    // Even deletion receipts are user data; retired entries remain recoverable.
+    if (!canonical && isRetiredInterviewId(id)) continue;
     if (item.question.isDeleted ? !canonical : canonical && areQuestionsEqual(canonical, item.question)) {
       delete next[id];
       changed = true;
@@ -406,6 +413,7 @@ export function mergeQuestionsWithDrafts(
 
   // Any newly added questions from publishedCache
   for (const newId of publishedIds) {
+    if (isRetiredInterviewId(newId)) continue; // Retained in cache for recovery, not listed as a new question.
     const cached = activePublished[newId].question;
     if (!cached.isDeleted && !drafts[newId]) {
       merged.unshift({
@@ -417,6 +425,7 @@ export function mergeQuestionsWithDrafts(
 
   // Any newly added questions from drafts
   for (const newId of draftIds) {
+    if (isRetiredInterviewId(newId)) continue; // Never resurrect a merged question from a local draft.
     const draft = drafts[newId];
     if (!draft.isDeleted) {
       merged.unshift({
@@ -432,6 +441,32 @@ export function mergeQuestionsWithDrafts(
 /**
  * Tải file JSON sao lưu đầy đủ câu hỏi về máy tính
  */
+/** Export archived copies without putting them back into the active question bank. */
+export function downloadRetiredInterviewBackup(drafts: DraftMap, cache: PublishedCacheMap): void {
+  const retiredDrafts = Object.fromEntries(
+    Object.entries(drafts).filter(([id]) => isRetiredInterviewId(id))
+  );
+  const retiredPublishedCache = Object.fromEntries(
+    Object.entries(cache).filter(([id]) => isRetiredInterviewId(id))
+  );
+  const snapshot = {
+    format: "quantavault-retired-interview-backup-v1",
+    createdAt: new Date().toISOString(),
+    drafts: retiredDrafts,
+    publishedCache: retiredPublishedCache,
+  };
+  const blob = new Blob([JSON.stringify(snapshot, null, 2) + "\n"], { type: "application/json;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "quantavault-retired-questions-" + new Date().toISOString().slice(0, 10) + ".json";
+  document.body.appendChild(link);
+  try { link.click(); } finally {
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+}
+
 export function downloadQuestionsBackup(
   canonicalQuestions: InterviewQuestion[],
   drafts: DraftMap,
