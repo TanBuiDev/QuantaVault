@@ -1,4 +1,5 @@
 import rawQuestions from "@/data/interview-questions.json";
+import { retiredInterviewIds } from "./questionIdMerge";
 import { matchesSearch } from "@/lib/utils/stringUtils";
 import type {
   InterviewFilterState,
@@ -14,7 +15,8 @@ export function getAllInterviewQuestions(): InterviewQuestion[] {
 }
 
 export function getInterviewQuestionById(id: string): InterviewQuestion | undefined {
-  return getAllInterviewQuestions().find((q) => q.id === id);
+  const normalizedId = retiredInterviewIds[id] ?? id;
+  return getAllInterviewQuestions().find((q) => q.id === normalizedId);
 }
 
 export function getAllCategories() {
@@ -52,7 +54,10 @@ export function filterInterviewQuestions(
         `#${unpaddedNum}`.includes(cleanTerm) ||
         (cleanTerm.startsWith("#") && cleanTerm.slice(1) === unpaddedNum);
       const matchNumberExact = cleanTerm === numOnly || cleanTerm === unpaddedNum;
-      const matchId = matchesSearch(q.id, term) || matchBadge || matchNumberExact;
+      const requestedId = /^\d+$/.test(cleanTerm) ? `q-${cleanTerm.padStart(3, "0")}`
+        : /^#\d+$/.test(cleanTerm) ? `q-${cleanTerm.slice(1).padStart(3, "0")}` : cleanTerm;
+      const matchRetiredAlias = retiredInterviewIds[requestedId] === q.id;
+      const matchId = matchesSearch(q.id, term) || matchBadge || matchNumberExact || matchRetiredAlias;
       const matchTitle = matchesSearch(q.title, term);
       const matchSummary = matchesSearch(q.summary, term);
       const matchTags = q.tags.some((t) => matchesSearch(t, term));
