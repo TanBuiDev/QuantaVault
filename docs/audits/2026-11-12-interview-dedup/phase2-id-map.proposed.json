@@ -1,0 +1,107 @@
+{
+  "schema": "quantavault-canonical-merge-proposal-v1",
+  "status": "PROPOSAL_ONLY_DO_NOT_APPLY_TO_RUNTIME",
+  "baselineCommit": "2c56c4bf02015961f0e9bd7979c8f8e1cce34f68",
+  "rule": "Do not put these mappings in legacyIdMap.json: that file already remaps historical IDs which collide with canonical IDs.",
+  "sourceGroups": 21,
+  "retiredIds": 22,
+  "retiredToCanonical": {
+    "q-194": "q-193",
+    "q-090": "q-089",
+    "q-092": "q-091",
+    "q-100": "q-099",
+    "q-121": "q-120",
+    "q-140": "q-139",
+    "q-261": "q-260",
+    "q-397": "q-396",
+    "q-432": "q-431",
+    "q-357": "q-356",
+    "q-466": "q-465",
+    "q-043": "q-044",
+    "q-070": "q-069",
+    "q-098": "q-097",
+    "q-133": "q-132",
+    "q-212": "q-211",
+    "q-268": "q-258",
+    "q-189": "q-007",
+    "q-023": "q-022",
+    "q-024": "q-022",
+    "q-488": "q-487",
+    "q-411": "q-410"
+  },
+  "legacyMapCollisionCount": 381,
+  "retiredLegacyCollisions": [
+    {
+      "id": "q-194",
+      "legacyDestination": "q-202",
+      "newCanonical": "q-193"
+    },
+    {
+      "id": "q-100",
+      "legacyDestination": "q-106",
+      "newCanonical": "q-099"
+    },
+    {
+      "id": "q-121",
+      "legacyDestination": "q-129",
+      "newCanonical": "q-120"
+    },
+    {
+      "id": "q-140",
+      "legacyDestination": "q-148",
+      "newCanonical": "q-139"
+    },
+    {
+      "id": "q-261",
+      "legacyDestination": "q-277",
+      "newCanonical": "q-260"
+    },
+    {
+      "id": "q-397",
+      "legacyDestination": "q-426",
+      "newCanonical": "q-396"
+    },
+    {
+      "id": "q-432",
+      "legacyDestination": "q-476",
+      "newCanonical": "q-431"
+    },
+    {
+      "id": "q-357",
+      "legacyDestination": "q-386",
+      "newCanonical": "q-356"
+    },
+    {
+      "id": "q-466",
+      "legacyDestination": "q-523",
+      "newCanonical": "q-465"
+    },
+    {
+      "id": "q-133",
+      "legacyDestination": "q-141",
+      "newCanonical": "q-132"
+    },
+    {
+      "id": "q-212",
+      "legacyDestination": "q-220",
+      "newCanonical": "q-211"
+    },
+    {
+      "id": "q-268",
+      "legacyDestination": "q-284",
+      "newCanonical": "q-258"
+    },
+    {
+      "id": "q-189",
+      "legacyDestination": "q-197",
+      "newCanonical": "q-007"
+    },
+    {
+      "id": "q-411",
+      "legacyDestination": "q-455",
+      "newCanonical": "q-410"
+    }
+  ],
+  "migrationPrerequisite": "Version/disambiguate source progress identity before mapping. Back up existing local/cloud state; do not bulk-write D1.",
+  "productionDataChanged": false
+}
