@@ -29,6 +29,9 @@ jobs:
       - name: Validate canonical content
         run: python tools/validate_content.py
 
+      - name: Validate staged interview merges
+        run: python tools/validate_interview_merge_staging.py
+
       - name: Audit Java WHY comments
         run: python tools/audit_java_solution_comments.py
 
