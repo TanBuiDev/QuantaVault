@@ -56,3 +56,53 @@ test("fullscreen interview editor aligns exactly with the viewport and keeps foo
   await page.getByRole("button", { name: "Thu nhỏ cửa sổ" }).click();
   await expect(page.getByRole("button", { name: "Mở rộng toàn màn hình" })).toBeVisible();
 });
+
+
+test("fullscreen has no bottom strip or overlapping actions from mobile to desktop", async ({ page }) => {
+  await page.setViewportSize({ width: 1650, height: 818 });
+  await page.goto("/interview/?edit=true&editQuestion=q-001");
+  const editor = page.getByPlaceholder("Nhập nội dung câu trả lời chi tiết bằng cú pháp Markdown...");
+  await expect(editor).toBeVisible();
+  const content = "## Regression check\\n\\nFullscreen must preserve unsaved text.";
+  await editor.fill(content);
+  await page.getByRole("button", { name: "Mở rộng toàn màn hình" }).click();
+
+  for (const width of [390, 850, 1024, 1280, 1650]) {
+    await page.setViewportSize({ width, height: 818 });
+    const geometry = await page.evaluate(() => {
+      const box = (selector: string) => {
+        const node = document.querySelector<HTMLElement>(selector);
+        if (!node) throw new Error("Missing editor node: " + selector);
+        return node.getBoundingClientRect();
+      };
+      const modal = document.querySelector<HTMLElement>('[role="dialog"]');
+      if (!modal) throw new Error("Fullscreen dialog is missing");
+      const card = (modal.children[1] as HTMLElement).getBoundingClientRect();
+      const layout = box('[data-testid="interview-editor-layout"]');
+      const footer = box('[data-testid="interview-editor-action-bar"]');
+      const left = box('[data-testid="interview-editor-action-left"]');
+      const right = box('[data-testid="interview-editor-action-right"]');
+      return {
+        cardTop: card.top, cardBottom: card.bottom, layoutBottom: layout.bottom,
+        footerTop: footer.top, footerBottom: footer.bottom,
+        leftRight: left.right, rightLeft: right.left,
+        rightRight: right.right, viewportWidth: window.innerWidth, viewportHeight: window.innerHeight,
+      };
+    });
+    expect(Math.abs(geometry.cardTop), "card top at " + width).toBeLessThanOrEqual(2);
+    expect(Math.abs(geometry.cardBottom - geometry.viewportHeight), "card bottom at " + width).toBeLessThanOrEqual(2);
+    expect(Math.abs(geometry.layoutBottom - geometry.viewportHeight), "layout bottom at " + width).toBeLessThanOrEqual(2);
+    expect(Math.abs(geometry.footerBottom - geometry.viewportHeight), "footer bottom at " + width).toBeLessThanOrEqual(2);
+    expect(geometry.leftRight, "action groups overlap at " + width).toBeLessThanOrEqual(geometry.rightLeft - 2);
+    expect(geometry.rightRight, "save button is clipped at " + width).toBeLessThanOrEqual(geometry.viewportWidth + 1);
+    await expect(page.getByRole("button", { name: "Lưu thay đổi", exact: true })).toBeInViewport();
+  }
+
+  await page.getByRole("button", { name: "Thuộc tính" }).click();
+  const metadataFooterBottom = await page.getByTestId("interview-editor-action-bar").evaluate(element => element.getBoundingClientRect().bottom);
+  expect(Math.abs(metadataFooterBottom - 818)).toBeLessThanOrEqual(2);
+  await page.getByRole("button", { name: "Nội dung", exact: true }).click();
+  await expect(editor).toHaveValue(content);
+  await page.getByRole("button", { name: "Thu nhỏ cửa sổ" }).click();
+  await expect(editor).toHaveValue(content);
+});

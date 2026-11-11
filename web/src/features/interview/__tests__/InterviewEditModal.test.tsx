@@ -109,8 +109,10 @@ describe("InterviewEditModal draft safety", () => {
     expect(card).not.toHaveClass("h-screen", "animate-scale-in", "transform-gpu");
     const body = card.children[0] as HTMLElement;
     expect(body).toHaveClass("min-h-0", "overflow-hidden");
-    const layout = body.querySelector("fieldset") as HTMLFieldSetElement;
-    expect(layout).toHaveClass("flex", "flex-1", "min-h-0", "flex-col", "overflow-hidden");
+    const fieldset = body.querySelector("fieldset") as HTMLFieldSetElement;
+    expect(fieldset).toHaveClass("contents");
+    const layout = screen.getByTestId("interview-editor-layout");
+    expect(layout).toHaveClass("flex", "flex-1", "h-full", "min-h-0", "flex-col", "overflow-hidden");
     expect(layout.lastElementChild).toHaveClass("shrink-0");
     const input = editor();
     expect(input).toBeInTheDocument();
@@ -169,6 +171,10 @@ describe("InterviewEditModal draft safety", () => {
     const onClose = vi.fn();
     mount(vi.fn(), onClose);
     expect(screen.getByTestId("interview-editor-action-bar")).toHaveClass("flex-nowrap");
+    expect(screen.getByTestId("interview-editor-action-left")).toHaveClass("min-w-0", "flex-1");
+    expect(screen.getByTestId("interview-editor-action-right")).toHaveClass("shrink-0");
+    expect(screen.getByRole("group", { name: "Chế độ xem" }).parentElement).toHaveClass("xl:flex");
+    expect(screen.getByRole("button", { name: "Chế độ xem" }).parentElement).toHaveClass("xl:hidden");
     const trigger = screen.getByRole("button", { name: "Chế độ xem" });
     fireEvent.click(trigger);
     const modeMenu = screen.getByRole("menu", { name: "Chế độ xem" });
