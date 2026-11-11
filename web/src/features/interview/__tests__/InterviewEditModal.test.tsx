@@ -165,6 +165,30 @@ describe("InterviewEditModal draft safety", () => {
     );
   });
 
+  it("footer là một hàng và menu mobile quản lý chế độ xem, Escape không đóng modal", () => {
+    const onClose = vi.fn();
+    mount(vi.fn(), onClose);
+    expect(screen.getByTestId("interview-editor-action-bar")).toHaveClass("flex-nowrap");
+    const trigger = screen.getByRole("button", { name: "Chế độ xem" });
+    fireEvent.click(trigger);
+    const modeMenu = screen.getByRole("menu", { name: "Chế độ xem" });
+    expect(modeMenu).toBeInTheDocument();
+    fireEvent.keyDown(modeMenu, { key: "Escape" });
+    expect(screen.queryByRole("menu", { name: "Chế độ xem" })).not.toBeInTheDocument();
+    expect(onClose).not.toHaveBeenCalled();
+
+    fireEvent.click(trigger);
+    fireEvent.click(screen.getByRole("menuitemradio", { name: "Xem trước" }));
+    expect(screen.queryByRole("menu", { name: "Chế độ xem" })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Chế độ xem" }));
+    fireEvent.click(screen.getByRole("menuitemradio", { name: "Soạn thảo" }));
+    expect(editor()).toHaveValue(question.answerMarkdown);
+
+    fireEvent.click(screen.getByRole("button", { name: "Tùy chọn khác" }));
+    expect(screen.getByRole("menuitem", { name: "Hủy bỏ" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Lưu thay đổi" })).toBeInTheDocument();
+  });
+
   it("chuyển chế độ xem không làm đổi câu trả lời hoặc tạo bản nháp", () => {
     mount();
     fireEvent.click(screen.getByRole("button", { name: "Xem trước" }));
