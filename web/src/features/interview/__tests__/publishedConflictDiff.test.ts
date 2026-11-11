@@ -36,8 +36,8 @@ describe("published conflict Git-style diff", () => {
     const diff = buildLineDiff(before, after);
     const compact = compactDiffRows(diff.rows);
     expect(compact.some(row => "collapsed" in row && row.collapsed > 0)).toBe(true);
-    expect(compact.filter(row => !("collapsed" in row)).some(row => row.left?.text === "line 13")).toBe(true);
-    expect(compact.filter(row => !("collapsed" in row)).some(row => row.right?.text === "line 13 changed")).toBe(true);
+    expect(compact.some(row => "left" in row && row.left?.text === "line 13")).toBe(true);
+    expect(compact.some(row => "right" in row && row.right?.text === "line 13 changed")).toBe(true);
     expect(diff.rows).toHaveLength(24);
   });
 
