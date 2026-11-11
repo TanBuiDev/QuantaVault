@@ -283,7 +283,13 @@ function InterviewEditModalForm({
         </div>
       )}
       {externalChanged && !savedSuccess && <div role="status" className="border-b border-amber-500/30 bg-amber-500/10 p-4 text-sm text-[var(--foreground)]">Nội dung đã thay đổi ở nơi khác trong lúc form đang mở. Phần đang soạn được giữ nguyên; lưu thay thế sẽ cần xác nhận.</div>}
-      <fieldset disabled={Boolean(pendingDraft) || savedSuccess} className="contents">
+      {/* Fullscreen needs a real flex column so its footer stays flush with the viewport bottom. */}
+      <fieldset
+        disabled={Boolean(pendingDraft) || savedSuccess}
+        className={isFullscreen
+          ? "flex flex-1 min-h-0 min-w-0 flex-col overflow-hidden"
+          : "contents"}
+      >
       {/* 1. Header Bar */}
       <div className="flex items-center justify-between gap-3 border-b border-[var(--border)] px-5 py-3.5 bg-[var(--surface)] shrink-0">
         <div className="flex items-center gap-2.5 min-w-0 flex-1 mr-2">

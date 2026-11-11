@@ -109,6 +109,9 @@ describe("InterviewEditModal draft safety", () => {
     expect(card).not.toHaveClass("h-screen", "animate-scale-in", "transform-gpu");
     const body = card.children[0] as HTMLElement;
     expect(body).toHaveClass("min-h-0", "overflow-hidden");
+    const layout = body.querySelector("fieldset") as HTMLFieldSetElement;
+    expect(layout).toHaveClass("flex", "flex-1", "min-h-0", "flex-col", "overflow-hidden");
+    expect(layout.lastElementChild).toHaveClass("shrink-0");
     const input = editor();
     expect(input).toBeInTheDocument();
     expect(input.closest(".rounded-2xl")).toHaveClass("min-h-0");
@@ -116,6 +119,8 @@ describe("InterviewEditModal draft safety", () => {
     fireEvent.click(screen.getByRole("button", { name: "Thu nhỏ cửa sổ" }));
     expect(card).not.toHaveClass("absolute");
     expect(card).toHaveClass("relative", "animate-scale-in", "transform-gpu");
+    expect(layout).toHaveClass("contents");
+    expect(layout).not.toHaveClass("flex-1", "overflow-hidden");
     expect(editor()).toBeInTheDocument();
   });
   it("cho phép chuyển đổi giữa chế độ toàn màn hình và mặc định", () => {
