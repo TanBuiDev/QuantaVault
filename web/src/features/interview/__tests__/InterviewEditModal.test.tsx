@@ -138,6 +138,33 @@ describe("InterviewEditModal draft safety", () => {
     fireEvent.click(shrinkBtn);
     expect(screen.getByRole("button", { name: "Mở rộng toàn màn hình" })).toBeInTheDocument();
   });
+  it("chỉnh sửa tiêu đề trên header duy nhất, Enter/Escape không tự lưu hay đóng", () => {
+    const save = vi.fn();
+    const close = vi.fn();
+    mount(save, close);
+    const titleInput = screen.getByRole("textbox", { name: "Tiêu đề câu hỏi phỏng vấn" });
+    expect(titleInput).toHaveValue("Đã lưu mới nhất");
+    expect(screen.getAllByRole("textbox", { name: "Tiêu đề câu hỏi phỏng vấn" })).toHaveLength(1);
+    fireEvent.change(titleInput, { target: { value: "Tiêu đề được sửa trực tiếp" } });
+    fireEvent.keyDown(titleInput, { key: "Escape" });
+    fireEvent.keyDown(titleInput, { key: "Enter" });
+    expect(close).not.toHaveBeenCalled();
+    expect(save).not.toHaveBeenCalled();
+    expect(titleInput).toHaveValue("Tiêu đề được sửa trực tiếp");
+
+    fireEvent.click(screen.getByRole("button", { name: "Thuộc tính" }));
+    expect(screen.getAllByRole("textbox", { name: "Tiêu đề câu hỏi phỏng vấn" })).toHaveLength(1);
+    expect(titleInput).toHaveValue("Tiêu đề được sửa trực tiếp");
+    fireEvent.click(screen.getByRole("button", { name: "Nội dung" }));
+    expect(titleInput).toHaveValue("Tiêu đề được sửa trực tiếp");
+
+    fireEvent.click(screen.getByRole("button", { name: "Lưu thay đổi" }));
+    expect(save).toHaveBeenCalledWith(
+      expect.objectContaining({ title: "Tiêu đề được sửa trực tiếp", answerMarkdown: question.answerMarkdown }),
+      question,
+    );
+  });
+
   it("chuyển chế độ xem không làm đổi câu trả lời hoặc tạo bản nháp", () => {
     mount();
     fireEvent.click(screen.getByRole("button", { name: "Xem trước" }));
