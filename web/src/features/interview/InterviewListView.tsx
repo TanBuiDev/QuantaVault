@@ -36,6 +36,7 @@ import { InterviewFilterBar } from "./InterviewFilterBar";
 import { InterviewQuestionCard } from "./InterviewQuestionCard";
 import { InterviewEditModal } from "./InterviewEditModal";
 import { PublishDrawer } from "./PublishDrawer";
+import { PublishedConflictReview } from "./PublishedConflictReview";
 import { InterviewRightRail } from "./InterviewRightRail";
 import { InterviewPresentationModal } from "./InterviewPresentationModal";
 import { getUrlParams, updateUrlParams } from "@/lib/utils/urlParams";
@@ -464,11 +465,12 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
       </header>
 
       {/* 2. Progress Overview Stats Card */}
-      {publishedConflicts.length > 0 && (
-        <div role="status" className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-[var(--foreground)]">
-          Dữ liệu website khác nội dung vừa xuất bản ở {publishedConflicts.length} câu hỏi. Bản đã xuất bản vẫn được giữ trên máy để bạn đối chiếu; hãy sao lưu trước khi xử lý xung đột.
-        </div>
-      )}
+      <PublishedConflictReview
+        canonicalQuestions={initialQuestions}
+        drafts={drafts}
+        publishedCache={publishedCache}
+        conflictingIds={publishedConflicts}
+      />
       <section aria-label="Thống kê tiến độ ôn luyện">
         <InterviewStatsCard
           questions={initialQuestions}

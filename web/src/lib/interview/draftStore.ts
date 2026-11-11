@@ -113,6 +113,81 @@ export function writePublishedCache(cache: PublishedCacheMap): void {
   window.dispatchEvent(new Event(PUBLISHED_CHANGE_EVENT));
 }
 
+
+/**
+ * Resolve one published-cache conflict after the user has reviewed and backed
+ * up both versions. Protect against changes from another tab while the dialog
+ * is open; never clear other published entries or unpublished drafts.
+ */
+function unchangedPublishedSnapshot(id: string, expected: PublishedCacheItem): PublishedCacheMap {
+  const current = getPublishedCache();
+  if (!current[id] || JSON.stringify(current[id]) !== JSON.stringify(expected)) {
+    throw new Error("Phiên bản lưu trên máy đã thay đổi. Hãy mở lại phần đối chiếu để kiểm tra.");
+  }
+  return current;
+}
+
+/** Keep the canonical website copy for one ID; drafts remain untouched. */
+export function acceptWebsitePublishedVersion(id: string, expected: PublishedCacheItem): void {
+  const cache = unchangedPublishedSnapshot(id, expected);
+  const next = { ...cache };
+  delete next[id];
+  writePublishedCache(next);
+}
+
+/**
+ * Preserve the locally published copy as an explicit unpublished draft.
+ * Write the draft before removing its cache entry so a storage failure never
+ * destroys the only local copy. Refuse to overwrite any existing draft.
+ */
+export function keepPublishedVersionAsDraft(
+  id: string,
+  expected: PublishedCacheItem,
+  websiteQuestion: InterviewQuestion | null
+): void {
+  const cache = unchangedPublishedSnapshot(id, expected);
+  if (websiteQuestion && websiteQuestion.id !== id) {
+    throw new Error("ID phiên bản website không khớp với câu hỏi đang đối chiếu.");
+  }
+  const currentDrafts = getDrafts();
+  if (currentDrafts[id]) {
+    throw new Error("Câu hỏi đã có bản nháp chưa xuất bản. Không thể ghi đè bản nháp đó.");
+  }
+  const draft: DraftQuestion = {
+    ...cache[id].question,
+    baseVersion: questionVersion(websiteQuestion),
+  };
+  // Order matters: a quota error leaves the published cache intact.
+  writeDrafts({ ...currentDrafts, [id]: draft });
+  // A cache-write failure leaves two copies, not zero copies.
+  acceptWebsitePublishedVersion(id, expected);
+}
+
+/** Download all three layers, not a merged view that hides one side of a conflict. */
+export function downloadPublishedConflictBackup(
+  canonicalQuestions: InterviewQuestion[],
+  drafts: DraftMap,
+  publishedCache: PublishedCacheMap
+): void {
+  const snapshot = {
+    format: "quantavault-interview-conflict-backup-v1",
+    createdAt: new Date().toISOString(),
+    canonicalQuestions,
+    drafts,
+    publishedCache,
+  };
+  const blob = new Blob([JSON.stringify(snapshot, null, 2) + "\n"], { type: "application/json;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "quantavault-interview-conflict-backup-" + new Date().toISOString().replace(/[:.]/g, "-") + ".json";
+  document.body.appendChild(link);
+  try { link.click(); } finally {
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+}
+
 export function clearAllPublishedCache(): void {
   writePublishedCache({});
 }
