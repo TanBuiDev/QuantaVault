@@ -312,7 +312,7 @@ function InterviewEditModalForm({
   }
 
   return (
-    <div className={classNames("flex flex-col", isFullscreen ? "h-full flex-1 min-h-0" : "max-h-[85vh]")}>
+    <div className={classNames("flex flex-col", isFullscreen ? "h-full min-h-0 w-full flex-1" : "max-h-[85vh]")}>
       {pendingDraft && (
         <div role="status" className="border-b border-amber-500/30 bg-amber-500/10 p-4 text-sm text-[var(--foreground)]">
           <p>Có bản nháp chưa lưu. Nội dung đã lưu vẫn đang được hiển thị; bản nháp chỉ được nạp khi bạn chọn khôi phục.</p>
@@ -327,10 +327,10 @@ function InterviewEditModalForm({
       {/* Fullscreen needs a real flex column so its footer stays flush with the viewport bottom. */}
       <fieldset
         disabled={Boolean(pendingDraft) || savedSuccess}
-        className={isFullscreen
-          ? "flex flex-1 min-h-0 min-w-0 flex-col overflow-hidden"
-          : "contents"}
+        className="contents"
       >
+      {/* Fieldset preserves disabled controls; a real div owns fullscreen flex sizing. */}
+      <div data-testid="interview-editor-layout" className={isFullscreen ? "flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden" : "contents"}>
       {/* 1. Header Bar */}
       <div className="flex items-center justify-between gap-3 border-b border-[var(--border)] px-5 py-3.5 bg-[var(--surface)] shrink-0">
         <div className="flex items-center gap-2.5 min-w-0 flex-1 mr-2">
@@ -706,28 +706,28 @@ function InterviewEditModalForm({
 
       {/* Single responsive action bar; Markdown formatting toolbar stays by the textarea. */}
       <div data-testid="interview-editor-action-bar" className="flex w-full min-w-0 flex-nowrap items-center justify-between gap-2 border-t border-[var(--border)] bg-[var(--surface)] px-3 py-3 sm:px-5 shrink-0">
-        <div className="flex min-w-0 items-center gap-2">
+        <div data-testid="interview-editor-action-left" className="flex min-w-0 flex-1 items-center gap-2">
           {activeTab === "content" && (
-            <div className="hidden min-w-0 items-center gap-2 md:flex">
+            <div className="hidden min-w-0 shrink-0 items-center gap-2 xl:flex">
               <div role="group" aria-label="Chế độ xem" className="flex shrink-0 items-center rounded-lg border border-[var(--border)] bg-[var(--surface)] p-0.5 text-xs">
                 <button type="button" aria-label="Soạn thảo" aria-pressed={viewMode === "edit"} onClick={() => setViewMode("edit")} title="Chỉ soạn thảo"
                   className={`inline-flex items-center gap-1 rounded-md px-2.5 py-1.5 transition-all ${viewMode === "edit" ? "bg-[var(--surface-hover)] text-[var(--foreground)] font-bold shadow-2xs" : "text-[var(--muted)] hover:text-[var(--foreground)]"}`}>
-                  <Edit3 className="h-3.5 w-3.5" /><span className="hidden lg:inline">Soạn thảo</span>
+                  <Edit3 className="h-3.5 w-3.5" /><span className="hidden 2xl:inline">Soạn thảo</span>
                 </button>
                 <button type="button" aria-label="Xem trước" aria-pressed={viewMode === "preview"} onClick={() => setViewMode("preview")} title="Xem trước kết quả"
                   className={`inline-flex items-center gap-1 rounded-md px-2.5 py-1.5 transition-all ${viewMode === "preview" ? "bg-[var(--surface-hover)] text-[var(--foreground)] font-bold shadow-2xs" : "text-[var(--muted)] hover:text-[var(--foreground)]"}`}>
-                  <Eye className="h-3.5 w-3.5" /><span className="hidden lg:inline">Xem trước</span>
+                  <Eye className="h-3.5 w-3.5" /><span className="hidden 2xl:inline">Xem trước</span>
                 </button>
                 <button type="button" aria-label="Song song" aria-pressed={viewMode === "split"} onClick={() => setViewMode("split")} title="Xem song song"
                   className={`inline-flex items-center gap-1 rounded-md px-2.5 py-1.5 transition-all ${viewMode === "split" ? "bg-[var(--surface-hover)] text-[var(--foreground)] font-bold shadow-2xs" : "text-[var(--muted)] hover:text-[var(--foreground)]"}`}>
-                  <Columns className="h-3.5 w-3.5" /><span className="hidden lg:inline">Song song</span>
+                  <Columns className="h-3.5 w-3.5" /><span className="hidden 2xl:inline">Song song</span>
                 </button>
               </div>
               {onTextScaleChange && <InterviewTextSizeControl value={textScale} onChange={onTextScaleChange} />}
             </div>
           )}
 
-          <div ref={mobilePanelRef} className="relative flex shrink-0 items-center gap-1 md:hidden"
+          <div ref={mobilePanelRef} className="relative flex shrink-0 items-center gap-1 xl:hidden"
             onKeyDown={(event) => {
               if (event.key === "Escape" && mobilePanel) {
                 event.preventDefault();
@@ -797,21 +797,21 @@ function InterviewEditModalForm({
             )}
           </div>
 
-          <div role="status" aria-label="Bản nháp tự lưu trên máy. Ctrl+S để lưu thay đổi." className="hidden min-w-0 items-center gap-1.5 text-xs text-[var(--muted)] md:flex">
+          <div role="status" aria-label="Bản nháp tự lưu trên máy. Ctrl+S để lưu thay đổi." className="hidden min-w-0 flex-1 items-center gap-1.5 text-xs text-[var(--muted)] 2xl:flex">
             <Sparkles className="h-4 w-4 shrink-0 text-amber-500" />
-            <span className="hidden truncate xl:inline">Nháp tự lưu trên máy · Ctrl+S: Lưu thay đổi</span>
+            <span className="min-w-0 truncate">Nháp tự lưu trên máy · Ctrl+S: Lưu thay đổi</span>
           </div>
         </div>
 
-        <div className="flex shrink-0 items-center gap-1.5">
+        <div data-testid="interview-editor-action-right" className="flex shrink-0 items-center gap-1.5">
           {onDelete && <button type="button" onClick={() => { void handleDelete(); }} aria-label="Xóa câu này" title="Xóa câu hỏi này khỏi danh sách ôn luyện"
-            className="hidden items-center gap-1 rounded-xl border border-rose-500/30 bg-rose-500/10 px-2.5 py-2 text-xs font-bold text-rose-500 transition-colors hover:bg-rose-500/20 md:inline-flex xl:px-3">
-            <Trash2 className="h-3.5 w-3.5" /><span className="hidden xl:inline">Xóa câu này</span>
+            className="hidden items-center gap-1 rounded-xl border border-rose-500/30 bg-rose-500/10 px-2.5 py-2 text-xs font-bold text-rose-500 transition-colors hover:bg-rose-500/20 xl:inline-flex xl:px-3">
+            <Trash2 className="h-3.5 w-3.5" /><span className="hidden 2xl:inline">Xóa câu này</span>
           </button>}
 
           <button type="button" onClick={() => { void requestClose(); }} aria-label="Hủy bỏ (Esc)"
-            className="hidden rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--muted-strong)] transition-colors hover:bg-[var(--surface-hover)] md:inline-flex">
-            <span className="hidden lg:inline">Hủy bỏ (Esc)</span><span className="lg:hidden">Hủy</span>
+            className="hidden rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--muted-strong)] transition-colors hover:bg-[var(--surface-hover)] xl:inline-flex">
+            <span className="hidden 2xl:inline">Hủy bỏ (Esc)</span><span className="2xl:hidden">Hủy</span>
           </button>
 
           <button type="button" onClick={handleSave}
@@ -819,6 +819,7 @@ function InterviewEditModalForm({
             {savedSuccess ? (<><Check className="h-4 w-4" /><span>Đã lưu nháp!</span></>) : (<><Save className="h-4 w-4" /><span>Lưu thay đổi</span></>)}
           </button>
         </div>
+      </div>
       </div>
       </fieldset>
     </div>
