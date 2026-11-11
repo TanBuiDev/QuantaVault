@@ -82,7 +82,7 @@ test("Git-style comparison highlights changed lines without mutating local versi
   await expect(page.getByRole("checkbox", { name: "Hiển thị cả dòng không đổi" })).toBeChecked();
   await conflict.getByText("Xem toàn bộ hai phiên bản và dữ liệu JSON (không tô màu)").click();
   await expect(conflict.locator("details").first().getByText("Locally published summary", { exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "Đóng" }).click();
+  await page.getByRole("button", { name: "Đóng", exact: true }).click();
 
   const after = await page.evaluate(() => ({
     published: localStorage.getItem("interview_published_cache_v1"),
