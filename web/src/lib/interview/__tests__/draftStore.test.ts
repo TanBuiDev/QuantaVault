@@ -417,7 +417,7 @@ describe("draftStore", () => {
       const expected = cached();
       writePublishedCache({ "q-1": expected });
       const setItem = Storage.prototype.setItem;
-      const spy = vi.spyOn(Storage.prototype, "setItem").mockImplementation(function (key, value) {
+      const spy = vi.spyOn(Storage.prototype, "setItem").mockImplementation(function (this: Storage, key: string, value: string) {
         if (key === "interview_published_cache_v1") throw new DOMException("quota", "QuotaExceededError");
         return setItem.call(this, key, value);
       });
