@@ -16,6 +16,9 @@ import {
   getPublishedConflicts,
   useInterviewDrafts,
   rebaseDraft,
+  acceptWebsitePublishedVersion,
+  keepPublishedVersionAsDraft,
+  downloadPublishedConflictBackup,
 } from "../draftStore";
 import type { InterviewQuestion } from "../types";
 import { questionVersion } from "../questionVersion";
@@ -350,4 +353,99 @@ describe("draftStore", () => {
       expect(getDrafts()["q-1"]).toEqual(expected);
     });
   });
+
+  describe("safe published conflict resolution", () => {
+    const local = { ...mockQuestion1, title: "Locally published", answerMarkdown: "Local answer" };
+    const remote = { ...mockQuestion1, title: "Website version", answerMarkdown: "Website answer" };
+    const cached = () => ({ question: local, publishedAt: 1234, baseVersion: questionVersion(mockQuestion1) });
+
+    it("accepts website copy for one ID only, preserving drafts and unrelated cache", () => {
+      const other = { ...mockQuestion2, title: "Unrelated published version" };
+      const expected = cached();
+      writePublishedCache({ "q-1": expected, "q-2": { question: other, publishedAt: 5678 } });
+      saveDraft({ ...mockQuestion1, title: "Unpublished edit" }, mockQuestion1);
+      const beforeDrafts = getDrafts();
+
+      acceptWebsitePublishedVersion("q-1", expected);
+      expect(getPublishedCache()["q-1"]).toBeUndefined();
+      expect(getPublishedCache()["q-2"].question.title).toBe(other.title);
+      expect(getDrafts()).toEqual(beforeDrafts);
+    });
+
+    it("refuses stale cache snapshots from another tab without deleting anything", () => {
+      const expected = cached();
+      const changed = { ...expected, question: { ...expected.question, title: "Newer tab edit" } };
+      writePublishedCache({ "q-1": expected });
+      writePublishedCache({ "q-1": changed });
+      expect(() => acceptWebsitePublishedVersion("q-1", expected)).toThrow(/đã thay đổi/);
+      expect(() => keepPublishedVersionAsDraft("q-1", expected, remote)).toThrow(/đã thay đổi/);
+      expect(getPublishedCache()["q-1"]).toEqual(changed);
+      expect(getDrafts()).toEqual({});
+    });
+
+    it("moves local published copy to a draft based on website version without republishing", () => {
+      const expected = cached();
+      writePublishedCache({ "q-1": expected });
+      keepPublishedVersionAsDraft("q-1", expected, remote);
+      expect(getDrafts()["q-1"]).toEqual({ ...local, baseVersion: questionVersion(remote) });
+      expect(getPublishedCache()["q-1"]).toBeUndefined();
+    });
+
+    it("never overwrites a separately edited draft", () => {
+      const expected = cached();
+      writePublishedCache({ "q-1": expected });
+      saveDraft({ ...mockQuestion1, title: "Work in progress" }, mockQuestion1);
+      const before = getDrafts();
+      expect(() => keepPublishedVersionAsDraft("q-1", expected, remote)).toThrow(/bản nháp/);
+      expect(getDrafts()).toEqual(before);
+      expect(getPublishedCache()["q-1"]).toEqual(expected);
+    });
+
+    it("keeps published copy if storage refuses the draft write", () => {
+      const expected = cached();
+      writePublishedCache({ "q-1": expected });
+      const spy = vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+        throw new DOMException("quota", "QuotaExceededError");
+      });
+      expect(() => keepPublishedVersionAsDraft("q-1", expected, remote)).toThrow();
+      spy.mockRestore();
+      expect(getPublishedCache()["q-1"]).toEqual(expected);
+      expect(getDrafts()["q-1"]).toBeUndefined();
+    });
+
+    it("retains both copies if the second cache write fails after draft creation", () => {
+      const expected = cached();
+      writePublishedCache({ "q-1": expected });
+      const setItem = Storage.prototype.setItem;
+      const spy = vi.spyOn(Storage.prototype, "setItem").mockImplementation(function (key, value) {
+        if (key === "interview_published_cache_v1") throw new DOMException("quota", "QuotaExceededError");
+        return setItem.call(this, key, value);
+      });
+      expect(() => keepPublishedVersionAsDraft("q-1", expected, remote)).toThrow();
+      spy.mockRestore();
+      expect(getPublishedCache()["q-1"]).toEqual(expected);
+      expect(getDrafts()["q-1"]).toEqual({ ...local, baseVersion: questionVersion(remote) });
+    });
+
+    it("backs up canonical, draft and published layers without mutating them", () => {
+      const expected = cached();
+      writePublishedCache({ "q-1": expected });
+      saveDraft({ ...mockQuestion2, title: "Unpublished question" }, mockQuestion2);
+      const beforeDraft = getDrafts();
+      const beforeCache = getPublishedCache();
+      const create = vi.fn(() => "blob:test");
+      const revoke = vi.fn();
+      const click = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {});
+      Object.defineProperty(URL, "createObjectURL", { configurable: true, value: create });
+      Object.defineProperty(URL, "revokeObjectURL", { configurable: true, value: revoke });
+      downloadPublishedConflictBackup([mockQuestion1, mockQuestion2], beforeDraft, beforeCache);
+      expect(create).toHaveBeenCalledTimes(1);
+      expect(click).toHaveBeenCalledTimes(1);
+      expect(revoke).toHaveBeenCalledWith("blob:test");
+      expect(getDrafts()).toEqual(beforeDraft);
+      expect(getPublishedCache()).toEqual(beforeCache);
+      click.mockRestore();
+    });
+  });
+
 });
