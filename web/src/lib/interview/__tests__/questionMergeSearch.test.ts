@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getAllInterviewQuestions, getInterviewQuestionById, filterInterviewQuestions } from "../index";
+import { getAllInterviewQuestions, getInterviewQuestionById, filterInterviewQuestions, interviewMatchesCategory } from "../index";
 import type { InterviewFilterState } from "../types";
 
 const filters: InterviewFilterState = {
@@ -26,6 +26,16 @@ describe("published 504-question bank with preserved historic links", () => {
     const result = filterInterviewQuestions(questions, { ...filters, search });
     expect(result.some(q => q.id === "q-193")).toBe(true);
     expect(result.some(q => q.id === "q-194")).toBe(false);
+  });
+
+  it("retains both source categories for cross-category merged questions", () => {
+    const spring = getInterviewQuestionById("q-007")!;
+    const docker = getInterviewQuestionById("q-487")!;
+    expect(interviewMatchesCategory(spring, "project-covie")).toBe(true);
+    expect(interviewMatchesCategory(spring, "spring")).toBe(true);
+    expect(interviewMatchesCategory(docker, "microservices")).toBe(true);
+    expect(filterInterviewQuestions(questions, { ...filters, category: "spring" }).some(q => q.id === "q-007")).toBe(true);
+    expect(filterInterviewQuestions(questions, { ...filters, category: "microservices" }).some(q => q.id === "q-487")).toBe(true);
   });
 
   it("keeps independent interview questions unrelated to the merges", () => {
