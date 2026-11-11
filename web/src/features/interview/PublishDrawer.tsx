@@ -14,6 +14,7 @@ import {
   Lock,
 } from "lucide-react";
 import type { InterviewQuestion } from "@/lib/interview/types";
+import { isRetiredInterviewId } from "@/lib/interview/questionIdMerge";
 import { canonicalQuestion, questionVersion } from "@/lib/interview/questionVersion";
 import type { PublishConflict } from "@/lib/interview/githubPublish";
 import {
@@ -68,7 +69,7 @@ export function PublishDrawer({
     }
   };
 
-  const draftList = Object.values(drafts);
+  const draftList = Object.values(drafts).filter(q => !isRetiredInterviewId(q.id));
   const draftCount = draftList.length;
 
   useEffect(() => {
@@ -105,7 +106,9 @@ export function PublishDrawer({
     setError(null);
     setPersistenceWarning(null);
     setConflictReview(null);
-    const submitted = structuredClone(drafts);
+    const submitted = structuredClone(Object.fromEntries(
+      Object.entries(drafts).filter(([id]) => !isRetiredInterviewId(id))
+    ));
     const baseVersions = Object.fromEntries(Object.values(submitted).map(q => [q.id,
       q.baseVersion ?? questionVersion(canonicalQuestions?.find(original => original.id === q.id) ?? null),
     ]));
