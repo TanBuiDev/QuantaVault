@@ -61,3 +61,46 @@ test("keeping a local conflict creates an unpublished draft, never a new GitHub 
   expect(state.published).toBeUndefined();
   await expect(page.getByRole("button", { name: "Xuất bản (1)" })).toBeVisible();
 });
+
+
+test("Git-style comparison highlights changed lines without mutating local versions", async ({ page }) => {
+  await page.setViewportSize({ width: 1100, height: 900 });
+  await loadConflict(page);
+  const before = await page.evaluate(() => ({
+    published: localStorage.getItem("interview_published_cache_v1"),
+    drafts: localStorage.getItem("interview_drafts_v1"),
+  }));
+  const conflict = page.getByRole("region", { name: "Xung đột " + id });
+  const diff = conflict.getByRole("region", { name: "Thay đổi trường Nội dung trả lời" });
+  await expect(diff).toBeVisible();
+  await expect(diff.locator('[data-diff-kind="removed"][data-diff-side="left"]')).toContainText(localVersion.answerMarkdown);
+  await expect(diff.locator('[data-diff-kind="added"][data-diff-side="right"]').first()).toBeVisible();
+  await expect(diff.getByRole("columnheader", { name: /Bản cục bộ/ })).toBeVisible();
+  await expect(diff.getByRole("columnheader", { name: /Dữ liệu website hiện tại/ })).toBeVisible();
+
+  await page.getByRole("checkbox", { name: "Hiển thị cả dòng không đổi" }).check();
+  await expect(page.getByRole("checkbox", { name: "Hiển thị cả dòng không đổi" })).toBeChecked();
+  await conflict.getByText("Xem toàn bộ hai phiên bản và dữ liệu JSON (không tô màu)").click();
+  await expect(conflict.locator("details").first().getByText("Locally published summary", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Đóng", exact: true }).click();
+
+  const after = await page.evaluate(() => ({
+    published: localStorage.getItem("interview_published_cache_v1"),
+    drafts: localStorage.getItem("interview_drafts_v1"),
+  }));
+  expect(after).toEqual(before);
+});
+
+test("Git-style comparison fits a narrow mobile viewport without clipping comparison controls", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await loadConflict(page);
+  const diff = page.getByRole("region", { name: "Thay đổi trường Nội dung trả lời" });
+  await expect(diff).toBeVisible();
+  const scroll = await diff.locator('[role="table"]').evaluate(element => ({
+    fullWidth: element.scrollWidth, viewportWidth: window.innerWidth,
+    leftOverflow: element.getBoundingClientRect().left,
+  }));
+  expect(scroll.fullWidth).toBeGreaterThanOrEqual(560);
+  expect(scroll.leftOverflow).toBeGreaterThanOrEqual(0);
+  await expect(page.getByRole("button", { name: "Tải JSON sao lưu đầy đủ" })).toBeVisible();
+});
