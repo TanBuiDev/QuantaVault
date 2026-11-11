@@ -81,7 +81,9 @@ jobs:
 
       - name: Install Playwright Chromium
         working-directory: web
-        run: npx playwright install --with-deps chromium
+        # GitHub's Ubuntu runner already has Chromium shared libraries.
+        # Avoid optional apt font downloads that can fail when Ubuntu mirrors have transient DNS issues.
+        run: npx playwright install chromium
 
       - name: End-to-end tests
         working-directory: web
