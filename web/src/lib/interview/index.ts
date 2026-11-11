@@ -1,7 +1,9 @@
 import rawQuestions from "@/data/interview-questions.json";
 import { retiredInterviewIds } from "./questionIdMerge";
+import mergedCategoryAliases from "./mergedCategoryAliases.json";
 import { matchesSearch } from "@/lib/utils/stringUtils";
 import type {
+  InterviewCategory,
   InterviewFilterState,
   InterviewProgressState,
   InterviewQuestion,
@@ -17,6 +19,13 @@ export function getAllInterviewQuestions(): InterviewQuestion[] {
 export function getInterviewQuestionById(id: string): InterviewQuestion | undefined {
   const normalizedId = retiredInterviewIds[id] ?? id;
   return getAllInterviewQuestions().find((q) => q.id === normalizedId);
+}
+
+/** Retain the original category entry points for cross-category merges. */
+export function interviewMatchesCategory(question: InterviewQuestion, category: InterviewCategory): boolean {
+  if (question.category === category) return true;
+  const aliases = mergedCategoryAliases as Record<string, string[]>;
+  return (aliases[question.id] ?? []).includes(category);
 }
 
 export function getAllCategories() {
@@ -68,7 +77,7 @@ export function filterInterviewQuestions(
     }
 
     // 2. Category
-    if (filter.category !== "all" && q.category !== filter.category) {
+    if (filter.category !== "all" && !interviewMatchesCategory(q, filter.category)) {
       return false;
     }
 
