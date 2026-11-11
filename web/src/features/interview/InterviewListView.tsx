@@ -32,6 +32,8 @@ import {
 } from "@/lib/interview/draftStore";
 import { InterviewStatsCard } from "./InterviewStatsCard";
 import { InterviewCloudSync } from "./InterviewCloudSync";
+import { InterviewMergeRecovery } from "./InterviewMergeRecovery";
+import { isRetiredInterviewId } from "@/lib/interview/questionIdMerge";
 import { InterviewFilterBar } from "./InterviewFilterBar";
 import { InterviewQuestionCard } from "./InterviewQuestionCard";
 import { InterviewEditModal } from "./InterviewEditModal";
@@ -282,7 +284,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
 
   const effectiveEditingId = editingQuestion?.id ?? restoredEditingId;
   const effectiveEditingQuestion = draftsHydrated ? mergedQuestions.find(q => q.id === effectiveEditingId) ??
-    (effectiveEditingId && !drafts[effectiveEditingId]?.isDeleted && !publishedCache[effectiveEditingId]?.question.isDeleted ? editingQuestion : null) : null;
+    (effectiveEditingId && !isRetiredInterviewId(effectiveEditingId) && !drafts[effectiveEditingId]?.isDeleted && !publishedCache[effectiveEditingId]?.question.isDeleted ? editingQuestion : null) : null;
 
   const canonicalQuestion = useMemo(() => {
     return initialQuestions.find((q) => q.id === effectiveEditingId);
@@ -481,6 +483,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
         />
       </section>
 
+      <InterviewMergeRecovery progress={progress} drafts={drafts} publishedCache={publishedCache} />
       <InterviewCloudSync />
 
       {/* 3. Filter Controls */}
