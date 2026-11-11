@@ -1,0 +1,936 @@
+{
+  "schema": "quantavault-interview-merge-originals-v1",
+  "baselineMainCommit": "2c56c4bf02015961f0e9bd7979c8f8e1cce34f68",
+  "source": "data/interview-questions.json",
+  "purpose": "Immutable source snapshot for review and rollback; contains no study progress, drafts or secrets.",
+  "originalCount": 43,
+  "questions": [
+    {
+      "id": "q-007",
+      "title": "Spring Framework và Spring Boot khác nhau thế nào?",
+      "category": "project-covie",
+      "difficulty": "junior",
+      "tags": [
+        "Java",
+        "Spring Framework",
+        "Spring Boot",
+        "AutoConfiguration",
+        "IoC",
+        "Dependency Injection",
+        "CoVie",
+        "Backend"
+      ],
+      "companies": [
+        "FPT Software",
+        "Viettel",
+        "VNG",
+        "One Mount",
+        "Tiki",
+        "Shopee",
+        "MB Bank",
+        "Sea Group"
+      ],
+      "summary": "**Spring Framework** là nền tảng cung cấp các chức năng cốt lõi để phát triển ứng dụng Java như IoC, Dependency Injection (DI), AOP và Spring MVC.\n\n**Spring Boot** được xây dựng trên Spring Framework, giúp phát triển và triển khai ứng dụng nhanh hơn nhờ:\n\n- **Starter Dependencies:** Gom các thư viện cần thiết và quản lý phiên bản.\n- **Auto-configuration:** Tự động cấu hình dựa trên thư viện và các điều kiện của ứng dụng.\n- **Embedded Server:** Hỗ trợ máy chủ nhúng như Tomcat, cho phép chạy ứng dụng độc lập bằng `java -jar`.\n\n**Khác biệt cốt lõi:** Spring Framework cung cấp nền tảng kỹ thuật, còn Spring Boot giúp sử dụng nền tảng đó với ít cấu hình thủ công hơn.",
+      "answerMarkdown": "### 1. Spring Framework là gì?\n\nSpring Framework là framework phát triển ứng dụng Java, cung cấp:\n\n- **IoC Container:** Quản lý việc tạo và vòng đời các đối tượng (Bean).\n- **Dependency Injection:** Cung cấp dependency cho các class thay vì để chúng tự tạo.\n- **AOP:** Tách các xử lý dùng chung như Transaction và Logging khỏi nghiệp vụ chính.\n- **Spring MVC:** Xây dựng ứng dụng web và REST API.\n\nVí dụ:\n\n```java\n@Service\npublic class OrderService {\n\n    private final OrderRepository repository;\n\n    public OrderService(OrderRepository repository) {\n        this.repository = repository;\n    }\n}\n```\n\nỞ đây, Spring quản lý `OrderService` và cung cấp `OrderRepository` thông qua constructor.\n\n**Lưu ý:** Các annotation như `@Service`, `@Component`, `@Autowired` thuộc hệ sinh thái Spring Framework, không phải tính năng riêng của Spring Boot.\n\n### 2. Spring Boot là gì?\n\nSpring Boot giúp đơn giản hóa việc cấu hình và khởi chạy ứng dụng sử dụng Spring Framework.\n\nCó ba cơ chế quan trọng:\n\n#### **A. Starter Dependencies**\n\nThay vì tự chọn và quản lý nhiều thư viện, Spring Boot cung cấp các nhóm dependency được cấu hình sẵn.\n\nVí dụ với Spring Boot 4:\n\n```xml\n<dependency>\n    <groupId>org.springframework.boot</groupId>\n    <artifactId>spring-boot-starter-webmvc</artifactId>\n</dependency>\n```\n\nStarter này cung cấp những thành phần cần thiết để xây dựng REST API với Spring MVC và Tomcat nhúng theo cấu hình mặc định.\n\nSpring Boot còn sử dụng BOM (Bill of Materials) để quản lý các phiên bản thư viện tương thích.\n\n#### **B. Auto-configuration**\n\nSpring Boot tự động cấu hình ứng dụng dựa trên các dependency, property và Bean hiện có.\n\nVí dụ:\n\n- Khi có Spring MVC và các điều kiện phù hợp, Boot cấu hình các thành phần phục vụ REST API.\n- Khi cấu hình kết nối Database phù hợp, Boot có thể tự động tạo `DataSource`.\n- Nếu lập trình viên cung cấp Bean tùy chỉnh, một số cấu hình mặc định tương ứng sẽ không được áp dụng.\n\nCơ chế này sử dụng các annotation như:\n\n- `@ConditionalOnClass`: Kiểm tra class có tồn tại hay không.\n- `@ConditionalOnMissingBean`: Chỉ áp dụng cấu hình khi chưa có Bean tương ứng.\n- `@ConditionalOnProperty`: Kiểm tra giá trị cấu hình.\n\n`@SpringBootApplication` kết hợp ba annotation chính:\n\n- `@SpringBootConfiguration`\n- `@EnableAutoConfiguration`\n- `@ComponentScan`\n\n#### **C. Embedded Server**\n\nTrong ứng dụng Spring MVC truyền thống, một cách triển khai phổ biến là đóng gói WAR và chạy trên Tomcat bên ngoài.\n\nSpring Boot đơn giản hóa việc này bằng máy chủ nhúng.\n\n```java\n@SpringBootApplication\npublic class CoVieApplication {\n\n    public static void main(String[] args) {\n        SpringApplication.run(CoVieApplication.class, args);\n    }\n}\n```\n\nVới cấu hình web phù hợp, Spring Boot khởi tạo Spring Context và Tomcat nhúng.\n\nỨng dụng có thể được đóng gói thành Executable JAR và chạy bằng:\n\n```bash\njava -jar app.jar\n```\n\n**Lưu ý:** Spring Boot vẫn hỗ trợ WAR và Tomcat bên ngoài khi cần.\n\n### 3. Bảng so sánh\n\n| Tiêu chí | Spring Framework | Spring Boot |\n|---|---|---|\n| Bản chất | Framework nền tảng | Công cụ đơn giản hóa phát triển ứng dụng Spring |\n| IoC, DI, AOP | Cung cấp trực tiếp | Sử dụng từ Spring Framework |\n| Cấu hình | Thường cần cấu hình tường minh hơn | Hỗ trợ Auto-configuration |\n| Dependency | Tự lựa chọn và quản lý | Có Starter và BOM |\n| Web Server | Có thể cấu hình server ngoài hoặc nhúng | Hỗ trợ Embedded Server thuận tiện |\n| Đóng gói | Phụ thuộc cách triển khai | Thường dùng Executable JAR |\n| Giám sát | Cần tích hợp thêm | Có Spring Boot Actuator |\n\n### 4. Ứng dụng trong dự án\n\nSử dụng Spring Boot để xây dựng Backend theo kiến trúc Modular Monolith.\n\nCác lợi ích chính:\n\n- **Dependency Injection:** Quản lý Controller, Service và Repository giữa các module.\n- **Auto-configuration:** Giảm công việc cấu hình Spring MVC, Database và các thành phần hạ tầng.\n- **Embedded Server:** Dễ đóng gói ứng dụng thành JAR và chạy trong Docker.\n- **Actuator:** Hỗ trợ giám sát sức khỏe và số liệu vận hành khi được tích hợp.\n\n### 5. Câu hỏi phỏng vấn mở rộng\n\n**Spring Boot có thay thế Spring Framework không?**\n\nKhông. Spring Boot sử dụng Spring Framework làm nền tảng và bổ sung các cơ chế tự động hóa cấu hình, quản lý dependency và khởi chạy ứng dụng.\n\n**Auto-configuration có nghĩa là không cần cấu hình gì nữa?**\n\nKhông. Spring Boot cung cấp cấu hình mặc định khi phù hợp. Những thông tin đặc thù như Database URL, Credentials, Security hoặc nghiệp vụ riêng vẫn cần được cấu hình.\n\n**Spring Boot có bắt buộc dùng Tomcat không?**\n\nKhông. Tomcat là lựa chọn mặc định phổ biến với Spring MVC, nhưng có thể sử dụng server khác hoặc xây dựng ứng dụng không cần web server.\n\n**Spring Boot có bắt buộc đóng gói JAR không?**\n\nKhông. Spring Boot hỗ trợ cả Executable JAR và WAR.\n\n**Spring Boot Actuator có tự động giám sát toàn bộ hệ thống không?**\n\nKhông. Cần thêm dependency Actuator và cấu hình những endpoint, quyền truy cập và hệ thống thu thập dữ liệu phù hợp.\n\n## Kết luận\n\nSpring Framework cung cấp các chức năng nền tảng như IoC, DI, AOP và Spring MVC.\n\nSpring Boot xây dựng trên Spring Framework, giúp phát triển ứng dụng nhanh hơn nhờ Starter Dependencies, Auto-configuration và Embedded Server.\n\nSpring Boot giúp giảm cấu hình hạ tầng ứng dụng, thuận tiện đóng gói Docker và tập trung vào các nghiệp vụ Java Backend."
+    },
+    {
+      "id": "q-022",
+      "title": "Controller chịu trách nhiệm gì?",
+      "category": "project-covie",
+      "difficulty": "middle",
+      "tags": [
+        "ModularMonolith",
+        "LayeredArchitecture",
+        "DTO",
+        "SOLID",
+        "CleanArchitecture"
+      ],
+      "companies": [
+        "VNG",
+        "Grab"
+      ],
+      "summary": "Trong Spring MVC, Controller chịu trách nhiệm chính là tiếp nhận HTTP Request từ phía client, điều phối xử lý và trả về HTTP Response.",
+      "answerMarkdown": "*Trong Spring MVC, **Controller chịu trách nhiệm chính là tiếp nhận HTTP Request từ phía client, điều phối xử lý và trả về HTTP Response**.*\n\n*Nhiệm vụ cụ thể của Controller gồm 4 bước:*\n\n* *1\\. **Nhận dữ liệu & Validate:** Đọc thông tin từ URL, Query Parameter hoặc Request Body, đồng thời kích hoạt Validation để kiểm tra tính hợp lệ của dữ liệu đầu vào.*  \n* *2\\. **Điều phối nghiệp vụ:** Gọi sang tầng Service (tầng Application) để xử lý logic cốt lõi. Controller **tuyệt đối không tự viết logic nghiệp vụ** (như tính tiền, kiểm tra tồn kho) để đảm bảo code sạch và dễ tái sử dụng.*  \n* *3\\. **Đóng gói kết quả:** Nhận dữ liệu trả về từ Service và chuyển đổi sang dạng **DTO** phù hợp.*  \n* *4\\. **Phản hồi:** Trả dữ liệu JSON về cho client kèm theo **HTTP Status** chuẩn (như 200 OK, 201 Created, 400 Bad Request).*\n\n*Ví dụ trong dự án CoVie, PublicCatalogController sẽ nhận request GET /products/{id}, gọi ProductService để lấy thông tin sản phẩm rồi trả về ProductResponse cho frontend.*"
+    },
+    {
+      "id": "q-023",
+      "title": "Service chịu trách nhiệm gì?",
+      "category": "project-covie",
+      "difficulty": "middle",
+      "tags": [
+        "ModularMonolith",
+        "LayeredArchitecture",
+        "DTO",
+        "SOLID",
+        "CleanArchitecture"
+      ],
+      "companies": [
+        "NAB Innovation",
+        "Samsung R&D",
+        "VNPay"
+      ],
+      "summary": "Service là tầng chịu trách nhiệm xử lý và điều phối logic nghiệp vụ của hệ thống. Service thường nằm giữa Controller và Repository, nhận yêu cầu từ Controller, phối hợp với Repository để thao tác dữ liệu và quản lý Transaction.",
+      "answerMarkdown": "Service là tầng chịu trách nhiệm xử lý và điều phối logic nghiệp vụ của hệ thống. Service thường nằm giữa Controller và Repository, nhận yêu cầu từ Controller, phối hợp với Repository để thao tác dữ liệu và quản lý Transaction. Các trách nhiệm chính của Service gồm:\n\n1. Xử lý nghiệp vụ: Kiểm tra và thực hiện các quy tắc nghiệp vụ của hệ thống.  \n2. Làm việc với Repository: Truy xuất, lưu trữ và cập nhật dữ liệu thông qua Repository.  \n3. Điều phối các thành phần: Kết hợp nhiều Repository hoặc Service để hoàn thành một chức năng.  \n4. Quản lý Transaction: Đảm bảo các thao tác dữ liệu liên quan được thực hiện nhất quán.\n\nVí dụ trong CoVie: Khi khách hàng đặt hàng, Service có thể điều phối việc kiểm tra giá sản phẩm, xác nhận tồn kho, tạo đơn hàng và giữ số lượng hàng tương ứng.\n\nTrong Spring Boot, annotation `@Service` giúp Spring nhận diện và quản lý lớp Service dưới dạng một Bean."
+    },
+    {
+      "id": "q-024",
+      "title": "Repository chịu trách nhiệm gì?",
+      "category": "project-covie",
+      "difficulty": "middle",
+      "tags": [
+        "ModularMonolith",
+        "LayeredArchitecture",
+        "DTO",
+        "SOLID",
+        "CleanArchitecture"
+      ],
+      "companies": [
+        "FPT Software",
+        "Techcombank",
+        "MB Bank",
+        "Tiki"
+      ],
+      "summary": "Repository là tầng chịu trách nhiệm truy cập và thao tác dữ liệu với cơ sở dữ liệu, bao gồm các hoạt động CRUD và truy vấn dữ liệu.",
+      "answerMarkdown": "Repository là tầng chịu trách nhiệm truy cập và thao tác dữ liệu với cơ sở dữ liệu, bao gồm các hoạt động CRUD và truy vấn dữ liệu. Repository thường nằm giữa Service và Database, tách biệt logic nghiệp vụ khỏi logic truy xuất dữ liệu.Trong Spring Boot, Repository thường sử dụng Spring Data JPA và kế thừa \\`JpaRepository\\` để thực hiện các thao tác dữ liệu mà không cần tự viết SQL cho những chức năng cơ bản. Các trách nhiệm chính của Repository gồm:\n\n1\\. Truy vấn dữ liệu: Tìm kiếm, lọc và lấy dữ liệu từ Database.\n\n2\\. Thao tác dữ liệu: Thực hiện các hoạt động thêm, đọc, cập nhật và xóa (CRUD).\n\n3\\. Định nghĩa truy vấn: Cung cấp các phương thức truy vấn dữ liệu theo yêu cầu của Service.\n\n4\\. Tách biệt trách nhiệm: Giúp Service tập trung xử lý nghiệp vụ thay vì trực tiếp thực hiện các câu lệnh SQL. \n\nVí dụ trong CoVie: Khi người dùng muốn xem thông tin đơn hàng, \\`OrderService\\` gọi \\`OrderRepository\\` để lấy dữ liệu từ PostgreSQL. Repository chịu trách nhiệm truy xuất dữ liệu, còn Service kiểm tra quyền truy cập và xử lý các quy tắc nghiệp vụ liên quan."
+    },
+    {
+      "id": "q-043",
+      "title": "Bytecode là gì?",
+      "category": "java-core",
+      "difficulty": "junior",
+      "tags": [
+        "JavaCore",
+        "JVM",
+        "JDK",
+        "Bytecode",
+        "Primitive",
+        "Autoboxing"
+      ],
+      "companies": [
+        "Axon",
+        "One Mount"
+      ],
+      "summary": "**Bytecode** là mã lệnh trung gian được trình biên dịch Java (`javac`) tạo ra từ mã nguồn `.java`, thường được lưu trong file `.class`. Bytecode không phải mã máy của một hệ điều hành cụ thể mà được thiết kế để **JVM (Java Virtual Machine)** hiểu và thực thi. Nhờ đó, Java có khả năng chạy trên nhiều nền tảng khác nhau.",
+      "answerMarkdown": "### 1. Bytecode hoạt động như thế nào?\n\nQuá trình biên dịch và thực thi Java diễn ra như sau:\n\n1. **Viết mã nguồn:** Lập trình viên viết chương trình trong file `.java`.\n2. **Biên dịch:** Trình biên dịch `javac` chuyển mã nguồn thành Bytecode, lưu trong file `.class`.\n3. **Thực thi:** JVM tải và kiểm tra class, sau đó thực thi Bytecode bằng cách:\n   - **Interpreter:** Thông dịch các lệnh Bytecode trong quá trình chạy.\n   - **JIT Compiler (Just-In-Time):** Biên dịch Bytecode thành mã máy để tối ưu hiệu năng, đặc biệt với những đoạn code được thực thi thường xuyên.\n\nFile `.class` chứa Bytecode cùng các thông tin cần thiết về class như method, field và kiểu dữ liệu.\n\n### 2. Ví dụ thực tế\n\nGiả sử trong dự án Java Backend có class `OrderService.java`.\n\nKhi biên dịch:\n\n```bash\njavac OrderService.java\n```\n\nTrình biên dịch tạo ra file `OrderService.class` chứa Bytecode. Khi ứng dụng chạy, JVM sẽ tải class này và thực thi các method khi được gọi. Cùng một Bytecode có thể được JVM tương thích trên Windows, Linux hoặc macOS thực thi mà không cần biên dịch lại cho từng hệ điều hành, miễn là chương trình không phụ thuộc vào thành phần đặc thù của nền tảng.\n\n### 3. Bytecode có phụ thuộc phiên bản Java không?\n\n**Có.** Mỗi phiên bản Java hỗ trợ những phiên bản Class File nhất định.\n\nVí dụ:\n\n- Java 17 sử dụng Class File version 61.\n- Java 21 sử dụng Class File version 65.\n\nNếu biên dịch chương trình bằng Java 21 (mặc định tạo Class File version 65), sau đó chạy bằng JVM Java 17, chương trình có thể gặp lỗi:\n\n```text\nUnsupportedClassVersionError\n```\n\nNguyên nhân là JVM Java 17 không hỗ trợ định dạng Class File version 65. Để khắc phục, có thể sử dụng Java Runtime mới hơn hoặc biên dịch với tùy chọn `--release` phù hợp, miễn là mã nguồn và API sử dụng tương thích với phiên bản Java mục tiêu."
+    },
+    {
+      "id": "q-044",
+      "title": "Quá trình biên dịch và thực thi chương trình Java diễn ra như thế nào?",
+      "category": "java-core",
+      "difficulty": "junior",
+      "tags": [
+        "JavaCore",
+        "JVM",
+        "JDK",
+        "Bytecode",
+        "Primitive",
+        "Autoboxing"
+      ],
+      "companies": [
+        "Tiki",
+        "Momo",
+        "NAB Innovation"
+      ],
+      "summary": "Quá trình chạy chương trình Java thường gồm **hai giai đoạn chính: biên dịch (Compilation) và thực thi (Execution)**.\n\nĐầu tiên, trình biên dịch `javac` chuyển mã nguồn `.java` thành **Bytecode (`.class`)**. Sau đó, khi chạy chương trình bằng lệnh `java`, **JVM (Java Virtual Machine)** sẽ nạp các class cần thiết, kiểm tra Bytecode và thực thi chương trình.\n\nTrong quá trình chạy, JVM có thể sử dụng **Interpreter** hoặc **JIT Compiler** để thực thi Bytecode, đồng thời quản lý bộ nhớ thông qua Garbage Collector (GC).",
+      "answerMarkdown": "### 1. Giai đoạn biên dịch (Compilation)\n\nLập trình viên viết mã nguồn Java trong file `.java`.\n\nVí dụ:\n\n```java\npublic class Hello {\n    public static void main(String[] args) {\n        System.out.println(\"Hello Java\");\n    }\n}\n```\n\nSử dụng trình biên dịch `javac`:\n\n```bash\njavac Hello.java\n```\n\nKết quả tạo ra file `Hello.class` chứa **Bytecode**, là mã trung gian được JVM hiểu và thực thi.\n\n### 2. Giai đoạn thực thi (Execution)\n\nChạy chương trình bằng lệnh:\n\n```bash\njava Hello\n```\n\nJVM thực hiện các công việc chính:\n\n1. **Class Loading:** ClassLoader nạp các class cần thiết vào JVM.\n2. **Bytecode Verification:** JVM kiểm tra tính hợp lệ của Bytecode trước khi thực thi.\n3. **Class Initialization:** JVM khởi tạo các class theo yêu cầu, bao gồm thực thi các thành phần khởi tạo tĩnh.\n4. **Execution:** JVM bắt đầu thực thi chương trình thông qua phương thức `main()`.\n\nTrong quá trình thực thi:\n\n- **Interpreter:** Thông dịch các lệnh Bytecode.\n- **JIT Compiler (Just-In-Time):** Biên dịch Bytecode thành mã máy để tối ưu hiệu năng, đặc biệt đối với những đoạn code được thực thi thường xuyên (hot code).\n- **Heap Memory:** Lưu trữ các đối tượng được tạo trong quá trình chạy chương trình.\n- **Garbage Collector (GC):** Tự động thu hồi bộ nhớ của những đối tượng không còn được sử dụng.\n\nNhờ đó, lập trình viên không cần tự quản lý việc giải phóng bộ nhớ của từng đối tượng như trong một số ngôn ngữ lập trình khác.\n\n### 3. Ví dụ thực tế với Spring Boot và Maven\n\nTrong dự án Java Backend sử dụng Spring Boot, quá trình build và chạy ứng dụng thường diễn ra như sau:\n\n**Bước 1: Build ứng dụng bằng Maven**\n\n```bash\nmvn clean package\n```\n\nMaven sử dụng cấu hình trong `pom.xml` để quản lý dependency, thực hiện các bước build như biên dịch mã nguồn, chạy test và đóng gói ứng dụng.\n\nNếu được cấu hình với Spring Boot Maven Plugin, kết quả có thể là một **executable JAR** chứa các class của ứng dụng và những dependency cần thiết.\n\n**Bước 2: Chạy ứng dụng**\n\n```bash\njava -jar target/covie.jar\n```\n\n(Tên file JAR thực tế phụ thuộc vào cấu hình build của dự án.)\n\nKhi chạy:\n\n1. JVM khởi động và nạp các class cần thiết từ ứng dụng.\n2. Phương thức `main()` của ứng dụng Spring Boot được gọi.\n3. Trong phương thức `main()`, lệnh `SpringApplication.run(...)` khởi động Spring Boot.\n4. Spring Boot tạo và cấu hình **ApplicationContext**, khởi tạo các Spring Bean cần thiết.\n5. Nếu là ứng dụng web sử dụng embedded server, Spring Boot khởi động web server (ví dụ Tomcat) để tiếp nhận HTTP request.\n\n**Phân biệt Maven và JVM:**\n\n- **Maven:** Công cụ quản lý dependency và tự động hóa quá trình build, test, đóng gói ứng dụng.\n- **JVM:** Môi trường thực thi Bytecode và quản lý quá trình chạy chương trình Java.\n\nVì vậy, Maven hỗ trợ tạo ra file JAR để triển khai, còn JVM mới là thành phần thực sự thực thi ứng dụng Java."
+    },
+    {
+      "id": "q-069",
+      "title": "Interface có method có implementation được không?",
+      "category": "design-patterns",
+      "difficulty": "middle",
+      "tags": [
+        "OOP",
+        "SOLID",
+        "DesignPatterns",
+        "Factory",
+        "Strategy",
+        "Observer",
+        "Singleton"
+      ],
+      "companies": [
+        "Viettel",
+        "Shopee",
+        "Sea Group",
+        "FPT Software"
+      ],
+      "summary": "Có. Từ Java 8, interface có thể khai báo default method với phần thân triển khai, và class implements có thể sử dụng luôn hoặc override nó.",
+      "answerMarkdown": "Có. Từ Java 8, interface có thể khai báo default method với phần thân triển khai, và class implements có thể sử dụng luôn hoặc override nó. Ví dụ, interface DiscountPolicy có method calculate(...) và một default method isApplicable(...) trả về true theo mặc định. Default method giúp mở rộng interface mà không bắt mọi implementation cũ phải viết ngay method mới. Ngoài ra, interface có thể có static method và từ Java 9 có private method để dùng chung logic nội bộ giữa các method trong interface. Nếu một class implements hai interface có default method trùng chữ ký và không có quy tắc ưu tiên rõ, class phải override để giải quyết xung đột. Em chỉ dùng default method cho hành vi phù hợp với hợp đồng, không biến interface thành nơi chứa toàn bộ nghiệp vụ phức tạp."
+    },
+    {
+      "id": "q-070",
+      "title": "Interface có static method được không?",
+      "category": "design-patterns",
+      "difficulty": "middle",
+      "tags": [
+        "OOP",
+        "SOLID",
+        "DesignPatterns",
+        "Factory",
+        "Strategy",
+        "Observer",
+        "Singleton"
+      ],
+      "companies": [
+        "Axon",
+        "One Mount"
+      ],
+      "summary": "Có. Interface trong Java có thể khai báo static method và cung cấp phần thân triển khai cho method đó.",
+      "answerMarkdown": "Có. Interface trong Java có thể khai báo static method và cung cấp phần thân triển khai cho method đó. Ví dụ, interface MoneyFormatter có static method format(long amount) dùng một logic tiện ích liên quan trực tiếp đến hợp đồng. Cách gọi là MoneyFormatter.format(...), không phải gọi qua object implementation như một instance method thông thường. Static method của interface không được kế thừa theo cách instance method được override, nên không tham gia runtime polymorphism. Em phân biệt static method với default method: default method được gọi qua object triển khai và có thể override, còn static method thuộc chính interface. Trong dự án backend, em chỉ đặt static method trong interface nếu nó thực sự là tiện ích hoặc factory gắn với hợp đồng đó; logic cần dependency từ Spring thường nên nằm ở Service."
+    },
+    {
+      "id": "q-089",
+      "title": "String Constant Pool trong Java là gì?",
+      "category": "java-core",
+      "difficulty": "middle",
+      "tags": [
+        "Java",
+        "JVM",
+        "StringPool",
+        "Immutability",
+        "MemoryManagement"
+      ],
+      "companies": [
+        "MB Bank",
+        "Tiki",
+        "Momo",
+        "Viettel",
+        "Shopee"
+      ],
+      "summary": "**String Constant Pool (SCP)** là cơ chế lưu trữ và tái sử dụng các đối tượng String có cùng nội dung, giúp tiết kiệm bộ nhớ.\n\n- **String Literal:** Java tái sử dụng String đã tồn tại trong Pool.\n- **`new String()`:** Tạo một đối tượng String mới, khác với đối tượng trong Pool.\n- **`intern()`:** Trả về tham chiếu đến String có cùng nội dung trong Pool.\n\nTừ Java 7, các đối tượng String được quản lý trong Pool nằm trên Java Heap.",
+      "answerMarkdown": "### 1. String Literal — Tái sử dụng đối tượng\n\n```java\nString s1 = \"Java\";\nString s2 = \"Java\";\n\nSystem.out.println(s1 == s2); // true\n```\n\n**Giải thích:** Hai biến cùng tham chiếu đến đối tượng `\"Java\"` trong String Pool nên `==` trả về `true`.\n\n### 2. new String() — Tạo đối tượng mới\n\n```java\nString s1 = \"Java\";\nString s2 = new String(\"Java\");\n\nSystem.out.println(s1 == s2);      // false\nSystem.out.println(s1.equals(s2)); // true\n```\n\n**Giải thích:**\n\n- `s1` tham chiếu đến String trong Pool.\n- `s2` tham chiếu đến đối tượng String mới.\n- `==` trả về `false` vì khác đối tượng.\n- `equals()` trả về `true` vì cùng nội dung.\n\n### 3. intern() — Lấy String từ Pool\n\n```java\nString s1 = new String(\"Java\");\nString s2 = s1.intern();\nString s3 = \"Java\";\n\nSystem.out.println(s1 == s2); // false\nSystem.out.println(s2 == s3); // true\n```\n\n**Giải thích:** `intern()` trả về đối tượng String tương ứng trong Pool. Nếu chưa có chuỗi cùng nội dung, JVM đưa một tham chiếu chuẩn hóa vào Pool.\n\nVì vậy, `s2` và `s3` cùng tham chiếu đến một đối tượng.\n\n### 4. Vì sao String Pool hoạt động được?\n\nVì `String` là **Immutable (bất biến)**.\n\nNhiều biến có thể dùng chung một đối tượng String mà không lo biến này làm thay đổi nội dung của biến khác.\n\n### 5. Lưu ý khi sử dụng\n\n- Ưu tiên `String s = \"Java\"` thay vì `new String(\"Java\")` khi không cần tạo đối tượng riêng.\n- Dùng `equals()` để so sánh nội dung String, không dùng `==`.\n- Không nên lạm dụng `intern()` với dữ liệu động số lượng lớn vì có thể tăng chi phí quản lý Pool.\n\n**Kết luận:** String Pool giúp JVM tiết kiệm bộ nhớ bằng cách tái sử dụng các String có cùng nội dung. `new String()` tạo đối tượng riêng, còn `intern()` trả về String tương ứng trong Pool.",
+      "relatedProblems": [
+        383,
+        242,
+        3
+      ]
+    },
+    {
+      "id": "q-090",
+      "title": "new String(\"abc\") khác \"abc\" thế nào?",
+      "category": "java-core",
+      "difficulty": "middle",
+      "tags": [
+        "String",
+        "Immutability",
+        "StringPool",
+        "EqualsHashCode",
+        "Enum",
+        "Record"
+      ],
+      "companies": [
+        "Viettel",
+        "Shopee",
+        "Sea Group",
+        "FPT Software"
+      ],
+      "summary": "- **`\"abc\"` (String Literal):** Sử dụng đối tượng String trong String Pool, có thể tái sử dụng nếu đã tồn tại.\n- **`new String(\"abc\")`:** Luôn tạo một đối tượng String mới, dù nội dung `\"abc\"` đã có trong Pool.\n\nCả hai đều có cùng nội dung nhưng không nhất thiết tham chiếu đến cùng một đối tượng.",
+      "answerMarkdown": "### 1. Ví dụ\n\n```java\nString a = \"abc\";\nString b = new String(\"abc\");\n\nSystem.out.println(a == b);      // false\nSystem.out.println(a.equals(b)); // true\n```\n\n**Giải thích:**\n\n- `a` tham chiếu đến đối tượng `\"abc\"` trong String Pool.\n- `b` tham chiếu đến một đối tượng String mới.\n- `==` trả về `false` vì hai tham chiếu khác đối tượng.\n- `equals()` trả về `true` vì nội dung giống nhau.\n\n### 2. Phương thức intern()\n\n```java\nString a = \"abc\";\nString b = new String(\"abc\");\n\nSystem.out.println(a == b.intern()); // true\n```\n\n`intern()` trả về tham chiếu đến String có nội dung tương ứng trong Pool.\n\n### 3. Khi nào sử dụng?\n\nTrong Java Backend, nên ưu tiên:\n\n```java\nString status = \"ACTIVE\";\n```\n\nThay vì:\n\n```java\nString status = new String(\"ACTIVE\");\n```\n\nVì việc tạo đối tượng String mới thường không cần thiết.\n\nKhi so sánh nội dung String, luôn dùng `equals()` hoặc `Objects.equals()` thay vì `==`.\n\n**Kết luận:** String Literal tái sử dụng đối tượng trong Pool, còn `new String()` tạo đối tượng mới. Sử dụng `equals()` để so sánh nội dung.",
+      "relatedProblems": [
+        383,
+        242,
+        3
+      ]
+    },
+    {
+      "id": "q-091",
+      "title": "equals() và hashCode() trong Java có mối quan hệ thế nào?",
+      "category": "java-core",
+      "difficulty": "middle",
+      "tags": [
+        "String",
+        "Immutability",
+        "StringPool",
+        "EqualsHashCode",
+        "Enum",
+        "Record"
+      ],
+      "companies": [
+        "Axon",
+        "One Mount"
+      ],
+      "summary": "- **`equals()`:** Xác định hai object có được xem là bằng nhau hay không.\n- **`hashCode()`:** Trả về một số nguyên (mã băm), giúp các cấu trúc như `HashMap` và `HashSet` xác định vị trí tìm kiếm, lưu trữ dữ liệu.\n\n**Quy tắc quan trọng:**\n\n- Nếu `a.equals(b) == true` thì `a.hashCode() == b.hashCode()` bắt buộc đúng.\n- Nếu hai object có cùng `hashCode()` thì chưa chắc `equals()` trả về `true`. Đây gọi là Hash Collision.\n\nVì vậy, **khi override `equals()`, phải override `hashCode()` tương ứng** để đảm bảo tính nhất quán.",
+      "answerMarkdown": "### 1. Ví dụ thực tế\n\nGiả sử hai sản phẩm có cùng mã `code` được xem là bằng nhau:\n\n```java\nimport java.util.Objects;\n\npublic class ProductCode {\n\n    private final String code;\n\n    public ProductCode(String code) {\n        this.code = code;\n    }\n\n    @Override\n    public boolean equals(Object obj) {\n        if (this == obj) return true;\n\n        if (!(obj instanceof ProductCode other)) {\n            return false;\n        }\n\n        return Objects.equals(code, other.code);\n    }\n\n    @Override\n    public int hashCode() {\n        return Objects.hashCode(code);\n    }\n}\n```\n\nSử dụng với `HashSet`:\n\n```java\nSet<ProductCode> products = new HashSet<>();\n\nproducts.add(new ProductCode(\"P001\"));\n\nSystem.out.println(\n    products.contains(new ProductCode(\"P001\"))\n); // true\n```\n\n**Giải thích:**\n\n- Hai object khác nhau nhưng có cùng `code = \"P001\"`.\n- `equals()` xác định chúng bằng nhau.\n- `hashCode()` tạo mã băm nhất quán từ `code`.\n- Vì vậy, `HashSet` có thể tìm thấy phần tử đã thêm.\n\n### 2. Điều gì xảy ra nếu không override hashCode()?\n\nNếu chỉ override `equals()` mà giữ `hashCode()` mặc định từ `Object`, hai object được xem là bằng nhau vẫn có thể có mã băm khác nhau.\n\nKhi đó, `HashSet` hoặc `HashMap` có thể tìm sai vị trí và không tìm thấy dữ liệu như mong đợi.\n\n### 3. Lưu ý khi sử dụng\n\n- Hai object có cùng `hashCode()` không nhất thiết bằng nhau.\n- Không nên thay đổi các field tham gia tính `equals()` và `hashCode()` khi object đang được dùng làm key trong `HashMap` hoặc phần tử của `HashSet`.\n- Java `record` tự sinh `equals()` và `hashCode()` dựa trên các component.\n- Với JPA Entity, cần thiết kế cẩn thận khi sử dụng ID tự sinh.\n\n**Kết luận:** `equals()` quyết định tính bằng nhau, còn `hashCode()` hỗ trợ tìm kiếm bằng mã băm. Hai phương thức phải tuân thủ cùng một quy tắc so sánh để `HashMap` và `HashSet` hoạt động đúng."
+    },
+    {
+      "id": "q-092",
+      "title": "Override equals() mà không override hashCode() gây gì?",
+      "category": "java-core",
+      "difficulty": "middle",
+      "tags": [
+        "String",
+        "Immutability",
+        "StringPool",
+        "EqualsHashCode",
+        "Enum",
+        "Record"
+      ],
+      "companies": [
+        "Tiki",
+        "Momo",
+        "NAB Innovation"
+      ],
+      "summary": "Nếu override equals() mà không override hashCode(), hai object được xem là bằng nhau có thể trả về hai mã hash khác nhau, vi phạm hợp đồng Object và gây lỗi với HashMap hoặc HashSet.",
+      "answerMarkdown": "Nếu override equals() mà không override hashCode(), hai object được xem là bằng nhau có thể trả về hai mã hash khác nhau, vi phạm hợp đồng Object và gây lỗi với HashMap hoặc HashSet. Ví dụ, em tạo hai ProductKey có cùng SKU, equals() trả true, nhưng hashCode() kế thừa từ Object vẫn có thể khác; khi thêm key thứ nhất vào HashMap rồi lấy bằng key thứ hai, kết quả có thể null vì tìm sai bucket. Trong Java, em luôn triển khai hai method nhất quán và dựa trên những field xác định tính bằng nhau. Đặc biệt, những field dùng trong equals()/hashCode() của key nên ổn định khi object nằm trong hash collection; nếu sửa field sau khi thêm key, việc tìm lại cũng có thể thất bại. Em có thể dùng Objects.hash(...) nhưng vẫn phải hiểu tiêu chí bằng nhau là gì."
+    },
+    {
+      "id": "q-097",
+      "title": "Enum là gì, khi nào thay String?",
+      "category": "java-core",
+      "difficulty": "middle",
+      "tags": [
+        "String",
+        "Immutability",
+        "StringPool",
+        "EqualsHashCode",
+        "Enum",
+        "Record"
+      ],
+      "companies": [
+        "VNG",
+        "Grab"
+      ],
+      "summary": "`enum` định nghĩa một **tập giá trị cố định, có kiểu rõ ràng**, ví dụ trạng thái đơn hàng `PENDING`, `PAID`, `CANCELLED`. So với String tự do, enum giúp trình biên dịch phát hiện việc dùng sai kiểu và tránh lỗi gõ nhầm. Trong backend, enum phù hợp cho trạng thái nghiệp vụ; **vẫn phải kiểm tra chuyển trạng thái hợp lệ** và cân nhắc cách lưu trong database.",
+      "answerMarkdown": "## 1. Enum là gì?\n\n`enum` (enumeration) là kiểu dữ liệu Java dành cho **một tập hằng số xác định trước**. Ví dụ một đơn hàng có thể ở trạng thái `PENDING`, `PAID` hoặc `CANCELLED`.\n\n**So với String:** dùng `\"PAID\"` dễ gõ nhầm thành `\"PADI\"` mà trình biên dịch không phát hiện; `OrderStatus.PAID` được kiểm tra kiểu ngay khi biên dịch.\n\n## 2. Ví dụ Java hoàn chỉnh\n\n```java\npublic class EnumDemo {\n    enum OrderStatus { PENDING, PAID, CANCELLED } // Tập trạng thái cố định.\n\n    public static void main(String[] args) {\n        OrderStatus status = OrderStatus.PENDING; // Giá trị enum ban đầu.\n\n        if (status == OrderStatus.PENDING) { // Enum so sánh bằng ==.\n            status = OrderStatus.PAID;      // Chuyển sang đã thanh toán.\n        }\n\n        System.out.println(status); // PAID\n    }\n}\n```\n\n**Giải thích:**\n\n- `enum OrderStatus`: Khai báo một **kiểu** mới, không phải một `String`.\n- `OrderStatus.PENDING`: Một hằng enum; mỗi hằng thuộc cùng kiểu là một instance duy nhất.\n- `==`: Cách so sánh enum thường dùng và an toàn khi hai vế cùng kiểu; `status` vẫn có thể `null`, nên không gọi method trên nó khi chưa kiểm tra.\n- `OrderStatus.valueOf(\"PAID\")`: Chuyển tên hằng sang enum; **ném `IllegalArgumentException`** nếu chuỗi không hợp lệ, nên đầu vào API cần validation.\n\n## 3. Enum và String khác nhau thế nào?\n\n| Tiêu chí | String | Enum |\n|---|---|---|\n| Kiểm tra giá trị | Có thể sai chính tả khi chạy | Tên hằng được compiler kiểm tra khi dùng trong code |\n| Tập giá trị | Mở, thay đổi tự do | Định nghĩa rõ trước |\n| So sánh | Dùng `equals()` cho nội dung | Thường dùng `==` |\n| Phù hợp | Tên, mô tả, dữ liệu không giới hạn | Trạng thái hoặc loại nghiệp vụ cố định |\n\n## 4. Dùng Enum trong Spring Boot / JPA\n\n```java\n@Enumerated(EnumType.STRING) // Lưu tên enum, ví dụ \"PAID\".\nprivate OrderStatus status;    // Field trong một JPA Entity.\n```\n\nVới JPA, thường ưu tiên `EnumType.STRING` hơn `ORDINAL` vì đổi thứ tự hằng enum có thể khiến số thứ tự cũ mang ý nghĩa sai. **Nhưng đổi tên hằng cũng cần migration dữ liệu** nếu database đã lưu tên cũ.\n\nEnum **không tự ngăn** chuyển `PAID -> PENDING` không hợp lệ: Service vẫn phải kiểm tra quy tắc chuyển trạng thái. Nếu tập giá trị thay đổi tùy người dùng hoặc liên tục cấu hình từ database, enum có thể không phù hợp.\n\n## 5. Câu trả lời phỏng vấn (30–45 giây)\n\n> Enum là một kiểu Java biểu diễn tập hằng số xác định trước. Em sử dụng enum thay cho String khi dữ liệu thuộc một tập giá trị cố định, như trạng thái đơn hàng, để tránh lỗi gõ nhầm và tận dụng kiểm tra kiểu của compiler. Với JPA em thường lưu bằng `EnumType.STRING` thay vì `ORDINAL`; còn quy tắc chuyển trạng thái vẫn cần được Service kiểm tra.\n\n**Học tiếp:** `q-098` (Vì sao trạng thái Order nên dùng Enum?), `q-054` (`==` và `equals()`).\n\n**Tài liệu:** [Oracle — Enum Types](https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html).",
+      "relatedProblems": [
+        383,
+        242,
+        3
+      ]
+    },
+    {
+      "id": "q-098",
+      "title": "Vì sao trạng thái Order nên dùng Enum?",
+      "category": "java-core",
+      "difficulty": "middle",
+      "tags": [
+        "String",
+        "Immutability",
+        "StringPool",
+        "EqualsHashCode",
+        "Enum",
+        "Record"
+      ],
+      "companies": [
+        "NAB Innovation",
+        "Samsung R&D",
+        "VNPay"
+      ],
+      "summary": "Trạng thái Order nên dùng Enum vì đơn hàng chỉ được phép ở một tập trạng thái xác định, chẳng hạn PENDING, CONFIRMED, CANCELLED hoặc COMPLETED, thay vì nhận chuỗi tùy ý có thể viết sai.",
+      "answerMarkdown": "Trạng thái Order nên dùng Enum vì đơn hàng chỉ được phép ở một tập trạng thái xác định, chẳng hạn PENDING, CONFIRMED, CANCELLED hoặc COMPLETED, thay vì nhận chuỗi tùy ý có thể viết sai. Enum giúp compiler phát hiện một số lỗi, làm điều kiện và switch dễ đọc, đồng thời giới hạn tập giá trị cần xử lý. Tuy vậy, dùng Enum mới chỉ giải quyết kiểu dữ liệu chứ chưa phải State Machine. Em vẫn phải quy định các phép chuyển trạng thái, ví dụ PENDING có thể sang CONFIRMED hoặc CANCELLED theo chính sách, còn COMPLETED là trạng thái cuối và không được tự ý chuyển tiếp. Trong CoVie, các lệnh chuyển trạng thái đơn hàng nên đi qua Service/policy cụ thể có kiểm tra actor và trạng thái hiện tại, thay vì API cho client truyền một status bất kỳ và save trực tiếp."
+    },
+    {
+      "id": "q-099",
+      "title": "Java Record là gì?",
+      "category": "java-core",
+      "difficulty": "middle",
+      "tags": [
+        "String",
+        "Immutability",
+        "StringPool",
+        "EqualsHashCode",
+        "Enum",
+        "Record"
+      ],
+      "companies": [
+        "FPT Software",
+        "Techcombank",
+        "MB Bank",
+        "Tiki"
+      ],
+      "summary": "Record là cú pháp Java dành cho những class chủ yếu mang dữ liệu, được khai báo bằng từ khóa record cùng danh sách component, ví dụ record ProductResponse(UUID id, String name, long priceMinor) {}.",
+      "answerMarkdown": "Record là cú pháp Java dành cho những class chủ yếu mang dữ liệu, được khai báo bằng từ khóa record cùng danh sách component, ví dụ record ProductResponse(UUID id, String name, long priceMinor) {}. Compiler tự tạo constructor, accessor như id(), name(), equals(), hashCode() và toString(), giảm nhiều boilerplate so với class thông thường. Component của record trở thành field private final, nên không thể thay tham chiếu sau tạo, nhưng record chỉ đảm bảo tính bất biến nông: nếu một component là List mutable thì nội dung List vẫn có thể thay đổi. Em có thể thêm validation trong compact constructor và method hỗ trợ. Trong CoVie, record phù hợp cho một số DTO response hoặc value object, nhưng không phải lựa chọn mặc định cho mọi JPA Entity vì Entity có yêu cầu lifecycle, proxy và quản lý trạng thái khác."
+    },
+    {
+      "id": "q-100",
+      "title": "Record khác Class thế nào?",
+      "category": "java-core",
+      "difficulty": "middle",
+      "tags": [
+        "String",
+        "Immutability",
+        "StringPool",
+        "EqualsHashCode",
+        "Enum",
+        "Record"
+      ],
+      "companies": [
+        "Grab",
+        "ZaloPay"
+      ],
+      "summary": "Record và class thông thường đều là kiểu tham chiếu trong Java, nhưng record được thiết kế cho dữ liệu có cấu trúc rõ ràng và tự sinh nhiều thành phần như constructor, accessor, equals(), hashCode(), toString().",
+      "answerMarkdown": "Record và class thông thường đều là kiểu tham chiếu trong Java, nhưng record được thiết kế cho dữ liệu có cấu trúc rõ ràng và tự sinh nhiều thành phần như constructor, accessor, equals(), hashCode(), toString(). Với class thường, em linh hoạt hơn khi muốn kế thừa, quản lý trạng thái mutable hoặc xây nhiều constructor/getter theo ý mình. Record ngầm extends java.lang.Record, không thể extends một class khác và không khai báo thêm instance field ngoài component; record vẫn có thể implements interface và có method riêng. Ví dụ, ProductResponse nên cân nhắc record vì chủ yếu chuyển dữ liệu qua API, trong khi một Order JPA Entity có state lifecycle và ORM mapping phức tạp thì class thường thường phù hợp hơn. Em cũng lưu ý record không tự động tạo deep immutable data nếu component là object mutable."
+    },
+    {
+      "id": "q-120",
+      "title": "Fail-fast Iterator là gì?",
+      "category": "collections",
+      "difficulty": "middle",
+      "tags": [
+        "Collections",
+        "HashMap",
+        "ArrayList",
+        "LinkedList",
+        "TreeMap",
+        "HashSet"
+      ],
+      "companies": [
+        "VNPay",
+        "Axon",
+        "One Mount",
+        "VNG"
+      ],
+      "summary": "Fail-fast Iterator là iterator có cơ chế phát hiện một số thay đổi cấu trúc không được thực hiện thông qua iterator trong khi đang duyệt và có thể ném ConcurrentModificationException.",
+      "answerMarkdown": "Fail-fast Iterator là iterator có cơ chế phát hiện một số thay đổi cấu trúc không được thực hiện thông qua iterator trong khi đang duyệt và có thể ném ConcurrentModificationException. ArrayList và HashMap có dạng iterator như vậy. Ví dụ, em đang for-each qua list rồi gọi list.add(...) ở giữa vòng lặp: chương trình có thể ném exception vì cấu trúc list thay đổi ngoài iterator. Tuy nhiên, fail-fast là cơ chế phát hiện lỗi theo best effort, không phải cam kết phát hiện mọi race condition hay công cụ đảm bảo thread safety. Nếu cần xóa trong khi duyệt, em có thể dùng Iterator.remove(), Collection.removeIf() hoặc tách bước lọc thành Collection mới. Với nhiều thread, em cần collection/concurrency strategy phù hợp thay vì trông chờ fail-fast bảo vệ dữ liệu."
+    },
+    {
+      "id": "q-121",
+      "title": "ConcurrentModificationException khi nào xảy ra?",
+      "category": "collections",
+      "difficulty": "middle",
+      "tags": [
+        "Collections",
+        "HashMap",
+        "ArrayList",
+        "LinkedList",
+        "TreeMap",
+        "HashSet"
+      ],
+      "companies": [
+        "MB Bank",
+        "Tiki"
+      ],
+      "summary": "ConcurrentModificationException thường xuất hiện khi một Collection bị thay đổi cấu trúc trong lúc đang duyệt bằng iterator không cho phép thay đổi kiểu đó.",
+      "answerMarkdown": "ConcurrentModificationException thường xuất hiện khi một Collection bị thay đổi cấu trúc trong lúc đang duyệt bằng iterator không cho phép thay đổi kiểu đó. Ví dụ, for (String s : list) { if (s.isBlank()) list.remove(s); } có thể gây exception với ArrayList vì for-each đang dùng iterator trong khi list bị sửa trực tiếp. Cách xử lý phù hợp là list.removeIf(String::isBlank), dùng Iterator.remove() hoặc lọc sang danh sách khác. Tên exception có chữ Concurrent nhưng không bắt buộc phải có nhiều thread mới xảy ra; một thread cũng có thể tự gây lỗi. Ngược lại, có nhiều thread mà không xảy ra exception cũng không có nghĩa chương trình an toàn. Em xem đây là dấu hiệu cần kiểm tra cách duyệt và thay đổi collection, chứ không chỉ thêm synchronized tùy tiện."
+    },
+    {
+      "id": "q-132",
+      "title": "Stream API là gì?",
+      "category": "collections",
+      "difficulty": "middle",
+      "tags": [
+        "StreamAPI",
+        "Lambda",
+        "FunctionalInterface",
+        "Optional",
+        "Collectors"
+      ],
+      "companies": [
+        "Momo",
+        "NAB Innovation",
+        "Samsung R&D",
+        "VNPay"
+      ],
+      "summary": "Stream API là công cụ trong Java giúp xử lý một chuỗi phần tử theo cách khai báo, nghĩa là mô tả muốn lọc, chuyển đổi, sắp xếp hoặc tổng hợp dữ liệu như thế nào thay vì tự viết tất cả vòng lặp.",
+      "answerMarkdown": "Stream API là công cụ trong Java giúp xử lý một chuỗi phần tử theo cách khai báo, nghĩa là mô tả muốn lọc, chuyển đổi, sắp xếp hoặc tổng hợp dữ liệu như thế nào thay vì tự viết tất cả vòng lặp. Ví dụ, products.stream().filter(p \\-\\> p.isActive()).map(Product::getName).toList() lọc sản phẩm hoạt động rồi lấy danh sách tên. Stream có các thao tác trung gian như filter(), map(), sorted() và thao tác kết thúc như toList(), count() hoặc collect(). Các thao tác trung gian thường được đánh giá lười, chỉ chạy khi có terminal operation. Stream không phải Collection mới và cũng không tự lưu dữ liệu; nó mô tả một pipeline tính toán trên nguồn dữ liệu. Trong CoVie, em có thể dùng Stream để biến Entity đã truy xuất thành DTO hoặc tổng hợp dữ liệu ở tầng application khi khối lượng phù hợp."
+    },
+    {
+      "id": "q-133",
+      "title": "Stream khác Collection thế nào?",
+      "category": "collections",
+      "difficulty": "middle",
+      "tags": [
+        "StreamAPI",
+        "Lambda",
+        "FunctionalInterface",
+        "Optional",
+        "Collectors"
+      ],
+      "companies": [
+        "Sea Group",
+        "FPT Software"
+      ],
+      "summary": "Collection là cấu trúc dùng để giữ các phần tử, ví dụ ArrayList hoặc HashSet; Stream là một pipeline dùng để xử lý phần tử từ một nguồn như Collection, array hoặc generator.",
+      "answerMarkdown": "Collection là cấu trúc dùng để giữ các phần tử, ví dụ ArrayList hoặc HashSet; Stream là một pipeline dùng để xử lý phần tử từ một nguồn như Collection, array hoặc generator. Em có thể duyệt Collection nhiều lần, thêm/xóa theo hợp đồng của nó; còn một Stream đã được tiêu thụ bởi terminal operation thì không nên tái sử dụng. Ví dụ, List\\<Product\\> products lưu những object, còn products.stream().filter(...).count() tính số object đáp ứng điều kiện chứ không tạo một List chứa dữ liệu ban đầu. Stream cũng không tự thay đổi Collection nguồn khi filter/map, trừ khi lambda chứa side effect không nên có. Khi cần kết quả dạng Collection, em dùng toList() hoặc collect(). Em thích Stream cho phép biến đổi dữ liệu ngắn, rõ nghĩa và dùng vòng lặp khi điều khiển luồng phức tạp sẽ dễ hiểu hơn."
+    },
+    {
+      "id": "q-139",
+      "title": "Lazy Evaluation trong Stream là gì?",
+      "category": "collections",
+      "difficulty": "middle",
+      "tags": [
+        "StreamAPI",
+        "Lambda",
+        "FunctionalInterface",
+        "Optional",
+        "Collectors"
+      ],
+      "companies": [
+        "Techcombank",
+        "MB Bank"
+      ],
+      "summary": "Lazy Evaluation nghĩa là những thao tác trung gian trong Stream như filter() và map() thường chưa được thực thi ngay khi em viết pipeline, mà được kích hoạt khi có một terminal operation như toList(), count() hoặc findFirst().",
+      "answerMarkdown": "Lazy Evaluation nghĩa là những thao tác trung gian trong Stream như filter() và map() thường chưa được thực thi ngay khi em viết pipeline, mà được kích hoạt khi có một terminal operation như toList(), count() hoặc findFirst(). Ví dụ, em tạo var stream \\= products.stream().filter(p \\-\\> { log.info(\"checking\"); return p.isActive(); }); thì chưa chắc có log nào được ghi tại thời điểm khai báo stream; khi gọi stream.toList(), pipeline mới được thực hiện. Java có thể kết hợp các thao tác để tránh xử lý phần tử không cần thiết; findFirst() có thể dừng sớm khi tìm được kết quả. Em tránh đặt side effect quan trọng vào các lambda vì số lần và thời điểm chạy có thể không như mong đợi, nhất là khi pipeline được tối ưu hoặc chạy song song. Sau terminal operation, Stream không được sử dụng lại."
+    },
+    {
+      "id": "q-140",
+      "title": "Intermediate và Terminal Operation khác nhau?",
+      "category": "collections",
+      "difficulty": "middle",
+      "tags": [
+        "StreamAPI",
+        "Lambda",
+        "FunctionalInterface",
+        "Optional",
+        "Collectors"
+      ],
+      "companies": [
+        "ZaloPay",
+        "Viettel",
+        "Shopee"
+      ],
+      "summary": "Intermediate Operation là thao tác trung gian trả về một Stream mới để tiếp tục ghép pipeline, ví dụ filter(), map(), flatMap(), sorted() hoặc distinct().",
+      "answerMarkdown": "Intermediate Operation là thao tác trung gian trả về một Stream mới để tiếp tục ghép pipeline, ví dụ filter(), map(), flatMap(), sorted() hoặc distinct(). Terminal Operation kết thúc pipeline và tạo kết quả hoặc side effect, ví dụ toList(), collect(), count(), reduce(), forEach() hoặc findFirst(). Khi em viết orders.stream().filter(o \\-\\> o.isPaid()).map(Order::getId).toList(), filter và map là trung gian, còn toList là kết thúc. Những intermediate operation thường lazy nên chỉ xác định cách biến đổi, chưa thực thi cho đến terminal operation. Một số thao tác như sorted() cần xử lý đáng kể dữ liệu trước khi sinh phần tử tiếp theo, khác filter có thể xử lý lần lượt. Em dùng cách phân biệt này để lý giải vì sao khai báo Stream chưa chắc chạy ngay và vì sao không thể dùng lại Stream đã được tiêu thụ."
+    },
+    {
+      "id": "q-189",
+      "title": "Spring Framework là gì?",
+      "category": "spring",
+      "difficulty": "middle",
+      "tags": [
+        "Spring",
+        "SpringCore",
+        "IoC",
+        "DependencyInjection",
+        "BeanLifecycle",
+        "AOPProxy",
+        "Transactional"
+      ],
+      "companies": [
+        "NAB Innovation",
+        "Samsung R&D",
+        "VNPay",
+        "Axon"
+      ],
+      "summary": "Spring Framework là một framework mã nguồn mở dành cho Java, cung cấp những thành phần nền tảng để xây dựng ứng dụng có cấu trúc rõ ràng.",
+      "answerMarkdown": "Spring Framework là một framework mã nguồn mở dành cho Java, cung cấp những thành phần nền tảng để xây dựng ứng dụng có cấu trúc rõ ràng. Chức năng quan trọng nhất là IoC Container, giúp quản lý object và Dependency Injection thay vì để mỗi class tự tạo các dependency. Spring còn cung cấp Spring MVC để xây REST API, cơ chế transaction, tích hợp dữ liệu và bảo mật thông qua các dự án trong hệ sinh thái như Spring Data, Spring Security. Ví dụ, OrderService cần OrderRepository thì Spring quản lý và cung cấp Repository cho Service, còn Controller nhận request và gọi nghiệp vụ tương ứng. Trong CoVie, backend dùng Spring Boot nhưng các chức năng như Bean, DI, transaction và MVC thực chất dựa vào Spring Framework. Em xem Spring là nền móng giải quyết các vấn đề lặp lại để tập trung vào nghiệp vụ, không phải một thư viện tự động làm đúng mọi logic cho mình."
+    },
+    {
+      "id": "q-193",
+      "title": "Constructor Injection và Field Injection khác nhau?",
+      "category": "spring",
+      "difficulty": "middle",
+      "tags": [
+        "Spring",
+        "SpringCore",
+        "IoC",
+        "DependencyInjection",
+        "BeanLifecycle",
+        "AOPProxy",
+        "Transactional"
+      ],
+      "companies": [
+        "Techcombank",
+        "MB Bank"
+      ],
+      "summary": "**Constructor Injection** truyền dependency qua constructor; **Field Injection** thường gắn `@Autowired` trực tiếp lên field. Constructor Injection thường được ưu tiên cho dependency bắt buộc vì hiện rõ yêu cầu lúc khởi tạo, dùng được `final`, và dễ unit test bằng `new` cùng fake/mock. Với một constructor, Spring tự chọn constructor đó mà thường không cần `@Autowired`.",
+      "answerMarkdown": "## 1. Phân biệt hai cách Dependency Injection\n\n**Dependency (phụ thuộc)** là object mà một class cần để làm việc, ví dụ `OrderService` cần `OrderRepository` để lưu đơn hàng.\n\n- **Constructor Injection:** Nhận `OrderRepository` qua **tham số constructor** khi tạo `OrderService`.\n- **Field Injection:** Spring gán dependency vào **field** (thường có `@Autowired`) sau bước tạo object.\n\n## 2. Constructor Injection — Cách thường được khuyến nghị\n\n```java\nimport org.springframework.stereotype.Service;\n\n@Service // Đăng ký class thành Spring Bean.\npublic class OrderService {\n    private final OrderRepository repository; // Dependency bắt buộc.\n\n    public OrderService(OrderRepository repository) { // Nhận qua constructor.\n        this.repository = repository; // Gán đúng một lần vào field final.\n    }\n\n    public void createOrder() {\n        repository.save(); // Dùng dependency được truyền vào.\n    }\n}\n```\n\n`OrderRepository` là interface/repository đã được khai báo trong ứng dụng. Trong Spring, nếu bean chỉ có **một constructor**, thường **không cần `@Autowired`** trên constructor đó. Khi tạo object thủ công để unit test, ta có thể truyền fake/mock repository qua `new OrderService(fakeRepository)`.\n\n## 3. Field Injection — Ngắn hơn nhưng có hạn chế\n\n```java\n@Service\npublic class OrderService {\n    @Autowired // Spring gán sau khi tạo object.\n    private OrderRepository repository; // Không thể khai báo final theo cách này.\n}\n```\n\nVới field injection, dependency không xuất hiện trong constructor nên dễ bị bỏ sót khi tạo object bằng `new OrderService()` ngoài Spring Container. Field injection còn khó thay thế dependency trong unit test nếu không khởi chạy Spring hoặc dùng reflection.\n\n## 4. So sánh nhanh\n\n| Tiêu chí | Constructor Injection | Field Injection |\n|---|---|---|\n| Dependency xuất hiện ở đâu? | Tham số constructor | Field có `@Autowired` |\n| Có thể dùng `final`? | Có | Thông thường không |\n| Tạo bằng `new` trong unit test | Dễ truyền fake/mock | Cần cách gán riêng |\n| Dependency bắt buộc | Thể hiện rõ | Ít rõ hơn |\n| Lựa chọn thường dùng | Ưu tiên cho Service và component | Chủ yếu ở code cũ / ví dụ ngắn |\n\n**Lưu ý:** Constructor Injection không tự động làm code thread-safe; `final` giúp cố định **tham chiếu**, không biến dependency thành object bất biến. Với nhiều bean cùng implement một interface, vẫn có thể cần `@Qualifier` hoặc `@Primary`.\n\n## 5. Câu trả lời phỏng vấn (30–45 giây)\n\n> Constructor Injection truyền dependency qua constructor, còn Field Injection dùng `@Autowired` trên field để Spring gán sau khi tạo object. Em ưu tiên Constructor Injection cho dependency bắt buộc vì yêu cầu phụ thuộc hiện rõ, có thể dùng `final` và dễ unit test bằng mock hoặc fake mà không cần khởi chạy Spring. Nếu bean chỉ có một constructor, Spring thường không yêu cầu ghi `@Autowired`.\n\n**Học tiếp:** `q-192` (Dependency Injection là gì?), `q-194` (Vì sao nên ưu tiên Constructor Injection?).\n\n**Tài liệu:** [Spring Boot — Beans and Dependency Injection](https://docs.spring.io/spring-boot/reference/using/spring-beans-and-dependency-injection.html), [Spring — Using @Autowired](https://docs.spring.io/spring-framework/reference/core/beans/annotation-config/autowired.html)."
+    },
+    {
+      "id": "q-194",
+      "title": "Vì sao thường khuyến khích Constructor Injection?",
+      "category": "spring",
+      "difficulty": "middle",
+      "tags": [
+        "Spring",
+        "SpringCore",
+        "IoC",
+        "DependencyInjection",
+        "BeanLifecycle",
+        "AOPProxy",
+        "Transactional"
+      ],
+      "companies": [
+        "ZaloPay",
+        "Viettel",
+        "Shopee"
+      ],
+      "summary": "Em ưu tiên Constructor Injection vì nó công khai những dependency bắt buộc trong chữ ký constructor và giúp object được tạo ra với đầy đủ thành phần cần thiết.",
+      "answerMarkdown": "Em ưu tiên Constructor Injection vì nó công khai những dependency bắt buộc trong chữ ký constructor và giúp object được tạo ra với đầy đủ thành phần cần thiết. Các field có thể khai báo private final, giảm nguy cơ bị thay tham chiếu sau khởi tạo. Khi viết unit test, em chỉ cần new OrderService(fakeRepository) mà không phải khởi động Spring Context hoặc dùng reflection để gán một field @Autowired. Nếu một Service có constructor quá dài, đó còn là tín hiệu để xem xét lại trách nhiệm của class, dù không phải cứ nhiều dependency là thiết kế sai. Trong Spring hiện đại, nếu class chỉ có một constructor phù hợp thì thường không cần thêm @Autowired lên constructor đó. Em cũng lưu ý constructor injection không tự giải quyết vòng phụ thuộc A cần B và B lại cần A; trường hợp này nên thiết kế lại ranh giới thay vì cố giấu bằng field injection."
+    },
+    {
+      "id": "q-211",
+      "title": "GET, POST, PUT, PATCH, DELETE khác nhau?",
+      "category": "spring",
+      "difficulty": "middle",
+      "tags": [
+        "SpringMVC",
+        "RESTAPI",
+        "HTTP",
+        "ControllerAdvice",
+        "Pagination",
+        "CORS",
+        "OpenAPI"
+      ],
+      "companies": [
+        "VNPay",
+        "Axon"
+      ],
+      "summary": "GET dùng để đọc tài nguyên, theo chuẩn là phương thức an toàn về ý nghĩa vì không được thiết kế nhằm yêu cầu thay đổi trạng thái; POST dùng để tạo tài nguyên hoặc thực hiện một thao tác xử lý; PUT thường thay thế trạng thái tài nguyên đích; PATCH cập nhật một phần; DELETE yêu cầu xóa tài nguyên.",
+      "answerMarkdown": "GET dùng để đọc tài nguyên, theo chuẩn là phương thức an toàn về ý nghĩa vì không được thiết kế nhằm yêu cầu thay đổi trạng thái; POST dùng để tạo tài nguyên hoặc thực hiện một thao tác xử lý; PUT thường thay thế trạng thái tài nguyên đích; PATCH cập nhật một phần; DELETE yêu cầu xóa tài nguyên. Ví dụ, GET /products/{id} lấy chi tiết sản phẩm, POST /products tạo sản phẩm, PATCH /products/{id} sửa tên và giá, DELETE /products/{id} yêu cầu xóa hoặc ngừng hiển thị theo nghiệp vụ. Em chú ý sự khác biệt giữa ý nghĩa giao thức và implementation: backend không nên để GET vô tình hủy Order hay làm thay đổi tồn kho. GET, PUT và DELETE có tính idempotent theo semantics chuẩn khi được triển khai đúng; POST thông thường không mặc định idempotent, còn PATCH tùy cách thiết kế. Dù dùng phương thức nào, backend CoVie vẫn phải validate input và kiểm tra quyền."
+    },
+    {
+      "id": "q-212",
+      "title": "PUT và PATCH khác nhau?",
+      "category": "spring",
+      "difficulty": "middle",
+      "tags": [
+        "SpringMVC",
+        "RESTAPI",
+        "HTTP",
+        "ControllerAdvice",
+        "Pagination",
+        "CORS",
+        "OpenAPI"
+      ],
+      "companies": [
+        "MB Bank",
+        "Tiki",
+        "Momo"
+      ],
+      "summary": "PUT và PATCH đều thường được dùng để cập nhật tài nguyên nhưng khác nhau về ý nghĩa. PUT biểu diễn việc gửi trạng thái mới thay thế cho representation của tài nguyên tại URL, nên khi client gửi lại cùng request, kết quả mong muốn vẫn giống nhau về mặt semantics.",
+      "answerMarkdown": "PUT và PATCH đều thường được dùng để cập nhật tài nguyên nhưng khác nhau về ý nghĩa. PUT biểu diễn việc gửi trạng thái mới thay thế cho representation của tài nguyên tại URL, nên khi client gửi lại cùng request, kết quả mong muốn vẫn giống nhau về mặt semantics. PATCH gửi một bản mô tả thay đổi một phần, ví dụ chỉ đổi displayName và không động đến email. Nếu thiết kế API sản phẩm, em có thể dùng PUT /products/{id} để thay thế thông tin chỉnh sửa theo contract đầy đủ, còn PATCH /products/{id} để cập nhật một vài trường được phép. Em phải quy định rõ field thiếu, field null và field bị khóa nghĩa là gì, tránh PATCH vô tình xóa dữ liệu quan trọng. PATCH không tự động idempotent: thao tác 'tăng quantity thêm 1' khác với 'đặt quantity \\= 5'. Trong CoVie, thay đổi giá và tồn kho cần thêm kiểm tra ownership và quy tắc nghiệp vụ, không chỉ phụ thuộc lựa chọn PUT/PATCH."
+    },
+    {
+      "id": "q-258",
+      "title": "JWT được ký như thế nào?",
+      "category": "security-auth",
+      "difficulty": "senior",
+      "tags": [
+        "JWT",
+        "Cookie",
+        "HttpOnly",
+        "SameSite",
+        "RefreshTokenRotation",
+        "ActiveSession"
+      ],
+      "companies": [
+        "NAB Innovation",
+        "Samsung R&D",
+        "VNPay",
+        "Axon"
+      ],
+      "summary": "JWT có chữ ký theo chuẩn JWS bằng cách mã hóa Base64URL header và payload, ghép thành header.payload rồi tính chữ ký trên chuỗi đó bằng thuật toán đã cấu hình.",
+      "answerMarkdown": "JWT có chữ ký theo chuẩn JWS bằng cách mã hóa Base64URL header và payload, ghép thành header.payload rồi tính chữ ký trên chuỗi đó bằng thuật toán đã cấu hình. Với HS256, hai bên cùng có secret dùng HMAC-SHA256; với RS256, bên phát hành dùng RSA private key để ký và bên nhận dùng public key tương ứng để xác minh. Chữ ký không được tính trên JSON tùy tiện sau khi parse lại, mà trên đúng hai đoạn token đã được mã hóa trong đầu vào ký. Ví dụ, nếu attacker sửa sub hoặc exp trong payload mà không có khóa ký, chữ ký sẽ không còn hợp lệ. Trong CoVie, em dựa vào thư viện JWT được duy trì để thực hiện ký và xác minh, không tự cài thuật toán mật mã. Em còn giới hạn thuật toán được chấp nhận tại verifier và kiểm tra các claim, chứ không tin header alg do client tự khai."
+    },
+    {
+      "id": "q-260",
+      "title": "Access Token và Refresh Token khác nhau?",
+      "category": "security-auth",
+      "difficulty": "senior",
+      "tags": [
+        "JWT",
+        "Cookie",
+        "HttpOnly",
+        "SameSite",
+        "RefreshTokenRotation",
+        "ActiveSession"
+      ],
+      "companies": [
+        "Grab",
+        "ZaloPay",
+        "Viettel"
+      ],
+      "summary": "Access Token là thông tin xác thực client gửi khi truy cập tài nguyên được bảo vệ và thường có tuổi thọ ngắn để giới hạn thời gian token bị đánh cắp có thể bị sử dụng.",
+      "answerMarkdown": "Access Token là thông tin xác thực client gửi khi truy cập tài nguyên được bảo vệ và thường có tuổi thọ ngắn để giới hạn thời gian token bị đánh cắp có thể bị sử dụng. Refresh Token dùng ở endpoint đổi phiên để xin access token mới mà không bắt user đăng nhập lại; vì có vòng đời dài hơn, refresh token cần cơ chế bảo vệ, thu hồi và rotation chặt chẽ. Ví dụ, khi access token CoVie hết hạn, frontend có thể gọi refresh endpoint bằng cookie thích hợp, nhận phiên xác thực mới rồi thực hiện lại request nếu được phép. Em không dùng refresh token trực tiếp để gọi mọi API nghiệp vụ. Nếu refresh token bị lộ, hậu quả có thể nghiêm trọng vì attacker có thể duy trì truy cập, nên em ưu tiên lưu an toàn, giới hạn theo thiết bị/session, quản lý trạng thái server và phát hiện dùng lại token cũ. Hai loại token có mục đích khác nhau chứ không chỉ khác TTL."
+    },
+    {
+      "id": "q-261",
+      "title": "Vì sao CoVie dùng cả Access và Refresh Token?",
+      "category": "security-auth",
+      "difficulty": "senior",
+      "tags": [
+        "JWT",
+        "Cookie",
+        "HttpOnly",
+        "SameSite",
+        "RefreshTokenRotation",
+        "ActiveSession"
+      ],
+      "companies": [
+        "Samsung R&D",
+        "VNPay",
+        "Axon",
+        "One Mount"
+      ],
+      "summary": "CoVie dùng access token và refresh token để cân bằng bảo mật với trải nghiệm đăng nhập.",
+      "answerMarkdown": "CoVie dùng access token và refresh token để cân bằng bảo mật với trải nghiệm đăng nhập. Access token ngắn hạn phục vụ xác thực các request thường xuyên mà không cần user nhập mật khẩu mỗi lần; refresh token giữ khả năng cấp lại access token khi phiên còn hợp lệ, giúp user không bị đăng xuất quá sớm. Nếu chỉ có token kéo dài nhiều ngày, khi bị đánh cắp kẻ tấn công có cửa sổ sử dụng lớn; nếu chỉ có access token rất ngắn mà không có refresh, người dùng phải đăng nhập lại thường xuyên. Em hiểu đây là mô hình có kiểm soát phiên, không phải mọi JWT đều thực sự stateless: backend còn có thể kiểm tra active session, thu hồi phiên hoặc token family. Trong CoVie, em sẽ trình bày chi tiết TTL và thuật toán dựa trên cấu hình thực tế, nhưng nguyên tắc là access ngắn hơn refresh và việc kéo dài TTL phải cân nhắc rủi ro."
+    },
+    {
+      "id": "q-268",
+      "title": "JWT xác minh chữ ký thế nào?",
+      "category": "security-auth",
+      "difficulty": "senior",
+      "tags": [
+        "JWT",
+        "Cookie",
+        "HttpOnly",
+        "SameSite",
+        "RefreshTokenRotation",
+        "ActiveSession"
+      ],
+      "companies": [
+        "Tiki",
+        "Momo"
+      ],
+      "summary": "Khi xác minh JWT, backend phải kiểm tra đúng chữ ký trên phần header.payload bằng khóa và thuật toán được cấu hình từ phía server, không tin thuật toán do client tự chọn.",
+      "answerMarkdown": "Khi xác minh JWT, backend phải kiểm tra đúng chữ ký trên phần header.payload bằng khóa và thuật toán được cấu hình từ phía server, không tin thuật toán do client tự chọn. Với RS256, verifier dùng public key tương ứng để kiểm tra chữ ký RSA; nếu bất kỳ claim nào bị sửa mà không được ký lại bằng private key hợp lệ, xác minh sẽ thất bại. Tuy nhiên, chữ ký hợp lệ chưa đủ để cho phép request: em còn kiểm tra exp, nbf nếu có, issuer, audience, loại token, định danh session và quyền hiện tại khi nghiệp vụ yêu cầu. Em tránh chấp nhận alg=none, nhầm lẫn giữa thuật toán bất đối xứng và đối xứng hoặc tải khóa xác minh từ URL tùy ý trong header token. Trong CoVie, filter hoặc thành phần auth có thể chuyển JWT hợp lệ thành Authentication cho Spring Security, sau đó Service vẫn phải kiểm tra ownership với Order cụ thể."
+    },
+    {
+      "id": "q-356",
+      "title": "Optimistic Locking là gì?",
+      "category": "database",
+      "difficulty": "middle",
+      "tags": [
+        "Transaction",
+        "IsolationLevels",
+        "PessimisticLock",
+        "OptimisticLock",
+        "SelectForUpdate",
+        "Flyway"
+      ],
+      "companies": [
+        "Grab",
+        "ZaloPay",
+        "Viettel"
+      ],
+      "summary": "Optimistic Locking là cách kiểm soát cập nhật đồng thời với giả định xung đột tương đối hiếm, thường không giữ khóa ghi dài trong suốt thời gian đọc và chỉnh sửa.",
+      "answerMarkdown": "Optimistic Locking là cách kiểm soát cập nhật đồng thời với giả định xung đột tương đối hiếm, thường không giữ khóa ghi dài trong suốt thời gian đọc và chỉnh sửa. Em nạp bản ghi kèm version, sau đó UPDATE chỉ thành công nếu version vẫn bằng giá trị đã đọc; nếu người khác cập nhật trước, transaction phát hiện xung đột và không ghi đè dữ liệu mới. Ví dụ, hai seller/admin cùng chỉnh thông tin một Product từ version 3: người đầu lưu thành version 4, người sau dùng version 3 sẽ gặp OptimisticLockException hoặc lỗi tương ứng. Trong Spring Data JPA, @Version giúp provider triển khai cơ chế này cho managed entity. Em không tự retry vô hạn, vì khi user chỉnh form cũ, cần thông báo conflict để họ xem dữ liệu mới. Trong CoVie, optimistic locking phù hợp với một số cập nhật ít tranh chấp, còn giữ tồn kho ở thời điểm checkout thường cần khóa hoặc atomic update rõ ràng hơn."
+    },
+    {
+      "id": "q-357",
+      "title": "Pessimistic Locking là gì?",
+      "category": "database",
+      "difficulty": "middle",
+      "tags": [
+        "Transaction",
+        "IsolationLevels",
+        "PessimisticLock",
+        "OptimisticLock",
+        "SelectForUpdate",
+        "Flyway"
+      ],
+      "companies": [
+        "Samsung R&D",
+        "VNPay",
+        "Axon",
+        "One Mount"
+      ],
+      "summary": "Pessimistic Locking chủ động lấy lock trên bản ghi hoặc tài nguyên database trước khi thực hiện thao tác nhạy cảm, với mục tiêu ngăn transaction khác cập nhật đồng thời theo cơ chế khóa của database.",
+      "answerMarkdown": "Pessimistic Locking chủ động lấy lock trên bản ghi hoặc tài nguyên database trước khi thực hiện thao tác nhạy cảm, với mục tiêu ngăn transaction khác cập nhật đồng thời theo cơ chế khóa của database. Ví dụ, khi CoVie Checkout cần giữ số lượng cuối cùng của một SKU, transaction có thể SELECT hàng Inventory FOR UPDATE rồi kiểm tra và giảm available quantity trước khi commit; request khác muốn khóa cùng hàng phải chờ hoặc xử lý timeout. JPA hỗ trợ LockModeType.PESSIMISTIC\\_WRITE và những lựa chọn khác, nhưng em phải xem SQL provider thực sự sinh và semantics của PostgreSQL. Pessimistic locking giúp điều phối xung đột rõ ràng nhưng tăng nguy cơ lock wait, deadlock và giảm throughput nếu transaction kéo dài. Em luôn giữ thứ tự khóa nhất quán, làm việc cần thiết nhanh trong transaction và không gọi dịch vụ ngoài khi đang giữ khóa. Lock không thay thế kiểm tra quyền buyer/seller hoặc idempotency."
+    },
+    {
+      "id": "q-396",
+      "title": "Vì sao Checkout Session cần hết hạn?",
+      "category": "project-covie",
+      "difficulty": "senior",
+      "tags": [
+        "Cart",
+        "CheckoutCommit",
+        "InventoryReservation",
+        "AvailableStock",
+        "OrderStateMachine"
+      ],
+      "companies": [
+        "ZaloPay",
+        "Viettel",
+        "Shopee",
+        "Sea Group"
+      ],
+      "summary": "Checkout Session cần có thời hạn để một snapshot giá, vị trí giao, lựa chọn fulfillment hoặc trạng thái giỏ không được coi là hợp lệ mãi mãi.",
+      "answerMarkdown": "Checkout Session cần có thời hạn để một snapshot giá, vị trí giao, lựa chọn fulfillment hoặc trạng thái giỏ không được coi là hợp lệ mãi mãi. Ví dụ, buyer xem Preview lúc 10 giờ rồi quay lại sau một ngày, khi đó seller có thể đã đóng cửa, món hết hàng hoặc giá thay đổi. Nếu Commit vẫn chấp nhận session cũ mà thiếu kiểm tra, hệ thống có thể tạo đơn sai với thông tin đã lỗi thời. CoVie cấu hình checkout.session-ttl là 15 phút, giúp giới hạn cửa sổ user có thể dùng snapshot ban đầu. Tuy nhiên, hết hạn không phải lớp bảo vệ duy nhất: dù còn trong 15 phút, Commit vẫn revalidate đầy đủ và so sánh điều kiện thực tế. Em còn tính đến cleanup session hết hạn để tránh dữ liệu tạm tích lũy, và không nhầm việc hết hạn checkout với việc phải xóa tất cả Cart Item hoặc buộc user đăng nhập lại."
+    },
+    {
+      "id": "q-397",
+      "title": "Checkout Session TTL 15 phút: hết hạn thì sao?",
+      "category": "project-covie",
+      "difficulty": "senior",
+      "tags": [
+        "Cart",
+        "CheckoutCommit",
+        "InventoryReservation",
+        "AvailableStock",
+        "OrderStateMachine"
+      ],
+      "companies": [
+        "VNPay",
+        "Axon"
+      ],
+      "summary": "Với Checkout Session TTL 15 phút, nếu buyer bấm Commit sau thời hạn, backend phải từ chối phiên đã hết hạn thay vì cố tạo Order từ snapshot cũ.",
+      "answerMarkdown": "Với Checkout Session TTL 15 phút, nếu buyer bấm Commit sau thời hạn, backend phải từ chối phiên đã hết hạn thay vì cố tạo Order từ snapshot cũ. Frontend nên hiển thị thông báo như 'Thông tin đặt hàng đã hết hạn, vui lòng kiểm tra lại' rồi gọi Preview để tạo phiên mới và cho user xác nhận lại giá, phí giao, sản phẩm và địa chỉ. Nếu user vẫn giữ nguyên Cart, không nhất thiết phải xóa giỏ chỉ vì token checkout hết hạn. Trong CoVie, thời hạn phiên được cấu hình checkout.session-ttl: 15m; CheckoutSessionService là nơi chịu trách nhiệm kiểm tra tính hợp lệ và CheckoutCommitService chỉ tạo đơn khi session được khóa và revalidate thành công. Em không cho frontend tự kéo dài timestamp hoặc tự tạo checkout token mới, vì như vậy bỏ qua quyền kiểm soát của server. Trạng thái thất bại nên được chuẩn hóa để client xử lý, ví dụ lỗi checkout session expired/invalid."
+    },
+    {
+      "id": "q-410",
+      "title": "Idempotency là gì?",
+      "category": "microservices",
+      "difficulty": "middle",
+      "tags": [
+        "Idempotency",
+        "Redis",
+        "TokenBucket",
+        "TransactionalOutbox",
+        "SSE",
+        "DistributedLock"
+      ],
+      "companies": [
+        "Viettel",
+        "Shopee",
+        "Sea Group"
+      ],
+      "summary": "Idempotency là tính chất khi cùng một yêu cầu logic được thực hiện lặp lại mà tác động cuối lên hệ thống tương đương thực hiện một lần.",
+      "answerMarkdown": "Idempotency là tính chất khi cùng một yêu cầu logic được thực hiện lặp lại mà tác động cuối lên hệ thống tương đương thực hiện một lần. Ví dụ, nếu buyer gửi lại yêu cầu xác nhận checkout vì mạng bị timeout, backend không được tạo thêm Order và trừ tồn kho lần thứ hai. Em phân biệt idempotent operation với HTTP method: POST không tự có tính chất này, nhưng ứng dụng có thể thiết kế POST kèm idempotency key hoặc token một lần để đạt hành vi mong muốn. Trong CoVie, Checkout Session được khóa và consume ở Commit là một cơ chế chống lặp ở luồng Checkout; các lệnh cập nhật đơn còn có OrderCommandIdempotencyService. Em phải xác định rõ retry của cùng payload sẽ được trả kết quả cũ, bị từ chối là đã xử lý hay phải tải lại trạng thái, rồi kiểm thử các tình huống concurrent request. Idempotency không đồng nghĩa mọi lần gọi đều có cùng HTTP response nếu hợp đồng đã quy định kết quả khác."
+    },
+    {
+      "id": "q-411",
+      "title": "Vì sao Checkout API cần Idempotency?",
+      "category": "microservices",
+      "difficulty": "senior",
+      "tags": [
+        "Idempotency",
+        "Redis",
+        "TokenBucket",
+        "TransactionalOutbox",
+        "SSE",
+        "DistributedLock"
+      ],
+      "companies": [
+        "Axon",
+        "One Mount",
+        "VNG",
+        "Grab"
+      ],
+      "summary": "Checkout API cần Idempotency vì người dùng có thể nhấn nút nhiều lần, app retry khi không nhận response, reverse proxy gửi lại request hoặc mạng ngắt sau khi database đã commit nhưng trước khi frontend nhận được Order ID.",
+      "answerMarkdown": "Checkout API cần Idempotency vì người dùng có thể nhấn nút nhiều lần, app retry khi không nhận response, reverse proxy gửi lại request hoặc mạng ngắt sau khi database đã commit nhưng trước khi frontend nhận được Order ID. Nếu xử lý mỗi POST như giao dịch hoàn toàn mới, hệ thống có thể tạo hai Order, hai reservation và hai thông báo cho cùng một ý định đặt hàng. Em muốn backend lưu một dấu hiệu định danh operation, khóa hoặc ràng buộc duy nhất ở PostgreSQL và phân biệt lần đầu xử lý với retry. Trong CoVie, checkout token/session và trạng thái consumed giúp kiểm soát replay của Commit; khi thiết kế API bổ sung, em cân nhắc một idempotency key được ràng buộc với user, endpoint và payload. Frontend disable nút chỉ cải thiện UX, không phải giải pháp bảo đảm. Điều quan trọng là tính nhất quán của Order, Inventory và Outbox phải được giữ ngay cả khi response bị mất."
+    },
+    {
+      "id": "q-431",
+      "title": "Write-through Cache là gì?",
+      "category": "microservices",
+      "difficulty": "middle",
+      "tags": [
+        "Idempotency",
+        "Redis",
+        "TokenBucket",
+        "TransactionalOutbox",
+        "SSE",
+        "DistributedLock"
+      ],
+      "companies": [
+        "Momo",
+        "NAB Innovation",
+        "Samsung R&D"
+      ],
+      "summary": "Write-through là chiến lược khi ghi dữ liệu, ứng dụng cập nhật cache và nơi lưu chính theo luồng phối hợp đã xác định, để cache ít bị cũ sau thao tác ghi.",
+      "answerMarkdown": "Write-through là chiến lược khi ghi dữ liệu, ứng dụng cập nhật cache và nơi lưu chính theo luồng phối hợp đã xác định, để cache ít bị cũ sau thao tác ghi. Ví dụ, khi thay giá sản phẩm, hệ thống cập nhật database đồng thời cập nhật cache tương ứng. Ưu điểm là dữ liệu cache tương đối mới; nhược điểm là thao tác ghi phức tạp và có thêm chi phí, đặc biệt khi cache lỗi giữa chừng. Cần xác định rõ nguồn dữ liệu chính và thứ tự ghi. CoVie hiện chưa có bằng chứng áp dụng Write-through cho dữ liệu sản phẩm; đây là kiến thức cần học."
+    },
+    {
+      "id": "q-432",
+      "title": "Write-back Cache là gì? Ưu điểm và rủi ro so với Write-through?",
+      "category": "microservices",
+      "difficulty": "middle",
+      "tags": [
+        "Idempotency",
+        "Redis",
+        "TokenBucket",
+        "TransactionalOutbox",
+        "SSE",
+        "DistributedLock"
+      ],
+      "companies": [
+        "Sea Group",
+        "FPT Software",
+        "Techcombank",
+        "MB Bank"
+      ],
+      "summary": "Write-back (hay write-behind) ghi thay đổi vào cache trước và đẩy xuống database sau, thường bất đồng bộ.",
+      "answerMarkdown": "Write-back (hay write-behind) ghi thay đổi vào cache trước và đẩy xuống database sau, thường bất đồng bộ. Ưu điểm là giảm độ trễ và gộp nhiều lần ghi, nhưng nếu cache mất dữ liệu trước khi ghi xuống database thì có thể mất thay đổi. Write-through cập nhật nguồn lưu trong cùng luồng xử lý ghi, nên thường dễ kiểm soát độ bền hơn. Với những nghiệp vụ quan trọng như tạo đơn và giữ tồn kho, không nên tự ý dùng write-back nếu chưa có thiết kế phục hồi và nhất quán. CoVie dùng PostgreSQL làm dữ liệu nghiệp vụ chính."
+    },
+    {
+      "id": "q-465",
+      "title": "Unit Test là gì?",
+      "category": "testing-devops",
+      "difficulty": "middle",
+      "tags": [
+        "UnitTest",
+        "IntegrationTest",
+        "JUnit5",
+        "Mockito",
+        "Testcontainers",
+        "ContractTesting"
+      ],
+      "companies": [
+        "VNG",
+        "Grab",
+        "ZaloPay",
+        "Viettel"
+      ],
+      "summary": "Unit Test là kiểm thử một đơn vị logic nhỏ như method hoặc class trong môi trường được kiểm soát, thường tách các dependency bên ngoài để tìm lỗi nhanh và xác định rõ nguyên nhân.",
+      "answerMarkdown": "Unit Test là kiểm thử một đơn vị logic nhỏ như method hoặc class trong môi trường được kiểm soát, thường tách các dependency bên ngoài để tìm lỗi nhanh và xác định rõ nguyên nhân. Ví dụ, với CoVie em có thể test CheckoutComparisonService bằng những snapshot giá trước và sau, rồi assert kết quả phát hiện thay đổi đúng mà không cần khởi động PostgreSQL. Một unit test tốt gồm dữ liệu đầu vào, hành động và assertion về kết quả hoặc exception, đồng thời kiểm tra cả trường hợp biên như giỏ rỗng, số lượng âm hay giá đổi. Em không cố mock mọi object bằng mọi giá: class thuần Java có thể khởi tạo trực tiếp, còn đồng hồ thời gian nên inject AppClock để test ổn định. Unit Test chạy nhanh và có giá trị khi logic được tách rõ, nhưng nó không chứng minh transaction, constraint, Spring Security hoặc SQL thực tế đã đúng; những phần đó cần kiểm thử tích hợp bổ sung."
+    },
+    {
+      "id": "q-466",
+      "title": "Unit Test và Integration Test khác nhau?",
+      "category": "testing-devops",
+      "difficulty": "middle",
+      "tags": [
+        "UnitTest",
+        "IntegrationTest",
+        "JUnit5",
+        "Mockito",
+        "Testcontainers",
+        "ContractTesting"
+      ],
+      "companies": [
+        "NAB Innovation",
+        "Samsung R&D"
+      ],
+      "summary": "Unit Test tập trung vào một thành phần tương đối cô lập và thường dùng fake/mock cho Repository, HTTP client hoặc clock; Integration Test xác minh nhiều thành phần thật hoạt động với nhau như Controller–Service–Repository–PostgreSQL.",
+      "answerMarkdown": "Unit Test tập trung vào một thành phần tương đối cô lập và thường dùng fake/mock cho Repository, HTTP client hoặc clock; Integration Test xác minh nhiều thành phần thật hoạt động với nhau như Controller–Service–Repository–PostgreSQL. Ví dụ, em unit test hàm tính số tiền của Order bằng object trong bộ nhớ, còn integration test Checkout Commit bằng PostgreSQL thực để xác minh tạo Order, reservation và Outbox cùng commit hoặc rollback. Unit test thường nhanh, dễ xác định lỗi và phù hợp chạy liên tục; integration test chậm hơn vì khởi tạo môi trường, schema và kết nối nhưng phát hiện lỗi wiring, mapping, SQL và transaction. Trong CoVie, em không dùng một bài test Mockito pass để kết luận cơ chế SELECT FOR UPDATE chắc chắn chống overselling, bởi mock không thực hiện khóa ở database. Em phân loại test theo ranh giới thực sự chạy thay vì chỉ nhìn tên file hay annotation."
+    },
+    {
+      "id": "q-487",
+      "title": "Docker Compose làm gì?",
+      "category": "testing-devops",
+      "difficulty": "senior",
+      "tags": [
+        "Docker",
+        "MultiStageBuild",
+        "Linux",
+        "Nginx",
+        "Prometheus",
+        "Grafana",
+        "CICD",
+        "Actuator"
+      ],
+      "companies": [
+        "VNG",
+        "Grab"
+      ],
+      "summary": "Docker Compose giúp mô tả và khởi chạy nhiều service liên quan qua một file YAML, như PostgreSQL, Redis, MinIO, backend và frontend với network, volume, environment, healthcheck và dependency giữa chúng.",
+      "answerMarkdown": "Docker Compose giúp mô tả và khởi chạy nhiều service liên quan qua một file YAML, như PostgreSQL, Redis, MinIO, backend và frontend với network, volume, environment, healthcheck và dependency giữa chúng. Ví dụ, CoVie có những compose file tại infra/compose cho môi trường local, runtime, observability và production; developer có thể dựng một stack nhất quán thay vì chạy thủ công từng lệnh Docker. Compose tự tạo network để container truy cập nhau bằng service name khi nằm cùng network, nhưng cần phân biệt hostname trong container với localhost của máy host. Em không nghĩ depends\\_on đơn thuần đảm bảo database đã chạy migration hay sẵn sàng nhận truy vấn; nên dùng healthcheck và retry phù hợp. Compose thuận tiện cho phát triển và nhiều môi trường triển khai, nhưng không tự thay thế mọi chức năng orchestration quy mô lớn hoặc chính sách bảo mật mạng."
+    },
+    {
+      "id": "q-488",
+      "title": "Vì sao chạy PostgreSQL, Redis, MinIO bằng Compose?",
+      "category": "microservices",
+      "difficulty": "senior",
+      "tags": [
+        "Docker",
+        "MultiStageBuild",
+        "Linux",
+        "Nginx",
+        "Prometheus",
+        "Grafana",
+        "CICD",
+        "Actuator"
+      ],
+      "companies": [
+        "NAB Innovation",
+        "Samsung R&D",
+        "VNPay"
+      ],
+      "summary": "Chạy PostgreSQL, Redis và MinIO bằng Docker Compose giúp CoVie có môi trường hạ tầng local lặp lại được giữa các máy, tránh cài thủ công nhiều phiên bản service và cấu hình lệch nhau.",
+      "answerMarkdown": "Chạy PostgreSQL, Redis và MinIO bằng Docker Compose giúp CoVie có môi trường hạ tầng local lặp lại được giữa các máy, tránh cài thủ công nhiều phiên bản service và cấu hình lệch nhau. PostgreSQL phục vụ dữ liệu quan hệ, transaction và khả năng không gian PostGIS; Redis dùng các nhu cầu như rate limiting/cache tùy cấu hình; MinIO cung cấp object storage API tương thích S3 để kiểm tra upload bằng presigned URL. Em có thể cấp volume riêng cho PostgreSQL/MinIO, giới hạn port mapping, dùng healthcheck và environment phục vụ development để các service kết nối dễ hơn. Tuy nhiên, các container cùng chạy không tự đảm bảo dữ liệu thử nghiệm sạch: phải quản lý migration và seed data, tránh dùng mật khẩu development ở production. Trong CoVie, Docker Compose còn thuận tiện cho integration test hoặc smoke test của cả luồng upload, checkout và notification mà không phải gọi dịch vụ cloud thật."
+    }
+  ]
+}
