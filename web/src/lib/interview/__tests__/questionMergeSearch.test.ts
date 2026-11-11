@@ -1,0 +1,36 @@
+import { describe, expect, it } from "vitest";
+import { getAllInterviewQuestions, getInterviewQuestionById, filterInterviewQuestions } from "../index";
+import type { InterviewFilterState } from "../types";
+
+const filters: InterviewFilterState = {
+  search: "", category: "all", difficulty: "all", status: "all", company: "all",
+};
+
+describe("published 504-question bank with preserved historic links", () => {
+  const questions = getAllInterviewQuestions();
+
+  it("contains exactly 504 unique canonical questions", () => {
+    expect(questions).toHaveLength(504);
+    expect(new Set(questions.map(q => q.id)).size).toBe(504);
+    expect(questions.some(q => q.id === "q-194")).toBe(false);
+    expect(questions.some(q => q.id === "q-193")).toBe(true);
+  });
+
+  it("resolves a retired direct lookup to the retained question", () => {
+    expect(getInterviewQuestionById("q-194")?.id).toBe("q-193");
+    expect(getInterviewQuestionById("q-024")?.id).toBe("q-022");
+    expect(getInterviewQuestionById("q-999")).toBeUndefined();
+  });
+
+  it.each(["q-194", "#194", "194"])("allows searching a retired ID (%s)", search => {
+    const result = filterInterviewQuestions(questions, { ...filters, search });
+    expect(result.some(q => q.id === "q-193")).toBe(true);
+    expect(result.some(q => q.id === "q-194")).toBe(false);
+  });
+
+  it("keeps independent interview questions unrelated to the merges", () => {
+    expect(getInterviewQuestionById("q-101")?.id).toBe("q-101");
+    expect(getInterviewQuestionById("q-412")?.id).toBe("q-412");
+    expect(getInterviewQuestionById("q-407")?.id).toBe("q-407");
+  });
+});
