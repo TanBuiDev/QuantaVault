@@ -296,12 +296,28 @@ function InterviewEditModalForm({
           <span className="font-mono text-xs font-bold text-indigo-500 bg-indigo-500/10 px-2.5 py-1 rounded-lg shrink-0">
             {formatQuestionBadge(question.id)}
           </span>
-          <h2
-            title={title || question.title}
-            className="text-sm font-bold text-[var(--foreground)] truncate min-w-0 flex-1"
-          >
-            Chỉnh sửa: {title || question.title}
-          </h2>
+          <div className="flex min-w-0 flex-1 items-center gap-1 text-sm font-bold text-[var(--foreground)]">
+            <span className="hidden shrink-0 sm:inline">Chỉnh sửa:</span>
+            <input
+              type="text"
+              aria-label="Tiêu đề câu hỏi phỏng vấn"
+              title={title || question.title}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              onKeyDown={(e) => {
+                // Enter/Escape finish inline editing without saving or closing the dialog.
+                if (e.key === "Enter" || e.key === "Escape") {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  e.currentTarget.blur();
+                }
+              }}
+              spellCheck={false}
+              autoComplete="off"
+              placeholder="Nhập tiêu đề câu hỏi..."
+              className="w-full min-w-0 flex-1 truncate rounded-md border border-transparent bg-transparent px-1 py-1 text-sm font-bold text-[var(--foreground)] outline-none transition-colors hover:bg-[var(--surface-hover)] focus:border-[var(--focus)] focus:bg-[var(--surface-hover)]"
+            />
+          </div>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
@@ -310,6 +326,7 @@ function InterviewEditModalForm({
             <button
               type="button"
               onClick={() => setActiveTab("content")}
+              aria-label="Nội dung"
               className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 transition-all ${
                 activeTab === "content"
                   ? "bg-[var(--surface)] text-[var(--foreground)] shadow-xs"
@@ -317,11 +334,12 @@ function InterviewEditModalForm({
               }`}
             >
               <FileText className="h-3.5 w-3.5" />
-              <span>Nội dung</span>
+              <span className="hidden sm:inline">Nội dung</span>
             </button>
             <button
               type="button"
               onClick={() => setActiveTab("metadata")}
+              aria-label="Thuộc tính"
               className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 transition-all ${
                 activeTab === "metadata"
                   ? "bg-[var(--surface)] text-[var(--foreground)] shadow-xs"
@@ -329,7 +347,7 @@ function InterviewEditModalForm({
               }`}
             >
               <Sliders className="h-3.5 w-3.5" />
-              <span>Thuộc tính</span>
+              <span className="hidden sm:inline">Thuộc tính</span>
             </button>
           </div>
 
@@ -358,28 +376,6 @@ function InterviewEditModalForm({
         {/* TAB 1: Markdown Content Editor */}
         {activeTab === "content" && (
           <div className={classNames("space-y-3.5", isFullscreen ? "flex-1 min-h-0 flex flex-col" : "")}>
-            {/* Question Title (2 rows) */}
-            <div className="space-y-1.5 shrink-0">
-              <label className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
-                Tiêu đề câu hỏi phỏng vấn
-              </label>
-              <textarea
-                rows={2}
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                spellCheck={false}
-                autoCorrect="off"
-                autoCapitalize="off"
-                autoComplete="off"
-                data-gramm="false"
-                data-gramm_editor="false"
-                data-enable-grammarly="false"
-                placeholder="Ví dụ: [Câu 3] Hãy giải thích kiến trúc Modular Monolith..."
-                style={textScale === 100 ? undefined : { fontSize: `${14 * textScale / 100}px` }}
-                className="w-full resize-none rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3 text-xs sm:text-sm font-semibold leading-relaxed text-[var(--foreground)] outline-none focus:border-[var(--focus)] focus:bg-[var(--surface)] transition-all [contain:content]"
-              />
-            </div>
-
             {/* Top View Mode Controls */}
             <div className="flex flex-wrap items-center justify-between gap-2 pt-0.5 shrink-0">
               <span className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
@@ -528,28 +524,6 @@ function InterviewEditModalForm({
         {/* TAB 2: Metadata & Properties */}
         {activeTab === "metadata" && (
           <div className="space-y-4">
-            {/* Question Title */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
-                Tiêu đề câu hỏi phỏng vấn
-              </label>
-              <textarea
-                rows={2}
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                spellCheck={false}
-                autoCorrect="off"
-                autoCapitalize="off"
-                autoComplete="off"
-                data-gramm="false"
-                data-gramm_editor="false"
-                data-enable-grammarly="false"
-                placeholder="Ví dụ: [Câu 3] Hãy giải thích kiến trúc Modular Monolith..."
-                style={textScale === 100 ? undefined : { fontSize: `${14 * textScale / 100}px` }}
-                className="w-full resize-none rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3 text-xs sm:text-sm font-semibold leading-relaxed text-[var(--foreground)] outline-none focus:border-[var(--focus)] focus:bg-[var(--surface)] transition-all [contain:content]"
-              />
-            </div>
-
             {/* Category & Difficulty */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
