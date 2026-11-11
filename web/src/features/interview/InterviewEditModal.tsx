@@ -570,7 +570,7 @@ function InterviewEditModalForm({
                 <span>Trọng tâm cốt lõi (Key Takeaways / Active Recall)</span>
               </label>
               <textarea
-                rows={3}
+                rows={5}
                 value={summary}
                 onChange={(e) => setSummary(e.target.value)}
                 spellCheck={false}
@@ -581,7 +581,7 @@ function InterviewEditModalForm({
                 data-gramm_editor="false"
                 data-enable-grammarly="false"
                 placeholder="Câu đúc kết 1-2 dòng quan trọng nhất hoặc các ý trọng tâm mà ứng viên cần bật ra ngay khi phỏng vấn..."
-                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3 text-xs sm:text-sm text-[var(--foreground)] outline-none focus:border-[var(--focus)] focus:bg-[var(--surface)] transition-all [contain:content]"
+                className="w-full min-h-[140px] sm:min-h-[180px] max-h-[65vh] resize-y overflow-y-auto rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3 text-xs sm:text-sm text-[var(--foreground)] outline-none focus:border-[var(--focus)] focus:bg-[var(--surface)] transition-all [contain:content]"
               />
             </div>
 

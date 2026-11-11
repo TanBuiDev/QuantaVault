@@ -189,6 +189,24 @@ describe("InterviewEditModal draft safety", () => {
     expect(screen.getByRole("button", { name: "Lưu thay đổi" })).toBeInTheDocument();
   });
 
+  it("trọng tâm cốt lõi có chiều cao responsive, cho kéo dọc và giữ nội dung qua tab", () => {
+    const save = vi.fn();
+    mount(save);
+    fireEvent.click(screen.getByRole("button", { name: "Thuộc tính" }));
+    const summary = screen.getByPlaceholderText(/Câu đúc kết 1-2 dòng/);
+    expect(summary).toHaveAttribute("rows", "5");
+    expect(summary).toHaveClass("min-h-[140px]", "sm:min-h-[180px]", "max-h-[65vh]", "resize-y", "overflow-y-auto");
+    fireEvent.change(summary, { target: { value: "Tóm tắt Java Backend mới" } });
+    fireEvent.click(screen.getByRole("button", { name: "Nội dung" }));
+    fireEvent.click(screen.getByRole("button", { name: "Thuộc tính" }));
+    expect(screen.getByPlaceholderText(/Câu đúc kết 1-2 dòng/)).toHaveValue("Tóm tắt Java Backend mới");
+    fireEvent.click(screen.getByRole("button", { name: "Lưu thay đổi" }));
+    expect(save).toHaveBeenCalledWith(
+      expect.objectContaining({ summary: "Tóm tắt Java Backend mới", answerMarkdown: question.answerMarkdown }),
+      question,
+    );
+  });
+
   it("chuyển chế độ xem không làm đổi câu trả lời hoặc tạo bản nháp", () => {
     mount();
     fireEvent.click(screen.getByRole("button", { name: "Xem trước" }));
