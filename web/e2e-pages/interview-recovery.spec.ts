@@ -101,7 +101,7 @@ test("fullscreen has no bottom strip or overlapping actions from mobile to deskt
   await page.getByRole("button", { name: "Thuộc tính" }).click();
   const metadataFooterBottom = await page.getByTestId("interview-editor-action-bar").evaluate(element => element.getBoundingClientRect().bottom);
   expect(Math.abs(metadataFooterBottom - 818)).toBeLessThanOrEqual(2);
-  await page.getByRole("button", { name: "Nội dung" }).click();
+  await page.getByRole("button", { name: "Nội dung", exact: true }).click();
   await expect(editor).toHaveValue(content);
   await page.getByRole("button", { name: "Thu nhỏ cửa sổ" }).click();
   await expect(editor).toHaveValue(content);
