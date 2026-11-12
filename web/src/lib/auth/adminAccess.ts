@@ -60,12 +60,12 @@ async function recordFailure(db: Database, userId: string): Promise<void> {
     "locked_until=CASE WHEN updated_at<? THEN 0 WHEN failures+1>=5 THEN ? ELSE locked_until END, updated_at=?"
   ).bind(userId, now, now - 900, now - 900, now + 3600, now).run();
 }
-async function credentialCheck(request: Request, env: AdminEnv, userId: string, password: unknown, otp?: unknown): Promise<"ok" | "invalid" | "locked"> {
+async function credentialCheck(env: AdminEnv, userId: string, password: unknown, otp?: unknown, requireOtp = false): Promise<"ok" | "invalid" | "locked"> {
   const db = env.INTERVIEW_DB!;
   const attempted = await attemptCheck(db, userId);
   if (attempted.locked) return "locked";
   const pass = typeof password === "string" && password.length <= 256 && await passwordEqual(password.trim(), env.ADMIN_PIN!);
-  const validOtp = otp === undefined ? true : typeof otp === "string" && /^\d{6}$/.test(otp) && await verifyTOTP(otp, env.TOTP_SECRET!, { window: 1 });
+  const validOtp = !requireOtp || (typeof otp === "string" && /^\d{6}$/.test(otp) && await verifyTOTP(otp, env.TOTP_SECRET!, { window: 1 }));
   if (!pass || !validOtp) {
     await recordFailure(db, userId);
     return "invalid";
@@ -129,7 +129,7 @@ export async function handleAccountAdmin(request: Request, env: AdminEnv): Promi
     const body = await parseBody(request);
     if (!body) return response({ ok: false, code: "INVALID_BODY" }, 400);
     if (route === "/api/admin/bootstrap") {
-      const status = await credentialCheck(request, env, user.id, body.password, body.otp);
+      const status = await credentialCheck(env, user.id, body.password, body.otp, true);
       if (status !== "ok") return response({ ok: false, code: status === "locked" ? "LOCKED" : "INVALID_CREDENTIALS" }, status === "locked" ? 429 : 401);
       // Exactly one Google identity can claim the first admin role; never grant
       // based on an email address or merely on being the first user to log in.
@@ -146,7 +146,7 @@ export async function handleAccountAdmin(request: Request, env: AdminEnv): Promi
     }
     if (user.role !== "admin") return response({ ok: false, code: "ADMIN_ONLY" }, 403);
     if (route === "/api/admin/step-up") {
-      const status = await credentialCheck(request, env, user.id, body.password);
+      const status = await credentialCheck(env, user.id, body.password);
       if (status !== "ok") return response({ ok: false, code: status === "locked" ? "LOCKED" : "INVALID_CREDENTIALS" }, status === "locked" ? 429 : 401);
       const sessionHash = await currentSessionHash(request);
       if (!sessionHash) return response({ ok: false }, 401);
@@ -160,7 +160,7 @@ export async function handleAccountAdmin(request: Request, env: AdminEnv): Promi
       if (!await authorizedAdmin(request, env, true)) return response({ ok: false, code: "STEP_UP_REQUIRED" }, 403);
       if (typeof body.targetUserId !== "string" || !/^[a-f0-9]{64}$/.test(body.targetUserId)
         || (body.role !== "admin" && body.role !== "user")) return response({ ok: false, code: "INVALID_ROLE_REQUEST" }, 400);
-      const status = await credentialCheck(request, env, user.id, body.password, body.otp);
+      const status = await credentialCheck(env, user.id, body.password, body.otp, true);
       if (status !== "ok") return response({ ok: false, code: status === "locked" ? "LOCKED" : "INVALID_CREDENTIALS" }, status === "locked" ? 429 : 401);
       const target = await db.prepare("SELECT id FROM oauth_google_users WHERE id=?").bind(body.targetUserId).first<{ id: string }>();
       if (!target) return response({ ok: false, code: "UNKNOWN_ACCOUNT" }, 404);
