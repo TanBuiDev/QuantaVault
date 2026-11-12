@@ -65,6 +65,13 @@ describe("Google account progress is separate from legacy bearer-code storage", 
     expect(await after.json()).toMatchObject({ revision: 1, state });
     expect(db.writes).toBe(1);
   });
+  it("rejects stale requests made under a different Google identity", async () => {
+    const read = await handleGoogleProgress(new Request(ORIGIN + "/api/google-progress?userId=another-account"), { INTERVIEW_DB: db });
+    expect(read.status).toBe(403);
+    const write = await handleGoogleProgress(make("PUT", { state, revision: 0, userId:"another-account" }), { INTERVIEW_DB: db });
+    expect(write.status).toBe(403);
+    expect(db.writes).toBe(0);
+  });
   it("rejects cross-site CSRF writes", async () => {
     const response = await handleGoogleProgress(make("PUT", { state, revision: 0 }, "https://malicious.example"), { INTERVIEW_DB: db });
     expect(response.status).toBe(403);

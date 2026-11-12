@@ -95,10 +95,10 @@ export function SidebarAccount({ compact = false }: { compact?: boolean }) {
           id={menuId}
           className={`absolute bottom-full left-0 z-10 mb-2 max-h-[max(2rem,calc(100dvh-7rem))] space-y-1 overflow-y-auto overscroll-contain rounded-xl border border-[var(--border)] bg-[var(--surface-elevated)] p-1.5 text-xs shadow-lg ${compact ? "w-56" : "w-full"}`}
         >
-          <Link href="/account/" onClick={() => setOpen(false)} className={menuItem}><Settings className="size-4 shrink-0" /> Quản lý tài khoản</Link>
-          <Link href="/account/#sync" onClick={() => setOpen(false)} className={menuItem}><Cloud className="size-4 shrink-0" /> Đồng bộ: {syncLabels[syncStatus]}</Link>
+          <Link href="/account/?tab=profile" onClick={() => setOpen(false)} className={menuItem}><Settings className="size-4 shrink-0" /> Quản lý tài khoản</Link>
+          <Link href="/account/?tab=sync" onClick={() => setOpen(false)} className={menuItem}><Cloud className="size-4 shrink-0" /> Đồng bộ: {syncLabels[syncStatus]}</Link>
           {user.role === "admin" && (
-            <Link href="/account/#administration" onClick={() => setOpen(false)} className={menuItem}><ShieldCheck className="size-4 shrink-0" /> Quản trị nội dung</Link>
+            <Link href="/account/?tab=security" onClick={() => setOpen(false)} className={menuItem}><ShieldCheck className="size-4 shrink-0" /> Quản trị nội dung</Link>
           )}
           <button type="button" onClick={() => void logout()} className={menuItem}><LogOut className="size-4 shrink-0" /> Đăng xuất</button>
         </div>

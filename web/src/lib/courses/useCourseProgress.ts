@@ -83,6 +83,20 @@ function emitChange(nextState: AllCoursesProgressState) {
   }
 }
 
+/** Used by account-level sync; broadcasts changes to every course subscriber. */
+export function readCourseProgress(): AllCoursesProgressState {
+  return getSnapshot();
+}
+export function replaceCourseProgress(state: AllCoursesProgressState): void {
+  if (typeof window === "undefined") throw new Error("Browser storage unavailable");
+  if (state.version !== 1 || !state.courses || typeof state.courses !== "object") throw new Error("Invalid course progress");
+  const raw = JSON.stringify(state);
+  window.localStorage.setItem(STORAGE_KEY, raw);
+  cachedRaw = raw;
+  cachedState = state;
+  window.dispatchEvent(new Event(LOCAL_CHANGE_EVENT));
+}
+
 export function useCourseProgress() {
   const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   const hydrated = typeof window !== "undefined";

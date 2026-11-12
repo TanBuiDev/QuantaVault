@@ -1,7 +1,7 @@
 "use client";
 
 import type { InterviewProgressState } from "./types";
-import { isGoogleProgressLinked } from "../auth/googleSync";
+import { isGoogleProgressLinked, isGoogleSessionActive } from "../auth/googleSync";
 
 const KEY_STORAGE = "quantavault_progress_sync_code_v1";
 const REV_STORAGE = "quantavault_progress_sync_revision_v1";
@@ -95,7 +95,7 @@ export function resetCloudWriteQueue() {
 export function queueCloudProgress(state: InterviewProgressState) {
   // Prevent dual automatic writers after a user has linked a Google account.
   // Legacy code-based sync can still be downloaded manually for recovery.
-  if (isGoogleProgressLinked()) return;
+  if (isGoogleProgressLinked() || isGoogleSessionActive()) return;
   const code = getSyncCode();
   if (!code || readRevision() === null) return; // Not connected until first explicit transfer.
   if (queuedCode !== code) { pending = null; blocked = false; queuedCode = code; }
