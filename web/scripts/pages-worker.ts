@@ -2,6 +2,7 @@ import { onRequestPost, onRequestOptions } from "../functions/api/publish";
 import { handleInterviewProgress, type ProgressEnv } from "../functions/api/interview-progress";
 import { handleGoogleAuth, type OAuthEnv } from "../src/lib/auth/googleOAuth";
 import { handleGoogleProgress } from "../src/lib/auth/googleProgress";
+import { handleGoogleLearningProgress } from "../src/lib/auth/googleLearningProgress";
 import { handleAccountAdmin } from "../src/lib/auth/adminAccess";
 
 export default {
@@ -10,6 +11,7 @@ export default {
     if (pathname === "/api/interview-progress") return handleInterviewProgress({ request, env });
     if (pathname.startsWith("/api/auth/")) return handleGoogleAuth(request, env);
     if (pathname === "/api/google-progress") return handleGoogleProgress(request, env);
+    if (pathname === "/api/learning-progress") return handleGoogleLearningProgress(request, env);
     if (pathname.startsWith("/api/admin/")) return handleAccountAdmin(request, env);
     if (pathname === "/api/publish") {
       if (request.method === "OPTIONS") return onRequestOptions({ request, env });
