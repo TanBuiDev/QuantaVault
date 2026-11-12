@@ -31,6 +31,9 @@ export async function handleGoogleProgress(request: Request, env: OAuthEnv): Pro
   try {
     const user = await readGoogleAccount(request, env);
     if (!user) return result({ ok: false, code: "NOT_SIGNED_IN" }, 401);
+    // Prevent a stale write from account A being applied after a switch to account B.
+    const requestedUserId = new URL(request.url).searchParams.get("userId");
+    if (requestedUserId && requestedUserId !== user.id) return result({ ok: false, code: "ACCOUNT_MISMATCH" }, 403);
     const db = env.INTERVIEW_DB;
     if (request.method === "GET") {
       const row = await db.prepare("SELECT state_json, revision FROM oauth_interview_progress WHERE user_id=?")
@@ -46,8 +49,9 @@ export async function handleGoogleProgress(request: Request, env: OAuthEnv): Pro
     if (Number(request.headers.get("Content-Length") || 0) > 150_000) return result({ ok: false, code: "TOO_LARGE" }, 413);
     const body = await request.text();
     if (body.length > 150_000) return result({ ok: false, code: "TOO_LARGE" }, 413);
-    let input: { state?: unknown; revision?: unknown };
+    let input: { state?: unknown; revision?: unknown; userId?: unknown };
     try { input = JSON.parse(body); } catch { return result({ ok: false, code: "INVALID_JSON" }, 400); }
+    if (input?.userId !== undefined && input.userId !== user.id) return result({ ok: false, code: "ACCOUNT_MISMATCH" }, 403);
     const state = parseProgress(input?.state);
     const rev = input?.revision;
     if (!state || !Number.isSafeInteger(rev) || (rev as number) < 0) return result({ ok: false, code: "INVALID_PROGRESS" }, 400);

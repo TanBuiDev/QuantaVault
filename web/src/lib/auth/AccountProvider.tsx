@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import type { GoogleAccount } from "./googleOAuth";
-import { GOOGLE_SYNC_STATUS, emitGoogleSync, isGoogleProgressLinkedTo, reconcileGoogleProgress, type GoogleSyncStatus } from "./googleSync";
+import { GOOGLE_SYNC_STATUS, emitGoogleSync, ensureAutoLinkedGoogleProgress, prepareGoogleDevice, type GoogleSyncStatus } from "./googleSync";
 
 interface AccountValue {
   user: GoogleAccount | null;
@@ -19,9 +19,11 @@ function ProgressAutoSync({ userId, setStatus }: { userId: string | null; setSta
     let active = true;
     let busy = false;
     let replay = false;
+    try { prepareGoogleDevice(userId); }
+    catch { setStatus("conflict"); return; }
     let timeout: ReturnType<typeof setTimeout> | null = null;
     async function sync() {
-      if (!active || !userId || !isGoogleProgressLinkedTo(userId)) return;
+      if (!active || !userId) return;
       if (busy) { replay = true; return; }
       busy = true;
       try {
@@ -29,7 +31,7 @@ function ProgressAutoSync({ userId, setStatus }: { userId: string | null; setSta
           replay = false;
           setStatus("syncing");
           try {
-            const result = await reconcileGoogleProgress(userId);
+            const result = await ensureAutoLinkedGoogleProgress(userId);
             if (!active) return;
             setStatus(result);
             if (result === "conflict") return;
@@ -47,23 +49,24 @@ function ProgressAutoSync({ userId, setStatus }: { userId: string | null; setSta
       timeout = setTimeout(() => { timeout = null; void sync(); }, 700);
     }
     const onStorage = (e: StorageEvent) => {
-      if (e.key === null || ["quantavault_google_linked_user_v1", "interview-prep-progress-v1"].includes(e.key)) schedule();
+      if (e.key === null || ["quantavault_google_linked_user_v1", "interview-prep-progress-v1", "quantavault-course-progress:v1", "leetcode-top150-progress:v1"].includes(e.key)) schedule();
     };
-    const onLink = () => {
-      if (isGoogleProgressLinkedTo(userId)) schedule();
-      else setStatus("unlinked");
-    };
+    const onLink = () => schedule();
     const onFocus = () => schedule();
     window.addEventListener("interview-prep-progress:change", schedule);
+    window.addEventListener("quantavault-course-progress:change", schedule);
+    window.addEventListener("leetcode-top150-progress:change", schedule);
     window.addEventListener("storage", onStorage);
     window.addEventListener("online", onFocus);
     window.addEventListener("focus", onFocus);
     window.addEventListener(GOOGLE_SYNC_STATUS, onLink);
-    if (isGoogleProgressLinkedTo(userId)) schedule();
+    schedule();
     return () => {
       active = false;
       if (timeout !== null) clearTimeout(timeout);
       window.removeEventListener("interview-prep-progress:change", schedule);
+      window.removeEventListener("quantavault-course-progress:change", schedule);
+      window.removeEventListener("leetcode-top150-progress:change", schedule);
       window.removeEventListener("storage", onStorage);
       window.removeEventListener("online", onFocus);
       window.removeEventListener("focus", onFocus);
