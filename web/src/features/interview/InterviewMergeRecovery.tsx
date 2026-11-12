@@ -41,9 +41,9 @@ export function InterviewMergeRecovery({ progress, drafts, publishedCache }: Pro
       // A write failure must not trigger cloud sync or a success claim.
       replaceInterviewProgress(next);
       queueCloudProgress(next); // Revision-aware, conflict-safe.
-      setAutomaticError("");
+      queueMicrotask(() => setAutomaticError(""));
     } catch {
-      setAutomaticError("Không thể tự đối chiếu tiến độ vì bộ nhớ trình duyệt không lưu được bản sao. Dữ liệu gốc vẫn được giữ.");
+      queueMicrotask(() => setAutomaticError("Không thể tự đối chiếu tiến độ vì bộ nhớ trình duyệt không lưu được bản sao. Dữ liệu gốc vẫn được giữ."));
     }
   }, [progress]);
   const archivedDraftIds = Object.keys(drafts).filter(isRetiredInterviewId);
