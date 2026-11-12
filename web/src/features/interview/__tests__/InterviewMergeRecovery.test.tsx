@@ -67,7 +67,7 @@ describe("automatic and manual retired progress reconciliation", () => {
     expect(readInterviewProgress()).toEqual(original);
   });
 
-  it("never mutates progress or synchronizes if the archive write fails", () => {
+  it("never mutates progress or synchronizes if the archive write fails", async () => {
     const original = fromIds(["q-090"]);
     load(original);
     const setItem = Storage.prototype.setItem;
@@ -78,7 +78,7 @@ describe("automatic and manual retired progress reconciliation", () => {
     try {
       view(original);
       expect(readInterviewProgress()).toEqual(original);
-      expect(screen.getByRole("alert")).toHaveTextContent(/Không thể tự đối chiếu/);
+      await waitFor(() => expect(screen.getByRole("alert")).toHaveTextContent(/Không thể tự đối chiếu/));
     } finally {
       spy.mockRestore();
     }
