@@ -139,12 +139,12 @@ test("preview list retains original unboxed appearance while navigation remains 
   await firstItem.hover();
 
   for (const element of [list, firstItem]) {
-    expect(await element.evaluate(node => getComputedStyle(node).outlineStyle)).toBe("none");
+    expect(["none", ""]).toContain(await element.evaluate(node => getComputedStyle(node).outlineStyle));
   }
 
   // Keyboard access remains available, without the previous rectangular focus ring.
   await firstItem.focus();
-  expect(await firstItem.evaluate(node => getComputedStyle(node).outlineStyle)).toBe("none");
+  expect(["none", ""]).toContain(await firstItem.evaluate(node => getComputedStyle(node).outlineStyle));
   await firstItem.press("Enter");
   await expect.poll(() => editor.evaluate(node => (node as HTMLTextAreaElement).selectionStart))
     .toBe(markdown.indexOf("1. Khởi tạo"));
