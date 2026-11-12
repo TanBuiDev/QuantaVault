@@ -15,6 +15,9 @@ const STORES = [
   { kind: "top150", key: "leetcode-top150-progress:v1", event: "leetcode-top150-progress:change" },
 ] as const;
 export const GOOGLE_SYNC_STATUS = "quantavault-google-sync:status";
+let googleSessionActive = false;
+export function setGoogleSessionActive(active: boolean): void { googleSessionActive = active; }
+export function isGoogleSessionActive(): boolean { return googleSessionActive; }
 export type GoogleSyncStatus = "unlinked" | "synced" | "syncing" | "offline" | "conflict";
 export interface RemoteProgress { state: InterviewProgressState; revision: number }
 interface SyncBaseline { userId: string; revision: number; state: InterviewProgressState }

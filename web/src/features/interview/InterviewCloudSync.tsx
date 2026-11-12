@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Cloud, Copy, Download, Upload, Link2Off, ChevronDown, ChevronUp, ShieldCheck } from "lucide-react";
 import { useConfirm } from "@/components/ui/ConfirmDialog";
-import { isGoogleProgressLinked } from "@/lib/auth/googleSync";
+import { isGoogleProgressLinked, isGoogleSessionActive } from "@/lib/auth/googleSync";
 import { readInterviewProgress, replaceInterviewProgress } from "@/lib/interview/progress";
 import {
   CLOUD_SYNC_EVENT, downloadCloudProgress, generateSyncCode, getSyncCode,
@@ -30,7 +30,7 @@ export function InterviewCloudSync() {
 
     // Returning to the page with no local edits: safely refresh from the cloud.
     // Unsynced local changes are NEVER replaced automatically.
-    if (isGoogleProgressLinked()) return () => window.removeEventListener(CLOUD_SYNC_EVENT, onStatus);
+    if (isGoogleProgressLinked() || isGoogleSessionActive()) return () => window.removeEventListener(CLOUD_SYNC_EVENT, onStatus);
     const connected = getSyncCode();
     const baseline = getSyncedBaseline();
     if (connected && baseline && JSON.stringify(readInterviewProgress()) === baseline) {

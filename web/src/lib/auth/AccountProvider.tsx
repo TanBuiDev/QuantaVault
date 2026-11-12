@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import type { GoogleAccount } from "./googleOAuth";
-import { GOOGLE_SYNC_STATUS, emitGoogleSync, ensureAutoLinkedGoogleProgress, prepareGoogleDevice, type GoogleSyncStatus } from "./googleSync";
+import { GOOGLE_SYNC_STATUS, emitGoogleSync, ensureAutoLinkedGoogleProgress, prepareGoogleDevice, setGoogleSessionActive, type GoogleSyncStatus } from "./googleSync";
 import { reconcileLearningProgress } from "./learningSync";
 
 interface AccountValue {
@@ -91,6 +91,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
       if (!response.ok) throw new Error("SESSION_READ_FAILED");
       const data = await response.json() as { ok: boolean; user: GoogleAccount | null };
       if (!data.ok) throw new Error("SESSION_INVALID");
+      setGoogleSessionActive(Boolean(data.user));
       setUser(data.user);
     } catch { setUser(null); }
     finally { setLoading(false); }
@@ -100,6 +101,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
     try {
       const response = await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: "{}" });
       if (!response.ok) return false;
+      setGoogleSessionActive(false);
       setUser(null);
       emitGoogleSync("unlinked");
       setSyncStatus("unlinked");
