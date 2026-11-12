@@ -48,7 +48,7 @@ describe("Sidebar Google sign-in", () => {
     fireEvent.click(account);
     expect(account).toHaveAttribute("aria-expanded", "true");
     expect(screen.getByRole("link", { name: "Quản lý tài khoản" }))
-      .toHaveAttribute("href", "/account/?tab=profile");
+      .toHaveAttribute("href", "/account?tab=profile");
     expect(screen.queryByRole("link", { name: "Đăng nhập bằng Google" }))
       .not.toBeInTheDocument();
   });
