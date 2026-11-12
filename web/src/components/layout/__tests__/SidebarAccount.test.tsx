@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom/vitest";
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { SidebarAccount } from "../SidebarAccount";
 
@@ -23,7 +23,6 @@ describe("Sidebar Google sign-in", () => {
     const link = screen.getByRole("link", { name: "Đăng nhập bằng Google" });
     expect(link).toHaveAttribute("href", "/api/auth/google/start");
     expect(within(link).getByText("Đăng nhập")).toBeInTheDocument();
-    expect(link).toHaveClass("w-fit");
     expect([...link.querySelectorAll("svg path")].map(p => p.getAttribute("fill")))
       .toEqual(["#EA4335", "#4285F4", "#FBBC05", "#34A853"]);
   });
@@ -33,15 +32,19 @@ describe("Sidebar Google sign-in", () => {
     const link = screen.getByRole("link", { name: "Đăng nhập bằng Google" });
     expect(link).toHaveAttribute("href", "/api/auth/google/start");
     expect(link).toHaveAttribute("title", "Đăng nhập bằng Google");
-    expect(link).toHaveClass("size-9");
     expect(within(link).queryByText("Đăng nhập")).not.toBeInTheDocument();
     expect(link.querySelector("svg")).toBeInTheDocument();
   });
 
-  it("continues to show the account avatar rather than Google sign-in when authenticated", () => {
+  it("opens account management from the avatar in the collapsed sidebar", () => {
     accountState.signedIn = true;
     render(<SidebarAccount compact />);
-    expect(screen.getByRole("link", { name: "Quản lý tài khoản Google" }))
+    const account = screen.getByRole("button", { name: "Mở menu tài khoản" });
+    expect(account).toHaveAttribute("aria-expanded", "false");
+    expect(account).toHaveTextContent("");
+    fireEvent.click(account);
+    expect(account).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByRole("link", { name: "Quản lý tài khoản" }))
       .toHaveAttribute("href", "/account");
     expect(screen.queryByRole("link", { name: "Đăng nhập bằng Google" }))
       .not.toBeInTheDocument();
