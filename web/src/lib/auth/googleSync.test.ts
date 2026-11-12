@@ -3,6 +3,7 @@ import { readInterviewProgress, replaceInterviewProgress } from "../interview/pr
 import {
   conservativeMerge, fetchGoogleProgress, getLinkedGoogleUser, isGoogleProgressLinked,
   linkGoogleProgress, reconcileGoogleProgress, unlinkGoogleProgress,
+  ensureAutoLinkedGoogleProgress, prepareGoogleDevice,
 } from "./googleSync";
 import type { InterviewProgressState } from "../interview/types";
 
@@ -86,6 +87,44 @@ describe("Google progress link and cross-device safety", () => {
     unlinkGoogleProgress("google-user-a");
     expect(getLinkedGoogleUser()).toBeNull();
     expect(readInterviewProgress().learned["q-001"]).toBe(true);
+  });
+
+  it("automatically restores D1 progress on a fresh device after login", async () => {
+    remote = {state:state(["q-007"],["q-009"],["q-012"]),revision:4};
+    prepareGoogleDevice("google-user-a");
+    expect(await ensureAutoLinkedGoogleProgress("google-user-a")).toBe("synced");
+    expect(getLinkedGoogleUser()).toBe("google-user-a");
+    expect(readInterviewProgress()).toEqual(remote.state);
+    expect(fetchMock.mock.calls.some(call=>call[1]?.method==="PUT")).toBe(false);
+  });
+
+  it("automatically activates empty matching Google progress", async () => {
+    prepareGoogleDevice("google-user-a");
+    expect(await ensureAutoLinkedGoogleProgress("google-user-a")).toBe("synced");
+    expect(getLinkedGoogleUser()).toBe("google-user-a");
+  });
+
+  it("never uploads unclaimed device history without approval", async () => {
+    replaceInterviewProgress(state(["q-001"]));
+    prepareGoogleDevice("google-user-a");
+    expect(await ensureAutoLinkedGoogleProgress("google-user-a")).toBe("conflict");
+    expect(getLinkedGoogleUser()).toBeNull();
+    expect(remote.revision).toBe(0);
+  });
+
+  it("keeps a separate device cache when a browser changes Google accounts", async () => {
+    prepareGoogleDevice("google-user-a");
+    await ensureAutoLinkedGoogleProgress("google-user-a");
+    replaceInterviewProgress(state(["q-001"]));
+    expect(await reconcileGoogleProgress("google-user-a")).toBe("synced");
+    prepareGoogleDevice("google-user-b");
+    expect(readInterviewProgress()).toEqual(state());
+    expect(getLinkedGoogleUser()).toBeNull();
+    remote={revision:0,state:state()};
+    expect(await ensureAutoLinkedGoogleProgress("google-user-b")).toBe("synced");
+    prepareGoogleDevice("google-user-a");
+    expect(readInterviewProgress().learned["q-001"]).toBe(true);
+    expect(getLinkedGoogleUser()).toBe("google-user-a");
   });
 
   it("keeps local progress when account fetch is offline", async () => {
