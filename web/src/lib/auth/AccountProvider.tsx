@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import type { GoogleAccount } from "./googleOAuth";
 import { GOOGLE_SYNC_STATUS, emitGoogleSync, ensureAutoLinkedGoogleProgress, prepareGoogleDevice, type GoogleSyncStatus } from "./googleSync";
+import { reconcileLearningProgress } from "./learningSync";
 
 interface AccountValue {
   user: GoogleAccount | null;
@@ -30,17 +31,21 @@ function ProgressAutoSync({ userId, setStatus }: { userId: string | null; setSta
         do {
           replay = false;
           setStatus("syncing");
-          try {
-            const result = await ensureAutoLinkedGoogleProgress(userId);
-            if (!active) return;
-            setStatus(result);
-            if (result === "conflict") return;
-            if (result === "syncing") replay = true;
-          } catch (e) {
-            if (!active) return;
-            setStatus(e instanceof Error && e.message === "VERSION_CONFLICT" ? "conflict" : "offline");
-            return;
+          const results: GoogleSyncStatus[] = [];
+          for (const operation of [
+            () => ensureAutoLinkedGoogleProgress(userId),
+            () => reconcileLearningProgress("courses", userId),
+            () => reconcileLearningProgress("top150", userId),
+          ]) {
+            try { results.push(await operation()); }
+            catch (e) { results.push(e instanceof Error && ["VERSION_CONFLICT", "ACCOUNT_SWITCHED"].includes(e.message) ? "conflict" : "offline"); }
           }
+          if (!active) return;
+          const result: GoogleSyncStatus = results.includes("conflict") ? "conflict"
+            : results.includes("offline") ? "offline"
+              : results.includes("syncing") ? "syncing" : "synced";
+          setStatus(result);
+          if (result === "syncing") replay = true;
         } while (replay && active);
       } finally { busy = false; }
     }
