@@ -32,6 +32,7 @@ import {
 } from "@/lib/interview/draftStore";
 import { InterviewStatsCard } from "./InterviewStatsCard";
 import { InterviewCloudSync } from "./InterviewCloudSync";
+import { GoogleAccountPanel } from "./GoogleAccountPanel";
 import { InterviewMergeRecovery } from "./InterviewMergeRecovery";
 import { isRetiredInterviewId } from "@/lib/interview/questionIdMerge";
 import { InterviewFilterBar } from "./InterviewFilterBar";
@@ -484,6 +485,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
       </section>
 
       <InterviewMergeRecovery progress={progress} drafts={drafts} publishedCache={publishedCache} />
+      <GoogleAccountPanel />
       <InterviewCloudSync />
 
       {/* 3. Filter Controls */}
