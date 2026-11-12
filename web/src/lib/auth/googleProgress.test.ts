@@ -7,7 +7,7 @@ vi.mock("./googleOAuth", () => ({
   readGoogleAccount: vi.fn(),
 }));
 const ORIGIN = "https://quantavault.pages.dev";
-const user = { id: "stable-google-id", name: "Demo", email: "demo@example.com" };
+const user = { id: "stable-google-id", name: "Demo", email: "demo@example.com", role: "user" as const };
 const state = { learned: { "q-001": true }, review: { "q-089": true }, bookmarks: {} };
 const make = (method: string, body?: unknown, origin = ORIGIN) => new Request(ORIGIN + "/api/google-progress", {
   method, ...(body === undefined ? {} : {
