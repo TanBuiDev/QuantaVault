@@ -2,6 +2,7 @@ import "@testing-library/jest-dom/vitest";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { SidebarAccount } from "../SidebarAccount";
+import controls from "@/components/ui/SidebarControl.module.css";
 
 const accountState = vi.hoisted(() => ({ signedIn: false }));
 vi.mock("@/lib/auth/AccountProvider", () => ({
@@ -22,6 +23,7 @@ describe("Sidebar Google sign-in", () => {
     render(<SidebarAccount />);
     const link = screen.getByRole("link", { name: "Đăng nhập bằng Google" });
     expect(link).toHaveAttribute("href", "/api/auth/google/start");
+    expect(link).toHaveClass(controls.centerContent);
     expect(within(link).getByText("Đăng nhập")).toBeInTheDocument();
     expect([...link.querySelectorAll("svg path")].map(p => p.getAttribute("fill")))
       .toEqual(["#EA4335", "#4285F4", "#FBBC05", "#34A853"]);
@@ -41,6 +43,7 @@ describe("Sidebar Google sign-in", () => {
     render(<SidebarAccount compact />);
     const account = screen.getByRole("button", { name: "Mở menu tài khoản" });
     expect(account).toHaveAttribute("aria-expanded", "false");
+    expect(account).not.toHaveClass(controls.centerContent);
     expect(account).toHaveTextContent("");
     fireEvent.click(account);
     expect(account).toHaveAttribute("aria-expanded", "true");
