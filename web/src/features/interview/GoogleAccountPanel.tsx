@@ -27,7 +27,7 @@ export function GoogleAccountPanel() {
     setRemote(r);
     setLinked(isGoogleProgressLinkedTo(user.id));
   }, [user]);
-  useEffect(() => { if (user) void refresh().catch(() => setNotice("Chưa đọc được tiến độ từ Google. Tiến độ trên máy vẫn được giữ.")); }, [user, refresh]);
+  useEffect(() => { if (user) queueMicrotask(() => { void refresh().catch(() => setNotice("Chưa đọc được tiến độ từ Google. Tiến độ trên máy vẫn được giữ.")); }); }, [user, refresh]);
   if (loading) return <p className="text-xs text-[var(--muted)]">Đang kiểm tra tài khoản Google...</p>;
   if (!user) return <a className="inline-flex rounded-xl bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white" href="/api/auth/google/start">Tiếp tục với Google</a>;
 
