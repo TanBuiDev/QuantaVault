@@ -172,7 +172,10 @@ export async function handleAccountAdmin(request: Request, env: AdminEnv): Promi
         const active = await db.prepare("SELECT COUNT(*) AS total FROM oauth_user_roles WHERE role='admin'")
           .first<{ total: number }>();
         if (!active || active.total <= 1) return response({ ok: false, code: "LAST_ADMIN_REQUIRED" }, 409);
-        await db.prepare("DELETE FROM oauth_user_roles WHERE user_id=?").bind(target.id).run();
+        const revoked = await db.prepare(
+          "DELETE FROM oauth_user_roles WHERE user_id=? AND (SELECT COUNT(*) FROM oauth_user_roles WHERE role='admin') > 1"
+        ).bind(target.id).run();
+        if (revoked.meta?.changes !== 1) return response({ ok: false, code: "LAST_ADMIN_REQUIRED" }, 409);
         await db.prepare("DELETE FROM oauth_admin_elevations WHERE user_id=?").bind(target.id).run();
         await audit(db, user.id, "revoke_admin", target.id);
       }
