@@ -87,7 +87,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
     } catch { setUser(null); }
     finally { setLoading(false); }
   }, []);
-  useEffect(() => { void refresh(); }, [refresh]);
+  useEffect(() => { queueMicrotask(() => { void refresh(); }); }, [refresh]);
   const logout = useCallback(async () => {
     try {
       const response = await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: "{}" });
