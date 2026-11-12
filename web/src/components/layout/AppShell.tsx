@@ -7,6 +7,7 @@ import { SidebarProvider, useSidebar } from "./SidebarContext";
 import { AppSidebar } from "./AppSidebar";
 import { MobileHeader } from "./MobileHeader";
 import { CommandPalette } from "./CommandPalette";
+import { AccountProvider } from "@/lib/auth/AccountProvider";
 
 export interface AppShellProps {
   children: ReactNode;
@@ -79,8 +80,10 @@ function AppShellContent({ children, courses }: { children: ReactNode; courses: 
 
 export function AppShell({ children, courses = [] }: AppShellProps) {
   return (
-    <SidebarProvider>
-      <AppShellContent courses={courses}>{children}</AppShellContent>
-    </SidebarProvider>
+    <AccountProvider>
+      <SidebarProvider>
+        <AppShellContent courses={courses}>{children}</AppShellContent>
+      </SidebarProvider>
+    </AccountProvider>
   );
 }
