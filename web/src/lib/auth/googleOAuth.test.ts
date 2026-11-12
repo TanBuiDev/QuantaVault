@@ -6,7 +6,7 @@ import { handleGoogleAuth } from "./googleOAuth";
 const ORIGIN = "https://quantavault.pages.dev";
 const ID = "567990028938-03d27ug65h8bcj5o1m20polgho680ed4.apps.googleusercontent.com";
 const envBase = { GOOGLE_CLIENT_ID: ID, GOOGLE_CLIENT_SECRET: "test-server-secret" };
-let rsa: CryptoKeyPair, jwk: JsonWebKey;
+let rsa: { privateKey: webcrypto.CryptoKey; publicKey: webcrypto.CryptoKey }, jwk: JsonWebKey;
 const encoder = new TextEncoder();
 const b64 = (bytes: Uint8Array) => Buffer.from(bytes).toString("base64url");
 const jsonb64 = (v: unknown) => b64(encoder.encode(JSON.stringify(v)));
