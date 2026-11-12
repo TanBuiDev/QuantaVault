@@ -87,7 +87,7 @@ afterEach(() => { vi.unstubAllGlobals(); vi.clearAllMocks(); });
 describe("Google admin permissions and privileged actions", () => {
   it("does not automatically grant admin for a signed-in Google user", async () => {
     expect((await handleAccountAdmin(req("/api/admin/bootstrap-status"), env()).then(r=>r.json())).needsSetup).toBe(true);
-    expect((await handleAccountAdmin(req("/api/admin/users"), env())).status).toBe(405);
+    expect((await handleAccountAdmin(req("/api/admin/users"), env())).status).toBe(403);
     expect((await authorizedAdmin(req("/api/admin/status"), env(), false))).toBeNull();
     expect(db.roles.size).toBe(0);
   });
