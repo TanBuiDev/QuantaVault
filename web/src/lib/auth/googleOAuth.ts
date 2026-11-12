@@ -27,12 +27,14 @@ export interface OAuthEnv {
 }
 interface GoogleClaims {
   iss?: string; aud?: string; sub?: string; email?: string; email_verified?: boolean;
-  name?: string; exp?: number; iat?: number; nonce?: string;
+  name?: string; picture?: string; exp?: number; iat?: number; nonce?: string;
 }
 export interface GoogleAccount {
   id: string;
   name: string;
   email: string;
+  role: "user" | "admin";
+  picture?: string | null;
 }
 
 function json(data: unknown, status = 200, extra?: HeadersInit): Response {
@@ -137,10 +139,11 @@ async function issueSession(env: OAuthEnv, claims: GoogleClaims): Promise<string
   const sub = claims.sub!;
   const id = await sha256("google-sub:" + sub);
   const db = env.INTERVIEW_DB!;
+  const picture = typeof claims.picture === "string" && /^https:\/\/([a-z0-9-]+\.)?googleusercontent\.com\//i.test(claims.picture) && claims.picture.length <= 1000 ? claims.picture : null;
   await db.prepare(
-    "INSERT INTO oauth_google_users (id, google_sub, email, display_name) VALUES (?, ?, ?, ?) " +
-    "ON CONFLICT(google_sub) DO UPDATE SET email=excluded.email, display_name=excluded.display_name"
-  ).bind(id, sub, claims.email!, (claims.name || claims.email!).slice(0, 200)).run();
+    "INSERT INTO oauth_google_users (id, google_sub, email, display_name, picture_url) VALUES (?, ?, ?, ?, ?) " +
+    "ON CONFLICT(google_sub) DO UPDATE SET email=excluded.email, display_name=excluded.display_name, picture_url=excluded.picture_url"
+  ).bind(id, sub, claims.email!, (claims.name || claims.email!).slice(0, 200), picture).run();
   const token = randomToken();
   const digest = await sha256(token);
   const expires = Math.floor(Date.now() / 1000) + MAX_SESSION_AGE;
@@ -148,16 +151,20 @@ async function issueSession(env: OAuthEnv, claims: GoogleClaims): Promise<string
     .bind(digest, id, expires).run();
   return token;
 }
-export async function readGoogleAccount(request: Request, env: OAuthEnv): Promise<GoogleAccount | null> {
+export async function currentSessionHash(request: Request): Promise<string | null> {
   const token = getCookie(request, SESSION_COOKIE);
-  if (!token || !/^[A-Za-z0-9_-]{43}$/.test(token) || !env.INTERVIEW_DB) return null;
-  const tokenHash = await sha256(token);
+  return token && /^[A-Za-z0-9_-]{43}$/.test(token) ? sha256(token) : null;
+}
+export async function readGoogleAccount(request: Request, env: OAuthEnv): Promise<GoogleAccount | null> {
+  const tokenHash = await currentSessionHash(request);
+  if (!tokenHash || !env.INTERVIEW_DB) return null;
   const row = await env.INTERVIEW_DB.prepare(
-    "SELECT u.id AS id, u.email AS email, u.display_name AS name " +
-    "FROM oauth_sessions s JOIN oauth_google_users u ON u.id=s.user_id " +
+    "SELECT u.id AS id, u.email AS email, u.display_name AS name, u.picture_url AS picture, " +
+    "r.role AS assigned_role FROM oauth_sessions s JOIN oauth_google_users u ON u.id=s.user_id " +
+    "LEFT JOIN oauth_user_roles r ON r.user_id=u.id " +
     "WHERE s.token_hash=? AND s.expires_at > ?"
-  ).bind(tokenHash, Math.floor(Date.now()/1000)).first<GoogleAccount>();
-  return row ?? null;
+  ).bind(tokenHash, Math.floor(Date.now()/1000)).first<GoogleAccount & { assigned_role?: string }>();
+  return row ? { id: row.id, email: row.email, name: row.name, picture: row.picture ?? null, role: row.assigned_role === "admin" ? "admin" : "user" } : null;
 }
 export async function handleGoogleAuth(request: Request, env: OAuthEnv): Promise<Response> {
   const url = new URL(request.url);
@@ -196,7 +203,7 @@ export async function handleGoogleAuth(request: Request, env: OAuthEnv): Promise
       const idToken = await exchangeCode(code, flow, env);
       const claims = await verifyGoogleIdToken(idToken, env.GOOGLE_CLIENT_ID!, flow.nonce);
       const session = await issueSession(env, claims);
-      return redirect(ORIGIN + "/interview/?auth=connected", [reset, cookie(SESSION_COOKIE, session, MAX_SESSION_AGE)]);
+      return redirect(ORIGIN + "/interview/?auth=connected", [reset, cookie(SESSION_COOKIE, session, MAX_SESSION_AGE), cookie("__Host-qv_admin", "", 0)]);
     } catch {
       return json({ ok: false, code: "GOOGLE_LOGIN_FAILED" }, 502, { "Set-Cookie": reset });
     }
@@ -218,7 +225,10 @@ export async function handleGoogleAuth(request: Request, env: OAuthEnv): Promise
           .bind(await sha256(token)).run();
       } catch { return json({ ok: false, code: "LOGOUT_UNAVAILABLE" }, 503); }
     }
-    return json({ ok: true }, 200, { "Set-Cookie": cookie(SESSION_COOKIE, "", 0) });
+    const headers = new Headers(HEADERS);
+    headers.append("Set-Cookie", cookie(SESSION_COOKIE, "", 0));
+    headers.append("Set-Cookie", cookie("__Host-qv_admin", "", 0));
+    return Response.json({ ok: true }, { headers });
   }
   return json({ ok: false }, 404);
 }

@@ -21,6 +21,7 @@ import { useSidebar } from "./SidebarContext";
 import { ProblemNavTree } from "./ProblemNavTree";
 import type { CourseNavigationItem } from "@/lib/courses";
 import { useCourseProgress } from "@/lib/courses/useCourseProgress";
+import { SidebarAccount } from "./SidebarAccount";
 
 const MAX_VISIBLE_COURSES = 4;
 
@@ -281,6 +282,7 @@ export function AppSidebar({ courses = [] }: { courses?: CourseNavigationItem[] 
 
           {/* Expanded Footer */}
           <div className="shrink-0 border-t border-[var(--border)] p-3 space-y-2">
+            <SidebarAccount />
             <ThemeToggle />
             <p className="px-1 text-[10px] leading-relaxed text-[var(--muted)]">
               QuantaVault • Nền tảng tri thức kỹ sư toàn diện.
@@ -369,6 +371,7 @@ export function AppSidebar({ courses = [] }: { courses?: CourseNavigationItem[] 
 
           {/* Mini Footer Theme Toggle */}
           <div className="flex flex-col items-center gap-2">
+            <SidebarAccount compact />
             <ThemeToggle compact />
           </div>
         </div>

@@ -9,6 +9,7 @@ const pathname = vi.hoisted(() => vi.fn(() => "/courses"));
 vi.mock("next/navigation", () => ({ usePathname: pathname }));
 vi.mock("@/components/theme/ThemeToggle", () => ({ ThemeToggle: () => null }));
 vi.mock("../ProblemNavTree", () => ({ ProblemNavTree: () => null }));
+vi.mock("../SidebarAccount", () => ({ SidebarAccount: () => null }));
 
 function course(n: number): CourseNavigationItem {
   return {

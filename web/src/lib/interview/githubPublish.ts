@@ -37,8 +37,8 @@ export function validQuestion(v: unknown): v is PublishQuestionItem {
     && (v.relatedProblems === undefined || (Array.isArray(v.relatedProblems) && v.relatedProblems.length <= 200 && v.relatedProblems.every(n => Number.isSafeInteger(n) && n > 0)))
     && (v.isDeleted === undefined || typeof v.isDeleted === "boolean");
 }
-export function validatePublishPayload(value: unknown): PublishPayload {
-  if (!record(value) || !text(value.pin, 256, true) || !text(value.otp, 32, true)
+export function validatePublishPayload(value: unknown, verifiedAdmin = false): PublishPayload {
+  if (!record(value) || (!verifiedAdmin && (!text(value.pin, 256, true) || !text(value.otp, 32, true)))
     || !Array.isArray(value.modifiedQuestions) || value.modifiedQuestions.length === 0 || value.modifiedQuestions.length > 1000
     || !value.modifiedQuestions.every(validQuestion) || !record(value.baseVersions)
     || (value.commitMessage !== undefined && !text(value.commitMessage, 2000))) {
@@ -96,15 +96,17 @@ function sha(value: unknown): string {
   return value;
 }
 
-export async function executePublishToGithub(value: unknown, env: PublishEnv): Promise<PublishResult> {
+export async function executePublishToGithub(value: unknown, env: PublishEnv, verifiedAdmin = false): Promise<PublishResult> {
   try {
     validatePublishConfig(env);
-    const payload = validatePublishPayload(value);
-    const [pinValid, otpValid] = await Promise.all([
-      constantTimeEqual(payload.pin.trim(), env.ADMIN_PIN!.trim()),
-      /^\d{6}$/.test(payload.otp.trim()) ? verifyTOTP(payload.otp.trim(), env.TOTP_SECRET!.trim(), { window: 1 }) : Promise.resolve(false),
-    ]);
-    if (!pinValid || !otpValid) return failure(401, "AUTHENTICATION_FAILED", "Mã PIN hoặc OTP không hợp lệ. Cần xác thực cả hai yếu tố.");
+    const payload = validatePublishPayload(value, verifiedAdmin);
+    if (!verifiedAdmin) {
+      const [pinValid, otpValid] = await Promise.all([
+        constantTimeEqual(payload.pin.trim(), env.ADMIN_PIN!.trim()),
+        /^\d{6}$/.test(payload.otp.trim()) ? verifyTOTP(payload.otp.trim(), env.TOTP_SECRET!.trim(), { window: 1 }) : Promise.resolve(false),
+      ]);
+      if (!pinValid || !otpValid) return failure(401, "AUTHENTICATION_FAILED", "Mã PIN hoặc OTP không hợp lệ. Cần xác thực cả hai yếu tố.");
+    }
 
     const owner = env.GITHUB_OWNER || "TanBuiDev", repo = env.GITHUB_REPO || "QuantaVault";
     const api = `https://api.github.com/repos/${owner}/${repo}`;

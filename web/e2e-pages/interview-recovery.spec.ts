@@ -1,4 +1,13 @@
 import { expect, test } from "@playwright/test";
+test.beforeEach(async ({ page }) => {
+  // Backend role is authoritative. Mock only the verified session for editor E2E.
+  await page.route("**/api/auth/session", route => route.fulfill({
+    status: 200,
+    contentType: "application/json",
+    body: JSON.stringify({ ok: true, user: { id: "e2e-admin", name: "Admin", email: "admin@example.com", role: "admin" } }),
+  }));
+});
+
 
 test("saved interview content survives reopening and reload; unsaved recovery requires consent", async ({ page }) => {
   await page.goto("/interview/?edit=true&editQuestion=q-001");

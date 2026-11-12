@@ -1,153 +1,115 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { CloudDownload, CloudUpload, LogIn, LogOut, ShieldCheck } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { Cloud, CloudDownload, CloudUpload, Link2Off, ShieldCheck } from "lucide-react";
 import { useConfirm } from "@/components/ui/ConfirmDialog";
-import { readInterviewProgress, replaceInterviewProgress } from "@/lib/interview/progress";
-import { archiveProgressBeforeMerge } from "@/lib/interview/questionIdMerge";
+import { useAccount } from "@/lib/auth/AccountProvider";
+import { readInterviewProgress } from "@/lib/interview/progress";
+import { conservativeMerge, fetchGoogleProgress, getLinkedGoogleUser, isGoogleProgressLinkedTo, linkGoogleProgress, unlinkGoogleProgress, type RemoteProgress } from "@/lib/auth/googleSync";
 import type { InterviewProgressState } from "@/lib/interview/types";
 
-type User = { id: string; email: string; name: string };
-type Remote = { ok: boolean; state: InterviewProgressState; revision: number };
-function nonEmpty(state: InterviewProgressState) {
-  return Object.keys(state.learned).length + Object.keys(state.review).length + Object.keys(state.bookmarks).length > 0;
-}
-function same(a: InterviewProgressState, b: InterviewProgressState) {
-  return JSON.stringify(a) === JSON.stringify(b);
+const empty = (p: InterviewProgressState) => Object.values(p).every(entries => Object.keys(entries).length === 0);
+const equal = (a: InterviewProgressState, b: InterviewProgressState) => JSON.stringify(a) === JSON.stringify(b);
+function count(p: InterviewProgressState) {
+  return `${Object.keys(p.learned).length} nắm vững · ${Object.keys(p.review).length} cần ôn · ${Object.keys(p.bookmarks).length} đã lưu`;
 }
 
 export function GoogleAccountPanel() {
+  const { user, loading, syncStatus } = useAccount();
   const confirm = useConfirm();
-  const [user, setUser] = useState<User | null>(null);
+  const [remote, setRemote] = useState<RemoteProgress | null>(null);
   const [busy, setBusy] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState("");
+  const [notice, setNotice] = useState("");
+  const [linked, setLinked] = useState(false);
+  const refresh = useCallback(async () => {
+    if (!user) return;
+    const r = await fetchGoogleProgress();
+    setRemote(r);
+    setLinked(isGoogleProgressLinkedTo(user.id));
+  }, [user]);
+  useEffect(() => { if (user) queueMicrotask(() => { void refresh().catch(() => setNotice("Chưa đọc được tiến độ từ Google. Tiến độ trên máy vẫn được giữ.")); }); }, [user, refresh]);
+  if (loading) return <p className="text-xs text-[var(--muted)]">Đang kiểm tra tài khoản Google...</p>;
+  if (!user) return <a className="inline-flex rounded-xl bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white" href="/api/auth/google/start">Tiếp tục với Google</a>;
 
-  useEffect(() => {
-    let live = true;
-    void fetch("/api/auth/session", { credentials: "same-origin", cache: "no-store" })
-      .then(async response => {
-        if (!response.ok) throw new Error("session failed");
-        return response.json() as Promise<{ user: User | null }>;
-      })
-      .then(data => { if (live) setUser(data.user); })
-      .catch(() => { if (live) setMessage("Không thể kiểm tra phiên đăng nhập. Tiến độ trên máy vẫn được giữ."); })
-      .finally(() => { if (live) setLoading(false); });
-    return () => { live = false; };
-  }, []);
-
-  async function getAccountProgress(): Promise<Remote> {
-    const response = await fetch("/api/google-progress", { credentials: "same-origin", cache: "no-store" });
-    if (!response.ok) throw new Error("Google progress read failed");
-    const result = await response.json() as Remote;
-    if (!result.ok || !result.state || !Number.isSafeInteger(result.revision)) throw new Error("invalid cloud progress");
-    return result;
-  }
-
-  async function saveToAccount() {
-    if (!user || busy) return;
+  async function choose(mode: "local" | "remote" | "conservative") {
+    if (!user || !remote || busy) return;
+    const other = getLinkedGoogleUser();
+    if (other && other !== user.id) {
+      setNotice("Trình duyệt đã liên kết tiến độ với một tài khoản Google khác. Hãy sao lưu và ngắt liên kết cũ trước khi đổi tài khoản.");
+      return;
+    }
+    const original = readInterviewProgress();
+    const merged = mode === "conservative" ? conservativeMerge(original, remote.state) : mode === "remote" ? remote.state : original;
+    const ok = await confirm({
+      title: "Liên kết tiến độ với tài khoản Google?",
+      message: `Tiến độ máy: ${count(original)}. Tiến độ Google: ${count(remote.state)}. Kết quả lựa chọn: ${count(merged)}. Hệ thống sao lưu tiến độ trên máy trước khi thay đổi. Sau khi liên kết, Google trở thành nguồn đồng bộ tự động, mã 64 ký tự chỉ còn dùng để phục hồi.`,
+      confirmText: "Sao lưu và liên kết",
+      cancelText: "Hủy",
+      variant: "warning",
+    });
+    if (!ok) return;
+    if (!equal(readInterviewProgress(), original)) {
+      setNotice("Tiến độ trên máy vừa thay đổi. Hãy đối chiếu và thử lại.");
+      return;
+    }
     setBusy(true);
     try {
-      const remote = await getAccountProgress();
-      const local = readInterviewProgress();
-      if (remote.revision !== 0) {
-        setMessage(same(local, remote.state)
-          ? "Tài khoản Google đã có cùng tiến độ trên máy. Không cần ghi đè."
-          : "Tài khoản Google đã có tiến độ khác. Để tránh mất dữ liệu, hệ thống không tự ghi đè; hãy sao lưu và đối chiếu trước.");
-        return;
-      }
-      if (!nonEmpty(local)) { setMessage("Máy hiện chưa có tiến độ để lưu."); return; }
-      const accepted = await confirm({
-        title: "Lưu tiến độ lên tài khoản Google?",
-        message: "Tài khoản Google chưa có dữ liệu. Thao tác sẽ sao chép trạng thái Nắm vững, Cần ôn, Đã lưu từ trình duyệt. Mã đồng bộ cũ và dữ liệu localStorage không bị xóa.",
-        confirmText: "Lưu bản tiến độ", cancelText: "Hủy", variant: "primary",
-      });
-      if (!accepted) return;
-      if (!same(readInterviewProgress(), local)) { setMessage("Tiến độ vừa thay đổi. Hãy kiểm tra và thử lại."); return; }
-      // Fail closed before any remote write if the local immutable archive cannot be stored.
-      archiveProgressBeforeMerge(local);
-      const response = await fetch("/api/google-progress", {
-        method: "PUT", credentials: "same-origin", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ state: local, revision: 0 }),
-      });
-      if (response.status === 409) { setMessage("Tài khoản đã thay đổi trên thiết bị khác. Không ghi đè dữ liệu."); return; }
-      if (!response.ok) throw new Error("cannot upload");
-      setMessage("Đã lưu bản tiến độ lên tài khoản Google; bản tiến độ và mã đồng bộ cũ vẫn còn. Chưa bật đồng bộ tự động.");
-    } catch {
-      setMessage("Chưa thể lưu lên tài khoản Google. Tiến độ trên thiết bị vẫn còn nguyên.");
+      await linkGoogleProgress(user.id, mode, remote);
+      await refresh();
+      setNotice("Đã liên kết an toàn. Những thay đổi tiếp theo sẽ được tự đồng bộ qua Google và Cloudflare D1.");
+    } catch (e) {
+      setNotice(e instanceof Error && e.message === "VERSION_CONFLICT"
+        ? "Dữ liệu Google đã thay đổi ở thiết bị khác. Hãy tải lại để đối chiếu trước khi thử tiếp."
+        : "Chưa thể liên kết. Bản tiến độ trên máy vẫn được bảo lưu; hãy kiểm tra bộ nhớ hoặc kết nối mạng.");
     } finally { setBusy(false); }
   }
-
-  async function loadFromAccount() {
+  async function detach() {
     if (!user || busy) return;
-    setBusy(true);
-    try {
-      const remote = await getAccountProgress();
-      if (remote.revision === 0 || !nonEmpty(remote.state)) { setMessage("Tài khoản Google chưa có tiến độ để tải."); return; }
-      const current = readInterviewProgress();
-      if (same(current, remote.state)) { setMessage("Tiến độ trên máy đã khớp với tài khoản Google."); return; }
-      const accepted = await confirm({
-        title: "Nhập tiến độ từ tài khoản Google?",
-        message: "Tiến độ trên trình duyệt sẽ được thay bằng bản từ tài khoản Google. Bản hiện tại được lưu tại chỗ trước khi nhập. Mã đồng bộ riêng và dữ liệu trong bảng D1 cũ không bị thay đổi.",
-        confirmText: "Sao lưu rồi nhập", cancelText: "Giữ tiến độ trên máy", variant: "warning",
-      });
-      if (!accepted) return;
-      if (!same(readInterviewProgress(), current)) { setMessage("Tiến độ trên máy vừa thay đổi; đã dừng để tránh ghi đè."); return; }
-      archiveProgressBeforeMerge(current);
-      replaceInterviewProgress(remote.state);
-      setMessage("Đã nhập tiến độ Google. Bản trên máy trước khi nhập đã được lưu; không tác động dữ liệu đồng bộ bằng mã riêng.");
-    } catch {
-      setMessage("Không thể tải tiến độ Google. Trạng thái hiện tại trên máy không bị thay đổi.");
-    } finally { setBusy(false); }
+    const ok = await confirm({
+      title: "Dừng đồng bộ với tài khoản Google?",
+      message: "Chỉ gỡ liên kết trên thiết bị này. Dữ liệu Google, tiến độ localStorage, mã đồng bộ cũ và các bản nháp không bị xóa. Sau đó bạn có thể đối chiếu và liên kết lại.",
+      confirmText: "Dừng đồng bộ trên thiết bị",
+      cancelText: "Giữ liên kết",
+      variant: "warning",
+    });
+    if (!ok) return;
+    unlinkGoogleProgress(user.id);
+    setLinked(false);
+    await refresh().catch(() => undefined);
   }
-
-  async function logout() {
-    if (busy) return;
-    setBusy(true);
-    try {
-      const response = await fetch("/api/auth/logout", {
-        method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: "{}",
-      });
-      if (!response.ok) throw new Error("signout error");
-      setUser(null);
-      setMessage("Đã đăng xuất khỏi QuantaVault. Tiến độ trên máy vẫn được giữ.");
-    } catch { setMessage("Không đăng xuất được. Hãy thử lại."); }
-    finally { setBusy(false); }
-  }
-
+  const local = readInterviewProgress();
+  const remoteDiffers = remote && !equal(local, remote.state);
+  const linkOther = getLinkedGoogleUser() && !linked;
   return (
-    <section id="google-account" aria-label="Tài khoản Google" className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-3 shadow-sm space-y-2">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <ShieldCheck className="h-4 w-4 text-indigo-500" />
-          <div>
-            <p className="text-sm font-semibold text-[var(--foreground)]">Tài khoản Google</p>
-            <p className="text-xs text-[var(--muted-strong)]">
-              {loading ? "Đang kiểm tra phiên đăng nhập..." : user ? `Đã đăng nhập: ${user.name} (${user.email})` : "Đăng nhập để lưu bản tiến độ riêng theo tài khoản"}
-            </p>
-          </div>
-        </div>
-        {!loading && (user
-          ? <button type="button" onClick={() => void logout()} disabled={busy} className="inline-flex items-center gap-1 rounded-lg border border-[var(--border)] px-3 py-2 text-xs font-semibold disabled:opacity-40"><LogOut className="h-3.5 w-3.5" /> Đăng xuất</button>
-          : <a href="/api/auth/google/start" className="inline-flex items-center gap-1 rounded-lg bg-[var(--primary)] px-3 py-2 text-xs font-semibold text-white"><LogIn className="h-3.5 w-3.5" /> Tiếp tục với Google</a>)}
+    <section id="sync" aria-label="Đồng bộ Google" className="space-y-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
+      <div className="flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-indigo-500" /><h2 className="text-base font-semibold">Đồng bộ với tài khoản Google</h2></div>
+      <p className="text-xs text-[var(--muted-strong)]">Tài khoản: {user.email}. Tiến độ học tập được tự lưu lên D1 sau khi bạn xác nhận liên kết lần đầu. Không xóa hoặc ghi đè tiến độ cũ khi đăng nhập.</p>
+      <div className="grid gap-2 sm:grid-cols-2 text-xs">
+        <div className="rounded-lg border border-[var(--border)] p-3"><p className="font-semibold">Trên thiết bị</p><p className="mt-1 text-[var(--muted-strong)]">{count(local)}</p></div>
+        <div className="rounded-lg border border-[var(--border)] p-3"><p className="font-semibold">Trên Google (Cloudflare D1)</p><p className="mt-1 text-[var(--muted-strong)]">{remote ? count(remote.state) : "Chưa tải được"}</p></div>
       </div>
-      {user && (
-        <>
-          <p className="text-xs text-[var(--muted-strong)]">
-            Tiến độ trong tài khoản Google được lưu riêng, không tự thay thế tiến độ trên thiết bị hoặc mã đồng bộ cũ.
-            Khi mới đăng nhập, bạn cần chọn thao tác chuyển dữ liệu một lần.
-          </p>
-          <div className="flex flex-wrap gap-2">
-            <button type="button" onClick={() => void saveToAccount()} disabled={busy} className="inline-flex items-center gap-1 rounded-lg border border-[var(--border)] px-3 py-2 text-xs font-semibold disabled:opacity-40">
-              <CloudUpload className="h-3.5 w-3.5" /> Lưu tiến độ máy lên tài khoản
-            </button>
-            <button type="button" onClick={() => void loadFromAccount()} disabled={busy} className="inline-flex items-center gap-1 rounded-lg border border-[var(--border)] px-3 py-2 text-xs font-semibold disabled:opacity-40">
-              <CloudDownload className="h-3.5 w-3.5" /> Tải tiến độ từ tài khoản
-            </button>
-          </div>
-        </>
+      {linked ? (
+        <div className="space-y-2">
+          <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400"><Cloud className="mr-1 inline h-4 w-4" /> {syncStatus === "synced" ? "Đã đồng bộ" : syncStatus === "syncing" ? "Đang đồng bộ" : syncStatus === "offline" ? "Mất mạng — dữ liệu máy vẫn được giữ" : syncStatus === "conflict" ? "Có xung đột — cần đối chiếu" : "Đã liên kết"}</p>
+          {syncStatus === "conflict" && <p className="text-xs text-amber-600">Hai thiết bị đã thay đổi dữ liệu khác nhau. Không tự ghi đè. Chọn Dừng đồng bộ trên thiết bị rồi đối chiếu để quyết định.</p>}
+          <button type="button" onClick={() => void detach()} disabled={busy} className="inline-flex items-center gap-1 rounded-lg border border-[var(--border)] px-3 py-2 text-xs font-semibold"><Link2Off className="h-4 w-4" /> Dừng đồng bộ để đối chiếu</button>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {linkOther && <p className="text-xs text-amber-600">Trình duyệt đang giữ liên kết với tài khoản khác; vui lòng đăng nhập lại tài khoản cũ để ngắt liên kết an toàn.</p>}
+          {!linkOther && remote && (
+            <div className="flex flex-wrap gap-2">
+              {(remote.revision === 0 || !remoteDiffers) &&
+                <button type="button" onClick={() => void choose("local")} disabled={busy} className="inline-flex items-center gap-1 rounded-lg border border-[var(--border)] px-3 py-2 text-xs font-semibold"><CloudUpload className="h-4 w-4" /> {remote.revision === 0 ? "Lưu máy lên Google và liên kết" : "Liên kết dữ liệu đang khớp"}</button>}
+              {remote.revision > 0 && <button type="button" onClick={() => void choose("remote")} disabled={busy} className="inline-flex items-center gap-1 rounded-lg border border-[var(--border)] px-3 py-2 text-xs font-semibold"><CloudDownload className="h-4 w-4" /> Dùng bản Google (sao lưu bản máy)</button>}
+              {remote.revision > 0 && remoteDiffers && !empty(local) && <button type="button" onClick={() => void choose("conservative")} disabled={busy} className="inline-flex items-center gap-1 rounded-lg border border-amber-500/50 px-3 py-2 text-xs font-semibold text-amber-600">Hợp nhất thận trọng (ưu tiên Cần ôn)</button>}
+            </div>
+          )}
+          <p className="text-xs text-[var(--muted-strong)]">Liên kết một lần trước khi bật đồng bộ tự động. Nếu chọn hợp nhất, những câu có trạng thái chưa nhất quán sẽ chuyển thành Cần ôn thay vì tự đánh dấu Nắm vững.</p>
+        </div>
       )}
-      {message && <p role="status" className="text-xs text-[var(--muted-strong)]">{message}</p>}
+      <button type="button" onClick={() => void refresh().catch(() => setNotice("Không thể tải lại tiến độ Google."))} className="text-xs font-semibold text-indigo-600 dark:text-indigo-400">Tải lại dữ liệu Google</button>
+      {notice && <p role="status" className="text-xs text-[var(--muted-strong)]">{notice}</p>}
     </section>
   );
 }
