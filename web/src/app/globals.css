@@ -159,6 +159,7 @@ textarea {
    non-box text cue for accessibility. */
 .md-source-navigation [data-md-source-offset] {
   cursor: pointer;
+  outline: none; /* Prevent default rectangular outline on focused preview text. */
 }
 .md-source-navigation [data-md-source-offset]:focus-visible {
   outline: none;
