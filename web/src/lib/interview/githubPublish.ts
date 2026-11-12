@@ -2,6 +2,7 @@ import { INTERVIEW_CATEGORIES, type InterviewQuestion } from "./types";
 import { verifyTOTP } from "./totp";
 import { fromBase32 } from "./base32";
 import { canonicalQuestion, questionVersion } from "./questionVersion";
+import { isRetiredInterviewId } from "./questionIdMerge";
 
 export interface PublishEnv {
   GITHUB_PAT?: string; GITHUB_OWNER?: string; GITHUB_REPO?: string;
@@ -44,6 +45,9 @@ export function validatePublishPayload(value: unknown): PublishPayload {
     throw new PublishError(400, "INVALID_PAYLOAD", "Dữ liệu xuất bản không hợp lệ hoặc thiếu phiên bản nền. Hãy cập nhật trang và kiểm tra bản nháp.");
   }
   const ids = value.modifiedQuestions.map(q => q.id);
+  if (ids.some(isRetiredInterviewId)) {
+    throw new PublishError(409, "RETIRED_QUESTION_ID", "Câu hỏi này đã được hợp nhất. Bản cũ vẫn được giữ để sao lưu; vui lòng chỉnh sửa câu hỏi chính.");
+  }
   if (new Set(ids).size !== ids.length || ids.some(id => !Object.hasOwn(value.baseVersions as object, id) || !text((value.baseVersions as Record<string, unknown>)[id], 600000, true))) {
     throw new PublishError(400, "INVALID_PAYLOAD", "ID bị trùng hoặc thiếu phiên bản nền của câu hỏi.");
   }

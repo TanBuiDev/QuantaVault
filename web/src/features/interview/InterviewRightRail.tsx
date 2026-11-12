@@ -1,5 +1,7 @@
 "use client";
 
+import { interviewMatchesCategory } from "@/lib/interview";
+
 import { useState } from "react";
 import {
   Presentation,
@@ -85,7 +87,7 @@ export function InterviewRightRail({
 
   // Calculate progress per category across all canonical questions
   const categoryStats = Object.values(INTERVIEW_CATEGORIES).map((cat) => {
-    const catQuestions = allQuestions.filter((q) => q.category === cat.id);
+    const catQuestions = allQuestions.filter((q) => interviewMatchesCategory(q, cat.id));
     const total = catQuestions.length;
     let learned = 0;
     for (const q of catQuestions) {

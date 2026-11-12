@@ -13,48 +13,24 @@ const EMPTY_STATE: InterviewProgressState = {
   bookmarks: {},
 };
 
-import legacyMap from "./legacyIdMap.json";
-
+// Historical aliases can collide with current q-001..q-538 question IDs.
+// Never automatically rewrite unversioned study progress during a read.
+// The explicit, backed-up reconciliation UI handles the retired canonical IDs.
 let cachedRaw: string | null | undefined;
 let cachedState: InterviewProgressState = EMPTY_STATE;
-
-function migrateRecord(record: Record<string, boolean>): { updated: Record<string, boolean>; changed: boolean } {
-  const result: Record<string, boolean> = {};
-  let changed = false;
-  const map = legacyMap as Record<string, string>;
-
-  for (const [key, val] of Object.entries(record)) {
-    if (map[key] && map[key] !== key) {
-      result[map[key]] = val;
-      changed = true;
-    } else {
-      result[key] = val;
-    }
-  }
-  return { updated: result, changed };
-}
 
 function readStorage(): InterviewProgressState {
   if (typeof window === "undefined") return EMPTY_STATE;
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return EMPTY_STATE;
-    const parsed = JSON.parse(raw);
-    const learnedRes = migrateRecord(typeof parsed.learned === "object" && parsed.learned ? parsed.learned : {});
-    const reviewRes = migrateRecord(typeof parsed.review === "object" && parsed.review ? parsed.review : {});
-    const bookmarksRes = migrateRecord(typeof parsed.bookmarks === "object" && parsed.bookmarks ? parsed.bookmarks : {});
-
-    const migratedState: InterviewProgressState = {
-      learned: learnedRes.updated,
-      review: reviewRes.updated,
-      bookmarks: bookmarksRes.updated,
+    const parsed = JSON.parse(raw) as Partial<InterviewProgressState>;
+    if (!parsed || typeof parsed !== "object") return EMPTY_STATE;
+    return {
+      learned: parsed.learned && typeof parsed.learned === "object" ? parsed.learned : {},
+      review: parsed.review && typeof parsed.review === "object" ? parsed.review : {},
+      bookmarks: parsed.bookmarks && typeof parsed.bookmarks === "object" ? parsed.bookmarks : {},
     };
-
-    if (learnedRes.changed || reviewRes.changed || bookmarksRes.changed) {
-      writeStorage(migratedState);
-    }
-
-    return migratedState;
   } catch {
     return EMPTY_STATE;
   }
@@ -217,5 +193,11 @@ export function readInterviewProgress(): InterviewProgressState {
   return readStorage();
 }
 export function replaceInterviewProgress(next: InterviewProgressState) {
-  writeStorage(next);
+  if (typeof window === "undefined") throw new Error("Browser storage unavailable");
+  // Migration and manual cloud downloads must fail closed on storage quota errors.
+  const raw = JSON.stringify(next);
+  window.localStorage.setItem(STORAGE_KEY, raw);
+  cachedRaw = raw;
+  cachedState = next;
+  window.dispatchEvent(new Event(CHANGE_EVENT));
 }

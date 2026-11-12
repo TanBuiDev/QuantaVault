@@ -1,0 +1,322 @@
+{
+  "schema": "quantavault-interview-merge-phase1-v1",
+  "baselineMainCommit": "2c56c4bf02015961f0e9bd7979c8f8e1cce34f68",
+  "sourceFile": "data/interview-questions.json",
+  "stage": "content-review-only",
+  "groups": [
+    {
+      "group": "A01",
+      "keptId": "q-193",
+      "mergedIds": [
+        "q-194"
+      ],
+      "question": {
+        "id": "q-193",
+        "title": "Constructor Injection và Field Injection khác nhau thế nào? Vì sao ưu tiên Constructor Injection?",
+        "category": "spring",
+        "difficulty": "middle",
+        "tags": [
+          "Spring",
+          "SpringCore",
+          "IoC",
+          "DependencyInjection",
+          "BeanLifecycle",
+          "AOPProxy",
+          "Transactional"
+        ],
+        "companies": [
+          "Techcombank",
+          "MB Bank"
+        ],
+        "summary": "**Constructor Injection** truyền dependency bắt buộc qua constructor, giúp object được tạo với các phụ thuộc rõ ràng, có thể giữ tham chiếu bằng `final` và dễ unit test không cần khởi động Spring. **Field Injection** dùng `@Autowired` trên field sau khi tạo object, ngắn nhưng che giấu dependency và khó khởi tạo độc lập. Constructor Injection không tự giải quyết circular dependency hoặc làm đối tượng phụ thuộc trở nên thread-safe.",
+        "answerMarkdown": "## 1. Phân biệt hai cách Dependency Injection\n\n**Dependency (phụ thuộc)** là object mà một class cần để làm việc, ví dụ `OrderService` cần `OrderRepository` để lưu đơn hàng.\n\n- **Constructor Injection:** Nhận `OrderRepository` qua **tham số constructor** khi tạo `OrderService`.\n- **Field Injection:** Spring gán dependency vào **field** (thường có `@Autowired`) sau bước tạo object.\n\n## 2. Constructor Injection — Cách thường được khuyến nghị\n\n```java\nimport org.springframework.stereotype.Service;\n\n@Service // Đăng ký class thành Spring Bean.\npublic class OrderService {\n    private final OrderRepository repository; // Dependency bắt buộc.\n\n    public OrderService(OrderRepository repository) { // Nhận qua constructor.\n        this.repository = repository; // Gán đúng một lần vào field final.\n    }\n\n    public long countOrders() {\n        return repository.count(); // Dùng dependency được truyền vào.\n    }\n}\n```\n\nVí dụ minh họa giả định `OrderRepository` là Spring Data repository có method `count()`, được khai báo trong ứng dụng. Trong Spring, nếu bean chỉ có **một constructor**, thường **không cần `@Autowired`** trên constructor đó. Khi tạo object thủ công để unit test, ta có thể truyền fake/mock repository qua `new OrderService(fakeRepository)`.\n\n## 3. Field Injection — Ngắn hơn nhưng có hạn chế\n\n```java\n@Service\npublic class OrderService {\n    @Autowired // Spring gán sau khi tạo object.\n    private OrderRepository repository; // Không thể khai báo final theo cách này.\n}\n```\n\nVới field injection, dependency không xuất hiện trong constructor nên dễ bị bỏ sót khi tạo object bằng `new OrderService()` ngoài Spring Container. Field injection còn khó thay thế dependency trong unit test nếu không khởi chạy Spring hoặc dùng reflection.\n\n## 4. So sánh nhanh\n\n| Tiêu chí | Constructor Injection | Field Injection |\n|---|---|---|\n| Dependency xuất hiện ở đâu? | Tham số constructor | Field có `@Autowired` |\n| Có thể dùng `final`? | Có | Thông thường không |\n| Tạo bằng `new` trong unit test | Dễ truyền fake/mock | Cần cách gán riêng |\n| Dependency bắt buộc | Thể hiện rõ | Ít rõ hơn |\n| Lựa chọn thường dùng | Ưu tiên cho Service và component | Chủ yếu ở code cũ / ví dụ ngắn |\n\n**Lưu ý:** Constructor Injection không tự động làm code thread-safe; `final` giúp cố định **tham chiếu**, không biến dependency thành object bất biến. Với nhiều bean cùng implement một interface, vẫn có thể cần `@Qualifier` hoặc `@Primary`.\n\n## 5. Câu trả lời phỏng vấn (30–45 giây)\n\n> Constructor Injection truyền dependency qua constructor, còn Field Injection dùng `@Autowired` trên field để Spring gán sau khi tạo object. Em ưu tiên Constructor Injection cho dependency bắt buộc vì yêu cầu phụ thuộc hiện rõ, có thể dùng `final` và dễ unit test bằng mock hoặc fake mà không cần khởi chạy Spring. Nếu bean chỉ có một constructor, Spring thường không yêu cầu ghi `@Autowired`.\n\n**Học tiếp:** `q-192` (Dependency Injection là gì?).\n\n**Tài liệu:** [Spring Boot — Beans and Dependency Injection](https://docs.spring.io/spring-boot/reference/using/spring-beans-and-dependency-injection.html), [Spring — Using @Autowired](https://docs.spring.io/spring-framework/reference/core/beans/annotation-config/autowired.html).\n## 6. Giới hạn và dấu hiệu cần cải thiện thiết kế\n\nNếu constructor có quá nhiều tham số, hãy xem lại trách nhiệm của Service; không có một ngưỡng số lượng dependency đúng cho mọi trường hợp. Circular dependency (`A` cần `B` và `B` cần `A`) vẫn là vấn đề với constructor injection và thường nên được xử lý bằng việc tách lại trách nhiệm, không chuyển sang field injection để che đi chu trình.\n\n`final` chỉ ngăn gán lại **tham chiếu** repository sau khởi tạo; không đảm bảo repository hoặc toàn bộ Service bất biến hay thread-safe."
+      }
+    },
+    {
+      "group": "A02",
+      "keptId": "q-089",
+      "mergedIds": [
+        "q-090"
+      ],
+      "question": {
+        "id": "q-089",
+        "title": "String Constant Pool là gì? String literal, new String() và intern() khác nhau thế nào?",
+        "category": "java-core",
+        "difficulty": "middle",
+        "tags": [
+          "Java",
+          "JVM",
+          "StringPool",
+          "Immutability",
+          "MemoryManagement"
+        ],
+        "companies": [
+          "MB Bank",
+          "Tiki",
+          "Momo",
+          "Viettel",
+          "Shopee"
+        ],
+        "summary": "**String Constant Pool** giúp JVM dùng lại String có cùng nội dung. Với `String a = \"abc\"`, literal thường trỏ đến đối tượng đã được intern trong pool; `new String(\"abc\")` luôn tạo một đối tượng String mới. `intern()` trả về tham chiếu chuẩn hóa trong pool. `==` kiểm tra cùng object, còn `equals()` kiểm tra nội dung, vì vậy khi so sánh String trong nghiệp vụ nên dùng `equals()`.",
+        "answerMarkdown": "### 1. String Literal — Tái sử dụng đối tượng\n\n```java\nString s1 = \"Java\";\nString s2 = \"Java\";\n\nSystem.out.println(s1 == s2); // true\n```\n\n**Giải thích:** Hai biến cùng tham chiếu đến đối tượng `\"Java\"` trong String Pool nên `==` trả về `true`.\n\n### 2. new String() — Tạo đối tượng mới\n\n```java\nString s1 = \"Java\";\nString s2 = new String(\"Java\");\n\nSystem.out.println(s1 == s2);      // false\nSystem.out.println(s1.equals(s2)); // true\n```\n\n**Giải thích:**\n\n- `s1` tham chiếu đến String trong Pool.\n- `s2` tham chiếu đến đối tượng String mới.\n- `==` trả về `false` vì khác đối tượng.\n- `equals()` trả về `true` vì cùng nội dung.\n\n### 3. intern() — Lấy String từ Pool\n\n```java\nString s1 = new String(\"Java\");\nString s2 = s1.intern();\nString s3 = \"Java\";\n\nSystem.out.println(s1 == s2); // false\nSystem.out.println(s2 == s3); // true\n```\n\n**Giải thích:** `intern()` trả về đối tượng String tương ứng trong Pool. Nếu chưa có chuỗi cùng nội dung, JVM đưa một tham chiếu chuẩn hóa vào Pool.\n\nVì vậy, `s2` và `s3` cùng tham chiếu đến một đối tượng.\n\n### 4. Vì sao String Pool hoạt động được?\n\nVì `String` là **Immutable (bất biến)**.\n\nNhiều biến có thể dùng chung một đối tượng String mà không lo biến này làm thay đổi nội dung của biến khác.\n\n### 5. Lưu ý khi sử dụng\n\n- Ưu tiên `String s = \"Java\"` thay vì `new String(\"Java\")` khi không cần tạo đối tượng riêng.\n- Dùng `equals()` để so sánh nội dung String, không dùng `==`.\n- Không nên lạm dụng `intern()` với dữ liệu động số lượng lớn vì có thể tăng chi phí quản lý Pool.\n\n**Kết luận:** String Pool giúp JVM tiết kiệm bộ nhớ bằng cách tái sử dụng các String có cùng nội dung. `new String()` tạo đối tượng riêng, còn `intern()` trả về String tương ứng trong Pool.\n### 6. So sánh nhanh theo kiểu phỏng vấn\n\n| Biểu thức | Đối tượng được tham chiếu | So sánh nội dung |\n|---|---|---|\n| `\"abc\"` | Chuỗi đã intern trong pool | Dùng `equals()` |\n| `new String(\"abc\")` | Object mới, khác tham chiếu literal | Dùng `equals()` |\n| `someString.intern()` | Chuỗi chuẩn hóa trong pool | Dùng `equals()` |\n\nKhông nên dựa vào kết quả `==` dù trong vài tình huống hai biến cùng trỏ đến literal. Việc `new String(\"abc\")` tạo một object mới không có nghĩa luôn tạo **thêm** một object literal mới, vì literal có thể đã tồn tại trong pool.",
+        "relatedProblems": [
+          383,
+          242,
+          3
+        ]
+      }
+    },
+    {
+      "group": "A03",
+      "keptId": "q-091",
+      "mergedIds": [
+        "q-092"
+      ],
+      "question": {
+        "id": "q-091",
+        "title": "equals() và hashCode() có hợp đồng gì? Override thiếu một phương thức gây lỗi ra sao?",
+        "category": "java-core",
+        "difficulty": "middle",
+        "tags": [
+          "String",
+          "Immutability",
+          "StringPool",
+          "EqualsHashCode",
+          "Enum",
+          "Record"
+        ],
+        "companies": [
+          "Axon",
+          "One Mount"
+        ],
+        "summary": "`equals()` xác định hai object có bằng nhau về mặt logic; `hashCode()` cung cấp mã băm cho các cấu trúc như `HashMap` và `HashSet`. Nếu `a.equals(b)` là `true` thì hai mã băm bắt buộc bằng nhau, nhưng hai mã băm bằng nhau chưa chắc hai object bằng nhau. Chỉ override `equals()` có thể khiến việc tìm key trong `HashMap` hoặc phần tử trong `HashSet` thất bại.",
+        "answerMarkdown": "### 1. Ví dụ thực tế\n\nGiả sử hai sản phẩm có cùng mã `code` được xem là bằng nhau:\n\n```java\nimport java.util.Objects;\n\npublic class ProductCode {\n\n    private final String code;\n\n    public ProductCode(String code) {\n        this.code = code;\n    }\n\n    @Override\n    public boolean equals(Object obj) {\n        if (this == obj) return true;\n\n        if (!(obj instanceof ProductCode other)) {\n            return false;\n        }\n\n        return Objects.equals(code, other.code);\n    }\n\n    @Override\n    public int hashCode() {\n        return Objects.hashCode(code);\n    }\n}\n```\n\nSử dụng với `HashSet`:\n\n```java\nSet<ProductCode> products = new HashSet<>();\n\nproducts.add(new ProductCode(\"P001\"));\n\nSystem.out.println(\n    products.contains(new ProductCode(\"P001\"))\n); // true\n```\n\n**Giải thích:**\n\n- Hai object khác nhau nhưng có cùng `code = \"P001\"`.\n- `equals()` xác định chúng bằng nhau.\n- `hashCode()` tạo mã băm nhất quán từ `code`.\n- Vì vậy, `HashSet` có thể tìm thấy phần tử đã thêm.\n\n### 2. Điều gì xảy ra nếu không override hashCode()?\n\nNếu chỉ override `equals()` mà giữ `hashCode()` mặc định từ `Object`, hai object được xem là bằng nhau vẫn có thể có mã băm khác nhau.\n\nKhi đó, `HashSet` hoặc `HashMap` có thể tìm sai vị trí và không tìm thấy dữ liệu như mong đợi.\n\n### 3. Lưu ý khi sử dụng\n\n- Hai object có cùng `hashCode()` không nhất thiết bằng nhau.\n- Không nên thay đổi các field tham gia tính `equals()` và `hashCode()` khi object đang được dùng làm key trong `HashMap` hoặc phần tử của `HashSet`.\n- Java `record` tự sinh `equals()` và `hashCode()` dựa trên các component.\n- Với JPA Entity, cần thiết kế cẩn thận khi sử dụng ID tự sinh.\n\n**Kết luận:** `equals()` quyết định tính bằng nhau, còn `hashCode()` hỗ trợ tìm kiếm bằng mã băm. Hai phương thức phải tuân thủ cùng một quy tắc so sánh để `HashMap` và `HashSet` hoạt động đúng.\n### 4. Ví dụ lỗi với HashMap khi chỉ override equals()\n\n```java\nProductCode saved = new ProductCode(\"P001\");\nMap<ProductCode, Integer> stock = new HashMap<>();\nstock.put(saved, 5);\nSystem.out.println(stock.get(new ProductCode(\"P001\"))); // 5 nếu cả equals và hashCode đúng\n```\n\nNếu bỏ `hashCode()` đã override trong class `ProductCode` ở ví dụ trước, hai object bằng nhau về `code` vẫn có thể rơi vào bucket khác nhau và `get()` có thể trả về `null`. `equals()` cũng cần tuân thủ tính phản xạ, đối xứng, bắc cầu, nhất quán và xử lý `null` đúng."
+      }
+    },
+    {
+      "group": "A04",
+      "keptId": "q-099",
+      "mergedIds": [
+        "q-100"
+      ],
+      "question": {
+        "id": "q-099",
+        "title": "Java Record là gì và khác class thông thường thế nào?",
+        "category": "java-core",
+        "difficulty": "middle",
+        "tags": [
+          "String",
+          "Immutability",
+          "StringPool",
+          "EqualsHashCode",
+          "Enum",
+          "Record"
+        ],
+        "companies": [
+          "FPT Software",
+          "Techcombank",
+          "MB Bank",
+          "Tiki"
+        ],
+        "summary": "`record` là dạng class Java mô tả dữ liệu bằng các component, tự sinh constructor, accessor, `equals()`, `hashCode()` và `toString()`. Khác class thông thường, record có field component `private final`, không thể extends một class tùy ý hoặc khai báo thêm instance field, nhưng có thể implements interface. Record chỉ bất biến **nông** và thường phù hợp DTO/value object hơn JPA Entity.",
+        "answerMarkdown": "## 1. Record và class thường\n\nRecord giảm boilerplate cho các đối tượng mà **dữ liệu xác định danh tính giá trị**. Ví dụ:\n\n```java\nrecord ProductResponse(long id, String name) {}\nProductResponse dto = new ProductResponse(10L, \"Book\");\nSystem.out.println(dto.name()); // Book\n```\n\nCompiler sinh canonical constructor, các accessor như `id()`, `name()`, và `equals()`, `hashCode()`, `toString()` theo component. Với class thường, lập trình viên chủ động viết constructor/getter/setter và quản lý trạng thái mutable khi cần.\n\n## 2. Các giới hạn quan trọng\n\n| Tiêu chí | Record | Class thông thường |\n|---|---|---|\n| Field dữ liệu | Component là `private final` | Có thể mutable |\n| Kế thừa class khác | Không; record extends `java.lang.Record` | Có thể extends class khác |\n| Interface | Có thể implements | Có thể implements |\n| Instance field bổ sung | Không | Có thể |\n| Phù hợp | DTO, value object | Entity, stateful object, nhiều hành vi |\n\nRecord có thể khai báo method riêng, static member và validation trong compact constructor. Không có setter cho component, nhưng **không phải deep immutable**: List được truyền vào vẫn có thể bị sửa từ bên ngoài.\n\n```java\nimport java.util.List;\nrecord CartResponse(List<String> items) {\n    public CartResponse {\n        items = List.copyOf(items); // Tạo bản sao List không cho sửa trực tiếp.\n    }\n}\n```\n\n`List.copyOf` chỉ sao chép cấu trúc List; bản thân phần tử mutable vẫn cần xử lý riêng.\n\n## 3. Áp dụng Java Backend\n\nRecord thích hợp cho `ProductResponse` hoặc DTO không cần thay đổi trạng thái. Với JPA Entity như `Order`, class thường phù hợp hơn vì ORM phải quản lý lifecycle, proxy và trạng thái entity. Đối với Java hiện đại, record là lựa chọn theo ngữ nghĩa dữ liệu, không phải thay thế mọi class.\n\n**Trả lời phỏng vấn:** Record giúp khai báo lớp dữ liệu ngắn gọn và có value semantics; class thường linh hoạt hơn cho kế thừa và trạng thái thay đổi. Record bất biến nông nên cần defensive copy khi có component mutable."
+      }
+    },
+    {
+      "group": "A05",
+      "keptId": "q-120",
+      "mergedIds": [
+        "q-121"
+      ],
+      "question": {
+        "id": "q-120",
+        "title": "Fail-fast Iterator là gì? Vì sao có ConcurrentModificationException và xử lý thế nào?",
+        "category": "collections",
+        "difficulty": "middle",
+        "tags": [
+          "Collections",
+          "HashMap",
+          "ArrayList",
+          "LinkedList",
+          "TreeMap",
+          "HashSet"
+        ],
+        "companies": [
+          "VNPay",
+          "Axon",
+          "One Mount",
+          "VNG"
+        ],
+        "summary": "Một số iterator như của `ArrayList` sử dụng cơ chế **fail-fast**, cố phát hiện việc thay đổi cấu trúc Collection không thông qua iterator khi đang duyệt và có thể ném `ConcurrentModificationException`. Lỗi có thể xuất hiện ngay trong **một thread**, không nhất thiết do truy cập đồng thời. Xóa phần tử đúng cách bằng `Iterator.remove()`, `removeIf()` hoặc tạo Collection mới; fail-fast chỉ là kiểm tra best-effort, không bảo đảm thread safety.",
+        "answerMarkdown": "## 1. Cơ chế fail-fast\n\nKhi iterator được tạo, nó có thể ghi nhận thông tin thay đổi cấu trúc của Collection. Nếu Collection bị chỉnh sửa ngoài iterator trong lúc duyệt, một lần kiểm tra tiếp theo có thể phát hiện sự khác biệt và ném `ConcurrentModificationException` (CME). Đây là hành vi **best-effort**, không phải giao thức đồng bộ đa luồng.\n\n## 2. Ví dụ gây lỗi\n\n```java\nList<String> names = new ArrayList<>(List.of(\"Ana\", \"\", \"Binh\"));\nfor (String name : names) {\n    if (name.isBlank()) names.remove(name); // Sửa trực tiếp khi for-each duyệt.\n}\n```\n\n`for-each` trên `List` sử dụng iterator; việc gọi `names.remove(...)` trong lúc duyệt có thể gây CME. Không cần có thread thứ hai để tái hiện.\n\n## 3. Cách xử lý\n\n```java\nnames.removeIf(String::isBlank); // Một bước lọc rõ ràng.\n\nIterator<String> it = names.iterator();\nwhile (it.hasNext()) {\n    if (it.next().isBlank()) it.remove(); // Xóa qua chính iterator.\n}\n```\n\nCó thể lọc sang List mới nếu không muốn thay đổi nguồn. Trong ứng dụng nhiều thread, cần thiết kế đồng bộ hoặc dùng Collection phù hợp với mô hình truy cập; **không** coi việc không thấy CME là bằng chứng code an toàn. Một số iterator concurrent/weakly consistent có ngữ nghĩa khác fail-fast.\n\n**Trả lời phỏng vấn:** Fail-fast cảnh báo thao tác sửa cấu trúc khi đang duyệt. CME có thể phát sinh từ một thread, còn hướng xử lý là sửa qua iterator, `removeIf()` hoặc thay chiến lược duyệt/dữ liệu."
+      }
+    },
+    {
+      "group": "A06",
+      "keptId": "q-139",
+      "mergedIds": [
+        "q-140"
+      ],
+      "question": {
+        "id": "q-139",
+        "title": "Lazy Evaluation trong Stream là gì? Intermediate và Terminal Operation khác nhau thế nào?",
+        "category": "collections",
+        "difficulty": "middle",
+        "tags": [
+          "StreamAPI",
+          "Lambda",
+          "FunctionalInterface",
+          "Optional",
+          "Collectors"
+        ],
+        "companies": [
+          "Techcombank",
+          "MB Bank"
+        ],
+        "summary": "Stream tạo một **pipeline** xử lý dữ liệu: `filter()`, `map()`, `sorted()` là intermediate operations trả về Stream và thường **lazy**; `toList()`, `count()`, `findFirst()` là terminal operations kích hoạt việc xử lý và tạo kết quả. Lazy evaluation cho phép bỏ qua phần tử không cần thiết và hỗ trợ short-circuit. Stream đã có terminal operation thì không được tái sử dụng; tránh đặt side effect quan trọng vào lambda trung gian.",
+        "answerMarkdown": "## 1. Intermediate và Terminal Operation\n\n| Loại | Ví dụ | Tính chất |\n|---|---|---|\n| Intermediate | `filter()`, `map()`, `flatMap()`, `sorted()`, `distinct()` | Trả về Stream mới; thường chưa xử lý dữ liệu ngay |\n| Terminal | `toList()`, `collect()`, `count()`, `findFirst()`, `forEach()` | Khởi chạy pipeline và tạo kết quả hoặc hiệu ứng |\n\nMột số intermediate operation như `sorted()` là **stateful**, có thể cần giữ nhiều phần tử trước khi tiếp tục; `filter()` thường xử lý từng phần tử.\n\n## 2. Ví dụ Java\n\n```java\nList<String> names = List.of(\"An\", \"Binh\", \"Chi\");\nvar pipeline = names.stream()\n        .filter(name -> name.length() > 3) // Chưa chạy khi tạo pipeline.\n        .map(String::toUpperCase);\nList<String> result = pipeline.toList(); // Terminal: kích hoạt thực thi.\nSystem.out.println(result); // [BINH]\n```\n\n`findFirst()` có thể dừng sớm khi tìm thấy phần tử phù hợp. Không nên giả định lambda luôn chạy một lần cho mỗi phần tử: tối ưu pipeline, short-circuit và thực thi song song có thể thay đổi số lần gọi.\n\n## 3. Ứng dụng Backend và lỗi hay gặp\n\nStream hữu ích để ánh xạ Entity đã truy vấn thành DTO hoặc lọc dữ liệu trong bộ nhớ. Nó **không tự động** thay thế truy vấn SQL hiệu quả cho một bảng dữ liệu lớn. Tránh ghi database, cập nhật shared state hoặc logging bắt buộc trong intermediate lambda. Sau terminal operation, muốn duyệt tiếp cần tạo Stream mới từ nguồn.\n\n**Trả lời phỏng vấn:** Intermediate operation xây pipeline lazy, terminal operation tiêu thụ và chạy pipeline; điều này giải thích vì sao chỉ khai báo `filter()` chưa tạo kết quả và vì sao Stream không thể sử dụng lại."
+      }
+    },
+    {
+      "group": "A07",
+      "keptId": "q-260",
+      "mergedIds": [
+        "q-261"
+      ],
+      "question": {
+        "id": "q-260",
+        "title": "Access Token và Refresh Token khác nhau gì? Vì sao backend sử dụng cả hai?",
+        "category": "security-auth",
+        "difficulty": "senior",
+        "tags": [
+          "JWT",
+          "Cookie",
+          "HttpOnly",
+          "SameSite",
+          "RefreshTokenRotation",
+          "ActiveSession"
+        ],
+        "companies": [
+          "Grab",
+          "ZaloPay",
+          "Viettel"
+        ],
+        "summary": "**Access Token** được gửi đến API bảo vệ tài nguyên, thường có TTL ngắn; **Refresh Token** chỉ dùng với cơ chế cấp lại phiên/access token, thường có TTL dài hơn. Kết hợp hai token giúp hạn chế thời gian kẻ tấn công lợi dụng access token bị lộ mà không bắt người dùng đăng nhập liên tục. Refresh Token cần bảo vệ kỹ, có thể rotation, thu hồi và phát hiện reuse; JWT hợp lệ không đồng nghĩa session luôn hợp lệ.",
+        "answerMarkdown": "## 1. Vai trò và sự khác biệt\n\n| Đặc điểm | Access Token | Refresh Token |\n|---|---|---|\n| Dùng ở đâu | API yêu cầu xác thực | Endpoint đổi phiên/token |\n| Thời hạn | Thường ngắn | Thường dài hơn |\n| Nếu lộ | Có thể gọi API tới khi bị vô hiệu/hết hạn | Có thể xin token mới, rủi ro kéo dài phiên |\n| Kiểm soát | Kiểm tra chữ ký/claims và quyền khi cần | Giới hạn theo session/thiết bị, rotation, revoke |\n\nKhông sử dụng refresh token để gọi trực tiếp API nghiệp vụ. Việc lưu trữ token phải xét đến CSRF, XSS, bảo mật cookie và thiết kế frontend/backend cụ thể.\n\n## 2. Luồng làm mới phiên\n\n1. Người dùng đăng nhập và nhận access token cùng cơ chế refresh phù hợp.\n2. Client gửi access token khi gọi API nghiệp vụ.\n3. Access token hết hạn, client gọi refresh endpoint nếu phiên refresh vẫn hợp lệ.\n4. Server xác thực refresh token, áp dụng rotation/thu hồi theo thiết kế và trả access token mới; client chỉ retry request an toàn theo contract.\n5. Nếu refresh token hết hạn hoặc bị thu hồi, yêu cầu đăng nhập lại.\n\nTrong CoVie, hai token cân bằng bảo mật với UX. Tài liệu hiện có **không xác nhận chính xác TTL hoặc thuật toán của từng token**; khi phỏng vấn, chỉ nói thông số thực tế sau khi đọc cấu hình backend.\n\n## 3. Rủi ro và lỗi hay gặp\n\nKhông nên đặt refresh token trong URL hoặc log. Nếu triển khai rotation, reuse của token cũ phải được phát hiện theo policy. Khi server quản lý session/token family, hệ thống vẫn có state dù access token là JWT.\n\n**Trả lời phỏng vấn:** Access token dùng thường xuyên nhưng ngắn hạn; refresh token dùng để cấp lại access token có kiểm soát. Thiết kế này giảm gián đoạn đăng nhập nhưng đòi hỏi cơ chế bảo vệ refresh token nghiêm ngặt."
+      }
+    },
+    {
+      "group": "A08",
+      "keptId": "q-396",
+      "mergedIds": [
+        "q-397"
+      ],
+      "question": {
+        "id": "q-396",
+        "title": "Vì sao Checkout Session có TTL? Hết hạn thì backend và frontend xử lý thế nào?",
+        "category": "project-covie",
+        "difficulty": "senior",
+        "tags": [
+          "Cart",
+          "CheckoutCommit",
+          "InventoryReservation",
+          "AvailableStock",
+          "OrderStateMachine"
+        ],
+        "companies": [
+          "ZaloPay",
+          "Viettel",
+          "Shopee",
+          "Sea Group"
+        ],
+        "summary": "Checkout Session cần TTL để snapshot giá, tồn kho, địa chỉ giao và lựa chọn fulfillment không còn được dùng mãi. Theo nội dung CoVie, cấu hình `checkout.session-ttl` là **15 phút**. Khi Commit sau TTL, backend phải từ chối phiên hết hạn và yêu cầu Preview mới; frontend hiển thị thông báo, cho người dùng xem lại dữ liệu. Dù chưa hết TTL, Commit vẫn phải revalidate trạng thái hiện tại và không được tin timestamp do client cung cấp.",
+        "answerMarkdown": "## 1. Vì sao cần TTL?\n\nCheckout Preview tạo snapshot phục vụ bước xác nhận. Giá, hàng tồn kho, thời gian mở bán, địa chỉ hoặc phí giao có thể thay đổi sau thời điểm Preview. TTL giới hạn thời gian snapshot được xem xét nhưng **không thay** bước kiểm tra lại ở Commit.\n\n## 2. Luồng CoVie khi hết hạn\n\n1. Buyer tạo Preview, backend trả Checkout Session có thời hạn (`checkout.session-ttl: 15m` theo tài liệu câu hỏi).\n2. Buyer bấm Commit sau thời hạn. Backend xác minh TTL và **từ chối** session hết hạn/không hợp lệ.\n3. Frontend thông báo: *Thông tin đặt hàng đã hết hạn, vui lòng kiểm tra lại*, sau đó yêu cầu Preview mới.\n4. Buyer kiểm tra lại sản phẩm, giá, phí, địa chỉ và xác nhận trước khi Commit lần nữa.\n\nKhông xóa toàn bộ Cart Item chỉ vì Checkout Session hết hạn. Client không được tự tăng timestamp hoặc tự tạo checkout token để vượt qua kiểm tra server.\n\n## 3. Còn hạn cũng phải revalidate\n\nTrong mô tả CoVie, `CheckoutSessionService` kiểm tra phiên, còn `CheckoutCommitService` chỉ tạo Order sau khi kiểm soát phiên và kiểm tra điều kiện hiện tại. TTL không đảm bảo tồn kho hoặc giá không đổi trong 15 phút. Phải kiểm tra lại điều kiện nghiệp vụ, ngăn commit trùng và quản lý transaction đúng. Session hết hạn có thể được cleanup theo chính sách lưu trữ.\n\n**Trả lời phỏng vấn:** TTL ngăn Checkout dựa trên snapshot cũ quá lâu. Khi hết hạn phải tạo Preview lại; ngay cả phiên còn hạn vẫn phải revalidate để chống đơn sai giá hoặc overselling."
+      }
+    },
+    {
+      "group": "A09",
+      "keptId": "q-431",
+      "mergedIds": [
+        "q-432"
+      ],
+      "question": {
+        "id": "q-431",
+        "title": "Write-through và Write-back Cache khác nhau thế nào? Ưu điểm, rủi ro và khi nào dùng?",
+        "category": "microservices",
+        "difficulty": "middle",
+        "tags": [
+          "Idempotency",
+          "Redis",
+          "TokenBucket",
+          "TransactionalOutbox",
+          "SSE",
+          "DistributedLock"
+        ],
+        "companies": [
+          "Momo",
+          "NAB Innovation",
+          "Samsung R&D"
+        ],
+        "summary": "**Write-through** phối hợp ghi vào cache và nơi lưu chính trong đường ghi dữ liệu, giúp dữ liệu bền vững sớm hơn nhưng tăng độ trễ ghi. **Write-back/write-behind** nhận ghi ở cache trước, rồi đẩy xuống database bất đồng bộ, nhanh hơn nhưng có nguy cơ mất dữ liệu hoặc lệch trạng thái nếu cache/worker lỗi. CoVie dùng PostgreSQL làm nguồn dữ liệu nghiệp vụ; tài liệu chưa chứng minh CoVie áp dụng write-through cache cho sản phẩm.",
+        "answerMarkdown": "## 1. Cơ chế\n\n**Write-through:** Khi ứng dụng cập nhật một sản phẩm, lớp cache/store phối hợp cập nhật cache và nguồn lưu chính trong đường xử lý ghi. Thứ tự và tính nguyên tử cần được thiết kế; hai hệ thống không mặc nhiên cùng một transaction.\n\n**Write-back (write-behind):** Ghi vào cache trước, đánh dấu dirty/đưa vào hàng đợi; worker đẩy thay đổi về database sau. Có thể gộp nhiều thao tác nhưng phát sinh khoảng thời gian database chưa được cập nhật.\n\n## 2. So sánh\n\n| Tiêu chí | Write-through | Write-back |\n|---|---|---|\n| Độ trễ ghi | Thường cao hơn | Thường thấp hơn |\n| Thời điểm ghi database | Trong đường xử lý ghi | Bất đồng bộ sau đó |\n| Độ bền khi cache mất | Thường dễ bảo vệ hơn nếu DB đã xác nhận | Rủi ro mất ghi chưa flush |\n| Độ phức tạp | Phải xử lý thứ tự/lỗi giữa hai nơi | Cần queue, retry, recovery, idempotency |\n\n## 3. Java Backend thực tế\n\nVí dụ thay đổi giá sản phẩm có thể cập nhật DB trước rồi làm mới hoặc vô hiệu hóa cache theo chính sách. Với order, payment, reservation, inventory, không nên coi cache là nơi lưu bền vững duy nhất nếu chưa có cơ chế journal, replication và phục hồi được kiểm chứng.\n\n**Lưu ý CoVie:** Nội dung hiện có xác nhận PostgreSQL là nguồn nghiệp vụ chính nhưng **chưa có bằng chứng** CoVie dùng write-through cache cho dữ liệu sản phẩm; đây là câu kiến thức kiến trúc, không nên tự nhận đã triển khai.\n\n**Trả lời phỏng vấn:** Write-through ưu tiên dữ liệu bền vững sớm hơn; write-back ưu tiên giảm latency, đổi lại là nguy cơ mất ghi chưa được flush và phức tạp consistency."
+      }
+    },
+    {
+      "group": "A10",
+      "keptId": "q-356",
+      "mergedIds": [
+        "q-357"
+      ],
+      "question": {
+        "id": "q-356",
+        "title": "Optimistic và Pessimistic Locking khác nhau thế nào? Khi nào dùng trong Java Backend?",
+        "category": "database",
+        "difficulty": "middle",
+        "tags": [
+          "Transaction",
+          "IsolationLevels",
+          "PessimisticLock",
+          "OptimisticLock",
+          "SelectForUpdate",
+          "Flyway"
+        ],
+        "companies": [
+          "Grab",
+          "ZaloPay",
+          "Viettel"
+        ],
+        "summary": "**Optimistic Locking** kiểm tra xung đột lúc ghi, thường bằng version (`@Version` trong JPA), phù hợp khi tranh chấp ít. **Pessimistic Locking** chủ động giữ lock database trong transaction (ví dụ `SELECT ... FOR UPDATE`), phù hợp đoạn cập nhật nhạy cảm có cạnh tranh cao hơn. Cả hai cần transaction và xử lý lỗi đúng; không có phương án nào tự thay thế validation, idempotency hoặc ràng buộc dữ liệu.",
+        "answerMarkdown": "## 1. Optimistic Locking\n\nỨng dụng đọc bản ghi kèm `version`. Khi lưu, provider JPA với `@Version` kiểm tra version chưa đổi; nếu transaction khác đã ghi trước, thay đổi có thể thất bại tại flush/commit bằng lỗi optimistic locking.\n\n```java\n@Version // JPA tăng/kiểm tra version khi cập nhật entity.\nprivate long version; // Field trong một JPA Entity.\n```\n\nPhù hợp cho màn hình cập nhật sản phẩm, hồ sơ hoặc form có xung đột hiếm. Không retry mù quáng một bản form cũ: nên báo người dùng xem thay đổi mới.\n\n## 2. Pessimistic Locking\n\nTrong PostgreSQL, transaction có thể khóa hàng inventory trước khi kiểm tra và trừ tồn kho:\n\n```sql\nBEGIN;\nSELECT available_quantity FROM inventory WHERE sku_id = 42 FOR UPDATE;\n-- Kiểm tra số lượng rồi UPDATE trong cùng transaction.\nUPDATE inventory SET available_quantity = available_quantity - 1\nWHERE sku_id = 42 AND available_quantity >= 1;\nCOMMIT;\n```\n\nĐây là SQL minh họa: application phải kiểm tra kết quả UPDATE và rollback khi thiếu tồn kho. `SELECT ... FOR UPDATE` giữ row lock đến khi kết thúc transaction; request cạnh tranh có thể phải chờ hoặc gặp timeout/deadlock. JPA có `LockModeType.PESSIMISTIC_WRITE`, nhưng cần kiểm tra SQL và semantics của database thực tế.\n\n## 3. So sánh và lựa chọn\n\n| Đặc điểm | Optimistic | Pessimistic |\n|---|---|---|\n| Khóa khi đọc/chỉnh sửa | Không giữ row lock dài chỉ vì đọc | Chủ động lấy row lock |\n| Xung đột | Phát hiện khi ghi, cần retry/reload theo nghiệp vụ | Có thể chờ lock, timeout hoặc deadlock |\n| Phù hợp | Cập nhật ít tranh chấp | Inventory/critical section cạnh tranh |\n\nTrong checkout CoVie, phải bảo toàn order/inventory với transaction, unique constraint hoặc atomic conditional update theo thiết kế; locking **không thay thế** kiểm soát truy cập hay idempotency. Giữ transaction ngắn và tránh gọi HTTP bên ngoài trong lúc khóa.\n\n**Trả lời phỏng vấn:** Optimistic phát hiện tranh chấp ở thời điểm ghi; pessimistic ngăn cập nhật cạnh tranh bằng lock trước. Chọn theo mức độ xung đột và yêu cầu nhất quán."
+      }
+    },
+    {
+      "group": "A11",
+      "keptId": "q-465",
+      "mergedIds": [
+        "q-466"
+      ],
+      "question": {
+        "id": "q-465",
+        "title": "Unit Test và Integration Test khác nhau thế nào? Ví dụ trong Spring Boot",
+        "category": "testing-devops",
+        "difficulty": "middle",
+        "tags": [
+          "UnitTest",
+          "IntegrationTest",
+          "JUnit5",
+          "Mockito",
+          "Testcontainers",
+          "ContractTesting"
+        ],
+        "companies": [
+          "VNG",
+          "Grab",
+          "ZaloPay",
+          "Viettel"
+        ],
+        "summary": "**Unit Test** kiểm thử logic nhỏ, cô lập các dependency bên ngoài để chạy nhanh và tìm lỗi rõ ràng. **Integration Test** chạy nhiều thành phần thật cùng nhau để xác minh wiring Spring, SQL, transaction, mapping và constraint; thường tốn thời gian hơn. Unit test bằng Mockito không đủ chứng minh `SELECT FOR UPDATE` chống overselling, cần integration test trên database phù hợp.",
+        "answerMarkdown": "## 1. Unit Test là gì?\n\nUnit Test xác minh một đơn vị hành vi nhỏ như hàm tính tiền, policy giảm giá hoặc `CheckoutComparisonService`. Với Java, có thể dùng JUnit 5, dùng fake/mock repository khi cần, nhưng đừng mock một class thuần Java không cần thiết.\n\n```java\n@Test\nvoid totalIncludesQuantity() {\n    long unitPrice = 12_000L;\n    int quantity = 3;\n    assertEquals(36_000L, unitPrice * quantity); // Ví dụ phép tính độc lập.\n}\n```\n\nTest có input, hành động, assertion và trường hợp biên. Với clock hoặc ID ngẫu nhiên, nên inject abstraction để test ổn định. Đoạn code sử dụng JUnit 5 và minh họa một phép tính cơ bản, không phải implementation checkout của CoVie.\n\n## 2. Integration Test là gì?\n\nIntegration Test kiểm tra nhiều phần thật tương tác: Spring MVC → Service → Repository → PostgreSQL. Ví dụ chạy giao dịch Checkout Commit trên PostgreSQL test để xác minh Order, Reservation và Outbox cùng commit hoặc rollback; với khóa tồn kho cần chạy transaction cạnh tranh thực tế.\n\nTrong Spring Boot có thể sử dụng `@SpringBootTest`, test slice thích hợp và Testcontainers khi cần database giống môi trường vận hành. Không dùng test với mock repository để kết luận SQL locking hoặc database constraint đã đúng.\n\n## 3. Khác nhau\n\n| Tiêu chí | Unit Test | Integration Test |\n|---|---|---|\n| Phạm vi | Một đơn vị logic | Nhiều component thật |\n| Tốc độ | Thường nhanh | Thường chậm hơn |\n| Phát hiện | Sai nhánh xử lý, tính toán, validation thuần | Mapping, wiring, SQL, transaction, constraint |\n| Phụ thuộc hạ tầng | Ít, thường dùng mock/fake | Cần môi trường tích hợp phù hợp |\n\n**Trả lời phỏng vấn:** Unit test giúp kiểm tra nhanh quy tắc nghiệp vụ độc lập; integration test chứng minh các lớp và hệ thống thật phối hợp đúng. Với checkout và concurrency, cần kết hợp cả hai."
+      }
+    }
+  ]
+}
