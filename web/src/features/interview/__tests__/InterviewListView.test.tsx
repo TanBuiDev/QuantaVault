@@ -5,6 +5,10 @@ import type { InterviewQuestion } from "@/lib/interview/types";
 import { saveDraft } from "@/lib/interview/draftStore";
 
 vi.mock("@/components/ui/MermaidRenderer", () => ({ MermaidRenderer: () => null }));
+const accountMock = vi.hoisted(() => ({ role: "admin" as "admin" | "user" }));
+vi.mock("@/lib/auth/AccountProvider", () => ({
+  useAccount: () => ({ user: { id: "test-user", name: "Admin", email: "admin@example.com", role: accountMock.role }, loading: false }),
+}));
 
 const mockQuestions: InterviewQuestion[] = [
   {
@@ -34,9 +38,19 @@ const mockQuestions: InterviewQuestion[] = [
 
 describe("InterviewListView Component", () => {
   beforeEach(() => {
+    accountMock.role = "admin";
     window.localStorage.clear();
     window.sessionStorage.clear();
     window.history.replaceState({}, "", "/interview");
+  });
+
+  it("does not open the editor for ordinary users even if URL requests edit=true", () => {
+    accountMock.role = "user";
+    window.history.replaceState({}, "", "/interview/?edit=true&editQuestion=test-001");
+    render(<InterviewListView initialQuestions={mockQuestions} />);
+    expect(screen.queryByRole("button", { name: "Thêm câu hỏi" })).toBeNull();
+    expect(screen.queryByRole("button", { name: /Vào chế độ biên tập/ })).toBeNull();
+    expect(screen.queryByRole("dialog", { name: /Chỉnh sửa/ })).toBeNull();
   });
 
   it("renders the main heading and question count", () => {
