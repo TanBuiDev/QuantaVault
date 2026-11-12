@@ -13,7 +13,7 @@ test("staging whitelists source and omits credentials, tests, and local runtime 
       "src/app/page.tsx": "public page", "src/app/api/run-code/route.ts": "private runtime", "src/app/api/problems/route.ts": "export async function GET() {}",
       "src/app/api/study-plan/route.ts": "export async function GET() {}", "src/app/media/[id]/route.ts": "node media", "src/instrumentation.ts": "docker",
       "src/lib/foo.test.ts": "tests", "src/lib/foo.ts": "source", "src/test/setup.ts": "test setup", "src/.env": "private", ".env.local": "secret",
-      "package.json": "{}", "tsconfig.json": "{}", "next.config.ts": "export default {};", "postcss.config.mjs": "export default {};", "public/logo.png": "logo",
+      "package.json": "{}", "tsconfig.json": "{}", "next.config.ts": "export default {};", "postcss.config.mjs": "export default {};", "public/logo.png": "logo", "public/site.webmanifest": "{\"name\":\"QuantaVault\"}",
     })) {
       const target = path.join(source, file); fs.mkdirSync(path.dirname(target), { recursive: true }); fs.writeFileSync(target, value);
     }
@@ -21,6 +21,7 @@ test("staging whitelists source and omits credentials, tests, and local runtime 
     assert.equal(fs.readFileSync(path.join(stage, "src/app/page.tsx"), "utf8"), "public page");
     for (const file of [".env.local", "src/.env", "src/instrumentation.ts", "src/app/api", "src/app/media", "src/lib/foo.test.ts", "src/test"]) assert.equal(fs.existsSync(path.join(stage, file)), false, file);
     assert.match(fs.readFileSync(path.join(stage, "src/app/content/problems.json/route.ts"), "utf8"), /force-static/);
+    assert.equal(fs.readFileSync(path.join(stage, "public/site.webmanifest"), "utf8"), "{\"name\":\"QuantaVault\"}");
   } finally { fs.rmSync(root, { recursive: true, force: true }); }
 });
 
