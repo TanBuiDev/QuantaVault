@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { readInterviewProgress, replaceInterviewProgress } from "../interview/progress";
 import {
   conservativeMerge, fetchGoogleProgress, getLinkedGoogleUser, isGoogleProgressLinked,
@@ -26,10 +26,7 @@ beforeEach(() => {
   });
   vi.stubGlobal("fetch", fetchMock);
 });
-afterEachCleanup();
-function afterEachCleanup() {
-  // Only the fake fetch is replaced by each test; the jsdom environment is owned by Vitest.
-}
+afterEach(() => vi.unstubAllGlobals());
 
 describe("Google progress link and cross-device safety", () => {
   it("does not enable Google sync before explicit linking", () => {
