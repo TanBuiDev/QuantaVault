@@ -285,8 +285,12 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
 
   // Merge canonical initialQuestions with user drafts and published cache
   const mergedQuestions = useMemo(() => {
+    // Saved drafts and unpublished cache must never alter what ordinary learners
+    // see, even when another account previously used the same browser.
+    // Preserve all local drafts without deleting them.
+    if (!canEdit) return initialQuestions;
     return mergeQuestionsWithDrafts(initialQuestions, drafts, publishedCache);
-  }, [initialQuestions, drafts, publishedCache]);
+  }, [initialQuestions, drafts, publishedCache, canEdit]);
 
   const effectiveEditingId = editingQuestion?.id ?? restoredEditingId;
   const effectiveEditingQuestion = draftsHydrated ? mergedQuestions.find(q => q.id === effectiveEditingId) ??
