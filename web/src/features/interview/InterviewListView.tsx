@@ -26,6 +26,7 @@ import type {
 } from "@/lib/interview/types";
 import { filterInterviewQuestions } from "@/lib/interview";
 import { useInterviewProgress } from "@/lib/interview/progress";
+import { useAccount } from "@/lib/auth/AccountProvider";
 import {
   useInterviewDrafts,
   mergeQuestionsWithDrafts,
@@ -76,6 +77,8 @@ function getPageList(currentPage: number, totalPages: number): (number | "...")[
 
 export function InterviewListView({ initialQuestions }: InterviewListViewProps) {
   const confirm = useConfirm();
+  const { user, loading: accountLoading } = useAccount();
+  const canEdit = user?.role === "admin";
   const { textScale, changeTextScale } = useInterviewTextSize();
   const [filter, setFilter] = useState<InterviewFilterState>(() => {
     if (typeof window === "undefined") return DEFAULT_FILTER;
@@ -181,10 +184,11 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
 
   // Sync URL on initial mount if already in edit mode
   useEffect(() => {
-    if (isEditMode) {
-      syncEditUrl(true);
-    }
-  }, [isEditMode]);
+    if (isEditMode && canEdit) syncEditUrl(true);
+    else if (!accountLoading && !canEdit) syncEditUrl(false);
+  }, [isEditMode, canEdit, accountLoading]);
+  // URL and localStorage merely store UI preferences; they never grant admin rights.
+  const activeEditMode = canEdit && isEditMode;
 
   // Shortcut Ctrl + Shift + E to toggle edit mode, and P to toggle presentation mode
   useEffect(() => {
@@ -197,7 +201,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
         return;
       }
 
-      if (e.ctrlKey && e.shiftKey && (e.key === "E" || e.key === "e")) {
+      if (canEdit && e.ctrlKey && e.shiftKey && (e.key === "E" || e.key === "e")) {
         e.preventDefault();
         setIsEditMode((prev) => {
           const next = !prev;
@@ -218,9 +222,10 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
     }
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [canEdit]);
 
   const handleToggleEditMode = () => {
+    if (!canEdit) return;
     setIsEditMode((prev) => {
       const next = !prev;
       try {
@@ -419,7 +424,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
             <span>Trình chiếu (P)</span>
           </button>
 
-          {isEditMode ? (
+          {activeEditMode ? (
             <>
               <div className="inline-flex min-h-11 items-center gap-2 rounded-2xl border border-indigo-500/30 bg-indigo-500/10 px-3.5 text-xs sm:text-sm font-semibold text-indigo-600 dark:text-indigo-400">
                 <Edit3 className="h-4 w-4" />
@@ -616,12 +621,12 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
                       isBookmarked={isBookmarked(question.id)}
                       isDraft={isQuestionDraft}
                       onEdit={
-                        isEditMode
+                        activeEditMode
                           ? () => handleOpenEdit(question)
                           : undefined
                       }
                       onDiscardDraft={
-                        isEditMode && isQuestionDraft
+                        activeEditMode && isQuestionDraft
                           ? async () => {
                               const isConfirmed = await confirm({
                                 title: "Hủy bản nháp?",
@@ -734,11 +739,11 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
               <div className="flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-indigo-500 shrink-0" />
                 <span className="font-semibold text-[var(--foreground)]">
-                  {isEditMode ? "Chế độ Biên tập đang bật" : "Phương pháp ôn tập gợi nhớ chủ động (Active Recall)"}
+                  {activeEditMode ? "Chế độ Biên tập đang bật" : "Phương pháp ôn tập gợi nhớ chủ động (Active Recall)"}
                 </span>
               </div>
               <span>
-                {isEditMode ? (
+                {activeEditMode ? (
                   <>
                     Bạn có thể sửa câu hỏi trực tiếp hoặc thêm câu mới, sau đó xuất bản 1 commit lên GitHub khi kết thúc buổi làm việc.
                   </>
@@ -774,7 +779,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
       </div>
 
       {/* 6. Interview Edit Modal (Only active in Edit Mode) */}
-      {isEditMode && draftsHydrated && (
+      {activeEditMode && draftsHydrated && (
         <InterviewEditModal
           isOpen={isEditModalOpen}
           onClose={handleCloseEdit}
@@ -792,7 +797,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
       )}
 
       {/* 7. Floating Bottom Publish Drawer (Only visible in Edit Mode) */}
-      {isEditMode && (
+      {activeEditMode && (
         <PublishDrawer
           drafts={drafts}
           publishedCache={publishedCache}
