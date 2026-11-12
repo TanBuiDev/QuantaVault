@@ -42,7 +42,7 @@ describe("Sidebar Google sign-in", () => {
     accountState.signedIn = true;
     render(<SidebarAccount compact />);
     expect(screen.getByRole("link", { name: "Quản lý tài khoản Google" }))
-      .toHaveAttribute("href", "/account/");
+      .toHaveAttribute("href", "/account");
     expect(screen.queryByRole("link", { name: "Đăng nhập bằng Google" }))
       .not.toBeInTheDocument();
   });
