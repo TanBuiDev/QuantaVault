@@ -43,7 +43,7 @@ export function SidebarAccount({ compact = false }: { compact?: boolean }) {
         href="/api/auth/google/start"
         title="Đăng nhập bằng Google"
         aria-label="Đăng nhập bằng Google"
-        className={controlClass}
+        className={`${controlClass} ${controls.centerContent}`}
       >
         <GoogleLogo />
         {!compact && <span className="truncate">Đăng nhập</span>}
