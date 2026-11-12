@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, beforeEach, vi } from "vitest";
 import { InterviewListView } from "../InterviewListView";
 import type { InterviewQuestion } from "@/lib/interview/types";
@@ -51,6 +51,14 @@ describe("InterviewListView Component", () => {
     expect(screen.queryByRole("button", { name: "Thêm câu hỏi" })).toBeNull();
     expect(screen.queryByRole("button", { name: /Vào chế độ biên tập/ })).toBeNull();
     expect(screen.queryByRole("dialog", { name: /Chỉnh sửa/ })).toBeNull();
+  });
+
+  it("does not expose unpublished local drafts to a different signed-in ordinary user", async () => {
+    accountMock.role = "user";
+    saveDraft({ ...mockQuestions[0], title: "Unpublished admin draft" }, mockQuestions[0]);
+    render(<InterviewListView initialQuestions={mockQuestions} />);
+    await waitFor(() => expect(screen.getByText(mockQuestions[0].title)).toBeInTheDocument());
+    expect(screen.queryByText("Unpublished admin draft")).toBeNull();
   });
 
   it("renders the main heading and question count", () => {
