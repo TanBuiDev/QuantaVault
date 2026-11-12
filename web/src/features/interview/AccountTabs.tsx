@@ -68,8 +68,8 @@ export function AccountTabs() {
           </div>}
       </section>
       <section id="account-panel-sync" role="tabpanel" aria-labelledby="account-tab-sync" hidden={tab!=="sync"} className="space-y-4">
-        <GoogleAccountPanel />
-        <GoogleLearningSyncPanel />
+        <GoogleAccountPanel key={user?.id ?? "guest"} />
+        <GoogleLearningSyncPanel key={user?.id ?? "guest"} />
         <details className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
           <summary className="cursor-pointer text-sm font-semibold">Cài đặt nâng cao · Khôi phục dữ liệu cũ</summary>
           <p className="mt-3 text-xs text-[var(--muted-strong)]">Mã đồng bộ 64 ký tự chỉ dùng để nhập hoặc khôi phục tiến độ legacy. Không cần mã này khi đã đăng nhập Google. Trước khi khôi phục, hãy sao lưu và đối chiếu dữ liệu.</p>
@@ -81,7 +81,7 @@ export function AccountTabs() {
           <h2 className="font-semibold">Bảo mật tài khoản</h2>
           <p className="mt-2 text-[var(--muted-strong)]">{user ? "Phiên đăng nhập Google được xác thực ở máy chủ. Quyền quản trị được kiểm tra riêng cho từng API." : "Đăng nhập Google để xem thông tin bảo mật và quyền tài khoản."}</p>
         </div>
-        <AdminAccountPanel />
+        <AdminAccountPanel key={user?.id ?? "guest"} />
       </section>
     </div>
   );
