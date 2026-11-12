@@ -1,0 +1,25 @@
+{
+  "id": "/",
+  "name": "QuantaVault – Kho tri thức Java Backend",
+  "short_name": "QuantaVault",
+  "description": "Học Java Backend, Database, thuật toán và ôn luyện phỏng vấn.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0B1433",
+  "theme_color": "#1653EC",
+  "icons": [
+    {
+      "src": "/app-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

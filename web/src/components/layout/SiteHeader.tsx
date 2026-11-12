@@ -15,7 +15,8 @@ export function SiteHeader() {
           href="/"
           className="font-semibold tracking-tight text-slate-950 dark:text-slate-100 focus-visible:rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-slate-500"
         >
-          QuantaVault
+          <img src="/brand-icon.svg" alt="" aria-hidden="true" className="mr-2 inline-block size-8 align-middle" />
+          <span className="align-middle">QuantaVault</span>
         </Link>
         <nav aria-label="Primary navigation">
           <ul className="flex items-center gap-1 sm:gap-2">

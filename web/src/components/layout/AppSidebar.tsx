@@ -76,7 +76,7 @@ export function AppSidebar({ courses = [] }: { courses?: CourseNavigationItem[] 
         {isOpen && (
           <Link href="/" className={`${styles.interactive} flex min-w-0 items-center gap-2.5 rounded-xl`}>
             <img
-              src="/brand-logo.png"
+              src="/brand-icon.svg"
               alt=""
               className="size-9 shrink-0 rounded-xl object-cover shadow-md shadow-indigo-500/25"
             />
@@ -201,7 +201,7 @@ export function AppSidebar({ courses = [] }: { courses?: CourseNavigationItem[] 
       ) : (
         <nav aria-label="Điều hướng chính" className="flex min-h-0 flex-1 flex-col items-center gap-2 overflow-y-auto overscroll-contain py-3 [scrollbar-width:none]">
           <Link href="/" className={`${styles.item} ${styles.railItem} shrink-0`} title="QuantaVault">
-            <img src="/brand-logo.png" alt="" className="size-8 rounded-xl object-cover" />
+            <img src="/brand-icon.svg" alt="" className="size-8 rounded-xl object-cover" />
           </Link>
           {[
             { href: "/", title: "Dashboard Tổng Quan", Icon: LayoutDashboard, active: pathname === "/" },
