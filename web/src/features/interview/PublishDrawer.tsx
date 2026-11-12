@@ -41,7 +41,7 @@ export function PublishDrawer({
 }: PublishDrawerProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pin, setPin] = useState("");
-  const [otp, setOtp] = useState("");
+  const [elevated, setElevated] = useState(false);
   const [customMessage, setCustomMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -55,6 +55,16 @@ export function PublishDrawer({
   } | null>(null);
 
   const confirm = useConfirm();
+
+  useEffect(() => {
+    if (!isModalOpen) return;
+    let live = true;
+    void fetch("/api/admin/status", { cache: "no-store" })
+      .then(async r => r.ok ? r.json() as Promise<{ elevated: boolean }> : { elevated: false })
+      .then(status => { if (live) setElevated(status.elevated === true); })
+      .catch(() => { if (live) setElevated(false); });
+    return () => { live = false; };
+  }, [isModalOpen]);
 
   const handleClearAllWithConfirm = async () => {
     const isConfirmed = await confirm({
@@ -83,12 +93,12 @@ export function PublishDrawer({
   async function reviewConflict(conflict: PublishConflict) {
     const expected = conflictReview?.submitted[conflict.id];
     if (!expected) return;
-    const confirmed = await confirm({ title: "Dùng phiên bản mới làm nền?", message: "Giữ nguyên nội dung bạn đã chỉnh sửa và cập nhật phiên bản nền theo nội dung GitHub vừa đối chiếu. Chỉ xuất bản khi bạn tiếp tục nhập PIN, OTP và xác nhận.", confirmText: "Dùng phiên bản mới làm nền", cancelText: "Tiếp tục đối chiếu", variant: "warning" });
+    const confirmed = await confirm({ title: "Dùng phiên bản mới làm nền?", message: "Giữ nguyên nội dung bạn đã chỉnh sửa và cập nhật phiên bản nền theo nội dung GitHub vừa đối chiếu. Chỉ xuất bản khi bạn xác nhận lại bằng phiên admin hợp lệ.", confirmText: "Dùng phiên bản mới làm nền", cancelText: "Tiếp tục đối chiếu", variant: "warning" });
     if (!confirmed) return;
     try {
       rebaseDraft(conflict.id, expected, conflict.current);
       setConflictReview(current => current ? { ...current, conflicts: current.conflicts.filter(item => item.id !== conflict.id) } : null);
-      setError(null); setPin(""); setOtp("");
+      setError(null); setPin("");
     } catch {
       setError("Không thể cập nhật phiên bản nền: bản nháp có thể đã thay đổi ở tab khác hoặc bộ nhớ không khả dụng. Nội dung vẫn được giữ; hãy đối chiếu lại.");
     }
@@ -97,8 +107,8 @@ export function PublishDrawer({
   async function handlePublish() {
     if (retryCooldown > 0) return;
 
-    if (!pin.trim() || !/^\d{6}$/.test(otp.trim())) {
-      setError("Vui lòng nhập mã PIN quản trị và mã Google Authenticator gồm 6 số.");
+    if (!elevated && !pin.trim()) {
+      setError("Vui lòng nhập mật khẩu quản trị để xác thực phiên 15 phút.");
       return;
     }
 
@@ -114,14 +124,28 @@ export function PublishDrawer({
     ]));
 
     try {
+      if (!elevated) {
+        const stepResponse = await fetch("/api/admin/step-up", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password: pin }),
+        });
+        if (stepResponse.status === 429) {
+          setRetryCooldown(60);
+          throw new Error("Đã thử mật khẩu sai quá nhiều lần. Vui lòng thử lại sau.");
+        }
+        if (!stepResponse.ok) throw new Error("Mật khẩu quản trị không đúng hoặc tài khoản không có quyền admin.");
+        setElevated(true);
+        setPin("");
+      }
       const response = await fetch("/api/publish", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          pin: pin.trim(),
-          otp: otp.trim(),
+          // Credentials are verified by /api/admin/step-up and bound to an HttpOnly cookie.
+          pin: "",
+          otp: "",
           baseVersions,
           modifiedQuestions: Object.values(submitted).map(q => ({ ...canonicalQuestion(q), ...(q.isDeleted ? { isDeleted: true } : {}) })),
           commitMessage: customMessage.trim() || undefined,
@@ -137,6 +161,7 @@ export function PublishDrawer({
       }
 
       if (!response.ok || !data.success) {
+        if (response.status === 403) setElevated(false);
         if (response.status === 409 && Array.isArray(data.conflicts)) setConflictReview({ conflicts: data.conflicts, submitted });
         throw new Error(data.error || "Không thể xuất bản câu hỏi lên GitHub.");
       }
@@ -144,7 +169,7 @@ export function PublishDrawer({
       try { onPublishSuccess(submitted); }
       catch { setPersistenceWarning("GitHub đã ghi thành công nhưng không thể cập nhật bộ nhớ trình duyệt. Bản nháp được giữ lại; hãy sao lưu và chờ website cập nhật, không cần xuất bản lại."); }
       setPin("");
-      setOtp("");
+     
       setCustomMessage("");
       setSuccessResult({
         commitUrl: data.commitUrl,
@@ -203,7 +228,7 @@ export function PublishDrawer({
       <Modal
         isOpen={isModalOpen}
         onClose={() => {
-          if (!isLoading) { setIsModalOpen(false); setSuccessResult(null); setConflictReview(null); setPin(""); setOtp(""); }
+          if (!isLoading) { setIsModalOpen(false); setSuccessResult(null); setConflictReview(null); setPin(""); }
         }}
         maxWidth="md"
         title="Xuất Bản"
@@ -314,52 +339,19 @@ export function PublishDrawer({
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <label htmlFor="publish-pin" className="font-bold text-[var(--muted)]">Mã PIN quản trị</label>
-                <input id="publish-pin" type="password" autoComplete="off" maxLength={256} value={pin} disabled={isLoading || retryCooldown > 0} onChange={e => setPin(e.target.value)} className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-[var(--foreground)]" />
-              </div>
-
-              {/* Independent second authentication factor */}
-              <div className="space-y-2">
-                <label htmlFor="publish-otp" className="font-bold uppercase tracking-wider text-[var(--muted)] text-[11px] flex items-center justify-between">
-                  <span className="flex items-center gap-1.5">
-                    <ShieldCheck className="h-3.5 w-3.5 text-indigo-500" />
-                    <span>Mã Google Authenticator</span>
-                  </span>
-                  <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
-                    Bảo mật 2 lớp
-                  </span>
-                </label>
-
-                {retryCooldown > 0 ? (
-                  <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 text-center space-y-1">
-                    <div className="flex items-center justify-center gap-1.5 text-xs font-bold text-rose-600 dark:text-rose-400">
-                      <Lock className="h-4 w-4" />
-                      <span>Hệ thống đang tạm khóa để bảo vệ an toàn</span>
-                    </div>
-                    <p className="text-[11px] text-rose-500/90 font-mono">
-                      Vui lòng chờ thử lại sau: <strong>{retryCooldown}s</strong>
-                    </p>
-                  </div>
-                ) : (
-                  <div className="relative">
-                    <ShieldCheck className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--muted)]" />
-                    <input
-                      type="text"
-                      id="publish-otp"
-                      aria-label="Mã Google Authenticator"
-                      autoComplete="one-time-code"
-                      inputMode="numeric"
-                      maxLength={6}
-                      value={otp}
-                      disabled={isLoading || retryCooldown > 0}
-                      onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-                      placeholder="Nhập 6 số từ app Google Authenticator trên điện thoại..."
-                      className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] py-2.5 pl-9 pr-3 text-sm text-[var(--foreground)] outline-none focus:border-[var(--focus)] transition-all font-mono tracking-wider disabled:opacity-50"
-                    />
-                  </div>
-                )}
-              </div>
+              {elevated ? (
+                <div className="flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-xs text-emerald-600 dark:text-emerald-400">
+                  <ShieldCheck className="h-4 w-4" />
+                  Đã xác thực mật khẩu quản trị. Có thể xuất bản trong phiên 15 phút; server kiểm tra lại quyền trước mỗi lần ghi.
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <label htmlFor="publish-pin" className="font-bold text-[var(--muted)]">Mật khẩu quản trị QuantaVault</label>
+                  <input id="publish-pin" type="password" autoComplete="off" maxLength={256} value={pin} disabled={isLoading || retryCooldown > 0} onChange={e => setPin(e.target.value)} className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-[var(--foreground)]" />
+                  <p className="text-xs text-[var(--muted)]">Đăng nhập Google với role admin là điều kiện bắt buộc. Không cần TOTP cho lần xuất bản thường; TOTP vẫn được giữ để bảo vệ thao tác cấp quyền.</p>
+                </div>
+              )}
+              {retryCooldown > 0 && <p className="rounded-lg border border-rose-500/30 bg-rose-500/10 p-2 text-xs text-rose-600"><Lock className="mr-1 inline h-4 w-4" /> Tạm khóa xác thực — thử lại sau {retryCooldown}s.</p>}
 
               {/* Optional Custom Commit Message */}
               <div className="space-y-1.5">
@@ -380,7 +372,7 @@ export function PublishDrawer({
                 <button
                   type="button"
                   disabled={isLoading}
-                  onClick={() => { setIsModalOpen(false); setConflictReview(null); setPin(""); setOtp(""); }}
+                  onClick={() => { setIsModalOpen(false); setConflictReview(null); setPin(""); }}
                   className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-xs font-bold text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] transition-colors disabled:opacity-50 cursor-pointer"
                 >
                   Hủy
