@@ -17,6 +17,7 @@ class FakeD1 {
   bootstrap: string | null = null;
   roles = new Set<string>();
   people = new Set([OWNER, OTHER]);
+  allowedBootstrapOwners = new Set([OWNER]);
   audits: string[] = [];
   elevations = new Map<string, { userId: string; sessionHash: string; expires: number }>();
   failures = new Map<string, { failures: number; locked_until: number; updated_at: number }>();
@@ -26,6 +27,7 @@ class FakeD1 {
       bind(...args: unknown[]) { params = args; return this; },
       first: async <T>(): Promise<T | null> => {
         if (sql.startsWith("SELECT owner_user_id")) return this.bootstrap ? { owner_user_id: this.bootstrap } as T : null;
+        if (sql.startsWith("SELECT user_id FROM oauth_admin_owner_allowlist")) return this.allowedBootstrapOwners.has(params[0] as string) ? {user_id:params[0]} as T : null;
         if (sql.startsWith("SELECT failures")) return (this.failures.get(params[0] as string) as T) || null;
         if (sql.startsWith("SELECT token_hash FROM oauth_admin_elevations")) {
           const a = this.elevations.get(params[0] as string);
@@ -49,8 +51,11 @@ class FakeD1 {
         } else if (sql.startsWith("DELETE FROM oauth_admin_auth_attempts")) {
           this.failures.delete(params[0] as string);
         } else if (sql.startsWith("INSERT INTO oauth_admin_bootstrap")) {
-          if (this.bootstrap) return { meta:{changes:0} };
-          this.bootstrap = params[0] as string;
+          const owner = params[0] as string;
+          if (this.bootstrap || !this.allowedBootstrapOwners.has(owner) || owner !== params[1]) return { meta:{changes:0} };
+          this.bootstrap = owner;
+          this.roles.add(owner); // D1 AFTER INSERT trigger, atomic with bootstrap
+          this.audits.push("admin_bootstrap");
         } else if (sql.startsWith("INSERT INTO oauth_user_roles")) {
           this.roles.add(params[0] as string);
         } else if (sql.startsWith("DELETE FROM oauth_user_roles")) {
@@ -106,12 +111,23 @@ describe("Google admin permissions and privileged actions", () => {
     expect(db.audits).toContain("admin_bootstrap");
   });
 
-  it("allows only the original verified owner to retry the bootstrap", async () => {
-    const otp = await generateTOTP(envBase.TOTP_SECRET);
-    await handleAccountAdmin(req("/api/admin/bootstrap", { password:envBase.ADMIN_PIN, otp }), env());
-    nowUser = { ...nowUser, id:OTHER };
-    const denied = await handleAccountAdmin(req("/api/admin/bootstrap", { password:envBase.ADMIN_PIN, otp }), env());
+  it("hides bootstrap from non-owners and refuses their direct API requests", async () => {
+    nowUser = { ...nowUser, id:OTHER, email:"other@example.com" };
+    const status = await handleAccountAdmin(req("/api/admin/bootstrap-status"), env());
+    expect(await status.json()).toMatchObject({ ok:true, needsSetup:false });
+    const denied = await handleAccountAdmin(req("/api/admin/bootstrap", { password:envBase.ADMIN_PIN, otp:await generateTOTP(envBase.TOTP_SECRET), email:"owner@example.com" }), env());
     expect(denied.status).toBe(403);
+    expect(db.roles.size).toBe(0);
+    expect(db.failures.has(OTHER)).toBe(false);
+  });
+
+  it("allows a single owner bootstrap and refuses even an owner replay", async () => {
+    const otp = await generateTOTP(envBase.TOTP_SECRET);
+    expect((await handleAccountAdmin(req("/api/admin/bootstrap", { password:envBase.ADMIN_PIN, otp }), env())).status).toBe(200);
+    expect((await handleAccountAdmin(req("/api/admin/bootstrap", { password:envBase.ADMIN_PIN, otp }), env())).status).toBe(409);
+    expect(db.audits.filter(x => x==="admin_bootstrap")).toHaveLength(1);
+    nowUser = { ...nowUser, id:OTHER };
+    expect((await handleAccountAdmin(req("/api/admin/bootstrap", { password:envBase.ADMIN_PIN, otp }), env())).status).toBe(403);
     expect(db.roles.has(OTHER)).toBe(false);
   });
 
