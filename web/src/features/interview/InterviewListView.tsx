@@ -424,6 +424,12 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
             <span>Trình chiếu (P)</span>
           </button>
 
+          {canEdit && !activeEditMode && (
+            <button type="button" onClick={handleToggleEditMode}
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-indigo-500/40 bg-indigo-500/10 px-4 text-xs sm:text-sm font-semibold text-indigo-600 dark:text-indigo-400">
+              <Edit3 className="h-4 w-4" /> Vào chế độ biên tập
+            </button>
+          )}
           {activeEditMode ? (
             <>
               <div className="inline-flex min-h-11 items-center gap-2 rounded-2xl border border-indigo-500/30 bg-indigo-500/10 px-3.5 text-xs sm:text-sm font-semibold text-indigo-600 dark:text-indigo-400">
