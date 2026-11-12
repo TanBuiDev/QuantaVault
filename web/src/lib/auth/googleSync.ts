@@ -25,6 +25,10 @@ interface SyncBaseline { userId: string; revision: number; state: InterviewProgr
 const equal = (a: InterviewProgressState, b: InterviewProgressState): boolean => JSON.stringify(a) === JSON.stringify(b);
 const empty = (): InterviewProgressState => ({ learned: {}, review: {}, bookmarks: {} });
 const hasData = (s: InterviewProgressState): boolean => Object.keys(s.learned).length + Object.keys(s.review).length + Object.keys(s.bookmarks).length > 0;
+function assertActiveAccount(userId: string): void {
+  const active = localStorage.getItem(ACTIVE_KEY);
+  if (active && active !== userId) throw new Error("ACCOUNT_SWITCHED");
+}
 
 export function isGoogleProgressLinked(): boolean {
   try { return Boolean(localStorage.getItem(LINK_KEY)); }
@@ -117,10 +121,13 @@ export function clearUnowned(kind: "interview" | "courses" | "top150"): void {
 
 /** Transparent first login for blank or matching device state; never claim unknown legacy data. */
 export async function ensureAutoLinkedGoogleProgress(userId: string): Promise<GoogleSyncStatus> {
+  assertActiveAccount(userId);
   if (isGoogleProgressLinkedTo(userId)) return reconcileGoogleProgress(userId);
   if (getLinkedGoogleUser()) return "conflict";
   const local = readInterviewProgress();
   const remote = await fetchGoogleProgress(userId);
+  assertActiveAccount(userId);
+  if (!equal(readInterviewProgress(), local)) return "conflict";
   if (isUnownedProgress("interview") && hasData(local) && !equal(local, remote.state)) return "conflict";
   if (remote.revision === 0 && hasData(local)) return "conflict";
   if (remote.revision > 0 && hasData(local) && !equal(local, remote.state)) return "conflict";
@@ -137,6 +144,7 @@ export async function fetchGoogleProgress(userId?: string): Promise<RemoteProgre
   return { state: result.state, revision: result.revision };
 }
 export async function putGoogleProgress(state: InterviewProgressState, revision: number, userId?: string): Promise<number> {
+  if (userId) assertActiveAccount(userId);
   const res = await fetch("/api/google-progress", {
     method: "PUT", credentials: "same-origin",
     headers: { "Content-Type": "application/json" },
@@ -155,6 +163,7 @@ export async function putGoogleProgress(state: InterviewProgressState, revision:
 export async function linkGoogleProgress(
   userId: string, mode: "local" | "remote" | "conservative", remote: RemoteProgress
 ): Promise<void> {
+  assertActiveAccount(userId);
   const existingUser = getLinkedGoogleUser();
   if (existingUser && existingUser !== userId) throw new Error("DIFFERENT_LINKED_GOOGLE_ACCOUNT");
   const local = readInterviewProgress();
@@ -177,6 +186,8 @@ export async function linkGoogleProgress(
   } else if (mode === "conservative" && !equal(selected, remote.state)) {
     revision = await putGoogleProgress(selected, remote.revision, userId);
   }
+  assertActiveAccount(userId);
+  if (!equal(readInterviewProgress(), local)) throw new Error("LOCAL_CHANGED");
   if (!equal(selected, local)) replaceInterviewProgress(selected);
   // Keep baseline and link atomic from the user's perspective: write baseline first.
   setBaseline(userId, { state: selected, revision });
@@ -211,11 +222,13 @@ export function conservativeMerge(a: InterviewProgressState, b: InterviewProgres
  * Offline data stays in localStorage. Only user-initiated merge can resolve a true conflict.
  */
 export async function reconcileGoogleProgress(userId: string): Promise<GoogleSyncStatus> {
+  assertActiveAccount(userId);
   if (!isGoogleProgressLinkedTo(userId)) return "unlinked";
   const base = readBaseline(userId);
   if (!base) return "conflict";
   const local = readInterviewProgress();
   const remote = await fetchGoogleProgress(userId);
+  assertActiveAccount(userId);
   if (!isGoogleProgressLinkedTo(userId)) return "unlinked";
   if (equal(remote.state, local)) {
     setBaseline(userId, remote);
@@ -233,6 +246,7 @@ export async function reconcileGoogleProgress(userId: string): Promise<GoogleSyn
   }
   if (equal(local, base.state)) return "synced";
   const revision = await putGoogleProgress(local, base.revision, userId);
+  assertActiveAccount(userId);
   if (!isGoogleProgressLinkedTo(userId)) return "unlinked";
   setBaseline(userId, { state: local, revision });
   return equal(readInterviewProgress(), local) ? "synced" : "syncing";

@@ -127,6 +127,39 @@ describe("Google progress link and cross-device safety", () => {
     expect(getLinkedGoogleUser()).toBe("google-user-a");
   });
 
+  it("does not import an old response after switching Google accounts", async () => {
+    prepareGoogleDevice("google-user-a");
+    let release!: () => void;
+    const gate = new Promise<void>(resolve => { release = resolve; });
+    fetchMock.mockImplementationOnce(async () => {
+      await gate;
+      return Response.json({ok:true,state:state(["q-018"]),revision:4});
+    });
+    const inflight = ensureAutoLinkedGoogleProgress("google-user-a");
+    prepareGoogleDevice("google-user-b");
+    const bData = state([],["q-201"]);
+    replaceInterviewProgress(bData);
+    release();
+    await expect(inflight).rejects.toThrow("ACCOUNT_SWITCHED");
+    expect(readInterviewProgress()).toEqual(bData);
+    expect(getLinkedGoogleUser()).toBeNull();
+  });
+
+  it("does not replace a local edit that arrives during first sync", async () => {
+    prepareGoogleDevice("google-user-a");
+    let release!: () => void;
+    const gate = new Promise<void>(resolve => { release = resolve; });
+    fetchMock.mockImplementationOnce(async () => {
+      await gate;
+      return Response.json({ok:true,state:state(["q-015"]),revision:1});
+    });
+    const inflight = ensureAutoLinkedGoogleProgress("google-user-a");
+    replaceInterviewProgress(state(["q-202"]));
+    release();
+    expect(await inflight).toBe("conflict");
+    expect(readInterviewProgress()).toEqual(state(["q-202"]));
+  });
+
   it("keeps local progress when account fetch is offline", async () => {
     replaceInterviewProgress(state(["q-001"]));
     await linkGoogleProgress("google-user-a", "local", remote);
