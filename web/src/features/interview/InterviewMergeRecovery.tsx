@@ -1,14 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Download, ShieldAlert } from "lucide-react";
 import { useConfirm } from "@/components/ui/ConfirmDialog";
 import type { InterviewProgressState } from "@/lib/interview/types";
 import type { DraftMap, PublishedCacheMap } from "@/lib/interview/draftStore";
 import { downloadRetiredInterviewBackup } from "@/lib/interview/draftStore";
 import {
-  inspectRetiredProgress, isRetiredInterviewId, retiredInterviewIds,
-  archiveProgressBeforeMerge, mergeApprovedRetiredProgress,
+  inspectRetiredProgress, isRetiredInterviewId,
+  getSafelyMappableRetiredIds, archiveProgressBeforeMerge, mergeApprovedRetiredProgress,
 } from "@/lib/interview/questionIdMerge";
 import { readInterviewProgress, replaceInterviewProgress } from "@/lib/interview/progress";
 import { queueCloudProgress } from "@/lib/interview/cloudSync";
@@ -23,19 +23,33 @@ export function InterviewMergeRecovery({ progress, drafts, publishedCache }: Pro
   const confirm = useConfirm();
   const [selected, setSelected] = useState<string[]>([]);
   const [message, setMessage] = useState("");
+  const [automaticError, setAutomaticError] = useState("");
   const pending = useMemo(() => inspectRetiredProgress(progress), [progress]);
+  const ambiguousPending = useMemo(() => pending.filter(entry => entry.historicalTarget !== null), [pending]);
+
+  // Safe canonical IDs can be reconciled as soon as local or cloud progress
+  // becomes available. Archive FIRST and preserve unrelated keys; no PIN,
+  // no forced D1 overwrite and no change to ambiguous historical aliases.
+  useEffect(() => {
+    const before = readInterviewProgress();
+    if (JSON.stringify(before) !== JSON.stringify(progress)) return;
+    const safeIds = getSafelyMappableRetiredIds(before);
+    if (safeIds.length === 0) return;
+    try {
+      const next = mergeApprovedRetiredProgress(before, safeIds);
+      archiveProgressBeforeMerge(before);
+      // A write failure must not trigger cloud sync or a success claim.
+      replaceInterviewProgress(next);
+      queueCloudProgress(next); // Revision-aware, conflict-safe.
+      setAutomaticError("");
+    } catch {
+      setAutomaticError("Không thể tự đối chiếu tiến độ vì bộ nhớ trình duyệt không lưu được bản sao. Dữ liệu gốc vẫn được giữ.");
+    }
+  }, [progress]);
   const archivedDraftIds = Object.keys(drafts).filter(isRetiredInterviewId);
   const archivedCacheIds = Object.keys(publishedCache).filter(isRetiredInterviewId);
   const archivedIds = new Set([...archivedDraftIds, ...archivedCacheIds]);
-  const uncertainLearned = useMemo(() => {
-    const byTarget = new Map<string, string[]>();
-    for (const [oldId, target] of Object.entries(retiredInterviewIds)) {
-      byTarget.set(target, [...(byTarget.get(target) ?? []), oldId]);
-    }
-    return [...byTarget.entries()].filter(([target, sources]) =>
-      Boolean(progress.learned[target]) && sources.some(id => !progress.learned[id])
-    ).map(([target]) => target);
-  }, [progress]);
+
 
   function exportProgressBackup() {
     try {
@@ -95,7 +109,7 @@ export function InterviewMergeRecovery({ progress, drafts, publishedCache }: Pro
     }
   }
 
-  if (pending.length === 0 && archivedIds.size === 0 && uncertainLearned.length === 0) return null;
+  if (ambiguousPending.length === 0 && archivedIds.size === 0 && !automaticError) return null;
   return (
     <section aria-label="Khôi phục và hợp nhất câu hỏi cũ" className="rounded-2xl border border-amber-500/40 bg-[var(--surface)] p-4 space-y-3">
       <div className="flex items-start gap-2">
@@ -103,15 +117,15 @@ export function InterviewMergeRecovery({ progress, drafts, publishedCache }: Pro
         <div>
           <p className="font-semibold text-sm text-[var(--foreground)]">Đối chiếu sau hợp nhất câu hỏi</p>
           <p className="text-xs text-[var(--muted-strong)]">
-            Hệ thống giữ nguyên bản nháp và tiến độ cũ. Không tự chuyển những ID có thể trùng lịch sử.
+            Hệ thống tự bảo toàn tiến độ khi ID có thể xác định chính xác. Chỉ những ID có lịch sử không rõ ràng mới cần xác nhận.
           </p>
         </div>
       </div>
-      {pending.length > 0 && (
+      {ambiguousPending.length > 0 && (
         <div className="space-y-2">
-          <p className="text-xs font-semibold">Có {pending.length} ID tiến độ cũ cần bạn đối chiếu:</p>
+          <p className="text-xs font-semibold">Có {ambiguousPending.length} ID trùng với lịch sử cần xác nhận:</p>
           <div className="max-h-52 overflow-auto space-y-1">
-            {pending.map(entry => (
+            {ambiguousPending.map(entry => (
               <label key={entry.oldId} className="flex items-start gap-2 rounded-lg border border-[var(--border)] px-2 py-2 text-xs">
                 <input
                   type="checkbox"
@@ -137,12 +151,6 @@ export function InterviewMergeRecovery({ progress, drafts, publishedCache }: Pro
           <button type="button" onClick={() => void applySelected()} disabled={selected.length === 0} className="rounded-lg bg-amber-600 px-3 py-2 text-xs font-semibold text-white disabled:opacity-40">Hợp nhất {selected.length} ID đã chọn</button>
         </div>
       )}
-      {uncertainLearned.length > 0 && (
-        <p className="text-xs text-[var(--muted-strong)]">
-          Có {uncertainLearned.length} câu chính đang được đánh dấu Nắm vững trong khi ít nhất một câu nguồn chưa có trạng thái Nắm vững.
-          Nếu chưa học đủ nội dung sau hợp nhất, hãy mở câu đó và chọn Cần ôn. Website không tự sửa đánh giá của bạn.
-        </p>
-      )}
       {archivedIds.size > 0 && (
         <div className="space-y-2">
           <p className="text-xs text-[var(--muted-strong)]">
@@ -152,6 +160,7 @@ export function InterviewMergeRecovery({ progress, drafts, publishedCache }: Pro
         </div>
       )}
       <button type="button" onClick={exportProgressBackup} className="inline-flex items-center gap-1 rounded-lg border border-[var(--border)] px-3 py-2 text-xs font-semibold"><Download className="h-3.5 w-3.5" /> Sao lưu tiến độ và bản nháp</button>
+      {automaticError && <p role="alert" className="text-xs text-amber-600 dark:text-amber-400">{automaticError}</p>}
       {message && <p role="status" className="text-xs text-[var(--foreground)]">{message}</p>}
     </section>
   );
