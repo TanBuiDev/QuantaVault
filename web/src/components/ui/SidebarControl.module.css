@@ -26,6 +26,11 @@
   outline-offset: 2px;
 }
 
+.centerContent {
+  justify-content: center;
+  text-align: center;
+}
+
 .compact {
   width: 2.5rem;
   justify-content: center;
