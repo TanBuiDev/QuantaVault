@@ -17,7 +17,7 @@ export function ThemeToggle({ compact = false }: { compact?: boolean }) {
       onClick={toggleTheme}
       aria-label={`Switch to ${target} mode`}
       title={`${label} · Chuyển sang giao diện ${isDark ? "sáng" : "tối"}`}
-      className={`${controls.control} ${compact ? controls.compact : ""}`}
+      className={`${controls.control} ${controls.centerContent} ${compact ? controls.compact : ""}`}
     >
       <Icon aria-hidden="true" className={controls.icon} />
       {!compact && <span className="truncate">{label}</span>}
