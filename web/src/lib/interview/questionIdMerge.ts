@@ -37,6 +37,17 @@ export function inspectRetiredProgress(state: InterviewProgressState): RetiredPr
 }
 
 /**
+ * Only retired IDs which NEVER had a different legacy alias can be remapped
+ * without human interpretation. This is intentionally a strict allow-list
+ * derived from the two independent maps, not a guess from a question title.
+ */
+export function getSafelyMappableRetiredIds(state: InterviewProgressState): string[] {
+  return inspectRetiredProgress(state)
+    .filter(entry => entry.historicalTarget === null)
+    .map(entry => entry.oldId);
+}
+
+/**
  * Only IDs explicitly approved by the user are remapped.
  * Input is never modified. Unapproved and unrelated records are retained.
  * When learning histories are incomplete, downgrade to "review" rather than
