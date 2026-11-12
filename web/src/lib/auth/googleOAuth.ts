@@ -55,10 +55,12 @@ function getCookie(request: Request, name: string): string | null {
 function bytesToUrl(bytes: Uint8Array): string {
   return btoa(String.fromCharCode(...bytes)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
 }
-function fromUrl(value: string): Uint8Array {
+function fromUrl(value: string): Uint8Array<ArrayBuffer> {
   if (!/^[A-Za-z0-9_-]+$/.test(value)) throw new Error("invalid base64url");
   const text = atob(value.replace(/-/g, "+").replace(/_/g, "/"));
-  return Uint8Array.from(text, char => char.charCodeAt(0));
+  const bytes = new Uint8Array(new ArrayBuffer(text.length));
+  for (let i = 0; i < text.length; i++) bytes[i] = text.charCodeAt(i);
+  return bytes;
 }
 function randomToken(): string { return bytesToUrl(crypto.getRandomValues(new Uint8Array(32))); }
 async function sha256(input: string): Promise<string> {
