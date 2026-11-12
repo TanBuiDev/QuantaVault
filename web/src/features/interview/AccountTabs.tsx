@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAccount } from "@/lib/auth/AccountProvider";
 import { GoogleAccountPanel } from "./GoogleAccountPanel";
+import { GoogleLearningSyncPanel } from "./GoogleLearningSyncPanel";
 import { AdminAccountPanel } from "./AdminAccountPanel";
 import { InterviewCloudSync } from "./InterviewCloudSync";
 
@@ -68,6 +69,7 @@ export function AccountTabs() {
       </section>
       <section id="account-panel-sync" role="tabpanel" aria-labelledby="account-tab-sync" hidden={tab!=="sync"} className="space-y-4">
         <GoogleAccountPanel />
+        <GoogleLearningSyncPanel />
         <details className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
           <summary className="cursor-pointer text-sm font-semibold">Cài đặt nâng cao · Khôi phục dữ liệu cũ</summary>
           <p className="mt-3 text-xs text-[var(--muted-strong)]">Mã đồng bộ 64 ký tự chỉ dùng để nhập hoặc khôi phục tiến độ legacy. Không cần mã này khi đã đăng nhập Google. Trước khi khôi phục, hãy sao lưu và đối chiếu dữ liệu.</p>
