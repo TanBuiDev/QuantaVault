@@ -97,7 +97,8 @@ describe("Cloudflare Google OpenID Connect login", () => {
 
   it("fails closed when Client Secret is missing", async () => {
     const response = await handleGoogleAuth(send("/api/auth/google/start"), { GOOGLE_CLIENT_ID: ID, INTERVIEW_DB: db });
-    expect(response.status).toBe(503);
+    expect(response.status).toBe(303);
+    expect(response.headers.get("Location")).toContain("authError=unavailable");
     expect(response.headers.get("set-cookie")).toBeNull();
   });
 
@@ -117,7 +118,8 @@ describe("Cloudflare Google OpenID Connect login", () => {
     const fn = vi.fn();
     vi.stubGlobal("fetch", fn);
     const bad = await handleGoogleAuth(send("/api/auth/google/callback?code=fake&state=wrong", { headers: { Cookie: oauth } }), { ...envBase, INTERVIEW_DB: db });
-    expect(bad.status).toBe(400);
+    expect(bad.status).toBe(303);
+    expect(bad.headers.get("Location")).toContain("authError=expired");
     expect(fn).not.toHaveBeenCalled();
     expect(bad.headers.get("set-cookie")).toMatch(/Max-Age=0/);
   });
@@ -142,6 +144,40 @@ describe("Cloudflare Google OpenID Connect login", () => {
     expect(db.sessions.size).toBe(0);
   });
 
+
+  it("preserves the intended lesson, query, and hash after OAuth", async () => {
+    const returnTo = "/courses/postgresql/lesson-01/?view=notes#summary";
+    const start = await handleGoogleAuth(send("/api/auth/google/start?returnTo=" + encodeURIComponent(returnTo)), { ...envBase, INTERVIEW_DB: db });
+    const oauth = cookieValue(start.headers.get("set-cookie")!, "__Host-qv_oauth");
+    const flow = JSON.parse(Buffer.from(oauth.split("=")[1], "base64url").toString("utf8"));
+    mockGoogle(await issueIdToken(flow.nonce));
+    const callback = await handleGoogleAuth(send("/api/auth/google/callback?state=" + flow.state + "&code=mock", { headers: { Cookie: oauth } }), { ...envBase, INTERVIEW_DB: db });
+    expect(callback.status).toBe(303);
+    const result = new URL(callback.headers.get("Location")!);
+    expect(result.pathname).toBe("/courses/postgresql/lesson-01/");
+    expect(result.searchParams.get("view")).toBe("notes");
+    expect(result.searchParams.get("auth")).toBe("connected");
+    expect(result.hash).toBe("#summary");
+  });
+
+  it.each(["//evil.example", "https://evil.example/path", "/%2f%2fevil", "/%2e%2e/admin", "/\\\\evil.example"])("rejects unsafe OAuth return destinations: %s", async returnTo => {
+    const start = await handleGoogleAuth(send("/api/auth/google/start?returnTo=" + encodeURIComponent(returnTo)), { ...envBase, INTERVIEW_DB: db });
+    expect(start.status).toBe(303);
+    const oauth = cookieValue(start.headers.get("set-cookie")!, "__Host-qv_oauth");
+    const flow = JSON.parse(Buffer.from(oauth.split("=")[1], "base64url").toString("utf8"));
+    expect(flow.returnTo).toBe("/interview/");
+  });
+
+  it("returns to the lesson on Google cancellation without creating a session", async () => {
+    const start = await handleGoogleAuth(send("/api/auth/google/start?returnTo=%2Fproblems%2F1"), { ...envBase, INTERVIEW_DB: db });
+    const oauth = cookieValue(start.headers.get("set-cookie")!, "__Host-qv_oauth");
+    const flow = JSON.parse(Buffer.from(oauth.split("=")[1], "base64url").toString("utf8"));
+    const cancel = await handleGoogleAuth(send("/api/auth/google/callback?error=access_denied&state=" + flow.state, { headers: { Cookie: oauth } }), { ...envBase, INTERVIEW_DB: db });
+    expect(cancel.status).toBe(303);
+    expect(cancel.headers.get("Location")).toBe(ORIGIN + "/problems/1?authError=cancelled");
+    expect(db.sessions.size).toBe(0);
+  });
+
   it.each([
     { aud: "attacker.apps.googleusercontent.com" },
     { nonce: "not-the-requested-nonce" },
@@ -152,7 +188,8 @@ describe("Cloudflare Google OpenID Connect login", () => {
     const { oauth, data } = await begin();
     const mock = mockGoogle(await issueIdToken(data.nonce, override));
     const response = await handleGoogleAuth(send("/api/auth/google/callback?code=x&state=" + data.state, { headers: { Cookie: oauth } }), { ...envBase, INTERVIEW_DB: db });
-    expect(response.status).toBe(502);
+    expect(response.status).toBe(303);
+    expect(response.headers.get("Location")).toContain("authError=unavailable");
     expect(db.sessions.size).toBe(0);
     expect(mock).toHaveBeenCalled();
   });
