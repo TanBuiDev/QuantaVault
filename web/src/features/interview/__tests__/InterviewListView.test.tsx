@@ -122,6 +122,56 @@ describe("InterviewListView Component", () => {
     expect(screen.queryByText("Sự khác biệt giữa equals() và hashCode()?")).toBeNull();
   });
 
+  it("never renumbers q-010 to #001 when a search leaves one question", () => {
+    accountMock.role = "user";
+    const questions = [
+      { ...mockQuestions[0], id: "q-010", title: "MinIO là gì? Vì sao dùng MinIO?" },
+      { ...mockQuestions[1], id: "q-020" },
+    ];
+    const { container } = render(<InterviewListView initialQuestions={questions} />);
+    fireEvent.change(screen.getByPlaceholderText(/Tìm theo câu hỏi/i), { target: { value: "010" } });
+    const cards = container.querySelectorAll("article[id^='question-']");
+    expect(cards).toHaveLength(1);
+    expect(cards[0]).toHaveAttribute("id", "question-q-010");
+    expect(cards[0]).toHaveTextContent("#010");
+    expect(cards[0]).not.toHaveTextContent("#001");
+  });
+
+  it("opens the exact deep-linked question despite filters and supports Back/Forward", () => {
+    accountMock.role = "admin";
+    const questions = [
+      { ...mockQuestions[0], id: "q-010", title: "MinIO là gì?", difficulty: "senior" as const },
+      { ...mockQuestions[1], id: "q-020" },
+    ];
+    window.history.replaceState({}, "", "/interview/?questionId=q-010&difficulty=junior&edit=true");
+    const { container } = render(<InterviewListView initialQuestions={questions} />);
+    expect(container.querySelector("#question-q-010")).toBeInTheDocument();
+    expect(container.querySelector("#question-q-020")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Quay lại danh sách" }));
+    expect(window.location.search).toContain("edit=true");
+    expect(window.location.search).not.toContain("questionId");
+    expect(container.querySelector("#question-q-010")).not.toBeInTheDocument();
+    window.history.pushState({}, "", "/interview/?questionId=q-010&difficulty=junior&edit=true");
+    fireEvent.popState(window);
+    expect(container.querySelector("#question-q-010")).toBeInTheDocument();
+  });
+
+  it("copies a clean canonical question URL without auth or filter values", async () => {
+    const questions = [{ ...mockQuestions[0], id: "q-010" }];
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, "clipboard", { configurable: true, value: { writeText } });
+    window.history.replaceState({}, "", "/interview/?auth=connected&edit=true&difficulty=junior");
+    render(<InterviewListView initialQuestions={questions} />);
+    fireEvent.click(screen.getByRole("button", { name: "Sao chép liên kết câu hỏi" }));
+    await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
+    const url = new URL(writeText.mock.calls[0][0] as string);
+    expect(url.pathname).toBe("/interview/");
+    expect(url.searchParams.get("questionId")).toBe("q-010");
+    expect(url.searchParams.has("auth")).toBe(false);
+    expect(url.searchParams.has("difficulty")).toBe(false);
+    expect(window.location.search).toContain("edit=true");
+  });
+
   it("shows summary by default and allows toggling full answers", () => {
     render(<InterviewListView initialQuestions={mockQuestions} />);
 

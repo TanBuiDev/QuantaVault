@@ -20,11 +20,10 @@ import {
 import { MarkdownContent } from "@/features/practice/MarkdownContent";
 import { InterviewSummaryMarkdown } from "./InterviewSummaryMarkdown";
 import type { InterviewQuestion } from "@/lib/interview/types";
-import { INTERVIEW_CATEGORIES, formatQuestionNumber } from "@/lib/interview/types";
+import { INTERVIEW_CATEGORIES, formatQuestionBadge } from "@/lib/interview/types";
 
 export interface InterviewQuestionCardProps {
   question: InterviewQuestion;
-  index: number;
   textScale?: number;
   isLearned: boolean;
   canMarkProgress?: boolean;
@@ -42,7 +41,6 @@ export interface InterviewQuestionCardProps {
 
 export function InterviewQuestionCard({
   question,
-  index,
   textScale = 100,
   isLearned,
   canMarkProgress = true,
@@ -60,6 +58,7 @@ export function InterviewQuestionCard({
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   const [showSummary, setShowSummary] = useState(defaultShowSummary);
   const [copied, setCopied] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
 
   const categoryMeta = INTERVIEW_CATEGORIES[question.category] || {
     id: question.category,
@@ -83,6 +82,18 @@ export function InterviewQuestionCard({
     void navigator.clipboard.writeText(textToCopy);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleCopyLink = async () => {
+    const url = new URL("/interview/", window.location.origin);
+    url.searchParams.set("questionId", question.id);
+    try {
+      await navigator.clipboard.writeText(url.toString());
+      setLinkCopied(true);
+      window.setTimeout(() => setLinkCopied(false), 2000);
+    } catch {
+      setLinkCopied(false);
+    }
   };
 
   const handleCollapse = () => {
@@ -117,7 +128,7 @@ export function InterviewQuestionCard({
             {/* Badges & Meta */}
             <div className="flex flex-wrap items-center gap-2 text-xs">
               <span className="font-mono font-bold text-[var(--muted)]">
-                {formatQuestionNumber(index + 1)}
+                {formatQuestionBadge(question.id)}
               </span>
 
               {/* Category */}
@@ -229,6 +240,17 @@ export function InterviewQuestionCard({
               aria-label={isBookmarked ? "Bỏ đánh dấu" : "Đánh dấu câu hỏi"}
             >
               <Bookmark className={`h-4 w-4 ${isBookmarked ? "fill-current" : ""}`} />
+            </button>
+
+            {/* Share the canonical ID without auth or account parameters. */}
+            <button
+              type="button"
+              onClick={() => void handleCopyLink()}
+              title="Sao chép liên kết câu hỏi"
+              aria-label="Sao chép liên kết câu hỏi"
+              className="rounded-xl p-2 text-[var(--muted)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)] transition-colors"
+            >
+              {linkCopied ? <Check className="h-4 w-4 text-emerald-500" /> : <ExternalLink className="h-4 w-4" />}
             </button>
 
             {/* Copy button */}

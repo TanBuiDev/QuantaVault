@@ -1,5 +1,4 @@
 import rawQuestions from "@/data/interview-questions.json";
-import { retiredInterviewIds } from "./questionIdMerge";
 import mergedCategoryAliases from "./mergedCategoryAliases.json";
 import { matchesSearch } from "@/lib/utils/stringUtils";
 import type {
@@ -8,7 +7,7 @@ import type {
   InterviewProgressState,
   InterviewQuestion,
 } from "./types";
-import { INTERVIEW_CATEGORIES, formatQuestionBadge } from "./types";
+import { INTERVIEW_CATEGORIES } from "./types";
 
 export * from "./types";
 
@@ -17,8 +16,8 @@ export function getAllInterviewQuestions(): InterviewQuestion[] {
 }
 
 export function getInterviewQuestionById(id: string): InterviewQuestion | undefined {
-  const normalizedId = retiredInterviewIds[id] ?? id;
-  return getAllInterviewQuestions().find((q) => q.id === normalizedId);
+  // Historical aliases may collide with real canonical IDs.
+  return getAllInterviewQuestions().find((q) => q.id === id);
 }
 
 /** Retain the original category entry points for cross-category merges. */
@@ -49,31 +48,22 @@ export function filterInterviewQuestions(
   filter: InterviewFilterState,
   progress?: InterviewProgressState
 ): InterviewQuestion[] {
-  const filtered = questions.filter((q) => {
-    // 1. Search Query (Number, Badge, ID, Title, Summary, Tags, Companies with accent-insensitive support)
-    if (filter.search.trim()) {
-      const term = filter.search.trim();
-      const badge = formatQuestionBadge(q.id); // e.g. "#087"
-      const numOnly = q.id.replace(/\D/g, ""); // e.g. "087"
-      const unpaddedNum = String(parseInt(numOnly || "0", 10)); // e.g. "87"
+  const term = filter.search.trim();
+  // Numeric queries are exact IDs, never substring or ambiguous merged-ID matches.
+  const numericQuery = /^(?:#|q-)?(\d+)$/i.exec(term);
+  const requestedId = numericQuery ? `q-${numericQuery[1].padStart(3, "0")}`.toLowerCase() : null;
 
-      const cleanTerm = term.toLowerCase();
-      const matchBadge =
-        badge.toLowerCase().includes(cleanTerm) ||
-        `#${unpaddedNum}`.includes(cleanTerm) ||
-        (cleanTerm.startsWith("#") && cleanTerm.slice(1) === unpaddedNum);
-      const matchNumberExact = cleanTerm === numOnly || cleanTerm === unpaddedNum;
-      const requestedId = /^\d+$/.test(cleanTerm) ? `q-${cleanTerm.padStart(3, "0")}`
-        : /^#\d+$/.test(cleanTerm) ? `q-${cleanTerm.slice(1).padStart(3, "0")}` : cleanTerm;
-      const matchRetiredAlias = retiredInterviewIds[requestedId] === q.id;
-      const matchId = matchesSearch(q.id, term) || matchBadge || matchNumberExact || matchRetiredAlias;
-      const matchTitle = matchesSearch(q.title, term);
-      const matchSummary = matchesSearch(q.summary, term);
-      const matchTags = q.tags.some((t) => matchesSearch(t, term));
-      const matchCompanies = q.companies?.some((c) => matchesSearch(c, term)) ?? false;
-      if (!matchId && !matchTitle && !matchSummary && !matchTags && !matchCompanies) {
-        return false;
-      }
+  return questions.filter((q) => {
+    if (requestedId) {
+      if (q.id.toLowerCase() !== requestedId) return false;
+    } else if (term) {
+      const matchesText =
+        matchesSearch(q.id, term) ||
+        matchesSearch(q.title, term) ||
+        matchesSearch(q.summary, term) ||
+        q.tags.some((tag) => matchesSearch(tag, term)) ||
+        (q.companies?.some((company) => matchesSearch(company, term)) ?? false);
+      if (!matchesText) return false;
     }
 
     // 2. Category
@@ -106,20 +96,4 @@ export function filterInterviewQuestions(
     return true;
   });
 
-  // Prioritize exact question number or badge matches to the very top
-  if (filter.search.trim()) {
-    const rawTerm = filter.search.trim().toLowerCase();
-    const cleanNum = rawTerm.replace(/^[#q\-0]+/, ""); // e.g. "#087" -> "87", "q-087" -> "87", "87" -> "87"
-    if (cleanNum && /^\d+$/.test(cleanNum)) {
-      filtered.sort((a, b) => {
-        const aNum = a.id.replace(/\D/g, "").replace(/^0+/, "");
-        const bNum = b.id.replace(/\D/g, "").replace(/^0+/, "");
-        if (aNum === cleanNum && bNum !== cleanNum) return -1;
-        if (bNum === cleanNum && aNum !== cleanNum) return 1;
-        return 0;
-      });
-    }
-  }
-
-  return filtered;
 }
