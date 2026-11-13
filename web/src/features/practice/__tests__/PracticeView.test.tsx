@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { setLearningSessionActive } from "@/lib/auth/progressAccess";
 
 import { ConfirmProvider } from "@/components/ui/ConfirmDialog";
 import { ToastProvider } from "@/components/ui/Toast";
@@ -72,7 +73,9 @@ describe("PracticeView", () => {
   beforeEach(() => {
     localStorage.clear();
     sessionStorage.clear();
+    setLearningSessionActive(true);
   });
+  afterEach(() => setLearningSessionActive(false));
 
   it("keeps static reading and reference code without filesystem mutation controls", async () => {
     vi.stubEnv("NEXT_PUBLIC_STUDY_MODE", "static");

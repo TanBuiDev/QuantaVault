@@ -22,7 +22,7 @@ function difficultyVariant(difficulty: ProblemContent["difficulty"]) {
 }
 
 export function PracticeStudyContent(model: ReturnType<typeof usePracticeWorkspace>) {
-  const { content, hints, sectionName, updateProblem, progress, activeTab, wordWrap, langMode, handleSetLangMode, problemMedia, tabs, changeTab } = model;
+  const { content, hints, sectionName, updateProblem, progress, canTrackProgress, activeTab, wordWrap, langMode, handleSetLangMode, problemMedia, tabs, changeTab } = model;
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -146,13 +146,14 @@ export function PracticeStudyContent(model: ReturnType<typeof usePracticeWorkspa
                   </label>
                   <span className="inline-flex items-center gap-1 text-[11px] text-emerald-500 font-medium">
                     <CheckCircle2 className="h-3 w-3" />
-                    Đã lưu
+                    {canTrackProgress ? "Đã lưu" : "Đăng nhập để lưu"}
                   </span>
                 </div>
                 <textarea
                   id={`notes-${content.id}`}
                   rows={10}
                   value={progress?.notes ?? ""}
+                  disabled={!canTrackProgress}
                   onChange={(event) => updateProblem(content.id, { notes: event.target.value })}
                   spellCheck={false}
                   autoCorrect="off"

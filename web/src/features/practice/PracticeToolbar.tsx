@@ -37,6 +37,7 @@ export function PracticeToolbar(model: ReturnType<typeof usePracticeWorkspace>) 
     previous,
     next,
     updateProblem,
+    canTrackProgress,
     progress,
     layoutMode,
     wordWrap,
@@ -157,7 +158,8 @@ export function PracticeToolbar(model: ReturnType<typeof usePracticeWorkspace>) 
                 <button
                   type="button"
                   onClick={handleCycleStatus}
-                  title="Click to change status"
+                  disabled={!canTrackProgress}
+                  title={!canTrackProgress ? "Đăng nhập Google để lưu tiến độ" : "Click to change status"}
                   className={`h-8 px-3.5 text-xs font-semibold rounded-lg transition-all duration-150 active:scale-[0.97] cursor-pointer select-none ${statusConfig.className}`}
                 >
                   {statusConfig.label}

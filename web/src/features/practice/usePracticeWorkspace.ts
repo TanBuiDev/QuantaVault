@@ -13,7 +13,7 @@ import { useProgress } from "@/lib/progress/provider";
 import type { PracticeTab, PracticeViewProps } from "./practiceTypes";
 export function usePracticeWorkspace({ content, hints, previous, next, sectionName }: PracticeViewProps) {
   const router = useRouter();
-  const { getProgress, updateProblem } = useProgress();
+  const { getProgress, updateProblem, canTrackProgress } = useProgress();
   const progress = getProgress(content.id);
   const [activeTab, setActiveTab] = useState<PracticeTab>(() => {
     if (typeof window === "undefined" || !window.sessionStorage) return "problem";
@@ -155,6 +155,7 @@ export function usePracticeWorkspace({ content, hints, previous, next, sectionNa
     router,
     updateProblem,
     progress,
+    canTrackProgress,
     activeTab,
     layoutMode,
     bottomTab,

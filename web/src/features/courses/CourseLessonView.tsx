@@ -53,6 +53,7 @@ export function CourseLessonView({
 
   const {
     hydrated,
+    canTrackProgress,
     isLessonCompleted,
     toggleLessonCompleted,
     recordLastAccessed,
@@ -178,6 +179,8 @@ export function CourseLessonView({
               <button
                 type="button"
                 onClick={() => toggleLessonCompleted(course.id, lesson.id)}
+                disabled={!canTrackProgress}
+                title={!canTrackProgress ? "Đăng nhập Google để lưu tiến độ học tập" : undefined}
                 className={`flex items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all cursor-pointer ${
                   isCompleted
                     ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20"

@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom/vitest";
 import { fireEvent, render, screen, within } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { setLearningSessionActive } from "@/lib/auth/progressAccess";
 import { SidebarProvider } from "../SidebarContext";
 import { AppSidebar } from "../AppSidebar";
 import type { CourseNavigationItem } from "@/lib/courses";
@@ -33,7 +34,9 @@ describe("Dynamic course sidebar", () => {
     pathname.mockReturnValue("/courses");
     Object.defineProperty(window, "innerWidth", { configurable: true, value: 1280 });
     localStorage.clear();
+    setLearningSessionActive(true);
   });
+  afterEach(() => setLearningSessionActive(false));
 
   it("renders the registry's only course without hardcoded menu entries", () => {
     renderSidebar([course(1)]);

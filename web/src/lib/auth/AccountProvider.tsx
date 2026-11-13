@@ -93,7 +93,10 @@ export function AccountProvider({ children }: { children: ReactNode }) {
       if (!data.ok) throw new Error("SESSION_INVALID");
       setGoogleSessionActive(Boolean(data.user));
       setUser(data.user);
-    } catch { setUser(null); }
+    } catch {
+      setGoogleSessionActive(false);
+      setUser(null);
+    }
     finally { setLoading(false); }
   }, []);
   useEffect(() => { queueMicrotask(() => { void refresh(); }); }, [refresh]);

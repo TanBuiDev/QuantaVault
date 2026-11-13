@@ -1,7 +1,8 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import { PROGRESS_STORAGE_KEY, type ProgressStateV1 } from "@/lib/progress";
+import { setLearningSessionActive } from "@/lib/auth/progressAccess";
 import { ProgressProvider, useProgress } from "@/lib/progress/provider";
 
 function ProgressProbe() {
@@ -51,7 +52,9 @@ function storedState(status: "in-progress" | "solved" | "review"): ProgressState
 describe("ProgressProvider", () => {
   beforeEach(() => {
     localStorage.clear();
+    setLearningSessionActive(true);
   });
+  afterEach(() => setLearningSessionActive(false));
 
   it("hydrates learner state from localStorage after mounting", async () => {
     localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(storedState("review")));

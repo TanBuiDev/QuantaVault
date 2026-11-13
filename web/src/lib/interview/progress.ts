@@ -3,6 +3,7 @@
 import { useSyncExternalStore, useCallback } from "react";
 import type { InterviewProgressState } from "./types";
 import { queueCloudProgress } from "./cloudSync";
+import { canWriteLearningProgress, useLearningSession } from "../auth/progressAccess";
 
 const STORAGE_KEY = "interview-prep-progress-v1";
 const CHANGE_EVENT = "interview-prep-progress:change";
@@ -98,7 +99,10 @@ function getServerHydratedSnapshot(): boolean {
 }
 
 export function useInterviewProgress() {
-  const state = useSyncExternalStore(subscribe, getBrowserSnapshot, getServerSnapshot);
+  const storedState = useSyncExternalStore(subscribe, getBrowserSnapshot, getServerSnapshot);
+  const canTrackProgress = useLearningSession();
+  // Hide old marks after logout; preserve the underlying storage for the next login.
+  const state = canTrackProgress ? storedState : EMPTY_STATE;
   const hydrated = useSyncExternalStore(
     subscribeHydration,
     getHydratedSnapshot,
@@ -107,6 +111,7 @@ export function useInterviewProgress() {
 
   const toggleLearned = useCallback(
     (questionId: string) => {
+      if (!canWriteLearningProgress()) return;
       const current = readStorage();
       const isLearned = Boolean(current.learned[questionId]);
       const next: InterviewProgressState = {
@@ -130,6 +135,7 @@ export function useInterviewProgress() {
 
   const toggleReview = useCallback(
     (questionId: string) => {
+      if (!canWriteLearningProgress()) return;
       const current = readStorage();
       const isReview = Boolean(current.review[questionId]);
       const next: InterviewProgressState = {
@@ -153,6 +159,7 @@ export function useInterviewProgress() {
 
   const toggleBookmark = useCallback(
     (questionId: string) => {
+      if (!canWriteLearningProgress()) return;
       const current = readStorage();
       const isBookmarked = Boolean(current.bookmarks[questionId]);
       const next: InterviewProgressState = {
@@ -179,6 +186,7 @@ export function useInterviewProgress() {
   return {
     state,
     hydrated,
+    canTrackProgress,
     isLearned,
     isReview,
     isBookmarked,
