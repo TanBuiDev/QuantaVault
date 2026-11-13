@@ -499,13 +499,12 @@ export function InterviewPresentationModal({
               type="button"
               onClick={() => onToggleLearned(currentQ.id)}
               disabled={!canMarkProgress}
-              title={!canMarkProgress ? "Đăng nhập Google để lưu tiến độ" : undefined}
               className={`inline-flex min-h-10 items-center gap-1.5 rounded-xl border px-3 text-xs font-bold transition-all cursor-pointer ${
                 hasLearned
                   ? "border-emerald-500/50 bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 shadow-xs"
                   : "border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)]"
               }`}
-              title="Phím tắt: 1"
+              title={!canMarkProgress ? "Đăng nhập Google để lưu tiến độ" : "Phím tắt: 1"}
             >
               <CheckCircle2 className="h-3.5 w-3.5" />
               <span>Nắm vững (1)</span>
@@ -515,13 +514,12 @@ export function InterviewPresentationModal({
               type="button"
               onClick={() => onToggleReview(currentQ.id)}
               disabled={!canMarkProgress}
-              title={!canMarkProgress ? "Đăng nhập Google để lưu tiến độ" : undefined}
               className={`inline-flex min-h-10 items-center gap-1.5 rounded-xl border px-3 text-xs font-bold transition-all cursor-pointer ${
                 hasReview
                   ? "border-amber-500/50 bg-amber-500/20 text-amber-600 dark:text-amber-400 shadow-xs"
                   : "border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)]"
               }`}
-              title="Phím tắt: 2"
+              title={!canMarkProgress ? "Đăng nhập Google để lưu tiến độ" : "Phím tắt: 2"}
             >
               <RotateCcw className="h-3.5 w-3.5" />
               <span>Cần ôn (2)</span>
@@ -531,13 +529,12 @@ export function InterviewPresentationModal({
               type="button"
               onClick={() => onToggleBookmark(currentQ.id)}
               disabled={!canMarkProgress}
-              title={!canMarkProgress ? "Đăng nhập Google để lưu tiến độ" : undefined}
               className={`inline-flex min-h-10 items-center gap-1.5 rounded-xl border px-3 text-xs font-bold transition-all cursor-pointer ${
                 hasBookmarked
                   ? "border-indigo-500/50 bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 shadow-xs"
                   : "border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)]"
               }`}
-              title="Phím tắt: 3"
+              title={!canMarkProgress ? "Đăng nhập Google để lưu tiến độ" : "Phím tắt: 3"}
             >
               <Bookmark className="h-3.5 w-3.5" />
               <span>Đánh dấu (3)</span>
