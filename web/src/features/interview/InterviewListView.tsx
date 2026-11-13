@@ -304,6 +304,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
     state: progress,
     hydrated,
     canTrackProgress,
+    storageError,
     isLearned,
     isReview,
     isBookmarked,
@@ -491,6 +492,9 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
           <button type="button" onClick={requestLogin} className="font-semibold text-[var(--primary-strong)] hover:underline">Đăng nhập Google</button>
         </div>
       )}
+      {storageError && <div role="alert" className="rounded-xl border border-amber-500/40 p-3 text-sm text-amber-600">
+        Trình duyệt chưa lưu được đánh dấu tiến độ. Hãy kiểm tra dung lượng/quyền lưu trữ và thử lại; thao tác này chưa được đồng bộ.
+      </div>}
       {/* 2. Progress Overview Stats Card */}
       {canEdit && <PublishedConflictReview
         canonicalQuestions={initialQuestions}
@@ -503,6 +507,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
           questions={initialQuestions}
           progress={progress}
           hydrated={hydrated}
+          canTrackProgress={canMarkProgress}
           activeStatusFilter={filter.status}
           onSelectStatusFilter={handleSelectStatusFilter}
         />

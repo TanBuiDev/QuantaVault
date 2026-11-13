@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore, useCallback } from "react";
+import { useSyncExternalStore, useCallback, useState } from "react";
 import type { InterviewProgressState } from "./types";
 import { queueCloudProgress } from "./cloudSync";
 import { canWriteLearningProgress, useLearningSession } from "../auth/progressAccess";
@@ -38,21 +38,19 @@ function readStorage(): InterviewProgressState {
 }
 
 function writeStorage(state: InterviewProgressState) {
-  if (typeof window === "undefined") return;
-  try {
-    const raw = JSON.stringify(state);
-    window.localStorage.setItem(STORAGE_KEY, raw);
-    cachedRaw = raw;
-    cachedState = state;
-    window.dispatchEvent(new Event(CHANGE_EVENT));
-  } catch {
-    // Ignore storage quota errors
-  }
+  if (typeof window === "undefined") throw new Error("STORAGE_UNAVAILABLE");
+  const raw = JSON.stringify(state);
+  window.localStorage.setItem(STORAGE_KEY, raw);
+  cachedRaw = raw;
+  cachedState = state;
+  window.dispatchEvent(new Event(CHANGE_EVENT));
 }
 
 function getBrowserSnapshot(): InterviewProgressState {
   if (typeof window === "undefined") return EMPTY_STATE;
-  const raw = window.localStorage.getItem(STORAGE_KEY);
+  let raw: string | null;
+  try { raw = window.localStorage.getItem(STORAGE_KEY); }
+  catch { return cachedState; }
   if (raw === cachedRaw) return cachedState;
 
   cachedRaw = raw;
@@ -100,6 +98,7 @@ function getServerHydratedSnapshot(): boolean {
 
 export function useInterviewProgress() {
   const storedState = useSyncExternalStore(subscribe, getBrowserSnapshot, getServerSnapshot);
+  const [storageError, setStorageError] = useState(false);
   const canTrackProgress = useLearningSession();
   // Hide old marks after logout; preserve the underlying storage for the next login.
   const state = canTrackProgress ? storedState : EMPTY_STATE;
@@ -127,8 +126,13 @@ export function useInterviewProgress() {
         delete next.review[questionId]; // Nếu đã hiểu thì bỏ khỏi cần ôn lại
       }
 
-      writeStorage(next);
-      queueCloudProgress(next);
+      try {
+        writeStorage(next);
+        setStorageError(false);
+        queueCloudProgress(next);
+      } catch {
+        setStorageError(true);
+      }
     },
     []
   );
@@ -151,8 +155,13 @@ export function useInterviewProgress() {
         delete next.learned[questionId]; // Nếu cần ôn lại thì bỏ khỏi đã hiểu
       }
 
-      writeStorage(next);
-      queueCloudProgress(next);
+      try {
+        writeStorage(next);
+        setStorageError(false);
+        queueCloudProgress(next);
+      } catch {
+        setStorageError(true);
+      }
     },
     []
   );
@@ -173,8 +182,13 @@ export function useInterviewProgress() {
         next.bookmarks[questionId] = true;
       }
 
-      writeStorage(next);
-      queueCloudProgress(next);
+      try {
+        writeStorage(next);
+        setStorageError(false);
+        queueCloudProgress(next);
+      } catch {
+        setStorageError(true);
+      }
     },
     []
   );
@@ -187,6 +201,7 @@ export function useInterviewProgress() {
     state,
     hydrated,
     canTrackProgress,
+    storageError,
     isLearned,
     isReview,
     isBookmarked,
