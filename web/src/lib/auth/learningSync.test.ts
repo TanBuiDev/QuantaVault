@@ -43,14 +43,37 @@ describe("Unified account learning progress",()=>{
     expect(cloud.courses.revision).toBe(1);
     expect(await reconcileLearningProgress("courses","account-a")).toBe("synced");
   });
-  it("uses CAS and preserves conflicting device edits",async()=>{
+  it("uses CAS to merge edits to different courses without a prompt",async()=>{
     prepareGoogleDevice("account-a");
     expect(await reconcileLearningProgress("courses","account-a")).toBe("synced");
     localStorage.setItem(courseKey,JSON.stringify(state));
     cloud.courses={revision:1,state:{version:1,courses:{"redis-for-java":{completedLessonIds:["lesson-01"],updatedAt:"2026-11-12T00:00:00.000Z"}}}};
-    expect(await reconcileLearningProgress("courses","account-a")).toBe("conflict");
-    expect(JSON.parse(localStorage.getItem(courseKey)!)).toEqual(state);
+    expect(await reconcileLearningProgress("courses","account-a")).toBe("synced");
+    expect(Object.keys((JSON.parse(localStorage.getItem(courseKey)!) as typeof state).courses)).toHaveLength(2);
+    expect(Object.keys((cloud.courses.state as {courses:object}).courses)).toHaveLength(2);
   });
+  it("combines different Top150 problems, but protects contradictory edits",async()=>{
+    prepareGoogleDevice("account-a");
+    await reconcileLearningProgress("top150","account-a");
+    const local={...problem,problemId:2};
+    localStorage.setItem(topKey,JSON.stringify({version:1,problems:{"2":local}}));
+    cloud.top150={revision:1,state:{version:1,problems:{"1":problem}}};
+    expect(await reconcileLearningProgress("top150","account-a")).toBe("synced");
+    const combined=JSON.parse(localStorage.getItem(topKey)!) as {problems:Record<string,unknown>};
+    expect(Object.keys(combined.problems).sort()).toEqual(["1","2"]);
+    expect(Object.keys((cloud.top150.state as {problems:object}).problems)).toHaveLength(2);
+
+    // Two devices updating the same problem to different statuses need review.
+    const baseline={...problem,status:"in-progress"};
+    cloud.top150={revision:3,state:{version:1,problems:{"1":baseline}}};
+    localStorage.setItem(topKey,JSON.stringify(cloud.top150.state));
+    await reconcileLearningProgress("top150","account-a");
+    localStorage.setItem(topKey,JSON.stringify({version:1,problems:{"1":{...baseline,status:"solved"}}}));
+    cloud.top150={revision:4,state:{version:1,problems:{"1":{...baseline,status:"review"}}}};
+    expect(await reconcileLearningProgress("top150","account-a")).toBe("conflict");
+    expect((JSON.parse(localStorage.getItem(topKey)!) as {problems:Record<string,{status:string}>}).problems["1"].status).toBe("solved");
+  });
+
   it("isolates Top150 writes from course progress",async()=>{
     prepareGoogleDevice("account-a");
     await reconcileLearningProgress("courses","account-a");
