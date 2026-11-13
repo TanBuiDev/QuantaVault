@@ -23,6 +23,7 @@ import { InterviewTextSizeControl } from "@/features/interview/InterviewTextSize
 import { useInterviewTextSize } from "@/features/interview/useInterviewTextSize";
 import type { CourseLesson, CourseManifest } from "@/lib/courses";
 import { useCourseProgress } from "@/lib/courses/useCourseProgress";
+import { useAccount } from "@/lib/auth/AccountProvider";
 import { useEnglishSpeech } from "@/lib/courses/speech";
 import { CourseSyllabusSidebar } from "./CourseSyllabusSidebar";
 import { EnglishLessonContent } from "./EnglishLessonContent";
@@ -44,6 +45,8 @@ export function CourseLessonView({
 }: CourseLessonViewProps) {
   const [mobileSyllabusOpen, setMobileSyllabusOpen] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
+  const [copyFailed, setCopyFailed] = useState(false);
+  const { requestLogin } = useAccount();
   const { textScale, changeTextScale } = useInterviewTextSize();
   const { speak, isSpeaking } = useEnglishSpeech();
   const isEnglish = course.slug === "english-job-interview";
@@ -65,14 +68,18 @@ export function CourseLessonView({
 
   // Record this lesson as last visited
   useEffect(() => {
-    recordLastAccessed(course.id, lesson.id);
-  }, [course.id, lesson.id, recordLastAccessed]);
+    if (canTrackProgress) recordLastAccessed(course.id, lesson.id);
+  }, [course.id, lesson.id, recordLastAccessed, canTrackProgress]);
 
-  const handleShare = () => {
-    if (typeof window !== "undefined") {
-      void navigator.clipboard.writeText(window.location.href);
+  const handleShare = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopyFailed(false);
       setCopiedLink(true);
       setTimeout(() => setCopiedLink(false), 2000);
+    } catch {
+      setCopiedLink(false);
+      setCopyFailed(true);
     }
   };
 
@@ -175,11 +182,13 @@ export function CourseLessonView({
                 )}
               </button>
 
+              {copyFailed && <div role="alert" className="text-xs text-amber-600">
+                Không thể sao chép tự động. Bạn có thể chọn liên kết trên thanh địa chỉ để sao chép.
+              </div>}
               {/* Mark Complete Button */}
               <button
                 type="button"
-                onClick={() => toggleLessonCompleted(course.id, lesson.id)}
-                disabled={!canTrackProgress}
+                onClick={() => canTrackProgress ? toggleLessonCompleted(course.id, lesson.id) : requestLogin()}
                 title={!canTrackProgress ? "Đăng nhập Google để lưu tiến độ học tập" : undefined}
                 className={`flex items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all cursor-pointer ${
                   isCompleted
