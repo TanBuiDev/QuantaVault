@@ -51,5 +51,6 @@ describe("Sidebar Google sign-in", () => {
       .toHaveAttribute("href", "/account?tab=profile");
     expect(screen.queryByRole("link", { name: "Đăng nhập bằng Google" }))
       .not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /Đồng bộ/ })).not.toBeInTheDocument();
   });
 });

@@ -70,7 +70,7 @@ test("account menu preserves footer geometry and account actions", async ({ page
   await expect(account.getByText(email)).toHaveCSS("text-overflow", "ellipsis");
   await account.click();
   await expect(sidebar.getByRole("link", { name: "Quản lý tài khoản" })).toHaveAttribute("href", "/account/?tab=profile");
-  await expect(sidebar.getByRole("link", { name: /Đồng bộ/ })).toHaveAttribute("href", "/account/?tab=sync");
+  await expect(sidebar.getByRole("link", { name: /Đồng bộ/ })).toHaveCount(0);
   await expect(sidebar.getByRole("link", { name: "Quản trị nội dung" })).toBeVisible();
   await expectAligned(account, theme);
   await page.keyboard.press("Escape");
