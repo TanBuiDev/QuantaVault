@@ -52,13 +52,13 @@ export function AccountTabs() {
       <section id="account-panel-profile" role="tabpanel" aria-labelledby="account-tab-profile" hidden={tab!=="profile"}
         className="space-y-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 sm:p-5">
         <h2 className="text-base font-semibold">Thông tin tài khoản</h2>
-        {loading ? <p className="text-sm text-[var(--muted)]">Đang xác thực tài khoản...</p>
+        {loading ? <p className="text-sm text-[var(--muted)]">Đang tải thông tin tài khoản...</p>
           : user ? <>
             <div className="flex min-w-0 items-center gap-4">{avatar}
               <div className="min-w-0">
                 <p className="break-words font-semibold">{user.name}</p>
                 <p className="break-all text-sm text-[var(--muted-strong)]">{user.email}</p>
-                <p className="mt-1 text-xs text-[var(--muted-strong)]">Đã đăng nhập bằng Google · Vai trò: {user.role==="admin"?"Quản trị viên":"Người dùng"}</p>
+                <p className="mt-1 text-xs text-[var(--muted-strong)]">Đã đăng nhập bằng Google{user.role==="admin" ? " · Quản trị viên" : ""}</p>
               </div>
             </div>
             <button type="button" onClick={()=>void logout()} className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm font-medium">Đăng xuất</button>
@@ -72,14 +72,14 @@ export function AccountTabs() {
         <GoogleLearningSyncPanel key={user?.id ?? "guest"} />
         <details className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
           <summary className="cursor-pointer text-sm font-semibold">Cài đặt nâng cao · Khôi phục dữ liệu cũ</summary>
-          <p className="mt-3 text-xs text-[var(--muted-strong)]">Mã đồng bộ 64 ký tự chỉ dùng để nhập hoặc khôi phục tiến độ legacy. Không cần mã này khi đã đăng nhập Google. Trước khi khôi phục, hãy sao lưu và đối chiếu dữ liệu.</p>
+          <p className="mt-3 text-xs text-[var(--muted-strong)]">Mã khôi phục chỉ dành cho dữ liệu đã lưu theo cách cũ. Bạn không cần mã này khi đăng nhập Google. Hãy kiểm tra và sao lưu dữ liệu trước khi khôi phục.</p>
           <div className="mt-3"><InterviewCloudSync /></div>
         </details>
       </section>
       <section id="account-panel-security" role="tabpanel" aria-labelledby="account-tab-security" hidden={tab!=="security"} className="space-y-4">
         <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-sm">
           <h2 className="font-semibold">Bảo mật tài khoản</h2>
-          <p className="mt-2 text-[var(--muted-strong)]">{user ? "Phiên đăng nhập Google được xác thực ở máy chủ. Quyền quản trị được kiểm tra riêng cho từng API." : "Đăng nhập Google để xem thông tin bảo mật và quyền tài khoản."}</p>
+          <p className="mt-2 text-[var(--muted-strong)]">{!user ? "Đăng nhập với Google để bảo vệ tài khoản và lưu tiến độ học tập." : user.role === "admin" ? "Bạn đang đăng nhập bằng Google. Để quản lý tài khoản, hãy xác nhận mật khẩu quản trị bên dưới." : "Bạn đang đăng nhập bằng Google. Hãy giữ an toàn thông tin đăng nhập và không chia sẻ tài khoản với người khác."}</p>
         </div>
         {user?.role === "admin" && <AdminAccountPanel key={user.id} />}
       </section>

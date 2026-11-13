@@ -20,6 +20,8 @@ describe("Account route tabs",()=>{
     expect(window.location.search).toContain("tab=security");
     expect(screen.getByRole("tabpanel",{name:"Bảo mật"})).not.toHaveAttribute("hidden");
     expect(screen.queryByText("Restricted admin panel")).not.toBeInTheDocument();
+    expect(screen.getByText(/Hãy giữ an toàn thông tin đăng nhập/)).toBeInTheDocument();
+    expect(screen.queryByText(/Quyền quản trị được kiểm tra riêng/)).not.toBeInTheDocument();
   });
   it("accepts links from the legacy hash navigation",()=>{
     window.history.replaceState(null,"","/account/#administration");

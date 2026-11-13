@@ -39,7 +39,7 @@ export function GoogleLearningSyncPanel() {
     const local=read(kind);
     const ok=await confirm({
       title:"Xác nhận đối chiếu "+(kind==="courses"?"khóa học":"Top Interview 150"),
-      message:`Máy có ${describeLearningProgress(kind,local)} mục, Google có ${describeLearningProgress(kind,remote.state)} mục. ${mode==="conservative"?"Hợp nhất thận trọng: khóa học chỉ giữ bài hoàn thành ở cả hai bản; thuật toán khác trạng thái sẽ chuyển thành Cần ôn.":mode==="local"?"Chọn bản máy để cập nhật lên Google.":"Chọn bản Google để phục hồi thiết bị."} Hai nguồn được sao lưu trước khi thay đổi.`,
+      message:`Trên thiết bị có ${describeLearningProgress(kind,local)} mục, trên tài khoản có ${describeLearningProgress(kind,remote.state)} mục. ${mode==="conservative"?"Kết hợp an toàn: khóa học chỉ giữ bài hoàn thành ở cả hai bản; thuật toán khác trạng thái sẽ chuyển thành Cần ôn.":mode==="local"?"Lưu tiến độ trên thiết bị vào tài khoản.":"Khôi phục tiến độ đã lưu vào thiết bị."} Hai nguồn được sao lưu trước khi thay đổi.`,
       confirmText:"Sao lưu và áp dụng",cancelText:"Hủy",variant:"warning",
     });
     if(!ok)return;
@@ -50,7 +50,7 @@ export function GoogleLearningSyncPanel() {
       await refresh();
       emitGoogleSync("syncing");
     }catch(e) {
-      setNotice(e instanceof Error&&e.message==="VERSION_CONFLICT"?"Dữ liệu Google đã đổi ở thiết bị khác. Hãy tải lại trước khi hợp nhất.":"Chưa thể đối chiếu; bản lưu hiện tại vẫn được bảo toàn.");
+      setNotice(e instanceof Error&&e.message==="VERSION_CONFLICT"?"Tiến độ đã thay đổi trên thiết bị khác. Hãy tải lại trước khi tiếp tục.":"Chưa thể đối chiếu; bản lưu hiện tại vẫn được bảo toàn.");
     }finally{setBusy(null);}
   }
   return <div className="grid gap-3 sm:grid-cols-2">
@@ -61,14 +61,14 @@ export function GoogleLearningSyncPanel() {
         <h3 className="text-sm font-semibold">{kind.label}</h3>
         <div className="grid gap-2 text-xs">
           <p>Thiết bị: <strong>{describeLearningProgress(kind.id,local)} {kind.unit}</strong></p>
-          <p>Google D1: <strong>{remote?describeLearningProgress(kind.id,remote.state)+" "+kind.unit:"Chưa tải được"}</strong></p>
+          <p>Trên tài khoản: <strong>{remote?describeLearningProgress(kind.id,remote.state)+" "+kind.unit:"Chưa tải được"}</strong></p>
         </div>
         {syncStatus==="conflict"&&diff&&remote&&<div className="space-y-2">
-          <p className="text-xs text-amber-600">Có khác biệt dữ liệu. Cần quyết định trước khi ghi đè.</p>
+          <p className="text-xs text-amber-600">Tiến độ trên thiết bị và tài khoản khác nhau. Hãy chọn cách xử lý để tránh mất dữ liệu.</p>
           <div className="flex flex-wrap gap-2">
-            {remote.revision===0&&<button type="button" disabled={!!busy} onClick={()=>void choose(kind.id,"local")} className="rounded-lg border border-[var(--border)] px-3 py-2 text-xs font-semibold">Nhập dữ liệu máy</button>}
-            {remote.revision>0&&<button type="button" disabled={!!busy} onClick={()=>void choose(kind.id,"remote")} className="rounded-lg border border-[var(--border)] px-3 py-2 text-xs font-semibold">Dùng bản Google</button>}
-            {remote.revision>0&&<button type="button" disabled={!!busy} onClick={()=>void choose(kind.id,"conservative")} className="rounded-lg border border-amber-500/50 px-3 py-2 text-xs font-semibold">Hợp nhất thận trọng</button>}
+            {remote.revision===0&&<button type="button" disabled={!!busy} onClick={()=>void choose(kind.id,"local")} className="rounded-lg border border-[var(--border)] px-3 py-2 text-xs font-semibold">Lưu từ thiết bị</button>}
+            {remote.revision>0&&<button type="button" disabled={!!busy} onClick={()=>void choose(kind.id,"remote")} className="rounded-lg border border-[var(--border)] px-3 py-2 text-xs font-semibold">Dùng bản đã lưu</button>}
+            {remote.revision>0&&<button type="button" disabled={!!busy} onClick={()=>void choose(kind.id,"conservative")} className="rounded-lg border border-amber-500/50 px-3 py-2 text-xs font-semibold">Kết hợp tiến độ</button>}
           </div>
         </div>}
       </section>;
