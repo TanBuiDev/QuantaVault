@@ -117,11 +117,10 @@ export function formatQuestionNumber(num: number, totalQuestions = 0): string {
 /**
  * Định dạng mã kỹ thuật (vd: "q-001" -> "#001") để hiển thị đẹp trên giao diện
  */
-export function formatQuestionBadge(id: string, totalQuestions = 0): string {
-  const match = id.match(/q-(\d+)/);
-  if (match) {
-    return formatQuestionNumber(Number(match[1]), totalQuestions);
-  }
-  return id;
+export function formatQuestionBadge(id: string): string {
+  // Only a complete canonical numeric ID is a badge. Draft IDs remain explicit.
+  const match = /^q-(\d+)$/i.exec(id);
+  if (match) return `#${match[1].padStart(3, "0")}`;
+  return id || "Chưa có ID";
 }
 
