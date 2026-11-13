@@ -158,10 +158,10 @@ export function AccountProvider({ children }: { children: ReactNode }) {
     <AccountContext.Provider value={{ user, loading, sessionStatus, refresh, logout, syncStatus, requestLogin: () => setAuthPromptOpen(true) }}>
       <ProgressAutoSync userId={user?.id ?? null} setStatus={setSyncStatus} onSessionInvalid={refresh} />
       {children}
-      {(sessionStatus === "offline" || sessionStatus === "expired") && !authPromptOpen && <div role="status" className="fixed bottom-3 right-3 z-[130] w-[min(92vw,360px)] rounded-xl border border-amber-500/40 bg-[var(--surface)] px-4 py-3 shadow-lg">
+      {(sessionStatus === "offline" || sessionStatus === "expired") && !authPromptOpen && <div role="status" className="pointer-events-none fixed bottom-3 right-3 z-[40] w-[min(92vw,360px)] rounded-xl border border-amber-500/40 bg-[var(--surface)] px-4 py-3 shadow-lg">
         <p className="text-sm font-semibold text-[var(--foreground)]">{sessionStatus === "offline" ? "Chưa thể xác minh phiên Google" : "Phiên Google đã hết hạn"}</p>
         <p className="mt-1 text-xs text-[var(--muted-strong)]">{sessionStatus === "offline" ? (user ? "Không có kết nối. Tiến độ trên máy vẫn được giữ; đồng bộ sẽ thử lại khi có mạng." : "Bạn vẫn có thể đọc nội dung, nhưng chưa thể lưu tiến độ trước khi xác minh.") : "Bạn có thể đăng nhập lại mà không xóa bản nháp trên thiết bị."}</p>
-        <button type="button" className="mt-2 text-xs font-bold text-[var(--primary-strong)]" onClick={() => sessionStatus === "offline" ? void refresh() : setAuthPromptOpen(true)}>{sessionStatus === "offline" ? "Thử kết nối lại" : "Đăng nhập lại"}</button>
+        <button type="button" className="pointer-events-auto mt-2 text-xs font-bold text-[var(--primary-strong)]" onClick={() => sessionStatus === "offline" ? void refresh() : setAuthPromptOpen(true)}>{sessionStatus === "offline" ? "Thử kết nối lại" : "Đăng nhập lại"}</button>
       </div>}
       {authError && <div role="alert" className="fixed bottom-5 left-1/2 z-[150] w-[min(94vw,500px)] -translate-x-1/2 rounded-2xl border border-amber-500/40 bg-[var(--surface)] p-4 shadow-2xl">
         <p className="text-sm text-[var(--foreground)]">{authError}</p>
