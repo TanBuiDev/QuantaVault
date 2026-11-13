@@ -3,6 +3,7 @@ import { PracticeSolution } from "./PracticeSolution";
 import { MediaGallery } from "./MediaGallery";
 
 import { CheckCircle2 } from "lucide-react";
+import { useState } from "react";
 
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardContent } from "@/components/ui/Card";
@@ -23,8 +24,21 @@ function difficultyVariant(difficulty: ProblemContent["difficulty"]) {
 }
 
 export function PracticeStudyContent(model: ReturnType<typeof usePracticeWorkspace>) {
-  const { requestLogin } = useAccount();
-  const { content, hints, sectionName, updateProblem, progress, canTrackProgress, activeTab, wordWrap, langMode, handleSetLangMode, problemMedia, tabs, changeTab } = model;
+  const { requestLogin, user, syncStatus, syncConfirmedAt } = useAccount();
+  const { content, hints, sectionName, updateProblem, progress, canTrackProgress, localSaveStatus, lastLocalSavedAt, activeTab, wordWrap, langMode, handleSetLangMode, problemMedia, tabs, changeTab } = model;
+  const [unsavedNotes, setUnsavedNotes] = useState<{key: string; text: string} | null>(null);
+  const notesKey = `${user?.id ?? "guest"}:${content.id}`;
+  const pending = unsavedNotes?.key === notesKey ? unsavedNotes.text : null;
+  const notesValue = pending ?? progress?.notes ?? "";
+  function saveNotes(text: string) {
+    setUnsavedNotes({key: notesKey, text});
+    const ok = updateProblem(content.id, { notes: text });
+    if (ok) setUnsavedNotes(null);
+  }
+  const notesStatus = !canTrackProgress ? "Đăng nhập để lưu"
+    : pending !== null || localSaveStatus === "storage-error" ? "Chưa lưu được trên thiết bị"
+      : syncStatus === "synced" && syncConfirmedAt > 0 && syncConfirmedAt >= lastLocalSavedAt ? "Đã đồng bộ"
+        : localSaveStatus === "saved-local" ? "Đã lưu trên thiết bị — chờ đồng bộ" : "Đang kiểm tra lưu trữ";
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -148,7 +162,7 @@ export function PracticeStudyContent(model: ReturnType<typeof usePracticeWorkspa
                   </label>
                   <span className="inline-flex items-center gap-1 text-[11px] text-emerald-500 font-medium">
                     <CheckCircle2 className="h-3 w-3" />
-                    {canTrackProgress ? "Đã lưu" : "Đăng nhập để lưu"}
+                    {notesStatus}
                   </span>
                 </div>
                 {!canTrackProgress && <button type="button" onClick={requestLogin}
@@ -158,9 +172,9 @@ export function PracticeStudyContent(model: ReturnType<typeof usePracticeWorkspa
                 <textarea
                   id={`notes-${content.id}`}
                   rows={10}
-                  value={progress?.notes ?? ""}
+                  value={notesValue}
                   disabled={!canTrackProgress}
-                  onChange={(event) => updateProblem(content.id, { notes: event.target.value })}
+                  onChange={(event) => saveNotes(event.target.value)}
                   spellCheck={false}
                   autoCorrect="off"
                   autoCapitalize="off"
@@ -171,6 +185,10 @@ export function PracticeStudyContent(model: ReturnType<typeof usePracticeWorkspa
                   placeholder="Ghi chú lại thuật toán, bẫy testcase, độ phức tạp..."
                   className="w-full resize-y rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)] p-4 text-sm leading-relaxed text-[var(--foreground)] outline-none focus:border-[var(--focus)] focus:ring-2 focus:ring-indigo-500/15 [contain:content]"
                 />
+                {pending !== null && <div role="alert" className="flex flex-wrap items-center gap-3 rounded-xl border border-amber-500/40 p-3 text-xs text-amber-600">
+                  <span>Ghi chú chưa được lưu. Nội dung đang giữ tạm trong tab này; đừng đóng trang.</span>
+                  <button type="button" onClick={() => saveNotes(pending)} className="font-bold underline">Thử lưu lại</button>
+                </div>}
               </div>
             ) : null}
           </div>

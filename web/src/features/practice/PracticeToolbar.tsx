@@ -3,6 +3,7 @@
 import { ChevronLeft, ChevronRight, Columns, LayoutTemplate, Settings, WrapText } from "lucide-react";
 import Link from "next/link";
 import { useAccount } from "@/lib/auth/AccountProvider";
+import { useConfirm } from "@/components/ui/ConfirmDialog";
 
 
 
@@ -11,22 +12,22 @@ function getStatusConfig(status?: string) {
   switch (status) {
     case "solved":
       return {
-        label: "Solved",
+        label: "Đã giải",
         className: "bg-emerald-600 hover:bg-emerald-500 text-white shadow-xs shadow-emerald-950/20",
       };
     case "review":
       return {
-        label: "Review",
+        label: "Cần ôn",
         className: "bg-amber-600 hover:bg-amber-500 text-white shadow-xs shadow-amber-950/20",
       };
     case "in-progress":
       return {
-        label: "In Progress",
+        label: "Đang làm",
         className: "bg-indigo-600 hover:bg-indigo-500 text-white shadow-xs shadow-indigo-950/20",
       };
     default:
       return {
-        label: "Not Started",
+        label: "Chưa bắt đầu",
         className: "bg-slate-700/60 hover:bg-slate-700 text-slate-200 border border-slate-600/40 shadow-xs",
       };
   }
@@ -34,6 +35,7 @@ function getStatusConfig(status?: string) {
 
 export function PracticeToolbar(model: ReturnType<typeof usePracticeWorkspace>) {
   const { requestLogin } = useAccount();
+  const confirm = useConfirm();
   const {
     content,
     previous,
@@ -41,6 +43,9 @@ export function PracticeToolbar(model: ReturnType<typeof usePracticeWorkspace>) 
     updateProblem,
     canTrackProgress,
     progress,
+    legacyDraftAvailable,
+    importLegacyDraft,
+    draftStorageError,
     layoutMode,
     wordWrap,
     isSettingsOpen,
@@ -138,35 +143,25 @@ export function PracticeToolbar(model: ReturnType<typeof usePracticeWorkspace>) 
             LeetCode <span aria-hidden="true">↗</span>
           </a>
 
-          <div className="flex items-center" aria-label="Learning status">
-            {(() => {
-              const statusConfig = getStatusConfig(progress?.status);
-              const handleCycleStatus = () => {
-                const current = progress?.status;
-                let next: "in-progress" | "solved" | "review" = "in-progress";
-                if (current === "in-progress") {
-                  next = "solved";
-                } else if (current === "solved") {
-                  next = "review";
-                } else if (current === "review") {
-                  next = "in-progress";
-                } else {
-                  next = "in-progress";
-                }
-                updateProblem(content.id, { status: next });
-              };
-
-              return (
-                <button
-                  type="button"
-                  onClick={() => canTrackProgress ? handleCycleStatus() : requestLogin()}
-                  title={!canTrackProgress ? "Đăng nhập Google để lưu tiến độ" : "Nhấn để đổi trạng thái"}
-                  className={`h-8 px-3.5 text-xs font-semibold rounded-lg transition-all duration-150 active:scale-[0.97] cursor-pointer select-none ${statusConfig.className}`}
-                >
-                  {statusConfig.label}
-                </button>
-              );
-            })()}
+          <div className="flex items-center" aria-label="Trạng thái bài tập">
+            <label className="flex items-center">
+              <span className="sr-only">Chọn trạng thái bài tập</span>
+              <select
+                aria-label="Chọn trạng thái bài tập"
+                value={progress?.status ?? "not-started"}
+                onChange={event => {
+                  if (!canTrackProgress) { requestLogin(); return; }
+                  updateProblem(content.id, { status: event.target.value as "not-started" | "in-progress" | "solved" | "review" });
+                }}
+                onPointerDown={event => { if (!canTrackProgress) { event.preventDefault(); requestLogin(); } }}
+                className={`h-8 max-w-36 rounded-lg px-2 text-xs font-semibold cursor-pointer ${getStatusConfig(progress?.status).className}`}
+              >
+                <option value="not-started">Chưa bắt đầu</option>
+                <option value="in-progress">Đang làm</option>
+                <option value="solved">Đã giải</option>
+                <option value="review">Cần ôn</option>
+              </select>
+            </label>
           </div>
 
           {/* Settings Button (Right of status button) */}
@@ -233,7 +228,13 @@ export function PracticeToolbar(model: ReturnType<typeof usePracticeWorkspace>) 
         </div>
       </div>
     </header>
-
-
+    {draftStorageError && <p role="alert" className="mt-2 rounded-xl border border-amber-500/40 p-3 text-xs text-amber-600">Trình duyệt không lưu được mã nháp. Hãy sao chép mã trước khi rời trang hoặc kiểm tra dung lượng lưu trữ.</p>}
+    {legacyDraftAvailable && <div className="mt-2 flex flex-wrap items-center gap-3 rounded-xl border border-amber-500/30 bg-amber-500/5 p-3">
+      <p className="flex-1 text-xs text-[var(--muted-strong)]">Tìm thấy mã nháp cũ trên thiết bị này, chưa xác định tài khoản sở hữu. Chỉ nhập nếu đây là mã của bạn; bản cũ vẫn được giữ nguyên.</p>
+      <button type="button" className="rounded-lg border border-[var(--border)] px-3 py-2 text-xs font-semibold" onClick={async () => {
+        const ok = await confirm({ title: "Nhập mã nháp chưa gắn tài khoản?", message: "Chỉ tiếp tục nếu đây là mã của bạn. Mã cũ sẽ được sao lưu nguyên trạng và mã của tài khoản hiện tại có thể được thay thế.", confirmText: "Nhập mã của tôi", cancelText: "Để sau", variant: "warning" });
+        if (ok) importLegacyDraft();
+      }}>Nhập mã cũ</button>
+    </div>}
   </>);
 }

@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/Card";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import type { StudyPlan } from "@/lib/content";
 import { useProgress } from "@/lib/progress/provider";
+import { googleLoginHref } from "@/lib/auth/loginReturn";
 
 import { calculateDashboardMetrics, calculateSectionProgress } from "./metrics";
 
@@ -17,7 +18,8 @@ export interface DashboardViewProps {
 }
 
 export function DashboardView({ plan, orderedProblemIds }: DashboardViewProps) {
-  const { state, hydrated } = useProgress();
+  const { state, hydrated, canTrackProgress } = useProgress();
+  const needsSignIn = hydrated && !canTrackProgress;
   const metrics = useMemo(
     () => calculateDashboardMetrics(orderedProblemIds, state),
     [orderedProblemIds, state],
@@ -26,10 +28,10 @@ export function DashboardView({ plan, orderedProblemIds }: DashboardViewProps) {
   const solvedPercent = metrics.total > 0 ? Math.round((metrics.solved / metrics.total) * 100) : 0;
 
   const summaryCards = [
-    { label: "Solved", value: metrics.solved, detail: "Đã hoàn thành", variant: "success" as const },
-    { label: "In progress", value: metrics.inProgress, detail: "Đang luyện tập", variant: "primary" as const },
-    { label: "Review", value: metrics.review, detail: "Cần ôn lại", variant: "warning" as const },
-    { label: "Remaining", value: metrics.remaining, detail: "Chưa bắt đầu", variant: "neutral" as const },
+    { label: "Đã giải", value: metrics.solved, detail: "Đã hoàn thành", variant: "success" as const },
+    { label: "Đang làm", value: metrics.inProgress, detail: "Đang luyện tập", variant: "primary" as const },
+    { label: "Cần ôn", value: metrics.review, detail: "Cần ôn lại", variant: "warning" as const },
+    { label: "Còn lại", value: metrics.remaining, detail: "Chưa bắt đầu", variant: "neutral" as const },
   ];
 
   return (
@@ -37,8 +39,8 @@ export function DashboardView({ plan, orderedProblemIds }: DashboardViewProps) {
       <header className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
         <div className="space-y-2">
           <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="primary" dot>Study Hub</Badge>
-            <span className="text-sm font-medium text-[var(--muted)]">{plan.sections.length} topics · {metrics.total} problems</span>
+            <Badge variant="primary" dot>Góc học tập</Badge>
+            <span className="text-sm font-medium text-[var(--muted)]">{plan.sections.length} chủ đề · {metrics.total} bài tập</span>
           </div>
           <h1 className="text-3xl font-black tracking-[-0.035em] text-[var(--foreground)] sm:text-4xl xl:text-5xl">
             Top Interview 150
@@ -61,16 +63,20 @@ export function DashboardView({ plan, orderedProblemIds }: DashboardViewProps) {
 
           <Link
             href="/problems"
-            aria-label="Browse problems"
+            aria-label="Xem danh sách bài tập"
             className="inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 text-sm font-bold text-white shadow-md shadow-indigo-500/20 transition-all hover:scale-105 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)]"
           >
-            Browse problems <span aria-hidden="true">→</span>
+            Xem bài tập <span aria-hidden="true">→</span>
           </Link>
         </div>
       </header>
 
 
-      <section aria-label="Overall study progress" className="grid gap-4 xl:grid-cols-[1.3fr_1fr]">
+      {needsSignIn && <div role="status" className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
+        <p className="text-sm text-[var(--muted-strong)]">Đăng nhập để xem tiến độ cá nhân và đồng bộ các bài đã học. Các số liệu của tài khoản không bị xóa khi đăng xuất.</p>
+        <button type="button" onClick={() => window.location.assign(googleLoginHref())} className="rounded-lg bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white">Tiếp tục với Google</button>
+      </div>}
+      <section aria-label="Tiến độ học tập tổng quan" className="grid gap-4 xl:grid-cols-[1.3fr_1fr]">
         <Card className="overflow-hidden border-transparent bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-900 text-white shadow-xl shadow-indigo-950/20">
           <CardContent className="p-6 sm:p-8">
             <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
@@ -80,20 +86,20 @@ export function DashboardView({ plan, orderedProblemIds }: DashboardViewProps) {
                   <p className="text-xs font-bold uppercase tracking-widest text-indigo-200">Tiến độ tổng quan</p>
                 </div>
                 <div className="mt-2 flex items-baseline gap-3">
-                  <span className="text-5xl font-black tracking-tight sm:text-6xl">{solvedPercent}%</span>
-                  <span className="text-sm font-semibold text-indigo-200">{metrics.solved} / {metrics.total} bài</span>
+                  <span className="text-5xl font-black tracking-tight sm:text-6xl">{needsSignIn ? "—" : `${solvedPercent}%`}</span>
+                  <span className="text-sm font-semibold text-indigo-200">{needsSignIn ? `Tổng ${metrics.total} bài tập` : `${metrics.solved} / ${metrics.total} bài`}</span>
                 </div>
                 <p className="mt-3 max-w-lg text-sm leading-6 text-indigo-100/85">
                   Sự kiên trì quan trọng hơn tốc độ. Đánh dấu xanh bài đã nắm rõ và đưa các bài chưa tự tin vào danh sách ôn tập.
                 </p>
               </div>
               <div className="min-w-40 rounded-2xl bg-white/10 p-4 ring-1 ring-inset ring-white/20 backdrop-blur-md">
-                <p className="text-xs font-bold uppercase tracking-[0.16em] text-indigo-200">Browser Sync</p>
-                <p className="mt-1.5 text-sm font-semibold">{hydrated ? "Dữ liệu sẵn sàng" : "Đang tải dữ liệu..."}</p>
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-indigo-200">Đồng bộ học tập</p>
+                <p className="mt-1.5 text-sm font-semibold">{!hydrated ? "Đang kiểm tra dữ liệu..." : needsSignIn ? "Đăng nhập để xem tiến độ cá nhân" : "Dữ liệu sẵn sàng"}</p>
               </div>
             </div>
             <div className="mt-7 h-3 overflow-hidden rounded-full bg-black/25 ring-1 ring-white/15">
-              <div className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-teal-300 transition-all duration-500" style={{ width: `${solvedPercent}%` }} />
+              <div className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-teal-300 transition-all duration-500" style={{ width: `${needsSignIn ? 0 : solvedPercent}%` }} />
             </div>
           </CardContent>
         </Card>
@@ -107,7 +113,7 @@ export function DashboardView({ plan, orderedProblemIds }: DashboardViewProps) {
                   <Badge variant={item.variant} dot />
                 </div>
                 <div className="mt-2">
-                  <p className="text-3xl font-black tracking-tight text-[var(--foreground)]">{item.value}</p>
+                  <p className="text-3xl font-black tracking-tight text-[var(--foreground)]">{needsSignIn ? "—" : item.value}</p>
                   <p className="mt-1 text-xs text-[var(--muted)]">{item.detail}</p>
                 </div>
               </CardContent>
@@ -121,11 +127,11 @@ export function DashboardView({ plan, orderedProblemIds }: DashboardViewProps) {
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--primary-strong)]">Lộ trình học tập</p>
             <h2 id="sections-heading" className="mt-1 text-xl font-bold text-[var(--foreground)] sm:text-2xl">
-              Progress by section
+              Tiến độ theo chủ đề
             </h2>
             <p className="mt-1 text-sm text-[var(--muted)]">Theo sát cấu trúc phân loại của Top Interview 150 để nắm vững từng dạng bài.</p>
           </div>
-          <Badge variant="primary">{plan.sections.length} topics</Badge>
+          <Badge variant="primary">{plan.sections.length} chủ đề</Badge>
         </div>
 
         <div className="grid gap-4 lg:grid-cols-2 2xl:grid-cols-3">
@@ -140,19 +146,19 @@ export function DashboardView({ plan, orderedProblemIds }: DashboardViewProps) {
                         {section.name}
                       </h3>
                       <p className="mt-1 text-xs text-[var(--muted)]">
-                        {section.inProgress} đang làm · {section.review} ôn tập · {section.remaining} còn lại
+                        {needsSignIn ? `${section.total} bài tập trong chủ đề` : `${section.inProgress} đang làm · ${section.review} ôn tập · ${section.remaining} còn lại`}
                       </p>
                     </div>
                     <div className="shrink-0 text-right">
-                      <span className="text-lg font-black text-[var(--foreground)]">{percent}%</span>
-                      <p className="text-xs font-medium text-[var(--muted)]">{section.solved}/{section.total}</p>
+                      <span className="text-lg font-black text-[var(--foreground)]">{needsSignIn ? "—" : `${percent}%`}</span>
+                      <p className="text-xs font-medium text-[var(--muted)]">{needsSignIn ? `${section.total} bài` : `${section.solved}/${section.total}`}</p>
                     </div>
                   </div>
                   <ProgressBar
-                    value={section.solved}
+                    value={needsSignIn ? 0 : section.solved}
                     max={section.total}
                     variant={percent === 100 ? "success" : percent > 50 ? "primary" : "warning"}
-                    label={`${section.name} solved progress`}
+                    label={`Tiến độ ${section.name}`}
                     className="mt-4"
                   />
                 </CardContent>

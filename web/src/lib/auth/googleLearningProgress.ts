@@ -43,7 +43,7 @@ function validateTop150(value: unknown): unknown | null {
   for (const [key, p] of entries) {
     const id = Number(key);
     if (!Number.isSafeInteger(id) || id < 1 || id > 1000000 || String(id) !== key || !isRecord(p)
-      || p.problemId !== id || !["in-progress", "solved", "review"].includes(String(p.status))
+      || p.problemId !== id || !["not-started", "in-progress", "solved", "review"].includes(String(p.status))
       || typeof p.bookmarked !== "boolean" || typeof p.solutionViewed !== "boolean"
       || typeof p.interviewViewed !== "boolean" || typeof p.notes !== "string" || p.notes.length > 10000
       || typeof p.updatedAt !== "string" || Number.isNaN(Date.parse(p.updatedAt))

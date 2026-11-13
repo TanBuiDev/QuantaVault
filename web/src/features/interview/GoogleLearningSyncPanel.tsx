@@ -14,24 +14,51 @@ const kinds=[{id:"courses" as const,label:"Khóa học",unit:"khóa học"},{id:
 const read=(kind:LearningKind):Record<string,unknown> =>
   kind==="courses" ? readCourseProgress() as unknown as Record<string,unknown> : readProgress() as unknown as Record<string,unknown>;
 const equal=(a:unknown,b:unknown)=>JSON.stringify(a)===JSON.stringify(b);
+function explainError(error:unknown):string {
+  const message=error instanceof Error?error.message:"";
+  if(message.endsWith("_401"))return "Phiên Google đã hết hạn. Vui lòng đăng nhập lại.";
+  if(message.endsWith("_403"))return "Tài khoản không có quyền đọc dữ liệu này.";
+  return "Chưa tải được dữ liệu. Kiểm tra kết nối rồi thử lại.";
+}
 export function GoogleLearningSyncPanel() {
   const {user,syncStatus}=useAccount();
   const confirm=useConfirm();
   const [remotes,setRemotes]=useState<Partial<Record<LearningKind,Remote>>>({});
+  const [readErrors,setReadErrors]=useState<Partial<Record<LearningKind,string>>>({});
+  const [loadingKinds,setLoadingKinds]=useState(false);
   const [busy,setBusy]=useState<LearningKind|null>(null);
   const [notice,setNotice]=useState("");
   const refresh=useCallback(async()=>{
     if(!user)return;
-    const settled=await Promise.allSettled(kinds.map(k=>fetchLearningProgress(k.id,user.id)));
-    const current:Partial<Record<LearningKind,Remote>>={};
-    settled.forEach((entry,index)=>{if(entry.status==="fulfilled")current[kinds[index].id]=entry.value;});
-    setRemotes(current);
+    setLoadingKinds(true);
+    try {
+      const settled=await Promise.allSettled(kinds.map(k=>fetchLearningProgress(k.id,user.id)));
+      const current:Partial<Record<LearningKind,Remote>>={};
+      const errors:Partial<Record<LearningKind,string>>={};
+      settled.forEach((entry,index)=>{
+        const kind=kinds[index].id;
+        if(entry.status==="fulfilled")current[kind]=entry.value;
+        else errors[kind]=explainError(entry.reason);
+      });
+      setRemotes(current);
+      setReadErrors(errors);
+    } finally { setLoadingKinds(false); }
   },[user?.id]);
   useEffect(()=>{
     if(!user)return;
     queueMicrotask(()=>{void refresh().catch(()=>setNotice("Không thể tải dữ liệu khóa học hoặc thuật toán."));});
-  },[user?.id,refresh,syncStatus]);
+  },[user?.id,refresh,syncStatus==="conflict"]);
   if(!user)return null;
+  async function retryKind(kind:LearningKind) {
+    if(!user)return;
+    setReadErrors(previous=>({...previous,[kind]:undefined}));
+    try {
+      const value=await fetchLearningProgress(kind,user.id);
+      setRemotes(previous=>({...previous,[kind]:value}));
+    } catch(error) {
+      setReadErrors(previous=>({...previous,[kind]:explainError(error)}));
+    }
+  }
   async function choose(kind:LearningKind,mode:"local"|"remote"|"conservative") {
     if(!user||busy)return;
     const remote=remotes[kind];
@@ -63,6 +90,10 @@ export function GoogleLearningSyncPanel() {
           <p>Thiết bị: <strong>{describeLearningProgress(kind.id,local)} {kind.unit}</strong></p>
           <p>Trên tài khoản: <strong>{remote?describeLearningProgress(kind.id,remote.state)+" "+kind.unit:"Chưa tải được"}</strong></p>
         </div>
+        {readErrors[kind.id] && <div role="alert" className="space-y-2 text-xs text-amber-600">
+          <p>{readErrors[kind.id]}</p>
+          <button type="button" disabled={loadingKinds} onClick={()=>void retryKind(kind.id)} className="font-semibold underline">Thử tải lại {kind.label}</button>
+        </div>}
         {syncStatus==="conflict"&&diff&&remote&&<div className="space-y-2">
           <p className="text-xs text-amber-600">Tiến độ trên thiết bị và tài khoản khác nhau. Hãy chọn cách xử lý để tránh mất dữ liệu.</p>
           <div className="flex flex-wrap gap-2">

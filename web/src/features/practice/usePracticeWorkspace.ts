@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { usePracticeDraft } from "./usePracticeDraft";
+import { useAccount } from "@/lib/auth/AccountProvider";
 import { usePracticeVersions } from "./usePracticeVersions";
 import { usePracticeExecution } from "./usePracticeExecution";
 
@@ -13,7 +14,8 @@ import { useProgress } from "@/lib/progress/provider";
 import type { PracticeTab, PracticeViewProps } from "./practiceTypes";
 export function usePracticeWorkspace({ content, hints, previous, next, sectionName }: PracticeViewProps) {
   const router = useRouter();
-  const { getProgress, updateProblem, canTrackProgress } = useProgress();
+  const { user } = useAccount();
+  const { getProgress, updateProblem, canTrackProgress, localSaveStatus, lastLocalSavedAt } = useProgress();
   const progress = getProgress(content.id);
   const [activeTab, setActiveTab] = useState<PracticeTab>(() => {
     if (typeof window === "undefined" || !window.sessionStorage) return "problem";
@@ -57,8 +59,11 @@ export function usePracticeWorkspace({ content, hints, previous, next, sectionNa
     langMode,
     handleSetLangMode,
     handleSetLayoutMode,
-    handleCodeChange
-  } = usePracticeDraft(content.id, starterCode);
+    handleCodeChange,
+    legacyDraftAvailable,
+    importLegacyDraft,
+    draftStorageError,
+  } = usePracticeDraft(content.id, starterCode, user?.id);
   const versions = usePracticeVersions(content, handleCodeChange);
   const {
     codeVersions,
@@ -156,6 +161,8 @@ export function usePracticeWorkspace({ content, hints, previous, next, sectionNa
     updateProblem,
     progress,
     canTrackProgress,
+    localSaveStatus,
+    lastLocalSavedAt,
     activeTab,
     layoutMode,
     bottomTab,
@@ -182,6 +189,9 @@ export function usePracticeWorkspace({ content, hints, previous, next, sectionNa
     handleSetLangMode,
     handleSetLayoutMode,
     handleCodeChange,
+    legacyDraftAvailable,
+    importLegacyDraft,
+    draftStorageError,
     handleLoadSolutionToEditor,
     copyJavaSource,
     handleDeleteCodeVersion,
