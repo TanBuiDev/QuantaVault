@@ -3,6 +3,7 @@
  * Authentication is independent of interview progress and the existing sync-code.
  * NEVER include this server module in client components.
  */
+import { safeReturnTo } from "./loginReturn";
 const ORIGIN = "https://quantavault.pages.dev";
 export const GOOGLE_CALLBACK = ORIGIN + "/api/auth/google/callback";
 const OAUTH_COOKIE = "__Host-qv_oauth";
@@ -45,6 +46,11 @@ function redirect(url: string, cookies: string[] = []): Response {
   for (const cookie of cookies) headers.append("Set-Cookie", cookie);
   return new Response(null, { status: 303, headers });
 }
+function authRedirect(returnTo: string | null | undefined, kind: "connected" | "cancelled" | "expired" | "unavailable", cookies: string[] = []): Response {
+  const target = new URL(safeReturnTo(returnTo), ORIGIN);
+  target.searchParams.set(kind === "connected" ? "auth" : "authError", kind);
+  return redirect(target.toString(), cookies);
+}
 function cookie(name: string, value: string, seconds: number): string {
   return `${name}=${value}; Path=/; Max-Age=${seconds}; Secure; HttpOnly; SameSite=Lax`;
 }
@@ -72,17 +78,18 @@ async function sha256(input: string): Promise<string> {
 async function challenge(input: string): Promise<string> {
   return bytesToUrl(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(input))));
 }
-function encodeFlow(data: { state: string; nonce: string; verifier: string; at: number }): string {
+interface OAuthFlow { state: string; nonce: string; verifier: string; at: number; returnTo?: string }
+function encodeFlow(data: OAuthFlow): string {
   return bytesToUrl(new TextEncoder().encode(JSON.stringify(data)));
 }
-function decodeFlow(value: string): { state: string; nonce: string; verifier: string; at: number } | null {
+function decodeFlow(value: string): OAuthFlow | null {
   try {
     if (value.length > 1500) return null;
     const data = JSON.parse(new TextDecoder().decode(fromUrl(value)));
     if (!data || typeof data !== "object" || !Number.isSafeInteger(data.at)) return null;
     if (![data.state, data.nonce, data.verifier].every((s: unknown) => typeof s === "string" && /^[A-Za-z0-9_-]{40,100}$/.test(s))) return null;
     if (data.at > Date.now() + 60_000 || Date.now() - data.at > MAX_OAUTH_AGE * 1000) return null;
-    return data;
+    return { ...data, returnTo: safeReturnTo(typeof data.returnTo === "string" ? data.returnTo : null) };
   } catch { return null; }
 }
 async function verifyGoogleIdToken(raw: string, clientId: string, nonce: string): Promise<GoogleClaims> {
@@ -174,7 +181,7 @@ export async function handleGoogleAuth(request: Request, env: OAuthEnv): Promise
 
   if (url.pathname === "/api/auth/google/start") {
     if (request.method !== "GET") return json({ ok: false }, 405);
-    if (!isConfigured(env)) return json({ ok: false, code: "OAUTH_NOT_CONFIGURED" }, 503);
+    if (!isConfigured(env)) return authRedirect(url.searchParams.get("returnTo"), "unavailable");
     const state = randomToken(), nonce = randomToken(), verifier = randomToken();
     const query = new URLSearchParams({
       client_id: env.GOOGLE_CLIENT_ID!, redirect_uri: GOOGLE_CALLBACK,
@@ -183,7 +190,7 @@ export async function handleGoogleAuth(request: Request, env: OAuthEnv): Promise
       prompt: "select_account",
     });
     return redirect("https://accounts.google.com/o/oauth2/v2/auth?" + query, [
-      cookie(OAUTH_COOKIE, encodeFlow({ state, nonce, verifier, at: Date.now() }), MAX_OAUTH_AGE),
+      cookie(OAUTH_COOKIE, encodeFlow({ state, nonce, verifier, at: Date.now(), returnTo: safeReturnTo(url.searchParams.get("returnTo")) }), MAX_OAUTH_AGE),
     ]);
   }
 
@@ -191,21 +198,23 @@ export async function handleGoogleAuth(request: Request, env: OAuthEnv): Promise
     if (request.method !== "GET") return json({ ok: false }, 405);
     const reset = cookie(OAUTH_COOKIE, "", 0);
     const flow = decodeFlow(getCookie(request, OAUTH_COOKIE) ?? "");
-    if (!flow || !url.searchParams.get("state") || flow.state !== url.searchParams.get("state")
-      || url.searchParams.has("error")) {
-      return json({ ok: false, code: "OAUTH_STATE_INVALID" }, 400, { "Set-Cookie": reset });
+    if (!flow || !url.searchParams.get("state") || flow.state !== url.searchParams.get("state")) {
+      return authRedirect(null, "expired", [reset]);
+    }
+    if (url.searchParams.has("error")) {
+      return authRedirect(flow.returnTo, url.searchParams.get("error") === "access_denied" ? "cancelled" : "unavailable", [reset]);
     }
     const code = url.searchParams.get("code");
     if (!code || code.length > 2048 || !isConfigured(env)) {
-      return json({ ok: false, code: "OAUTH_NOT_CONFIGURED_OR_INVALID_CODE" }, 400, { "Set-Cookie": reset });
+      return authRedirect(flow.returnTo, "unavailable", [reset]);
     }
     try {
       const idToken = await exchangeCode(code, flow, env);
       const claims = await verifyGoogleIdToken(idToken, env.GOOGLE_CLIENT_ID!, flow.nonce);
       const session = await issueSession(env, claims);
-      return redirect(ORIGIN + "/interview/?auth=connected", [reset, cookie(SESSION_COOKIE, session, MAX_SESSION_AGE), cookie("__Host-qv_admin", "", 0)]);
+      return authRedirect(flow.returnTo, "connected", [reset, cookie(SESSION_COOKIE, session, MAX_SESSION_AGE), cookie("__Host-qv_admin", "", 0)]);
     } catch {
-      return json({ ok: false, code: "GOOGLE_LOGIN_FAILED" }, 502, { "Set-Cookie": reset });
+      return authRedirect(flow.returnTo, "unavailable", [reset]);
     }
   }
 
