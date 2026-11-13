@@ -16,16 +16,14 @@ describe("published 504-question bank with preserved historic links", () => {
     expect(questions.some(q => q.id === "q-193")).toBe(true);
   });
 
-  it("resolves a retired direct lookup to the retained question", () => {
-    expect(getInterviewQuestionById("q-194")?.id).toBe("q-193");
-    expect(getInterviewQuestionById("q-024")?.id).toBe("q-022");
+  it("does not guess a destination for retired or ambiguous IDs", () => {
+    expect(getInterviewQuestionById("q-194")).toBeUndefined();
+    expect(getInterviewQuestionById("q-024")).toBeUndefined();
     expect(getInterviewQuestionById("q-999")).toBeUndefined();
   });
 
-  it.each(["q-194", "#194", "194"])("allows searching a retired ID (%s)", search => {
-    const result = filterInterviewQuestions(questions, { ...filters, search });
-    expect(result.some(q => q.id === "q-193")).toBe(true);
-    expect(result.some(q => q.id === "q-194")).toBe(false);
+  it.each(["q-194", "#194", "194"])("does not silently search another question for retired ID (%s)", search => {
+    expect(filterInterviewQuestions(questions, { ...filters, search })).toEqual([]);
   });
 
   it("retains both source categories for cross-category merged questions", () => {
