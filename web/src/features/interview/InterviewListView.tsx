@@ -77,7 +77,7 @@ function getPageList(currentPage: number, totalPages: number): (number | "...")[
 
 export function InterviewListView({ initialQuestions }: InterviewListViewProps) {
   const confirm = useConfirm();
-  const { user, loading: accountLoading } = useAccount();
+  const { user, loading: accountLoading, requestLogin } = useAccount();
   const canEdit = user?.role === "admin";
   const { textScale, changeTextScale } = useInterviewTextSize();
   const [filter, setFilter] = useState<InterviewFilterState>(() => {
@@ -492,12 +492,12 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
         </div>
       )}
       {/* 2. Progress Overview Stats Card */}
-      <PublishedConflictReview
+      {canEdit && <PublishedConflictReview
         canonicalQuestions={initialQuestions}
         drafts={drafts}
         publishedCache={publishedCache}
         conflictingIds={publishedConflicts}
-      />
+      />}
       <section aria-label="Thống kê tiến độ ôn luyện">
         <InterviewStatsCard
           questions={initialQuestions}
@@ -661,9 +661,9 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
                             }
                           : undefined
                       }
-                      onToggleLearned={() => toggleLearned(question.id)}
-                      onToggleReview={() => toggleReview(question.id)}
-                      onToggleBookmark={() => toggleBookmark(question.id)}
+                      onToggleLearned={() => canMarkProgress ? toggleLearned(question.id) : requestLogin()}
+                      onToggleReview={() => canMarkProgress ? toggleReview(question.id) : requestLogin()}
+                      onToggleBookmark={() => canMarkProgress ? toggleBookmark(question.id) : requestLogin()}
                       defaultExpanded={recallMode === "answers"}
                       defaultShowSummary={true}
                     />
@@ -836,9 +836,9 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
         isLearned={isLearned}
         isReview={isReview}
         isBookmarked={isBookmarked}
-        onToggleLearned={toggleLearned}
-        onToggleReview={toggleReview}
-        onToggleBookmark={toggleBookmark}
+        onToggleLearned={(id) => canMarkProgress ? toggleLearned(id) : requestLogin()}
+        onToggleReview={(id) => canMarkProgress ? toggleReview(id) : requestLogin()}
+        onToggleBookmark={(id) => canMarkProgress ? toggleBookmark(id) : requestLogin()}
         canMarkProgress={canMarkProgress}
       />
     </div>
