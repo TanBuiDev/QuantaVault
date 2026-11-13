@@ -23,6 +23,15 @@ const menuItem = "flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left 
 export function SidebarAccount({ compact = false }: { compact?: boolean }) {
   const { user, loading, logout, syncStatus } = useAccount();
   const [open, setOpen] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
+  const [logoutError, setLogoutError] = useState(false);
+  async function handleLogout() {
+    if (loggingOut) return;
+    setLoggingOut(true);
+    setLogoutError(false);
+    try { if (!(await logout())) setLogoutError(true); }
+    finally { setLoggingOut(false); }
+  }
   const trigger = useRef<HTMLButtonElement>(null);
   const menuId = useId();
   const controlClass = `${controls.control} ${compact ? controls.compact : ""}`;
@@ -96,7 +105,8 @@ export function SidebarAccount({ compact = false }: { compact?: boolean }) {
           {user.role === "admin" && (
             <Link href="/account/?tab=security" onClick={() => setOpen(false)} className={menuItem}><ShieldCheck className="size-4 shrink-0" /> Quản trị nội dung</Link>
           )}
-          <button type="button" onClick={() => void logout()} className={menuItem}><LogOut className="size-4 shrink-0" /> Đăng xuất</button>
+          {logoutError && <p role="alert" className="px-2 text-xs text-amber-600">Chưa đăng xuất được. Hãy thử lại.</p>}
+          <button type="button" disabled={loggingOut} onClick={() => void handleLogout()} className={menuItem}><LogOut className="size-4 shrink-0" /> {loggingOut ? "Đang đăng xuất..." : "Đăng xuất"}</button>
         </div>
       )}
     </div>
