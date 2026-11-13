@@ -12,7 +12,7 @@ import {
   Keyboard,
 } from "lucide-react";
 import type { InterviewProgressState, InterviewQuestion } from "@/lib/interview/types";
-import { INTERVIEW_CATEGORIES } from "@/lib/interview/types";
+import { INTERVIEW_CATEGORIES, formatQuestionBadge } from "@/lib/interview/types";
 import { useToast } from "@/components/ui/Toast";
 import { useConfirm } from "@/components/ui/ConfirmDialog";
 import { InterviewTextSizeControl } from "./InterviewTextSizeControl";
@@ -166,7 +166,7 @@ export function InterviewRightRail({
         {/* Grid of question buttons */}
         <div className="mt-3.5 max-h-56 overflow-y-auto pr-1">
           <div className="grid grid-cols-5 gap-1.5">
-            {questions.map((q, idx) => {
+            {questions.map((q) => {
               const isLearned = Boolean(progress.learned[q.id]);
               const isReview = Boolean(progress.review[q.id]);
               const isBookmarked = Boolean(progress.bookmarks[q.id]);
@@ -189,10 +189,10 @@ export function InterviewRightRail({
                   key={q.id}
                   type="button"
                   onClick={() => onJumpToQuestion(q.id)}
-                  title={`#${idx + 1}: ${q.title}`}
+                  title={`${formatQuestionBadge(q.id)}: ${q.title}`}
                   className={`group relative flex h-8 items-center justify-center rounded-xl border text-xs transition-all hover:scale-105 active:scale-95 cursor-pointer ${statusStyle}`}
                 >
-                  <span>#{idx + 1}</span>
+                  <span>{formatQuestionBadge(q.id)}</span>
                   {isBookmarked && (
                     <span className="absolute top-1 right-1 size-1.5 rounded-full bg-indigo-500 ring-1 ring-white" />
                   )}
