@@ -57,6 +57,7 @@ export function CourseLessonView({
   const {
     hydrated,
     canTrackProgress,
+    storageError,
     isLessonCompleted,
     toggleLessonCompleted,
     recordLastAccessed,
@@ -184,6 +185,9 @@ export function CourseLessonView({
 
               {copyFailed && <div role="alert" className="text-xs text-amber-600">
                 Không thể sao chép tự động. Bạn có thể chọn liên kết trên thanh địa chỉ để sao chép.
+              </div>}
+              {storageError && <div role="alert" className="text-xs text-amber-600">
+                Chưa lưu được tiến độ bài học trên thiết bị. Hãy kiểm tra quyền/dung lượng lưu trữ và thử lại.
               </div>}
               {/* Mark Complete Button */}
               <button
