@@ -44,19 +44,12 @@ import { PublishedConflictReview } from "./PublishedConflictReview";
 import { InterviewRightRail } from "./InterviewRightRail";
 import { InterviewPresentationModal } from "./InterviewPresentationModal";
 import { getUrlParams, updateUrlParams } from "@/lib/utils/urlParams";
+import { clearInterviewViewState, DEFAULT_INTERVIEW_FILTER, getInterviewViewState, saveInterviewViewState } from "@/lib/interview/viewState";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 
 export interface InterviewListViewProps {
   initialQuestions: InterviewQuestion[];
 }
-
-const DEFAULT_FILTER: InterviewFilterState = {
-  search: "",
-  category: "all",
-  difficulty: "all",
-  status: "all",
-  company: "all",
-};
 
 export type RecallMode = "summaries" | "answers";
 
@@ -80,59 +73,40 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
   const { user, loading: accountLoading, requestLogin } = useAccount();
   const canEdit = user?.role === "admin";
   const { textScale, changeTextScale } = useInterviewTextSize();
-  const [filter, setFilter] = useState<InterviewFilterState>(() => {
-    if (typeof window === "undefined") return DEFAULT_FILTER;
-    const params = getUrlParams();
-    return {
-      search: params.get("search") || params.get("q") || "",
-      category: (params.get("category") as InterviewCategory) || "all",
-      difficulty: (params.get("difficulty") as InterviewFilterState["difficulty"]) || "all",
-      status: (params.get("status") as InterviewFilterState["status"]) || "all",
-      company: params.get("company") || "all",
-    };
-  });
-  const [recallMode, setRecallMode] = useState<RecallMode>(() => {
-    if (typeof window === "undefined") return "summaries";
-    const params = getUrlParams();
-    const mode = params.get("recall");
-    if (mode === "answers") return "answers";
-    return "summaries";
-  });
-  const [pageSize, setPageSize] = useState<number | "all">(() => {
-    if (typeof window === "undefined") return 15;
-    const params = getUrlParams();
-    const size = params.get("size");
-    if (size === "all") return "all";
-    if (size) {
-      const num = parseInt(size, 10);
-      if (!isNaN(num) && [15, 30, 50].includes(num)) return num;
-    }
-    return 15;
-  });
-  const [currentPage, setCurrentPage] = useState<number>(() => {
-    if (typeof window === "undefined") return 1;
-    const params = getUrlParams();
-    const p = params.get("page");
-    if (p) {
-      const num = parseInt(p, 10);
-      if (!isNaN(num) && num > 0) return num;
-    }
-    return 1;
-  });
+  // Explicit URL view params win over remembered settings from this browser tab.
+  const [initialView] = useState(getInterviewViewState);
+  const [filter, setFilter] = useState<InterviewFilterState>(initialView.filter);
+  const [recallMode, setRecallMode] = useState<RecallMode>(initialView.recallMode);
+  const [pageSize, setPageSize] = useState<number | "all">(initialView.pageSize);
+  const [currentPage, setCurrentPage] = useState<number>(initialView.currentPage);
 
   const listTopRef = useRef<HTMLDivElement>(null);
 
-  const currentFilterKey = `${filter.search}|${filter.category}|${filter.difficulty}|${filter.status}|${filter.company}|${pageSize}`;
-  const [prevFilterKey, setPrevFilterKey] = useState(currentFilterKey);
-  if (prevFilterKey !== currentFilterKey) {
-    setPrevFilterKey(currentFilterKey);
+  // Browser Back/Forward can update the URL without remounting this component.
+  useEffect(() => {
+    const restoreFromHistory = () => {
+      const next = getInterviewViewState();
+      setFilter(next.filter);
+      setCurrentPage(next.currentPage);
+      setPageSize(next.pageSize);
+      setRecallMode(next.recallMode);
+    };
+    window.addEventListener("popstate", restoreFromHistory);
+    return () => window.removeEventListener("popstate", restoreFromHistory);
+  }, []);
+
+  const handleFilterChange = (next: InterviewFilterState) => {
+    setFilter(next);
     setCurrentPage(1);
-  }
+  };
 
   // Synchronize URL search params with filter, pagination, and recall mode (debounced 250ms)
   useEffect(() => {
+    // Persist immediately, before the debounced URL update or a quick navigation away.
+    saveInterviewViewState({ filter, currentPage, pageSize, recallMode });
     const timer = setTimeout(() => {
       updateUrlParams({
+        q: null, // drop legacy search alias
         search: filter.search || null,
         category: filter.category !== "all" ? filter.category : null,
         difficulty: filter.difficulty !== "all" ? filter.difficulty : null,
@@ -361,11 +335,18 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
   };
 
   const handleResetFilter = () => {
-    setFilter(DEFAULT_FILTER);
+    clearInterviewViewState();
+    setFilter(DEFAULT_INTERVIEW_FILTER);
+    setCurrentPage(1);
+    // Also clear stale URL filters before navigation can interrupt the debounce.
+    updateUrlParams({
+      q: null, search: null, category: null, difficulty: null,
+      status: null, company: null, page: null,
+    });
   };
 
   const handleSelectStatusFilter = (status: InterviewFilterState["status"]) => {
-    setFilter((prev) => ({ ...prev, status }));
+    handleFilterChange({ ...filter, status });
   };
 
   const handleJumpToQuestion = (id: string) => {
@@ -522,7 +503,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
         <InterviewFilterBar
           questions={initialQuestions}
           filter={filter}
-          onFilterChange={setFilter}
+          onFilterChange={handleFilterChange}
           onResetFilter={handleResetFilter}
         />
       </section>
@@ -566,9 +547,10 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
                   <span>Hiển thị:</span>
                   <select
                     value={pageSize}
-                    onChange={(e) =>
-                      setPageSize(e.target.value === "all" ? "all" : Number(e.target.value))
-                    }
+                    onChange={(e) => {
+                      setPageSize(e.target.value === "all" ? "all" : Number(e.target.value));
+                      setCurrentPage(1);
+                    }}
                     className="rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] px-2 py-1 text-xs font-semibold text-[var(--foreground)] cursor-pointer"
                     aria-label="Số câu hỏi mỗi trang"
                   >
@@ -792,7 +774,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
             progress={progress}
             activeCategory={filter.category}
             onSelectCategory={(cat) =>
-              setFilter((prev) => ({ ...prev, category: cat as InterviewCategory | "all" }))
+              handleFilterChange({ ...filter, category: cat as InterviewCategory | "all" })
             }
             onOpenPresentation={() => {
               setPresentationStartIndex(0);
