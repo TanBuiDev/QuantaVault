@@ -16,6 +16,12 @@ test("numeric, badge, and technical-ID searches resolve only q-010 without renum
 });
 
 test("direct question URL wins over saved filters, reloads, and supports browser history", async ({ page }) => {
+  // An authorized editor keeps edit=true. Ordinary accounts intentionally discard it.
+  await page.route("**/api/auth/session", route => route.fulfill({
+    status: 200,
+    contentType: "application/json",
+    body: JSON.stringify({ ok: true, user: { id: "e2e-admin", name: "Admin", email: "admin@example.com", role: "admin" } }),
+  }));
   await page.goto("/interview/?search=unmatched-string-xyz&questionId=q-010&edit=true");
   await expect(page.locator(card)).toBeVisible();
   await expect(page.locator(card)).toContainText("#010");
