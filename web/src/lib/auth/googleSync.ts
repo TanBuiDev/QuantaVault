@@ -1,6 +1,7 @@
 "use client";
 
 import type { InterviewProgressState } from "../interview/types";
+import { mergeInterviewProgress } from "./progressMerge";
 import { readInterviewProgress, replaceInterviewProgress } from "../interview/progress";
 import { archiveProgressBeforeMerge } from "../interview/questionIdMerge";
 
@@ -242,7 +243,22 @@ export async function reconcileGoogleProgress(userId: string): Promise<GoogleSyn
       setBaseline(userId, remote);
       return "synced";
     }
-    return "conflict";
+    const merged=mergeInterviewProgress(base.state,local,remote.state);
+    if(!merged)return "conflict";
+    archiveProgressBeforeMerge(local);
+    assertActiveAccount(userId);
+    if(!equal(readInterviewProgress(),local))return "syncing";
+    let revision=remote.revision;
+    if(!equal(merged,remote.state)){
+      try{revision=await putGoogleProgress(merged,remote.revision,userId);}
+      catch(e){if(e instanceof Error&&e.message==="VERSION_CONFLICT")return "syncing";throw e;}
+    }
+    assertActiveAccount(userId);
+    if(!isGoogleProgressLinkedTo(userId))return "unlinked";
+    setBaseline(userId,{state:merged,revision});
+    if(!equal(readInterviewProgress(),local))return "syncing";
+    if(!equal(merged,local))replaceInterviewProgress(merged);
+    return "synced";
   }
   if (equal(local, base.state)) return "synced";
   const revision = await putGoogleProgress(local, base.revision, userId);

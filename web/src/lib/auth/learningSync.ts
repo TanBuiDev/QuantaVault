@@ -1,6 +1,7 @@
 "use client";
 
 import type { GoogleSyncStatus } from "./googleSync";
+import { mergeLearningProgress } from "./progressMerge";
 import { clearUnowned, isUnownedProgress } from "./googleSync";
 import { readCourseProgress, replaceCourseProgress } from "../courses/useCourseProgress";
 import { PROGRESS_STORAGE_KEY, readProgress, writeProgress, type ProgressStateV1 } from "../progress";
@@ -115,7 +116,21 @@ export async function reconcileLearningProgress(kind:LearningKind,userId:string)
       setBaseline(kind,userId,remote);
       return "synced";
     }
-    return "conflict";
+    const merged=mergeLearningProgress(kind,base.state,local,remote.state);
+    if(!merged)return "conflict";
+    backup(kind,userId,local,remote);
+    assertUser(userId);
+    if(!equal(readLocal(kind),local))return "syncing";
+    let revision=remote.revision;
+    if(!equal(merged,remote.state)){
+      try{revision=await put(kind,userId,merged,remote.revision);}
+      catch(e){if(e instanceof Error&&e.message==="VERSION_CONFLICT")return "syncing";throw e;}
+    }
+    assertUser(userId);
+    setBaseline(kind,userId,{state:merged,revision});
+    if(!equal(readLocal(kind),local))return "syncing";
+    if(!equal(merged,local))saveLocal(kind,merged);
+    return "synced";
   }
   if(equal(local,base.state))return "synced";
   backup(kind,userId,local,remote);
