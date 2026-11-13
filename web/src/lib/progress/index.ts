@@ -1,4 +1,4 @@
-export type LearningStatus = "in-progress" | "solved" | "review";
+export type LearningStatus = "not-started" | "in-progress" | "solved" | "review";
 
 export interface ProblemProgress {
   problemId: number;
@@ -20,7 +20,7 @@ export interface ProgressStateV1 {
 export const PROGRESS_STORAGE_KEY = "leetcode-top150-progress:v1";
 
 const EMPTY_STATE: ProgressStateV1 = { version: 1, problems: {} };
-const VALID_STATUSES = new Set<LearningStatus>(["in-progress", "solved", "review"]);
+const VALID_STATUSES = new Set<LearningStatus>(["not-started", "in-progress", "solved", "review"]);
 
 function emptyState(): ProgressStateV1 {
   return { version: 1, problems: {} };
