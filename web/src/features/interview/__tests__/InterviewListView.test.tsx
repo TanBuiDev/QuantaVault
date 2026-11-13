@@ -71,6 +71,21 @@ describe("InterviewListView Component", () => {
     expect(accountMock.requestLogin).toHaveBeenCalledTimes(1);
   });
 
+  it("keeps the tab filter when switching from admin to a regular account", async () => {
+    const first = render(<InterviewListView initialQuestions={mockQuestions} />);
+    fireEvent.click(screen.getByRole("button", { name: "Junior (Cơ bản)" }));
+    await waitFor(() => expect(sessionStorage.getItem("interview_view_state_v1")).toContain("difficulty=junior"));
+    first.unmount();
+
+    accountMock.role = "user";
+    window.history.replaceState({}, "", "/interview?auth=connected");
+    render(<InterviewListView initialQuestions={mockQuestions} />);
+
+    expect(screen.getByRole("button", { name: "Junior (Cơ bản)" })).toHaveClass("bg-emerald-500");
+    expect(screen.queryByRole("button", { name: "Thêm câu hỏi" })).toBeNull();
+    expect(screen.queryByText("Từ khóa volatile và JMM trong Java?")).toBeNull();
+  });
+
   it("renders the main heading and question count", () => {
     render(<InterviewListView initialQuestions={mockQuestions} />);
 
