@@ -14,7 +14,7 @@ test("Top Interview 150 study workflow persists progress without exposing spoile
   await clearProgress(page);
 
   await expect(page.getByRole("heading", { name: "Top Interview 150" })).toBeVisible();
-  await expect(page.getByRole("region", { name: "Overall study progress" })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Tiến độ học tập tổng quan" })).toBeVisible();
 
   // The app shell navigation is intentionally compact/icon-first now, so navigate directly
   // to the problem explorer and keep this test focused on the study workflow itself.
@@ -40,21 +40,17 @@ test("Top Interview 150 study workflow persists progress without exposing spoile
   await page.getByRole("tab", { name: "Solution" }).click();
   await expect(page.getByRole("heading", { name: "Java solution", exact: true })).toBeVisible();
 
-  // Entering a problem from the explorer may already mark it In Progress. Cycle from
-  // whichever current state the UI exposes until it reaches Solved.
-  const statusButton = page.getByLabel("Learning status").getByRole("button");
-  for (let attempt = 0; attempt < 3; attempt += 1) {
-    if ((await statusButton.textContent())?.trim() === "Solved") break;
-    await statusButton.click();
-  }
-  await expect(statusButton).toHaveText("Solved");
+  // Status updates select their destination directly; reset remains separately available.
+  const statusPicker = page.getByRole("combobox", { name: "Chọn trạng thái bài tập" });
+  await statusPicker.selectOption("solved");
+  await expect(statusPicker).toHaveValue("solved");
 
   await page.getByRole("tab", { name: "Notes" }).click();
   const personalNotes = page.getByLabel(/Ghi chú cá nhân/i);
   await personalNotes.fill("Review running minimum before interview.");
   await page.reload();
 
-  await expect(page.getByRole("button", { name: "Solved", exact: true })).toBeVisible();
+  await expect(page.getByRole("combobox", { name: "Chọn trạng thái bài tập" })).toHaveValue("solved");
   await page.getByRole("tab", { name: "Notes" }).click();
   await expect(page.getByLabel(/Ghi chú cá nhân/i)).toHaveValue(
     "Review running minimum before interview.",
