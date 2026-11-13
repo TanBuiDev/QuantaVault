@@ -10,7 +10,7 @@ test("the everyday account view hides legacy sync controls, while the separate r
   await expect(page.getByRole("button",{name:/Đồng bộ tiến độ giữa các thiết bị/})).toHaveCount(0);
   await page.goto("/account/recovery/");
   await expect(page.getByRole("heading",{name:"Khôi phục tiến độ cũ"})).toBeVisible();
-  await expect(page.getByText(/không tự chuyển dữ liệu cũ vào tài khoản Google/)).toBeVisible();
+  await expect(page.getByText(/tiến độ cũ tải về thiết bị có thể tiếp tục được đồng bộ/)).toBeVisible();
   await expect(page.getByRole("button",{name:/Đồng bộ tiến độ giữa các thiết bị/})).toBeVisible();
   await page.getByRole("button",{name:/Đồng bộ tiến độ giữa các thiết bị/}).click();
   await expect(page.getByText("Mã đồng bộ bí mật (64 ký tự)")).toBeVisible();

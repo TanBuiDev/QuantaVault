@@ -25,8 +25,8 @@ export default function LegacyProgressRecoveryPage() {
         <p className="font-semibold">Lưu ý trước khi khôi phục</p>
         <p className="mt-2 text-[var(--muted-strong)]">
           Hãy kiểm tra và sao lưu tiến độ hiện tại trước khi tải dữ liệu cũ về thiết bị.
-          Công cụ này không tự chuyển dữ liệu cũ vào tài khoản Google của bạn.
-          Chỉ tiếp tục nếu bạn có mã đồng bộ đã lưu từ trước.
+          Nếu đang đăng nhập Google, tiến độ cũ tải về thiết bị có thể tiếp tục được đồng bộ vào tài khoản này.
+          Chỉ tiếp tục khi bạn thực sự muốn khôi phục dữ liệu cũ, đã kiểm tra bản lưu hiện tại và có mã đồng bộ từ trước.
         </p>
       </section>
       <InterviewCloudSync />
