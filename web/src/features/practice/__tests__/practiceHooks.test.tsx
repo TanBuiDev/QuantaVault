@@ -91,16 +91,19 @@ describe("draft compatibility", () => {
 describe("account-scoped code draft isolation", () => {
   it("never reveals A code to B or a guest, and restores A after login", async () => {
     const { result, rerender } = renderHook(({ user }) => usePracticeDraft(121, "starter", user), { initialProps: { user: "account-A" as string | null } });
-    await waitFor(() => expect(result.current.userCode).toBe("starter"));
+    await waitFor(() => expect(result.current.draftReady).toBe(true));
+    expect(result.current.userCode).toBe("starter");
     act(() => result.current.handleCodeChange("secret from A"));
     expect(result.current.userCode).toBe("secret from A");
     rerender({ user: "account-B" });
     expect(result.current.userCode).not.toBe("secret from A");
-    await waitFor(() => expect(result.current.userCode).toBe("starter"));
+    await waitFor(() => expect(result.current.draftReady).toBe(true));
+    expect(result.current.userCode).toBe("starter");
     act(() => result.current.handleCodeChange("code B"));
     rerender({ user: null });
     expect(result.current.userCode).not.toBe("code B");
     rerender({ user: "account-A" });
+    await waitFor(() => expect(result.current.draftReady).toBe(true));
     await waitFor(() => expect(result.current.userCode).toBe("secret from A"));
     expect(localStorage.getItem("quantavault-user-code-v2:account-B:121")).toBe("code B");
   });
