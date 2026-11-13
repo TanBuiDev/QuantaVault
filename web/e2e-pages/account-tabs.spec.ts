@@ -9,6 +9,8 @@ test("regular accounts use one useful page; retired links open the account summa
   await expect(page.getByRole("tablist")).toHaveCount(0);
   await expect(page).toHaveURL(/tab=profile/);
   await expect(page.locator("#progress-sync")).toBeVisible();
+  await expect(page.getByText("Khôi phục dữ liệu cũ")).toHaveCount(0);
+  await expect(page.getByRole("link",{name:"Công cụ khôi phục dữ liệu cũ"})).toHaveCount(0);
   await page.goto("/account/?tab=security");
   await expect(page).toHaveURL(/tab=profile/);
   await page.goto("/account/#sync");

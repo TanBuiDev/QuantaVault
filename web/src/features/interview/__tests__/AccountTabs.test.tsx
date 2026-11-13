@@ -11,7 +11,6 @@ vi.mock("@/lib/auth/AccountProvider",()=>({useAccount:()=>({
 vi.mock("../GoogleAccountPanel",()=>({GoogleAccountPanel:()=> <div>Interview recovery</div>}));
 vi.mock("../GoogleLearningSyncPanel",()=>({GoogleLearningSyncPanel:()=> <div>Course recovery</div>}));
 vi.mock("../AdminAccountPanel",()=>({AdminAccountPanel:()=> <div>Restricted admin panel</div>}));
-vi.mock("../InterviewCloudSync",()=>({InterviewCloudSync:()=> <div>Legacy recovery</div>}));
 
 describe("Account view: Google sync is automatic",()=>{
   beforeEach(()=>{
@@ -25,7 +24,8 @@ describe("Account view: Google sync is automatic",()=>{
     expect(screen.getByRole("heading",{name:"Thông tin tài khoản"})).toBeVisible();
     expect(screen.getByText("Đã lưu tiến độ học tập")).toBeInTheDocument();
     expect(screen.queryByText("Interview recovery")).not.toBeInTheDocument();
-    expect(screen.getByText("Khôi phục dữ liệu cũ")).toBeInTheDocument();
+    expect(screen.queryByText("Khôi phục dữ liệu cũ")).not.toBeInTheDocument();
+    expect(screen.queryByText("Legacy recovery")).not.toBeInTheDocument();
   });
   it("redirects retired sync links and legacy hashes to the account summary",async()=>{
     window.history.replaceState(null,"","/account/?tab=sync");
