@@ -113,7 +113,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
       expired: "Phiên xác thực đã hết hạn hoặc không hợp lệ. Vui lòng thử lại.",
       unavailable: "Chưa thể đăng nhập với Google. Vui lòng thử lại sau.",
     };
-    setAuthError(messages[reason] ?? messages.unavailable);
+    queueMicrotask(() => setAuthError(messages[reason] ?? messages.unavailable));
     url.searchParams.delete("authError");
     window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
   }, []);
