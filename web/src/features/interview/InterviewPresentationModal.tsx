@@ -19,7 +19,7 @@ import {
   HelpCircle,
 } from "lucide-react";
 import type { InterviewQuestion } from "@/lib/interview/types";
-import { INTERVIEW_CATEGORIES, formatQuestionNumber } from "@/lib/interview/types";
+import { INTERVIEW_CATEGORIES, formatQuestionBadge } from "@/lib/interview/types";
 import { MarkdownContent } from "@/features/practice/MarkdownContent";
 
 export type PresentationFontSize = "normal" | "large" | "huge";
@@ -269,7 +269,7 @@ export function InterviewPresentationModal({
               </span>
             </div>
             <p className="truncate text-xs font-semibold text-[var(--muted)]">
-              Câu hỏi <strong className="text-[var(--foreground)]">{currentIndex + 1}</strong> /{" "}
+              Slide <strong className="text-[var(--foreground)]">{currentIndex + 1}</strong> /{" "}
               {questions.length} ({Math.round(((currentIndex + 1) / questions.length) * 100)}%)
             </p>
           </div>
@@ -360,7 +360,7 @@ export function InterviewPresentationModal({
           {/* Metadata Badges */}
           <div className="flex flex-wrap items-center gap-2.5">
             <span className="font-mono text-sm sm:text-base font-extrabold text-[var(--muted)] bg-[var(--surface-hover)] px-2.5 py-1 rounded-xl border border-[var(--border)]">
-              {formatQuestionNumber(currentIndex + 1, questions.length)}
+              {formatQuestionBadge(currentQ.id)}
             </span>
 
             {/* Category */}
