@@ -3,7 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import type { GoogleAccount } from "./googleOAuth";
 import { googleLoginHref } from "./loginReturn";
-import { GOOGLE_SYNC_STATUS, emitGoogleSync, classifyGoogleSyncError, ensureAutoLinkedGoogleProgress, prepareGoogleDevice, setGoogleSessionActive, type GoogleSyncStatus } from "./googleSync";
+import { GOOGLE_SYNC_STATUS, emitGoogleSync, classifyGoogleSyncError, canWriteLearningProgress, ensureAutoLinkedGoogleProgress, prepareGoogleDevice, setGoogleSessionActive, type GoogleSyncStatus } from "./googleSync";
 import { reconcileLearningProgress } from "./learningSync";
 
 export type SessionStatus = "checking" | "authenticated" | "guest" | "offline" | "expired";
@@ -107,6 +107,9 @@ export function AccountProvider({ children }: { children: ReactNode }) {
   const [authError, setAuthError] = useState<string | null>(null);
   const refresh = useCallback(async () => {
     lastSessionCheck.current = Date.now();
+    // Suspend progress writes while the current Google identity is revalidated.
+    const wasAuthenticated = canWriteLearningProgress();
+    setGoogleSessionActive(false);
     try {
       const response = await fetch("/api/auth/session", { cache: "no-store", credentials: "same-origin" });
       if (response.status === 401 || response.status === 403) {
@@ -118,12 +121,24 @@ export function AccountProvider({ children }: { children: ReactNode }) {
       if (!response.ok) throw new Error("SESSION_READ_FAILED");
       const data = await response.json() as { ok: boolean; user: GoogleAccount | null };
       if (!data.ok) throw new Error("SESSION_INVALID");
-      setGoogleSessionActive(Boolean(data.user));
+      if (data.user) {
+        try {
+          // Swap storage snapshots BEFORE allowing any progress write by the new account.
+          prepareGoogleDevice(data.user.id);
+          setGoogleSessionActive(true);
+        } catch {
+          setGoogleSessionActive(false);
+          setSyncStatus("conflict");
+        }
+      } else {
+        setGoogleSessionActive(false);
+      }
       setUser(data.user);
       setSessionStatus(previous => data.user ? "authenticated" : (previous === "authenticated" || previous === "offline" ? "expired" : "guest"));
     } catch {
       // A failed network request is not proof of a sign-out. Retain the last verified in-memory identity.
       // On a fresh offline reload the user stays null and progress writes remain locked.
+      setGoogleSessionActive(wasAuthenticated);
       setSessionStatus("offline");
     } finally { setLoading(false); }
   }, []);
