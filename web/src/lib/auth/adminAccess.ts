@@ -92,17 +92,6 @@ export async function authorizedAdmin(request: Request, env: OAuthEnv, elevated 
   }
   return { user, sessionHash };
 }
-async function hasBootstrap(db: Database): Promise<boolean> {
-  const row = await db.prepare("SELECT owner_user_id FROM oauth_admin_bootstrap WHERE id=1").first<{ owner_user_id: string }>();
-  return Boolean(row);
-}
-/** Owner membership is provisioned in D1 after verifying the Google sub.
- * It is never inferred from a client-supplied email or a shared password. */
-async function mayBootstrap(db: Database, userId: string): Promise<boolean> {
-  const row = await db.prepare("SELECT user_id FROM oauth_admin_owner_allowlist WHERE user_id=?")
-    .bind(userId).first<{ user_id: string }>();
-  return row?.user_id === userId;
-}
 async function audit(db: Database, actor: string, action: string, subject: string | null) {
   await db.prepare("INSERT INTO oauth_admin_audit(actor_user_id,action,subject_user_id) VALUES (?,?,?)")
     .bind(actor, action, subject).run();
@@ -118,7 +107,8 @@ export async function handleAccountAdmin(request: Request, env: AdminEnv): Promi
     const user = await requireUser(request, env);
     if (!user) return response({ ok: false, code: "UNAUTHENTICATED" }, 401);
     if (request.method === "GET" && route === "/api/admin/bootstrap-status") {
-      return response({ ok: true, needsSetup: !(await hasBootstrap(db)) && await mayBootstrap(db, user.id) });
+      // Legacy clients may request this endpoint; first-admin activation is retired.
+      return response({ ok: true, needsSetup: false });
     }
     if (request.method === "GET" && route === "/api/admin/status") {
       const elevated = Boolean(await authorizedAdmin(request, env, true));
@@ -136,20 +126,8 @@ export async function handleAccountAdmin(request: Request, env: AdminEnv): Promi
     const body = await parseBody(request);
     if (!body) return response({ ok: false, code: "INVALID_BODY" }, 400);
     if (route === "/api/admin/bootstrap") {
-      // Check owner identity BEFORE accepting any credential attempts.
-      if (!await mayBootstrap(db, user.id)) return response({ ok: false, code: "NOT_BOOTSTRAP_OWNER" }, 403);
-      if (await hasBootstrap(db)) return response({ ok: false, code: "BOOTSTRAP_CLOSED" }, 409);
-      const status = await credentialCheck(env, user.id, body.password, body.otp, true);
-      if (status !== "ok") return response({ ok: false, code: status === "locked" ? "LOCKED" : "INVALID_CREDENTIALS" }, status === "locked" ? 429 : 401);
-      // Exactly one atomic INSERT. D1 trigger atomically assigns the role and
-      // audits the bootstrap; a failed role insert rolls back the claim.
-      const claimed = await db.prepare(
-        "INSERT INTO oauth_admin_bootstrap(id,owner_user_id) SELECT 1,? " +
-        "WHERE EXISTS (SELECT 1 FROM oauth_admin_owner_allowlist WHERE user_id=?) " +
-        "ON CONFLICT(id) DO NOTHING"
-      ).bind(user.id, user.id).run();
-      if (claimed.meta?.changes !== 1) return response({ ok: false, code: "BOOTSTRAP_CLOSED" }, 409);
-      return response({ ok: true, role: "admin" });
+      // Owner is provisioned by verified Google identity in D1, never by a browser.
+      return response({ ok: false, code: "BOOTSTRAP_CLOSED" }, 409);
     }
     if (user.role !== "admin") return response({ ok: false, code: "ADMIN_ONLY" }, 403);
     if (route === "/api/admin/step-up") {

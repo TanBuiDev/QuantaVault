@@ -91,24 +91,20 @@ afterEach(() => { vi.unstubAllGlobals(); vi.clearAllMocks(); });
 
 describe("Google admin permissions and privileged actions", () => {
   it("does not automatically grant admin for a signed-in Google user", async () => {
-    expect((await handleAccountAdmin(req("/api/admin/bootstrap-status"), env()).then(r=>r.json())).needsSetup).toBe(true);
+    expect((await handleAccountAdmin(req("/api/admin/bootstrap-status"), env()).then(r=>r.json())).needsSetup).toBe(false);
     expect((await handleAccountAdmin(req("/api/admin/users"), env())).status).toBe(403);
     expect((await authorizedAdmin(req("/api/admin/status"), env(), false))).toBeNull();
     expect(db.roles.size).toBe(0);
   });
 
-  it("requires BOTH password and TOTP for the first admin", async () => {
-    const missingOtp = await handleAccountAdmin(req("/api/admin/bootstrap", { password:envBase.ADMIN_PIN }), env());
-    expect(missingOtp.status).toBe(401);
-    expect(db.roles.size).toBe(0);
-    const wrongOtp = await handleAccountAdmin(req("/api/admin/bootstrap", { password:envBase.ADMIN_PIN, otp:"000000" }), env());
-    expect(wrongOtp.status).toBe(401);
+  it("retires browser-based first-admin activation even with valid credentials", async () => {
     const otp = await generateTOTP(envBase.TOTP_SECRET);
-    const result = await handleAccountAdmin(req("/api/admin/bootstrap", { password:envBase.ADMIN_PIN, otp }), env());
-    expect(result.status).toBe(200);
-    expect(db.roles.has(OWNER)).toBe(true);
-    expect(db.bootstrap).toBe(OWNER);
-    expect(db.audits).toContain("admin_bootstrap");
+    const response = await handleAccountAdmin(req("/api/admin/bootstrap", { password:envBase.ADMIN_PIN, otp }), env());
+    expect(response.status).toBe(409);
+    expect(await response.json()).toMatchObject({ ok:false, code:"BOOTSTRAP_CLOSED" });
+    expect(db.roles.size).toBe(0);
+    expect(db.bootstrap).toBeNull();
+    expect(db.audits).toHaveLength(0);
   });
 
   it("hides bootstrap from non-owners and refuses their direct API requests", async () => {
@@ -116,18 +112,20 @@ describe("Google admin permissions and privileged actions", () => {
     const status = await handleAccountAdmin(req("/api/admin/bootstrap-status"), env());
     expect(await status.json()).toMatchObject({ ok:true, needsSetup:false });
     const denied = await handleAccountAdmin(req("/api/admin/bootstrap", { password:envBase.ADMIN_PIN, otp:await generateTOTP(envBase.TOTP_SECRET), email:"owner@example.com" }), env());
-    expect(denied.status).toBe(403);
+    expect(denied.status).toBe(409);
     expect(db.roles.size).toBe(0);
     expect(db.failures.has(OTHER)).toBe(false);
   });
 
-  it("allows a single owner bootstrap and refuses even an owner replay", async () => {
+  it("recognizes the verified owner role provisioned in D1 without a bootstrap form", async () => {
+    db.bootstrap = OWNER;
+    db.roles.add(OWNER);
+    nowUser = { ...nowUser, role:"admin" };
+    expect((await authorizedAdmin(req("/api/admin/status"), env(), false))?.user.id).toBe(OWNER);
     const otp = await generateTOTP(envBase.TOTP_SECRET);
-    expect((await handleAccountAdmin(req("/api/admin/bootstrap", { password:envBase.ADMIN_PIN, otp }), env())).status).toBe(200);
     expect((await handleAccountAdmin(req("/api/admin/bootstrap", { password:envBase.ADMIN_PIN, otp }), env())).status).toBe(409);
-    expect(db.audits.filter(x => x==="admin_bootstrap")).toHaveLength(1);
-    nowUser = { ...nowUser, id:OTHER };
-    expect((await handleAccountAdmin(req("/api/admin/bootstrap", { password:envBase.ADMIN_PIN, otp }), env())).status).toBe(403);
+    nowUser = { ...nowUser, id:OTHER, role:"user" };
+    expect((await handleAccountAdmin(req("/api/admin/bootstrap", { password:envBase.ADMIN_PIN, otp }), env())).status).toBe(409);
     expect(db.roles.has(OTHER)).toBe(false);
   });
 
