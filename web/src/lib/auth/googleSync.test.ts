@@ -50,14 +50,25 @@ describe("Google progress link and cross-device safety", () => {
     expect(remote.state.learned["q-004"]).toBe(true);
   });
 
-  it("detects concurrent device writes and leaves local data intact", async () => {
+  it("automatically merges independent interview changes from two devices", async () => {
     replaceInterviewProgress(state(["q-001"]));
     await linkGoogleProgress("google-user-a", "local", remote);
     replaceInterviewProgress(state(["q-001", "q-002"]));
     remote = { state: state(["q-001"], ["q-003"]), revision: 2 };
-    expect(await reconcileGoogleProgress("google-user-a")).toBe("conflict");
+    expect(await reconcileGoogleProgress("google-user-a")).toBe("synced");
     expect(readInterviewProgress().learned["q-002"]).toBe(true);
+    expect(readInterviewProgress().review["q-003"]).toBe(true);
     expect(remote.state.review["q-003"]).toBe(true);
+    expect(remote.state.learned["q-002"]).toBe(true);
+  });
+
+  it("protects contradictory statuses for the same question", async () => {
+    await linkGoogleProgress("google-user-a","local",remote);
+    replaceInterviewProgress(state(["q-009"]));
+    remote={state:state([],["q-009"]),revision:1};
+    expect(await reconcileGoogleProgress("google-user-a")).toBe("conflict");
+    expect(readInterviewProgress().learned["q-009"]).toBe(true);
+    expect(remote.state.review["q-009"]).toBe(true);
   });
 
   it("imports a newer remote if local matches the last saved baseline", async () => {

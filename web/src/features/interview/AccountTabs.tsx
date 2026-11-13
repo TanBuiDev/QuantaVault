@@ -1,36 +1,43 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AlertTriangle, CheckCircle2, CloudOff, LoaderCircle } from "lucide-react";
 import { useAccount } from "@/lib/auth/AccountProvider";
 import { GoogleAccountPanel } from "./GoogleAccountPanel";
 import { GoogleLearningSyncPanel } from "./GoogleLearningSyncPanel";
 import { AdminAccountPanel } from "./AdminAccountPanel";
 import { InterviewCloudSync } from "./InterviewCloudSync";
 
-type AccountTab = "profile" | "sync" | "security";
+type AccountTab = "profile" | "security";
 const TABS: { id:AccountTab;label:string }[] = [
   {id:"profile",label:"Tài khoản"},
-  {id:"sync",label:"Đồng bộ"},
-  {id:"security",label:"Bảo mật"},
+  {id:"security",label:"Quản trị"},
 ];
 function selectedTab(isAdmin:boolean):AccountTab {
-  const hash=window.location.hash;
-  if(hash==="#sync")return "sync";
-  if(hash==="#administration")return isAdmin ? "security" : "profile";
-  const tab=new URLSearchParams(window.location.search).get("tab");
-  return tab==="sync" || (isAdmin && tab==="security") ? tab : "profile";
+  const url=new URL(window.location.href);
+  return isAdmin && (url.hash==="#administration" || url.searchParams.get("tab")==="security") ? "security" : "profile";
 }
+const progressStatus={
+  synced:{title:"Đã lưu tiến độ học tập",detail:"Tiến độ của bạn được tự động cập nhật khi sử dụng các thiết bị khác.",icon:CheckCircle2,color:"text-emerald-600 dark:text-emerald-400"},
+  syncing:{title:"Đang lưu tiến độ",detail:"Các thay đổi của bạn đang được cập nhật.",icon:LoaderCircle,color:"text-[var(--primary-strong)]"},
+  offline:{title:"Chưa thể kết nối",detail:"Tiến độ vẫn được giữ trên thiết bị này và sẽ đồng bộ khi có kết nối.",icon:CloudOff,color:"text-amber-600"},
+  conflict:{title:"Cần kiểm tra tiến độ",detail:"Có dữ liệu cần được đối chiếu trước khi tiếp tục đồng bộ. Tiến độ hiện tại vẫn được giữ nguyên.",icon:AlertTriangle,color:"text-amber-600"},
+  unlinked:{title:"Đang chuẩn bị đồng bộ",detail:"Tiến độ của bạn sẽ được tự động lưu vào tài khoản.",icon:LoaderCircle,color:"text-[var(--muted-strong)]"},
+} as const;
+
 export function AccountTabs() {
   const [tab,setTab]=useState<AccountTab>("profile");
-  const {user,loading,logout}=useAccount();
+  const {user,loading,logout,syncStatus}=useAccount();
   const isAdmin=!loading && user?.role==="admin";
   useEffect(()=>{
     if(loading)return;
     const update=()=>{
-      setTab(selectedTab(isAdmin));
-      // Old links must never leave regular users on a non-existent admin panel.
+      const next=selectedTab(isAdmin);
+      setTab(next);
       const url=new URL(window.location.href);
-      if(!isAdmin && (url.hash==="#administration" || url.searchParams.get("tab")==="security")){
+      // Retired sync tab and non-admin security deep links open the account summary.
+      if(url.hash==="#sync" || url.searchParams.get("tab")==="sync" ||
+        (!isAdmin && (url.hash==="#administration" || url.searchParams.get("tab")==="security"))){
         url.searchParams.set("tab","profile");
         url.hash="";
         window.history.replaceState(null,"",url.pathname+url.search);
@@ -52,16 +59,18 @@ export function AccountTabs() {
   const avatar=user?.picture && /^https:\/\/([a-z0-9-]+\.)?googleusercontent\.com\//i.test(user.picture)
     ? <img src={user.picture} alt="" className="size-14 rounded-full object-cover" referrerPolicy="no-referrer"/>
     : <span className="grid size-14 place-items-center rounded-full bg-[var(--primary-soft)] text-xl font-semibold text-[var(--primary-strong)]">{user?.name?.charAt(0).toUpperCase()||"G"}</span>;
+  const status=progressStatus[syncStatus]??progressStatus.unlinked;
+  const StatusIcon=status.icon;
   return (
     <div className="space-y-5">
-      <div role="tablist" aria-label="Cài đặt tài khoản" className={`grid ${isAdmin ? "grid-cols-3" : "grid-cols-2"} gap-1 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-1`}>
-        {TABS.filter(item=>item.id!=="security" || isAdmin).map(item=><button key={item.id} id={"account-tab-"+item.id} type="button" role="tab" aria-selected={tab===item.id} aria-controls={"account-panel-"+item.id}
+      {isAdmin && <div role="tablist" aria-label="Cài đặt tài khoản" className="grid grid-cols-2 gap-1 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-1">
+        {TABS.map(item=><button key={item.id} id={"account-tab-"+item.id} type="button" role="tab" aria-selected={tab===item.id} aria-controls={"account-panel-"+item.id}
           onClick={()=>choose(item.id)}
           className={`rounded-lg px-3 py-2.5 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)] ${tab===item.id ? "bg-[var(--primary-soft)] text-[var(--primary-strong)]" : "text-[var(--muted-strong)] hover:bg-[var(--surface-hover)]"}`}>
           {item.label}
         </button>)}
-      </div>
-      <section id="account-panel-profile" role="tabpanel" aria-labelledby="account-tab-profile" hidden={tab!=="profile"}
+      </div>}
+      <section id="account-panel-profile" role={isAdmin ? "tabpanel" : undefined} aria-labelledby={isAdmin ? "account-tab-profile" : undefined} hidden={isAdmin && tab!=="profile"}
         className="space-y-4 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 sm:p-5">
         <h2 className="text-base font-semibold">Thông tin tài khoản</h2>
         {loading ? <p className="text-sm text-[var(--muted)]">Đang tải thông tin tài khoản...</p>
@@ -73,23 +82,30 @@ export function AccountTabs() {
                 <p className="mt-1 text-xs text-[var(--muted-strong)]">Đã đăng nhập bằng Google{user.role==="admin" ? " · Quản trị viên" : ""}</p>
               </div>
             </div>
+            <div id="progress-sync" role="status" aria-live="polite" className="flex items-start gap-3 rounded-xl border border-[var(--border)] p-3">
+              <StatusIcon aria-hidden="true" className={`mt-0.5 size-5 shrink-0 ${status.color}`}/>
+              <div>
+                <p className="text-sm font-semibold">{status.title}</p>
+                <p className="mt-1 text-xs text-[var(--muted-strong)]">{status.detail}</p>
+              </div>
+            </div>
+            {syncStatus==="conflict" && <div className="space-y-3" aria-label="Khôi phục tiến độ học tập">
+              <GoogleAccountPanel key={user.id}/>
+              <GoogleLearningSyncPanel key={user.id}/>
+            </div>}
+            <details className="rounded-xl border border-[var(--border)] p-3 text-sm">
+              <summary className="cursor-pointer font-medium">Khôi phục dữ liệu cũ</summary>
+              <p className="mt-2 text-xs text-[var(--muted-strong)]">Chỉ dùng nếu trước đây bạn lưu tiến độ bằng mã khôi phục. Hãy kiểm tra và sao lưu dữ liệu trước khi tiếp tục.</p>
+              <div className="mt-3"><InterviewCloudSync/></div>
+            </details>
             <button type="button" onClick={()=>void logout()} className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm font-medium">Đăng xuất</button>
           </> : <div className="space-y-3">
             <p className="text-sm text-[var(--muted-strong)]">Đăng nhập Google để tự lưu và khôi phục tiến độ trên các thiết bị.</p>
             <a href="/api/auth/google/start" className="inline-flex rounded-lg bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white">Tiếp tục với Google</a>
           </div>}
       </section>
-      <section id="account-panel-sync" role="tabpanel" aria-labelledby="account-tab-sync" hidden={tab!=="sync"} className="space-y-4">
-        <GoogleAccountPanel key={user?.id ?? "guest"} />
-        <GoogleLearningSyncPanel key={user?.id ?? "guest"} />
-        <details className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
-          <summary className="cursor-pointer text-sm font-semibold">Cài đặt nâng cao · Khôi phục dữ liệu cũ</summary>
-          <p className="mt-3 text-xs text-[var(--muted-strong)]">Mã khôi phục chỉ dành cho dữ liệu đã lưu theo cách cũ. Bạn không cần mã này khi đăng nhập Google. Hãy kiểm tra và sao lưu dữ liệu trước khi khôi phục.</p>
-          <div className="mt-3"><InterviewCloudSync /></div>
-        </details>
-      </section>
       {isAdmin && <section id="account-panel-security" role="tabpanel" aria-labelledby="account-tab-security" hidden={tab!=="security"} className="space-y-4">
-        <AdminAccountPanel key={user?.id ?? "admin"} />
+        <AdminAccountPanel key={user?.id ?? "admin"}/>
       </section>}
     </div>
   );

@@ -2,7 +2,7 @@
 
 import { useId, useRef, useState } from "react";
 import Link from "next/link";
-import { ChevronDown, Cloud, LogOut, Settings, ShieldCheck, UserRound } from "lucide-react";
+import { AlertTriangle, ChevronDown, LogOut, Settings, ShieldCheck, UserRound } from "lucide-react";
 import controls from "@/components/ui/SidebarControl.module.css";
 import { useAccount } from "@/lib/auth/AccountProvider";
 
@@ -16,14 +16,6 @@ function GoogleLogo() {
     </svg>
   );
 }
-
-const syncLabels = {
-  synced: "Đã đồng bộ",
-  conflict: "Cần đối chiếu",
-  offline: "Chưa kết nối",
-  syncing: "Đang lưu",
-  unlinked: "Chưa liên kết",
-};
 
 const menuItem = "flex w-full items-center gap-2 rounded-lg px-2 py-2 text-left hover:bg-[var(--surface-hover)] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[var(--focus)]";
 
@@ -96,7 +88,9 @@ export function SidebarAccount({ compact = false }: { compact?: boolean }) {
           className={`absolute bottom-full left-0 z-10 mb-2 max-h-[max(2rem,calc(100dvh-7rem))] space-y-1 overflow-y-auto overscroll-contain rounded-xl border border-[var(--border)] bg-[var(--surface-elevated)] p-1.5 text-xs shadow-lg ${compact ? "w-56" : "w-full"}`}
         >
           <Link href="/account/?tab=profile" onClick={() => setOpen(false)} className={menuItem}><Settings className="size-4 shrink-0" /> Quản lý tài khoản</Link>
-          <Link href="/account/?tab=sync" onClick={() => setOpen(false)} className={menuItem}><Cloud className="size-4 shrink-0" /> Đồng bộ: {syncLabels[syncStatus]}</Link>
+          {syncStatus === "conflict" && (
+            <Link href="/account/?tab=profile#progress-sync" onClick={() => setOpen(false)} className={menuItem}><AlertTriangle className="size-4 shrink-0" /> Cần kiểm tra tiến độ</Link>
+          )}
           {user.role === "admin" && (
             <Link href="/account/?tab=security" onClick={() => setOpen(false)} className={menuItem}><ShieldCheck className="size-4 shrink-0" /> Quản trị nội dung</Link>
           )}
