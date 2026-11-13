@@ -142,10 +142,10 @@ describe("PracticeView", () => {
     renderPractice();
     await waitFor(() => expect(screen.getByText("VISIBLE PROBLEM")).toBeInTheDocument());
 
-    // Cycle status: Not Started -> In Progress -> Solved
-    fireEvent.click(screen.getByRole("button", { name: "Not Started" }));
-    fireEvent.click(screen.getByRole("button", { name: "In Progress" }));
-    expect(screen.getByRole("button", { name: "Solved" })).toBeInTheDocument();
+    // Select a status directly instead of cycling through intermediate states.
+    const status = screen.getByRole("combobox", { name: "Chọn trạng thái bài tập" });
+    fireEvent.change(status, { target: { value: "solved" } });
+    expect(status).toHaveValue("solved");
 
     fireEvent.click(screen.getByRole("tab", { name: "Notes" }));
     fireEvent.change(screen.getByLabelText(/Ghi chú cá nhân/i), {
