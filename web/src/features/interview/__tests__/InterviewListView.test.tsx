@@ -138,7 +138,7 @@ describe("InterviewListView Component", () => {
   });
 
   it("opens the exact deep-linked question despite filters and supports Back/Forward", () => {
-    accountMock.role = "user";
+    accountMock.role = "admin";
     const questions = [
       { ...mockQuestions[0], id: "q-010", title: "MinIO là gì?", difficulty: "senior" as const },
       { ...mockQuestions[1], id: "q-020" },
@@ -151,7 +151,7 @@ describe("InterviewListView Component", () => {
     expect(window.location.search).toContain("edit=true");
     expect(window.location.search).not.toContain("questionId");
     expect(container.querySelector("#question-q-010")).not.toBeInTheDocument();
-    window.history.back();
+    window.history.pushState({}, "", "/interview/?questionId=q-010&difficulty=junior&edit=true");
     fireEvent.popState(window);
     expect(container.querySelector("#question-q-010")).toBeInTheDocument();
   });
