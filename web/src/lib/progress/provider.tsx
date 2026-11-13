@@ -46,7 +46,9 @@ export interface ProgressContextValue {
 
 function getBrowserSnapshot(): ProgressStateV1 {
   if (typeof window === "undefined") return SERVER_SNAPSHOT;
-  const raw = window.localStorage.getItem(PROGRESS_STORAGE_KEY);
+  let raw: string | null;
+  try { raw = window.localStorage.getItem(PROGRESS_STORAGE_KEY); }
+  catch { return SERVER_SNAPSHOT; }
   if (raw === cachedRaw) return cachedState;
 
   cachedRaw = raw;
@@ -134,7 +136,11 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
 
   const clearProblem = useCallback((problemId: number) => {
     if (!canWriteLearningProgress()) return;
-    publish(removeProblemProgress(getBrowserSnapshot(), problemId));
+    try {
+      publish(removeProblemProgress(getBrowserSnapshot(), problemId));
+      setLocalSaveStatus("saved-local");
+      setLastLocalSavedAt(Date.now());
+    } catch { setLocalSaveStatus("storage-error"); }
   }, []);
 
   const value = useMemo<ProgressContextValue>(
