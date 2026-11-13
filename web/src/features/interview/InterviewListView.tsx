@@ -488,7 +488,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
       {!accountLoading && !canMarkProgress && (
         <div role="note" className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-sm">
           <p className="text-[var(--muted-strong)]">Đăng nhập Google để đánh dấu đã hiểu, cần ôn lại hoặc lưu câu hỏi.</p>
-          <a href="/api/auth/google/start" className="font-semibold text-[var(--primary-strong)] hover:underline">Đăng nhập Google</a>
+          <button type="button" onClick={requestLogin} className="font-semibold text-[var(--primary-strong)] hover:underline">Đăng nhập Google</button>
         </div>
       )}
       {/* 2. Progress Overview Stats Card */}
