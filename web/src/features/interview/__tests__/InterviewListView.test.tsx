@@ -5,9 +5,9 @@ import type { InterviewQuestion } from "@/lib/interview/types";
 import { saveDraft } from "@/lib/interview/draftStore";
 
 vi.mock("@/components/ui/MermaidRenderer", () => ({ MermaidRenderer: () => null }));
-const accountMock = vi.hoisted(() => ({ role: "admin" as "admin" | "user" }));
+const accountMock = vi.hoisted(() => ({ role: "admin" as "admin" | "user", requestLogin: vi.fn() }));
 vi.mock("@/lib/auth/AccountProvider", () => ({
-  useAccount: () => ({ user: { id: "test-user", name: "Admin", email: "admin@example.com", role: accountMock.role }, loading: false }),
+  useAccount: () => ({ user: { id: "test-user", name: "Admin", email: "admin@example.com", role: accountMock.role }, loading: false, requestLogin: accountMock.requestLogin }),
 }));
 
 const mockQuestions: InterviewQuestion[] = [
@@ -39,6 +39,7 @@ const mockQuestions: InterviewQuestion[] = [
 describe("InterviewListView Component", () => {
   beforeEach(() => {
     accountMock.role = "admin";
+    accountMock.requestLogin.mockClear();
     window.localStorage.clear();
     window.sessionStorage.clear();
     window.history.replaceState({}, "", "/interview");
@@ -59,6 +60,15 @@ describe("InterviewListView Component", () => {
     render(<InterviewListView initialQuestions={mockQuestions} />);
     await waitFor(() => expect(screen.getByText(mockQuestions[0].title)).toBeInTheDocument());
     expect(screen.queryByText("Unpublished admin draft")).toBeNull();
+  });
+
+  it("guest progress action shows contextual login instead of a dead disabled button", () => {
+    accountMock.role = "user";
+    render(<InterviewListView initialQuestions={mockQuestions} />);
+    const button = screen.getAllByRole("button", { name: "Đánh dấu đã hiểu" })[0];
+    expect(button).not.toBeDisabled();
+    fireEvent.click(button);
+    expect(accountMock.requestLogin).toHaveBeenCalledTimes(1);
   });
 
   it("renders the main heading and question count", () => {

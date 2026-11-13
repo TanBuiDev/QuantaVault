@@ -220,7 +220,6 @@ export function InterviewQuestionCard({
             <button
               type="button"
               onClick={onToggleBookmark}
-              disabled={!canMarkProgress}
               title={!canMarkProgress ? "Đăng nhập Google để lưu câu hỏi" : isBookmarked ? "Bỏ đánh dấu" : "Đánh dấu câu hỏi này"}
               className={`rounded-xl p-2 transition-all ${
                 isBookmarked
@@ -317,7 +316,6 @@ export function InterviewQuestionCard({
             <button
               type="button"
               onClick={onToggleLearned}
-              disabled={!canMarkProgress}
               className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 font-bold transition-all ${
                 isLearned
                   ? "bg-emerald-500 text-white shadow-xs"
@@ -332,7 +330,6 @@ export function InterviewQuestionCard({
             <button
               type="button"
               onClick={onToggleReview}
-              disabled={!canMarkProgress}
               className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 font-bold transition-all ${
                 isReview
                   ? "bg-amber-500 text-white shadow-xs"

@@ -19,7 +19,15 @@ const STORES = [
 export const GOOGLE_SYNC_STATUS = "quantavault-google-sync:status";
 export const setGoogleSessionActive = setLearningSessionActive;
 export const isGoogleSessionActive = canWriteLearningProgress;
-export type GoogleSyncStatus = "unlinked" | "synced" | "syncing" | "offline" | "conflict";
+export type GoogleSyncStatus = "unlinked" | "synced" | "syncing" | "offline" | "conflict" | "auth-required" | "forbidden";
+/** Distinguish an expired login and denied access from a network outage. */
+export function classifyGoogleSyncError(error: unknown): GoogleSyncStatus {
+  const reason = error instanceof Error ? error.message : "";
+  if (/(?:READ|WRITE)_401$/.test(reason)) return "auth-required";
+  if (/(?:READ|WRITE)_403$/.test(reason)) return "forbidden";
+  if (["VERSION_CONFLICT", "ACCOUNT_SWITCHED", "INVALID_LOCAL_PROGRESS", "INVALID_ACCOUNT_CACHE"].includes(reason)) return "conflict";
+  return "offline";
+}
 export interface RemoteProgress { state: InterviewProgressState; revision: number }
 interface SyncBaseline { userId: string; revision: number; state: InterviewProgressState }
 

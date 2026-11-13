@@ -10,12 +10,20 @@ test("logged-out learners can read questions but cannot change saved progress",a
   await page.goto("/interview/");
   const question=page.locator("#question-q-013");
   await expect(page.getByRole("note")).toContainText("Đăng nhập Google để đánh dấu");
-  await expect(question.getByRole("button",{name:"Đánh dấu đã hiểu"})).toBeDisabled();
-  await expect(question.getByRole("button",{name:"Cần ôn lại"})).toBeDisabled();
-  await expect(question.getByRole("button",{name:"Đánh dấu câu hỏi"})).toBeDisabled();
+  for(const label of ["Đánh dấu đã hiểu","Cần ôn lại","Đánh dấu câu hỏi"]) {
+    const button = question.getByRole("button",{name:label});
+    await expect(button).toBeEnabled();
+    await button.click();
+    await expect(page.getByRole("dialog",{name:"Đăng nhập để lưu tiến độ"})).toBeVisible();
+    await page.getByRole("button",{name:"Để sau"}).click();
+    await expect(page.getByRole("dialog",{name:"Đăng nhập để lưu tiến độ"})).toHaveCount(0);
+  }
   const before=await page.evaluate(()=>localStorage.getItem("interview-prep-progress-v1"));
   await page.reload();
-  await expect(question.getByRole("button",{name:"Đánh dấu đã hiểu"})).toBeDisabled();
+  await expect(question.getByRole("button",{name:"Đánh dấu đã hiểu"})).toBeEnabled();
+  await question.getByRole("button",{name:"Đánh dấu đã hiểu"}).click();
+  await expect(page.getByRole("dialog",{name:"Đăng nhập để lưu tiến độ"})).toBeVisible();
+  await page.getByRole("button",{name:"Để sau"}).click();
   expect(await page.evaluate(()=>localStorage.getItem("interview-prep-progress-v1"))).toBe(before);
 });
 
@@ -35,6 +43,8 @@ test("marking works with a verified session and stops immediately after logout",
   await page.getByRole("button",{name:"Mở menu tài khoản"}).click();
   await page.getByRole("button",{name:"Đăng xuất"}).click();
   await expect(page.getByRole("note")).toContainText("Đăng nhập Google để đánh dấu");
-  await expect(question.getByRole("button",{name:"Đánh dấu đã hiểu"})).toBeDisabled();
+  await expect(question.getByRole("button",{name:"Đánh dấu đã hiểu"})).toBeEnabled();
+  await question.getByRole("button",{name:"Đánh dấu đã hiểu"}).click();
+  await expect(page.getByRole("dialog",{name:"Đăng nhập để lưu tiến độ"})).toBeVisible();
   expect(await page.evaluate(()=>localStorage.getItem("interview-prep-progress-v1"))).toBe(saved);
 });

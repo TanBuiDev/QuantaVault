@@ -14,6 +14,7 @@ import { MarkdownContent } from "./MarkdownContent";
 
 import type { PracticeTab } from "./practiceTypes";
 import type { usePracticeWorkspace } from "./usePracticeWorkspace";
+import { useAccount } from "@/lib/auth/AccountProvider";
 function difficultyVariant(difficulty: ProblemContent["difficulty"]) {
   if (difficulty === "Easy") return "success" as const;
   if (difficulty === "Medium") return "warning" as const;
@@ -22,6 +23,7 @@ function difficultyVariant(difficulty: ProblemContent["difficulty"]) {
 }
 
 export function PracticeStudyContent(model: ReturnType<typeof usePracticeWorkspace>) {
+  const { requestLogin } = useAccount();
   const { content, hints, sectionName, updateProblem, progress, canTrackProgress, activeTab, wordWrap, langMode, handleSetLangMode, problemMedia, tabs, changeTab } = model;
   return (
     <div className="space-y-4">
@@ -149,6 +151,10 @@ export function PracticeStudyContent(model: ReturnType<typeof usePracticeWorkspa
                     {canTrackProgress ? "Đã lưu" : "Đăng nhập để lưu"}
                   </span>
                 </div>
+                {!canTrackProgress && <button type="button" onClick={requestLogin}
+                  className="w-full rounded-xl border border-[var(--primary)]/30 bg-[var(--primary-soft)] px-4 py-3 text-left text-sm font-medium text-[var(--primary-strong)]">
+                  Tiếp tục với Google để viết và lưu ghi chú cho bài này
+                </button>}
                 <textarea
                   id={`notes-${content.id}`}
                   rows={10}

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { AlertTriangle, CheckCircle2, CloudOff, LoaderCircle } from "lucide-react";
 import { useAccount } from "@/lib/auth/AccountProvider";
+import { googleLoginHref } from "@/lib/auth/loginReturn";
 import { GoogleAccountPanel } from "./GoogleAccountPanel";
 import { GoogleLearningSyncPanel } from "./GoogleLearningSyncPanel";
 import { AdminAccountPanel } from "./AdminAccountPanel";
@@ -18,16 +19,27 @@ function selectedTab(isAdmin:boolean):AccountTab {
 }
 const progressStatus={
   synced:{title:"Đã lưu tiến độ học tập",detail:"Tiến độ của bạn được tự động cập nhật khi sử dụng các thiết bị khác.",icon:CheckCircle2,color:"text-emerald-600 dark:text-emerald-400"},
-  syncing:{title:"Đang lưu tiến độ",detail:"Các thay đổi của bạn đang được cập nhật.",icon:LoaderCircle,color:"text-[var(--primary-strong)]"},
+  syncing:{title:"Đang kiểm tra tiến độ",detail:"Đang đối chiếu dữ liệu giữa thiết bị và tài khoản.",icon:LoaderCircle,color:"text-[var(--primary-strong)]"},
   offline:{title:"Chưa thể kết nối",detail:"Tiến độ vẫn được giữ trên thiết bị này và sẽ đồng bộ khi có kết nối.",icon:CloudOff,color:"text-amber-600"},
   conflict:{title:"Cần kiểm tra tiến độ",detail:"Có dữ liệu cần được đối chiếu trước khi tiếp tục đồng bộ. Tiến độ hiện tại vẫn được giữ nguyên.",icon:AlertTriangle,color:"text-amber-600"},
   unlinked:{title:"Đang chuẩn bị đồng bộ",detail:"Tiến độ của bạn sẽ được tự động lưu vào tài khoản.",icon:LoaderCircle,color:"text-[var(--muted-strong)]"},
+  "auth-required":{title:"Cần đăng nhập lại",detail:"Phiên đã hết hạn. Tiến độ trên thiết bị được giữ nguyên và sẽ đồng bộ sau khi đăng nhập lại.",icon:AlertTriangle,color:"text-amber-600"},
+  forbidden:{title:"Không đủ quyền đồng bộ",detail:"Máy chủ đã từ chối quyền truy cập. Không có dữ liệu nào bị tự động xóa.",icon:AlertTriangle,color:"text-amber-600"},
 } as const;
 
 export function AccountTabs() {
   const [tab,setTab]=useState<AccountTab>("profile");
+  const [loggingOut,setLoggingOut]=useState(false);
+  const [logoutError,setLogoutError]=useState(false);
   const {user,loading,logout,syncStatus}=useAccount();
   const isAdmin=!loading && user?.role==="admin";
+  async function handleLogout() {
+    if(loggingOut)return;
+    setLoggingOut(true);
+    setLogoutError(false);
+    try { if(!(await logout()))setLogoutError(true); }
+    finally { setLoggingOut(false); }
+  }
   useEffect(()=>{
     if(loading)return;
     const update=()=>{
@@ -92,10 +104,11 @@ export function AccountTabs() {
               <GoogleAccountPanel key={user.id}/>
               <GoogleLearningSyncPanel key={user.id}/>
             </div>}
-            <button type="button" onClick={()=>void logout()} className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm font-medium">Đăng xuất</button>
+            {logoutError && <p role="alert" className="text-xs text-amber-600">Chưa đăng xuất được. Vui lòng thử lại; tài khoản vẫn đang đăng nhập.</p>}
+            <button type="button" disabled={loggingOut} onClick={()=>void handleLogout()} className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm font-medium disabled:opacity-60">{loggingOut?"Đang đăng xuất...":"Đăng xuất"}</button>
           </> : <div className="space-y-3">
             <p className="text-sm text-[var(--muted-strong)]">Đăng nhập Google để tự lưu và khôi phục tiến độ trên các thiết bị.</p>
-            <a href="/api/auth/google/start" className="inline-flex rounded-lg bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white">Tiếp tục với Google</a>
+            <a href="/api/auth/google/start" onClick={event=>{event.preventDefault();window.location.assign(googleLoginHref());}} className="inline-flex rounded-lg bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white">Tiếp tục với Google</a>
           </div>}
       </section>
       {isAdmin && <section id="account-panel-security" role="tabpanel" aria-labelledby="account-tab-security" hidden={tab!=="security"} className="space-y-4">

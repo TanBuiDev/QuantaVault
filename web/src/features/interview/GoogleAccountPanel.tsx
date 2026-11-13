@@ -21,6 +21,8 @@ const stateLabel={
   offline:"Chưa có kết nối — tiến độ lưu trên máy",
   conflict:"Cần đối chiếu dữ liệu",
   unlinked:"Đang chuẩn bị đồng bộ",
+  "auth-required":"Cần đăng nhập lại",
+  forbidden:"Không đủ quyền đồng bộ",
 };
 export function GoogleAccountPanel() {
   const {user,loading,syncStatus}=useAccount();

@@ -2,6 +2,7 @@
 
 import { ChevronLeft, ChevronRight, Columns, LayoutTemplate, Settings, WrapText } from "lucide-react";
 import Link from "next/link";
+import { useAccount } from "@/lib/auth/AccountProvider";
 
 
 
@@ -32,6 +33,7 @@ function getStatusConfig(status?: string) {
 }
 
 export function PracticeToolbar(model: ReturnType<typeof usePracticeWorkspace>) {
+  const { requestLogin } = useAccount();
   const {
     content,
     previous,
@@ -157,9 +159,8 @@ export function PracticeToolbar(model: ReturnType<typeof usePracticeWorkspace>) 
               return (
                 <button
                   type="button"
-                  onClick={handleCycleStatus}
-                  disabled={!canTrackProgress}
-                  title={!canTrackProgress ? "Đăng nhập Google để lưu tiến độ" : "Click to change status"}
+                  onClick={() => canTrackProgress ? handleCycleStatus() : requestLogin()}
+                  title={!canTrackProgress ? "Đăng nhập Google để lưu tiến độ" : "Nhấn để đổi trạng thái"}
                   className={`h-8 px-3.5 text-xs font-semibold rounded-lg transition-all duration-150 active:scale-[0.97] cursor-pointer select-none ${statusConfig.className}`}
                 >
                   {statusConfig.label}
