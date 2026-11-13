@@ -13,24 +13,36 @@ const TABS: { id:AccountTab;label:string }[] = [
   {id:"sync",label:"Đồng bộ"},
   {id:"security",label:"Bảo mật"},
 ];
-function selectedTab():AccountTab {
+function selectedTab(isAdmin:boolean):AccountTab {
   const hash=window.location.hash;
   if(hash==="#sync")return "sync";
-  if(hash==="#administration")return "security";
+  if(hash==="#administration")return isAdmin ? "security" : "profile";
   const tab=new URLSearchParams(window.location.search).get("tab");
-  return tab==="sync"||tab==="security" ? tab : "profile";
+  return tab==="sync" || (isAdmin && tab==="security") ? tab : "profile";
 }
 export function AccountTabs() {
   const [tab,setTab]=useState<AccountTab>("profile");
   const {user,loading,logout}=useAccount();
+  const isAdmin=!loading && user?.role==="admin";
   useEffect(()=>{
-    const update=()=>setTab(selectedTab());
+    if(loading)return;
+    const update=()=>{
+      setTab(selectedTab(isAdmin));
+      // Old links must never leave regular users on a non-existent admin panel.
+      const url=new URL(window.location.href);
+      if(!isAdmin && (url.hash==="#administration" || url.searchParams.get("tab")==="security")){
+        url.searchParams.set("tab","profile");
+        url.hash="";
+        window.history.replaceState(null,"",url.pathname+url.search);
+      }
+    };
     update();
     window.addEventListener("popstate",update);
     window.addEventListener("hashchange",update);
     return ()=>{window.removeEventListener("popstate",update);window.removeEventListener("hashchange",update);};
-  },[]);
+  },[isAdmin,loading]);
   function choose(next:AccountTab) {
+    if(next==="security" && !isAdmin)return;
     setTab(next);
     const url=new URL(window.location.href);
     url.searchParams.set("tab",next);
@@ -42,8 +54,8 @@ export function AccountTabs() {
     : <span className="grid size-14 place-items-center rounded-full bg-[var(--primary-soft)] text-xl font-semibold text-[var(--primary-strong)]">{user?.name?.charAt(0).toUpperCase()||"G"}</span>;
   return (
     <div className="space-y-5">
-      <div role="tablist" aria-label="Cài đặt tài khoản" className="grid grid-cols-3 gap-1 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-1">
-        {TABS.map(item=><button key={item.id} id={"account-tab-"+item.id} type="button" role="tab" aria-selected={tab===item.id} aria-controls={"account-panel-"+item.id}
+      <div role="tablist" aria-label="Cài đặt tài khoản" className={`grid ${isAdmin ? "grid-cols-3" : "grid-cols-2"} gap-1 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-1`}>
+        {TABS.filter(item=>item.id!=="security" || isAdmin).map(item=><button key={item.id} id={"account-tab-"+item.id} type="button" role="tab" aria-selected={tab===item.id} aria-controls={"account-panel-"+item.id}
           onClick={()=>choose(item.id)}
           className={`rounded-lg px-3 py-2.5 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)] ${tab===item.id ? "bg-[var(--primary-soft)] text-[var(--primary-strong)]" : "text-[var(--muted-strong)] hover:bg-[var(--surface-hover)]"}`}>
           {item.label}
@@ -76,13 +88,9 @@ export function AccountTabs() {
           <div className="mt-3"><InterviewCloudSync /></div>
         </details>
       </section>
-      <section id="account-panel-security" role="tabpanel" aria-labelledby="account-tab-security" hidden={tab!=="security"} className="space-y-4">
-        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-sm">
-          <h2 className="font-semibold">Bảo mật tài khoản</h2>
-          <p className="mt-2 text-[var(--muted-strong)]">{!user ? "Đăng nhập với Google để bảo vệ tài khoản và lưu tiến độ học tập." : user.role === "admin" ? "Bạn đang đăng nhập bằng Google. Để quản lý tài khoản, hãy xác nhận mật khẩu quản trị bên dưới." : "Bạn đang đăng nhập bằng Google. Hãy giữ an toàn thông tin đăng nhập và không chia sẻ tài khoản với người khác."}</p>
-        </div>
-        {user?.role === "admin" && <AdminAccountPanel key={user.id} />}
-      </section>
+      {isAdmin && <section id="account-panel-security" role="tabpanel" aria-labelledby="account-tab-security" hidden={tab!=="security"} className="space-y-4">
+        <AdminAccountPanel key={user?.id ?? "admin"} />
+      </section>}
     </div>
   );
 }
