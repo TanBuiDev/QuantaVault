@@ -9,6 +9,7 @@ export interface InterviewStatsCardProps {
   questions: InterviewQuestion[];
   progress: InterviewProgressState;
   hydrated?: boolean;
+  canTrackProgress?: boolean;
   activeStatusFilter: InterviewStatus | "bookmarked" | "all";
   onSelectStatusFilter: (status: InterviewStatus | "bookmarked" | "all") => void;
 }
@@ -17,6 +18,7 @@ export function InterviewStatsCard({
   questions,
   progress,
   hydrated = true,
+  canTrackProgress = true,
   activeStatusFilter,
   onSelectStatusFilter,
 }: InterviewStatsCardProps) {
@@ -100,9 +102,9 @@ export function InterviewStatsCard({
               <div className="mt-2 flex items-baseline gap-3">
                 {hydrated ? (
                   <>
-                    <span className="text-5xl font-black tracking-tight sm:text-6xl">{stats.percent}%</span>
+                    <span className="text-5xl font-black tracking-tight sm:text-6xl">{canTrackProgress ? `${stats.percent}%` : "—"}</span>
                     <span className="text-sm font-semibold text-indigo-200">
-                      {stats.learnedCount} / {stats.total} câu hỏi
+                      {canTrackProgress ? `${stats.learnedCount} / ${stats.total} câu hỏi` : `Tổng ${stats.total} câu hỏi` }
                     </span>
                   </>
                 ) : (
@@ -127,12 +129,15 @@ export function InterviewStatsCard({
           <div className="mt-6 h-3 overflow-hidden rounded-full bg-black/30 ring-1 ring-white/15">
             <div
               className="h-full rounded-full bg-gradient-to-r from-emerald-400 via-teal-300 to-indigo-300 transition-all duration-500"
-              style={{ width: `${hydrated ? stats.percent : 0}%` }}
+              style={{ width: `${hydrated && canTrackProgress ? stats.percent : 0}%` }}
             />
           </div>
         </CardContent>
       </Card>
 
+      {!canTrackProgress && <p role="status" className="xl:col-span-2 text-xs text-[var(--muted-strong)]">
+        Đăng nhập để xem số câu đã hiểu, cần ôn lại và đánh dấu. Tiến độ của tài khoản không bị xóa khi đăng xuất.
+      </p>}
       {/* 2. Interactive Filter / Stats Grid */}
       <div className="grid grid-cols-2 gap-3">
         {cards.map((c) => {
@@ -159,7 +164,7 @@ export function InterviewStatsCard({
 
               <div className="mt-2">
                 {hydrated ? (
-                  <p className="text-3xl font-black tracking-tight text-[var(--foreground)]">{c.value}</p>
+                  <p className="text-3xl font-black tracking-tight text-[var(--foreground)]">{canTrackProgress ? c.value : "—"}</p>
                 ) : (
                   <div className="h-9 w-12 rounded-lg bg-[var(--surface-hover)] animate-pulse" />
                 )}
