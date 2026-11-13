@@ -10,6 +10,7 @@ import type { ProblemContent } from "@/lib/content";
 import { PROGRESS_STORAGE_KEY } from "@/lib/progress";
 import { ProgressProvider } from "@/lib/progress/provider";
 
+vi.mock("@/lib/auth/AccountProvider", () => ({ useAccount: () => ({ requestLogin: vi.fn() }) }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: vi.fn(), push: vi.fn() }) }));
 vi.mock("../CodeEditorPanel", () => ({ CodeEditorPanel: ({ onRun, onSubmit }: { onRun: () => void; onSubmit: () => void }) => <div><button onClick={onRun}>Test Run</button><button onClick={onSubmit}>Test Submit</button></div> }));
 
