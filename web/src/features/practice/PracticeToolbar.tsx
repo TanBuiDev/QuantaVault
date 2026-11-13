@@ -3,6 +3,7 @@
 import { ChevronLeft, ChevronRight, Columns, LayoutTemplate, Settings, WrapText } from "lucide-react";
 import Link from "next/link";
 import { useAccount } from "@/lib/auth/AccountProvider";
+import { useConfirm } from "@/components/ui/ConfirmDialog";
 
 
 
@@ -34,6 +35,7 @@ function getStatusConfig(status?: string) {
 
 export function PracticeToolbar(model: ReturnType<typeof usePracticeWorkspace>) {
   const { requestLogin } = useAccount();
+  const confirm = useConfirm();
   const {
     content,
     previous,
@@ -41,6 +43,9 @@ export function PracticeToolbar(model: ReturnType<typeof usePracticeWorkspace>) 
     updateProblem,
     canTrackProgress,
     progress,
+    legacyDraftAvailable,
+    importLegacyDraft,
+    draftStorageError,
     layoutMode,
     wordWrap,
     isSettingsOpen,
@@ -233,7 +238,13 @@ export function PracticeToolbar(model: ReturnType<typeof usePracticeWorkspace>) 
         </div>
       </div>
     </header>
-
-
+    {draftStorageError && <p role="alert" className="mt-2 rounded-xl border border-amber-500/40 p-3 text-xs text-amber-600">Trình duyệt không lưu được mã nháp. Hãy sao chép mã trước khi rời trang hoặc kiểm tra dung lượng lưu trữ.</p>}
+    {legacyDraftAvailable && <div className="mt-2 flex flex-wrap items-center gap-3 rounded-xl border border-amber-500/30 bg-amber-500/5 p-3">
+      <p className="flex-1 text-xs text-[var(--muted-strong)]">Tìm thấy mã nháp cũ trên thiết bị này, chưa xác định tài khoản sở hữu. Chỉ nhập nếu đây là mã của bạn; bản cũ vẫn được giữ nguyên.</p>
+      <button type="button" className="rounded-lg border border-[var(--border)] px-3 py-2 text-xs font-semibold" onClick={async () => {
+        const ok = await confirm({ title: "Nhập mã nháp chưa gắn tài khoản?", message: "Chỉ tiếp tục nếu đây là mã của bạn. Mã cũ sẽ được sao lưu nguyên trạng và mã của tài khoản hiện tại có thể được thay thế.", confirmText: "Nhập mã của tôi", cancelText: "Để sau", variant: "warning" });
+        if (ok) importLegacyDraft();
+      }}>Nhập mã cũ</button>
+    </div>}
   </>);
 }
