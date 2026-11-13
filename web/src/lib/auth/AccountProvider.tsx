@@ -3,8 +3,9 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import type { GoogleAccount } from "./googleOAuth";
 import { googleLoginHref } from "./loginReturn";
-import { GOOGLE_SYNC_STATUS, emitGoogleSync, classifyGoogleSyncError, canWriteLearningProgress, ensureAutoLinkedGoogleProgress, prepareGoogleDevice, setGoogleSessionActive, type GoogleSyncStatus } from "./googleSync";
+import { GOOGLE_SYNC_STATUS, emitGoogleSync, classifyGoogleSyncError, ensureAutoLinkedGoogleProgress, prepareGoogleDevice, setGoogleSessionActive, type GoogleSyncStatus } from "./googleSync";
 import { reconcileLearningProgress } from "./learningSync";
+import { canWriteLearningProgress } from "./progressAccess";
 
 export type SessionStatus = "checking" | "authenticated" | "guest" | "offline" | "expired";
 interface AccountValue {
