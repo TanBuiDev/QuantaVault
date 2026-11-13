@@ -6,7 +6,6 @@ import { useAccount } from "@/lib/auth/AccountProvider";
 import { GoogleAccountPanel } from "./GoogleAccountPanel";
 import { GoogleLearningSyncPanel } from "./GoogleLearningSyncPanel";
 import { AdminAccountPanel } from "./AdminAccountPanel";
-import { InterviewCloudSync } from "./InterviewCloudSync";
 
 type AccountTab = "profile" | "security";
 const TABS: { id:AccountTab;label:string }[] = [
@@ -93,11 +92,6 @@ export function AccountTabs() {
               <GoogleAccountPanel key={user.id}/>
               <GoogleLearningSyncPanel key={user.id}/>
             </div>}
-            <details className="rounded-xl border border-[var(--border)] p-3 text-sm">
-              <summary className="cursor-pointer font-medium">Khôi phục dữ liệu cũ</summary>
-              <p className="mt-2 text-xs text-[var(--muted-strong)]">Chỉ dùng nếu trước đây bạn lưu tiến độ bằng mã khôi phục. Hãy kiểm tra và sao lưu dữ liệu trước khi tiếp tục.</p>
-              <div className="mt-3"><InterviewCloudSync/></div>
-            </details>
             <button type="button" onClick={()=>void logout()} className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm font-medium">Đăng xuất</button>
           </> : <div className="space-y-3">
             <p className="text-sm text-[var(--muted-strong)]">Đăng nhập Google để tự lưu và khôi phục tiến độ trên các thiết bị.</p>
