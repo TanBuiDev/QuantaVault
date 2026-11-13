@@ -14,6 +14,7 @@ interface AccountValue {
   refresh: () => Promise<void>;
   logout: () => Promise<boolean>;
   syncStatus: GoogleSyncStatus;
+  syncConfirmedAt: number;
   requestLogin: () => void;
 }
 const AccountContext = createContext<AccountValue | null>(null);
@@ -97,6 +98,11 @@ export function AccountProvider({ children }: { children: ReactNode }) {
   const [sessionStatus, setSessionStatus] = useState<SessionStatus>("checking");
   const lastSessionCheck = useRef(0);
   const [syncStatus, setSyncStatus] = useState<GoogleSyncStatus>("unlinked");
+  const [syncConfirmedAt, setSyncConfirmedAt] = useState(0);
+  const reportSyncStatus = useCallback((status: GoogleSyncStatus) => {
+    setSyncStatus(status);
+    if (status === "synced") setSyncConfirmedAt(Date.now());
+  }, []);
   const [authPromptOpen, setAuthPromptOpen] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
   const refresh = useCallback(async () => {
@@ -155,8 +161,8 @@ export function AccountProvider({ children }: { children: ReactNode }) {
     } catch { return false; }
   }, []);
   return (
-    <AccountContext.Provider value={{ user, loading, sessionStatus, refresh, logout, syncStatus, requestLogin: () => setAuthPromptOpen(true) }}>
-      <ProgressAutoSync userId={user?.id ?? null} setStatus={setSyncStatus} onSessionInvalid={refresh} />
+    <AccountContext.Provider value={{ user, loading, sessionStatus, refresh, logout, syncStatus, syncConfirmedAt, requestLogin: () => setAuthPromptOpen(true) }}>
+      <ProgressAutoSync userId={user?.id ?? null} setStatus={reportSyncStatus} onSessionInvalid={refresh} />
       {children}
       {(sessionStatus === "offline" || sessionStatus === "expired") && !authPromptOpen && <div role="status" className="fixed bottom-3 right-3 z-[130] w-[min(92vw,360px)] rounded-xl border border-amber-500/40 bg-[var(--surface)] px-4 py-3 shadow-lg">
         <p className="text-sm font-semibold text-[var(--foreground)]">{sessionStatus === "offline" ? "Chưa thể xác minh phiên Google" : "Phiên Google đã hết hạn"}</p>
