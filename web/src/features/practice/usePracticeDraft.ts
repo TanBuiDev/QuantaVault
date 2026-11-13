@@ -113,6 +113,7 @@ export function usePracticeDraft(problemId: number, starterCode: string, userId?
   return {
     layoutMode,
     userCode: loadedScope === scope ? savedCode : starterCode,
+    draftReady: loadedScope === scope,
     wordWrap,
     isSettingsOpen,
     setIsSettingsOpen,
