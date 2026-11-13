@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from "react";
 
+import { canWriteLearningProgress, useLearningSession } from "../auth/progressAccess";
 import {
   PROGRESS_STORAGE_KEY,
   createEmptyProgressState,
@@ -30,6 +31,7 @@ let cachedState: ProgressStateV1 = SERVER_SNAPSHOT;
 export interface ProgressContextValue {
   state: ProgressStateV1;
   hydrated: boolean;
+  canTrackProgress: boolean;
   getProgress: (problemId: number) => ProblemProgress | null;
   updateProblem: (
     problemId: number,
@@ -94,7 +96,9 @@ function publish(next: ProgressStateV1): void {
 const ProgressContext = createContext<ProgressContextValue | null>(null);
 
 export function ProgressProvider({ children }: { children: ReactNode }) {
-  const state = useSyncExternalStore(subscribe, getBrowserSnapshot, () => SERVER_SNAPSHOT);
+  const storedState = useSyncExternalStore(subscribe, getBrowserSnapshot, () => SERVER_SNAPSHOT);
+  const canTrackProgress = useLearningSession();
+  const state = canTrackProgress ? storedState : SERVER_SNAPSHOT;
   const hydrated = useSyncExternalStore(
     subscribeHydration,
     getHydratedSnapshot,
@@ -108,18 +112,20 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
 
   const updateProblem = useCallback<ProgressContextValue["updateProblem"]>(
     (problemId, patch) => {
+      if (!canWriteLearningProgress()) return;
       publish(upsertProblemProgress(getBrowserSnapshot(), problemId, patch));
     },
     [],
   );
 
   const clearProblem = useCallback((problemId: number) => {
+    if (!canWriteLearningProgress()) return;
     publish(removeProblemProgress(getBrowserSnapshot(), problemId));
   }, []);
 
   const value = useMemo<ProgressContextValue>(
-    () => ({ state, hydrated, getProgress, updateProblem, clearProblem }),
-    [state, hydrated, getProgress, updateProblem, clearProblem],
+    () => ({ state, hydrated, canTrackProgress, getProgress, updateProblem, clearProblem }),
+    [state, hydrated, canTrackProgress, getProgress, updateProblem, clearProblem],
   );
 
   return <ProgressContext.Provider value={value}>{children}</ProgressContext.Provider>;

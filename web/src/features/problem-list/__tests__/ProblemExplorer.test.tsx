@@ -1,9 +1,10 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import { ProblemExplorer } from "@/features/problem-list/ProblemExplorer";
 import type { ProblemSummary, StudyPlanSection } from "@/lib/content";
 import { PROGRESS_STORAGE_KEY } from "@/lib/progress";
+import { setLearningSessionActive } from "@/lib/auth/progressAccess";
 import { ProgressProvider } from "@/lib/progress/provider";
 
 const summaries: ProblemSummary[] = [
@@ -56,6 +57,7 @@ const sections: StudyPlanSection[] = [
 
 describe("ProblemExplorer", () => {
   beforeEach(() => {
+    setLearningSessionActive(true);
     localStorage.clear();
     localStorage.setItem(
       PROGRESS_STORAGE_KEY,
@@ -77,6 +79,8 @@ describe("ProblemExplorer", () => {
       }),
     );
   });
+
+  afterEach(() => setLearningSessionActive(false));
 
   it("searches by title and links to the practice route", async () => {
     render(

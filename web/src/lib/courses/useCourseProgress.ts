@@ -2,6 +2,7 @@
 
 import { useCallback, useSyncExternalStore } from "react";
 import type { AllCoursesProgressState, CourseProgressRecord } from "./types";
+import { canWriteLearningProgress, useLearningSession } from "../auth/progressAccess";
 
 const STORAGE_KEY = "quantavault-course-progress:v1";
 const LOCAL_CHANGE_EVENT = "quantavault-course-progress:change";
@@ -98,7 +99,9 @@ export function replaceCourseProgress(state: AllCoursesProgressState): void {
 }
 
 export function useCourseProgress() {
-  const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const storedState = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const canTrackProgress = useLearningSession();
+  const state = canTrackProgress ? storedState : SERVER_SNAPSHOT;
   const hydrated = typeof window !== "undefined";
 
   const getCourseRecord = useCallback(
@@ -118,6 +121,7 @@ export function useCourseProgress() {
 
   const toggleLessonCompleted = useCallback(
     (courseId: string, lessonId: string) => {
+      if (!canWriteLearningProgress()) return;
       const currentState = getSnapshot();
       const curRecord = currentState.courses[courseId] || {
         completedLessonIds: [],
@@ -148,6 +152,7 @@ export function useCourseProgress() {
 
   const recordLastAccessed = useCallback(
     (courseId: string, lessonId: string) => {
+      if (!canWriteLearningProgress()) return;
       const currentState = getSnapshot();
       const curRecord = currentState.courses[courseId] || {
         completedLessonIds: [],
@@ -188,6 +193,7 @@ export function useCourseProgress() {
 
   return {
     hydrated,
+    canTrackProgress,
     getCourseRecord,
     isLessonCompleted,
     toggleLessonCompleted,

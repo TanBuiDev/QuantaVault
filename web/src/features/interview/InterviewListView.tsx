@@ -303,6 +303,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
   const {
     state: progress,
     hydrated,
+    canTrackProgress,
     isLearned,
     isReview,
     isBookmarked,
@@ -310,6 +311,8 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
     toggleReview,
     toggleBookmark,
   } = useInterviewProgress();
+
+  const canMarkProgress = !accountLoading && Boolean(user) && canTrackProgress;
 
   // Restore scroll position after progress is hydrated
   useScrollRestoration("interview_list_scroll", hydrated);
@@ -482,6 +485,12 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
         </div>
       </header>
 
+      {!accountLoading && !canMarkProgress && (
+        <div role="note" className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-sm">
+          <p className="text-[var(--muted-strong)]">Đăng nhập Google để đánh dấu đã hiểu, cần ôn lại hoặc lưu câu hỏi.</p>
+          <a href="/api/auth/google/start" className="font-semibold text-[var(--primary-strong)] hover:underline">Đăng nhập Google</a>
+        </div>
+      )}
       {/* 2. Progress Overview Stats Card */}
       <PublishedConflictReview
         canonicalQuestions={initialQuestions}
@@ -499,7 +508,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
         />
       </section>
 
-      <InterviewMergeRecovery progress={progress} drafts={drafts} publishedCache={publishedCache} />
+      {canMarkProgress && <InterviewMergeRecovery progress={progress} drafts={drafts} publishedCache={publishedCache} />}
 
 
 
@@ -626,6 +635,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
                       question={question}
                       index={globalIndex}
                       textScale={textScale}
+                      canMarkProgress={canMarkProgress}
                       isLearned={isLearned(question.id)}
                       isReview={isReview(question.id)}
                       isBookmarked={isBookmarked(question.id)}
@@ -829,6 +839,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
         onToggleLearned={toggleLearned}
         onToggleReview={toggleReview}
         onToggleBookmark={toggleBookmark}
+        canMarkProgress={canMarkProgress}
       />
     </div>
   );

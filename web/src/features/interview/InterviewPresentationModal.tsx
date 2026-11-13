@@ -29,6 +29,7 @@ export interface InterviewPresentationModalProps {
   onClose: () => void;
   questions: InterviewQuestion[];
   initialIndex?: number;
+  canMarkProgress?: boolean;
   isLearned: (id: string) => boolean;
   isReview: (id: string) => boolean;
   isBookmarked: (id: string) => boolean;
@@ -45,6 +46,7 @@ export function InterviewPresentationModal({
   isLearned,
   isReview,
   isBookmarked,
+  canMarkProgress = true,
   onToggleLearned,
   onToggleReview,
   onToggleBookmark,
@@ -496,6 +498,8 @@ export function InterviewPresentationModal({
             <button
               type="button"
               onClick={() => onToggleLearned(currentQ.id)}
+              disabled={!canMarkProgress}
+              title={!canMarkProgress ? "Đăng nhập Google để lưu tiến độ" : undefined}
               className={`inline-flex min-h-10 items-center gap-1.5 rounded-xl border px-3 text-xs font-bold transition-all cursor-pointer ${
                 hasLearned
                   ? "border-emerald-500/50 bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 shadow-xs"
@@ -510,6 +514,8 @@ export function InterviewPresentationModal({
             <button
               type="button"
               onClick={() => onToggleReview(currentQ.id)}
+              disabled={!canMarkProgress}
+              title={!canMarkProgress ? "Đăng nhập Google để lưu tiến độ" : undefined}
               className={`inline-flex min-h-10 items-center gap-1.5 rounded-xl border px-3 text-xs font-bold transition-all cursor-pointer ${
                 hasReview
                   ? "border-amber-500/50 bg-amber-500/20 text-amber-600 dark:text-amber-400 shadow-xs"
@@ -524,6 +530,8 @@ export function InterviewPresentationModal({
             <button
               type="button"
               onClick={() => onToggleBookmark(currentQ.id)}
+              disabled={!canMarkProgress}
+              title={!canMarkProgress ? "Đăng nhập Google để lưu tiến độ" : undefined}
               className={`inline-flex min-h-10 items-center gap-1.5 rounded-xl border px-3 text-xs font-bold transition-all cursor-pointer ${
                 hasBookmarked
                   ? "border-indigo-500/50 bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 shadow-xs"
