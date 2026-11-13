@@ -36,8 +36,8 @@ describe("Admin panel visibility", () => {
     auth.role = "admin";
     render(<AdminAccountPanel />);
     expect(screen.getByRole("region", {name:"Quản trị tài khoản"})).toBeInTheDocument();
-    expect(screen.getByText("Bạn có quyền admin.", {exact:false})).toBeInTheDocument();
-    expect(screen.getByRole("button", {name:/Xác thực 15 phút/})).toBeInTheDocument();
+    expect(screen.getByText("Bạn có quyền quản trị QuantaVault.", {exact:false})).toBeInTheDocument();
+    expect(screen.getByRole("button", {name:/Mở quyền quản lý/})).toBeInTheDocument();
     expect(screen.queryByText("Kích hoạt admin đầu tiên")).not.toBeInTheDocument();
     expect(screen.queryByText("TOTP (6 số)")).not.toBeInTheDocument();
     await waitFor(() => expect(fetch).toHaveBeenCalledWith("/api/admin/status", expect.any(Object)));
