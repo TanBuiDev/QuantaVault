@@ -81,15 +81,12 @@ function normalizeState(value: unknown): ProgressStateV1 {
 }
 
 export function readProgress(): ProgressStateV1 {
-  if (typeof window === "undefined" || !window.localStorage) return emptyState();
-  const raw = window.localStorage.getItem(PROGRESS_STORAGE_KEY);
-  if (!raw) return emptyState();
-
+  if (typeof window === "undefined") return emptyState();
   try {
+    const raw = window.localStorage.getItem(PROGRESS_STORAGE_KEY);
+    if (!raw) return emptyState();
     return normalizeState(JSON.parse(raw));
-  } catch {
-    return emptyState();
-  }
+  } catch { return emptyState(); }
 }
 
 export function writeProgress(state: ProgressStateV1): void {
