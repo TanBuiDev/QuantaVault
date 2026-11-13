@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AlertTriangle, ChevronDown, LogOut, Settings, ShieldCheck, UserRound } from "lucide-react";
 import controls from "@/components/ui/SidebarControl.module.css";
 import { useAccount } from "@/lib/auth/AccountProvider";
+import { googleLoginHref } from "@/lib/auth/loginReturn";
 
 function GoogleLogo() {
   return (
@@ -33,6 +34,7 @@ export function SidebarAccount({ compact = false }: { compact?: boolean }) {
     return (
       <a
         href="/api/auth/google/start"
+        onClick={event => { event.preventDefault(); window.location.assign(googleLoginHref()); }}
         title="Đăng nhập bằng Google"
         aria-label="Đăng nhập bằng Google"
         className={`${controlClass} ${controls.centerContent}`}
