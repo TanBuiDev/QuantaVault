@@ -28,7 +28,7 @@ export function CourseSyllabusSidebar({
   onLessonSelect,
   className
 }: CourseSyllabusSidebarProps) {
-  const { hydrated, isLessonCompleted, getCourseCompletion } = useCourseProgress();
+  const { hydrated, canTrackProgress, isLessonCompleted, getCourseCompletion } = useCourseProgress();
   const { completedCount, totalLessons, percentage } = hydrated
     ? getCourseCompletion(course.id, course.totalLessons)
     : { completedCount: 0, totalLessons: course.totalLessons, percentage: 0 };
@@ -85,10 +85,10 @@ export function CourseSyllabusSidebar({
           <div className="flex items-center justify-between text-[11px]">
             <span className="text-[var(--muted)]">Tiến độ khóa học</span>
             <span className="font-bold text-[var(--foreground)]">
-              {completedCount}/{totalLessons} ({percentage}%)
+              {canTrackProgress ? `${completedCount}/${totalLessons} (${percentage}%)` : `Tổng ${totalLessons} bài`}
             </span>
           </div>
-          <ProgressBar value={percentage} max={100} />
+          {canTrackProgress && <ProgressBar value={percentage} max={100} />}
         </div>
       </div>
 
@@ -105,6 +105,7 @@ export function CourseSyllabusSidebar({
             </span>
           </div>
 
+          {!canTrackProgress && <p className="text-xs text-[var(--muted)]">Đăng nhập Google để xem tiến độ từng bài. Bạn vẫn có thể đọc nội dung như bình thường.</p>}
           {/* Status Legend */}
           <div className="flex items-center gap-2.5 text-[10px] text-[var(--muted)]">
             <span className="flex items-center gap-1">
