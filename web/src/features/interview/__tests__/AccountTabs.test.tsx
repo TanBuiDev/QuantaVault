@@ -19,6 +19,7 @@ describe("Account route tabs",()=>{
     fireEvent.click(screen.getByRole("tab",{name:"Bảo mật"}));
     expect(window.location.search).toContain("tab=security");
     expect(screen.getByRole("tabpanel",{name:"Bảo mật"})).not.toHaveAttribute("hidden");
+    expect(screen.queryByText("Restricted admin panel")).not.toBeInTheDocument();
   });
   it("accepts links from the legacy hash navigation",()=>{
     window.history.replaceState(null,"","/account/#administration");

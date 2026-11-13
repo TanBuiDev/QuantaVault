@@ -81,7 +81,7 @@ export function AccountTabs() {
           <h2 className="font-semibold">Bảo mật tài khoản</h2>
           <p className="mt-2 text-[var(--muted-strong)]">{user ? "Phiên đăng nhập Google được xác thực ở máy chủ. Quyền quản trị được kiểm tra riêng cho từng API." : "Đăng nhập Google để xem thông tin bảo mật và quyền tài khoản."}</p>
         </div>
-        <AdminAccountPanel key={user?.id ?? "guest"} />
+        {user?.role === "admin" && <AdminAccountPanel key={user.id} />}
       </section>
     </div>
   );
