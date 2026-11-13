@@ -67,12 +67,10 @@ export function usePracticeDraft(problemId: number, starterCode: string, userId?
   }, [scope, problemId, starterCode]);
 
   const handleToggleWordWrap = () => {
-    setWordWrap(prev => {
-      const next = !prev;
-      try { localStorage.setItem("preferred_word_wrap", String(next)); }
-      catch { setDraftStorageError(true); }
-      return next;
-    });
+    const next = !wordWrap;
+    setWordWrap(next);
+    try { localStorage.setItem("preferred_word_wrap", String(next)); }
+    catch { setDraftStorageError(true); }
   };
   const langMode = mounted ? localLangMode : "bilingual";
   function handleSetLangMode(mode: "bilingual" | "en" | "vi") {
