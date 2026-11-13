@@ -7,6 +7,10 @@ async function clearProgress(page: import("@playwright/test").Page) {
 }
 
 test("Top Interview 150 study workflow persists progress without exposing spoilers", async ({ page }) => {
+  // Saving learning status requires a verified Google session.
+  await page.route("**/api/auth/session",route=>route.fulfill({json:{
+    ok:true,user:{id:"e2e-student",name:"Student",email:"student@example.test",role:"user"},
+  }}));
   await clearProgress(page);
 
   await expect(page.getByRole("heading", { name: "Top Interview 150" })).toBeVisible();
