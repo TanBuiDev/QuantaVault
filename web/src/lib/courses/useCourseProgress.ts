@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useSyncExternalStore } from "react";
+import { useCallback, useState, useSyncExternalStore } from "react";
 import type { AllCoursesProgressState, CourseProgressRecord } from "./types";
 import { canWriteLearningProgress, useLearningSession } from "../auth/progressAccess";
 
@@ -71,16 +71,18 @@ function subscribe(callback: () => void): () => void {
   };
 }
 
-function emitChange(nextState: AllCoursesProgressState) {
-  if (typeof window === "undefined") return;
+function emitChange(nextState: AllCoursesProgressState): boolean {
+  if (typeof window === "undefined") return false;
   try {
     const serialized = JSON.stringify(nextState);
     window.localStorage.setItem(STORAGE_KEY, serialized);
     cachedRaw = serialized;
     cachedState = nextState;
     window.dispatchEvent(new Event(LOCAL_CHANGE_EVENT));
+    return true;
   } catch {
-    // Ignore quota issues
+    // Do not silently claim a successful local save.
+    return false;
   }
 }
 
@@ -100,6 +102,7 @@ export function replaceCourseProgress(state: AllCoursesProgressState): void {
 
 export function useCourseProgress() {
   const storedState = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const [storageError, setStorageError] = useState(false);
   const canTrackProgress = useLearningSession();
   const state = canTrackProgress ? storedState : SERVER_SNAPSHOT;
   const hydrated = typeof window !== "undefined";
@@ -145,7 +148,9 @@ export function useCourseProgress() {
           }
         }
       };
-      emitChange(nextState);
+      const saved = emitChange(nextState);
+      setStorageError(!saved);
+      return saved;
     },
     []
   );
@@ -158,7 +163,7 @@ export function useCourseProgress() {
         completedLessonIds: [],
         updatedAt: new Date().toISOString()
       };
-      if (curRecord.lastAccessedLessonId === lessonId) return;
+      if (curRecord.lastAccessedLessonId === lessonId) return true;
 
       const nextState: AllCoursesProgressState = {
         ...currentState,
@@ -194,6 +199,7 @@ export function useCourseProgress() {
   return {
     hydrated,
     canTrackProgress,
+    storageError,
     getCourseRecord,
     isLessonCompleted,
     toggleLessonCompleted,
