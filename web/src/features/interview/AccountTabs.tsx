@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { AlertTriangle, CheckCircle2, CloudOff, LoaderCircle } from "lucide-react";
 import { useAccount } from "@/lib/auth/AccountProvider";
+import { googleLoginHref } from "@/lib/auth/loginReturn";
 import { GoogleAccountPanel } from "./GoogleAccountPanel";
 import { GoogleLearningSyncPanel } from "./GoogleLearningSyncPanel";
 import { AdminAccountPanel } from "./AdminAccountPanel";
@@ -95,7 +96,7 @@ export function AccountTabs() {
             <button type="button" onClick={()=>void logout()} className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm font-medium">Đăng xuất</button>
           </> : <div className="space-y-3">
             <p className="text-sm text-[var(--muted-strong)]">Đăng nhập Google để tự lưu và khôi phục tiến độ trên các thiết bị.</p>
-            <a href="/api/auth/google/start" className="inline-flex rounded-lg bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white">Tiếp tục với Google</a>
+            <a href="/api/auth/google/start" onClick={event=>{event.preventDefault();window.location.assign(googleLoginHref());}} className="inline-flex rounded-lg bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white">Tiếp tục với Google</a>
           </div>}
       </section>
       {isAdmin && <section id="account-panel-security" role="tabpanel" aria-labelledby="account-tab-security" hidden={tab!=="security"} className="space-y-4">
