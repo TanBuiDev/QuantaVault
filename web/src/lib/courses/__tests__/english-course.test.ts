@@ -24,7 +24,7 @@ describe("English job interview: original PDF -> Markdown -> website", () => {
   it("adds the English course without modifying PostgreSQL or Redis", () => {
     const registry = getAllCourses();
     expect(registry.map((c) => c.slug)).toEqual([
-      "postgres-for-java", "redis-for-java", "english-job-interview"
+      "postgres-for-java", "redis-for-java", "english-job-interview", "spring-framework-for-java"
     ]);
     expect(registry[0].lessons).toHaveLength(20);
     expect(registry[1].lessons).toHaveLength(10);
@@ -66,7 +66,7 @@ describe("English job interview: original PDF -> Markdown -> website", () => {
     expect(flattenedChapters).toEqual(lessonIds);
     const headings = course!.lessons.reduce((count, lesson) => {
       const file = readFileSync(resolve(sourceRoot, "lessons", lesson.id + ".md"), "utf8");
-      expect(file).toBe(lesson.contentMarkdown);
+      expect(file.replace(/\r\n/g, "\n")).toBe(lesson.contentMarkdown.replace(/\r\n/g, "\n"));
       expect(lesson.contentMarkdown.length).toBeGreaterThan(1000);
       expect(lesson.title.length).toBeGreaterThan(10);
       expect(lesson.summary.length).toBeGreaterThan(25);

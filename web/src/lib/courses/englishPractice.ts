@@ -7,6 +7,7 @@ import rawPractice from "@/data/courses/english-job-interview/practice.json";
 export type PracticeKind = "question" | "answer";
 export type PracticeDirection = "vi-en" | "en-vi";
 export type PracticeStatus = "remembered" | "review";
+export type PracticeStatusFilter = "all" | "review" | "remembered" | "unreviewed";
 
 export interface PracticeAnswer {
   id: string;
@@ -58,6 +59,22 @@ export function getPracticeCards(lessonId: string, kind: PracticeKind): Practice
     questionVi: q.questionVi,
     sampleNumber: index + 1
   })));
+}
+
+export function filterPracticeCards(
+  cards: PracticeCard[],
+  direction: PracticeDirection,
+  scores: Record<string, PracticeStatus>,
+  filter: PracticeStatusFilter
+): PracticeCard[] {
+  if (filter === "all") return cards;
+  return cards.filter((card) => {
+    const score = scores[practiceScoreKey(card.id, direction)];
+    if (filter === "remembered") return score === "remembered";
+    if (filter === "review") return score === "review";
+    if (filter === "unreviewed") return !score;
+    return true;
+  });
 }
 
 const STORAGE_KEY = "quantavault-english-practice:v1";

@@ -6,6 +6,7 @@ node_modules/
 web/.next/
 web/node_modules/
 web/next-env.d.ts
+test-results/
 web/test-results/
 web/playwright-report/
 web/dist/

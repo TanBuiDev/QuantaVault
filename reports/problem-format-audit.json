@@ -1,0 +1,882 @@
+{
+  "summary": {
+    "total_files_scanned": 150,
+    "files_with_issues": 27,
+    "p0_count": 0,
+    "p1_count": 62,
+    "p2_count": 0
+  },
+  "results": [
+    {
+      "problem_id": 139,
+      "slug": "0139-word-break",
+      "file": "problems/1d-dp/0139-word-break/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 33,
+          "context": "Token `apple` code-formatted in VI but plain in EN",
+          "english": "Explanation: Return `true` because \"applepenapple\" can be segmented as \"apple pen apple\".",
+          "vietnamese": "Có thể tách thành `\"apple pen apple\"`; từ `apple` được dùng lại.",
+          "suggestion": "Format `apple` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        }
+      ]
+    },
+    {
+      "problem_id": 42,
+      "slug": "0042-trapping-rain-water",
+      "file": "problems/array-string/0042-trapping-rain-water/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 9,
+          "context": "Token `n` code-formatted in VI but plain in EN",
+          "english": "Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.",
+          "vietnamese": "Cho `n` số nguyên không âm biểu diễn bản đồ độ cao, trong đó mỗi cột có chiều rộng `1`, hãy tính lượng nước có thể giữ lại sau khi mưa.",
+          "suggestion": "Format `n` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 39,
+          "context": "Token `n` code-formatted in VI but plain in EN",
+          "english": "`1 <= n <= 2 * 10^4`",
+          "vietnamese": "`n` từ `1` đến `2 * 10^4`.",
+          "suggestion": "Format `n` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        }
+      ]
+    },
+    {
+      "problem_id": 45,
+      "slug": "0045-jump-game-ii",
+      "file": "problems/array-string/0045-jump-game-ii/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 9,
+          "context": "Token `n` code-formatted in VI but plain in EN",
+          "english": "You are given a 0-indexed array of integers `nums` of length n. You are initially positioned at index 0.",
+          "vietnamese": "Bạn được cho mảng số nguyên `nums` có độ dài `n`, đánh index từ `0`. Ban đầu bạn đứng tại index `0`.",
+          "suggestion": "Format `n` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 13,
+          "context": "Token `i` code-formatted in VI but plain in EN",
+          "english": "Each element `nums[i]` represents the maximum length of a forward jump from index i. In other words, if you are at index i, you can jump to any index (i + j) where:",
+          "vietnamese": "Mỗi `nums[i]` biểu diễn độ dài tối đa của một bước nhảy về phía trước từ index `i`. Nói cách khác, nếu đang ở `i`, bạn có thể nhảy đến `i + j` khi:",
+          "suggestion": "Format `i` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        }
+      ]
+    },
+    {
+      "problem_id": 68,
+      "slug": "0068-text-justification",
+      "file": "problems/array-string/0068-text-justification/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 67,
+          "context": "Token `be` code-formatted in VI but plain in EN",
+          "english": "Explanation: Note that the last line is \"shall be    \" instead of \"shall     be\", because the last line must be `left`-justified instead of fully-justified. Note that the second line is also `left`-justified because it contains only `one` word.",
+          "vietnamese": "Giải thích: Dòng cuối dùng một space giữa `shall` và `be`, rồi pad phần còn lại ở cuối vì phải căn trái. Dòng chỉ có một word cũng được căn trái.",
+          "suggestion": "Format `be` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 67,
+          "context": "Token `shall` code-formatted in VI but plain in EN",
+          "english": "Explanation: Note that the last line is \"shall be    \" instead of \"shall     be\", because the last line must be `left`-justified instead of fully-justified. Note that the second line is also `left`-justified because it contains only `one` word.",
+          "vietnamese": "Giải thích: Dòng cuối dùng một space giữa `shall` và `be`, rồi pad phần còn lại ở cuối vì phải căn trái. Dòng chỉ có một word cũng được căn trái.",
+          "suggestion": "Format `shall` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        }
+      ]
+    },
+    {
+      "problem_id": 134,
+      "slug": "0134-gas-station",
+      "file": "problems/array-string/0134-gas-station/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 9,
+          "context": "Token `n` code-formatted in VI but plain in EN",
+          "english": "There are n `gas` stations along a circular route, where the amount of `gas` at the `i`th station is `gas[i]`.",
+          "vietnamese": "Có `n` trạm xăng nằm trên một tuyến đường tròn; lượng xăng tại trạm thứ `i` là `gas[i]`.",
+          "suggestion": "Format `n` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 51,
+          "context": "Token `n` code-formatted in VI but plain in EN",
+          "english": "`1 <= n <= 10^5`",
+          "vietnamese": "`n` từ `1` đến `10^5`.",
+          "suggestion": "Format `n` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        }
+      ]
+    },
+    {
+      "problem_id": 135,
+      "slug": "0135-candy",
+      "file": "problems/array-string/0135-candy/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 9,
+          "context": "Token `n` code-formatted in VI but plain in EN",
+          "english": "There are n children standing in a line.",
+          "vietnamese": "Có `n` đứa trẻ đứng thành một hàng.",
+          "suggestion": "Format `n` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        }
+      ]
+    },
+    {
+      "problem_id": 169,
+      "slug": "0169-majority-element",
+      "file": "problems/array-string/0169-majority-element/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 53,
+          "context": "Token `n` code-formatted in VI but plain in EN",
+          "english": "`1 <= n <= 5 * 10^4`",
+          "vietnamese": "`n` nằm trong giới hạn được nêu trong đề nguồn.",
+          "suggestion": "Format `n` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        }
+      ]
+    },
+    {
+      "problem_id": 238,
+      "slug": "0238-product-of-array-except-self",
+      "file": "problems/array-string/0238-product-of-array-except-self/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 9,
+          "context": "Token `answer` code-formatted in VI but plain in EN",
+          "english": "Given an integer array `nums`, return an array answer such that `answer[i]` is equal to the product of all the elements of `nums` except `nums[i]`.",
+          "vietnamese": "Cho mảng số nguyên `nums`, hãy trả về mảng `answer` sao cho `answer[i]` bằng tích của tất cả phần tử trong `nums` ngoại trừ `nums[i]`.",
+          "suggestion": "Format `answer` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        }
+      ]
+    },
+    {
+      "problem_id": 380,
+      "slug": "0380-insert-delete-getrandom-o1",
+      "file": "problems/array-string/0380-insert-delete-getrandom-o1/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 9,
+          "context": "Token `RandomizedSet` code-formatted in VI but plain in EN",
+          "english": "Implement the RandomizedSet class:",
+          "vietnamese": "Hãy cài đặt lớp `RandomizedSet`:",
+          "suggestion": "Format `RandomizedSet` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 13,
+          "context": "Token `RandomizedSet` code-formatted in VI but plain in EN",
+          "english": "RandomizedSet() Initializes the RandomizedSet object.",
+          "vietnamese": "`RandomizedSet()` khởi tạo đối tượng `RandomizedSet`.",
+          "suggestion": "Format `RandomizedSet` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 54,
+          "context": "Token `insert` code-formatted in VI but plain in EN",
+          "english": "At most 2 * 10^5 calls will be made to insert, `remove`, and getRandom.",
+          "vietnamese": "Có tối đa `2 * 10^5` lời gọi tới `insert`, `remove` và `getRandom`.",
+          "suggestion": "Format `insert` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 54,
+          "context": "Token `getRandom` code-formatted in VI but plain in EN",
+          "english": "At most 2 * 10^5 calls will be made to insert, `remove`, and getRandom.",
+          "vietnamese": "Có tối đa `2 * 10^5` lời gọi tới `insert`, `remove` và `getRandom`.",
+          "suggestion": "Format `getRandom` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 58,
+          "context": "Token `getRandom` code-formatted in VI but plain in EN",
+          "english": "There will be at least one element in the data structure when getRandom is called.",
+          "vietnamese": "Luôn có ít nhất một phần tử khi `getRandom` được gọi.",
+          "suggestion": "Format `getRandom` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        }
+      ]
+    },
+    {
+      "problem_id": 4,
+      "slug": "0004-median-of-two-sorted-arrays",
+      "file": "problems/binary-search/0004-median-of-two-sorted-arrays/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 9,
+          "context": "Token `m` code-formatted in VI but plain in EN",
+          "english": "Given two sorted arrays `nums1` and `nums2` of size m and n respectively, return the median of the two sorted arrays.",
+          "vietnamese": "Cho hai mảng đã sắp xếp `nums1`, `nums2` có kích thước `m`, `n`, hãy trả về median của hai mảng kết hợp.",
+          "suggestion": "Format `m` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 9,
+          "context": "Token `n` code-formatted in VI but plain in EN",
+          "english": "Given two sorted arrays `nums1` and `nums2` of size m and n respectively, return the median of the two sorted arrays.",
+          "vietnamese": "Cho hai mảng đã sắp xếp `nums1`, `nums2` có kích thước `m`, `n`, hãy trả về median của hai mảng kết hợp.",
+          "suggestion": "Format `n` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        }
+      ]
+    },
+    {
+      "problem_id": 219,
+      "slug": "0219-contains-duplicate-ii",
+      "file": "problems/hashmap/0219-contains-duplicate-ii/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 9,
+          "context": "Token `i` code-formatted in VI but plain in EN",
+          "english": "Given an integer array `nums` and an integer `k`, return `true` if there are two distinct indices i and j in the array such that `nums[i]` == `nums[j]` and abs(i - j) <= `k`.",
+          "vietnamese": "Cho mảng số nguyên `nums` và số nguyên `k`, trả về `true` nếu tồn tại hai index khác nhau `i`, `j` sao cho `nums[i] == nums[j]` và `abs(i-j) <= k`.",
+          "suggestion": "Format `i` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 9,
+          "context": "Token `j` code-formatted in VI but plain in EN",
+          "english": "Given an integer array `nums` and an integer `k`, return `true` if there are two distinct indices i and j in the array such that `nums[i]` == `nums[j]` and abs(i - j) <= `k`.",
+          "vietnamese": "Cho mảng số nguyên `nums` và số nguyên `k`, trả về `true` nếu tồn tại hai index khác nhau `i`, `j` sao cho `nums[i] == nums[j]` và `abs(i-j) <= k`.",
+          "suggestion": "Format `j` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        }
+      ]
+    },
+    {
+      "problem_id": 295,
+      "slug": "0295-find-median-from-data-stream",
+      "file": "problems/heap/0295-find-median-from-data-stream/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 13,
+          "context": "Token `MedianFinder` code-formatted in VI but plain in EN",
+          "english": "Implement the MedianFinder class: `MedianFinder()` initializes the object, `void addNum(int num)` adds a number, and `double findMedian()` returns the median of all elements so far.",
+          "vietnamese": "Cài đặt lớp `MedianFinder` với constructor, `addNum(int)` để thêm số và `findMedian()` để trả median hiện tại.",
+          "suggestion": "Format `MedianFinder` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 30,
+          "context": "Token `num` code-formatted in VI but plain in EN",
+          "english": "`-10^5 <= num <= 10^5`; at least one element exists before `findMedian`; at most `5 * 10^4` calls are made.",
+          "vietnamese": "`num` trong `[-10^5,10^5]`; luôn có ít nhất một phần tử trước khi gọi `findMedian`; tối đa `5 * 10^4` lời gọi.",
+          "suggestion": "Format `num` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        }
+      ]
+    },
+    {
+      "problem_id": 57,
+      "slug": "0057-insert-interval",
+      "file": "problems/intervals/0057-insert-interval/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 9,
+          "context": "Token `starti` code-formatted in VI but plain in EN",
+          "english": "You are given an array of non-overlapping `intervals` `intervals` where `intervals[i]` = [starti, endi] represent the start and the end of the `i`th interval and `intervals` is sorted in ascending order by starti. You are also given an interval `newInterval` = [start, end] that represents the start and end of another interval.",
+          "vietnamese": "Bạn được cho một mảng các interval không chồng lấn `intervals`, trong đó `intervals[i] = [starti, endi]` biểu diễn điểm bắt đầu và kết thúc của interval thứ `i`. Mảng đã được sort tăng dần theo `starti`. Ngoài ra có một interval mới `newInterval = [start, end]`.",
+          "suggestion": "Format `starti` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 17,
+          "context": "Token `starti` code-formatted in VI but plain in EN",
+          "english": "Insert `newInterval` into `intervals` such that `intervals` is still sorted in ascending order by starti and `intervals` still does not have any overlapping `intervals` (merge overlapping `intervals` if necessary).",
+          "vietnamese": "Hãy chèn `newInterval` sao cho kết quả vẫn sorted tăng dần theo `starti` và không còn interval nào overlap; nếu cần thì phải merge các interval overlap.",
+          "suggestion": "Format `starti` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 65,
+          "context": "Token `starti` code-formatted in VI but plain in EN",
+          "english": "`intervals is sorted by starti in ascending order.`",
+          "vietnamese": "`intervals` đã được sort tăng dần theo `starti`.",
+          "suggestion": "Format `starti` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        }
+      ]
+    },
+    {
+      "problem_id": 452,
+      "slug": "0452-minimum-number-of-arrows-to-burst-balloons",
+      "file": "problems/intervals/0452-minimum-number-of-arrows-to-burst-balloons/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 9,
+          "context": "Token `xstart` code-formatted in VI but plain in EN",
+          "english": "There are some spherical balloons taped onto a flat wall that represents the XY-plane. The balloons are represented as a 2D integer array `points` where `points[i]` = [xstart, xend] denotes a balloon whose horizontal diameter stretches between xstart and xend. You do not know the exact y-coordinates of the balloons.",
+          "vietnamese": "Có một số quả bóng hình cầu được dán lên một bức tường phẳng biểu diễn mặt phẳng XY. Mỗi balloon được mô tả bởi `points[i] = [xstart, xend]`, tức đường kính ngang của nó trải từ `xstart` đến `xend`. Tọa độ `y` chính xác không được biết.",
+          "suggestion": "Format `xstart` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 9,
+          "context": "Token `xend` code-formatted in VI but plain in EN",
+          "english": "There are some spherical balloons taped onto a flat wall that represents the XY-plane. The balloons are represented as a 2D integer array `points` where `points[i]` = [xstart, xend] denotes a balloon whose horizontal diameter stretches between xstart and xend. You do not know the exact y-coordinates of the balloons.",
+          "vietnamese": "Có một số quả bóng hình cầu được dán lên một bức tường phẳng biểu diễn mặt phẳng XY. Mỗi balloon được mô tả bởi `points[i] = [xstart, xend]`, tức đường kính ngang của nó trải từ `xstart` đến `xend`. Tọa độ `y` chính xác không được biết.",
+          "suggestion": "Format `xend` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 13,
+          "context": "Token `x` code-formatted in VI but plain in EN",
+          "english": "Arrows can be shot up directly vertically (in the positive y-direction) from different `points` along the x-axis. A balloon with xstart and xend is burst by an arrow shot at x if xstart <= x <= xend. There is no limit to the number of arrows that can be shot. A shot arrow keeps traveling up infinitely, bursting any balloons in its path.",
+          "vietnamese": "Mũi tên được bắn thẳng đứng theo chiều dương của trục `y` từ một vị trí `x` trên trục hoành. Balloon `[xstart, xend]` bị bắn vỡ nếu `xstart <= x <= xend`. Không giới hạn số mũi tên, và một mũi tên tiếp tục bay lên vô hạn nên có thể xuyên qua nhiều balloon cùng chứa vị trí `x` đó.",
+          "suggestion": "Format `x` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        }
+      ]
+    },
+    {
+      "problem_id": 19,
+      "slug": "0019-remove-nth-node-from-end-of-list",
+      "file": "problems/linked-list/0019-remove-nth-node-from-end-of-list/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 38,
+          "context": "Token `sz` code-formatted in VI but plain in EN",
+          "english": "The number of nodes in the list is sz.",
+          "vietnamese": "Gọi `sz` là số node trong list.",
+          "suggestion": "Format `sz` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        }
+      ]
+    },
+    {
+      "problem_id": 25,
+      "slug": "0025-reverse-nodes-in-k-group",
+      "file": "problems/linked-list/0025-reverse-nodes-in-k-group/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 39,
+          "context": "Token `n` code-formatted in VI but plain in EN",
+          "english": "The number of nodes in the list is n.",
+          "vietnamese": "Gọi `n` là số node trong list.",
+          "suggestion": "Format `n` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        }
+      ]
+    },
+    {
+      "problem_id": 92,
+      "slug": "0092-reverse-linked-list-ii",
+      "file": "problems/linked-list/0092-reverse-linked-list-ii/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 31,
+          "context": "Token `n` code-formatted in VI but plain in EN",
+          "english": "The number of nodes in the list is n.",
+          "vietnamese": "Gọi `n` là số node trong list.",
+          "suggestion": "Format `n` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        }
+      ]
+    },
+    {
+      "problem_id": 138,
+      "slug": "0138-copy-list-with-random-pointer",
+      "file": "problems/linked-list/0138-copy-list-with-random-pointer/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 9,
+          "context": "Token `n` code-formatted in VI but plain in EN",
+          "english": "A linked list of length n is given such that each node contains an additional `random` pointer, which could point to any node in the list, or `null`.",
+          "vietnamese": "Cho một linked list dài `n`, trong đó mỗi node có thêm pointer `random` có thể trỏ tới bất kỳ node nào trong list hoặc `null`.",
+          "suggestion": "Format `n` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 13,
+          "context": "Token `n` code-formatted in VI but plain in EN",
+          "english": "Construct a deep copy of the list. The deep copy should consist of exactly n brand new nodes, where each new node has its value set to the value of its corresponding original node. Both the `next` and `random` pointer of the new nodes should point to new nodes in the copied list such that the pointers in the original list and copied list represent the same list state. None of the pointers in the new list should point to nodes in the original list.",
+          "vietnamese": "Hãy tạo một **deep copy** gồm đúng `n` node hoàn toàn mới. Mỗi node mới có cùng value với node tương ứng trong list gốc; cả `next` và `random` phải tái tạo đúng cấu trúc nhưng chỉ trỏ tới các node của bản sao. Không pointer nào trong copied list được trỏ về node của original list.",
+          "suggestion": "Format `n` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 33,
+          "context": "Token `random_index` code-formatted in VI but plain in EN",
+          "english": "random_index: the index of the node (range from 0 to n-1) that the `random` pointer `points` to, or `null` if it does not point to any node.",
+          "vietnamese": "`random_index` là index node mà `random` trỏ tới, hoặc `null` nếu không trỏ tới node nào.",
+          "suggestion": "Format `random_index` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 66,
+          "context": "Token `n` code-formatted in VI but plain in EN",
+          "english": "0 <= n <= 1000",
+          "vietnamese": "`n` nằm trong `[0, 1000]`.",
+          "suggestion": "Format `n` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        }
+      ]
+    },
+    {
+      "problem_id": 141,
+      "slug": "0141-linked-list-cycle",
+      "file": "problems/linked-list/0141-linked-list-cycle/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 13,
+          "context": "Token `pos` code-formatted in VI but plain in EN",
+          "english": "There is a `cycle` in a linked list if there is some node in the list that can be reached again by continuously following the `next` pointer. Internally, pos is used to denote the index of the node that tail's `next` pointer is connected to. Note that pos is not passed as a parameter.",
+          "vietnamese": "Linked list có cycle nếu tồn tại một node có thể được đi tới lần nữa bằng cách liên tục theo con trỏ `next`. Trong mô tả input, `pos` được dùng nội bộ để chỉ index của node mà `next` của tail nối tới. Lưu ý `pos` không được truyền vào hàm.",
+          "suggestion": "Format `pos` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 63,
+          "context": "Token `pos` code-formatted in VI but plain in EN",
+          "english": "pos is -1 or a valid index in the linked-list.",
+          "vietnamese": "`pos` bằng `-1` hoặc là một index hợp lệ của linked list.",
+          "suggestion": "Format `pos` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        }
+      ]
+    },
+    {
+      "problem_id": 146,
+      "slug": "0146-lru-cache",
+      "file": "problems/linked-list/0146-lru-cache/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 13,
+          "context": "Token `LRUCache` code-formatted in VI but plain in EN",
+          "english": "Implement the LRUCache class:",
+          "vietnamese": "Cài đặt class `LRUCache`:",
+          "suggestion": "Format `LRUCache` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 29,
+          "context": "Token `put` code-formatted in VI but plain in EN",
+          "english": "The functions `get` and put must each run in O(1) average time complexity.",
+          "vietnamese": "Cả `get` và `put` phải chạy với độ phức tạp trung bình `O(1)`.",
+          "suggestion": "Format `put` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 62,
+          "context": "Token `put` code-formatted in VI but plain in EN",
+          "english": "At most 2 * 10^5 calls will be made to `get` and put.",
+          "vietnamese": "Có tối đa `2 * 10^5` lời gọi `get` và `put`.",
+          "suggestion": "Format `put` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        }
+      ]
+    },
+    {
+      "problem_id": 63,
+      "slug": "0063-unique-paths-ii",
+      "file": "problems/multidimensional-dp/0063-unique-paths-ii/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 58,
+          "context": "Token `m` code-formatted in VI but plain in EN",
+          "english": "`1 <= m, n <= 100`",
+          "vietnamese": "`m` và `n` nằm trong khoảng từ `1` đến `100`.",
+          "suggestion": "Format `m` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 58,
+          "context": "Token `n` code-formatted in VI but plain in EN",
+          "english": "`1 <= m, n <= 100`",
+          "vietnamese": "`m` và `n` nằm trong khoảng từ `1` đến `100`.",
+          "suggestion": "Format `n` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        }
+      ]
+    },
+    {
+      "problem_id": 64,
+      "slug": "0064-minimum-path-sum",
+      "file": "problems/multidimensional-dp/0064-minimum-path-sum/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 47,
+          "context": "Token `m` code-formatted in VI but plain in EN",
+          "english": "`1 <= m, n <= 200`",
+          "vietnamese": "`m` và `n` nằm trong khoảng từ `1` đến `200`.",
+          "suggestion": "Format `m` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 47,
+          "context": "Token `n` code-formatted in VI but plain in EN",
+          "english": "`1 <= m, n <= 200`",
+          "vietnamese": "`m` và `n` nằm trong khoảng từ `1` đến `200`.",
+          "suggestion": "Format `n` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        }
+      ]
+    },
+    {
+      "problem_id": 97,
+      "slug": "0097-interleaving-string",
+      "file": "problems/multidimensional-dp/0097-interleaving-string/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 13,
+          "context": "Token `s` code-formatted in VI but plain in EN",
+          "english": "An interleaving of two strings s and t is a configuration where s and t are divided into n and m substrings respectively, such that:",
+          "vietnamese": "Một interleaving của hai chuỗi `s` và `t` là cách chia chúng thành lần lượt `n` và `m` chuỗi con sao cho:",
+          "suggestion": "Format `s` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 13,
+          "context": "Token `m` code-formatted in VI but plain in EN",
+          "english": "An interleaving of two strings s and t is a configuration where s and t are divided into n and m substrings respectively, such that:",
+          "vietnamese": "Một interleaving của hai chuỗi `s` và `t` là cách chia chúng thành lần lượt `n` và `m` chuỗi con sao cho:",
+          "suggestion": "Format `m` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 13,
+          "context": "Token `t` code-formatted in VI but plain in EN",
+          "english": "An interleaving of two strings s and t is a configuration where s and t are divided into n and m substrings respectively, such that:",
+          "vietnamese": "Một interleaving của hai chuỗi `s` và `t` là cách chia chúng thành lần lượt `n` và `m` chuỗi con sao cho:",
+          "suggestion": "Format `t` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 13,
+          "context": "Token `n` code-formatted in VI but plain in EN",
+          "english": "An interleaving of two strings s and t is a configuration where s and t are divided into n and m substrings respectively, such that:",
+          "vietnamese": "Một interleaving của hai chuỗi `s` và `t` là cách chia chúng thành lần lượt `n` và `m` chuỗi con sao cho:",
+          "suggestion": "Format `n` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        }
+      ]
+    },
+    {
+      "problem_id": 120,
+      "slug": "0120-triangle",
+      "file": "problems/multidimensional-dp/0120-triangle/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 13,
+          "context": "Token `i` code-formatted in VI but plain in EN",
+          "english": "For each step, you may move to an adjacent number of the row below. More formally, if you are on index i on the current row, you may move to either index i or index i + 1 on the `next` row.",
+          "vietnamese": "Ở mỗi bước, bạn chỉ được đi tới một số kề ở hàng dưới. Cụ thể, từ index `i` ở hàng hiện tại, có thể đi tới index `i` hoặc `i + 1` ở hàng kế tiếp.",
+          "suggestion": "Format `i` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 60,
+          "context": "Token `n` code-formatted in VI but plain in EN",
+          "english": "Follow up: Could you do this using only O(n) extra space, where n is the total number of rows in the `triangle`?",
+          "vietnamese": "Follow-up: Có thể giải bằng `O(n)` bộ nhớ phụ với `n` là số hàng không?",
+          "suggestion": "Format `n` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        }
+      ]
+    },
+    {
+      "problem_id": 76,
+      "slug": "0076-minimum-window-substring",
+      "file": "problems/sliding-window/0076-minimum-window-substring/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 9,
+          "context": "Token `m` code-formatted in VI but plain in EN",
+          "english": "Given two strings `s` and `t` of lengths m and n respectively, return the minimum window substring of `s` such that every character in `t` (including duplicates) is included in the window. If there is no such substring, return the empty string \"\".",
+          "vietnamese": "Cho hai chuỗi `s` và `t` có độ dài lần lượt là `m` và `n`, hãy trả về substring ngắn nhất của `s` chứa mọi ký tự trong `t`, kể cả số lần lặp. Nếu không tồn tại, trả về chuỗi rỗng `\"\"`.",
+          "suggestion": "Format `m` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 9,
+          "context": "Token `n` code-formatted in VI but plain in EN",
+          "english": "Given two strings `s` and `t` of lengths m and n respectively, return the minimum window substring of `s` such that every character in `t` (including duplicates) is included in the window. If there is no such substring, return the empty string \"\".",
+          "vietnamese": "Cho hai chuỗi `s` và `t` có độ dài lần lượt là `m` và `n`, hãy trả về substring ngắn nhất của `s` chứa mọi ký tự trong `t`, kể cả số lần lặp. Nếu không tồn tại, trả về chuỗi rỗng `\"\"`.",
+          "suggestion": "Format `n` as inline code in EN",
+          "confidence": 0.9,
+          "action": "auto-repair"
+        }
+      ]
+    },
+    {
+      "problem_id": 155,
+      "slug": "0155-min-stack",
+      "file": "problems/stack/0155-min-stack/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 9,
+          "context": "Token `pop` code-formatted in VI but plain in EN",
+          "english": "Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.",
+          "vietnamese": "Thiết kế một stack hỗ trợ `push`, `pop`, `top` và lấy phần tử nhỏ nhất trong thời gian hằng số.",
+          "suggestion": "Format `pop` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 9,
+          "context": "Token `push` code-formatted in VI but plain in EN",
+          "english": "Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.",
+          "vietnamese": "Thiết kế một stack hỗ trợ `push`, `pop`, `top` và lấy phần tử nhỏ nhất trong thời gian hằng số.",
+          "suggestion": "Format `push` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 9,
+          "context": "Token `top` code-formatted in VI but plain in EN",
+          "english": "Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.",
+          "vietnamese": "Thiết kế một stack hỗ trợ `push`, `pop`, `top` và lấy phần tử nhỏ nhất trong thời gian hằng số.",
+          "suggestion": "Format `top` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 13,
+          "context": "Token `MinStack` code-formatted in VI but plain in EN",
+          "english": "Implement the MinStack class:",
+          "vietnamese": "Hãy cài đặt class `MinStack`:",
+          "suggestion": "Format `MinStack` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 21,
+          "context": "Token `value` code-formatted in VI but plain in EN",
+          "english": "void push(int value) pushes the element value onto the stack.",
+          "vietnamese": "`push(int value)` đưa `value` lên đỉnh stack.",
+          "suggestion": "Format `value` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 72,
+          "context": "Token `pop` code-formatted in VI but plain in EN",
+          "english": "Methods pop, top and getMin operations will always be called on non-empty stacks.",
+          "vietnamese": "`pop`, `top`, `getMin` chỉ được gọi khi stack không rỗng.",
+          "suggestion": "Format `pop` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 72,
+          "context": "Token `top` code-formatted in VI but plain in EN",
+          "english": "Methods pop, top and getMin operations will always be called on non-empty stacks.",
+          "vietnamese": "`pop`, `top`, `getMin` chỉ được gọi khi stack không rỗng.",
+          "suggestion": "Format `top` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        },
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 72,
+          "context": "Token `getMin` code-formatted in VI but plain in EN",
+          "english": "Methods pop, top and getMin operations will always be called on non-empty stacks.",
+          "vietnamese": "`pop`, `top`, `getMin` chỉ được gọi khi stack không rỗng.",
+          "suggestion": "Format `getMin` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        }
+      ]
+    },
+    {
+      "problem_id": 11,
+      "slug": "0011-container-with-most-water",
+      "file": "problems/two-pointers/0011-container-with-most-water/problem.md",
+      "issues": [
+        {
+          "type": "identifier-format-mismatch",
+          "severity": "P1",
+          "line": 13,
+          "context": "Token `x` code-formatted in VI but plain in EN",
+          "english": "Find two lines that together with the x-axis form a container, such that the container contains the most water.",
+          "vietnamese": "Hãy tìm hai đường thẳng cùng với trục `x` tạo thành một container chứa được nhiều nước nhất.",
+          "suggestion": "Format `x` as inline code in EN",
+          "confidence": 0.9,
+          "action": "needs-review"
+        }
+      ]
+    }
+  ]
+}
