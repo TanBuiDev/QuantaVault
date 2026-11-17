@@ -1,3 +1,20 @@
+export interface CourseFlashcard {
+  id: string;
+  questionEn: string;
+  questionVi: string;
+  answerEn: string;
+  answerVi: string;
+  explanationEn?: string;
+  explanationVi?: string;
+}
+
+export interface CourseTranscriptSentence {
+  id: string;
+  en: string;
+  vi: string;
+  time?: string;
+}
+
 export interface CourseLesson {
   id: string;
   slug: string;
@@ -10,6 +27,9 @@ export interface CourseLesson {
   durationMinutes: number;
   tags?: string[];
   contentMarkdown: string;
+  videoId?: string;
+  flashcards?: CourseFlashcard[];
+  transcript?: CourseTranscriptSentence[];
 }
 
 export interface CourseChapter {

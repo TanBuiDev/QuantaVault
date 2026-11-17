@@ -24,7 +24,7 @@ describe("English job interview: original PDF -> Markdown -> website", () => {
   it("adds the English course without modifying PostgreSQL or Redis", () => {
     const registry = getAllCourses();
     expect(registry.map((c) => c.slug)).toEqual([
-      "postgres-for-java", "redis-for-java", "english-job-interview"
+      "postgres-for-java", "redis-for-java", "english-job-interview", "spring-framework-for-java"
     ]);
     expect(registry[0].lessons).toHaveLength(20);
     expect(registry[1].lessons).toHaveLength(10);
