@@ -3,6 +3,7 @@
 import { useSyncExternalStore, useCallback, useMemo, useEffect } from "react";
 import type { InterviewQuestion } from "./types";
 import { questionVersion } from "./questionVersion";
+import { isRetiredInterviewId } from "./questionIdMerge";
 
 const DRAFTS_STORAGE_KEY = "interview_drafts_v1";
 const DRAFTS_CHANGE_EVENT = "interview-drafts:change";
@@ -113,6 +114,81 @@ export function writePublishedCache(cache: PublishedCacheMap): void {
   window.dispatchEvent(new Event(PUBLISHED_CHANGE_EVENT));
 }
 
+
+/**
+ * Resolve one published-cache conflict after the user has reviewed and backed
+ * up both versions. Protect against changes from another tab while the dialog
+ * is open; never clear other published entries or unpublished drafts.
+ */
+function unchangedPublishedSnapshot(id: string, expected: PublishedCacheItem): PublishedCacheMap {
+  const current = getPublishedCache();
+  if (!current[id] || JSON.stringify(current[id]) !== JSON.stringify(expected)) {
+    throw new Error("Phiên bản lưu trên máy đã thay đổi. Hãy mở lại phần đối chiếu để kiểm tra.");
+  }
+  return current;
+}
+
+/** Keep the canonical website copy for one ID; drafts remain untouched. */
+export function acceptWebsitePublishedVersion(id: string, expected: PublishedCacheItem): void {
+  const cache = unchangedPublishedSnapshot(id, expected);
+  const next = { ...cache };
+  delete next[id];
+  writePublishedCache(next);
+}
+
+/**
+ * Preserve the locally published copy as an explicit unpublished draft.
+ * Write the draft before removing its cache entry so a storage failure never
+ * destroys the only local copy. Refuse to overwrite any existing draft.
+ */
+export function keepPublishedVersionAsDraft(
+  id: string,
+  expected: PublishedCacheItem,
+  websiteQuestion: InterviewQuestion | null
+): void {
+  const cache = unchangedPublishedSnapshot(id, expected);
+  if (websiteQuestion && websiteQuestion.id !== id) {
+    throw new Error("ID phiên bản website không khớp với câu hỏi đang đối chiếu.");
+  }
+  const currentDrafts = getDrafts();
+  if (currentDrafts[id]) {
+    throw new Error("Câu hỏi đã có bản nháp chưa xuất bản. Không thể ghi đè bản nháp đó.");
+  }
+  const draft: DraftQuestion = {
+    ...cache[id].question,
+    baseVersion: questionVersion(websiteQuestion),
+  };
+  // Order matters: a quota error leaves the published cache intact.
+  writeDrafts({ ...currentDrafts, [id]: draft });
+  // A cache-write failure leaves two copies, not zero copies.
+  acceptWebsitePublishedVersion(id, expected);
+}
+
+/** Download all three layers, not a merged view that hides one side of a conflict. */
+export function downloadPublishedConflictBackup(
+  canonicalQuestions: InterviewQuestion[],
+  drafts: DraftMap,
+  publishedCache: PublishedCacheMap
+): void {
+  const snapshot = {
+    format: "quantavault-interview-conflict-backup-v1",
+    createdAt: new Date().toISOString(),
+    canonicalQuestions,
+    drafts,
+    publishedCache,
+  };
+  const blob = new Blob([JSON.stringify(snapshot, null, 2) + "\n"], { type: "application/json;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "quantavault-interview-conflict-backup-" + new Date().toISOString().replace(/[:.]/g, "-") + ".json";
+  document.body.appendChild(link);
+  try { link.click(); } finally {
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+}
+
 export function clearAllPublishedCache(): void {
   writePublishedCache({});
 }
@@ -209,7 +285,11 @@ export function rebaseDraft(id: string, expected: DraftQuestion, remote: Intervi
 }
 
 export function clearAllDrafts(): void {
-  writeDrafts({});
+  // Do not silently delete recoverable drafts for questions retired by a merge.
+  const archived = Object.fromEntries(
+    Object.entries(getDrafts()).filter(([id]) => isRetiredInterviewId(id))
+  );
+  writeDrafts(archived);
 }
 
 function getBrowserSnapshot(): DraftMap {
@@ -275,6 +355,8 @@ export function reconcilePublishedCache(canonicalQuestions: InterviewQuestion[],
   let changed = false;
   for (const [id, item] of Object.entries(cache)) {
     const canonical = canonicalQuestions.find(q => q.id === id);
+    // Even deletion receipts are user data; retired entries remain recoverable.
+    if (!canonical && isRetiredInterviewId(id)) continue;
     if (item.question.isDeleted ? !canonical : canonical && areQuestionsEqual(canonical, item.question)) {
       delete next[id];
       changed = true;
@@ -331,6 +413,7 @@ export function mergeQuestionsWithDrafts(
 
   // Any newly added questions from publishedCache
   for (const newId of publishedIds) {
+    if (isRetiredInterviewId(newId)) continue; // Retained in cache for recovery, not listed as a new question.
     const cached = activePublished[newId].question;
     if (!cached.isDeleted && !drafts[newId]) {
       merged.unshift({
@@ -342,6 +425,7 @@ export function mergeQuestionsWithDrafts(
 
   // Any newly added questions from drafts
   for (const newId of draftIds) {
+    if (isRetiredInterviewId(newId)) continue; // Never resurrect a merged question from a local draft.
     const draft = drafts[newId];
     if (!draft.isDeleted) {
       merged.unshift({
@@ -357,6 +441,32 @@ export function mergeQuestionsWithDrafts(
 /**
  * Tải file JSON sao lưu đầy đủ câu hỏi về máy tính
  */
+/** Export archived copies without putting them back into the active question bank. */
+export function downloadRetiredInterviewBackup(drafts: DraftMap, cache: PublishedCacheMap): void {
+  const retiredDrafts = Object.fromEntries(
+    Object.entries(drafts).filter(([id]) => isRetiredInterviewId(id))
+  );
+  const retiredPublishedCache = Object.fromEntries(
+    Object.entries(cache).filter(([id]) => isRetiredInterviewId(id))
+  );
+  const snapshot = {
+    format: "quantavault-retired-interview-backup-v1",
+    createdAt: new Date().toISOString(),
+    drafts: retiredDrafts,
+    publishedCache: retiredPublishedCache,
+  };
+  const blob = new Blob([JSON.stringify(snapshot, null, 2) + "\n"], { type: "application/json;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "quantavault-retired-questions-" + new Date().toISOString().slice(0, 10) + ".json";
+  document.body.appendChild(link);
+  try { link.click(); } finally {
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+}
+
 export function downloadQuestionsBackup(
   canonicalQuestions: InterviewQuestion[],
   drafts: DraftMap,

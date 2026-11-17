@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { setLearningSessionActive } from "@/lib/auth/progressAccess";
 
 import { ConfirmProvider } from "@/components/ui/ConfirmDialog";
 import { ToastProvider } from "@/components/ui/Toast";
@@ -9,6 +10,7 @@ import type { ProblemContent } from "@/lib/content";
 import { PROGRESS_STORAGE_KEY } from "@/lib/progress";
 import { ProgressProvider } from "@/lib/progress/provider";
 
+vi.mock("@/lib/auth/AccountProvider", () => ({ useAccount: () => ({ requestLogin: vi.fn() }) }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: vi.fn(), push: vi.fn() }) }));
 vi.mock("../CodeEditorPanel", () => ({ CodeEditorPanel: ({ onRun, onSubmit }: { onRun: () => void; onSubmit: () => void }) => <div><button onClick={onRun}>Test Run</button><button onClick={onSubmit}>Test Submit</button></div> }));
 
@@ -72,7 +74,9 @@ describe("PracticeView", () => {
   beforeEach(() => {
     localStorage.clear();
     sessionStorage.clear();
+    setLearningSessionActive(true);
   });
+  afterEach(() => setLearningSessionActive(false));
 
   it("keeps static reading and reference code without filesystem mutation controls", async () => {
     vi.stubEnv("NEXT_PUBLIC_STUDY_MODE", "static");
@@ -138,10 +142,10 @@ describe("PracticeView", () => {
     renderPractice();
     await waitFor(() => expect(screen.getByText("VISIBLE PROBLEM")).toBeInTheDocument());
 
-    // Cycle status: Not Started -> In Progress -> Solved
-    fireEvent.click(screen.getByRole("button", { name: "Not Started" }));
-    fireEvent.click(screen.getByRole("button", { name: "In Progress" }));
-    expect(screen.getByRole("button", { name: "Solved" })).toBeInTheDocument();
+    // Select a status directly instead of cycling through intermediate states.
+    const status = screen.getByRole("combobox", { name: "Chọn trạng thái bài tập" });
+    fireEvent.change(status, { target: { value: "solved" } });
+    expect(status).toHaveValue("solved");
 
     fireEvent.click(screen.getByRole("tab", { name: "Notes" }));
     fireEvent.change(screen.getByLabelText(/Ghi chú cá nhân/i), {

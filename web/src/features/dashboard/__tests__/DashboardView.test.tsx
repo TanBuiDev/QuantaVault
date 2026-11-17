@@ -25,8 +25,8 @@ describe("DashboardView", () => {
     );
 
     expect(screen.getByRole("heading", { name: "Top Interview 150" })).toBeInTheDocument();
-    expect(screen.getByRole("region", { name: "Overall study progress" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /browse problems/i })).toHaveAttribute("href", "/problems");
+    expect(screen.getByRole("region", { name: "Tiến độ học tập tổng quan" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /xem danh sách bài tập/i })).toHaveAttribute("href", "/problems");
     expect(screen.getByText("Array / String")).toBeInTheDocument();
   });
 });

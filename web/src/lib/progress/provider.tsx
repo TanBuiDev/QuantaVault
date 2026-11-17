@@ -6,9 +6,11 @@ import {
   useContext,
   useMemo,
   useSyncExternalStore,
+  useState,
   type ReactNode,
 } from "react";
 
+import { canWriteLearningProgress, useLearningSession } from "../auth/progressAccess";
 import {
   PROGRESS_STORAGE_KEY,
   createEmptyProgressState,
@@ -27,20 +29,26 @@ const SERVER_SNAPSHOT = createEmptyProgressState();
 let cachedRaw: string | null | undefined;
 let cachedState: ProgressStateV1 = SERVER_SNAPSHOT;
 
+export type LocalSaveStatus = "idle" | "saved-local" | "storage-error";
 export interface ProgressContextValue {
+  localSaveStatus: LocalSaveStatus;
+  lastLocalSavedAt: number;
   state: ProgressStateV1;
   hydrated: boolean;
+  canTrackProgress: boolean;
   getProgress: (problemId: number) => ProblemProgress | null;
   updateProblem: (
     problemId: number,
     patch: Partial<Omit<ProblemProgress, "problemId" | "updatedAt">>,
-  ) => void;
+  ) => boolean;
   clearProblem: (problemId: number) => void;
 }
 
 function getBrowserSnapshot(): ProgressStateV1 {
   if (typeof window === "undefined") return SERVER_SNAPSHOT;
-  const raw = window.localStorage.getItem(PROGRESS_STORAGE_KEY);
+  let raw: string | null;
+  try { raw = window.localStorage.getItem(PROGRESS_STORAGE_KEY); }
+  catch { return SERVER_SNAPSHOT; }
   if (raw === cachedRaw) return cachedState;
 
   cachedRaw = raw;
@@ -94,7 +102,11 @@ function publish(next: ProgressStateV1): void {
 const ProgressContext = createContext<ProgressContextValue | null>(null);
 
 export function ProgressProvider({ children }: { children: ReactNode }) {
-  const state = useSyncExternalStore(subscribe, getBrowserSnapshot, () => SERVER_SNAPSHOT);
+  const storedState = useSyncExternalStore(subscribe, getBrowserSnapshot, () => SERVER_SNAPSHOT);
+  const [localSaveStatus, setLocalSaveStatus] = useState<LocalSaveStatus>("idle");
+  const [lastLocalSavedAt, setLastLocalSavedAt] = useState(0);
+  const canTrackProgress = useLearningSession();
+  const state = canTrackProgress ? storedState : SERVER_SNAPSHOT;
   const hydrated = useSyncExternalStore(
     subscribeHydration,
     getHydratedSnapshot,
@@ -108,18 +120,32 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
 
   const updateProblem = useCallback<ProgressContextValue["updateProblem"]>(
     (problemId, patch) => {
-      publish(upsertProblemProgress(getBrowserSnapshot(), problemId, patch));
+      if (!canWriteLearningProgress()) return false;
+      try {
+        publish(upsertProblemProgress(getBrowserSnapshot(), problemId, patch));
+        setLocalSaveStatus("saved-local");
+        setLastLocalSavedAt(Date.now());
+        return true;
+      } catch {
+        setLocalSaveStatus("storage-error");
+        return false;
+      }
     },
     [],
   );
 
   const clearProblem = useCallback((problemId: number) => {
-    publish(removeProblemProgress(getBrowserSnapshot(), problemId));
+    if (!canWriteLearningProgress()) return;
+    try {
+      publish(removeProblemProgress(getBrowserSnapshot(), problemId));
+      setLocalSaveStatus("saved-local");
+      setLastLocalSavedAt(Date.now());
+    } catch { setLocalSaveStatus("storage-error"); }
   }, []);
 
   const value = useMemo<ProgressContextValue>(
-    () => ({ state, hydrated, getProgress, updateProblem, clearProblem }),
-    [state, hydrated, getProgress, updateProblem, clearProblem],
+    () => ({ state, hydrated, canTrackProgress, localSaveStatus, lastLocalSavedAt, getProgress, updateProblem, clearProblem }),
+    [state, hydrated, canTrackProgress, localSaveStatus, lastLocalSavedAt, getProgress, updateProblem, clearProblem],
   );
 
   return <ProgressContext.Provider value={value}>{children}</ProgressContext.Provider>;

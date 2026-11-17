@@ -6,6 +6,8 @@ import { classNames } from "@/components/ui/classNames";
 import { useConfirm } from "@/components/ui/ConfirmDialog";
 import { useToast } from "@/components/ui/Toast";
 import { questionVersion } from "@/lib/interview/questionVersion";
+import type { MarkdownSourceLocation } from "@/lib/markdownSourceNavigation";
+import { focusMarkdownTextareaAtOffset } from "./markdownTextareaNavigation";
 import { editorDraftKey, readEditorDraft, writeEditorDraft, type EditorDraftValues } from "./editorDraft";
 import {
   FileText,
@@ -19,6 +21,8 @@ import {
   Check,
   Maximize2,
   Minimize2,
+  MoreHorizontal,
+  Type,
 } from "lucide-react";
 import type {
   InterviewCategory,
@@ -116,8 +120,36 @@ function InterviewEditModalForm({
   const [tagInput, setTagInput] = useState("");
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [editorFont, setEditorFont] = useState<"sans" | "mono">("sans");
+  const [mobilePanel, setMobilePanel] = useState<"mode" | "size" | "actions" | null>(null);
+  const mobilePanelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!mobilePanel) return;
+    const closeOnOutsideClick = (event: PointerEvent) => {
+      if (!mobilePanelRef.current?.contains(event.target as Node)) setMobilePanel(null);
+    };
+    document.addEventListener("pointerdown", closeOnOutsideClick);
+    return () => document.removeEventListener("pointerdown", closeOnOutsideClick);
+  }, [mobilePanel]);
+
+  useEffect(() => {
+    if (!mobilePanel) return;
+    mobilePanelRef.current
+      ?.querySelector<HTMLElement>("[data-mobile-panel] button:not(:disabled)")
+      ?.focus();
+  }, [mobilePanel]);
+
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const sourceNavigationStatusRef = useRef<HTMLSpanElement>(null);
+
+  const navigateToSource = (location: MarkdownSourceLocation, previewSource: string) => {
+    const editor = textareaRef.current;
+    // React uses deferred preview rendering; never navigate using old source offsets.
+    if (!editor || previewSource !== answerMarkdown || editor.value !== answerMarkdown || pendingDraft || savedSuccess) return;
+    if (!focusMarkdownTextareaAtOffset(editor, location.offset)) return;
+    if (sourceNavigationStatusRef.current) sourceNavigationStatusRef.current.textContent = `Đã chuyển đến dòng ${location.line} trong Markdown.`;
+  };
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => () => { if (closeTimer.current) clearTimeout(closeTimer.current); }, []);
 
@@ -173,6 +205,26 @@ function InterviewEditModalForm({
     setSummary(draft.summary); setAnswerMarkdown(draft.answerMarkdown);
     setCompanies(draft.companies); setTags(draft.tags); setRelatedProblems(draft.relatedProblems);
     setPendingDraft(null);
+  };
+
+  const handleDelete = async () => {
+    if (!onDelete) return;
+    const isConfirmed = await confirm({
+      title: "Xác nhận xóa câu hỏi?",
+      message: `Bạn có chắc chắn muốn xóa câu hỏi "${title || question.title}" khỏi danh sách ôn luyện không? Thao tác này sẽ đánh dấu xóa câu hỏi.`,
+      confirmText: "Xóa câu hỏi",
+      cancelText: "Hủy bỏ",
+      variant: "danger",
+    });
+    if (!isConfirmed) return;
+    try {
+      onDelete(question);
+      suppressed.current = true;
+      discardSession();
+      onClose();
+    } catch {
+      showError("Không thể xóa câu hỏi. Nội dung đang soạn vẫn được giữ.");
+    }
   };
 
   // Handle Save
@@ -260,7 +312,7 @@ function InterviewEditModalForm({
   }
 
   return (
-    <div className={classNames("flex flex-col", isFullscreen ? "h-full flex-1 min-h-0" : "max-h-[85vh]")}>
+    <div className={classNames("flex flex-col", isFullscreen ? "h-full min-h-0 w-full flex-1" : "max-h-[85vh]")}>
       {pendingDraft && (
         <div role="status" className="border-b border-amber-500/30 bg-amber-500/10 p-4 text-sm text-[var(--foreground)]">
           <p>Có bản nháp chưa lưu. Nội dung đã lưu vẫn đang được hiển thị; bản nháp chỉ được nạp khi bạn chọn khôi phục.</p>
@@ -272,19 +324,41 @@ function InterviewEditModalForm({
         </div>
       )}
       {externalChanged && !savedSuccess && <div role="status" className="border-b border-amber-500/30 bg-amber-500/10 p-4 text-sm text-[var(--foreground)]">Nội dung đã thay đổi ở nơi khác trong lúc form đang mở. Phần đang soạn được giữ nguyên; lưu thay thế sẽ cần xác nhận.</div>}
-      <fieldset disabled={Boolean(pendingDraft) || savedSuccess} className="contents">
+      {/* Fullscreen needs a real flex column so its footer stays flush with the viewport bottom. */}
+      <fieldset
+        disabled={Boolean(pendingDraft) || savedSuccess}
+        className="contents"
+      >
+      {/* Fieldset preserves disabled controls; a real div owns fullscreen flex sizing. */}
+      <div data-testid="interview-editor-layout" className={isFullscreen ? "flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden" : "contents"}>
       {/* 1. Header Bar */}
       <div className="flex items-center justify-between gap-3 border-b border-[var(--border)] px-5 py-3.5 bg-[var(--surface)] shrink-0">
         <div className="flex items-center gap-2.5 min-w-0 flex-1 mr-2">
           <span className="font-mono text-xs font-bold text-indigo-500 bg-indigo-500/10 px-2.5 py-1 rounded-lg shrink-0">
             {formatQuestionBadge(question.id)}
           </span>
-          <h2
-            title={title || question.title}
-            className="text-sm font-bold text-[var(--foreground)] truncate min-w-0 flex-1"
-          >
-            Chỉnh sửa: {title || question.title}
-          </h2>
+          <div className="flex min-w-0 flex-1 items-center gap-1 text-sm font-bold text-[var(--foreground)]">
+            <span className="hidden shrink-0 sm:inline">Chỉnh sửa:</span>
+            <input
+              type="text"
+              aria-label="Tiêu đề câu hỏi phỏng vấn"
+              title={title || question.title}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              onKeyDown={(e) => {
+                // Enter/Escape finish inline editing without saving or closing the dialog.
+                if (e.key === "Enter" || e.key === "Escape") {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  e.currentTarget.blur();
+                }
+              }}
+              spellCheck={false}
+              autoComplete="off"
+              placeholder="Nhập tiêu đề câu hỏi..."
+              className="w-full min-w-0 flex-1 truncate rounded-md border border-transparent bg-transparent px-1 py-1 text-sm font-bold text-[var(--foreground)] outline-none transition-colors hover:bg-[var(--surface-hover)] focus:border-[var(--focus)] focus:bg-[var(--surface-hover)]"
+            />
+          </div>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
@@ -292,7 +366,8 @@ function InterviewEditModalForm({
           <div className="flex items-center rounded-xl bg-[var(--surface-hover)] p-0.5 text-xs font-semibold">
             <button
               type="button"
-              onClick={() => setActiveTab("content")}
+              onClick={() => { setMobilePanel(null); setActiveTab("content"); }}
+              aria-label="Nội dung"
               className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 transition-all ${
                 activeTab === "content"
                   ? "bg-[var(--surface)] text-[var(--foreground)] shadow-xs"
@@ -300,11 +375,12 @@ function InterviewEditModalForm({
               }`}
             >
               <FileText className="h-3.5 w-3.5" />
-              <span>Nội dung</span>
+              <span className="hidden sm:inline">Nội dung</span>
             </button>
             <button
               type="button"
-              onClick={() => setActiveTab("metadata")}
+              onClick={() => { setMobilePanel(null); setActiveTab("metadata"); }}
+              aria-label="Thuộc tính"
               className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 transition-all ${
                 activeTab === "metadata"
                   ? "bg-[var(--surface)] text-[var(--foreground)] shadow-xs"
@@ -312,7 +388,7 @@ function InterviewEditModalForm({
               }`}
             >
               <Sliders className="h-3.5 w-3.5" />
-              <span>Thuộc tính</span>
+              <span className="hidden sm:inline">Thuộc tính</span>
             </button>
           </div>
 
@@ -341,78 +417,8 @@ function InterviewEditModalForm({
         {/* TAB 1: Markdown Content Editor */}
         {activeTab === "content" && (
           <div className={classNames("space-y-3.5", isFullscreen ? "flex-1 min-h-0 flex flex-col" : "")}>
-            {/* Question Title (2 rows) */}
-            <div className="space-y-1.5 shrink-0">
-              <label className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
-                Tiêu đề câu hỏi phỏng vấn
-              </label>
-              <textarea
-                rows={2}
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                spellCheck={false}
-                autoCorrect="off"
-                autoCapitalize="off"
-                autoComplete="off"
-                data-gramm="false"
-                data-gramm_editor="false"
-                data-enable-grammarly="false"
-                placeholder="Ví dụ: [Câu 3] Hãy giải thích kiến trúc Modular Monolith..."
-                style={textScale === 100 ? undefined : { fontSize: `${14 * textScale / 100}px` }}
-                className="w-full resize-none rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3 text-xs sm:text-sm font-semibold leading-relaxed text-[var(--foreground)] outline-none focus:border-[var(--focus)] focus:bg-[var(--surface)] transition-all [contain:content]"
-              />
-            </div>
-
-            {/* Top View Mode Controls */}
-            <div className="flex flex-wrap items-center justify-between gap-2 pt-0.5 shrink-0">
-              <span className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
-                Soạn thảo câu trả lời (Markdown & Java Code)
-              </span>
-
-              <div className="flex flex-wrap items-center gap-2">
-                {onTextScaleChange && <InterviewTextSizeControl value={textScale} onChange={onTextScaleChange} />}
-                <div className="flex items-center rounded-lg border border-[var(--border)] bg-[var(--surface)] p-0.5 text-xs">
-                <button
-                  type="button"
-                  onClick={() => setViewMode("edit")}
-                  title="Chỉ soạn thảo"
-                  className={`inline-flex items-center gap-1 rounded-md px-2.5 py-1 transition-all ${
-                    viewMode === "edit"
-                      ? "bg-[var(--surface-hover)] text-[var(--foreground)] font-bold shadow-2xs"
-                      : "text-[var(--muted)] hover:text-[var(--foreground)]"
-                  }`}
-                >
-                  <Edit3 className="h-3.5 w-3.5" />
-                  <span className="hidden sm:inline">Soạn thảo</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setViewMode("preview")}
-                  title="Xem trước kết quả"
-                  className={`inline-flex items-center gap-1 rounded-md px-2.5 py-1 transition-all ${
-                    viewMode === "preview"
-                      ? "bg-[var(--surface-hover)] text-[var(--foreground)] font-bold shadow-2xs"
-                      : "text-[var(--muted)] hover:text-[var(--foreground)]"
-                  }`}
-                >
-                  <Eye className="h-3.5 w-3.5" />
-                  <span className="hidden sm:inline">Xem trước</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setViewMode("split")}
-                  title="Xem song song"
-                  className={`hidden md:inline-flex items-center gap-1 rounded-md px-2.5 py-1 transition-all ${
-                    viewMode === "split"
-                      ? "bg-[var(--surface-hover)] text-[var(--foreground)] font-bold shadow-2xs"
-                      : "text-[var(--muted)] hover:text-[var(--foreground)]"
-                  }`}
-                >
-                  <Columns className="h-3.5 w-3.5" />
-                  <span>Song song</span>
-                </button>
-                </div>
-              </div>
+            <div className="shrink-0 text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
+              Soạn thảo câu trả lời (Markdown & Java Code)
             </div>
 
             {/* Editor + Preview Area */}
@@ -492,9 +498,11 @@ function InterviewEditModalForm({
                 >
                   <div className="text-[11px] font-bold uppercase tracking-wider text-[var(--muted)] mb-3 pb-2 border-b border-[var(--border)]">
                     Xem trước hiển thị thực tế:
+                    {viewMode === "split" && <span className="ml-2 font-normal normal-case">Nhấp vào nội dung hoặc dùng Tab + Enter để đến Markdown bên trái.</span>}
                   </div>
+                  {viewMode === "split" && <span ref={sourceNavigationStatusRef} role="status" className="sr-only" />}
                   {deferredAnswerMarkdown.trim() ? (
-                    <MarkdownContent markdown={deferredAnswerMarkdown} fullWidth textScale={textScale} />
+                    <MarkdownContent markdown={deferredAnswerMarkdown} fullWidth textScale={textScale} onNavigateSource={viewMode === "split" ? navigateToSource : undefined} />
                   ) : (
                     <p className="text-xs text-[var(--muted)] italic">
                       Chưa có nội dung xem trước...
@@ -509,28 +517,6 @@ function InterviewEditModalForm({
         {/* TAB 2: Metadata & Properties */}
         {activeTab === "metadata" && (
           <div className="space-y-4">
-            {/* Question Title */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
-                Tiêu đề câu hỏi phỏng vấn
-              </label>
-              <textarea
-                rows={2}
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                spellCheck={false}
-                autoCorrect="off"
-                autoCapitalize="off"
-                autoComplete="off"
-                data-gramm="false"
-                data-gramm_editor="false"
-                data-enable-grammarly="false"
-                placeholder="Ví dụ: [Câu 3] Hãy giải thích kiến trúc Modular Monolith..."
-                style={textScale === 100 ? undefined : { fontSize: `${14 * textScale / 100}px` }}
-                className="w-full resize-none rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3 text-xs sm:text-sm font-semibold leading-relaxed text-[var(--foreground)] outline-none focus:border-[var(--focus)] focus:bg-[var(--surface)] transition-all [contain:content]"
-              />
-            </div>
-
             {/* Category & Difficulty */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
@@ -584,7 +570,7 @@ function InterviewEditModalForm({
                 <span>Trọng tâm cốt lõi (Key Takeaways / Active Recall)</span>
               </label>
               <textarea
-                rows={3}
+                rows={5}
                 value={summary}
                 onChange={(e) => setSummary(e.target.value)}
                 spellCheck={false}
@@ -595,7 +581,7 @@ function InterviewEditModalForm({
                 data-gramm_editor="false"
                 data-enable-grammarly="false"
                 placeholder="Câu đúc kết 1-2 dòng quan trọng nhất hoặc các ý trọng tâm mà ứng viên cần bật ra ngay khi phỏng vấn..."
-                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3 text-xs sm:text-sm text-[var(--foreground)] outline-none focus:border-[var(--focus)] focus:bg-[var(--surface)] transition-all [contain:content]"
+                className="w-full min-h-[140px] sm:min-h-[180px] max-h-[65vh] resize-y overflow-y-auto rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-3 text-xs sm:text-sm text-[var(--foreground)] outline-none focus:border-[var(--focus)] focus:bg-[var(--surface)] transition-all [contain:content]"
               />
             </div>
 
@@ -718,72 +704,122 @@ function InterviewEditModalForm({
         )}
       </div>
 
-      {/* 3. Footer Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--border)] px-5 py-3.5 bg-[var(--surface)] shrink-0">
-        <div className="flex items-center gap-2 text-xs text-[var(--muted)]">
-          <Sparkles className="h-4 w-4 text-amber-500" />
-          <span>Lưu tạm vào bộ nhớ máy (<kbd className="rounded border px-1">Ctrl+S</kbd>)</span>
-        </div>
-
-        <div className="flex items-center gap-2">
-          {onDelete && (
-            <button
-              type="button"
-              onClick={async () => {
-                const isConfirmed = await confirm({
-                  title: "Xác nhận xóa câu hỏi?",
-                  message: `Bạn có chắc chắn muốn xóa câu hỏi "${title || question.title}" khỏi danh sách ôn luyện không? Thao tác này sẽ đánh dấu xóa câu hỏi.`,
-                  confirmText: "Xóa câu hỏi",
-                  cancelText: "Hủy bỏ",
-                  variant: "danger",
-                });
-                if (isConfirmed) {
-                  try {
-                    onDelete(question);
-                    suppressed.current = true;
-                    discardSession();
-                    onClose();
-                  } catch { showError("Không thể xóa câu hỏi. Nội dung đang soạn vẫn được giữ."); }
-                }
-              }}
-              title="Xóa câu hỏi này khỏi danh sách ôn luyện"
-              className="inline-flex items-center gap-1 rounded-xl border border-rose-500/30 bg-rose-500/10 px-3 py-2 text-xs font-bold text-rose-500 hover:bg-rose-500/20 transition-colors mr-1 cursor-pointer"
-            >
-              <Trash2 className="h-3.5 w-3.5" />
-              <span>Xóa câu này</span>
-            </button>
+      {/* Single responsive action bar; Markdown formatting toolbar stays by the textarea. */}
+      <div data-testid="interview-editor-action-bar" className="flex w-full min-w-0 flex-nowrap items-center justify-between gap-2 border-t border-[var(--border)] bg-[var(--surface)] px-3 py-3 sm:px-5 shrink-0">
+        <div data-testid="interview-editor-action-left" className="flex min-w-0 flex-1 items-center gap-2">
+          {activeTab === "content" && (
+            <div className="hidden min-w-0 shrink-0 items-center gap-2 xl:flex">
+              <div role="group" aria-label="Chế độ xem" className="flex shrink-0 items-center rounded-lg border border-[var(--border)] bg-[var(--surface)] p-0.5 text-xs">
+                <button type="button" aria-label="Soạn thảo" aria-pressed={viewMode === "edit"} onClick={() => setViewMode("edit")} title="Chỉ soạn thảo"
+                  className={`inline-flex items-center gap-1 rounded-md px-2.5 py-1.5 transition-all ${viewMode === "edit" ? "bg-[var(--surface-hover)] text-[var(--foreground)] font-bold shadow-2xs" : "text-[var(--muted)] hover:text-[var(--foreground)]"}`}>
+                  <Edit3 className="h-3.5 w-3.5" /><span className="hidden 2xl:inline">Soạn thảo</span>
+                </button>
+                <button type="button" aria-label="Xem trước" aria-pressed={viewMode === "preview"} onClick={() => setViewMode("preview")} title="Xem trước kết quả"
+                  className={`inline-flex items-center gap-1 rounded-md px-2.5 py-1.5 transition-all ${viewMode === "preview" ? "bg-[var(--surface-hover)] text-[var(--foreground)] font-bold shadow-2xs" : "text-[var(--muted)] hover:text-[var(--foreground)]"}`}>
+                  <Eye className="h-3.5 w-3.5" /><span className="hidden 2xl:inline">Xem trước</span>
+                </button>
+                <button type="button" aria-label="Song song" aria-pressed={viewMode === "split"} onClick={() => setViewMode("split")} title="Xem song song"
+                  className={`inline-flex items-center gap-1 rounded-md px-2.5 py-1.5 transition-all ${viewMode === "split" ? "bg-[var(--surface-hover)] text-[var(--foreground)] font-bold shadow-2xs" : "text-[var(--muted)] hover:text-[var(--foreground)]"}`}>
+                  <Columns className="h-3.5 w-3.5" /><span className="hidden 2xl:inline">Song song</span>
+                </button>
+              </div>
+              {onTextScaleChange && <InterviewTextSizeControl value={textScale} onChange={onTextScaleChange} />}
+            </div>
           )}
 
-          <button
-            type="button"
-            onClick={() => { void requestClose(); }}
-            className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2 text-xs font-bold text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] transition-colors"
-          >
-            Hủy bỏ (Esc)
-          </button>
-
-          <button
-            type="button"
-            onClick={handleSave}
-            className={`inline-flex items-center gap-1.5 rounded-xl px-5 py-2 text-xs font-bold text-white transition-all shadow-xs ${
-              savedSuccess
-                ? "bg-emerald-600"
-                : "bg-indigo-600 hover:bg-indigo-700 active:scale-95"
-            }`}
-          >
-            {savedSuccess ? (
+          <div ref={mobilePanelRef} className="relative flex shrink-0 items-center gap-1 xl:hidden"
+            onKeyDown={(event) => {
+              if (event.key === "Escape" && mobilePanel) {
+                event.preventDefault();
+                event.stopPropagation();
+                const trigger = mobilePanelRef.current?.querySelector<HTMLElement>(`[data-mobile-trigger="${mobilePanel}"]`);
+                setMobilePanel(null);
+                trigger?.focus();
+              }
+              if ((event.key === "ArrowDown" || event.key === "ArrowUp") && mobilePanel) {
+                const buttons = Array.from(mobilePanelRef.current?.querySelectorAll<HTMLElement>("[data-mobile-panel] button:not(:disabled)") ?? []);
+                if (buttons.length) {
+                  event.preventDefault();
+                  const index = buttons.indexOf(document.activeElement as HTMLElement);
+                  buttons[(index + (event.key === "ArrowDown" ? 1 : buttons.length - 1)) % buttons.length].focus();
+                }
+              }
+            }}>
+            {activeTab === "content" && (
               <>
-                <Check className="h-4 w-4" />
-                <span>Đã lưu nháp!</span>
-              </>
-            ) : (
-              <>
-                <Save className="h-4 w-4" />
-                <span>Lưu thay đổi</span>
+                <button type="button" aria-label="Chế độ xem" title="Chế độ xem" aria-haspopup="menu" aria-expanded={mobilePanel === "mode"}
+                  aria-controls="interview-mobile-mode-menu" data-mobile-trigger="mode"
+                  onClick={() => setMobilePanel((prev) => prev === "mode" ? null : "mode")}
+                  className="inline-flex h-9 items-center gap-1 rounded-lg border border-[var(--border)] px-2 text-[var(--foreground)]">
+                  {viewMode === "preview" ? <Eye className="h-4 w-4" /> : <Edit3 className="h-4 w-4" />}
+                  <span className="sr-only">Đổi chế độ xem</span>
+                </button>
+                {onTextScaleChange && (
+                  <button type="button" aria-label="Cỡ chữ" title="Cỡ chữ" aria-haspopup="dialog" aria-expanded={mobilePanel === "size"}
+                    aria-controls="interview-mobile-size-panel" data-mobile-trigger="size"
+                    onClick={() => setMobilePanel((prev) => prev === "size" ? null : "size")}
+                    className="inline-flex h-9 items-center gap-1 rounded-lg border border-[var(--border)] px-2 text-[var(--foreground)]">
+                    <Type className="h-4 w-4" />
+                  </button>
+                )}
               </>
             )}
+            <button type="button" aria-label="Tùy chọn khác" title="Hủy hoặc xóa câu hỏi" aria-haspopup="menu" aria-expanded={mobilePanel === "actions"}
+              aria-controls="interview-mobile-actions-menu" data-mobile-trigger="actions"
+              onClick={() => setMobilePanel((prev) => prev === "actions" ? null : "actions")}
+              className="inline-flex h-9 items-center justify-center rounded-lg border border-[var(--border)] px-2 text-[var(--foreground)]">
+              <MoreHorizontal className="h-4 w-4" />
+            </button>
+
+            {mobilePanel === "mode" && activeTab === "content" && (
+              <div id="interview-mobile-mode-menu" data-mobile-panel="mode" role="menu" aria-label="Chế độ xem"
+                className="absolute bottom-full left-0 z-30 mb-2 flex min-w-40 flex-col gap-1 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 shadow-xl">
+                <button type="button" role="menuitemradio" aria-checked={viewMode === "edit"} onClick={() => { setViewMode("edit"); setMobilePanel(null); }}
+                  className="rounded-lg px-3 py-2 text-left text-xs text-[var(--foreground)] hover:bg-[var(--surface-hover)]">Soạn thảo</button>
+                <button type="button" role="menuitemradio" aria-checked={viewMode === "preview"} onClick={() => { setViewMode("preview"); setMobilePanel(null); }}
+                  className="rounded-lg px-3 py-2 text-left text-xs text-[var(--foreground)] hover:bg-[var(--surface-hover)]">Xem trước</button>
+              </div>
+            )}
+            {mobilePanel === "size" && activeTab === "content" && onTextScaleChange && (
+              <div id="interview-mobile-size-panel" data-mobile-panel="size" role="dialog" aria-label="Điều chỉnh cỡ chữ"
+                className="absolute bottom-full left-0 z-30 mb-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 shadow-xl">
+                <InterviewTextSizeControl value={textScale} onChange={onTextScaleChange} />
+              </div>
+            )}
+            {mobilePanel === "actions" && (
+              <div id="interview-mobile-actions-menu" data-mobile-panel="actions" role="menu" aria-label="Hành động khác"
+                className="absolute bottom-full left-0 z-30 mb-2 flex min-w-44 flex-col gap-1 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2 shadow-xl">
+                <button type="button" role="menuitem" onClick={() => { setMobilePanel(null); void requestClose(); }}
+                  className="rounded-lg px-3 py-2 text-left text-xs font-semibold text-[var(--foreground)] hover:bg-[var(--surface-hover)]">Hủy bỏ</button>
+                {onDelete && <button type="button" role="menuitem" onClick={() => { setMobilePanel(null); void handleDelete(); }}
+                  className="rounded-lg px-3 py-2 text-left text-xs font-semibold text-rose-500 hover:bg-rose-500/10">Xóa câu này</button>}
+              </div>
+            )}
+          </div>
+
+          <div role="status" aria-label="Bản nháp tự lưu trên máy. Ctrl+S để lưu thay đổi." className="hidden min-w-0 flex-1 items-center gap-1.5 text-xs text-[var(--muted)] 2xl:flex">
+            <Sparkles className="h-4 w-4 shrink-0 text-amber-500" />
+            <span className="min-w-0 truncate">Nháp tự lưu trên máy · Ctrl+S: Lưu thay đổi</span>
+          </div>
+        </div>
+
+        <div data-testid="interview-editor-action-right" className="flex shrink-0 items-center gap-1.5">
+          {onDelete && <button type="button" onClick={() => { void handleDelete(); }} aria-label="Xóa câu này" title="Xóa câu hỏi này khỏi danh sách ôn luyện"
+            className="hidden items-center gap-1 rounded-xl border border-rose-500/30 bg-rose-500/10 px-2.5 py-2 text-xs font-bold text-rose-500 transition-colors hover:bg-rose-500/20 xl:inline-flex xl:px-3">
+            <Trash2 className="h-3.5 w-3.5" /><span className="hidden 2xl:inline">Xóa câu này</span>
+          </button>}
+
+          <button type="button" onClick={() => { void requestClose(); }} aria-label="Hủy bỏ (Esc)"
+            className="hidden rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs font-bold text-[var(--muted-strong)] transition-colors hover:bg-[var(--surface-hover)] xl:inline-flex">
+            <span className="hidden 2xl:inline">Hủy bỏ (Esc)</span><span className="2xl:hidden">Hủy</span>
+          </button>
+
+          <button type="button" onClick={handleSave}
+            className={`inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold text-white shadow-xs transition-all sm:px-4 ${savedSuccess ? "bg-emerald-600" : "bg-indigo-600 hover:bg-indigo-700 active:scale-95"}`}>
+            {savedSuccess ? (<><Check className="h-4 w-4" /><span>Đã lưu nháp!</span></>) : (<><Save className="h-4 w-4" /><span>Lưu thay đổi</span></>)}
           </button>
         </div>
+      </div>
       </div>
       </fieldset>
     </div>

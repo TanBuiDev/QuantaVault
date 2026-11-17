@@ -5,7 +5,23 @@ import { ToastProvider } from "@/components/ui/Toast";
 import { ConfirmProvider } from "@/components/ui/ConfirmDialog";
 import type { InterviewQuestion } from "@/lib/interview/types";
 
-vi.mock("@/features/practice/MarkdownContent", () => ({ MarkdownContent: () => null }));
+vi.mock("@/features/practice/MarkdownContent", () => ({
+  MarkdownContent: ({ markdown, onNavigateSource }: {
+    markdown: string;
+    onNavigateSource?: (location: { offset: number; line: number; column: number }, source: string) => void;
+  }) => (
+    <div>
+      <button type="button" data-testid="mock-preview-navigation"
+        onClick={() => onNavigateSource?.({ offset: 2, line: 1, column: 3 }, markdown)}>
+        Navigate preview
+      </button>
+      <button type="button" data-testid="mock-stale-preview-navigation"
+        onClick={() => onNavigateSource?.({ offset: 4, line: 1, column: 5 }, markdown + " stale")}>
+        Navigate stale preview
+      </button>
+    </div>
+  ),
+}));
 const question: InterviewQuestion = { id: "q-recovery", title: "Đã lưu mới nhất", category: "java-core", difficulty: "junior", summary: "", answerMarkdown: "Đáp án đã lưu", tags: ["Java"] };
 const key = `interview_draft_${question.id}`;
 const editor = () => screen.getByPlaceholderText("Nhập nội dung câu trả lời chi tiết bằng cú pháp Markdown...");
@@ -93,6 +109,11 @@ describe("InterviewEditModal draft safety", () => {
     expect(card).not.toHaveClass("h-screen", "animate-scale-in", "transform-gpu");
     const body = card.children[0] as HTMLElement;
     expect(body).toHaveClass("min-h-0", "overflow-hidden");
+    const fieldset = body.querySelector("fieldset") as HTMLFieldSetElement;
+    expect(fieldset).toHaveClass("contents");
+    const layout = screen.getByTestId("interview-editor-layout");
+    expect(layout).toHaveClass("flex", "flex-1", "h-full", "min-h-0", "flex-col", "overflow-hidden");
+    expect(layout.lastElementChild).toHaveClass("shrink-0");
     const input = editor();
     expect(input).toBeInTheDocument();
     expect(input.closest(".rounded-2xl")).toHaveClass("min-h-0");
@@ -100,6 +121,8 @@ describe("InterviewEditModal draft safety", () => {
     fireEvent.click(screen.getByRole("button", { name: "Thu nhỏ cửa sổ" }));
     expect(card).not.toHaveClass("absolute");
     expect(card).toHaveClass("relative", "animate-scale-in", "transform-gpu");
+    expect(layout).toHaveClass("contents");
+    expect(layout).not.toHaveClass("flex-1", "overflow-hidden");
     expect(editor()).toBeInTheDocument();
   });
   it("cho phép chuyển đổi giữa chế độ toàn màn hình và mặc định", () => {
@@ -117,4 +140,110 @@ describe("InterviewEditModal draft safety", () => {
     fireEvent.click(shrinkBtn);
     expect(screen.getByRole("button", { name: "Mở rộng toàn màn hình" })).toBeInTheDocument();
   });
+  it("chỉnh sửa tiêu đề trên header duy nhất, Enter/Escape không tự lưu hay đóng", () => {
+    const save = vi.fn();
+    const close = vi.fn();
+    mount(save, close);
+    const titleInput = screen.getByRole("textbox", { name: "Tiêu đề câu hỏi phỏng vấn" });
+    expect(titleInput).toHaveValue("Đã lưu mới nhất");
+    expect(screen.getAllByRole("textbox", { name: "Tiêu đề câu hỏi phỏng vấn" })).toHaveLength(1);
+    fireEvent.change(titleInput, { target: { value: "Tiêu đề được sửa trực tiếp" } });
+    fireEvent.keyDown(titleInput, { key: "Escape" });
+    fireEvent.keyDown(titleInput, { key: "Enter" });
+    expect(close).not.toHaveBeenCalled();
+    expect(save).not.toHaveBeenCalled();
+    expect(titleInput).toHaveValue("Tiêu đề được sửa trực tiếp");
+
+    fireEvent.click(screen.getByRole("button", { name: "Thuộc tính" }));
+    expect(screen.getAllByRole("textbox", { name: "Tiêu đề câu hỏi phỏng vấn" })).toHaveLength(1);
+    expect(titleInput).toHaveValue("Tiêu đề được sửa trực tiếp");
+    fireEvent.click(screen.getByRole("button", { name: "Nội dung" }));
+    expect(titleInput).toHaveValue("Tiêu đề được sửa trực tiếp");
+
+    fireEvent.click(screen.getByRole("button", { name: "Lưu thay đổi" }));
+    expect(save).toHaveBeenCalledWith(
+      expect.objectContaining({ title: "Tiêu đề được sửa trực tiếp", answerMarkdown: question.answerMarkdown }),
+      question,
+    );
+  });
+
+  it("footer là một hàng và menu mobile quản lý chế độ xem, Escape không đóng modal", () => {
+    const onClose = vi.fn();
+    mount(vi.fn(), onClose);
+    expect(screen.getByTestId("interview-editor-action-bar")).toHaveClass("flex-nowrap");
+    expect(screen.getByTestId("interview-editor-action-left")).toHaveClass("min-w-0", "flex-1");
+    expect(screen.getByTestId("interview-editor-action-right")).toHaveClass("shrink-0");
+    expect(screen.getByRole("group", { name: "Chế độ xem" }).parentElement).toHaveClass("xl:flex");
+    expect(screen.getByRole("button", { name: "Chế độ xem" }).parentElement).toHaveClass("xl:hidden");
+    const trigger = screen.getByRole("button", { name: "Chế độ xem" });
+    fireEvent.click(trigger);
+    const modeMenu = screen.getByRole("menu", { name: "Chế độ xem" });
+    expect(modeMenu).toBeInTheDocument();
+    fireEvent.keyDown(modeMenu, { key: "Escape" });
+    expect(screen.queryByRole("menu", { name: "Chế độ xem" })).not.toBeInTheDocument();
+    expect(onClose).not.toHaveBeenCalled();
+
+    fireEvent.click(trigger);
+    fireEvent.click(screen.getByRole("menuitemradio", { name: "Xem trước" }));
+    expect(screen.queryByRole("menu", { name: "Chế độ xem" })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Chế độ xem" }));
+    fireEvent.click(screen.getByRole("menuitemradio", { name: "Soạn thảo" }));
+    expect(editor()).toHaveValue(question.answerMarkdown);
+
+    fireEvent.click(screen.getByRole("button", { name: "Tùy chọn khác" }));
+    expect(screen.getByRole("menuitem", { name: "Hủy bỏ" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Lưu thay đổi" })).toBeInTheDocument();
+  });
+
+  it("trọng tâm cốt lõi có chiều cao responsive, cho kéo dọc và giữ nội dung qua tab", () => {
+    const save = vi.fn();
+    mount(save);
+    fireEvent.click(screen.getByRole("button", { name: "Thuộc tính" }));
+    const summary = screen.getByPlaceholderText(/Câu đúc kết 1-2 dòng/);
+    expect(summary).toHaveAttribute("rows", "5");
+    expect(summary).toHaveClass("min-h-[140px]", "sm:min-h-[180px]", "max-h-[65vh]", "resize-y", "overflow-y-auto");
+    fireEvent.change(summary, { target: { value: "Tóm tắt Java Backend mới" } });
+    fireEvent.click(screen.getByRole("button", { name: "Nội dung" }));
+    fireEvent.click(screen.getByRole("button", { name: "Thuộc tính" }));
+    expect(screen.getByPlaceholderText(/Câu đúc kết 1-2 dòng/)).toHaveValue("Tóm tắt Java Backend mới");
+    fireEvent.click(screen.getByRole("button", { name: "Lưu thay đổi" }));
+    expect(save).toHaveBeenCalledWith(
+      expect.objectContaining({ summary: "Tóm tắt Java Backend mới", answerMarkdown: question.answerMarkdown }),
+      question,
+    );
+  });
+
+  it("chuyển chế độ xem không làm đổi câu trả lời hoặc tạo bản nháp", () => {
+    mount();
+    fireEvent.click(screen.getByRole("button", { name: "Xem trước" }));
+    fireEvent.click(screen.getByRole("button", { name: "Song song" }));
+    expect(editor()).toHaveValue("Đáp án đã lưu");
+    act(() => { vi.advanceTimersByTime(450); });
+    expect(sessionStorage.getItem(key)).toBeNull();
+  });
+
+  it("nhấp Preview chuyển con trỏ mà không sửa answerMarkdown, lưu nháp hoặc gọi onSave", () => {
+    const save = vi.fn();
+    mount(save);
+    fireEvent.click(screen.getByRole("button", { name: "Song song" }));
+    const input = editor() as HTMLTextAreaElement;
+    expect(input.selectionStart).toBe(0);
+    fireEvent.click(screen.getByTestId("mock-preview-navigation"));
+    expect(input).toHaveFocus();
+    expect(input.selectionStart).toBe(2);
+    expect(input.selectionEnd).toBe(2);
+    expect(input.value).toBe("Đáp án đã lưu");
+    act(() => { vi.advanceTimersByTime(450); });
+    expect(sessionStorage.getItem(key)).toBeNull();
+    expect(save).not.toHaveBeenCalled();
+  });
+  it("không điều hướng khi dữ liệu Preview không trùng bản hiện tại", () => {
+    mount();
+    fireEvent.click(screen.getByRole("button", { name: "Song song" }));
+    const input = editor() as HTMLTextAreaElement;
+    fireEvent.click(screen.getByTestId("mock-stale-preview-navigation"));
+    expect(input.selectionStart).toBe(0);
+    expect(input.value).toBe("Đáp án đã lưu");
+  });
+
 });

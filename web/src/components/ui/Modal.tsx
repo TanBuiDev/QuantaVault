@@ -80,7 +80,7 @@ export function Modal({
         className={classNames(
           "flex w-full flex-col bg-[var(--surface)] shadow-2xl isolate",
           fullScreen
-            ? "absolute inset-0 min-h-0 max-h-none max-w-none rounded-none border-0"
+            ? "absolute inset-0 h-[100dvh] min-h-0 max-h-[100dvh] max-w-none rounded-none border-0"
             : classNames("relative max-h-[90vh] rounded-3xl border border-[var(--border)] transition-all animate-scale-in transform-gpu", maxWidthClasses[maxWidth]),
           className
         )}

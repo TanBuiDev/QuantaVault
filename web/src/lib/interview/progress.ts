@@ -1,8 +1,9 @@
 "use client";
 
-import { useSyncExternalStore, useCallback } from "react";
+import { useSyncExternalStore, useCallback, useState } from "react";
 import type { InterviewProgressState } from "./types";
 import { queueCloudProgress } from "./cloudSync";
+import { canWriteLearningProgress, useLearningSession } from "../auth/progressAccess";
 
 const STORAGE_KEY = "interview-prep-progress-v1";
 const CHANGE_EVENT = "interview-prep-progress:change";
@@ -13,69 +14,43 @@ const EMPTY_STATE: InterviewProgressState = {
   bookmarks: {},
 };
 
-import legacyMap from "./legacyIdMap.json";
-
+// Historical aliases can collide with current q-001..q-538 question IDs.
+// Never automatically rewrite unversioned study progress during a read.
+// The explicit, backed-up reconciliation UI handles the retired canonical IDs.
 let cachedRaw: string | null | undefined;
 let cachedState: InterviewProgressState = EMPTY_STATE;
-
-function migrateRecord(record: Record<string, boolean>): { updated: Record<string, boolean>; changed: boolean } {
-  const result: Record<string, boolean> = {};
-  let changed = false;
-  const map = legacyMap as Record<string, string>;
-
-  for (const [key, val] of Object.entries(record)) {
-    if (map[key] && map[key] !== key) {
-      result[map[key]] = val;
-      changed = true;
-    } else {
-      result[key] = val;
-    }
-  }
-  return { updated: result, changed };
-}
 
 function readStorage(): InterviewProgressState {
   if (typeof window === "undefined") return EMPTY_STATE;
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return EMPTY_STATE;
-    const parsed = JSON.parse(raw);
-    const learnedRes = migrateRecord(typeof parsed.learned === "object" && parsed.learned ? parsed.learned : {});
-    const reviewRes = migrateRecord(typeof parsed.review === "object" && parsed.review ? parsed.review : {});
-    const bookmarksRes = migrateRecord(typeof parsed.bookmarks === "object" && parsed.bookmarks ? parsed.bookmarks : {});
-
-    const migratedState: InterviewProgressState = {
-      learned: learnedRes.updated,
-      review: reviewRes.updated,
-      bookmarks: bookmarksRes.updated,
+    const parsed = JSON.parse(raw) as Partial<InterviewProgressState>;
+    if (!parsed || typeof parsed !== "object") return EMPTY_STATE;
+    return {
+      learned: parsed.learned && typeof parsed.learned === "object" ? parsed.learned : {},
+      review: parsed.review && typeof parsed.review === "object" ? parsed.review : {},
+      bookmarks: parsed.bookmarks && typeof parsed.bookmarks === "object" ? parsed.bookmarks : {},
     };
-
-    if (learnedRes.changed || reviewRes.changed || bookmarksRes.changed) {
-      writeStorage(migratedState);
-    }
-
-    return migratedState;
   } catch {
     return EMPTY_STATE;
   }
 }
 
 function writeStorage(state: InterviewProgressState) {
-  if (typeof window === "undefined") return;
-  try {
-    const raw = JSON.stringify(state);
-    window.localStorage.setItem(STORAGE_KEY, raw);
-    cachedRaw = raw;
-    cachedState = state;
-    window.dispatchEvent(new Event(CHANGE_EVENT));
-  } catch {
-    // Ignore storage quota errors
-  }
+  if (typeof window === "undefined") throw new Error("STORAGE_UNAVAILABLE");
+  const raw = JSON.stringify(state);
+  window.localStorage.setItem(STORAGE_KEY, raw);
+  cachedRaw = raw;
+  cachedState = state;
+  window.dispatchEvent(new Event(CHANGE_EVENT));
 }
 
 function getBrowserSnapshot(): InterviewProgressState {
   if (typeof window === "undefined") return EMPTY_STATE;
-  const raw = window.localStorage.getItem(STORAGE_KEY);
+  let raw: string | null;
+  try { raw = window.localStorage.getItem(STORAGE_KEY); }
+  catch { return cachedState; }
   if (raw === cachedRaw) return cachedState;
 
   cachedRaw = raw;
@@ -122,7 +97,11 @@ function getServerHydratedSnapshot(): boolean {
 }
 
 export function useInterviewProgress() {
-  const state = useSyncExternalStore(subscribe, getBrowserSnapshot, getServerSnapshot);
+  const storedState = useSyncExternalStore(subscribe, getBrowserSnapshot, getServerSnapshot);
+  const [storageError, setStorageError] = useState(false);
+  const canTrackProgress = useLearningSession();
+  // Hide old marks after logout; preserve the underlying storage for the next login.
+  const state = canTrackProgress ? storedState : EMPTY_STATE;
   const hydrated = useSyncExternalStore(
     subscribeHydration,
     getHydratedSnapshot,
@@ -131,6 +110,7 @@ export function useInterviewProgress() {
 
   const toggleLearned = useCallback(
     (questionId: string) => {
+      if (!canWriteLearningProgress()) return;
       const current = readStorage();
       const isLearned = Boolean(current.learned[questionId]);
       const next: InterviewProgressState = {
@@ -146,14 +126,20 @@ export function useInterviewProgress() {
         delete next.review[questionId]; // Nếu đã hiểu thì bỏ khỏi cần ôn lại
       }
 
-      writeStorage(next);
-      queueCloudProgress(next);
+      try {
+        writeStorage(next);
+        setStorageError(false);
+        queueCloudProgress(next);
+      } catch {
+        setStorageError(true);
+      }
     },
     []
   );
 
   const toggleReview = useCallback(
     (questionId: string) => {
+      if (!canWriteLearningProgress()) return;
       const current = readStorage();
       const isReview = Boolean(current.review[questionId]);
       const next: InterviewProgressState = {
@@ -169,14 +155,20 @@ export function useInterviewProgress() {
         delete next.learned[questionId]; // Nếu cần ôn lại thì bỏ khỏi đã hiểu
       }
 
-      writeStorage(next);
-      queueCloudProgress(next);
+      try {
+        writeStorage(next);
+        setStorageError(false);
+        queueCloudProgress(next);
+      } catch {
+        setStorageError(true);
+      }
     },
     []
   );
 
   const toggleBookmark = useCallback(
     (questionId: string) => {
+      if (!canWriteLearningProgress()) return;
       const current = readStorage();
       const isBookmarked = Boolean(current.bookmarks[questionId]);
       const next: InterviewProgressState = {
@@ -190,8 +182,13 @@ export function useInterviewProgress() {
         next.bookmarks[questionId] = true;
       }
 
-      writeStorage(next);
-      queueCloudProgress(next);
+      try {
+        writeStorage(next);
+        setStorageError(false);
+        queueCloudProgress(next);
+      } catch {
+        setStorageError(true);
+      }
     },
     []
   );
@@ -203,6 +200,8 @@ export function useInterviewProgress() {
   return {
     state,
     hydrated,
+    canTrackProgress,
+    storageError,
     isLearned,
     isReview,
     isBookmarked,
@@ -217,5 +216,11 @@ export function readInterviewProgress(): InterviewProgressState {
   return readStorage();
 }
 export function replaceInterviewProgress(next: InterviewProgressState) {
-  writeStorage(next);
+  if (typeof window === "undefined") throw new Error("Browser storage unavailable");
+  // Migration and manual cloud downloads must fail closed on storage quota errors.
+  const raw = JSON.stringify(next);
+  window.localStorage.setItem(STORAGE_KEY, raw);
+  cachedRaw = raw;
+  cachedState = next;
+  window.dispatchEvent(new Event(CHANGE_EVENT));
 }

@@ -67,6 +67,25 @@ describe("InterviewPresentationModal Component", () => {
     expect(screen.getByText(/Thời Gian Thảo Luận & Tự Trả Lời/i)).toBeDefined();
   });
 
+  it("shows the canonical ID rather than the slide position", () => {
+    const selected = [{ ...mockQuestions[0], id: "q-010" }];
+    const { container } = render(
+      <InterviewPresentationModal
+        isOpen={true}
+        onClose={vi.fn()}
+        questions={selected}
+        isLearned={() => false}
+        isReview={() => false}
+        isBookmarked={() => false}
+        onToggleLearned={vi.fn()}
+        onToggleReview={vi.fn()}
+        onToggleBookmark={vi.fn()}
+      />
+    );
+    expect(container.querySelector("main")).toHaveTextContent("#010");
+    expect(container.querySelector("main")).not.toHaveTextContent("#001");
+  });
+
   it("reveals answer and takeaways on button click", () => {
     render(
       <InterviewPresentationModal

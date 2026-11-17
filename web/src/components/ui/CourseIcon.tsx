@@ -1,9 +1,10 @@
-import { BookOpen, Database, Languages, Server, type LucideIcon } from "lucide-react";
+import { BookOpen, Database, Languages, Leaf, Server, type LucideIcon } from "lucide-react";
 
 const COURSE_ICONS: Record<string, LucideIcon> = {
   Database,
   Server,
   Languages,
+  Leaf,
   BookOpen
 };
 

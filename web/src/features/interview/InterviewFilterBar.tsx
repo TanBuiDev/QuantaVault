@@ -7,6 +7,7 @@ import type {
   InterviewQuestion,
 } from "@/lib/interview/types";
 import { INTERVIEW_CATEGORIES } from "@/lib/interview/types";
+import { interviewMatchesCategory } from "@/lib/interview";
 
 export interface InterviewFilterBarProps {
   questions: InterviewQuestion[];
@@ -25,7 +26,11 @@ export function InterviewFilterBar({
   const categoryCounts = useMemo(() => {
     const counts: Record<string, number> = {};
     for (const q of questions) {
-      counts[q.category] = (counts[q.category] || 0) + 1;
+      for (const category of Object.values(INTERVIEW_CATEGORIES)) {
+        if (interviewMatchesCategory(q, category.id)) {
+          counts[category.id] = (counts[category.id] || 0) + 1;
+        }
+      }
     }
     return counts;
   }, [questions]);

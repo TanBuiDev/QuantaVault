@@ -3,7 +3,7 @@ import path from "node:path";
 import { parse } from "yaml";
 
 const sourceExtensions = new Set([".ts", ".tsx", ".css", ".json", ".png", ".ico", ".svg"]);
-const assetExtensions = new Set([".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".ico", ".woff", ".woff2", ".ttf"]);
+const assetExtensions = new Set([".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".ico", ".webmanifest", ".woff", ".woff2", ".ttf"]);
 
 function copyTree(source, target, accept) {
   if (!fs.existsSync(source)) return;

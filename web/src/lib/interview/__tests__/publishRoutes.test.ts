@@ -3,6 +3,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { POST } from "@/app/api/publish/route";
 import { onRequestPost } from "../../../../functions/api/publish";
 import { generateTOTP } from "../totp";
+import { authorizedAdmin } from "@/lib/auth/adminAccess";
+vi.mock("@/lib/auth/adminAccess", () => ({ authorizedAdmin: vi.fn() }));
 
 const origin = "https://study.example";
 const env = { ADMIN_PIN: "test-pin", TOTP_SECRET: "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ", GITHUB_PAT: "test-token", PUBLISH_ORIGINS: origin }; // RFC 6238 public test vector, never a runtime secret. gitleaks:allow
@@ -15,8 +17,9 @@ async function request(overrides: Record<string, unknown> = {}, requestOrigin = 
   });
 }
 describe.each(["node", "pages"])("publish endpoint %s", surface => {
-  afterEach(() => { vi.unstubAllGlobals(); vi.unstubAllEnvs(); });
+  afterEach(() => { vi.unstubAllGlobals(); vi.unstubAllEnvs(); vi.resetAllMocks(); });
   async function run(req: Request, settings: typeof env = env) {
+    vi.mocked(authorizedAdmin).mockResolvedValue({ user: { id: "verified-admin", name: "Admin", email: "admin@example.com", role: "admin" }, sessionHash: "session-hash" });
     for (const [key, value] of Object.entries(settings)) vi.stubEnv(key, value);
     return surface === "node" ? POST(req) : onRequestPost({ request: req, env: settings });
   }
@@ -27,11 +30,14 @@ describe.each(["node", "pages"])("publish endpoint %s", surface => {
     expect(await response.json()).toMatchObject({ code: "ORIGIN_FORBIDDEN" });
     expect(fetch).not.toHaveBeenCalled();
   });
-  it("requires PIN and OTP", async () => {
+  it("requires an elevated Google admin even when correct PIN + TOTP are supplied", async () => {
     const fetch = vi.fn(); vi.stubGlobal("fetch", fetch);
-    const response = await run(await request({ otp: "000invalid" }));
-    expect(response.status).toBe(401);
-    expect(await response.json()).toMatchObject({ code: "AUTHENTICATION_FAILED" });
+    const req = await request();
+    for (const [key, value] of Object.entries(env)) vi.stubEnv(key, value);
+    vi.mocked(authorizedAdmin).mockResolvedValue(null);
+    const result = surface === "node" ? await POST(req) : await onRequestPost({ request: req, env });
+    expect(result.status).toBe(403);
+    expect(await result.json()).toMatchObject({ code: "ADMIN_AUTH_REQUIRED" });
     expect(fetch).not.toHaveBeenCalled();
   });
   it("rejects bodies above the bounded request limit", async () => {

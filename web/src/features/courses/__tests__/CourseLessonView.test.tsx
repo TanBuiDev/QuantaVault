@@ -1,8 +1,11 @@
 import "@testing-library/jest-dom/vitest";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { setLearningSessionActive } from "@/lib/auth/progressAccess";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { CourseLessonView } from "../CourseLessonView";
 import type { CourseManifest } from "@/lib/courses";
+
+vi.mock("@/lib/auth/AccountProvider", () => ({ useAccount: () => ({ requestLogin: vi.fn() }) }));
 
 const mockCourse: CourseManifest = {
   id: "test-course",
@@ -47,6 +50,8 @@ const mockCourse: CourseManifest = {
 };
 
 describe("CourseLessonView", () => {
+  beforeEach(() => setLearningSessionActive(true));
+  afterEach(() => setLearningSessionActive(false));
   it("renders lesson details, badges and navigation", () => {
     render(
       <CourseLessonView

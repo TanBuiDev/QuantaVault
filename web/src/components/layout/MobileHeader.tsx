@@ -31,8 +31,8 @@ export function MobileHeader() {
             className="flex items-center gap-2 rounded-xl"
           >
             <img
-              src="/brand-logo.png"
-              alt="Logo Java"
+              src="/brand-icon.svg"
+              alt="QuantaVault"
               className="size-8 rounded-xl object-cover shadow-xs"
             />
             <span className="font-bold text-xs text-[var(--foreground)] tracking-tight">QuantaVault</span>

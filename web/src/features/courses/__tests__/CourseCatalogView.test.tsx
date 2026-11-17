@@ -1,5 +1,6 @@
 import "@testing-library/jest-dom/vitest";
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { setLearningSessionActive } from "@/lib/auth/progressAccess";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { CourseCatalogView } from "../CourseCatalogView";
 import { getAllCourses } from "@/lib/courses";
@@ -22,8 +23,10 @@ function saveProgress(id: string, lessonId: string, completedLessonIds: string[]
 
 describe("CourseCatalogView: scalable course catalog", () => {
   beforeEach(() => {
+    setLearningSessionActive(true);
     localStorage.clear();
   });
+  afterEach(() => setLearningSessionActive(false));
 
   it("renders every registered course in the scalable catalog", () => {
     render(<CourseCatalogView courses={realCourses} />);

@@ -23,9 +23,11 @@ import { InterviewTextSizeControl } from "@/features/interview/InterviewTextSize
 import { useInterviewTextSize } from "@/features/interview/useInterviewTextSize";
 import type { CourseLesson, CourseManifest } from "@/lib/courses";
 import { useCourseProgress } from "@/lib/courses/useCourseProgress";
+import { useAccount } from "@/lib/auth/AccountProvider";
 import { useEnglishSpeech } from "@/lib/courses/speech";
 import { CourseSyllabusSidebar } from "./CourseSyllabusSidebar";
 import { EnglishLessonContent } from "./EnglishLessonContent";
+import { SpringLessonContent } from "./SpringLessonContent";
 
 interface CourseLessonViewProps {
   course: CourseManifest;
@@ -44,15 +46,20 @@ export function CourseLessonView({
 }: CourseLessonViewProps) {
   const [mobileSyllabusOpen, setMobileSyllabusOpen] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
+  const [copyFailed, setCopyFailed] = useState(false);
+  const { requestLogin, user, loading } = useAccount();
   const { textScale, changeTextScale } = useInterviewTextSize();
   const { speak, isSpeaking } = useEnglishSpeech();
   const isEnglish = course.slug === "english-job-interview";
+  const isSpring = course.slug === "spring-framework-for-java";
   const visibleMarkdown = isEnglish
     ? lesson.contentMarkdown.replace(/^# Lesson [^\n]*\n\n\*\*Tiếng Việt:\*\*[^\n]*\n\n---\n\n/, "")
     : lesson.contentMarkdown;
 
   const {
     hydrated,
+    canTrackProgress,
+    storageError,
     isLessonCompleted,
     toggleLessonCompleted,
     recordLastAccessed,
@@ -64,14 +71,18 @@ export function CourseLessonView({
 
   // Record this lesson as last visited
   useEffect(() => {
-    recordLastAccessed(course.id, lesson.id);
-  }, [course.id, lesson.id, recordLastAccessed]);
+    if (canTrackProgress) recordLastAccessed(course.id, lesson.id);
+  }, [course.id, lesson.id, recordLastAccessed, canTrackProgress]);
 
-  const handleShare = () => {
-    if (typeof window !== "undefined") {
-      void navigator.clipboard.writeText(window.location.href);
+  const handleShare = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopyFailed(false);
       setCopiedLink(true);
       setTimeout(() => setCopiedLink(false), 2000);
+    } catch {
+      setCopiedLink(false);
+      setCopyFailed(true);
     }
   };
 
@@ -174,10 +185,17 @@ export function CourseLessonView({
                 )}
               </button>
 
+              {copyFailed && <div role="alert" className="text-xs text-amber-600">
+                Không thể sao chép tự động. Bạn có thể chọn liên kết trên thanh địa chỉ để sao chép.
+              </div>}
+              {storageError && <div role="alert" className="text-xs text-amber-600">
+                Chưa lưu được tiến độ bài học trên thiết bị. Hãy kiểm tra quyền/dung lượng lưu trữ và thử lại.
+              </div>}
               {/* Mark Complete Button */}
               <button
                 type="button"
-                onClick={() => toggleLessonCompleted(course.id, lesson.id)}
+                onClick={() => canTrackProgress ? toggleLessonCompleted(course.id, lesson.id) : requestLogin()}
+                title={!canTrackProgress ? "Đăng nhập Google để lưu tiến độ học tập" : undefined}
                 className={`flex items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all cursor-pointer ${
                   isCompleted
                     ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20"
@@ -215,7 +233,7 @@ export function CourseLessonView({
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[var(--foreground)] tracking-tight leading-snug">
                 {isEnglish && lesson.titleEn ? lesson.titleEn : lesson.title}
               </h1>
-              {isEnglish && lesson.titleEn && (
+              {(isEnglish || isSpring) && lesson.titleEn && (
                 <button
                   type="button"
                   onClick={() => speak(lesson.titleEn!)}
@@ -231,8 +249,8 @@ export function CourseLessonView({
                 </button>
               )}
             </div>
-            {isEnglish && lesson.titleEn && (
-              <p className="text-base sm:text-lg text-[var(--muted-strong)] font-medium">{lesson.title}</p>
+            {(isEnglish || isSpring) && lesson.titleEn && (
+              <p className="text-base sm:text-lg text-[var(--muted-strong)] font-medium">{isEnglish ? lesson.title : lesson.titleEn}</p>
             )}
 
             {/* Quick practice card for English lessons */}
@@ -286,6 +304,16 @@ export function CourseLessonView({
                 lessonId={lesson.id}
                 textScale={textScale}
                 fallbackMarkdown={visibleMarkdown}
+              />
+            </section>
+          ) : isSpring ? (
+            <section aria-label="Nội dung bài học Spring Framework">
+              <SpringLessonContent
+                key={JSON.stringify([lesson.id, user?.id ?? null])}
+                lesson={lesson}
+                textScale={textScale}
+                accountId={user?.id}
+                accountLoading={loading}
               />
             </section>
           ) : (

@@ -153,3 +153,17 @@ textarea {
   fill: #f1f5f9 !important;
   font-weight: 600 !important;
 }
+
+/* Preview navigation must not draw boxes around rendered Markdown.
+   Preserve the original reading appearance; only keyboard focus gets a
+   non-box text cue for accessibility. */
+.md-source-navigation [data-md-source-offset] {
+  cursor: pointer;
+  outline: none; /* Prevent default rectangular outline on focused preview text. */
+}
+.md-source-navigation [data-md-source-offset]:focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-decoration-color: var(--focus);
+  text-underline-offset: 0.2em;
+}
