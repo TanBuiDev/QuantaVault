@@ -27,6 +27,7 @@ import { useAccount } from "@/lib/auth/AccountProvider";
 import { useEnglishSpeech } from "@/lib/courses/speech";
 import { CourseSyllabusSidebar } from "./CourseSyllabusSidebar";
 import { EnglishLessonContent } from "./EnglishLessonContent";
+import { SpringLessonContent } from "./SpringLessonContent";
 
 interface CourseLessonViewProps {
   course: CourseManifest;
@@ -46,10 +47,11 @@ export function CourseLessonView({
   const [mobileSyllabusOpen, setMobileSyllabusOpen] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const [copyFailed, setCopyFailed] = useState(false);
-  const { requestLogin } = useAccount();
+  const { requestLogin, user, loading } = useAccount();
   const { textScale, changeTextScale } = useInterviewTextSize();
   const { speak, isSpeaking } = useEnglishSpeech();
   const isEnglish = course.slug === "english-job-interview";
+  const isSpring = course.slug === "spring-framework-for-java";
   const visibleMarkdown = isEnglish
     ? lesson.contentMarkdown.replace(/^# Lesson [^\n]*\n\n\*\*Tiếng Việt:\*\*[^\n]*\n\n---\n\n/, "")
     : lesson.contentMarkdown;
@@ -231,7 +233,7 @@ export function CourseLessonView({
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[var(--foreground)] tracking-tight leading-snug">
                 {isEnglish && lesson.titleEn ? lesson.titleEn : lesson.title}
               </h1>
-              {isEnglish && lesson.titleEn && (
+              {(isEnglish || isSpring) && lesson.titleEn && (
                 <button
                   type="button"
                   onClick={() => speak(lesson.titleEn!)}
@@ -247,8 +249,8 @@ export function CourseLessonView({
                 </button>
               )}
             </div>
-            {isEnglish && lesson.titleEn && (
-              <p className="text-base sm:text-lg text-[var(--muted-strong)] font-medium">{lesson.title}</p>
+            {(isEnglish || isSpring) && lesson.titleEn && (
+              <p className="text-base sm:text-lg text-[var(--muted-strong)] font-medium">{isEnglish ? lesson.title : lesson.titleEn}</p>
             )}
 
             {/* Quick practice card for English lessons */}
@@ -302,6 +304,16 @@ export function CourseLessonView({
                 lessonId={lesson.id}
                 textScale={textScale}
                 fallbackMarkdown={visibleMarkdown}
+              />
+            </section>
+          ) : isSpring ? (
+            <section aria-label="Nội dung bài học Spring Framework">
+              <SpringLessonContent
+                key={JSON.stringify([lesson.id, user?.id ?? null])}
+                lesson={lesson}
+                textScale={textScale}
+                accountId={user?.id}
+                accountLoading={loading}
               />
             </section>
           ) : (
