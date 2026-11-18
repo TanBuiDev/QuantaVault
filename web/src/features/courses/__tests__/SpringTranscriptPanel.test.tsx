@@ -22,25 +22,47 @@ const mockTranscript: CourseTranscriptSentence[] = [
 ];
 
 describe("SpringTranscriptPanel", () => {
-  it("renders in rail mode and searches correctly", () => {
-    render(
+  it("renders in rail mode and filters with searchQuery prop", () => {
+    const { rerender } = render(
       <SpringTranscriptPanel
         transcript={mockTranscript}
         inRail={true}
       />
     );
 
-    expect(screen.getByPlaceholderText("Tìm trong bài...")).toBeInTheDocument();
     expect(screen.getByText(/2 câu/i)).toBeInTheDocument();
     expect(screen.getByText("Spring makes Java programming quicker, easier, and safer for everybody.")).toBeInTheDocument();
     expect(screen.getByText("Dependency Injection is the core pattern in Spring Framework.")).toBeInTheDocument();
 
-    // Search for pattern
-    const searchInput = screen.getByPlaceholderText("Tìm trong bài...");
-    fireEvent.change(searchInput, { target: { value: "core pattern" } });
+    // Rerender with searchQuery prop
+    rerender(
+      <SpringTranscriptPanel
+        transcript={mockTranscript}
+        inRail={true}
+        searchQuery="core pattern"
+      />
+    );
 
     expect(screen.queryByText("Spring makes Java programming quicker, easier, and safer for everybody.")).not.toBeInTheDocument();
     expect(screen.getByText("Dependency Injection is the core pattern in Spring Framework.")).toBeInTheDocument();
+  });
+
+  it("renders search and toggles auto-scroll mode in full/mobile mode", () => {
+    render(
+      <SpringTranscriptPanel
+        transcript={mockTranscript}
+        inRail={false}
+      />
+    );
+
+    expect(screen.getByPlaceholderText("Tìm trong bài...")).toBeInTheDocument();
+
+    const toggleBtn = screen.getByTitle(/Đang bật tự cuộn/i);
+    expect(toggleBtn).toBeInTheDocument();
+    expect(toggleBtn).toHaveTextContent("Tự cuộn: Bật");
+
+    fireEvent.click(toggleBtn);
+    expect(toggleBtn).toHaveTextContent("Tự cuộn: Tắt");
   });
 
   it("filters language modes (bilingual, vi-only, en-only)", () => {
@@ -66,7 +88,7 @@ describe("SpringTranscriptPanel", () => {
     expect(screen.getByText("Spring giúp lập trình Java nhanh hơn, dễ dàng hơn và an toàn hơn cho mọi người.")).toBeInTheDocument();
   });
 
-  it("highlights active sentence synchronized with video currentTime", () => {
+  it("highlights active sentence synchronized with video currentTime without redundant label", () => {
     const { rerender } = render(
       <SpringTranscriptPanel
         transcript={mockTranscript}
@@ -76,7 +98,7 @@ describe("SpringTranscriptPanel", () => {
     );
 
     // At 7s (>= 5s and < 15s), sentence 1 should be active
-    expect(screen.getByText("Đang phát")).toBeInTheDocument();
+    expect(screen.queryByText("Đang phát")).not.toBeInTheDocument();
     expect(screen.getByText("00:05")).toBeInTheDocument();
 
     // Rerender at 18s (>= 15s), sentence 2 should be active
@@ -88,8 +110,42 @@ describe("SpringTranscriptPanel", () => {
       />
     );
 
-    expect(screen.getByText("Đang phát")).toBeInTheDocument();
+    expect(screen.queryByText("Đang phát")).not.toBeInTheDocument();
     expect(screen.getByText("00:15")).toBeInTheDocument();
+  });
+
+  it("opens Zen Reading Modal when clicking Mở rộng", () => {
+    render(
+      <SpringTranscriptPanel
+        transcript={mockTranscript}
+        inRail={true}
+      />
+    );
+
+    const expandBtn = screen.getByRole("button", { name: /Mở rộng/i });
+    expect(expandBtn).toBeInTheDocument();
+
+    fireEvent.click(expandBtn);
+    expect(screen.getByText(/Chế độ Đọc Chuyên Sâu/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Đóng \(Esc\)/i })).toBeInTheDocument();
+
+    // Close modal
+    fireEvent.click(screen.getByRole("button", { name: /Đóng \(Esc\)/i }));
+    expect(screen.queryByText(/Chế độ Đọc Chuyên Sâu/i)).not.toBeInTheDocument();
+  });
+
+  it("scales transcript font size directly with textScale", () => {
+    render(
+      <SpringTranscriptPanel
+        transcript={mockTranscript}
+        inRail={true}
+        textScale={120}
+      />
+    );
+
+    const enText = screen.getByText("Spring makes Java programming quicker, easier, and safer for everybody.");
+    // 13 * 1.2 = 15.6px
+    expect(enText).toHaveStyle({ fontSize: "15.6px" });
   });
 
   it("triggers onSeek when user clicks timestamp or sentence card", () => {
@@ -112,22 +168,6 @@ describe("SpringTranscriptPanel", () => {
     const text1 = screen.getByText("Spring makes Java programming quicker, easier, and safer for everybody.");
     fireEvent.click(text1);
     expect(onSeek).toHaveBeenCalledWith(5);
-  });
-
-  it("toggles auto-scroll mode", () => {
-    render(
-      <SpringTranscriptPanel
-        transcript={mockTranscript}
-        inRail={true}
-      />
-    );
-
-    const toggleBtn = screen.getByTitle(/Đang bật tự cuộn/i);
-    expect(toggleBtn).toBeInTheDocument();
-    expect(toggleBtn).toHaveTextContent("Tự cuộn: Bật");
-
-    fireEvent.click(toggleBtn);
-    expect(toggleBtn).toHaveTextContent("Tự cuộn: Tắt");
   });
 
   it("shows empty state when no transcript provided", () => {

@@ -17,12 +17,14 @@ import {
   Volume2,
   ArrowRight,
   ExternalLink,
-  Layers
+  Layers,
+  Search,
+  Navigation
 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { MarkdownContent } from "@/features/practice/MarkdownContent";
 import { InterviewTextSizeControl } from "@/features/interview/InterviewTextSizeControl";
-import { useInterviewTextSize } from "@/features/interview/useInterviewTextSize";
+import { useCourseTextSize } from "./useCourseTextSize";
 import type { CourseLesson, CourseManifest } from "@/lib/courses";
 import { useCourseProgress } from "@/lib/courses/useCourseProgress";
 import { useEnglishSpeech } from "@/lib/courses/speech";
@@ -57,6 +59,8 @@ export function CourseLessonView({
   const [copiedLink, setCopiedLink] = useState(false);
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
   const [rightRailTab, setRightRailTab] = useState<"transcript" | "syllabus">("transcript");
+  const [transcriptSearchQuery, setTranscriptSearchQuery] = useState("");
+  const [transcriptAutoScroll, setTranscriptAutoScroll] = useState(true);
 
   // --- Video Sync State & Height Matching ---
   const videoContainerRef = useRef<HTMLDivElement>(null);
@@ -66,7 +70,7 @@ export function CourseLessonView({
   const ytPlayerRef = useRef<any>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  const { textScale, changeTextScale } = useInterviewTextSize();
+  const { textScale, changeTextScale } = useCourseTextSize();
   const { speak, isSpeaking } = useEnglishSpeech();
   const isEnglish = course.slug === "english-job-interview";
   const isSpring = course.slug === "spring-framework-for-java";
@@ -392,13 +396,13 @@ export function CourseLessonView({
                 maxHeight: videoHeight ? `${videoHeight}px` : undefined
               }}
             >
-              {/* Tab Switcher Header + Cỡ chữ */}
-              <div className="flex items-center justify-between gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-2 shadow-2xs shrink-0">
-                <div className="flex items-center gap-1">
+              {/* Tab Switcher Header + Search + Tự cuộn + Cỡ chữ */}
+              <div className="flex items-center justify-between gap-1.5 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-2 shadow-2xs shrink-0">
+                <div className="flex items-center gap-1 shrink-0">
                   <button
                     type="button"
                     onClick={() => setRightRailTab("transcript")}
-                    className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold transition-all cursor-pointer ${
+                    className={`inline-flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs font-bold transition-all cursor-pointer ${
                       rightRailTab === "transcript"
                         ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-2xs"
                         : "text-[var(--muted-strong)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)]"
@@ -411,7 +415,7 @@ export function CourseLessonView({
                   <button
                     type="button"
                     onClick={() => setRightRailTab("syllabus")}
-                    className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold transition-all cursor-pointer ${
+                    className={`inline-flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs font-bold transition-all cursor-pointer ${
                       rightRailTab === "syllabus"
                         ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-2xs"
                         : "text-[var(--muted-strong)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)]"
@@ -422,7 +426,40 @@ export function CourseLessonView({
                   </button>
                 </div>
 
-                <InterviewTextSizeControl value={textScale} onChange={changeTextScale} />
+                <div className="flex items-center gap-1.5 min-w-0">
+                  {/* Ô tìm kiếm transcript trên header */}
+                  {rightRailTab === "transcript" && (
+                    <>
+                      <div className="relative min-w-[100px] max-w-[150px]">
+                        <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[var(--muted)]" />
+                        <input
+                          type="text"
+                          placeholder="Tìm trong bài..."
+                          value={transcriptSearchQuery}
+                          onChange={(e) => setTranscriptSearchQuery(e.target.value)}
+                          className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface-hover)]/50 pl-8 pr-2.5 py-1 text-[11px] text-[var(--foreground)] placeholder:text-[var(--muted)] focus:border-emerald-500 focus:outline-none transition-colors"
+                        />
+                      </div>
+
+                      {/* Nút bật/tắt Tự cuộn */}
+                      <button
+                        type="button"
+                        onClick={() => setTranscriptAutoScroll((prev) => !prev)}
+                        className={`inline-flex items-center gap-1 rounded-xl px-2 py-1 text-[11px] font-semibold border transition-all shrink-0 cursor-pointer ${
+                          transcriptAutoScroll
+                            ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 shadow-2xs"
+                            : "border-[var(--border)] text-[var(--muted)] hover:text-[var(--foreground)] bg-[var(--surface-hover)]/40"
+                        }`}
+                        title={transcriptAutoScroll ? "Đang bật tự cuộn theo video (nhấp để tắt)" : "Đã tắt tự cuộn (nhấp để bật lại)"}
+                      >
+                        <Navigation className={`h-3 w-3 transition-transform ${transcriptAutoScroll ? "rotate-45 text-emerald-500" : ""}`} />
+                        <span className="hidden xl:inline">{transcriptAutoScroll ? "Tự cuộn" : "Tắt cuộn"}</span>
+                      </button>
+                    </>
+                  )}
+
+                  <InterviewTextSizeControl value={textScale} onChange={changeTextScale} />
+                </div>
               </div>
 
               {/* Panel Content: Khớp 100% chiều cao video */}
@@ -434,6 +471,10 @@ export function CourseLessonView({
                     textScale={textScale}
                     currentTime={currentTime}
                     onSeek={handleSeek}
+                    searchQuery={transcriptSearchQuery}
+                    onSearchChange={setTranscriptSearchQuery}
+                    autoScroll={transcriptAutoScroll}
+                    onToggleAutoScroll={() => setTranscriptAutoScroll((prev) => !prev)}
                     className="h-full"
                   />
                 ) : (
@@ -597,6 +638,10 @@ export function CourseLessonView({
               textScale={textScale}
               currentTime={currentTime}
               onSeek={handleSeek}
+              searchQuery={transcriptSearchQuery}
+              onSearchChange={setTranscriptSearchQuery}
+              autoScroll={transcriptAutoScroll}
+              onToggleAutoScroll={() => setTranscriptAutoScroll((prev) => !prev)}
             />
           </section>
 

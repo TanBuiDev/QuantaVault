@@ -25,6 +25,10 @@ interface SpringLessonContentProps {
   textScale?: number;
   currentTime?: number;
   onSeek?: (seconds: number) => void;
+  searchQuery?: string;
+  onSearchChange?: (q: string) => void;
+  autoScroll?: boolean;
+  onToggleAutoScroll?: () => void;
 }
 
 type SpringTabMode = "flashcards" | "blueprint" | "transcript";
@@ -36,7 +40,11 @@ export function SpringLessonContent({
   lesson,
   textScale = 100,
   currentTime,
-  onSeek
+  onSeek,
+  searchQuery,
+  onSearchChange,
+  autoScroll,
+  onToggleAutoScroll
 }: SpringLessonContentProps) {
   const hasFlashcards = Boolean(lesson.flashcards && lesson.flashcards.length > 0);
   const defaultTab: SpringTabMode = hasFlashcards ? "flashcards" : "blueprint";
@@ -397,6 +405,10 @@ export function SpringLessonContent({
             textScale={textScale}
             currentTime={currentTime}
             onSeek={onSeek}
+            searchQuery={searchQuery}
+            onSearchChange={onSearchChange}
+            autoScroll={autoScroll}
+            onToggleAutoScroll={onToggleAutoScroll}
           />
         </div>
       )}
