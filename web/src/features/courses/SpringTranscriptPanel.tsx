@@ -56,15 +56,15 @@ export function SpringTranscriptPanel({
     );
   }
 
-  // --- 1. Right Rail Mode (Compact, scrollable beside video) ---
+  // --- 1. Right Rail Mode (Compact, scrollable beside video in Theater Dock) ---
   if (inRail) {
     return (
       <div
-        className={`flex flex-col rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-3.5 shadow-2xs space-y-3 ${className}`}
+        className={`flex flex-col h-full rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-3.5 sm:p-4 shadow-2xs space-y-3 ${className}`}
         style={{ fontSize: `${textScale}%` }}
       >
         {/* Rail Search Box */}
-        <div className="relative w-full">
+        <div className="relative w-full shrink-0">
           <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[var(--muted)]" />
           <input
             type="text"
@@ -76,12 +76,12 @@ export function SpringTranscriptPanel({
         </div>
 
         {/* Rail Filter Switcher */}
-        <div className="flex items-center justify-between gap-1 text-[11px] border-b border-[var(--border)] pb-2.5">
+        <div className="flex items-center justify-between gap-1 text-[11px] border-b border-[var(--border)] pb-2.5 shrink-0">
           <div className="flex rounded-lg bg-[var(--surface-hover)] p-0.5 border border-[var(--border)] font-medium">
             <button
               type="button"
               onClick={() => setTranscriptFilter("bilingual")}
-              className={`rounded-md px-2 py-0.5 transition-all cursor-pointer ${
+              className={`rounded-md px-2.5 py-1 transition-all cursor-pointer ${
                 transcriptFilter === "bilingual"
                   ? "bg-[var(--surface)] text-emerald-600 dark:text-emerald-400 shadow-2xs font-bold"
                   : "text-[var(--muted)] hover:text-[var(--foreground)]"
@@ -92,7 +92,7 @@ export function SpringTranscriptPanel({
             <button
               type="button"
               onClick={() => setTranscriptFilter("vi-only")}
-              className={`rounded-md px-2 py-0.5 transition-all cursor-pointer ${
+              className={`rounded-md px-2.5 py-1 transition-all cursor-pointer ${
                 transcriptFilter === "vi-only"
                   ? "bg-[var(--surface)] text-emerald-600 dark:text-emerald-400 shadow-2xs font-bold"
                   : "text-[var(--muted)] hover:text-[var(--foreground)]"
@@ -103,7 +103,7 @@ export function SpringTranscriptPanel({
             <button
               type="button"
               onClick={() => setTranscriptFilter("en-only")}
-              className={`rounded-md px-2 py-0.5 transition-all cursor-pointer ${
+              className={`rounded-md px-2.5 py-1 transition-all cursor-pointer ${
                 transcriptFilter === "en-only"
                   ? "bg-[var(--surface)] text-emerald-600 dark:text-emerald-400 shadow-2xs font-bold"
                   : "text-[var(--muted)] hover:text-[var(--foreground)]"
@@ -118,8 +118,8 @@ export function SpringTranscriptPanel({
           </span>
         </div>
 
-        {/* Rail Scrollable Sentences List */}
-        <div className="overflow-y-auto max-h-[460px] 2xl:max-h-[540px] space-y-2 pr-1 custom-scrollbar">
+        {/* Rail Scrollable Sentences List (Flex-1 to fill exact video height) */}
+        <div className="flex-1 min-h-[300px] overflow-y-auto space-y-2 pr-1 custom-scrollbar">
           {filteredTranscript.length === 0 ? (
             <p className="text-center py-6 text-xs text-[var(--muted)]">
               Không tìm thấy câu nào khớp với từ khóa.
@@ -130,25 +130,25 @@ export function SpringTranscriptPanel({
                 key={sent.id || idx}
                 className="group relative rounded-xl border border-[var(--border)] bg-[var(--surface-hover)]/30 p-2.5 hover:border-emerald-500/40 hover:bg-[var(--surface-hover)]/60 transition-all text-xs"
               >
-                <div className="flex items-start justify-between gap-2">
-                  <span className="shrink-0 rounded bg-emerald-500/10 px-1 py-0.5 text-[9px] font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                <div className="flex items-start justify-between gap-2.5">
+                  <span className="shrink-0 rounded bg-emerald-500/10 px-1.5 py-0.5 text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400">
                     #{String(idx + 1).padStart(2, "0")}
                   </span>
 
                   <div className="space-y-1 min-w-0 flex-1">
                     {transcriptFilter !== "vi-only" && (
-                      <p className="font-semibold text-[var(--foreground)] leading-relaxed select-text">
+                      <p className="font-semibold text-[var(--foreground)] text-xs sm:text-[13px] leading-relaxed select-text">
                         {sent.en}
                       </p>
                     )}
                     {transcriptFilter !== "en-only" && (
-                      <p className="text-[11px] text-[var(--muted-strong)] leading-relaxed select-text">
+                      <p className="text-xs text-[var(--muted-strong)] leading-relaxed select-text">
                         {sent.vi}
                       </p>
                     )}
                   </div>
 
-                  <div className="flex items-center gap-0.5 shrink-0 opacity-70 group-hover:opacity-100 transition-opacity">
+                  <div className="flex items-center gap-1 shrink-0 opacity-70 group-hover:opacity-100 transition-opacity">
                     <button
                       type="button"
                       onClick={() => speak(sent.en)}
@@ -160,7 +160,7 @@ export function SpringTranscriptPanel({
                       title="Phát âm tiếng Anh"
                       aria-label="Phát âm tiếng Anh"
                     >
-                      <Volume2 className="h-3 w-3" />
+                      <Volume2 className="h-3.5 w-3.5" />
                     </button>
                     <button
                       type="button"
@@ -170,9 +170,9 @@ export function SpringTranscriptPanel({
                       aria-label="Sao chép câu"
                     >
                       {copiedSentenceId === sent.id ? (
-                        <Check className="h-3 w-3 text-emerald-500" />
+                        <Check className="h-3.5 w-3.5 text-emerald-500" />
                       ) : (
-                        <Copy className="h-3 w-3" />
+                        <Copy className="h-3.5 w-3.5" />
                       )}
                     </button>
                   </div>
