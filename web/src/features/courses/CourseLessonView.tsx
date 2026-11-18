@@ -15,7 +15,9 @@ import {
   BookOpen,
   Languages,
   Volume2,
-  ArrowRight
+  ArrowRight,
+  ExternalLink,
+  Layers
 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { MarkdownContent } from "@/features/practice/MarkdownContent";
@@ -27,6 +29,7 @@ import { useEnglishSpeech } from "@/lib/courses/speech";
 import { CourseSyllabusSidebar } from "./CourseSyllabusSidebar";
 import { EnglishLessonContent } from "./EnglishLessonContent";
 import { SpringLessonContent } from "./SpringLessonContent";
+import { SpringTranscriptPanel } from "./SpringTranscriptPanel";
 
 interface CourseLessonViewProps {
   course: CourseManifest;
@@ -45,6 +48,9 @@ export function CourseLessonView({
 }: CourseLessonViewProps) {
   const [mobileSyllabusOpen, setMobileSyllabusOpen] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
+  const [descriptionExpanded, setDescriptionExpanded] = useState(false);
+  const [rightRailTab, setRightRailTab] = useState<"transcript" | "syllabus">("transcript");
+
   const { textScale, changeTextScale } = useInterviewTextSize();
   const { speak, isSpeaking } = useEnglishSpeech();
   const isEnglish = course.slug === "english-job-interview";
@@ -113,16 +119,16 @@ export function CourseLessonView({
       {/* Two-Column Responsive Layout on Desktop / Large Screens */}
       <div className="xl:grid xl:grid-cols-[1fr_340px] 2xl:grid-cols-[1fr_380px] xl:gap-8 xl:items-start">
         {/* Left / Center Column: Lesson Article (Fluid 1fr) */}
-        <div className="space-y-8 min-w-0">
-          {/* 1. Top Navigation & Action Bar */}
-          <div className="flex items-center justify-between gap-3 pb-4 border-b border-[var(--border)]">
+        <div className="space-y-6 sm:space-y-8 min-w-0">
+          {/* 1. Top Navigation Bar */}
+          <div className="flex items-center justify-between gap-3 pb-3 border-b border-[var(--border)]">
             <div className="flex items-center gap-2 min-w-0">
               <button
                 type="button"
                 onClick={() => setMobileSyllabusOpen(true)}
                 className="xl:hidden flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-bold text-[var(--foreground)] hover:bg-[var(--surface-hover)] shadow-2xs cursor-pointer"
               >
-                <Menu className="h-4 w-4 text-indigo-500" />
+                <Menu className="h-4 w-4 text-emerald-500" />
                 <span>Mục lục</span>
               </button>
 
@@ -133,193 +139,364 @@ export function CourseLessonView({
                 <span>/</span>
                 <span className="text-[var(--muted-strong)] truncate">{course.title}</span>
                 <span>/</span>
-                <span className="text-indigo-600 dark:text-indigo-400 font-semibold truncate">
+                <span className="text-emerald-600 dark:text-emerald-400 font-semibold truncate">
                   Bài {lesson.number}
                 </span>
               </nav>
             </div>
 
+            {/* Top right actions for non-Spring or mobile fallback */}
             <div className="flex items-center gap-2 shrink-0">
-              {/* Fallback Text Size Control on screens where the Right Rail is hidden */}
               <div className="xl:hidden">
                 <InterviewTextSizeControl value={textScale} onChange={changeTextScale} />
               </div>
 
-              {isEnglish && (
-                <Link
-                  href={`/courses/english-job-interview/practice?lesson=${lesson.id}`}
-                  className="inline-flex items-center gap-1.5 rounded-xl border border-indigo-500/30 bg-indigo-500/10 px-2.5 py-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/20"
-                  aria-label="Mở chế độ luyện tập tiếng Anh"
-                >
-                  <Languages className="h-4 w-4" />
-                  <span className="hidden sm:inline">Luyện tập</span>
-                </Link>
+              {!isSpring && (
+                <>
+                  {isEnglish && (
+                    <Link
+                      href={`/courses/english-job-interview/practice?lesson=${lesson.id}`}
+                      className="inline-flex items-center gap-1.5 rounded-xl border border-indigo-500/30 bg-indigo-500/10 px-2.5 py-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/20"
+                      aria-label="Mở chế độ luyện tập tiếng Anh"
+                    >
+                      <Languages className="h-4 w-4" />
+                      <span className="hidden sm:inline">Luyện tập</span>
+                    </Link>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={handleShare}
+                    className="flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-medium text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)] transition-all cursor-pointer shadow-2xs"
+                    title="Sao chép liên kết bài học"
+                  >
+                    {copiedLink ? (
+                      <>
+                        <Check className="h-3.5 w-3.5 text-emerald-500" />
+                        <span className="text-emerald-500 font-semibold">Đã chép</span>
+                      </>
+                    ) : (
+                      <>
+                        <Share2 className="h-3.5 w-3.5" />
+                        <span className="hidden sm:inline">Chia sẻ</span>
+                      </>
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => toggleLessonCompleted(course.id, lesson.id)}
+                    className={`flex items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all cursor-pointer ${
+                      isCompleted
+                        ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20"
+                        : "bg-[var(--primary)] text-white hover:brightness-110 shadow-sm active:scale-95"
+                    }`}
+                  >
+                    {isCompleted ? (
+                      <>
+                        <CheckCircle2 className="h-4 w-4" />
+                        <span>Đã học xong</span>
+                      </>
+                    ) : (
+                      <>
+                        <Circle className="h-4 w-4" />
+                        <span>Đánh dấu đã học</span>
+                      </>
+                    )}
+                  </button>
+                </>
               )}
-
-              {/* Share link button */}
-              <button
-                type="button"
-                onClick={handleShare}
-                className="flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-medium text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)] transition-all cursor-pointer shadow-2xs"
-                title="Sao chép liên kết bài học"
-              >
-                {copiedLink ? (
-                  <>
-                    <Check className="h-3.5 w-3.5 text-emerald-500" />
-                    <span className="text-emerald-500 font-semibold">Đã chép</span>
-                  </>
-                ) : (
-                  <>
-                    <Share2 className="h-3.5 w-3.5" />
-                    <span className="hidden sm:inline">Chia sẻ</span>
-                  </>
-                )}
-              </button>
-
-              {/* Mark Complete Button */}
-              <button
-                type="button"
-                onClick={() => toggleLessonCompleted(course.id, lesson.id)}
-                className={`flex items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all cursor-pointer ${
-                  isCompleted
-                    ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20"
-                    : "bg-[var(--primary)] text-white hover:brightness-110 shadow-sm active:scale-95"
-                }`}
-              >
-                {isCompleted ? (
-                  <>
-                    <CheckCircle2 className="h-4 w-4" />
-                    <span>Đã học xong</span>
-                  </>
-                ) : (
-                  <>
-                    <Circle className="h-4 w-4" />
-                    <span>Đánh dấu đã học</span>
-                  </>
-                )}
-              </button>
             </div>
           </div>
 
-          {/* 2. Lesson Header */}
-          <header className="space-y-4">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="rounded-md bg-indigo-500/10 px-2 py-0.5 text-xs font-bold text-indigo-600 dark:text-indigo-400">
-                {chapterTitle}
-              </span>
-              <span className="flex items-center gap-1.5 text-xs text-[var(--muted)]">
-                <Clock className="h-3.5 w-3.5" />
-                <span>{lesson.durationMinutes} phút học dự kiến</span>
-              </span>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-3">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[var(--foreground)] tracking-tight leading-snug">
-                {isEnglish && lesson.titleEn ? lesson.titleEn : lesson.title}
-              </h1>
-              {lesson.titleEn && (
-                <button
-                  type="button"
-                  onClick={() => speak(lesson.titleEn!)}
-                  title="Nghe phát âm chuẩn tiêu đề tiếng Anh"
-                  aria-label="Nghe phát âm tiêu đề tiếng Anh"
-                  className={`inline-flex items-center justify-center p-2 rounded-xl border border-indigo-500/30 transition-all cursor-pointer ${
-                    isSpeaking(lesson.titleEn)
-                      ? "bg-indigo-600 text-white animate-pulse"
-                      : "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/20"
-                  }`}
-                >
-                  <Volume2 className="h-5 w-5" />
-                </button>
-              )}
-            </div>
-            {isEnglish && lesson.titleEn ? (
-              <p className="text-base sm:text-lg text-[var(--muted-strong)] font-medium">{lesson.title}</p>
-            ) : lesson.titleEn ? (
-              <p className="text-base sm:text-lg text-emerald-600 dark:text-emerald-400 font-semibold">{lesson.titleEn}</p>
-            ) : null}
-
-            {/* Quick practice card for English lessons */}
-            {isEnglish && (
-              <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-indigo-500/30 bg-indigo-500/5 p-4 shadow-2xs">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-indigo-500/15 text-indigo-600 dark:text-indigo-400">
-                    <Languages className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-[var(--foreground)]">Luyện nghe, dịch & phản xạ cho bài này</h4>
-                    <p className="text-xs text-[var(--muted-strong)]">Gõ dịch hai chiều, nghe phát âm bản xứ và tự đánh giá khả năng ghi nhớ.</p>
-                  </div>
+          {/* ============================================================== */}
+          {/* SPECIALIZED SPRING LESSON LAYOUT: YOUTUBE COMPACT PATTERN      */}
+          {/* ============================================================== */}
+          {isSpring ? (
+            <div className="space-y-6">
+              {/* 1. Hero Video Player (Top of left column) */}
+              {lesson.videoId ? (
+                <div className="relative aspect-video w-full overflow-hidden rounded-3xl border border-[var(--border)] bg-black shadow-xl">
+                  <iframe
+                    src={`https://www.youtube-nocookie.com/embed/${lesson.videoId}?rel=0&modestbranding=1`}
+                    title={lesson.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="absolute inset-0 h-full w-full border-0"
+                  />
                 </div>
-                <Link
-                  href={`/courses/english-job-interview/practice?lesson=${lesson.id}`}
-                  className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-3.5 py-2 text-xs font-bold text-white hover:bg-indigo-700 transition-all shadow-xs cursor-pointer"
-                >
-                  Luyện tập ngay <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-              </div>
-            )}
+              ) : (
+                <div className="rounded-3xl border border-dashed border-[var(--border)] bg-[var(--surface)] p-8 text-center text-sm text-[var(--muted)]">
+                  Chưa có video bài giảng trực tuyến.
+                </div>
+              )}
 
-            {/* Tags */}
-            {lesson.tags && lesson.tags.length > 0 && (
-              <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                {lesson.tags.map((tag) => (
-                  <Badge key={tag} variant="neutral">
-                    #{tag}
-                  </Badge>
-                ))}
+              {/* 2. Title & Speech Header (Directly under video) */}
+              <div className="space-y-2">
+                <div className="flex flex-wrap items-center gap-3">
+                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-[var(--foreground)] tracking-tight leading-snug">
+                    {lesson.title}
+                  </h1>
+                  {lesson.titleEn && (
+                    <button
+                      type="button"
+                      onClick={() => speak(lesson.titleEn!)}
+                      title="Nghe phát âm chuẩn tiêu đề tiếng Anh"
+                      aria-label="Nghe phát âm tiêu đề tiếng Anh"
+                      className={`inline-flex items-center justify-center p-1.5 rounded-xl border border-emerald-500/30 transition-all cursor-pointer ${
+                        isSpeaking(lesson.titleEn)
+                          ? "bg-emerald-600 text-white animate-pulse"
+                          : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20"
+                      }`}
+                    >
+                      <Volume2 className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
+                {lesson.titleEn && (
+                  <p className="text-sm sm:text-base text-emerald-600 dark:text-emerald-400 font-semibold">
+                    {lesson.titleEn}
+                  </p>
+                )}
               </div>
-            )}
 
-            {/* Summary Box */}
-            {!isEnglish && lesson.summary && (
-              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)]/60 p-4 sm:p-5 text-xs sm:text-sm text-[var(--muted-strong)] leading-relaxed shadow-2xs">
-                <span className="font-bold text-[var(--foreground)] block mb-1">
-                  <BookOpen className="mr-1.5 inline-block h-4 w-4" aria-hidden="true" />
-                  Tóm tắt bài học:
-                </span>
-                {lesson.summary}
+              {/* 3. Action Toolbar (Unified & Compact) */}
+              <div className="flex flex-wrap items-center justify-between gap-3 py-2 border-y border-[var(--border)]">
+                <div className="flex flex-wrap items-center gap-2">
+                  {/* Mark complete */}
+                  <button
+                    type="button"
+                    onClick={() => toggleLessonCompleted(course.id, lesson.id)}
+                    className={`flex items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all cursor-pointer ${
+                      isCompleted
+                        ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20"
+                        : "bg-[var(--primary)] text-white hover:brightness-110 shadow-sm active:scale-95"
+                    }`}
+                  >
+                    {isCompleted ? (
+                      <>
+                        <CheckCircle2 className="h-4 w-4" />
+                        <span>Đã học xong</span>
+                      </>
+                    ) : (
+                      <>
+                        <Circle className="h-4 w-4" />
+                        <span>Đánh dấu đã học</span>
+                      </>
+                    )}
+                  </button>
+
+                  {/* Share button */}
+                  <button
+                    type="button"
+                    onClick={handleShare}
+                    className="flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-medium text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)] transition-all cursor-pointer shadow-2xs"
+                    title="Sao chép liên kết bài học"
+                  >
+                    {copiedLink ? (
+                      <>
+                        <Check className="h-3.5 w-3.5 text-emerald-500" />
+                        <span className="text-emerald-500 font-semibold">Đã chép</span>
+                      </>
+                    ) : (
+                      <>
+                        <Share2 className="h-3.5 w-3.5" />
+                        <span>Chia sẻ</span>
+                      </>
+                    )}
+                  </button>
+
+                  {/* External YouTube Link */}
+                  {lesson.videoId && (
+                    <a
+                      href={`https://youtu.be/${lesson.videoId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-medium text-[var(--muted-strong)] hover:text-red-500 hover:bg-[var(--surface-hover)] transition-all cursor-pointer shadow-2xs"
+                      title="Mở video trên YouTube"
+                    >
+                      <ExternalLink className="h-3.5 w-3.5" />
+                      <span>Mở trên YouTube</span>
+                    </a>
+                  )}
+                </div>
               </div>
-            )}
-          </header>
 
-          {/* 3. Content Area */}
-          {isEnglish ? (
-            <section aria-label="Nội dung bài học tiếng Anh">
-              <EnglishLessonContent
-                lessonId={lesson.id}
-                textScale={textScale}
-                fallbackMarkdown={visibleMarkdown}
-              />
-            </section>
-          ) : isSpring ? (
-            <section aria-label="Nội dung bài học Spring Framework">
-              <SpringLessonContent
-                course={course}
-                lesson={lesson}
-                textScale={textScale}
-              />
-            </section>
+              {/* 4. YouTube-style Collapsible Description Card */}
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)]/60 p-4 transition-all hover:bg-[var(--surface-hover)]/80 shadow-2xs space-y-2.5">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="rounded-md bg-emerald-500/10 px-2 py-0.5 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                    {chapterTitle}
+                  </span>
+                  <span className="flex items-center gap-1.5 text-xs text-[var(--muted)]">
+                    <Clock className="h-3.5 w-3.5" />
+                    <span>{lesson.durationMinutes} phút học dự kiến</span>
+                  </span>
+                </div>
+
+                {lesson.summary && (
+                  <div>
+                    <p className={`text-xs sm:text-sm text-[var(--muted-strong)] leading-relaxed ${
+                      !descriptionExpanded ? "line-clamp-2" : ""
+                    }`}>
+                      <span className="font-bold text-[var(--foreground)] mr-1">
+                        <BookOpen className="mr-1 inline-block h-3.5 w-3.5" />
+                        Tóm tắt:
+                      </span>
+                      {lesson.summary}
+                    </p>
+                  </div>
+                )}
+
+                {/* Expanded metadata: Tags */}
+                {descriptionExpanded && lesson.tags && lesson.tags.length > 0 && (
+                  <div className="flex flex-wrap items-center gap-1.5 pt-1.5 border-t border-[var(--border)]">
+                    {lesson.tags.map((tag) => (
+                      <Badge key={tag} variant="neutral">
+                        #{tag}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+
+                <div className="pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setDescriptionExpanded(!descriptionExpanded)}
+                    className="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline cursor-pointer inline-flex items-center gap-1"
+                  >
+                    {descriptionExpanded ? "Thu gọn ▲" : "... Xem thêm ▼"}
+                  </button>
+                </div>
+              </div>
+
+              {/* 5. Lower Workspace: Flashcards & Blueprint (and Mobile Transcript) */}
+              <section aria-label="Nội dung bài học Spring Framework">
+                <SpringLessonContent
+                  course={course}
+                  lesson={lesson}
+                  textScale={textScale}
+                />
+              </section>
+            </div>
           ) : (
-            <section aria-label="Nội dung bài học" className="prose dark:prose-invert max-w-none text-[var(--foreground)] space-y-6">
-              <MarkdownContent markdown={visibleMarkdown} fullWidth textScale={textScale} />
-            </section>
+            /* ============================================================== */
+            /* STANDARD COURSE LAYOUT (For English & other courses)            */
+            /* ============================================================== */
+            <>
+              {/* Header */}
+              <header className="space-y-4">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="rounded-md bg-indigo-500/10 px-2 py-0.5 text-xs font-bold text-indigo-600 dark:text-indigo-400">
+                    {chapterTitle}
+                  </span>
+                  <span className="flex items-center gap-1.5 text-xs text-[var(--muted)]">
+                    <Clock className="h-3.5 w-3.5" />
+                    <span>{lesson.durationMinutes} phút học dự kiến</span>
+                  </span>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3">
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[var(--foreground)] tracking-tight leading-snug">
+                    {isEnglish && lesson.titleEn ? lesson.titleEn : lesson.title}
+                  </h1>
+                  {lesson.titleEn && (
+                    <button
+                      type="button"
+                      onClick={() => speak(lesson.titleEn!)}
+                      title="Nghe phát âm chuẩn tiêu đề tiếng Anh"
+                      aria-label="Nghe phát âm tiêu đề tiếng Anh"
+                      className={`inline-flex items-center justify-center p-2 rounded-xl border border-indigo-500/30 transition-all cursor-pointer ${
+                        isSpeaking(lesson.titleEn)
+                          ? "bg-indigo-600 text-white animate-pulse"
+                          : "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/20"
+                      }`}
+                    >
+                      <Volume2 className="h-5 w-5" />
+                    </button>
+                  )}
+                </div>
+                {isEnglish && lesson.titleEn ? (
+                  <p className="text-base sm:text-lg text-[var(--muted-strong)] font-medium">{lesson.title}</p>
+                ) : lesson.titleEn ? (
+                  <p className="text-base sm:text-lg text-emerald-600 dark:text-emerald-400 font-semibold">{lesson.titleEn}</p>
+                ) : null}
+
+                {/* Quick practice card for English lessons */}
+                {isEnglish && (
+                  <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-indigo-500/30 bg-indigo-500/5 p-4 shadow-2xs">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-indigo-500/15 text-indigo-600 dark:text-indigo-400">
+                        <Languages className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-bold text-[var(--foreground)]">Luyện nghe, dịch & phản xạ cho bài này</h4>
+                        <p className="text-xs text-[var(--muted-strong)]">Gõ dịch hai chiều, nghe phát âm bản xứ và tự đánh giá khả năng ghi nhớ.</p>
+                      </div>
+                    </div>
+                    <Link
+                      href={`/courses/english-job-interview/practice?lesson=${lesson.id}`}
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-3.5 py-2 text-xs font-bold text-white hover:bg-indigo-700 transition-all shadow-xs cursor-pointer"
+                    >
+                      Luyện tập ngay <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
+                  </div>
+                )}
+
+                {/* Tags */}
+                {lesson.tags && lesson.tags.length > 0 && (
+                  <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                    {lesson.tags.map((tag) => (
+                      <Badge key={tag} variant="neutral">
+                        #{tag}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+
+                {/* Summary Box */}
+                {!isEnglish && lesson.summary && (
+                  <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)]/60 p-4 sm:p-5 text-xs sm:text-sm text-[var(--muted-strong)] leading-relaxed shadow-2xs">
+                    <span className="font-bold text-[var(--foreground)] block mb-1">
+                      <BookOpen className="mr-1.5 inline-block h-4 w-4" aria-hidden="true" />
+                      Tóm tắt bài học:
+                    </span>
+                    {lesson.summary}
+                  </div>
+                )}
+              </header>
+
+              {/* Content Area */}
+              {isEnglish ? (
+                <section aria-label="Nội dung bài học tiếng Anh">
+                  <EnglishLessonContent
+                    lessonId={lesson.id}
+                    textScale={textScale}
+                    fallbackMarkdown={visibleMarkdown}
+                  />
+                </section>
+              ) : (
+                <section aria-label="Nội dung bài học" className="prose dark:prose-invert max-w-none text-[var(--foreground)] space-y-6">
+                  <MarkdownContent markdown={visibleMarkdown} fullWidth textScale={textScale} />
+                </section>
+              )}
+            </>
           )}
 
-          {/* 4. Footer Navigation Bar */}
+          {/* Footer Navigation Bar */}
           <footer className="pt-6 border-t border-[var(--border)]">
             <div className="flex items-center justify-between gap-4">
               {prevLesson ? (
                 <Link
                   href={`/courses/${course.slug}/${prevLesson.id}`}
-                  className="group flex items-center gap-2.5 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-left hover:border-indigo-500/40 hover:shadow-xs transition-all max-w-[48%]"
+                  className="group flex items-center gap-2.5 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-left hover:border-emerald-500/40 hover:shadow-xs transition-all max-w-[48%]"
                 >
-                  <ChevronLeft className="h-5 w-5 shrink-0 text-[var(--muted)] group-hover:text-indigo-500 transition-colors" />
+                  <ChevronLeft className="h-5 w-5 shrink-0 text-[var(--muted)] group-hover:text-emerald-500 transition-colors" />
                   <div className="min-w-0">
                     <span className="block text-[10px] font-semibold text-[var(--muted)] uppercase tracking-wider">
                       Bài trước
                     </span>
-                    <span className="block text-xs font-bold text-[var(--foreground)] truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                    <span className="block text-xs font-bold text-[var(--foreground)] truncate group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                       {prevLesson.titleEn || prevLesson.title}
                     </span>
                     {prevLesson.titleEn && <span className="block truncate text-[11px] text-[var(--muted)]">{prevLesson.title}</span>}
@@ -332,18 +509,18 @@ export function CourseLessonView({
               {nextLesson ? (
                 <Link
                   href={`/courses/${course.slug}/${nextLesson.id}`}
-                  className="group flex items-center justify-end gap-2.5 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-right hover:border-indigo-500/40 hover:shadow-xs transition-all max-w-[48%]"
+                  className="group flex items-center justify-end gap-2.5 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-right hover:border-emerald-500/40 hover:shadow-xs transition-all max-w-[48%]"
                 >
                   <div className="min-w-0">
                     <span className="block text-[10px] font-semibold text-[var(--muted)] uppercase tracking-wider">
                       Bài tiếp theo
                     </span>
-                    <span className="block text-xs font-bold text-[var(--foreground)] truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                    <span className="block text-xs font-bold text-[var(--foreground)] truncate group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                       {nextLesson.titleEn || nextLesson.title}
                     </span>
                     {nextLesson.titleEn && <span className="block truncate text-[11px] text-[var(--muted)]">{nextLesson.title}</span>}
                   </div>
-                  <ChevronRight className="h-5 w-5 shrink-0 text-[var(--muted)] group-hover:text-indigo-500 transition-colors" />
+                  <ChevronRight className="h-5 w-5 shrink-0 text-[var(--muted)] group-hover:text-emerald-500 transition-colors" />
                 </Link>
               ) : (
                 <div className="text-right">
@@ -357,14 +534,63 @@ export function CourseLessonView({
         </div>
 
         {/* Right Sticky Column: Right Rail on Desktop / Large Screens (xl+) */}
-        <aside className="hidden xl:block sticky top-6 space-y-4">
-          {/* Sticky Text Zoom Control */}
-          <div className="flex items-center justify-between gap-3 rounded-3xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 shadow-2xs">
-            <span className="text-xs font-semibold text-[var(--foreground)]">Cỡ chữ bài học</span>
-            <InterviewTextSizeControl value={textScale} onChange={changeTextScale} />
-          </div>
+        <aside className="hidden xl:block sticky top-6 space-y-3">
+          {isSpring ? (
+            <>
+              {/* Tab Switcher Header + Zoom Control */}
+              <div className="flex items-center justify-between gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-2 shadow-2xs">
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => setRightRailTab("transcript")}
+                    className={`inline-flex items-center gap-1.5 rounded-xl px-2.5 py-1 text-xs font-bold transition-all cursor-pointer ${
+                      rightRailTab === "transcript"
+                        ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-2xs"
+                        : "text-[var(--muted-strong)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)]"
+                    }`}
+                  >
+                    <BookOpen className="h-3.5 w-3.5 text-emerald-500" />
+                    <span>Transcript ({lesson.transcript?.length || 0})</span>
+                  </button>
 
-          <CourseSyllabusSidebar course={course} currentLessonId={lesson.id} />
+                  <button
+                    type="button"
+                    onClick={() => setRightRailTab("syllabus")}
+                    className={`inline-flex items-center gap-1.5 rounded-xl px-2.5 py-1 text-xs font-bold transition-all cursor-pointer ${
+                      rightRailTab === "syllabus"
+                        ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-2xs"
+                        : "text-[var(--muted-strong)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)]"
+                    }`}
+                  >
+                    <Layers className="h-3.5 w-3.5 text-emerald-500" />
+                    <span>Mục lục ({course.totalLessons})</span>
+                  </button>
+                </div>
+
+                <InterviewTextSizeControl value={textScale} onChange={changeTextScale} />
+              </div>
+
+              {/* Right Rail Content */}
+              {rightRailTab === "transcript" ? (
+                <SpringTranscriptPanel
+                  transcript={lesson.transcript}
+                  inRail
+                  textScale={textScale}
+                />
+              ) : (
+                <CourseSyllabusSidebar course={course} currentLessonId={lesson.id} />
+              )}
+            </>
+          ) : (
+            <>
+              <div className="flex items-center justify-between gap-3 rounded-3xl border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 shadow-2xs">
+                <span className="text-xs font-semibold text-[var(--foreground)]">Cỡ chữ bài học</span>
+                <InterviewTextSizeControl value={textScale} onChange={changeTextScale} />
+              </div>
+
+              <CourseSyllabusSidebar course={course} currentLessonId={lesson.id} />
+            </>
+          )}
         </aside>
       </div>
     </div>

@@ -2,7 +2,7 @@ import "@testing-library/jest-dom/vitest";
 import { describe, expect, it, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { SpringLessonContent } from "../SpringLessonContent";
-import type { CourseLesson, CourseManifest } from "@/lib/courses";
+import type { CourseManifest } from "@/lib/courses";
 
 const mockSpringCourse: CourseManifest = {
   id: "spring-framework-for-java",
@@ -73,7 +73,7 @@ describe("SpringLessonContent", () => {
     window.history.replaceState(null, "", "/");
   });
 
-  it("renders tabs and displays video and transcript by default", () => {
+  it("renders workspace tabs and displays flashcards by default", () => {
     render(
       <SpringLessonContent
         course={mockSpringCourse}
@@ -81,34 +81,25 @@ describe("SpringLessonContent", () => {
       />
     );
 
-    expect(screen.getByRole("button", { name: /Bài giảng & Transcript/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Thẻ Flashcard/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Kiến trúc & Phân tích chuyên sâu/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Transcript/i })).toBeInTheDocument();
 
-    // Verify YouTube iframe
-    const iframe = screen.getByTitle("Bài 1: Tổng quan Spring");
-    expect(iframe).toBeInTheDocument();
-    expect(iframe).toHaveAttribute("src", expect.stringContaining("X4Pho7r5sDg"));
-
-    // Verify Transcript
-    expect(screen.getByText("Welcome to the Spring course.")).toBeInTheDocument();
-    expect(screen.getByText("Chào mừng đến với khóa học Spring.")).toBeInTheDocument();
+    // Default tab is Flashcards
+    expect(screen.getByText("What is Spring?")).toBeInTheDocument();
+    expect(screen.getByText("Spring là gì?")).toBeInTheDocument();
   });
 
-  it("switches to Flashcards tab and supports 3D flip and self-assessment", () => {
+  it("supports 3D flip and self-assessment for flashcards", () => {
     render(
       <SpringLessonContent
         course={mockSpringCourse}
         lesson={mockSpringCourse.lessons[0]}
       />
     );
-
-    const flashcardsTab = screen.getByRole("button", { name: /Thẻ Flashcard/i });
-    fireEvent.click(flashcardsTab);
 
     // Front of card 1
     expect(screen.getByText("What is Spring?")).toBeInTheDocument();
-    expect(screen.getByText("Spring là gì?")).toBeInTheDocument();
     expect(screen.queryByText("A Java framework.")).not.toBeInTheDocument();
 
     // Click to flip card
@@ -140,13 +131,19 @@ describe("SpringLessonContent", () => {
     expect(screen.getByText("Nội dung Markdown chuyên sâu.")).toBeInTheDocument();
   });
 
-  it("filters transcript by search query", () => {
+  it("switches to mobile transcript fallback and filters sentences by search query", () => {
     render(
       <SpringLessonContent
         course={mockSpringCourse}
         lesson={mockSpringCourse.lessons[0]}
       />
     );
+
+    const transcriptTab = screen.getByRole("button", { name: /Transcript/i });
+    fireEvent.click(transcriptTab);
+
+    expect(screen.getByText("Welcome to the Spring course.")).toBeInTheDocument();
+    expect(screen.getByText("Chào mừng đến với khóa học Spring.")).toBeInTheDocument();
 
     const searchInput = screen.getByPlaceholderText("Tìm trong bài...");
     fireEvent.change(searchInput, { target: { value: "injection" } });

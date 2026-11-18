@@ -2,29 +2,22 @@
 
 import { useEffect, useMemo, useState } from "react";
 import {
-  Video,
   Layers,
   Sparkles,
   Volume2,
-  Copy,
-  Check,
-  Search,
   RotateCcw,
   ChevronLeft,
   ChevronRight,
   Shuffle,
   BookOpen,
   CheckCircle2,
-  XCircle,
-  HelpCircle,
-  ExternalLink,
-  Flame,
-  Lightbulb
+  XCircle
 } from "lucide-react";
 import { MarkdownContent } from "@/features/practice/MarkdownContent";
 import type { CourseLesson, CourseManifest, CourseFlashcard } from "@/lib/courses";
 import { useEnglishSpeech } from "@/lib/courses/speech";
 import { getUrlParams, updateUrlParams } from "@/lib/utils/urlParams";
+import { SpringTranscriptPanel } from "./SpringTranscriptPanel";
 
 interface SpringLessonContentProps {
   course: CourseManifest;
@@ -32,8 +25,7 @@ interface SpringLessonContentProps {
   textScale?: number;
 }
 
-type SpringTabMode = "video" | "flashcards" | "blueprint";
-type TranscriptFilterMode = "bilingual" | "vi-only" | "en-only";
+type SpringTabMode = "flashcards" | "blueprint" | "transcript";
 
 const FLASHCARD_STORAGE_PREFIX = "quantavault-spring-flashcards:v1";
 
@@ -42,46 +34,28 @@ export function SpringLessonContent({
   lesson,
   textScale = 100
 }: SpringLessonContentProps) {
+  const hasFlashcards = Boolean(lesson.flashcards && lesson.flashcards.length > 0);
+  const defaultTab: SpringTabMode = hasFlashcards ? "flashcards" : "blueprint";
+
   // 1. Tab state synchronized with URL search params (Tier 1 state persistence)
   const [activeTab, setActiveTab] = useState<SpringTabMode>(() => {
     if (typeof window !== "undefined") {
       const paramTab = getUrlParams().get("tab");
-      if (paramTab === "flashcards" || paramTab === "blueprint" || paramTab === "video") {
+      if (paramTab === "flashcards" || paramTab === "blueprint" || paramTab === "transcript") {
         return paramTab;
       }
     }
-    return "video";
+    return defaultTab;
   });
 
   const handleTabChange = (tab: SpringTabMode) => {
     setActiveTab(tab);
-    updateUrlParams({ tab }, { tab: "video" });
+    updateUrlParams({ tab }, { tab: defaultTab });
   };
 
-  // 2. Transcript tools
-  const [transcriptFilter, setTranscriptFilter] = useState<TranscriptFilterMode>("bilingual");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [copiedSentenceId, setCopiedSentenceId] = useState<string | null>(null);
-  const { speak, isSpeaking } = useEnglishSpeech();
+  const { speak } = useEnglishSpeech();
 
-  const handleCopyText = (text: string, id: string) => {
-    if (typeof window !== "undefined") {
-      void navigator.clipboard.writeText(text);
-      setCopiedSentenceId(id);
-      setTimeout(() => setCopiedSentenceId((cur) => (cur === id ? null : cur)), 2000);
-    }
-  };
-
-  const filteredTranscript = useMemo(() => {
-    if (!lesson.transcript) return [];
-    const q = searchQuery.trim().toLowerCase();
-    if (!q) return lesson.transcript;
-    return lesson.transcript.filter(
-      (s) => s.en.toLowerCase().includes(q) || s.vi.toLowerCase().includes(q)
-    );
-  }, [lesson.transcript, searchQuery]);
-
-  // 3. Flashcards state & deck management
+  // 2. Flashcards state & deck management
   const originalFlashcards: CourseFlashcard[] = useMemo(() => {
     return lesson.flashcards || [];
   }, [lesson.flashcards]);
@@ -168,28 +142,15 @@ export function SpringLessonContent({
   const reviewCount = Object.values(scores).filter((s) => s === "review").length;
 
   return (
-    <div className="space-y-8 animate-fade-in" style={{ fontSize: `${textScale}%` }}>
-      {/* 1. Mode Switcher Tabs */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border)] pb-4">
+    <div className="space-y-6 animate-fade-in" style={{ fontSize: `${textScale}%` }}>
+      {/* 1. Lower Workspace Mode Switcher Tabs */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border)] pb-3">
         <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={() => handleTabChange("video")}
-            className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-              activeTab === "video"
-                ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-xs"
-                : "text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
-            }`}
-          >
-            <Video className="h-4 w-4 text-emerald-500" />
-            <span>Bài giảng & Transcript</span>
-          </button>
-
           {totalCards > 0 && (
             <button
               type="button"
               onClick={() => handleTabChange("flashcards")}
-              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                 activeTab === "flashcards"
                   ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-xs"
                   : "text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
@@ -203,7 +164,7 @@ export function SpringLessonContent({
           <button
             type="button"
             onClick={() => handleTabChange("blueprint")}
-            className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+            className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-bold transition-all cursor-pointer ${
               activeTab === "blueprint"
                 ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-xs"
                 : "text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
@@ -212,166 +173,26 @@ export function SpringLessonContent({
             <Layers className="h-4 w-4 text-indigo-500" />
             <span>Kiến trúc & Phân tích chuyên sâu</span>
           </button>
-        </div>
 
-        {lesson.videoId && (
-          <a
-            href={`https://youtu.be/${lesson.videoId}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--muted)] hover:text-emerald-500 transition-colors"
-          >
-            <span>Mở trên YouTube</span>
-            <ExternalLink className="h-3.5 w-3.5" />
-          </a>
-        )}
+          {/* Transcript tab on mobile screens (< xl) where the right rail is hidden */}
+          {lesson.transcript && lesson.transcript.length > 0 && (
+            <button
+              type="button"
+              onClick={() => handleTabChange("transcript")}
+              className={`xl:hidden inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                activeTab === "transcript"
+                  ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-xs"
+                  : "text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
+              }`}
+            >
+              <BookOpen className="h-4 w-4 text-emerald-500" />
+              <span>Transcript ({lesson.transcript.length})</span>
+            </button>
+          )}
+        </div>
       </div>
 
-      {/* 2. TAB 1: VIDEO & INTERACTIVE TRANSCRIPT */}
-      {activeTab === "video" && (
-        <div className="space-y-8 animate-fade-in">
-          {/* Responsive YouTube Player */}
-          {lesson.videoId ? (
-            <div className="relative aspect-video w-full overflow-hidden rounded-3xl border border-[var(--border)] bg-black shadow-xl">
-              <iframe
-                src={`https://www.youtube-nocookie.com/embed/${lesson.videoId}?rel=0&modestbranding=1`}
-                title={lesson.title}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-                className="absolute inset-0 h-full w-full border-0"
-              />
-            </div>
-          ) : (
-            <div className="rounded-3xl border border-dashed border-[var(--border)] bg-[var(--surface)] p-8 text-center text-[var(--muted)]">
-              Chưa có video bài giảng trực tuyến.
-            </div>
-          )}
-
-          {/* Interactive Transcript Toolbar */}
-          {lesson.transcript && lesson.transcript.length > 0 && (
-            <div className="space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-3.5 sm:p-4 shadow-2xs">
-                <div className="flex items-center gap-2">
-                  <BookOpen className="h-4 w-4 text-emerald-500" />
-                  <span className="text-xs font-bold text-[var(--foreground)]">
-                    Transcript Song Ngữ Anh – Việt ({filteredTranscript.length} câu)
-                  </span>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-2">
-                  {/* Mode switcher */}
-                  <div className="flex rounded-xl bg-[var(--surface-hover)] p-0.5 border border-[var(--border)] text-xs font-semibold">
-                    <button
-                      type="button"
-                      onClick={() => setTranscriptFilter("bilingual")}
-                      className={`rounded-lg px-2.5 py-1 transition-all cursor-pointer ${
-                        transcriptFilter === "bilingual"
-                          ? "bg-[var(--surface)] text-emerald-600 dark:text-emerald-400 shadow-2xs font-bold"
-                          : "text-[var(--muted)] hover:text-[var(--foreground)]"
-                      }`}
-                    >
-                      Song ngữ
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setTranscriptFilter("vi-only")}
-                      className={`rounded-lg px-2.5 py-1 transition-all cursor-pointer ${
-                        transcriptFilter === "vi-only"
-                          ? "bg-[var(--surface)] text-emerald-600 dark:text-emerald-400 shadow-2xs font-bold"
-                          : "text-[var(--muted)] hover:text-[var(--foreground)]"
-                      }`}
-                    >
-                      Chỉ Tiếng Việt
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setTranscriptFilter("en-only")}
-                      className={`rounded-lg px-2.5 py-1 transition-all cursor-pointer ${
-                        transcriptFilter === "en-only"
-                          ? "bg-[var(--surface)] text-emerald-600 dark:text-emerald-400 shadow-2xs font-bold"
-                          : "text-[var(--muted)] hover:text-[var(--foreground)]"
-                      }`}
-                    >
-                      Chỉ Tiếng Anh
-                    </button>
-                  </div>
-
-                  {/* Search box */}
-                  <div className="relative min-w-[160px] sm:min-w-[200px]">
-                    <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[var(--muted)]" />
-                    <input
-                      type="text"
-                      placeholder="Tìm trong bài..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] pl-8 pr-3 py-1 text-xs text-[var(--foreground)] placeholder:text-[var(--muted)] focus:border-emerald-500 focus:outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Sentences List */}
-              <div className="space-y-3">
-                {filteredTranscript.map((sent, idx) => (
-                  <div
-                    key={sent.id || idx}
-                    className="group relative rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 hover:border-emerald-500/40 hover:shadow-sm transition-all"
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="flex items-start gap-3 min-w-0 flex-1">
-                        <span className="shrink-0 mt-0.5 rounded-md bg-emerald-500/10 px-1.5 py-0.5 text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400">
-                          #{String(idx + 1).padStart(2, "0")}
-                        </span>
-
-                        <div className="space-y-2 min-w-0 flex-1">
-                          {transcriptFilter !== "vi-only" && (
-                            <p className="text-sm font-semibold text-[var(--foreground)] leading-relaxed">
-                              {sent.en}
-                            </p>
-                          )}
-                          {transcriptFilter !== "en-only" && (
-                            <p className="text-xs sm:text-sm text-[var(--muted-strong)] leading-relaxed">
-                              {sent.vi}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Quick action tools */}
-                      <div className="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
-                        <button
-                          type="button"
-                          onClick={() => speak(sent.en)}
-                          className={`p-1.5 rounded-lg border border-[var(--border)] hover:bg-[var(--surface-hover)] cursor-pointer transition-all ${
-                            isSpeaking(sent.en) ? "text-emerald-500 animate-pulse bg-emerald-500/10" : "text-[var(--muted)] hover:text-emerald-500"
-                          }`}
-                          title="Nghe phát âm chuẩn tiếng Anh"
-                        >
-                          <Volume2 className="h-3.5 w-3.5" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleCopyText(`${sent.en}\n${sent.vi}`, sent.id)}
-                          className="p-1.5 rounded-lg border border-[var(--border)] hover:bg-[var(--surface-hover)] text-[var(--muted)] hover:text-[var(--foreground)] cursor-pointer transition-all"
-                          title="Sao chép câu song ngữ"
-                        >
-                          {copiedSentenceId === sent.id ? (
-                            <Check className="h-3.5 w-3.5 text-emerald-500" />
-                          ) : (
-                            <Copy className="h-3.5 w-3.5" />
-                          )}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* 3. TAB 2: INTERACTIVE FLASHCARD DECK */}
+      {/* 2. TAB: INTERACTIVE FLASHCARD DECK */}
       {activeTab === "flashcards" && totalCards > 0 && currentCard && (
         <div className="space-y-6 animate-fade-in max-w-3xl mx-auto">
           {/* Deck Status Bar */}
@@ -437,6 +258,7 @@ export function SpringLessonContent({
                   }}
                   className="p-1.5 rounded-xl border border-[var(--border)] hover:bg-[var(--surface)] text-[var(--muted)] hover:text-emerald-500 cursor-pointer transition-all"
                   title="Nghe phát âm tiếng Anh"
+                  aria-label="Nghe phát âm tiếng Anh"
                 >
                   <Volume2 className="h-4 w-4" />
                 </button>
@@ -546,7 +368,7 @@ export function SpringLessonContent({
         </div>
       )}
 
-      {/* 4. TAB 3: ARCHITECTURE & DEEP DIVE MARKDOWN */}
+      {/* 3. TAB: ARCHITECTURE & DEEP DIVE MARKDOWN */}
       {activeTab === "blueprint" && (
         <div className="space-y-6 animate-fade-in">
           <section
@@ -559,6 +381,17 @@ export function SpringLessonContent({
               textScale={textScale}
             />
           </section>
+        </div>
+      )}
+
+      {/* 4. TAB: MOBILE TRANSCRIPT FALLBACK */}
+      {activeTab === "transcript" && lesson.transcript && (
+        <div className="space-y-6 animate-fade-in">
+          <SpringTranscriptPanel
+            transcript={lesson.transcript}
+            inRail={false}
+            textScale={textScale}
+          />
         </div>
       )}
     </div>
