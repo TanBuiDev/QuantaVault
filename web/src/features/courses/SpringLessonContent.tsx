@@ -23,6 +23,8 @@ interface SpringLessonContentProps {
   course: CourseManifest;
   lesson: CourseLesson;
   textScale?: number;
+  currentTime?: number;
+  onSeek?: (seconds: number) => void;
 }
 
 type SpringTabMode = "flashcards" | "blueprint" | "transcript";
@@ -32,7 +34,9 @@ const FLASHCARD_STORAGE_PREFIX = "quantavault-spring-flashcards:v1";
 export function SpringLessonContent({
   course,
   lesson,
-  textScale = 100
+  textScale = 100,
+  currentTime,
+  onSeek
 }: SpringLessonContentProps) {
   const hasFlashcards = Boolean(lesson.flashcards && lesson.flashcards.length > 0);
   const defaultTab: SpringTabMode = hasFlashcards ? "flashcards" : "blueprint";
@@ -174,12 +178,12 @@ export function SpringLessonContent({
             <span>Kiến trúc & Phân tích chuyên sâu</span>
           </button>
 
-          {/* Transcript tab on mobile screens (< xl) where the right rail is hidden */}
+          {/* Transcript tab on mobile screens (< lg) where the right rail is hidden */}
           {lesson.transcript && lesson.transcript.length > 0 && (
             <button
               type="button"
               onClick={() => handleTabChange("transcript")}
-              className={`xl:hidden inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+              className={`lg:hidden inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                 activeTab === "transcript"
                   ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-xs"
                   : "text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
@@ -391,6 +395,8 @@ export function SpringLessonContent({
             transcript={lesson.transcript}
             inRail={false}
             textScale={textScale}
+            currentTime={currentTime}
+            onSeek={onSeek}
           />
         </div>
       )}

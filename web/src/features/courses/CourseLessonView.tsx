@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   CheckCircle2,
@@ -31,6 +31,13 @@ import { EnglishLessonContent } from "./EnglishLessonContent";
 import { SpringLessonContent } from "./SpringLessonContent";
 import { SpringTranscriptPanel } from "./SpringTranscriptPanel";
 
+declare global {
+  interface Window {
+    YT?: any;
+    onYouTubeIframeAPIReady?: () => void;
+  }
+}
+
 interface CourseLessonViewProps {
   course: CourseManifest;
   lesson: CourseLesson;
@@ -50,6 +57,14 @@ export function CourseLessonView({
   const [copiedLink, setCopiedLink] = useState(false);
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
   const [rightRailTab, setRightRailTab] = useState<"transcript" | "syllabus">("transcript");
+
+  // --- Video Sync State & Height Matching ---
+  const videoContainerRef = useRef<HTMLDivElement>(null);
+  const [videoHeight, setVideoHeight] = useState<number | null>(null);
+  const [currentTime, setCurrentTime] = useState<number>(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const ytPlayerRef = useRef<any>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const { textScale, changeTextScale } = useInterviewTextSize();
   const { speak, isSpeaking } = useEnglishSpeech();
@@ -75,6 +90,142 @@ export function CourseLessonView({
     recordLastAccessed(course.id, lesson.id);
   }, [course.id, lesson.id, recordLastAccessed]);
 
+  // Measure exact video height to sync with transcript panel
+  useEffect(() => {
+    if (!videoContainerRef.current) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const h = Math.round(entry.contentRect.height);
+        if (h > 0) {
+          setVideoHeight(h);
+        }
+      }
+    });
+    ro.observe(videoContainerRef.current);
+    return () => ro.disconnect();
+  }, []);
+
+  // Initialize YouTube IFrame API & postMessage listener
+  useEffect(() => {
+    if (!isSpring || !lesson.videoId) return;
+
+    let destroyed = false;
+
+    // 1. Listen for postMessage from YouTube iframe
+    const handleWindowMessage = (event: MessageEvent) => {
+      try {
+        const data = typeof event.data === "string" ? JSON.parse(event.data) : event.data;
+        if (data && data.event === "infoDelivery" && data.info) {
+          if (typeof data.info.currentTime === "number") {
+            setCurrentTime(data.info.currentTime);
+          }
+          if (typeof data.info.playerState === "number") {
+            setIsPlaying(data.info.playerState === 1);
+          }
+        }
+      } catch {
+        // ignore non-json messages
+      }
+    };
+    window.addEventListener("message", handleWindowMessage);
+
+    // 2. Setup YouTube IFrame API
+    const initYT = () => {
+      if (destroyed || typeof window === "undefined" || !window.YT || !window.YT.Player) return;
+      try {
+        ytPlayerRef.current = new window.YT.Player("spring-youtube-iframe", {
+          events: {
+            onStateChange: (e: any) => {
+              if (destroyed) return;
+              const playing = e.data === 1;
+              setIsPlaying(playing);
+              if (ytPlayerRef.current?.getCurrentTime) {
+                const t = ytPlayerRef.current.getCurrentTime();
+                if (typeof t === "number") setCurrentTime(t);
+              }
+            }
+          }
+        });
+      } catch {
+        // Fallback gracefully
+      }
+    };
+
+    if (typeof window !== "undefined") {
+      if (window.YT && window.YT.Player) {
+        initYT();
+      } else {
+        const prevOnReady = window.onYouTubeIframeAPIReady;
+        window.onYouTubeIframeAPIReady = () => {
+          if (prevOnReady) prevOnReady();
+          initYT();
+        };
+
+        if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
+          const script = document.createElement("script");
+          script.src = "https://www.youtube.com/iframe_api";
+          document.head.appendChild(script);
+        }
+      }
+    }
+
+    return () => {
+      destroyed = true;
+      window.removeEventListener("message", handleWindowMessage);
+      try {
+        ytPlayerRef.current?.destroy?.();
+      } catch {
+        // ignore
+      }
+      ytPlayerRef.current = null;
+    };
+  }, [isSpring, lesson.videoId]);
+
+  // Polling currentTime when video is playing
+  useEffect(() => {
+    if (!isPlaying) return;
+    const interval = setInterval(() => {
+      if (ytPlayerRef.current && typeof ytPlayerRef.current.getCurrentTime === "function") {
+        const t = ytPlayerRef.current.getCurrentTime();
+        if (typeof t === "number") {
+          setCurrentTime(t);
+        }
+      }
+    }, 250);
+    return () => clearInterval(interval);
+  }, [isPlaying]);
+
+  // Seek handler when user clicks a transcript sentence or timestamp
+  const handleSeek = useCallback((seconds: number) => {
+    if (ytPlayerRef.current && typeof ytPlayerRef.current.seekTo === "function") {
+      ytPlayerRef.current.seekTo(seconds, true);
+      if (typeof ytPlayerRef.current.playVideo === "function") {
+        ytPlayerRef.current.playVideo();
+      }
+    }
+
+    if (iframeRef.current?.contentWindow) {
+      iframeRef.current.contentWindow.postMessage(
+        JSON.stringify({
+          event: "command",
+          func: "seekTo",
+          args: [seconds, true]
+        }),
+        "*"
+      );
+      iframeRef.current.contentWindow.postMessage(
+        JSON.stringify({
+          event: "command",
+          func: "playVideo",
+          args: []
+        }),
+        "*"
+      );
+    }
+
+    setCurrentTime(seconds);
+  }, []);
+
   const handleShare = () => {
     if (typeof window !== "undefined") {
       void navigator.clipboard.writeText(window.location.href);
@@ -87,7 +238,7 @@ export function CourseLessonView({
     <div className="mx-auto w-full max-w-5xl xl:max-w-7xl 2xl:max-w-[1720px] space-y-6 lg:space-y-8 animate-fade-in">
       {/* Mobile Syllabus Drawer Overlay */}
       {mobileSyllabusOpen && (
-        <div className="fixed inset-0 z-50 xl:hidden flex">
+        <div className="fixed inset-0 z-50 lg:hidden flex">
           <div
             className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
             onClick={() => setMobileSyllabusOpen(false)}
@@ -122,7 +273,7 @@ export function CourseLessonView({
           <button
             type="button"
             onClick={() => setMobileSyllabusOpen(true)}
-            className="xl:hidden flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-bold text-[var(--foreground)] hover:bg-[var(--surface-hover)] shadow-2xs cursor-pointer"
+            className="lg:hidden flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-xs font-bold text-[var(--foreground)] hover:bg-[var(--surface-hover)] shadow-2xs cursor-pointer"
           >
             <Menu className="h-4 w-4 text-emerald-500" />
             <span>Mục lục</span>
@@ -143,7 +294,7 @@ export function CourseLessonView({
 
         {/* Top right actions for non-Spring or mobile fallback */}
         <div className="flex items-center gap-2 shrink-0">
-          <div className="xl:hidden">
+          <div className="lg:hidden">
             <InterviewTextSizeControl value={textScale} onChange={changeTextScale} />
           </div>
 
@@ -211,13 +362,15 @@ export function CourseLessonView({
       {isSpring ? (
         <div className="space-y-6 sm:space-y-8">
           {/* HÀNG 1: THEATER DOCK (Video 60% : Transcript/Syllabus 40%) */}
-          <div className="xl:grid xl:grid-cols-12 xl:gap-6 items-stretch">
+          <div className="lg:grid lg:grid-cols-12 lg:gap-6 items-start">
             {/* Cột 1: Video Player (Chiếm 7/12 = ~58.3% -> 60%) */}
-            <div className="xl:col-span-7 2xl:col-span-7 flex flex-col justify-center">
+            <div ref={videoContainerRef} className="lg:col-span-7 2xl:col-span-7 flex flex-col">
               {lesson.videoId ? (
-                <div className="relative aspect-video w-full overflow-hidden rounded-3xl border border-[var(--border)] bg-black shadow-xl">
+                <div className="relative aspect-video w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-[var(--border)] bg-black shadow-xl">
                   <iframe
-                    src={`https://www.youtube-nocookie.com/embed/${lesson.videoId}?rel=0&modestbranding=1`}
+                    ref={iframeRef}
+                    id="spring-youtube-iframe"
+                    src={`https://www.youtube-nocookie.com/embed/${lesson.videoId}?enablejsapi=1&rel=0&modestbranding=1`}
                     title={lesson.title}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
@@ -232,7 +385,13 @@ export function CourseLessonView({
             </div>
 
             {/* Cột 2: Transcript & Mục lục Panel (Chiếm 5/12 = ~41.7% -> 40%) */}
-            <div className="hidden xl:flex xl:col-span-5 2xl:col-span-5 flex-col h-full min-h-0 space-y-2.5">
+            <div
+              className="hidden lg:flex lg:col-span-5 2xl:col-span-5 flex-col overflow-hidden space-y-2.5 h-[420px] lg:h-[440px] xl:h-[470px] 2xl:h-[510px]"
+              style={{
+                height: videoHeight ? `${videoHeight}px` : undefined,
+                maxHeight: videoHeight ? `${videoHeight}px` : undefined
+              }}
+            >
               {/* Tab Switcher Header + Cỡ chữ */}
               <div className="flex items-center justify-between gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-2 shadow-2xs shrink-0">
                 <div className="flex items-center gap-1">
@@ -267,19 +426,21 @@ export function CourseLessonView({
               </div>
 
               {/* Panel Content: Khớp 100% chiều cao video */}
-              <div className="flex-1 min-h-0">
+              <div className="flex-1 min-h-0 overflow-hidden">
                 {rightRailTab === "transcript" ? (
                   <SpringTranscriptPanel
                     transcript={lesson.transcript}
                     inRail
                     textScale={textScale}
+                    currentTime={currentTime}
+                    onSeek={handleSeek}
                     className="h-full"
                   />
                 ) : (
                   <CourseSyllabusSidebar
                     course={course}
                     currentLessonId={lesson.id}
-                    className="flex flex-col h-full rounded-3xl border border-[var(--border)] bg-[var(--surface)] shadow-xs overflow-hidden max-h-[500px]"
+                    className="flex flex-col h-full rounded-3xl border border-[var(--border)] bg-[var(--surface)] shadow-xs overflow-hidden"
                   />
                 )}
               </div>
@@ -434,6 +595,8 @@ export function CourseLessonView({
               course={course}
               lesson={lesson}
               textScale={textScale}
+              currentTime={currentTime}
+              onSeek={handleSeek}
             />
           </section>
 

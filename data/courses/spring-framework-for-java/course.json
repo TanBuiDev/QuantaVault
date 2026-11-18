@@ -76,61 +76,85 @@
       "transcript": [
         {
           "id": "sent-1",
+          "start": 0,
+          "time": "00:00",
           "en": "Hello, and welcome to this course on the Fundamentals of the Spring Framework for Java Development.",
           "vi": "Xin chào và chào mừng bạn đến với khóa học Nền tảng Spring Framework cho Phát triển Java."
         },
         {
           "id": "sent-2",
+          "start": 11,
+          "time": "00:11",
           "en": "Sixty percent of Java developers create their main applications using the Spring Framework.",
           "vi": "Sáu mươi phần trăm (60%) các lập trình viên Java xây dựng các ứng dụng chính của họ bằng Spring Framework."
         },
         {
           "id": "sent-3",
+          "start": 11,
+          "time": "00:11",
           "en": "Spring Framework plays a crucial role in enterprise application development by enabling the creation of efficient, maintainable, and scalable solutions.",
           "vi": "Spring Framework đóng vai trò then chốt trong phát triển ứng dụng doanh nghiệp bằng cách cho phép tạo ra các giải pháp hiệu quả, dễ bảo trì và có khả năng mở rộng cao."
         },
         {
           "id": "sent-4",
+          "start": 26.7,
+          "time": "00:26",
           "en": "In this course, you'll learn to apply core and advanced Spring concepts, including dependency injection, bean configuration, and aspect-oriented programming.",
           "vi": "Trong khóa học này, bạn sẽ học cách áp dụng các khái niệm Spring từ cốt lõi đến nâng cao, bao gồm tiêm phụ thuộc (Dependency Injection), cấu hình Bean và lập trình hướng khía cạnh (AOP)."
         },
         {
           "id": "sent-5",
+          "start": 37.3,
+          "time": "00:37",
           "en": "You will also build scalable web applications, secure them with Spring Security, and create production-ready applications with Spring Boot.",
           "vi": "Bạn cũng sẽ xây dựng các ứng dụng web có khả năng mở rộng quy mô, bảo mật chúng bằng Spring Security và tạo các ứng dụng sẵn sàng cho môi trường Production với Spring Boot."
         },
         {
           "id": "sent-6",
+          "start": 46,
+          "time": "00:46",
           "en": "This course is designed for software developers who want to master the Spring Framework, experienced professionals, and students.",
           "vi": "Khóa học này được thiết kế dành cho các kỹ sư phần mềm muốn làm chủ Spring Framework, các chuyên gia giàu kinh nghiệm và sinh viên mong muốn xây dựng nền tảng vững chắc."
         },
         {
           "id": "sent-7",
+          "start": 62.4,
+          "time": "01:02",
           "en": "A basic understanding of the fundamentals of Java programming, including object-oriented programming, is essential.",
           "vi": "Hiểu biết cơ bản về nền tảng lập trình Java, bao gồm Lập trình hướng đối tượng (OOP), là điều kiện tiên quyết để nắm bắt khóa học."
         },
         {
           "id": "sent-8",
+          "start": 71.8,
+          "time": "01:11",
           "en": "You will begin the course by learning the fundamentals of the Spring Framework and exploring its core components and ecosystem.",
           "vi": "Bạn sẽ bắt đầu khóa học bằng việc tìm hiểu các nền tảng của Spring Framework và khám phá các thành phần cốt lõi cùng hệ sinh thái của nó."
         },
         {
           "id": "sent-9",
+          "start": 79.4,
+          "time": "01:19",
           "en": "You will set up your development environment with tools like IntelliJ and Maven, gaining the knowledge needed to create and manage basic Spring projects.",
           "vi": "Bạn sẽ thiết lập môi trường phát triển với các công cụ như IntelliJ IDEA và Maven, nắm vững kiến thức cần thiết để tạo và quản lý các dự án Spring cơ bản."
         },
         {
           "id": "sent-10",
+          "start": 95.8,
+          "time": "01:35",
           "en": "Next, you will dive into Spring Boot to create and configure projects using Spring Initializr and build REST APIs for dynamic web interactions.",
           "vi": "Tiếp theo, bạn sẽ đi sâu vào Spring Boot để tạo và cấu hình dự án bằng Spring Initializr, xây dựng các REST API cho các tương tác web linh hoạt."
         },
         {
           "id": "sent-11",
+          "start": 111.3,
+          "time": "01:51",
           "en": "You will then learn to build interactive web applications using Spring MVC and secure them with Spring Security.",
           "vi": "Sau đó bạn sẽ học cách xây dựng ứng dụng web tương tác bằng Spring MVC và bảo vệ ứng dụng bằng Spring Security."
         },
         {
           "id": "sent-12",
+          "start": 134.6,
+          "time": "02:14",
           "en": "Finally, you will apply your skills by developing a secure online quiz application using Spring Boot, Spring MVC, and Spring Security.",
           "vi": "Cuối cùng, bạn sẽ vận dụng toàn bộ kỹ năng bằng việc phát triển ứng dụng thi trắc nghiệm trực tuyến bảo mật (Online Quiz App) với Spring Boot, Spring MVC và Spring Security."
         }
@@ -241,281 +265,393 @@
       "transcript": [
         {
           "id": "sent-1",
+          "start": 6.2,
+          "time": "00:06",
           "en": "[MUSIC] Welcome to this video on the Spring framework and its ecosystem.",
           "vi": "[NHẠC] Chào mừng đến với video về Spring Framework và hệ sinh thái của nó."
         },
         {
           "id": "sent-2",
+          "start": 12.5,
+          "time": "00:12",
           "en": "After watching this video, you'll be able to describe the role of Spring framework in Java development.",
           "vi": "Sau khi xem video này, bạn sẽ có thể mô tả vai trò của Spring Framework trong phát triển Java."
         },
         {
           "id": "sent-3",
+          "start": 18.3,
+          "time": "00:18",
           "en": "You will also be able to explain the components of the Spring Ecosystem and describe the applications of Spring framework.",
           "vi": "Bạn cũng sẽ có thể giải thích các thành phần của hệ sinh thái Spring và mô tả các ứng dụng của Spring Framework."
         },
         {
           "id": "sent-4",
+          "start": 27.2,
+          "time": "00:27",
           "en": "Imagine cooking a gourmet meal without tools or appliances, barring an open flame that would be complex and unscalable.",
           "vi": "Hãy tưởng tượng việc nấu một bữa ăn cao cấp mà không có dụng cụ hay thiết bị nào, ngoài một ngọn lửa trần; việc đó sẽ phức tạp và khó mở rộng quy mô."
         },
         {
           "id": "sent-5",
+          "start": 36.9,
+          "time": "00:36",
           "en": "Similarly, Java programming before the development of Spring framework was a complex process involving manual configuration and repetition.",
           "vi": "Tương tự, trước khi Spring Framework ra đời, lập trình Java là một quá trình phức tạp, bao gồm cấu hình thủ công và các thao tác lặp lại."
         },
         {
           "id": "sent-6",
+          "start": 46.4,
+          "time": "00:46",
           "en": "It required managing dependencies, setting up infrastructure, and ensuring scalability.",
           "vi": "Việc này đòi hỏi phải quản lý các phụ thuộc, thiết lập cơ sở hạ tầng và đảm bảo khả năng mở rộng."
         },
         {
           "id": "sent-7",
+          "start": 52.1,
+          "time": "00:52",
           "en": "Fortunately, Spring simplified this by offering comprehensive tools that automate these tasks, allowing developers to focus on building features and solving real problems.",
           "vi": "May mắn thay, Spring đã đơn giản hóa việc này bằng cách cung cấp các công cụ toàn diện giúp tự động hóa những tác vụ đó, cho phép lập trình viên tập trung xây dựng tính năng và giải quyết các vấn đề thực tế."
         },
         {
           "id": "sent-8",
+          "start": 62.8,
+          "time": "01:02",
           "en": "Let's dive into the Spring framework Rod Johnson created Spring in 2003 to simplify Java development.",
           "vi": "Hãy cùng tìm hiểu Spring Framework. Rod Johnson đã tạo ra Spring vào năm 2003 để đơn giản hóa việc phát triển Java."
         },
         {
           "id": "sent-9",
+          "start": 71.9,
+          "time": "01:11",
           "en": "Before Spring, developers relied on Enterprise JavaBeans or EJB, which were often complex and difficult to test.",
           "vi": "Trước khi có Spring, lập trình viên dựa vào Enterprise JavaBeans, hay EJB, vốn thường phức tạp và khó kiểm thử."
         },
         {
           "id": "sent-10",
+          "start": 80.6,
+          "time": "01:20",
           "en": "Spring provided a lighter, more efficient framework, enabling developers to build scalable, maintainable applications with less complexity.",
           "vi": "Spring cung cấp một framework gọn nhẹ hơn, hiệu quả hơn, giúp lập trình viên xây dựng các ứng dụng có khả năng mở rộng và dễ bảo trì với ít sự phức tạp hơn."
         },
         {
           "id": "sent-11",
+          "start": 90.4,
+          "time": "01:30",
           "en": "Today, Spring comprises many tools, making it a comprehensive ecosystem that supports many applications, including web apps, microservices, and data processing tools.",
           "vi": "Ngày nay, Spring bao gồm nhiều công cụ, tạo thành một hệ sinh thái toàn diện hỗ trợ nhiều loại ứng dụng, bao gồm ứng dụng web, microservices và công cụ xử lý dữ liệu."
         },
         {
           "id": "sent-12",
+          "start": 90.4,
+          "time": "01:30",
           "en": "Spring comprises three primary components.",
           "vi": "Spring bao gồm ba thành phần chính."
         },
         {
           "id": "sent-13",
+          "start": 106.4,
+          "time": "01:46",
           "en": "Spring core provides essential features such as dependency injection and aspect oriented programming.",
           "vi": "Spring Core cung cấp các tính năng thiết yếu như tiêm phụ thuộc (dependency injection) và lập trình hướng khía cạnh (aspect-oriented programming)."
         },
         {
           "id": "sent-14",
+          "start": 113.3,
+          "time": "01:53",
           "en": "At the same time, Spring Model View Controller, or Spring MVC serves as a web framework separating business logic, user interface, and input processing.",
           "vi": "Trong khi đó, Spring Model View Controller, hay Spring MVC, đóng vai trò là một framework web, tách biệt logic nghiệp vụ, giao diện người dùng và xử lý đầu vào."
         },
         {
           "id": "sent-15",
+          "start": 123.9,
+          "time": "02:03",
           "en": "Spring aspect oriented programming, or Spring AOP, enables the management of cross-cutting concerns such as logging and transaction handling, keeping them separate from business logic.",
           "vi": "Spring Aspect Oriented Programming, hay Spring AOP, cho phép quản lý các vấn đề xuyên suốt như ghi log và xử lý giao dịch, tách chúng khỏi logic nghiệp vụ."
         },
         {
           "id": "sent-16",
+          "start": 137.1,
+          "time": "02:17",
           "en": "Spring Security provides a customizable framework for authentication and access control, adding security features to applications.",
           "vi": "Spring Security cung cấp một framework có thể tùy chỉnh để xác thực và kiểm soát truy cập, bổ sung các tính năng bảo mật cho ứng dụng."
         },
         {
           "id": "sent-17",
+          "start": 145.9,
+          "time": "02:25",
           "en": "Spring Java Database Connectivity, or JDBC simplifies database interactions by managing error handling and abstracting JDBC operations.",
           "vi": "Spring Java Database Connectivity, hay JDBC, đơn giản hóa việc tương tác với cơ sở dữ liệu bằng cách quản lý xử lý lỗi và trừu tượng hóa các thao tác JDBC."
         },
         {
           "id": "sent-18",
+          "start": 158.4,
+          "time": "02:38",
           "en": "Spring Web Flow simplifies navigation and state management in web applications.",
           "vi": "Spring Web Flow đơn giản hóa việc điều hướng và quản lý trạng thái trong các ứng dụng web."
         },
         {
           "id": "sent-19",
+          "start": 164.3,
+          "time": "02:44",
           "en": "Spring Web Services facilitates the development of interoperable simple object access protocol or SOAP web services, enabling reliable cross-platform communication.",
           "vi": "Spring Web Services hỗ trợ phát triển các dịch vụ web sử dụng Simple Object Access Protocol, hay SOAP, có khả năng tương tác với nhau, cho phép giao tiếp đáng tin cậy giữa các nền tảng."
         },
         {
           "id": "sent-20",
+          "start": 176.4,
+          "time": "02:56",
           "en": "Spring Batch supports robust batch processing with transaction management, chunk processing, and job scheduling features.",
           "vi": "Spring Batch hỗ trợ xử lý theo lô đáng tin cậy, với các tính năng quản lý giao dịch, xử lý theo khối và lập lịch công việc."
         },
         {
           "id": "sent-21",
+          "start": 183.3,
+          "time": "03:03",
           "en": "Integration is key to building seamless message driven applications.",
           "vi": "Tích hợp là yếu tố then chốt để xây dựng các ứng dụng hướng thông điệp hoạt động liền mạch."
         },
         {
           "id": "sent-22",
+          "start": 190.9,
+          "time": "03:10",
           "en": "Spring integration helps create such applications with an extensible framework for messaging and integration.",
           "vi": "Spring Integration giúp tạo ra những ứng dụng như vậy bằng một framework có thể mở rộng cho việc trao đổi thông điệp và tích hợp."
         },
         {
           "id": "sent-23",
+          "start": 198.2,
+          "time": "03:18",
           "en": "Meanwhile, Spring Data simplifies create, read, update and delete or CRUD operations by offering a uniform approach to data access.",
           "vi": "Trong khi đó, Spring Data đơn giản hóa các thao tác tạo, đọc, cập nhật và xóa (CRUD) bằng cách cung cấp một cách tiếp cận thống nhất để truy cập dữ liệu."
         },
         {
           "id": "sent-24",
+          "start": 208.5,
+          "time": "03:28",
           "en": "Effective documentation and session management are crucial in modern applications.",
           "vi": "Việc xây dựng tài liệu hiệu quả và quản lý phiên rất quan trọng trong các ứng dụng hiện đại."
         },
         {
           "id": "sent-25",
+          "start": 213.8,
+          "time": "03:33",
           "en": "Spring REST docs aids in documenting representational state transfer or RESTful services by generating snippets for AsciiDoc or markdown files.",
           "vi": "Spring REST Docs hỗ trợ lập tài liệu cho các dịch vụ Representational State Transfer, hay RESTful, bằng cách tạo các đoạn trích cho tệp AsciiDoc hoặc Markdown."
         },
         {
           "id": "sent-26",
+          "start": 223.9,
+          "time": "03:43",
           "en": "Ensuring application programming interface or API documentation stays in sync with the code.",
           "vi": "Đảm bảo tài liệu giao diện lập trình ứng dụng (API) luôn đồng bộ với mã nguồn."
         },
         {
           "id": "sent-27",
+          "start": 230.8,
+          "time": "03:50",
           "en": "Spring session manages user sessions in Spring applications, supporting session, clustering and persistence, making session handling more efficient.",
           "vi": "Spring Session quản lý phiên người dùng trong các ứng dụng Spring, hỗ trợ phiên, phân cụm và lưu trữ lâu dài, giúp việc xử lý phiên hiệu quả hơn."
         },
         {
           "id": "sent-28",
+          "start": 242.2,
+          "time": "04:02",
           "en": "Rapid development is one of the prime features of Spring.",
           "vi": "Phát triển nhanh là một trong những đặc điểm nổi bật của Spring."
         },
         {
           "id": "sent-29",
+          "start": 246,
+          "time": "04:06",
           "en": "Spring Boot speeds up application development by simplifying configuration and deployment, often using embedded servers.",
           "vi": "Spring Boot tăng tốc phát triển ứng dụng bằng cách đơn giản hóa cấu hình và triển khai, thường sử dụng máy chủ nhúng."
         },
         {
           "id": "sent-30",
+          "start": 254.4,
+          "time": "04:14",
           "en": "Spring command line interface or Spring CLI enables rapid application prototyping.",
           "vi": "Spring Command Line Interface, hay Spring CLI, cho phép tạo bản mẫu ứng dụng nhanh chóng."
         },
         {
           "id": "sent-31",
+          "start": 260.9,
+          "time": "04:20",
           "en": "Spring Cloud provides tools for building distributed systems, offering features such as service discovery and circuit breakers which help manage communication and ensure reliability in microservice architectures.",
           "vi": "Spring Cloud cung cấp các công cụ để xây dựng hệ thống phân tán, với các tính năng như khám phá dịch vụ và bộ ngắt mạch (circuit breaker), giúp quản lý giao tiếp và đảm bảo độ tin cậy trong kiến trúc microservices."
         },
         {
           "id": "sent-32",
+          "start": 275.7,
+          "time": "04:35",
           "en": "Other advanced features of the Spring ecosystem include Spring WebFlux, a reactive web framework for creating asynchronous and non-blocking applications that can handle large volumes of requests.",
           "vi": "Các tính năng nâng cao khác của hệ sinh thái Spring gồm Spring WebFlux, một framework web phản ứng dùng để tạo các ứng dụng bất đồng bộ và không chặn, có thể xử lý lượng lớn yêu cầu."
         },
         {
           "id": "sent-33",
+          "start": 287.3,
+          "time": "04:47",
           "en": "Spring for Apache Kafka supports building event driven systems using Apache Kafka, enabling efficient message streaming.",
           "vi": "Spring for Apache Kafka hỗ trợ xây dựng các hệ thống hướng sự kiện bằng Apache Kafka, cho phép truyền luồng thông điệp hiệu quả."
         },
         {
           "id": "sent-34",
+          "start": 295.7,
+          "time": "04:55",
           "en": "Spring Cloud Gateway is an API gateway that routes requests and applies cross cutting concerns such as security.",
           "vi": "Spring Cloud Gateway là một API gateway định tuyến các yêu cầu và xử lý các chức năng xuyên suốt như bảo mật."
         },
         {
           "id": "sent-35",
+          "start": 303.8,
+          "time": "05:03",
           "en": "Spring Authorization Server provides OAuth 2.0 and OpenID connect support for securing applications.",
           "vi": "Spring Authorization Server hỗ trợ OAuth 2.0 và OpenID Connect để bảo mật ứng dụng."
         },
         {
           "id": "sent-36",
+          "start": 311.8,
+          "time": "05:11",
           "en": "Lastly, Spring AI promotes using plain old Java objects or POJOs as the building blocks for AI applications.",
           "vi": "Cuối cùng, Spring AI thúc đẩy việc sử dụng các đối tượng Java thuần (POJO) làm thành phần xây dựng ứng dụng AI."
         },
         {
           "id": "sent-37",
+          "start": 321.9,
+          "time": "05:21",
           "en": "Spring is extensively used across diverse industries for its reliability and scalability.",
           "vi": "Spring được sử dụng rộng rãi trong nhiều ngành nhờ độ tin cậy và khả năng mở rộng."
         },
         {
           "id": "sent-38",
+          "start": 328.3,
+          "time": "05:28",
           "en": "E-commerce platforms leverage it to manage complex transactions, user accounts and secure payment processing.",
           "vi": "Các nền tảng thương mại điện tử tận dụng Spring để quản lý các giao dịch phức tạp, tài khoản người dùng và xử lý thanh toán an toàn."
         },
         {
           "id": "sent-39",
+          "start": 335.4,
+          "time": "05:35",
           "en": "Spring Security and transaction management capabilities in banking ensure smooth and secure operations.",
           "vi": "Spring Security và khả năng quản lý giao dịch trong lĩnh vực ngân hàng đảm bảo hoạt động trơn tru và an toàn."
         },
         {
           "id": "sent-40",
+          "start": 342.1,
+          "time": "05:42",
           "en": "Healthcare applications use Spring to manage patient records securely and efficiently.",
           "vi": "Các ứng dụng y tế sử dụng Spring để quản lý hồ sơ bệnh nhân một cách an toàn và hiệu quả."
         },
         {
           "id": "sent-41",
+          "start": 348,
+          "time": "05:48",
           "en": "Social media platforms rely on scalability to support millions of users simultaneously, ensuring a seamless user experience.",
           "vi": "Các nền tảng mạng xã hội dựa vào khả năng mở rộng để hỗ trợ đồng thời hàng triệu người dùng, đảm bảo trải nghiệm liền mạch."
         },
         {
           "id": "sent-42",
+          "start": 358.4,
+          "time": "05:58",
           "en": "Due to its robust features, Spring is a preferred choice for enterprise application development.",
           "vi": "Nhờ các tính năng mạnh mẽ, Spring là lựa chọn được ưu tiên khi phát triển ứng dụng doanh nghiệp."
         },
         {
           "id": "sent-43",
+          "start": 361.5,
+          "time": "06:01",
           "en": "It is ideal for creating large scale enterprise applications and uses Spring Boot to accelerate web application development.",
           "vi": "Spring lý tưởng để tạo các ứng dụng doanh nghiệp quy mô lớn và sử dụng Spring Boot để tăng tốc phát triển ứng dụng web."
         },
         {
           "id": "sent-44",
+          "start": 372.4,
+          "time": "06:12",
           "en": "Spring Boot provides quick setup for web app development and integrates well with Spring MVC, ensuring secure restful APIs through Spring Security.",
           "vi": "Spring Boot giúp thiết lập nhanh việc phát triển ứng dụng web và tích hợp tốt với Spring MVC, đảm bảo các API RESTful an toàn thông qua Spring Security."
         },
         {
           "id": "sent-45",
+          "start": 382.6,
+          "time": "06:22",
           "en": "Additionally, Spring Boot is perfect for building reliable microservices, making it a go-to solution for modern scalable application architectures.",
           "vi": "Ngoài ra, Spring Boot rất phù hợp để xây dựng các microservices đáng tin cậy, khiến nó trở thành một giải pháp được ưu tiên cho kiến trúc ứng dụng hiện đại có khả năng mở rộng."
         },
         {
           "id": "sent-46",
+          "start": 393.3,
+          "time": "06:33",
           "en": "To understand Spring, let's compare it to traditional Java development.",
           "vi": "Để hiểu Spring, hãy so sánh nó với cách phát triển Java truyền thống."
         },
         {
           "id": "sent-47",
+          "start": 397.7,
+          "time": "06:37",
           "en": "In basic Java, developers manually handle dependencies, configuring and managing object lifecycles, this leads to tightly coupled and less reusable code.",
           "vi": "Trong Java cơ bản, lập trình viên xử lý các phụ thuộc theo cách thủ công, cấu hình và quản lý vòng đời đối tượng; điều này dẫn đến mã liên kết chặt và khó tái sử dụng hơn."
         },
         {
           "id": "sent-48",
+          "start": 408.4,
+          "time": "06:48",
           "en": "Building large applications requires developers to create features such as security and transaction management from scratch.",
           "vi": "Việc xây dựng các ứng dụng lớn đòi hỏi lập trình viên tạo các tính năng như bảo mật và quản lý giao dịch từ đầu."
         },
         {
           "id": "sent-49",
+          "start": 416.2,
+          "time": "06:56",
           "en": "Spring simplifies this by automating dependency management through dependency injection.",
           "vi": "Spring đơn giản hóa việc này bằng cách tự động hóa quản lý phụ thuộc thông qua tiêm phụ thuộc (dependency injection)."
         },
         {
           "id": "sent-50",
+          "start": 422.1,
+          "time": "07:02",
           "en": "It offers built in features for security, transactions and data access.",
           "vi": "Spring cung cấp sẵn các tính năng về bảo mật, giao dịch và truy cập dữ liệu."
         },
         {
           "id": "sent-51",
+          "start": 427.7,
+          "time": "07:07",
           "en": "Its modular structure enhances scalability, while AOP ensures cleaner, more maintainable code.",
           "vi": "Cấu trúc mô-đun của Spring tăng khả năng mở rộng, trong khi AOP giúp mã gọn gàng hơn và dễ bảo trì hơn."
         },
         {
           "id": "sent-52",
+          "start": 434.7,
+          "time": "07:14",
           "en": "The large Spring community provides extensive resources for developers.",
           "vi": "Cộng đồng Spring đông đảo cung cấp nhiều tài nguyên cho lập trình viên."
         },
         {
           "id": "sent-53",
+          "start": 440.2,
+          "time": "07:20",
           "en": "In this video, you learned that Spring is a comprehensive ecosystem that supports various applications including web apps, microservices and data processing tools.",
           "vi": "Trong video này, bạn đã học rằng Spring là một hệ sinh thái toàn diện hỗ trợ nhiều loại ứng dụng, bao gồm ứng dụng web, microservices và công cụ xử lý dữ liệu."
         },
         {
           "id": "sent-54",
+          "start": 451.6,
+          "time": "07:31",
           "en": "Spring core, Spring MVC and Spring AOP are the core components of Spring, while other key tools in the ecosystem include Spring data, Spring REST Docs, Spring Boot, and Spring cloud.",
           "vi": "Spring Core, Spring MVC và Spring AOP là các thành phần cốt lõi của Spring, còn những công cụ quan trọng khác trong hệ sinh thái gồm Spring Data, Spring REST Docs, Spring Boot và Spring Cloud."
         },
         {
           "id": "sent-55",
+          "start": 464.9,
+          "time": "07:44",
           "en": "Spring is widely used in industries such as E-commerce, banking, healthcare and social media due to its scalability, security and transaction management capabilities.",
           "vi": "Spring được sử dụng rộng rãi trong các ngành như thương mại điện tử, ngân hàng, y tế và mạng xã hội nhờ khả năng mở rộng, bảo mật và quản lý giao dịch."
         },
         {
           "id": "sent-56",
+          "start": 476.7,
+          "time": "07:56",
           "en": "Spring Boot helps accelerate the development of web apps and microservices, while Spring simplifies Java development by automating dependency management, offering built-in features, and promoting modularity.",
           "vi": "Spring Boot giúp tăng tốc phát triển ứng dụng web và microservices, còn Spring đơn giản hóa việc phát triển Java bằng cách tự động hóa quản lý phụ thuộc, cung cấp các tính năng tích hợp sẵn và thúc đẩy tính mô-đun."
         }
@@ -609,281 +745,393 @@
       "transcript": [
         {
           "id": "sent-1",
+          "start": 0,
+          "time": "00:00",
           "en": "Welcome to this video exploring Essential Spring Concepts.",
           "vi": "Chào mừng bạn đến với video tìm hiểu các khái niệm cốt lõi của Spring."
         },
         {
           "id": "sent-2",
+          "start": 10.7,
+          "time": "00:10",
           "en": "After watching this video, you'll be able to describe Essential Spring Concepts and explain their role in Java programming.",
           "vi": "Sau khi xem video này, bạn sẽ có thể mô tả các khái niệm cốt lõi của Spring và giải thích vai trò của chúng trong lập trình Java."
         },
         {
           "id": "sent-3",
+          "start": 19,
+          "time": "00:19",
           "en": "Deploying Java code once involved several complex steps, such as manually configuring environments, checking dependencies, and carefully tracking down errors.",
           "vi": "Trước đây, việc triển khai mã Java bao gồm nhiều bước phức tạp, chẳng hạn như cấu hình môi trường thủ công, kiểm tra các phụ thuộc và cẩn thận tìm lỗi."
         },
         {
           "id": "sent-4",
+          "start": 28.4,
+          "time": "00:28",
           "en": "However, the Spring Framework has simplified this process.",
           "vi": "Tuy nhiên, Spring Framework đã đơn giản hóa quy trình này."
         },
         {
           "id": "sent-5",
+          "start": 32.4,
+          "time": "00:32",
           "en": "Let's explore the essential components associated with the Spring Framework.",
           "vi": "Hãy tìm hiểu các thành phần thiết yếu liên quan đến Spring Framework."
         },
         {
           "id": "sent-6",
+          "start": 38.8,
+          "time": "00:38",
           "en": "Applications are programs built using the Spring Framework.",
           "vi": "Ứng dụng là các chương trình được xây dựng bằng Spring Framework."
         },
         {
           "id": "sent-7",
+          "start": 42.2,
+          "time": "00:42",
           "en": "They comprise various components such as Beans, Services, and Configurations.",
           "vi": "Chúng bao gồm nhiều thành phần như Bean, Service và Configuration."
         },
         {
           "id": "sent-8",
+          "start": 47.9,
+          "time": "00:47",
           "en": "These components work together to perform tasks, allowing the application to handle requests, manage data, and implement business logic.",
           "vi": "Các thành phần này phối hợp thực hiện tác vụ, cho phép ứng dụng xử lý yêu cầu, quản lý dữ liệu và triển khai logic nghiệp vụ."
         },
         {
           "id": "sent-9",
+          "start": 57.7,
+          "time": "00:57",
           "en": "Beans are objects managed by the Spring Inversion of Control, or IoC, container.",
           "vi": "Bean là các đối tượng do bộ chứa Spring Inversion of Control (IoC) quản lý."
         },
         {
           "id": "sent-10",
+          "start": 63.8,
+          "time": "01:03",
           "en": "They are fundamental to a Spring application and form the core components that provide functionality in a Spring application.",
           "vi": "Chúng là nền tảng của một ứng dụng Spring và tạo thành các thành phần cốt lõi cung cấp chức năng cho ứng dụng Spring."
         },
         {
           "id": "sent-11",
+          "start": 71.5,
+          "time": "01:11",
           "en": "Simply put, a Bean is like a piece of furniture in a house.",
           "vi": "Nói đơn giản, một Bean giống như một món đồ nội thất trong nhà."
         },
         {
           "id": "sent-12",
+          "start": 75.8,
+          "time": "01:15",
           "en": "Each item, such as a sofa or table, contributes to the house's functionality, just like a Bean serves a specific purpose to the program.",
           "vi": "Mỗi món đồ, chẳng hạn như ghế sofa hoặc bàn, góp phần tạo nên công năng của ngôi nhà, giống như một Bean đảm nhiệm một mục đích cụ thể trong chương trình."
         },
         {
           "id": "sent-13",
+          "start": 85.1,
+          "time": "01:25",
           "en": "The application context is the central component of the Spring Framework.",
           "vi": "Application Context là thành phần trung tâm của Spring Framework."
         },
         {
           "id": "sent-14",
+          "start": 85.1,
+          "time": "01:25",
           "en": "It manages the Beans and their dependencies throughout the application's lifecycle.",
           "vi": "Nó quản lý các Bean và các phụ thuộc của chúng trong suốt vòng đời ứng dụng."
         },
         {
           "id": "sent-15",
+          "start": 85.1,
+          "time": "01:25",
           "en": "It is like a manual or ready reckoner that provides the instructions for creating and managing the various Beans that make up the application.",
           "vi": "Nó giống như một cuốn hướng dẫn hoặc bảng tra cứu nhanh, cung cấp chỉ dẫn để tạo và quản lý những Bean cấu thành ứng dụng."
         },
         {
           "id": "sent-16",
+          "start": 102.8,
+          "time": "01:42",
           "en": "It ensures that all necessary components are available when required.",
           "vi": "Nó đảm bảo tất cả các thành phần cần thiết đều sẵn có khi được yêu cầu."
         },
         {
           "id": "sent-17",
+          "start": 108.9,
+          "time": "01:48",
           "en": "Configuration involves the setup and management of Spring components.",
           "vi": "Configuration bao gồm việc thiết lập và quản lý các thành phần Spring."
         },
         {
           "id": "sent-18",
+          "start": 112.9,
+          "time": "01:52",
           "en": "It can be executed through XML files, Java annotations, or Java-based classes.",
           "vi": "Việc này có thể được thực hiện thông qua tệp XML, annotation Java hoặc các lớp viết bằng Java."
         },
         {
           "id": "sent-19",
+          "start": 118.6,
+          "time": "01:58",
           "en": "The configuration is like a building's blueprint, which outlines how each room or bean should be constructed and maintained within the structure.",
           "vi": "Configuration giống như bản thiết kế của một tòa nhà, mô tả cách xây dựng và duy trì từng phòng hoặc Bean trong công trình."
         },
         {
           "id": "sent-20",
+          "start": 128.6,
+          "time": "02:08",
           "en": "Annotations simplify configuration by serving as metadata.",
           "vi": "Annotation giúp đơn giản hóa cấu hình bằng cách đóng vai trò là siêu dữ liệu (metadata)."
         },
         {
           "id": "sent-21",
+          "start": 132.5,
+          "time": "02:12",
           "en": "They provide key information about how Beans should be managed.",
           "vi": "Chúng cung cấp thông tin quan trọng về cách quản lý các Bean."
         },
         {
           "id": "sent-22",
+          "start": 136.6,
+          "time": "02:16",
           "en": "For example, the @component annotation marks a class as a Spring Bean.",
           "vi": "Ví dụ, annotation @component đánh dấu một lớp là Spring Bean."
         },
         {
           "id": "sent-23",
+          "start": 142.3,
+          "time": "02:22",
           "en": "Annotations act like labels on a product, providing important details about its contents, without needing separate documentation.",
           "vi": "Annotation giống như nhãn trên sản phẩm, cung cấp thông tin quan trọng về thành phần bên trong mà không cần tài liệu riêng."
         },
         {
           "id": "sent-24",
+          "start": 150.6,
+          "time": "02:30",
           "en": "Dependencies refer to objects that other objects require to function properly.",
           "vi": "Dependencies là các đối tượng mà những đối tượng khác cần để hoạt động đúng."
         },
         {
           "id": "sent-25",
+          "start": 155,
+          "time": "02:34",
           "en": "They enable objects to work together effectively within an application.",
           "vi": "Chúng cho phép các đối tượng phối hợp hiệu quả trong một ứng dụng."
         },
         {
           "id": "sent-26",
+          "start": 158.9,
+          "time": "02:38",
           "en": "For instance, cars require engines to run, which implies that the engine is a dependency for the car.",
           "vi": "Chẳng hạn, ô tô cần động cơ để chạy, nghĩa là động cơ là một phụ thuộc của chiếc xe."
         },
         {
           "id": "sent-27",
+          "start": 166.4,
+          "time": "02:46",
           "en": "Inversion of Control, or IoC, is a key principle that transfers the responsibility of creating and managing dependencies from the application code to the Spring framework.",
           "vi": "Inversion of Control (IoC) là một nguyên lý quan trọng, chuyển trách nhiệm tạo và quản lý các phụ thuộc từ mã ứng dụng sang Spring Framework."
         },
         {
           "id": "sent-28",
+          "start": 177.4,
+          "time": "02:57",
           "en": "Rather than manually creating objects, such as an engine for a car, Spring provides the necessary components when initializing beans.",
           "vi": "Thay vì tạo các đối tượng theo cách thủ công, chẳng hạn như động cơ cho ô tô, Spring cung cấp các thành phần cần thiết khi khởi tạo Bean."
         },
         {
           "id": "sent-29",
+          "start": 185.9,
+          "time": "03:05",
           "en": "This process is akin to ordering food at a restaurant.",
           "vi": "Quá trình này giống như việc gọi món tại nhà hàng."
         },
         {
           "id": "sent-30",
+          "start": 189.6,
+          "time": "03:09",
           "en": "The chef prepares the meal for you, thereby creating and managing the dependency on your behalf.",
           "vi": "Đầu bếp chuẩn bị món ăn cho bạn, qua đó tạo và quản lý phần phụ thuộc thay bạn."
         },
         {
           "id": "sent-31",
+          "start": 197.4,
+          "time": "03:17",
           "en": "Dependency Injection, or DI, is a technique that allows dependencies to be injected into objects at runtime.",
           "vi": "Dependency Injection (DI) là kỹ thuật cho phép tiêm các phụ thuộc vào đối tượng tại thời điểm chạy."
         },
         {
           "id": "sent-32",
+          "start": 204.5,
+          "time": "03:24",
           "en": "Spring automatically provides dependencies instead of allowing an object to create them.",
           "vi": "Spring tự động cung cấp các phụ thuộc thay vì để đối tượng tự tạo chúng."
         },
         {
           "id": "sent-33",
+          "start": 209.4,
+          "time": "03:29",
           "en": "For example, if a car needs an engine to operate, Spring injects this engine into the car when the car Bean is initialized.",
           "vi": "Ví dụ, nếu ô tô cần động cơ để hoạt động, Spring sẽ tiêm động cơ này vào ô tô khi Bean ô tô được khởi tạo."
         },
         {
           "id": "sent-34",
+          "start": 218.6,
+          "time": "03:38",
           "en": "Autowiring is a Spring feature that automatically injects the necessary dependencies into Beans without explicitly defining them in the configuration.",
           "vi": "Autowiring là một tính năng của Spring, tự động tiêm các phụ thuộc cần thiết vào Bean mà không cần khai báo rõ chúng trong cấu hình."
         },
         {
           "id": "sent-35",
+          "start": 227.7,
+          "time": "03:47",
           "en": "Spring uses reflection to match the correct beans based on their type or name.",
           "vi": "Spring sử dụng reflection để tìm các Bean phù hợp dựa trên kiểu hoặc tên của chúng."
         },
         {
           "id": "sent-36",
+          "start": 233.6,
+          "time": "03:53",
           "en": "Autowiring can be compared to an automatic coffee machine, which brews coffee with little manual intervention.",
           "vi": "Có thể ví Autowiring như máy pha cà phê tự động, pha cà phê mà chỉ cần rất ít thao tác thủ công."
         },
         {
           "id": "sent-37",
+          "start": 239.8,
+          "time": "03:59",
           "en": "It eliminates manual defining and wiring dependencies.",
           "vi": "Nó loại bỏ việc phải định nghĩa và liên kết các phụ thuộc theo cách thủ công."
         },
         {
           "id": "sent-38",
+          "start": 245.6,
+          "time": "04:05",
           "en": "Components are classes directly managed by the IoC container.",
           "vi": "Component là các lớp được IoC container quản lý trực tiếp."
         },
         {
           "id": "sent-39",
+          "start": 249.6,
+          "time": "04:09",
           "en": "They are annotated using @component and can be automatically registered as beans within the Spring container.",
           "vi": "Chúng được gắn annotation @component và có thể tự động đăng ký thành Bean trong Spring container."
         },
         {
           "id": "sent-40",
+          "start": 256.5,
+          "time": "04:16",
           "en": "Components can be services, repositories, or any other application part.",
           "vi": "Component có thể là service, repository hoặc bất kỳ phần nào khác của ứng dụng."
         },
         {
           "id": "sent-41",
+          "start": 261.4,
+          "time": "04:21",
           "en": "They are similar to departments within an organization, each responsible for specific functions, working together to ensure the smooth operation of the application.",
           "vi": "Chúng giống như các phòng ban trong một tổ chức, mỗi phòng ban chịu trách nhiệm cho các chức năng cụ thể và cùng phối hợp để đảm bảo tổ chức hoạt động suôn sẻ."
         },
         {
           "id": "sent-42",
+          "start": 271.8,
+          "time": "04:31",
           "en": "Aspect-Oriented Programming, or AOP, is a programming paradigm that works alongside Object-Oriented Programming.",
           "vi": "Aspect-Oriented Programming (AOP) là một mô hình lập trình hoạt động song song với Object-Oriented Programming."
         },
         {
           "id": "sent-43",
+          "start": 279.7,
+          "time": "04:39",
           "en": "It improves application maintainability by isolating concerns relevant across multiple parts of the application, such as logging, security, and transaction management.",
           "vi": "Nó cải thiện khả năng bảo trì ứng dụng bằng cách tách riêng các mối quan tâm liên quan đến nhiều phần của ứng dụng, như ghi log, bảo mật và quản lý giao dịch."
         },
         {
           "id": "sent-44",
+          "start": 290.7,
+          "time": "04:50",
           "en": "AOP can be compared to adding layers to a cake, where each layer represents a different aspect, such as flavor or decoration, contributing to the overall structure without altering its core.",
           "vi": "Có thể ví AOP như việc thêm các lớp vào một chiếc bánh, trong đó mỗi lớp thể hiện một khía cạnh khác nhau như hương vị hoặc trang trí, góp phần tạo nên tổng thể mà không thay đổi phần cốt lõi."
         },
         {
           "id": "sent-45",
+          "start": 303.8,
+          "time": "05:03",
           "en": "In this video, you learned that Spring simplifies Java deployment by automating configurations, managing dependencies, and efficiently handling errors.",
           "vi": "Trong video này, bạn đã học rằng Spring đơn giản hóa việc triển khai Java bằng cách tự động hóa cấu hình, quản lý các phụ thuộc và xử lý lỗi hiệu quả."
         },
         {
           "id": "sent-46",
+          "start": 314.5,
+          "time": "05:14",
           "en": "Applications in Spring comprise components, such as beans, services, and configurations, that handle requests and business logic.",
           "vi": "Các ứng dụng Spring bao gồm những thành phần như Bean, Service và Configuration, đảm nhiệm việc xử lý yêu cầu và logic nghiệp vụ."
         },
         {
           "id": "sent-47",
+          "start": 322.9,
+          "time": "05:22",
           "en": "Beans are objects managed by Spring's IoC container and provide functionality in a Spring application.",
           "vi": "Bean là các đối tượng do IoC container của Spring quản lý và cung cấp chức năng cho ứng dụng Spring."
         },
         {
           "id": "sent-48",
+          "start": 329,
+          "time": "05:29",
           "en": "Application context is the central manager for beans and dependencies throughout the application's lifecycle.",
           "vi": "Application Context là bộ phận quản lý trung tâm đối với các Bean và phụ thuộc trong suốt vòng đời ứng dụng."
         },
         {
           "id": "sent-49",
+          "start": 337.4,
+          "time": "05:37",
           "en": "Configuration defines how components are set up using XML, Java annotations, or Java classes.",
           "vi": "Configuration xác định cách thiết lập các thành phần bằng XML, annotation Java hoặc lớp Java."
         },
         {
           "id": "sent-50",
+          "start": 337.4,
+          "time": "05:37",
           "en": "Annotations simplify configuration by marking components.",
           "vi": "Annotation giúp đơn giản hóa cấu hình bằng cách đánh dấu các thành phần."
         },
         {
           "id": "sent-51",
+          "start": 349.1,
+          "time": "05:49",
           "en": "Dependencies are objects required by other objects to function properly.",
           "vi": "Dependencies là các đối tượng mà những đối tượng khác cần để hoạt động đúng."
         },
         {
           "id": "sent-52",
+          "start": 353.5,
+          "time": "05:53",
           "en": "IoC shifts dependency management to Spring, reducing the need for manual object creation.",
           "vi": "IoC chuyển việc quản lý phụ thuộc sang Spring, giảm nhu cầu tạo đối tượng thủ công."
         },
         {
           "id": "sent-53",
+          "start": 361,
+          "time": "06:01",
           "en": "Dependency injection allows Spring to inject dependencies at runtime instead of having objects create them.",
           "vi": "Dependency Injection cho phép Spring tiêm các phụ thuộc vào đối tượng tại thời điểm chạy, thay vì để các đối tượng tự tạo chúng."
         },
         {
           "id": "sent-54",
+          "start": 368.5,
+          "time": "06:08",
           "en": "Autowiring automatically injects dependencies based on type or name without explicit configuration.",
           "vi": "Autowiring tự động tiêm các phụ thuộc dựa trên kiểu hoặc tên mà không cần cấu hình tường minh."
         },
         {
           "id": "sent-55",
+          "start": 375.3,
+          "time": "06:15",
           "en": "Components are managed by IoC and registered within the Spring container.",
           "vi": "Các Component được IoC quản lý và đăng ký trong Spring container."
         },
         {
           "id": "sent-56",
+          "start": 379.8,
+          "time": "06:19",
           "en": "Finally, AOP separates cross-cutting concerns, such as logging, security, and transaction management.",
           "vi": "Cuối cùng, AOP tách riêng các mối quan tâm xuyên suốt, như ghi log, bảo mật và quản lý giao dịch."
         }

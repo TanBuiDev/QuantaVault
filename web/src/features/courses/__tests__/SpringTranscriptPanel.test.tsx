@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom/vitest";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { SpringTranscriptPanel } from "../SpringTranscriptPanel";
 import type { CourseTranscriptSentence } from "@/lib/courses";
@@ -7,11 +7,15 @@ import type { CourseTranscriptSentence } from "@/lib/courses";
 const mockTranscript: CourseTranscriptSentence[] = [
   {
     id: "sent-1",
+    start: 5,
+    time: "00:05",
     en: "Spring makes Java programming quicker, easier, and safer for everybody.",
     vi: "Spring giúp lập trình Java nhanh hơn, dễ dàng hơn và an toàn hơn cho mọi người."
   },
   {
     id: "sent-2",
+    start: 15,
+    time: "00:15",
     en: "Dependency Injection is the core pattern in Spring Framework.",
     vi: "Dependency Injection là mẫu thiết kế cốt lõi trong Spring Framework."
   }
@@ -60,6 +64,70 @@ describe("SpringTranscriptPanel", () => {
 
     expect(screen.queryByText("Spring makes Java programming quicker, easier, and safer for everybody.")).not.toBeInTheDocument();
     expect(screen.getByText("Spring giúp lập trình Java nhanh hơn, dễ dàng hơn và an toàn hơn cho mọi người.")).toBeInTheDocument();
+  });
+
+  it("highlights active sentence synchronized with video currentTime", () => {
+    const { rerender } = render(
+      <SpringTranscriptPanel
+        transcript={mockTranscript}
+        inRail={true}
+        currentTime={7}
+      />
+    );
+
+    // At 7s (>= 5s and < 15s), sentence 1 should be active
+    expect(screen.getByText("Đang phát")).toBeInTheDocument();
+    expect(screen.getByText("00:05")).toBeInTheDocument();
+
+    // Rerender at 18s (>= 15s), sentence 2 should be active
+    rerender(
+      <SpringTranscriptPanel
+        transcript={mockTranscript}
+        inRail={true}
+        currentTime={18}
+      />
+    );
+
+    expect(screen.getByText("Đang phát")).toBeInTheDocument();
+    expect(screen.getByText("00:15")).toBeInTheDocument();
+  });
+
+  it("triggers onSeek when user clicks timestamp or sentence card", () => {
+    const onSeek = vi.fn();
+    render(
+      <SpringTranscriptPanel
+        transcript={mockTranscript}
+        inRail={true}
+        currentTime={0}
+        onSeek={onSeek}
+      />
+    );
+
+    // Click timestamp for sentence 2 (00:15)
+    const btn = screen.getByRole("button", { name: /00:15/i });
+    fireEvent.click(btn);
+    expect(onSeek).toHaveBeenCalledWith(15);
+
+    // Click sentence card 1
+    const text1 = screen.getByText("Spring makes Java programming quicker, easier, and safer for everybody.");
+    fireEvent.click(text1);
+    expect(onSeek).toHaveBeenCalledWith(5);
+  });
+
+  it("toggles auto-scroll mode", () => {
+    render(
+      <SpringTranscriptPanel
+        transcript={mockTranscript}
+        inRail={true}
+      />
+    );
+
+    const toggleBtn = screen.getByTitle(/Đang bật tự cuộn/i);
+    expect(toggleBtn).toBeInTheDocument();
+    expect(toggleBtn).toHaveTextContent("Tự cuộn: Bật");
+
+    fireEvent.click(toggleBtn);
+    expect(toggleBtn).toHaveTextContent("Tự cuộn: Tắt");
   });
 
   it("shows empty state when no transcript provided", () => {

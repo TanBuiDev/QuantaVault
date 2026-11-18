@@ -13,6 +13,8 @@ export interface CourseTranscriptSentence {
   en: string;
   vi: string;
   time?: string;
+  start?: number;
+  end?: number;
 }
 
 export interface CourseLesson {
