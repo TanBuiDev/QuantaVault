@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback } from "react";
 import {
   BookOpen,
   Volume2,
@@ -30,6 +30,8 @@ export interface SpringTranscriptPanelProps {
 }
 
 type TranscriptFilterMode = "bilingual" | "vi-only" | "en-only";
+
+const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 export function SpringTranscriptPanel({
   transcript = [],
@@ -66,6 +68,35 @@ export function SpringTranscriptPanel({
 
   const listContainerRef = useRef<HTMLDivElement>(null);
   const activeItemRef = useRef<HTMLDivElement>(null);
+  const isUserInteractingRef = useRef(false);
+  const userInteractionTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Lắng nghe thao tác cuộn thủ công của người dùng để tạm hoãn auto-scroll
+  useEffect(() => {
+    const container = listContainerRef.current;
+    if (!container) return;
+
+    const handleUserScroll = () => {
+      isUserInteractingRef.current = true;
+      if (userInteractionTimerRef.current) {
+        clearTimeout(userInteractionTimerRef.current);
+      }
+      userInteractionTimerRef.current = setTimeout(() => {
+        isUserInteractingRef.current = false;
+      }, 3500);
+    };
+
+    container.addEventListener("wheel", handleUserScroll, { passive: true });
+    container.addEventListener("touchmove", handleUserScroll, { passive: true });
+
+    return () => {
+      container.removeEventListener("wheel", handleUserScroll);
+      container.removeEventListener("touchmove", handleUserScroll);
+      if (userInteractionTimerRef.current) {
+        clearTimeout(userInteractionTimerRef.current);
+      }
+    };
+  }, []);
 
   const handleCopyText = (text: string, id: string) => {
     if (typeof window !== "undefined") {
@@ -100,43 +131,75 @@ export function SpringTranscriptPanel({
 
   const activeSentenceId = activeIndex >= 0 && transcript ? transcript[activeIndex]?.id : null;
 
-  // Auto-scroll to active sentence inside the panel container (Phương án A: ~32% + Vùng an toàn 20%-48%)
-  useEffect(() => {
-    if (!activeAutoScroll || !activeSentenceId) return;
+  // Tính toán vị trí cuộn an toàn tuyệt đối: mép trên của thẻ active neo tại 20% chiều cao vùng cuộn
+  const computeAnchorScrollTop = useCallback(() => {
     const container = listContainerRef.current;
     const activeEl = activeItemRef.current;
-    if (!container || !activeEl) return;
+    if (!container || !activeEl) return null;
 
-    const offsetWithinContainer = activeEl.offsetTop - container.offsetTop;
-    const currentVisibleTop = offsetWithinContainer - container.scrollTop;
+    const containerRect = container.getBoundingClientRect();
+    const activeRect = activeEl.getBoundingClientRect();
 
-    // Vùng an toàn (Deadzone): từ 20% đến 48% chiều cao khung nhìn
-    const minBound = container.clientHeight * 0.20;
-    const maxBound = container.clientHeight * 0.48;
+    // Khoảng cách thực tế từ mép trên khung cuộn đến mép trên của thẻ active
+    const currentVisualTop = activeRect.top - containerRect.top;
 
-    // Nếu thẻ active đã nằm trong vùng an toàn, không cần cuộn giật giật
-    if (currentVisibleTop >= minBound && currentVisibleTop <= maxBound) {
-      return;
-    }
+    // Điểm neo mục tiêu: mép trên thẻ active nằm tại chính xác 20% chiều cao vùng cuộn
+    const anchorTop = Math.round(containerRect.height * 0.20);
 
-    // Cuộn mượt đưa thẻ active về vị trí ~32% (Quy tắc 1/3)
-    const targetScrollTop = Math.max(0, offsetWithinContainer - Math.round(container.clientHeight * 0.32));
+    // Độ lệch cần bù trừ vào scrollTop hiện tại
+    const delta = currentVisualTop - anchorTop;
+    const targetScrollTop = container.scrollTop + delta;
 
-    const timer = setTimeout(() => {
+    // Xử lý ngoại lệ đầu & cuối danh sách (Clamp safe scroll boundaries)
+    const maxScrollTop = Math.max(0, container.scrollHeight - container.clientHeight);
+    return Math.min(maxScrollTop, Math.max(0, targetScrollTop));
+  }, []);
+
+  // 1. Khi đổi tab Song ngữ / Tiếng Việt / Tiếng Anh hoặc cỡ chữ: Căn tức thì (Instant) trước khi paint
+  useIsomorphicLayoutEffect(() => {
+    if (!activeAutoScroll || !activeSentenceId) return;
+    const safeTop = computeAnchorScrollTop();
+    if (safeTop === null) return;
+
+    const container = listContainerRef.current;
+    if (container) {
       if (typeof container.scrollTo === "function") {
-        container.scrollTo({
-          top: targetScrollTop,
-          behavior: "smooth"
-        });
+        container.scrollTo({ top: safeTop, behavior: "instant" as ScrollBehavior });
       } else {
-        container.scrollTop = targetScrollTop;
+        container.scrollTop = safeTop;
       }
-    }, 60);
+    }
+  }, [transcriptFilter, textScale, activeSentenceId, activeAutoScroll, computeAnchorScrollTop]);
 
-    return () => clearTimeout(timer);
-  }, [activeSentenceId, activeAutoScroll]);
+  // 2. Khi đổi câu đang phát: Cuộn mượt (Smooth) đưa mép trên thẻ mới vào điểm neo 20%
+  useEffect(() => {
+    if (!activeAutoScroll || !activeSentenceId) return;
+    if (isUserInteractingRef.current) return;
+
+    const safeTop = computeAnchorScrollTop();
+    if (safeTop === null) return;
+
+    const container = listContainerRef.current;
+    if (!container) return;
+
+    // Bỏ qua nếu đã nằm chuẩn xác trong ngưỡng dung sai 2px
+    if (Math.abs(container.scrollTop - safeTop) <= 2) return;
+
+    if (typeof container.scrollTo === "function") {
+      container.scrollTo({
+        top: safeTop,
+        behavior: "smooth"
+      });
+    } else {
+      container.scrollTop = safeTop;
+    }
+  }, [activeSentenceId, activeAutoScroll, computeAnchorScrollTop]);
 
   const handleSentenceClick = (sent: CourseTranscriptSentence) => {
+    isUserInteractingRef.current = false;
+    if (userInteractionTimerRef.current) {
+      clearTimeout(userInteractionTimerRef.current);
+    }
     if (sent.start !== undefined && onSeek) {
       onSeek(sent.start);
     }

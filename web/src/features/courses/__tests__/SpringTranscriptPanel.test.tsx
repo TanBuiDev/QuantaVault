@@ -174,4 +174,28 @@ describe("SpringTranscriptPanel", () => {
     render(<SpringTranscriptPanel transcript={[]} inRail={true} />);
     expect(screen.getByText("Chưa có transcript cho bài học này.")).toBeInTheDocument();
   });
+
+  it("re-anchors active sentence instantly when switching language tabs", () => {
+    const scrollToMock = vi.fn();
+    Element.prototype.scrollTo = scrollToMock;
+
+    render(
+      <SpringTranscriptPanel
+        transcript={mockTranscript}
+        inRail={true}
+        currentTime={7}
+      />
+    );
+
+    // Switch to Vietnamese only
+    const viBtn = screen.getByRole("button", { name: /^Tiếng Việt$/i });
+    fireEvent.click(viBtn);
+
+    // Should call scrollTo with instant behavior
+    expect(scrollToMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        behavior: "instant"
+      })
+    );
+  });
 });
