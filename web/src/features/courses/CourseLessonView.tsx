@@ -68,8 +68,11 @@ export function CourseLessonView({
   const [copiedLink, setCopiedLink] = useState(false);
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
 
+  const isQuizLesson = lesson.lessonType === "quiz";
   const hasTranscript = Boolean(lesson.transcript && lesson.transcript.length > 0);
-  const hasFlashcards = Boolean(lesson.flashcards && lesson.flashcards.length > 0);
+  // Đối với bài Quiz: Cột trái (Stage 60%) đã là sàn đấu Flashcard 3D tương tác chính.
+  // Vì vậy ở Dock bên phải, không lặp lại Flashcard để tránh hiển thị 2 bộ thẻ trùng lặp.
+  const hasFlashcards = Boolean(!isQuizLesson && lesson.flashcards && lesson.flashcards.length > 0);
 
   const [rightRailTab, setRightRailTab] = useState<"transcript" | "flashcards" | "syllabus">(() => {
     if (hasTranscript) return "transcript";
@@ -572,7 +575,7 @@ export function CourseLessonView({
                     </button>
                   )}
 
-                  {lesson.flashcards && lesson.flashcards.length > 0 && (
+                  {hasFlashcards && lesson.flashcards && lesson.flashcards.length > 0 && (
                     <button
                       type="button"
                       onClick={() => setRightRailTab("flashcards")}

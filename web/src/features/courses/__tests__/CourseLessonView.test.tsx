@@ -232,9 +232,11 @@ describe("CourseLessonView", () => {
     expect(screen.getAllByText("What is Spring IoC?").length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText("Spring IoC là gì?").length).toBeGreaterThanOrEqual(1);
 
-    // Right rail should have Flashcard and Syllabus tabs
-    expect(screen.getByRole("button", { name: /Flashcard \(1\)/i })).toBeInTheDocument();
+    // Right rail should NOT duplicate the Flashcard tab on quiz lessons (to avoid 2 flashcard areas)
+    expect(screen.queryByRole("button", { name: /Flashcard \(1\)/i })).not.toBeInTheDocument();
+    // Right rail should default to Syllabus tab
     expect(screen.getByRole("button", { name: /Mục lục \(2\)/i })).toBeInTheDocument();
+    expect(screen.getByText("Bản đồ 2 bài học")).toBeInTheDocument();
   });
 
   it("renders specialized Audio Lecture layout for reading-audio lessons", () => {
