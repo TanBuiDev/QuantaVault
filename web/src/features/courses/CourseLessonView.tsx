@@ -87,9 +87,9 @@ export function CourseLessonView({
     };
   }, [isMenuOpen]);
 
-  // --- Video Sync State & Height Matching ---
-  const videoContainerRef = useRef<HTMLDivElement>(null);
-  const [videoHeight, setVideoHeight] = useState<number | null>(null);
+  // --- Left Column Sync State & Height Matching (Video + Title + Action Toolbar) ---
+  const leftColRef = useRef<HTMLDivElement>(null);
+  const [leftColHeight, setLeftColHeight] = useState<number | null>(null);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const ytPlayerRef = useRef<any>(null);
@@ -119,18 +119,18 @@ export function CourseLessonView({
     recordLastAccessed(course.id, lesson.id);
   }, [course.id, lesson.id, recordLastAccessed]);
 
-  // Measure exact video height to sync with transcript panel
+  // Measure exact left column height (Video + Title + Action Toolbar) to sync with right dock panel
   useEffect(() => {
-    if (!videoContainerRef.current) return;
+    if (!leftColRef.current) return;
     const ro = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const h = Math.round(entry.contentRect.height);
         if (h > 0) {
-          setVideoHeight(h);
+          setLeftColHeight(h);
         }
       }
     });
-    ro.observe(videoContainerRef.current);
+    ro.observe(leftColRef.current);
     return () => ro.disconnect();
   }, []);
 
@@ -390,10 +390,11 @@ export function CourseLessonView({
       {/* ============================================================== */}
       {isSpring ? (
         <div className="space-y-6 sm:space-y-8">
-          {/* HÀNG 1: THEATER DOCK (Video 60% : Transcript/Syllabus 40%) */}
+          {/* HÀNG 1: THEATER DOCK (Video + Tiêu đề + Toolbar bên trái 60% : Transcript/Flashcard/Mục lục bên phải 40%) */}
           <div className="lg:grid lg:grid-cols-12 lg:gap-6 items-start">
-            {/* Cột 1: Video Player (Chiếm 7/12 = ~58.3% -> 60%) */}
-            <div ref={videoContainerRef} className="lg:col-span-7 2xl:col-span-7 flex flex-col">
+            {/* Cột 1: Video Player + Title & Speech Header + Action Toolbar (Chiếm 7/12 = ~58.3% -> 60%) */}
+            <div ref={leftColRef} className="lg:col-span-7 2xl:col-span-7 flex flex-col space-y-4">
+              {/* 1.1 Khung Video Player */}
               {lesson.videoId ? (
                 <div className="relative aspect-video w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-[var(--border)] bg-black shadow-xl">
                   <iframe
@@ -422,14 +423,105 @@ export function CourseLessonView({
                   </p>
                 </div>
               )}
+
+              {/* 1.2 Title & Speech Header */}
+              <div className="space-y-1.5 pt-0.5">
+                <div className="flex flex-wrap items-center gap-3">
+                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-[var(--foreground)] tracking-tight leading-snug">
+                    {lesson.title}
+                  </h1>
+                  {lesson.titleEn && (
+                    <button
+                      type="button"
+                      onClick={() => speak(lesson.titleEn!)}
+                      title="Nghe phát âm chuẩn tiêu đề tiếng Anh"
+                      aria-label="Nghe phát âm tiêu đề tiếng Anh"
+                      className={`inline-flex items-center justify-center p-1.5 rounded-xl border border-emerald-500/30 transition-all cursor-pointer ${
+                        isSpeaking(lesson.titleEn)
+                          ? "bg-emerald-600 text-white animate-pulse"
+                          : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20"
+                      }`}
+                    >
+                      <Volume2 className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
+                {lesson.titleEn && (
+                  <p className="text-sm sm:text-base text-emerald-600 dark:text-emerald-400 font-semibold">
+                    {lesson.titleEn}
+                  </p>
+                )}
+              </div>
+
+              {/* 1.3 Action Toolbar */}
+              <div className="flex flex-wrap items-center justify-between gap-3 pt-2.5 pb-1 border-t border-[var(--border)]">
+                <div className="flex flex-wrap items-center gap-2.5">
+                  {/* Mark complete */}
+                  <button
+                    type="button"
+                    onClick={() => toggleLessonCompleted(course.id, lesson.id)}
+                    className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold transition-all cursor-pointer ${
+                      isCompleted
+                        ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20"
+                        : "bg-[var(--primary)] text-white hover:brightness-110 shadow-sm active:scale-95"
+                    }`}
+                  >
+                    {isCompleted ? (
+                      <>
+                        <CheckCircle2 className="h-4 w-4" />
+                        <span>Đã học xong</span>
+                      </>
+                    ) : (
+                      <>
+                        <Circle className="h-4 w-4" />
+                        <span>Đánh dấu đã học</span>
+                      </>
+                    )}
+                  </button>
+
+                  {/* Share button */}
+                  <button
+                    type="button"
+                    onClick={handleShare}
+                    className="flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs font-medium text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)] transition-all cursor-pointer shadow-2xs"
+                    title="Sao chép liên kết bài học"
+                  >
+                    {copiedLink ? (
+                      <>
+                        <Check className="h-3.5 w-3.5 text-emerald-500" />
+                        <span className="text-emerald-500 font-semibold">Đã chép</span>
+                      </>
+                    ) : (
+                      <>
+                        <Share2 className="h-3.5 w-3.5" />
+                        <span>Chia sẻ</span>
+                      </>
+                    )}
+                  </button>
+
+                  {/* External YouTube Link */}
+                  {lesson.videoId && (
+                    <a
+                      href={`https://youtu.be/${lesson.videoId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs font-medium text-[var(--muted-strong)] hover:text-red-500 hover:bg-[var(--surface-hover)] transition-all cursor-pointer shadow-2xs"
+                      title="Mở video trên YouTube"
+                    >
+                      <ExternalLink className="h-3.5 w-3.5" />
+                      <span>Mở trên YouTube</span>
+                    </a>
+                  )}
+                </div>
+              </div>
             </div>
 
             {/* Cột 2: Transcript & Mục lục Panel (Chiếm 5/12 = ~41.7% -> 40%) */}
             <div
-              className="hidden lg:flex lg:col-span-5 2xl:col-span-5 flex-col overflow-hidden space-y-2.5 h-[420px] lg:h-[440px] xl:h-[470px] 2xl:h-[510px]"
+              className="hidden lg:flex lg:col-span-5 2xl:col-span-5 flex-col overflow-hidden space-y-2.5 h-[520px] lg:h-[550px] xl:h-[580px] 2xl:h-[620px]"
               style={{
-                height: videoHeight ? `${videoHeight}px` : undefined,
-                maxHeight: videoHeight ? `${videoHeight}px` : undefined
+                height: leftColHeight ? `${leftColHeight}px` : undefined,
+                maxHeight: leftColHeight ? `${leftColHeight}px` : undefined
               }}
             >
               {/* Tab Switcher Header + Search + Menu Tuỳ chọn [⋮] */}
@@ -589,99 +681,8 @@ export function CourseLessonView({
             </div>
           </div>
 
-          {/* HÀNG 2: THÔNG TIN & HÀNH ĐỘNG (Full-width bên dưới Theater Dock) */}
+          {/* HÀNG 2: THÔNG TIN TỔNG QUAN (Summary Card bên dưới Theater Dock) */}
           <div className="space-y-4">
-            {/* Title & Speech Header */}
-            <div className="space-y-1.5">
-              <div className="flex flex-wrap items-center gap-3">
-                <h1 className="text-xl sm:text-2xl lg:text-3xl font-black text-[var(--foreground)] tracking-tight leading-snug">
-                  {lesson.title}
-                </h1>
-                {lesson.titleEn && (
-                  <button
-                    type="button"
-                    onClick={() => speak(lesson.titleEn!)}
-                    title="Nghe phát âm chuẩn tiêu đề tiếng Anh"
-                    aria-label="Nghe phát âm tiêu đề tiếng Anh"
-                    className={`inline-flex items-center justify-center p-1.5 rounded-xl border border-emerald-500/30 transition-all cursor-pointer ${
-                      isSpeaking(lesson.titleEn)
-                        ? "bg-emerald-600 text-white animate-pulse"
-                        : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20"
-                    }`}
-                  >
-                    <Volume2 className="h-4 w-4" />
-                  </button>
-                )}
-              </div>
-              {lesson.titleEn && (
-                <p className="text-sm sm:text-base text-emerald-600 dark:text-emerald-400 font-semibold">
-                  {lesson.titleEn}
-                </p>
-              )}
-            </div>
-
-            {/* Action Toolbar */}
-            <div className="flex flex-wrap items-center justify-between gap-3 py-2.5 border-y border-[var(--border)]">
-              <div className="flex flex-wrap items-center gap-2.5">
-                {/* Mark complete */}
-                <button
-                  type="button"
-                  onClick={() => toggleLessonCompleted(course.id, lesson.id)}
-                  className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold transition-all cursor-pointer ${
-                    isCompleted
-                      ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20"
-                      : "bg-[var(--primary)] text-white hover:brightness-110 shadow-sm active:scale-95"
-                  }`}
-                >
-                  {isCompleted ? (
-                    <>
-                      <CheckCircle2 className="h-4 w-4" />
-                      <span>Đã học xong</span>
-                    </>
-                  ) : (
-                    <>
-                      <Circle className="h-4 w-4" />
-                      <span>Đánh dấu đã học</span>
-                    </>
-                  )}
-                </button>
-
-                {/* Share button */}
-                <button
-                  type="button"
-                  onClick={handleShare}
-                  className="flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs font-medium text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)] transition-all cursor-pointer shadow-2xs"
-                  title="Sao chép liên kết bài học"
-                >
-                  {copiedLink ? (
-                    <>
-                      <Check className="h-3.5 w-3.5 text-emerald-500" />
-                      <span className="text-emerald-500 font-semibold">Đã chép</span>
-                    </>
-                  ) : (
-                    <>
-                      <Share2 className="h-3.5 w-3.5" />
-                      <span>Chia sẻ</span>
-                    </>
-                  )}
-                </button>
-
-                {/* External YouTube Link */}
-                {lesson.videoId && (
-                  <a
-                    href={`https://youtu.be/${lesson.videoId}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-xs font-medium text-[var(--muted-strong)] hover:text-red-500 hover:bg-[var(--surface-hover)] transition-all cursor-pointer shadow-2xs"
-                    title="Mở video trên YouTube"
-                  >
-                    <ExternalLink className="h-3.5 w-3.5" />
-                    <span>Mở trên YouTube</span>
-                  </a>
-                )}
-              </div>
-            </div>
-
             {/* YouTube-style Collapsible Description Card */}
             <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)]/60 p-4 transition-all hover:bg-[var(--surface-hover)]/80 shadow-2xs space-y-2.5">
               <div className="flex flex-wrap items-center gap-2">
