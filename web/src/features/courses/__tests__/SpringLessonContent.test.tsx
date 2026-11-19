@@ -73,7 +73,7 @@ describe("SpringLessonContent", () => {
     window.history.replaceState(null, "", "/");
   });
 
-  it("renders workspace tabs and displays flashcards by default", () => {
+  it("renders workspace tabs and displays architecture blueprint by default", () => {
     render(
       <SpringLessonContent
         course={mockSpringCourse}
@@ -81,49 +81,11 @@ describe("SpringLessonContent", () => {
       />
     );
 
-    expect(screen.getByRole("button", { name: /Thẻ Flashcard/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Kiến trúc & Phân tích chuyên sâu/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Transcript/i })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Thẻ Flashcard/i })).not.toBeInTheDocument();
 
-    // Default tab is Flashcards (auto-shuffled)
-    expect(screen.getByText(/What is (Spring|DI)\?/)).toBeInTheDocument();
-    expect(screen.getByText(/(Spring|DI) là gì\?/)).toBeInTheDocument();
-  });
-
-  it("supports flipping and navigating flashcards", () => {
-    render(
-      <SpringLessonContent
-        course={mockSpringCourse}
-        lesson={mockSpringCourse.lessons[0]}
-      />
-    );
-
-    // Front of card (shuffled)
-    const frontText = screen.getByText(/What is (Spring|DI)\?/);
-    expect(frontText).toBeInTheDocument();
-
-    // Click to flip card
-    fireEvent.click(frontText);
-    expect(screen.getByText(/A Java framework|Dependency Injection/)).toBeInTheDocument();
-
-    // Click next button
-    const nextBtn = screen.getByRole("button", { name: /Thẻ tiếp theo|Xem kết quả/i });
-    fireEvent.click(nextBtn);
-
-    expect(screen.getByText(/1 \/ 2|2 \/ 2/)).toBeInTheDocument();
-  });
-
-  it("switches to Architecture Blueprint tab and renders markdown content", () => {
-    render(
-      <SpringLessonContent
-        course={mockSpringCourse}
-        lesson={mockSpringCourse.lessons[0]}
-      />
-    );
-
-    const blueprintTab = screen.getByRole("button", { name: /Kiến trúc & Phân tích chuyên sâu/i });
-    fireEvent.click(blueprintTab);
-
+    // Default tab is Blueprint (Markdown content)
     expect(screen.getByText("Phân tích kiến trúc Spring")).toBeInTheDocument();
     expect(screen.getByText("Nội dung Markdown chuyên sâu.")).toBeInTheDocument();
   });
@@ -147,5 +109,22 @@ describe("SpringLessonContent", () => {
 
     expect(screen.queryByText("Welcome to the Spring course.")).not.toBeInTheDocument();
     expect(screen.getByText("Spring provides dependency injection.")).toBeInTheDocument();
+  });
+
+  it("supports switching back to blueprint tab from transcript tab", () => {
+    render(
+      <SpringLessonContent
+        course={mockSpringCourse}
+        lesson={mockSpringCourse.lessons[0]}
+      />
+    );
+
+    const transcriptTab = screen.getByRole("button", { name: /Transcript/i });
+    fireEvent.click(transcriptTab);
+    expect(screen.getByText("Welcome to the Spring course.")).toBeInTheDocument();
+
+    const blueprintTab = screen.getByRole("button", { name: /Kiến trúc & Phân tích chuyên sâu/i });
+    fireEvent.click(blueprintTab);
+    expect(screen.getByText("Phân tích kiến trúc Spring")).toBeInTheDocument();
   });
 });

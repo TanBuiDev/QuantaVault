@@ -3,14 +3,12 @@
 import { useState, memo } from "react";
 import {
   Layers,
-  Sparkles,
   BookOpen
 } from "lucide-react";
 import { MarkdownContent } from "@/features/practice/MarkdownContent";
 import type { CourseLesson, CourseManifest } from "@/lib/courses";
 import { getUrlParams, updateUrlParams } from "@/lib/utils/urlParams";
 import { SpringTranscriptPanel } from "./SpringTranscriptPanel";
-import { SpringDockFlashcards } from "./SpringDockFlashcards";
 
 interface SpringLessonContentProps {
   course: CourseManifest;
@@ -25,7 +23,7 @@ interface SpringLessonContentProps {
   initialTab?: SpringTabMode;
 }
 
-type SpringTabMode = "flashcards" | "blueprint" | "transcript";
+type SpringTabMode = "blueprint" | "transcript";
 
 export const SpringLessonContent = memo(function SpringLessonContent({
   course,
@@ -39,14 +37,13 @@ export const SpringLessonContent = memo(function SpringLessonContent({
   onToggleAutoScroll,
   initialTab
 }: SpringLessonContentProps) {
-  const hasFlashcards = Boolean(lesson.flashcards && lesson.flashcards.length > 0);
-  const defaultTab: SpringTabMode = initialTab || (hasFlashcards ? "flashcards" : "blueprint");
+  const defaultTab: SpringTabMode = initialTab || "blueprint";
 
   // 1. Tab state synchronized with URL search params (Tier 1 state persistence)
   const [activeTab, setActiveTab] = useState<SpringTabMode>(() => {
     if (typeof window !== "undefined") {
       const paramTab = getUrlParams().get("tab");
-      if (paramTab === "flashcards" || paramTab === "blueprint" || paramTab === "transcript") {
+      if (paramTab === "blueprint" || paramTab === "transcript") {
         return paramTab;
       }
     }
@@ -57,8 +54,6 @@ export const SpringLessonContent = memo(function SpringLessonContent({
     setActiveTab(tab);
     updateUrlParams({ tab }, { tab: defaultTab });
   };
-
-  const totalCards = lesson.flashcards?.length || 0;
 
   return (
     <div className="space-y-6 animate-fade-in" style={{ fontSize: `${textScale}%` }}>
@@ -79,22 +74,6 @@ export const SpringLessonContent = memo(function SpringLessonContent({
             <span>Kiến trúc & Phân tích chuyên sâu</span>
           </button>
 
-          {/* Flashcard tab (Available for mobile or secondary access) */}
-          {totalCards > 0 && (
-            <button
-              type="button"
-              onClick={() => handleTabChange("flashcards")}
-              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                activeTab === "flashcards"
-                  ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-xs"
-                  : "text-[var(--muted-strong)] hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]"
-              }`}
-            >
-              <Sparkles className="h-4 w-4 text-amber-500" />
-              <span>Thẻ Flashcard ({totalCards})</span>
-            </button>
-          )}
-
           {/* Transcript tab on mobile screens (< lg) where the right rail is hidden */}
           {lesson.transcript && lesson.transcript.length > 0 && (
             <button
@@ -113,18 +92,7 @@ export const SpringLessonContent = memo(function SpringLessonContent({
         </div>
       </div>
 
-      {/* 2. TAB: INTERACTIVE FLASHCARD DECK (Minimalist Zero-Clutter) */}
-      {activeTab === "flashcards" && totalCards > 0 && lesson.flashcards && (
-        <div className="h-[380px] max-w-2xl mx-auto animate-fade-in">
-          <SpringDockFlashcards
-            flashcards={lesson.flashcards}
-            textScale={textScale}
-            className="h-full"
-          />
-        </div>
-      )}
-
-      {/* 3. TAB: ARCHITECTURE & DEEP DIVE MARKDOWN */}
+      {/* 2. TAB: ARCHITECTURE & DEEP DIVE MARKDOWN */}
       {activeTab === "blueprint" && (
         <div className="space-y-6">
           <section
@@ -140,7 +108,7 @@ export const SpringLessonContent = memo(function SpringLessonContent({
         </div>
       )}
 
-      {/* 4. TAB: MOBILE TRANSCRIPT FALLBACK */}
+      {/* 3. TAB: MOBILE TRANSCRIPT FALLBACK */}
       {activeTab === "transcript" && lesson.transcript && (
         <div className="space-y-6 animate-fade-in">
           <SpringTranscriptPanel
