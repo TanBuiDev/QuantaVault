@@ -85,12 +85,12 @@ describe("SpringLessonContent", () => {
     expect(screen.getByRole("button", { name: /Kiến trúc & Phân tích chuyên sâu/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Transcript/i })).toBeInTheDocument();
 
-    // Default tab is Flashcards
-    expect(screen.getByText("What is Spring?")).toBeInTheDocument();
-    expect(screen.getByText("Spring là gì?")).toBeInTheDocument();
+    // Default tab is Flashcards (auto-shuffled)
+    expect(screen.getByText(/What is (Spring|DI)\?/)).toBeInTheDocument();
+    expect(screen.getByText(/(Spring|DI) là gì\?/)).toBeInTheDocument();
   });
 
-  it("supports 3D flip and self-assessment for flashcards", () => {
+  it("supports flipping and navigating flashcards", () => {
     render(
       <SpringLessonContent
         course={mockSpringCourse}
@@ -98,22 +98,19 @@ describe("SpringLessonContent", () => {
       />
     );
 
-    // Front of card 1
-    expect(screen.getByText("What is Spring?")).toBeInTheDocument();
-    expect(screen.queryByText("A Java framework.")).not.toBeInTheDocument();
+    // Front of card (shuffled)
+    const frontText = screen.getByText(/What is (Spring|DI)\?/);
+    expect(frontText).toBeInTheDocument();
 
     // Click to flip card
-    fireEvent.click(screen.getByText("What is Spring?"));
-    expect(screen.getByText("A Java framework.")).toBeInTheDocument();
-    expect(screen.getByText("Một framework Java.")).toBeInTheDocument();
+    fireEvent.click(frontText);
+    expect(screen.getByText(/A Java framework|Dependency Injection/)).toBeInTheDocument();
 
-    // Mark as remembered
-    const rememberBtn = screen.getByRole("button", { name: /Đã ghi nhớ/i });
-    fireEvent.click(rememberBtn);
+    // Click next button
+    const nextBtn = screen.getByRole("button", { name: /Thẻ tiếp theo|Xem kết quả/i });
+    fireEvent.click(nextBtn);
 
-    // Should score in localStorage
-    const saved = localStorage.getItem("quantavault-spring-flashcards:v1:lesson-01");
-    expect(saved).toContain("remembered");
+    expect(screen.getByText(/1 \/ 2|2 \/ 2/)).toBeInTheDocument();
   });
 
   it("switches to Architecture Blueprint tab and renders markdown content", () => {

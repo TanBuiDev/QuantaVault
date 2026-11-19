@@ -19,7 +19,9 @@ import {
   ExternalLink,
   Layers,
   Search,
-  Navigation
+  Navigation,
+  MoreVertical,
+  Sparkles
 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { MarkdownContent } from "@/features/practice/MarkdownContent";
@@ -32,6 +34,7 @@ import { CourseSyllabusSidebar } from "./CourseSyllabusSidebar";
 import { EnglishLessonContent } from "./EnglishLessonContent";
 import { SpringLessonContent } from "./SpringLessonContent";
 import { SpringTranscriptPanel } from "./SpringTranscriptPanel";
+import { SpringDockFlashcards } from "./SpringDockFlashcards";
 
 declare global {
   interface Window {
@@ -58,9 +61,30 @@ export function CourseLessonView({
   const [mobileSyllabusOpen, setMobileSyllabusOpen] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
-  const [rightRailTab, setRightRailTab] = useState<"transcript" | "syllabus">("transcript");
+  const [rightRailTab, setRightRailTab] = useState<"transcript" | "flashcards" | "syllabus">("transcript");
   const [transcriptSearchQuery, setTranscriptSearchQuery] = useState("");
   const [transcriptAutoScroll, setTranscriptAutoScroll] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Click-outside & Escape handler for kebab menu
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsMenuOpen(false);
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isMenuOpen]);
 
   // --- Video Sync State & Height Matching ---
   const videoContainerRef = useRef<HTMLDivElement>(null);
@@ -396,13 +420,13 @@ export function CourseLessonView({
                 maxHeight: videoHeight ? `${videoHeight}px` : undefined
               }}
             >
-              {/* Tab Switcher Header + Search + Tự cuộn + Cỡ chữ */}
-              <div className="flex items-center justify-between gap-1.5 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1.5 sm:p-2 shadow-2xs shrink-0 overflow-hidden">
-                <div className="flex items-center gap-1 shrink-0">
+              {/* Tab Switcher Header + Search + Menu Tuỳ chọn [⋮] */}
+              <div className="flex items-center justify-between gap-1.5 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1.5 sm:p-2 shadow-2xs shrink-0">
+                <div className="flex items-center gap-1 shrink-0 overflow-x-auto no-scrollbar">
                   <button
                     type="button"
                     onClick={() => setRightRailTab("transcript")}
-                    className={`inline-flex items-center gap-1.5 rounded-xl px-2 py-1.5 text-xs font-bold transition-all cursor-pointer ${
+                    className={`inline-flex items-center gap-1.5 rounded-xl px-2 py-1.5 text-xs font-bold transition-all cursor-pointer shrink-0 ${
                       rightRailTab === "transcript"
                         ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-2xs"
                         : "text-[var(--muted-strong)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)]"
@@ -412,10 +436,25 @@ export function CourseLessonView({
                     <span>Transcript ({lesson.transcript?.length || 0})</span>
                   </button>
 
+                  {lesson.flashcards && lesson.flashcards.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setRightRailTab("flashcards")}
+                      className={`inline-flex items-center gap-1.5 rounded-xl px-2 py-1.5 text-xs font-bold transition-all cursor-pointer shrink-0 ${
+                        rightRailTab === "flashcards"
+                          ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-2xs"
+                          : "text-[var(--muted-strong)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)]"
+                      }`}
+                    >
+                      <Sparkles className="h-3.5 w-3.5 text-amber-500" />
+                      <span>Flashcard ({lesson.flashcards.length})</span>
+                    </button>
+                  )}
+
                   <button
                     type="button"
                     onClick={() => setRightRailTab("syllabus")}
-                    className={`inline-flex items-center gap-1.5 rounded-xl px-2 py-1.5 text-xs font-bold transition-all cursor-pointer ${
+                    className={`inline-flex items-center gap-1.5 rounded-xl px-2 py-1.5 text-xs font-bold transition-all cursor-pointer shrink-0 ${
                       rightRailTab === "syllabus"
                         ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-2xs"
                         : "text-[var(--muted-strong)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)]"
@@ -426,41 +465,82 @@ export function CourseLessonView({
                   </button>
                 </div>
 
-                <div className="flex items-center gap-1 min-w-0">
-                  {/* Ô tìm kiếm transcript trên header */}
+                <div className="flex items-center gap-1.5 min-w-0">
+                  {/* Ô tìm kiếm transcript trên header (chỉ hiện khi tab transcript) */}
                   {rightRailTab === "transcript" && (
-                    <>
-                      <div className="relative min-w-[60px] max-w-[110px] 2xl:max-w-[140px] flex-1">
-                        <Search className="absolute left-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[var(--muted)] pointer-events-none" />
-                        <input
-                          type="text"
-                          placeholder="Tìm..."
-                          value={transcriptSearchQuery}
-                          onChange={(e) => setTranscriptSearchQuery(e.target.value)}
-                          className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface-hover)]/50 pl-6.5 pr-2 py-1 text-[11px] text-[var(--foreground)] placeholder:text-[var(--muted)] focus:border-emerald-500 focus:outline-none transition-colors"
-                        />
-                      </div>
-
-                      {/* Nút bật/tắt Tự cuộn (Icon compact kèm tooltip) */}
-                      <button
-                        type="button"
-                        onClick={() => setTranscriptAutoScroll((prev) => !prev)}
-                        className={`inline-flex items-center justify-center rounded-lg p-1.5 text-[11px] font-semibold border transition-all shrink-0 cursor-pointer ${
-                          transcriptAutoScroll
-                            ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 shadow-2xs"
-                            : "border-[var(--border)] text-[var(--muted)] hover:text-[var(--foreground)] bg-[var(--surface-hover)]/40"
-                        }`}
-                        title={transcriptAutoScroll ? "Đang bật tự cuộn theo video (nhấp để tắt)" : "Đã tắt tự cuộn (nhấp để bật lại)"}
-                        aria-label={transcriptAutoScroll ? "Tắt tự cuộn" : "Bật tự cuộn"}
-                      >
-                        <Navigation className={`h-3.5 w-3.5 transition-transform ${transcriptAutoScroll ? "rotate-45 text-emerald-500" : ""}`} />
-                        <span className="hidden 2xl:inline ml-1">{transcriptAutoScroll ? "Tự cuộn" : "Tắt cuộn"}</span>
-                      </button>
-                    </>
+                    <div className="relative min-w-[55px] max-w-[110px] 2xl:max-w-[140px] flex-1">
+                      <Search className="absolute left-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[var(--muted)] pointer-events-none" />
+                      <input
+                        type="text"
+                        placeholder="Tìm..."
+                        value={transcriptSearchQuery}
+                        onChange={(e) => setTranscriptSearchQuery(e.target.value)}
+                        className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface-hover)]/50 pl-6.5 pr-2 py-1 text-[11px] text-[var(--foreground)] placeholder:text-[var(--muted)] focus:border-emerald-500 focus:outline-none transition-colors"
+                      />
+                    </div>
                   )}
 
-                  <div className="shrink-0">
-                    <InterviewTextSizeControl value={textScale} onChange={changeTextScale} />
+                  {/* Nút Menu Kebab [⋮] */}
+                  <div ref={menuRef} className="relative shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => setIsMenuOpen((prev) => !prev)}
+                      className={`inline-flex items-center justify-center rounded-lg p-1.5 text-xs font-semibold border transition-all cursor-pointer ${
+                        isMenuOpen
+                          ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 shadow-2xs"
+                          : "border-[var(--border)] text-[var(--muted-strong)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)]"
+                      }`}
+                      title="Tuỳ chọn bài học"
+                      aria-label="Tuỳ chọn bài học"
+                    >
+                      <MoreVertical className="h-3.5 w-3.5" />
+                    </button>
+
+                    {/* Popover Menu */}
+                    {isMenuOpen && (
+                      <div className="absolute right-0 top-full mt-1.5 z-50 w-52 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2.5 shadow-xl backdrop-blur-md animate-fade-in space-y-2.5">
+                        <div className="text-[10px] font-bold text-[var(--muted)] uppercase tracking-wider px-1">
+                          Tuỳ chọn bài học
+                        </div>
+
+                        {/* Tự cuộn theo video (chỉ khi tab transcript) */}
+                        {rightRailTab === "transcript" && (
+                          <div className="flex items-center justify-between gap-2 px-1 py-1 rounded-lg hover:bg-[var(--surface-hover)]/50">
+                            <div className="min-w-0">
+                              <div className="text-xs font-semibold text-[var(--foreground)]">Tự cuộn theo video</div>
+                              <div className="text-[10px] text-[var(--muted)]">Cuộn tới câu đang phát</div>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => setTranscriptAutoScroll((prev) => !prev)}
+                              className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                                transcriptAutoScroll ? "bg-emerald-500" : "bg-slate-300 dark:bg-slate-700"
+                              }`}
+                              role="switch"
+                              aria-checked={transcriptAutoScroll}
+                              aria-label="Bật hoặc tắt tự cuộn theo video"
+                            >
+                              <span
+                                className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out ${
+                                  transcriptAutoScroll ? "translate-x-4" : "translate-x-0"
+                                }`}
+                              />
+                            </button>
+                          </div>
+                        )}
+
+                        {/* Cỡ chữ bài học */}
+                        <div className={`px-1 py-1 space-y-1.5 ${rightRailTab === "transcript" ? "border-t border-[var(--border)] pt-2" : ""}`}>
+                          <div className="flex items-center justify-between text-xs text-[var(--muted-strong)]">
+                            <span className="font-semibold">Cỡ chữ bài học</span>
+                            <span className="text-[11px] font-mono text-emerald-500 font-bold">{textScale}%</span>
+                          </div>
+                          <div className="flex items-center justify-center pt-0.5">
+                            <InterviewTextSizeControl value={textScale} onChange={changeTextScale} />
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -478,6 +558,12 @@ export function CourseLessonView({
                     onSearchChange={setTranscriptSearchQuery}
                     autoScroll={transcriptAutoScroll}
                     onToggleAutoScroll={() => setTranscriptAutoScroll((prev) => !prev)}
+                    className="h-full"
+                  />
+                ) : rightRailTab === "flashcards" && lesson.flashcards ? (
+                  <SpringDockFlashcards
+                    flashcards={lesson.flashcards}
+                    textScale={textScale}
                     className="h-full"
                   />
                 ) : (
@@ -645,6 +731,7 @@ export function CourseLessonView({
               onSearchChange={setTranscriptSearchQuery}
               autoScroll={transcriptAutoScroll}
               onToggleAutoScroll={() => setTranscriptAutoScroll((prev) => !prev)}
+              initialTab="blueprint"
             />
           </section>
 
