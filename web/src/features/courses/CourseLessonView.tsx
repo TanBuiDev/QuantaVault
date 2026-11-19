@@ -36,6 +36,9 @@ import { EnglishLessonContent } from "./EnglishLessonContent";
 import { SpringLessonContent } from "./SpringLessonContent";
 import { SpringTranscriptPanel } from "./SpringTranscriptPanel";
 import { SpringDockFlashcards } from "./SpringDockFlashcards";
+import { CourseQuizLessonView } from "./CourseQuizLessonView";
+import { CourseAudioReadingView } from "./CourseAudioReadingView";
+import { CourseArticleLessonView } from "./CourseArticleLessonView";
 
 declare global {
   interface Window {
@@ -52,7 +55,7 @@ interface CourseLessonViewProps {
   nextLesson?: CourseLesson;
 }
 
-export function CourseLessonView({
+function CourseDefaultLessonView({
   course,
   lesson,
   chapterTitle,
@@ -964,4 +967,28 @@ export function CourseLessonView({
       )}
     </div>
   );
+}
+
+export function CourseLessonView(props: CourseLessonViewProps) {
+  const { course, lesson } = props;
+  const isSpring = course.slug === "spring-framework-for-java";
+
+  if (isSpring && lesson.lessonType === "quiz") {
+    return <CourseQuizLessonView {...props} />;
+  }
+
+  if (isSpring && lesson.lessonType === "reading-audio") {
+    return <CourseAudioReadingView {...props} />;
+  }
+
+  if (
+    isSpring &&
+    (lesson.lessonType === "reading" ||
+      lesson.lessonType === "cheatsheet" ||
+      lesson.lessonType === "practice")
+  ) {
+    return <CourseArticleLessonView {...props} />;
+  }
+
+  return <CourseDefaultLessonView {...props} />;
 }

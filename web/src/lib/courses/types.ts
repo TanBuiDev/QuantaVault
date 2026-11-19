@@ -17,6 +17,14 @@ export interface CourseTranscriptSentence {
   end?: number;
 }
 
+export type CourseLessonType =
+  | "video"
+  | "quiz"
+  | "reading-audio"
+  | "reading"
+  | "cheatsheet"
+  | "practice";
+
 export interface CourseLesson {
   id: string;
   slug: string;
@@ -29,6 +37,10 @@ export interface CourseLesson {
   durationMinutes: number;
   tags?: string[];
   contentMarkdown: string;
+  /** Optional lesson archetype: video, quiz, reading-audio, reading, cheatsheet, practice */
+  lessonType?: CourseLessonType;
+  /** Optional audio file URL for reading with audio or summary */
+  audioUrl?: string;
   /** Optional YouTube video ID (e.g. "X4Pho7r5sDg") */
   videoId?: string;
   /** Optional bilingual flashcards for interactive deck */

@@ -194,4 +194,99 @@ describe("CourseLessonView", () => {
     fireEvent.click(syllabusTab);
     expect(screen.getByText("Bản đồ 2 bài học")).toBeInTheDocument();
   });
+
+  it("renders specialized Quiz layout for quiz lessons without video player", () => {
+    const quizLesson = {
+      ...mockSpringCourse.lessons[0],
+      id: "lesson-05",
+      title: "Bài 05: Bài tập trắc nghiệm - Khám phá Spring Framework",
+      lessonType: "quiz" as const,
+      videoId: undefined,
+      transcript: undefined,
+      flashcards: [
+        {
+          id: "card-1",
+          questionEn: "What is Spring IoC?",
+          questionVi: "Spring IoC là gì?",
+          answerEn: "Inversion of Control",
+          answerVi: "Đảo ngược điều khiển"
+        }
+      ],
+      contentMarkdown: "## Chi tiết câu hỏi trắc nghiệm"
+    };
+
+    render(
+      <CourseLessonView
+        course={mockSpringCourse}
+        lesson={quizLesson}
+        chapterTitle="Chương 1: Nền tảng Spring"
+      />
+    );
+
+    // Should NOT have any video iframe or video placeholder
+    expect(screen.queryByTitle(/Bài 05/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Video bài giảng trực tuyến đang chờ cập nhật/i)).not.toBeInTheDocument();
+
+    // Should render Quiz Badge & Flashcard Arena
+    expect(screen.getByText(/Practice Quiz/i)).toBeInTheDocument();
+    expect(screen.getByText("Bài 05: Bài tập trắc nghiệm - Khám phá Spring Framework")).toBeInTheDocument();
+    expect(screen.getByText("What is Spring IoC?")).toBeInTheDocument();
+    expect(screen.getByText("Spring IoC là gì?")).toBeInTheDocument();
+  });
+
+  it("renders specialized Audio Lecture layout for reading-audio lessons", () => {
+    const audioLesson = {
+      ...mockSpringCourse.lessons[0],
+      id: "lesson-12",
+      title: "Bài 12: Tóm tắt Module 1",
+      lessonType: "reading-audio" as const,
+      videoId: undefined,
+      audioUrl: "/audio/courses/spring-framework-for-java/lesson-12-summary.mp3",
+      transcript: undefined,
+      contentMarkdown: "## Tóm tắt kiến thức cốt lõi"
+    };
+
+    render(
+      <CourseLessonView
+        course={mockSpringCourse}
+        lesson={audioLesson}
+        chapterTitle="Chương 1: Nền tảng Spring"
+      />
+    );
+
+    // Should NOT have video
+    expect(screen.queryByText(/Video bài giảng trực tuyến đang chờ cập nhật/i)).not.toBeInTheDocument();
+
+    // Should render Audio badge and Audio controls
+    expect(screen.getByText(/Bài đọc kết hợp Audio Lecture/i)).toBeInTheDocument();
+    expect(screen.getByText("Âm thanh bài giảng")).toBeInTheDocument();
+    expect(screen.getByLabelText(/Phát audio bài giảng/i)).toBeInTheDocument();
+  });
+
+  it("renders specialized Cheatsheet / Reading layout for article lessons", () => {
+    const cheatsheetLesson = {
+      ...mockSpringCourse.lessons[0],
+      id: "lesson-13",
+      title: "Bài 13: Sổ tay tra cứu mã nguồn",
+      lessonType: "cheatsheet" as const,
+      videoId: undefined,
+      transcript: undefined,
+      contentMarkdown: "Bảng tra cứu Annotations chi tiết"
+    };
+
+    const { container } = render(
+      <CourseLessonView
+        course={mockSpringCourse}
+        lesson={cheatsheetLesson}
+        chapterTitle="Chương 1: Nền tảng Spring"
+      />
+    );
+
+    // Should NOT have video
+    expect(screen.queryByText(/Video bài giảng trực tuyến đang chờ cập nhật/i)).not.toBeInTheDocument();
+
+    // Should render Cheatsheet badge and content
+    expect(screen.getByText("Sổ tay tra cứu mã nguồn (Cheat Sheet)")).toBeInTheDocument();
+    expect(container.textContent).toContain("Bảng tra cứu Annotations chi tiết");
+  });
 });
