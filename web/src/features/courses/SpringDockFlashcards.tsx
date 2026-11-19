@@ -76,11 +76,71 @@ export function SpringDockFlashcards({
       {!isCompleted && currentCard ? (
         <div
           onClick={() => setIsFlipped((prev) => !prev)}
-          className="group relative flex-1 w-full rounded-2xl border-2 border-emerald-500/25 hover:border-emerald-500/50 bg-gradient-to-br from-[var(--surface)] to-[var(--surface-hover)] p-5 sm:p-6 shadow-xs hover:shadow-md transition-all cursor-pointer overflow-hidden flex flex-col justify-center items-center text-center"
+          className="group relative flex-1 w-full cursor-pointer [perspective:1200px]"
           title="Nhấp để lật thẻ (hoặc bấm Space)"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              setIsFlipped((prev) => !prev);
+            }
+          }}
         >
+          {/* Khung xoay 3D lật dọc quanh trục X */}
+          <div
+            className="relative w-full h-full rounded-2xl transition-transform duration-500 shadow-xs group-hover:shadow-md"
+            style={{
+              transformStyle: "preserve-3d",
+              WebkitTransformStyle: "preserve-3d",
+              transform: isFlipped ? "rotateX(180deg)" : "rotateX(0deg)",
+              transitionTimingFunction: "cubic-bezier(0.34, 1.25, 0.64, 1)",
+            }}
+          >
+            {/* Mặt trước: CÂU HỎI */}
+            <div
+              aria-hidden={isFlipped}
+              className="absolute inset-0 w-full h-full rounded-2xl border-2 border-emerald-500/25 group-hover:border-emerald-500/50 bg-gradient-to-br from-[var(--surface)] to-[var(--surface-hover)] p-5 sm:p-6 flex flex-col justify-center items-center text-center overflow-hidden transition-colors"
+              style={{
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+                transform: "rotateX(0deg)",
+              }}
+            >
+              <div className="w-full max-w-md px-10 py-4 my-auto space-y-3">
+                <p className="text-base sm:text-lg lg:text-xl font-black text-[var(--foreground)] tracking-tight leading-snug">
+                  {currentCard.questionEn}
+                </p>
+                <p className="text-xs sm:text-sm font-medium text-[var(--muted-strong)] leading-relaxed">
+                  {currentCard.questionVi}
+                </p>
+              </div>
+            </div>
+
+            {/* Mặt sau: ĐÁP ÁN (Xoay 180deg theo trục X) */}
+            <div
+              aria-hidden={!isFlipped}
+              className="absolute inset-0 w-full h-full rounded-2xl border-2 border-emerald-500/35 group-hover:border-emerald-500/60 bg-gradient-to-br from-[var(--surface)] to-[var(--surface-hover)] p-5 sm:p-6 flex flex-col justify-center items-center text-center overflow-hidden transition-colors"
+              style={{
+                backfaceVisibility: "hidden",
+                WebkitBackfaceVisibility: "hidden",
+                transform: "rotateX(180deg)",
+              }}
+            >
+              <div className="w-full max-w-md px-10 py-4 my-auto space-y-2.5">
+                <p className="text-base sm:text-lg font-black text-emerald-600 dark:text-emerald-400 leading-snug">
+                  {currentCard.answerEn}
+                </p>
+                <p className="text-xs sm:text-sm font-semibold text-[var(--foreground)] leading-relaxed">
+                  {currentCard.answerVi}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Tầng điều khiển cố định (HUD Controls - Không bị xoay theo thẻ) */}
           {/* Top-left: Card index badge */}
-          <span className="absolute top-3.5 left-4 text-[11px] font-mono font-bold text-[var(--muted-strong)]">
+          <span className="absolute top-3.5 left-4 text-[11px] font-mono font-bold text-[var(--muted-strong)] z-20 pointer-events-none">
             {currentIndex + 1} / {deck.length}
           </span>
 
@@ -93,7 +153,7 @@ export function SpringDockFlashcards({
             }}
             title="Nghe phát âm tiếng Anh"
             aria-label="Nghe phát âm tiếng Anh"
-            className={`absolute top-3 right-3 p-1.5 rounded-lg border transition-all cursor-pointer z-10 ${
+            className={`absolute top-3 right-3 p-1.5 rounded-lg border transition-all cursor-pointer z-20 ${
               isSpeaking(isFlipped ? currentCard.answerEn : currentCard.questionEn)
                 ? "bg-emerald-600 text-white border-emerald-600 animate-pulse"
                 : "border-[var(--border)] bg-[var(--surface)]/80 text-[var(--muted-strong)] hover:text-emerald-500 hover:border-emerald-500/40"
@@ -113,7 +173,7 @@ export function SpringDockFlashcards({
               }}
               title="Thẻ trước (←)"
               aria-label="Thẻ trước"
-              className="absolute left-2.5 top-1/2 -translate-y-1/2 p-2 rounded-full border border-[var(--border)] bg-[var(--surface)]/90 text-[var(--foreground)] hover:bg-emerald-500/20 hover:border-emerald-500 hover:text-emerald-500 transition-all cursor-pointer shadow-sm z-10"
+              className="absolute left-2.5 top-1/2 -translate-y-1/2 p-2 rounded-full border border-[var(--border)] bg-[var(--surface)]/90 text-[var(--foreground)] hover:bg-emerald-500/20 hover:border-emerald-500 hover:text-emerald-500 transition-all cursor-pointer shadow-sm z-20"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
@@ -129,33 +189,10 @@ export function SpringDockFlashcards({
             }}
             title={currentIndex === deck.length - 1 ? "Xem kết quả (→)" : "Thẻ tiếp theo (→)"}
             aria-label="Thẻ tiếp theo"
-            className="absolute right-2.5 top-1/2 -translate-y-1/2 p-2 rounded-full border border-[var(--border)] bg-[var(--surface)]/90 text-[var(--foreground)] hover:bg-emerald-500/20 hover:border-emerald-500 hover:text-emerald-500 transition-all cursor-pointer shadow-sm z-10"
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 p-2 rounded-full border border-[var(--border)] bg-[var(--surface)]/90 text-[var(--foreground)] hover:bg-emerald-500/20 hover:border-emerald-500 hover:text-emerald-500 transition-all cursor-pointer shadow-sm z-20"
           >
             <ChevronRight className="h-4 w-4" />
           </button>
-
-          {/* Card Central Content */}
-          <div className="w-full max-w-md px-10 py-4 my-auto">
-            {!isFlipped ? (
-              <div className="space-y-3">
-                <p className="text-base sm:text-lg lg:text-xl font-black text-[var(--foreground)] tracking-tight leading-snug">
-                  {currentCard.questionEn}
-                </p>
-                <p className="text-xs sm:text-sm font-medium text-[var(--muted-strong)] leading-relaxed">
-                  {currentCard.questionVi}
-                </p>
-              </div>
-            ) : (
-              <div className="space-y-2.5 animate-fade-in">
-                <p className="text-base sm:text-lg font-black text-emerald-600 dark:text-emerald-400 leading-snug">
-                  {currentCard.answerEn}
-                </p>
-                <p className="text-xs sm:text-sm font-semibold text-[var(--foreground)] leading-relaxed">
-                  {currentCard.answerVi}
-                </p>
-              </div>
-            )}
-          </div>
         </div>
       ) : (
         /* End of Deck State */
