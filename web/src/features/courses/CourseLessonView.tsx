@@ -36,9 +36,11 @@ import { EnglishLessonContent } from "./EnglishLessonContent";
 import { SpringLessonContent } from "./SpringLessonContent";
 import { SpringTranscriptPanel } from "./SpringTranscriptPanel";
 import { SpringDockFlashcards } from "./SpringDockFlashcards";
-import { CourseQuizLessonView } from "./CourseQuizLessonView";
-import { CourseAudioReadingView } from "./CourseAudioReadingView";
-import { CourseArticleLessonView } from "./CourseArticleLessonView";
+import {
+  SpringQuizStage,
+  SpringAudioStage,
+  SpringDocumentStage
+} from "./SpringStageCards";
 
 declare global {
   interface Window {
@@ -55,7 +57,7 @@ interface CourseLessonViewProps {
   nextLesson?: CourseLesson;
 }
 
-function CourseDefaultLessonView({
+export function CourseLessonView({
   course,
   lesson,
   chapterTitle,
@@ -65,7 +67,26 @@ function CourseDefaultLessonView({
   const [mobileSyllabusOpen, setMobileSyllabusOpen] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
-  const [rightRailTab, setRightRailTab] = useState<"transcript" | "flashcards" | "syllabus">("transcript");
+
+  const hasTranscript = Boolean(lesson.transcript && lesson.transcript.length > 0);
+  const hasFlashcards = Boolean(lesson.flashcards && lesson.flashcards.length > 0);
+
+  const [rightRailTab, setRightRailTab] = useState<"transcript" | "flashcards" | "syllabus">(() => {
+    if (hasTranscript) return "transcript";
+    if (hasFlashcards) return "flashcards";
+    return "syllabus";
+  });
+
+  useEffect(() => {
+    if (hasTranscript) {
+      setRightRailTab("transcript");
+    } else if (hasFlashcards) {
+      setRightRailTab("flashcards");
+    } else {
+      setRightRailTab("syllabus");
+    }
+  }, [lesson.id, hasTranscript, hasFlashcards]);
+
   const [transcriptSearchQuery, setTranscriptSearchQuery] = useState("");
   const [transcriptAutoScroll, setTranscriptAutoScroll] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -395,10 +416,16 @@ function CourseDefaultLessonView({
         <div className="space-y-6 sm:space-y-8">
           {/* HÀNG 1: THEATER DOCK (Video + Tiêu đề + Toolbar bên trái 60% : Transcript/Flashcard/Mục lục bên phải 40%) */}
           <div className="lg:grid lg:grid-cols-12 lg:gap-6 items-start">
-            {/* Cột 1: Video Player + Title & Speech Header + Action Toolbar (Chiếm 7/12 = ~58.3% -> 60%) */}
+            {/* Cột 1: Stage Player + Title & Speech Header + Action Toolbar (Chiếm 7/12 = ~58.3% -> 60%) */}
             <div ref={leftColRef} className="lg:col-span-7 2xl:col-span-7 flex flex-col space-y-4">
-              {/* 1.1 Khung Video Player */}
-              {lesson.videoId ? (
+              {/* 1.1 Khung Stage chính theo loại bài học */}
+              {lesson.lessonType === "quiz" ? (
+                <SpringQuizStage lesson={lesson} textScale={textScale} />
+              ) : lesson.lessonType === "reading-audio" ? (
+                <SpringAudioStage lesson={lesson} />
+              ) : lesson.lessonType === "cheatsheet" || lesson.lessonType === "reading" || lesson.lessonType === "practice" ? (
+                <SpringDocumentStage lesson={lesson} chapterTitle={chapterTitle} />
+              ) : lesson.videoId ? (
                 <div className="relative aspect-video w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-[var(--border)] bg-black shadow-xl">
                   <iframe
                     ref={iframeRef}
@@ -530,18 +557,20 @@ function CourseDefaultLessonView({
               {/* Tab Switcher Header + Search + Menu Tuỳ chọn [⋮] */}
               <div className="flex items-center justify-between gap-1.5 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1.5 sm:p-2 shadow-2xs shrink-0">
                 <div className="flex items-center gap-1 shrink-0 overflow-x-auto no-scrollbar">
-                  <button
-                    type="button"
-                    onClick={() => setRightRailTab("transcript")}
-                    className={`inline-flex items-center gap-1.5 rounded-xl px-2 py-1.5 text-xs font-bold transition-all cursor-pointer shrink-0 ${
-                      rightRailTab === "transcript"
-                        ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-2xs"
-                        : "text-[var(--muted-strong)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)]"
-                    }`}
-                  >
-                    <BookOpen className="h-3.5 w-3.5 text-emerald-500" />
-                    <span>Transcript ({lesson.transcript?.length || 0})</span>
-                  </button>
+                  {hasTranscript && (
+                    <button
+                      type="button"
+                      onClick={() => setRightRailTab("transcript")}
+                      className={`inline-flex items-center gap-1.5 rounded-xl px-2 py-1.5 text-xs font-bold transition-all cursor-pointer shrink-0 ${
+                        rightRailTab === "transcript"
+                          ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-2xs"
+                          : "text-[var(--muted-strong)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)]"
+                      }`}
+                    >
+                      <BookOpen className="h-3.5 w-3.5 text-emerald-500" />
+                      <span>Transcript ({lesson.transcript?.length || 0})</span>
+                    </button>
+                  )}
 
                   {lesson.flashcards && lesson.flashcards.length > 0 && (
                     <button
@@ -654,7 +683,7 @@ function CourseDefaultLessonView({
 
               {/* Panel Content: Khớp 100% chiều cao video */}
               <div className="flex-1 min-h-0 overflow-hidden">
-                {rightRailTab === "transcript" ? (
+                {rightRailTab === "transcript" && hasTranscript ? (
                   <SpringTranscriptPanel
                     transcript={lesson.transcript}
                     inRail
@@ -668,7 +697,7 @@ function CourseDefaultLessonView({
                     onToggleAutoScroll={() => setTranscriptAutoScroll((prev) => !prev)}
                     className="h-full"
                   />
-                ) : rightRailTab === "flashcards" && lesson.flashcards ? (
+                ) : rightRailTab === "flashcards" && hasFlashcards && lesson.flashcards ? (
                   <SpringDockFlashcards
                     flashcards={lesson.flashcards}
                     textScale={textScale}
@@ -738,19 +767,30 @@ function CourseDefaultLessonView({
 
           {/* HÀNG 3: KHÔNG GIAN HỌC CHUYÊN SÂU (Full-width Lower Workspace) */}
           <section aria-label="Nội dung bài học Spring Framework" className="pt-2">
-            <SpringLessonContent
-              course={course}
-              lesson={lesson}
-              textScale={textScale}
-              currentTime={currentTime}
-              isPlaying={isPlaying}
-              onSeek={handleSeek}
-              searchQuery={transcriptSearchQuery}
-              onSearchChange={setTranscriptSearchQuery}
-              autoScroll={transcriptAutoScroll}
-              onToggleAutoScroll={() => setTranscriptAutoScroll((prev) => !prev)}
-              initialTab="blueprint"
-            />
+            {!lesson.lessonType || lesson.lessonType === "video" ? (
+              <SpringLessonContent
+                course={course}
+                lesson={lesson}
+                textScale={textScale}
+                currentTime={currentTime}
+                isPlaying={isPlaying}
+                onSeek={handleSeek}
+                searchQuery={transcriptSearchQuery}
+                onSearchChange={setTranscriptSearchQuery}
+                autoScroll={transcriptAutoScroll}
+                onToggleAutoScroll={() => setTranscriptAutoScroll((prev) => !prev)}
+                initialTab="blueprint"
+              />
+            ) : (
+              <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-10 shadow-xs">
+                <div
+                  className="prose dark:prose-invert max-w-none [contain:content]"
+                  style={{ fontSize: `${textScale}%` }}
+                >
+                  <MarkdownContent markdown={lesson.contentMarkdown} />
+                </div>
+              </div>
+            )}
           </section>
 
           {/* Footer Navigation Bar */}
@@ -967,28 +1007,4 @@ function CourseDefaultLessonView({
       )}
     </div>
   );
-}
-
-export function CourseLessonView(props: CourseLessonViewProps) {
-  const { course, lesson } = props;
-  const isSpring = course.slug === "spring-framework-for-java";
-
-  if (isSpring && lesson.lessonType === "quiz") {
-    return <CourseQuizLessonView {...props} />;
-  }
-
-  if (isSpring && lesson.lessonType === "reading-audio") {
-    return <CourseAudioReadingView {...props} />;
-  }
-
-  if (
-    isSpring &&
-    (lesson.lessonType === "reading" ||
-      lesson.lessonType === "cheatsheet" ||
-      lesson.lessonType === "practice")
-  ) {
-    return <CourseArticleLessonView {...props} />;
-  }
-
-  return <CourseDefaultLessonView {...props} />;
 }

@@ -227,11 +227,14 @@ describe("CourseLessonView", () => {
     expect(screen.queryByTitle(/Bài 05/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Video bài giảng trực tuyến đang chờ cập nhật/i)).not.toBeInTheDocument();
 
-    // Should render Quiz Badge & Flashcard Arena
-    expect(screen.getByText(/Practice Quiz/i)).toBeInTheDocument();
+    // Should render Quiz Stage & Flashcards
     expect(screen.getByText("Bài 05: Bài tập trắc nghiệm - Khám phá Spring Framework")).toBeInTheDocument();
-    expect(screen.getByText("What is Spring IoC?")).toBeInTheDocument();
-    expect(screen.getByText("Spring IoC là gì?")).toBeInTheDocument();
+    expect(screen.getAllByText("What is Spring IoC?").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("Spring IoC là gì?").length).toBeGreaterThanOrEqual(1);
+
+    // Right rail should have Flashcard and Syllabus tabs
+    expect(screen.getByRole("button", { name: /Flashcard \(1\)/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Mục lục \(2\)/i })).toBeInTheDocument();
   });
 
   it("renders specialized Audio Lecture layout for reading-audio lessons", () => {
@@ -259,8 +262,10 @@ describe("CourseLessonView", () => {
 
     // Should render Audio badge and Audio controls
     expect(screen.getByText(/Bài đọc kết hợp Audio Lecture/i)).toBeInTheDocument();
-    expect(screen.getByText("Âm thanh bài giảng")).toBeInTheDocument();
-    expect(screen.getByLabelText(/Phát audio bài giảng/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Phát audio/i)).toBeInTheDocument();
+
+    // Right rail should have Syllabus tab
+    expect(screen.getByRole("button", { name: /Mục lục \(2\)/i })).toBeInTheDocument();
   });
 
   it("renders specialized Cheatsheet / Reading layout for article lessons", () => {
@@ -288,5 +293,8 @@ describe("CourseLessonView", () => {
     // Should render Cheatsheet badge and content
     expect(screen.getByText("Sổ tay tra cứu mã nguồn (Cheat Sheet)")).toBeInTheDocument();
     expect(container.textContent).toContain("Bảng tra cứu Annotations chi tiết");
+
+    // Right rail should have Syllabus tab
+    expect(screen.getByRole("button", { name: /Mục lục \(2\)/i })).toBeInTheDocument();
   });
 });
