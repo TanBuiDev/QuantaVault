@@ -8,19 +8,15 @@ import {
   VolumeX,
   FastForward,
   Rewind,
-  Sparkles,
-  Shuffle,
   RotateCcw,
-  ChevronLeft,
-  ChevronRight,
   Code2,
   Terminal,
   BookOpen,
   HelpCircle,
   Clock
 } from "lucide-react";
-import type { CourseLesson, CourseFlashcard } from "@/lib/courses";
-import { useEnglishSpeech } from "@/lib/courses/speech";
+import type { CourseLesson } from "@/lib/courses";
+import { SpringDockFlashcards } from "./SpringDockFlashcards";
 
 function formatAudioTime(seconds: number): string {
   if (isNaN(seconds) || seconds < 0) return "00:00";
@@ -30,7 +26,7 @@ function formatAudioTime(seconds: number): string {
 }
 
 // =======================================================================
-// 1. QUIZ STAGE: 3D Flashcard Arena matching video aspect ratio (16:9)
+// 1. QUIZ STAGE: 3D Flashcard Arena tái sử dụng component Flashcard dùng chung
 // =======================================================================
 export function SpringQuizStage({
   lesson,
@@ -40,60 +36,8 @@ export function SpringQuizStage({
   textScale?: number;
 }) {
   const flashcards = lesson.flashcards || [];
-  const [deck, setDeck] = useState<CourseFlashcard[]>(() => [...flashcards]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isFlipped, setIsFlipped] = useState(false);
-  const { speak } = useEnglishSpeech();
 
-  useEffect(() => {
-    setDeck([...flashcards]);
-    setCurrentIndex(0);
-    setIsFlipped(false);
-  }, [flashcards]);
-
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      const targetTag = (e.target as HTMLElement)?.tagName;
-      if (["INPUT", "TEXTAREA"].includes(targetTag)) return;
-
-      if (e.code === "Space") {
-        e.preventDefault();
-        setIsFlipped((prev) => !prev);
-      } else if (e.code === "ArrowLeft") {
-        e.preventDefault();
-        if (currentIndex > 0) {
-          setIsFlipped(false);
-          setCurrentIndex((i) => i - 1);
-        }
-      } else if (e.code === "ArrowRight") {
-        e.preventDefault();
-        if (currentIndex < deck.length - 1) {
-          setIsFlipped(false);
-          setCurrentIndex((i) => i + 1);
-        }
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [currentIndex, deck.length]);
-
-  const handleShuffle = () => {
-    setDeck((prev) => [...prev].sort(() => Math.random() - 0.5));
-    setCurrentIndex(0);
-    setIsFlipped(false);
-  };
-
-  const handleRestart = () => {
-    setDeck([...flashcards]);
-    setCurrentIndex(0);
-    setIsFlipped(false);
-  };
-
-  const currentCard = deck.length > 0 && currentIndex < deck.length ? deck[currentIndex] : null;
-
-  if (!currentCard) {
+  if (flashcards.length === 0) {
     return (
       <div className="relative aspect-video w-full rounded-2xl sm:rounded-3xl border border-[var(--border)] bg-[var(--surface)] flex flex-col items-center justify-center p-6 text-center shadow-xl">
         <HelpCircle className="h-12 w-12 text-emerald-500 mb-2" />
@@ -104,150 +48,12 @@ export function SpringQuizStage({
   }
 
   return (
-    <div className="relative aspect-video w-full rounded-2xl sm:rounded-3xl border border-[var(--border)] bg-gradient-to-br from-[var(--surface)] via-[var(--surface)] to-[var(--surface-hover)] shadow-xl overflow-hidden flex flex-col justify-between p-4 sm:p-5 select-none">
-      {/* Top stage header */}
-      <div className="flex items-center justify-between text-xs font-bold text-[var(--muted-strong)] shrink-0">
-        <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1 rounded-lg bg-emerald-500/15 px-2 py-0.5 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 border border-emerald-500/25">
-            <HelpCircle className="h-3 w-3" />
-            <span>Câu {currentIndex + 1} / {deck.length}</span>
-          </span>
-          <span className="hidden sm:inline text-[10px] text-[var(--muted)] font-normal">
-            Phím tắt: Space lật thẻ, ← → đổi câu
-          </span>
-        </div>
-
-        <div className="flex items-center gap-1">
-          <button
-            type="button"
-            onClick={handleShuffle}
-            className="p-1 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)] transition-colors"
-            title="Xáo trộn câu hỏi"
-          >
-            <Shuffle className="h-3.5 w-3.5" />
-          </button>
-          <button
-            type="button"
-            onClick={handleRestart}
-            className="p-1 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)] transition-colors"
-            title="Làm lại từ đầu"
-          >
-            <RotateCcw className="h-3.5 w-3.5" />
-          </button>
-        </div>
-      </div>
-
-      {/* 3D Flip Card Interactive Area */}
-      <div
-        onClick={() => setIsFlipped((prev) => !prev)}
-        className="relative flex-1 my-2 cursor-pointer [perspective:1500px]"
-        role="button"
-        tabIndex={0}
-        title="Nhấp để lật thẻ (hoặc bấm Space)"
-      >
-        <div
-          className="relative w-full h-full rounded-2xl transition-transform duration-500 shadow-sm"
-          style={{
-            transformStyle: "preserve-3d",
-            WebkitTransformStyle: "preserve-3d",
-            transform: isFlipped ? "rotateX(180deg)" : "rotateX(0deg)",
-            transitionTimingFunction: "cubic-bezier(0.34, 1.25, 0.64, 1)"
-          }}
-        >
-          {/* Mặt trước: CÂU HỎI */}
-          <div
-            aria-hidden={isFlipped}
-            className="absolute inset-0 w-full h-full rounded-2xl border border-emerald-500/30 bg-[var(--surface)] p-4 sm:p-6 flex flex-col justify-center items-center text-center overflow-y-auto"
-            style={{
-              backfaceVisibility: "hidden",
-              WebkitBackfaceVisibility: "hidden",
-              transform: "rotateX(0deg)"
-            }}
-          >
-            <div className="space-y-2 max-w-xl">
-              <p className="text-sm sm:text-base lg:text-lg font-black text-[var(--foreground)] tracking-tight leading-snug">
-                {currentCard.questionEn}
-              </p>
-              <p className="text-xs sm:text-sm font-medium text-[var(--muted-strong)] leading-relaxed">
-                {currentCard.questionVi}
-              </p>
-            </div>
-            <span className="text-[10px] text-[var(--muted)] mt-2 opacity-80">
-              Nhấp để xem đáp án chính xác
-            </span>
-          </div>
-
-          {/* Mặt sau: ĐÁP ÁN */}
-          <div
-            aria-hidden={!isFlipped}
-            className="absolute inset-0 w-full h-full rounded-2xl border border-emerald-500/50 bg-gradient-to-br from-[var(--surface)] to-emerald-950/15 p-4 sm:p-6 flex flex-col justify-center items-center text-center overflow-y-auto"
-            style={{
-              backfaceVisibility: "hidden",
-              WebkitBackfaceVisibility: "hidden",
-              transform: "rotateX(180deg)"
-            }}
-          >
-            <div className="space-y-2 max-w-xl">
-              <div className="inline-block px-2.5 py-0.5 rounded-md bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-[11px] font-bold uppercase">
-                {currentCard.answerEn}
-              </div>
-              <p className="text-sm sm:text-base font-bold text-emerald-600 dark:text-emerald-400">
-                {currentCard.answerVi}
-              </p>
-              {(currentCard.explanationVi || currentCard.explanationEn) && (
-                <p className="text-[11px] text-[var(--muted-strong)] line-clamp-3 pt-1">
-                  {currentCard.explanationVi || currentCard.explanationEn}
-                </p>
-              )}
-            </div>
-            <span className="text-[10px] text-[var(--muted)] mt-2 opacity-80">
-              Nhấp để quay lại mặt câu hỏi
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom controls */}
-      <div className="flex items-center justify-between gap-2 shrink-0 pt-1 border-t border-[var(--border)]">
-        <button
-          type="button"
-          disabled={currentIndex === 0}
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsFlipped(false);
-            setCurrentIndex((i) => Math.max(0, i - 1));
-          }}
-          className="flex items-center gap-1 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-xs font-semibold text-[var(--foreground)] hover:bg-[var(--surface-hover)] disabled:opacity-30 disabled:cursor-not-allowed shadow-2xs transition-all cursor-pointer"
-        >
-          <ChevronLeft className="h-3.5 w-3.5" />
-          <span>Trước</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsFlipped((prev) => !prev);
-          }}
-          className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 transition-all cursor-pointer shadow-2xs"
-        >
-          {isFlipped ? "Xem câu hỏi" : "Lật xem đáp án"}
-        </button>
-
-        <button
-          type="button"
-          disabled={currentIndex === deck.length - 1}
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsFlipped(false);
-            setCurrentIndex((i) => Math.min(deck.length - 1, i + 1));
-          }}
-          className="flex items-center gap-1 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-xs font-semibold text-[var(--foreground)] hover:bg-[var(--surface-hover)] disabled:opacity-30 disabled:cursor-not-allowed shadow-2xs transition-all cursor-pointer"
-        >
-          <span>Tiếp</span>
-          <ChevronRight className="h-3.5 w-3.5" />
-        </button>
-      </div>
+    <div className="relative aspect-video w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-[var(--border)] bg-[var(--surface)] shadow-xl flex flex-col p-2 sm:p-3">
+      <SpringDockFlashcards
+        flashcards={flashcards}
+        textScale={textScale}
+        className="h-full w-full"
+      />
     </div>
   );
 }

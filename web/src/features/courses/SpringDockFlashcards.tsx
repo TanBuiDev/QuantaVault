@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Volume2, ChevronLeft, ChevronRight, RotateCcw } from "lucide-react";
+import { Volume2, ChevronLeft, ChevronRight, RotateCcw, Shuffle } from "lucide-react";
 import type { CourseFlashcard } from "@/lib/courses";
 import { useEnglishSpeech } from "@/lib/courses/speech";
 
@@ -16,17 +16,15 @@ export function SpringDockFlashcards({
   textScale = 100,
   className = ""
 }: SpringDockFlashcardsProps) {
-  // Always auto-shuffle deck on mount
-  const [deck, setDeck] = useState<CourseFlashcard[]>(() => {
-    return [...flashcards].sort(() => Math.random() - 0.5);
-  });
+  // Giữ thứ tự bài học gốc theo mặc định, hỗ trợ nút xáo trộn tùy chọn
+  const [deck, setDeck] = useState<CourseFlashcard[]>(() => [...flashcards]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const { speak, isSpeaking } = useEnglishSpeech();
 
   // Reset when flashcards change
   useEffect(() => {
-    setDeck([...flashcards].sort(() => Math.random() - 0.5));
+    setDeck([...flashcards]);
     setCurrentIndex(0);
     setIsFlipped(false);
   }, [flashcards]);
@@ -60,7 +58,7 @@ export function SpringDockFlashcards({
   }, [currentIndex, deck.length]);
 
   const handleRestart = () => {
-    setDeck([...flashcards].sort(() => Math.random() - 0.5));
+    setDeck([...flashcards]);
     setCurrentIndex(0);
     setIsFlipped(false);
   };
@@ -134,6 +132,11 @@ export function SpringDockFlashcards({
                 <p className="text-xs sm:text-sm font-semibold text-[var(--foreground)] leading-relaxed">
                   {currentCard.answerVi}
                 </p>
+                {currentCard.explanationVi && (
+                  <p className="text-xs text-[var(--muted-strong)] line-clamp-3 pt-1 leading-relaxed">
+                    {currentCard.explanationVi}
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -144,23 +147,39 @@ export function SpringDockFlashcards({
             {currentIndex + 1} / {deck.length}
           </span>
 
-          {/* Top-right: Floating Audio Button */}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              speak(isFlipped ? currentCard.answerEn : currentCard.questionEn);
-            }}
-            title="Nghe phát âm tiếng Anh"
-            aria-label="Nghe phát âm tiếng Anh"
-            className={`absolute top-4 right-4 sm:top-5 sm:right-5 p-1.5 rounded-lg border transition-all cursor-pointer z-20 ${
-              isSpeaking(isFlipped ? currentCard.answerEn : currentCard.questionEn)
-                ? "bg-emerald-600 text-white border-emerald-600 animate-pulse"
-                : "border-[var(--border)] bg-[var(--surface)]/80 text-[var(--muted-strong)] hover:text-emerald-500 hover:border-emerald-500/40"
-            }`}
-          >
-            <Volume2 className="h-4 w-4" />
-          </button>
+          {/* Top-right: Floating Shuffle & Audio Buttons */}
+          <div className="absolute top-4 right-4 sm:top-5 sm:right-5 flex items-center gap-1.5 z-20">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setDeck((prev) => [...prev].sort(() => Math.random() - 0.5));
+                setCurrentIndex(0);
+                setIsFlipped(false);
+              }}
+              title="Xáo trộn câu hỏi"
+              aria-label="Xáo trộn câu hỏi"
+              className="p-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)]/80 text-[var(--muted-strong)] hover:text-emerald-500 hover:border-emerald-500/40 transition-all cursor-pointer shadow-2xs"
+            >
+              <Shuffle className="h-4 w-4" />
+            </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                speak(isFlipped ? currentCard.answerEn : currentCard.questionEn);
+              }}
+              title="Nghe phát âm tiếng Anh"
+              aria-label="Nghe phát âm tiếng Anh"
+              className={`p-1.5 rounded-lg border transition-all cursor-pointer shadow-2xs ${
+                isSpeaking(isFlipped ? currentCard.answerEn : currentCard.questionEn)
+                  ? "bg-emerald-600 text-white border-emerald-600 animate-pulse"
+                  : "border-[var(--border)] bg-[var(--surface)]/80 text-[var(--muted-strong)] hover:text-emerald-500 hover:border-emerald-500/40"
+              }`}
+            >
+              <Volume2 className="h-4 w-4" />
+            </button>
+          </div>
 
           {/* Left Edge: Previous Card Arrow */}
           {currentIndex > 0 && (
