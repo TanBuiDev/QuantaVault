@@ -725,7 +725,6 @@ export function CourseLessonView({
               course={course}
               lesson={lesson}
               textScale={textScale}
-              currentTime={currentTime}
               onSeek={handleSeek}
               searchQuery={transcriptSearchQuery}
               onSearchChange={setTranscriptSearchQuery}

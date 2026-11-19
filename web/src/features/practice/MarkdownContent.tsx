@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, memo } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
@@ -216,7 +216,7 @@ function filterMarkdownByLanguage(text: string, mode: LanguageMode): string {
 
 
 
-export function MarkdownContent({
+export const MarkdownContent = memo(function MarkdownContent({
   markdown,
   languageMode = "bilingual",
   wordWrap = true,
@@ -304,7 +304,7 @@ export function MarkdownContent({
       </ReactMarkdown>
     </div>
   );
-}
+});
 
 
 

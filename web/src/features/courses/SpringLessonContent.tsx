@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, memo } from "react";
 import {
   Layers,
   Sparkles,
@@ -27,7 +27,7 @@ interface SpringLessonContentProps {
 
 type SpringTabMode = "flashcards" | "blueprint" | "transcript";
 
-export function SpringLessonContent({
+export const SpringLessonContent = memo(function SpringLessonContent({
   course,
   lesson,
   textScale = 100,
@@ -126,7 +126,7 @@ export function SpringLessonContent({
 
       {/* 3. TAB: ARCHITECTURE & DEEP DIVE MARKDOWN */}
       {activeTab === "blueprint" && (
-        <div className="space-y-6 animate-fade-in">
+        <div className="space-y-6">
           <section
             aria-label="Nội dung phân tích kiến trúc bài học"
             className="prose dark:prose-invert max-w-none text-[var(--foreground)] space-y-6"
@@ -158,4 +158,4 @@ export function SpringLessonContent({
       )}
     </div>
   );
-}
+});

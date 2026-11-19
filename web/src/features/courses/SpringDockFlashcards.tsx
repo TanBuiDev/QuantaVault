@@ -153,12 +153,6 @@ export function SpringDockFlashcards({
                 <p className="text-xs sm:text-sm font-semibold text-[var(--foreground)] leading-relaxed">
                   {currentCard.answerVi}
                 </p>
-                {currentCard.explanationVi && (
-                  <div className="mt-3 text-left rounded-xl bg-[var(--surface)]/80 p-2.5 text-[11px] sm:text-xs text-[var(--muted-strong)] border border-[var(--border)] leading-relaxed">
-                    <span className="font-bold text-amber-500 block mb-0.5">💡 Giải thích:</span>
-                    {currentCard.explanationVi}
-                  </div>
-                )}
               </div>
             )}
           </div>

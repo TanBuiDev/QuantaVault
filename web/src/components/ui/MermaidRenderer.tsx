@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useId } from "react";
+import { useEffect, useRef, useState, useId, memo } from "react";
 import { Check, Copy, Code, Eye, RefreshCw } from "lucide-react";
 import DOMPurify from "dompurify";
 
@@ -65,7 +65,7 @@ function getMermaid(): Promise<MermaidInstance> {
   return mermaidPromise;
 }
 
-export function MermaidRenderer({ chart }: MermaidRendererProps) {
+export const MermaidRenderer = memo(function MermaidRenderer({ chart }: MermaidRendererProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [svgContent, setSvgContent] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -233,4 +233,4 @@ export function MermaidRenderer({ chart }: MermaidRendererProps) {
       )}
     </div>
   );
-}
+});
