@@ -397,12 +397,12 @@ export function CourseLessonView({
               }}
             >
               {/* Tab Switcher Header + Search + Tự cuộn + Cỡ chữ */}
-              <div className="flex items-center justify-between gap-1.5 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-2 shadow-2xs shrink-0">
+              <div className="flex items-center justify-between gap-1.5 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1.5 sm:p-2 shadow-2xs shrink-0 overflow-hidden">
                 <div className="flex items-center gap-1 shrink-0">
                   <button
                     type="button"
                     onClick={() => setRightRailTab("transcript")}
-                    className={`inline-flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs font-bold transition-all cursor-pointer ${
+                    className={`inline-flex items-center gap-1.5 rounded-xl px-2 py-1.5 text-xs font-bold transition-all cursor-pointer ${
                       rightRailTab === "transcript"
                         ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-2xs"
                         : "text-[var(--muted-strong)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)]"
@@ -415,7 +415,7 @@ export function CourseLessonView({
                   <button
                     type="button"
                     onClick={() => setRightRailTab("syllabus")}
-                    className={`inline-flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs font-bold transition-all cursor-pointer ${
+                    className={`inline-flex items-center gap-1.5 rounded-xl px-2 py-1.5 text-xs font-bold transition-all cursor-pointer ${
                       rightRailTab === "syllabus"
                         ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-2xs"
                         : "text-[var(--muted-strong)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)]"
@@ -426,39 +426,42 @@ export function CourseLessonView({
                   </button>
                 </div>
 
-                <div className="flex items-center gap-1.5 min-w-0">
+                <div className="flex items-center gap-1 min-w-0">
                   {/* Ô tìm kiếm transcript trên header */}
                   {rightRailTab === "transcript" && (
                     <>
-                      <div className="relative min-w-[100px] max-w-[150px]">
-                        <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[var(--muted)]" />
+                      <div className="relative min-w-[60px] max-w-[110px] 2xl:max-w-[140px] flex-1">
+                        <Search className="absolute left-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[var(--muted)] pointer-events-none" />
                         <input
                           type="text"
-                          placeholder="Tìm trong bài..."
+                          placeholder="Tìm..."
                           value={transcriptSearchQuery}
                           onChange={(e) => setTranscriptSearchQuery(e.target.value)}
-                          className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface-hover)]/50 pl-8 pr-2.5 py-1 text-[11px] text-[var(--foreground)] placeholder:text-[var(--muted)] focus:border-emerald-500 focus:outline-none transition-colors"
+                          className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface-hover)]/50 pl-6.5 pr-2 py-1 text-[11px] text-[var(--foreground)] placeholder:text-[var(--muted)] focus:border-emerald-500 focus:outline-none transition-colors"
                         />
                       </div>
 
-                      {/* Nút bật/tắt Tự cuộn */}
+                      {/* Nút bật/tắt Tự cuộn (Icon compact kèm tooltip) */}
                       <button
                         type="button"
                         onClick={() => setTranscriptAutoScroll((prev) => !prev)}
-                        className={`inline-flex items-center gap-1 rounded-xl px-2 py-1 text-[11px] font-semibold border transition-all shrink-0 cursor-pointer ${
+                        className={`inline-flex items-center justify-center rounded-lg p-1.5 text-[11px] font-semibold border transition-all shrink-0 cursor-pointer ${
                           transcriptAutoScroll
                             ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 shadow-2xs"
                             : "border-[var(--border)] text-[var(--muted)] hover:text-[var(--foreground)] bg-[var(--surface-hover)]/40"
                         }`}
                         title={transcriptAutoScroll ? "Đang bật tự cuộn theo video (nhấp để tắt)" : "Đã tắt tự cuộn (nhấp để bật lại)"}
+                        aria-label={transcriptAutoScroll ? "Tắt tự cuộn" : "Bật tự cuộn"}
                       >
-                        <Navigation className={`h-3 w-3 transition-transform ${transcriptAutoScroll ? "rotate-45 text-emerald-500" : ""}`} />
-                        <span className="hidden xl:inline">{transcriptAutoScroll ? "Tự cuộn" : "Tắt cuộn"}</span>
+                        <Navigation className={`h-3.5 w-3.5 transition-transform ${transcriptAutoScroll ? "rotate-45 text-emerald-500" : ""}`} />
+                        <span className="hidden 2xl:inline ml-1">{transcriptAutoScroll ? "Tự cuộn" : "Tắt cuộn"}</span>
                       </button>
                     </>
                   )}
 
-                  <InterviewTextSizeControl value={textScale} onChange={changeTextScale} />
+                  <div className="shrink-0">
+                    <InterviewTextSizeControl value={textScale} onChange={changeTextScale} />
+                  </div>
                 </div>
               </div>
 
