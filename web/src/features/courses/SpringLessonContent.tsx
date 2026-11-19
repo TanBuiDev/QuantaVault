@@ -16,6 +16,7 @@ interface SpringLessonContentProps {
   lesson: CourseLesson;
   textScale?: number;
   currentTime?: number;
+  isPlaying?: boolean;
   onSeek?: (seconds: number) => void;
   searchQuery?: string;
   onSearchChange?: (q: string) => void;
@@ -31,6 +32,7 @@ export const SpringLessonContent = memo(function SpringLessonContent({
   lesson,
   textScale = 100,
   currentTime,
+  isPlaying = false,
   onSeek,
   searchQuery,
   onSearchChange,
@@ -183,6 +185,7 @@ export const SpringLessonContent = memo(function SpringLessonContent({
             inRail={false}
             textScale={textScale}
             currentTime={currentTime}
+            isPlaying={isPlaying}
             onSeek={onSeek}
             searchQuery={searchQuery}
             onSearchChange={onSearchChange}

@@ -21,6 +21,7 @@ export interface SpringTranscriptPanelProps {
   textScale?: number;
   className?: string;
   currentTime?: number;
+  isPlaying?: boolean;
   onSeek?: (seconds: number) => void;
   searchQuery?: string;
   onSearchChange?: (q: string) => void;
@@ -36,6 +37,7 @@ export function SpringTranscriptPanel({
   textScale = 100,
   className = "",
   currentTime,
+  isPlaying = false,
   onSeek,
   searchQuery,
   onSearchChange,
@@ -98,7 +100,7 @@ export function SpringTranscriptPanel({
 
   const activeSentenceId = activeIndex >= 0 && transcript ? transcript[activeIndex]?.id : null;
 
-  // Auto-scroll to active sentence inside the panel container
+  // Auto-scroll to active sentence inside the panel container (Phương án A: ~32% + Vùng an toàn 20%-48%)
   useEffect(() => {
     if (!activeAutoScroll || !activeSentenceId) return;
     const container = listContainerRef.current;
@@ -106,16 +108,32 @@ export function SpringTranscriptPanel({
     if (!container || !activeEl) return;
 
     const offsetWithinContainer = activeEl.offsetTop - container.offsetTop;
-    const targetScrollTop = offsetWithinContainer - container.clientHeight / 2 + activeEl.clientHeight / 2;
+    const currentVisibleTop = offsetWithinContainer - container.scrollTop;
 
-    if (typeof container.scrollTo === "function") {
-      container.scrollTo({
-        top: Math.max(0, targetScrollTop),
-        behavior: "smooth"
-      });
-    } else {
-      container.scrollTop = Math.max(0, targetScrollTop);
+    // Vùng an toàn (Deadzone): từ 20% đến 48% chiều cao khung nhìn
+    const minBound = container.clientHeight * 0.20;
+    const maxBound = container.clientHeight * 0.48;
+
+    // Nếu thẻ active đã nằm trong vùng an toàn, không cần cuộn giật giật
+    if (currentVisibleTop >= minBound && currentVisibleTop <= maxBound) {
+      return;
     }
+
+    // Cuộn mượt đưa thẻ active về vị trí ~32% (Quy tắc 1/3)
+    const targetScrollTop = Math.max(0, offsetWithinContainer - Math.round(container.clientHeight * 0.32));
+
+    const timer = setTimeout(() => {
+      if (typeof container.scrollTo === "function") {
+        container.scrollTo({
+          top: targetScrollTop,
+          behavior: "smooth"
+        });
+      } else {
+        container.scrollTop = targetScrollTop;
+      }
+    }, 60);
+
+    return () => clearTimeout(timer);
   }, [activeSentenceId, activeAutoScroll]);
 
   const handleSentenceClick = (sent: CourseTranscriptSentence) => {
@@ -206,6 +224,9 @@ export function SpringTranscriptPanel({
           ) : (
             filteredTranscript.map((sent, idx) => {
               const isActive = sent.id === activeSentenceId;
+              const isPast = activeIndex >= 0 && idx < activeIndex;
+              const isFuture = activeIndex >= 0 && idx > activeIndex;
+
               return (
                 <div
                   key={sent.id || idx}
@@ -214,17 +235,30 @@ export function SpringTranscriptPanel({
                     if ((e.target as HTMLElement).closest("button")) return;
                     handleSentenceClick(sent);
                   }}
-                  className={`group relative rounded-xl p-2.5 transition-all cursor-pointer select-text ${
+                  className={`group relative rounded-xl p-2.5 transition-all duration-300 ease-out cursor-pointer select-text overflow-hidden ${
                     isActive
-                      ? "border-2 border-emerald-500 bg-emerald-500/15 shadow-sm ring-1 ring-emerald-500/20"
-                      : "border border-[var(--border)] bg-[var(--surface-hover)]/30 hover:border-emerald-500/40 hover:bg-[var(--surface-hover)]/60"
+                      ? "border-2 border-emerald-500 bg-emerald-500/15 shadow-sm ring-1 ring-emerald-500/20 opacity-100"
+                      : `border-2 border-[var(--border)]/70 bg-[var(--surface-hover)]/30 hover:border-emerald-500/40 hover:bg-[var(--surface-hover)]/60 ${
+                          isPast ? "opacity-70 hover:opacity-100" : isFuture ? "opacity-90 hover:opacity-100" : "opacity-100"
+                        }`
                   }`}
                 >
-                  <div className="flex items-start justify-between gap-2.5">
-                    {/* Timestamp / Index Pill */}
+                  {/* Dải sáng định vị bên trái (Left Accent Pill) */}
+                  <span
+                    className={`absolute left-0 top-2 bottom-2 w-1 rounded-r-full transition-all duration-300 ${
+                      isActive ? "bg-emerald-500 opacity-100 scale-y-100" : "bg-transparent opacity-0 scale-y-50"
+                    }`}
+                  />
+
+                  <div className="flex items-start justify-between gap-2.5 pl-1.5">
+                    {/* Timestamp / Index Pill with Equalizer */}
                     {isActive ? (
-                      <span className="shrink-0 rounded bg-emerald-500 px-1.5 py-0.5 text-[10px] font-mono font-bold text-white shadow-2xs flex items-center gap-1">
-                        <Play className="h-2.5 w-2.5 fill-current animate-pulse" />
+                      <span className="shrink-0 rounded bg-emerald-500 px-1.5 py-0.5 text-[10px] font-mono font-bold text-white shadow-2xs flex items-center gap-1.5">
+                        <span className="flex items-end gap-0.5 h-2.5 w-2.5 justify-center overflow-hidden pb-0.5" aria-hidden="true">
+                          <span className={`w-0.5 bg-white rounded-full transition-all ${isPlaying ? "animate-eq-1" : "h-2"}`} />
+                          <span className={`w-0.5 bg-white rounded-full transition-all ${isPlaying ? "animate-eq-2" : "h-2.5"}`} />
+                          <span className={`w-0.5 bg-white rounded-full transition-all ${isPlaying ? "animate-eq-3" : "h-1.5"}`} />
+                        </span>
                         <span>{sent.time || `#${String(idx + 1).padStart(2, "0")}`}</span>
                       </span>
                     ) : (
@@ -546,6 +580,9 @@ export function SpringTranscriptPanel({
         ) : (
           filteredTranscript.map((sent, idx) => {
             const isActive = sent.id === activeSentenceId;
+            const isPast = activeIndex >= 0 && idx < activeIndex;
+            const isFuture = activeIndex >= 0 && idx > activeIndex;
+
             return (
               <div
                 key={sent.id || idx}
@@ -554,17 +591,31 @@ export function SpringTranscriptPanel({
                   if ((e.target as HTMLElement).closest("button")) return;
                   handleSentenceClick(sent);
                 }}
-                className={`group relative rounded-2xl p-4 transition-all cursor-pointer select-text ${
+                className={`group relative rounded-2xl p-4 transition-all duration-300 ease-out cursor-pointer select-text overflow-hidden ${
                   isActive
-                    ? "border-2 border-emerald-500 bg-emerald-500/15 shadow-sm ring-1 ring-emerald-500/20"
-                    : "border border-[var(--border)] bg-[var(--surface)] hover:border-emerald-500/40 hover:shadow-sm"
+                    ? "border-2 border-emerald-500 bg-emerald-500/15 shadow-sm ring-1 ring-emerald-500/20 opacity-100"
+                    : `border-2 border-[var(--border)]/70 bg-[var(--surface)] hover:border-emerald-500/40 hover:shadow-sm ${
+                        isPast ? "opacity-70 hover:opacity-100" : isFuture ? "opacity-90 hover:opacity-100" : "opacity-100"
+                      }`
                 }`}
               >
-                <div className="flex items-start justify-between gap-3">
+                {/* Dải sáng định vị bên trái (Left Accent Pill) */}
+                <span
+                  className={`absolute left-0 top-3 bottom-3 w-1.5 rounded-r-full transition-all duration-300 ${
+                    isActive ? "bg-emerald-500 opacity-100 scale-y-100" : "bg-transparent opacity-0 scale-y-50"
+                  }`}
+                />
+
+                <div className="flex items-start justify-between gap-3 pl-2">
                   <div className="flex items-start gap-3 min-w-0 flex-1">
+                    {/* Timestamp / Index Pill with Equalizer */}
                     {isActive ? (
-                      <span className="shrink-0 mt-0.5 rounded-md bg-emerald-500 px-2 py-0.5 text-[10px] font-mono font-bold text-white shadow-2xs flex items-center gap-1">
-                        <Play className="h-2.5 w-2.5 fill-current animate-pulse" />
+                      <span className="shrink-0 mt-0.5 rounded-md bg-emerald-500 px-2 py-0.5 text-[10px] font-mono font-bold text-white shadow-2xs flex items-center gap-1.5">
+                        <span className="flex items-end gap-0.5 h-2.5 w-2.5 justify-center overflow-hidden pb-0.5" aria-hidden="true">
+                          <span className={`w-0.5 bg-white rounded-full transition-all ${isPlaying ? "animate-eq-1" : "h-2"}`} />
+                          <span className={`w-0.5 bg-white rounded-full transition-all ${isPlaying ? "animate-eq-2" : "h-2.5"}`} />
+                          <span className={`w-0.5 bg-white rounded-full transition-all ${isPlaying ? "animate-eq-3" : "h-1.5"}`} />
+                        </span>
                         <span>{sent.time || `#${String(idx + 1).padStart(2, "0")}`}</span>
                       </span>
                     ) : (

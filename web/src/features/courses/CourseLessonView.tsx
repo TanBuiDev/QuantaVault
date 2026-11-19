@@ -657,6 +657,7 @@ export function CourseLessonView({
                     inRail
                     textScale={textScale}
                     currentTime={currentTime}
+                    isPlaying={isPlaying}
                     onSeek={handleSeek}
                     searchQuery={transcriptSearchQuery}
                     onSearchChange={setTranscriptSearchQuery}
@@ -738,6 +739,8 @@ export function CourseLessonView({
               course={course}
               lesson={lesson}
               textScale={textScale}
+              currentTime={currentTime}
+              isPlaying={isPlaying}
               onSeek={handleSeek}
               searchQuery={transcriptSearchQuery}
               onSearchChange={setTranscriptSearchQuery}
