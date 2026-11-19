@@ -76,7 +76,7 @@ export function SpringDockFlashcards({
       {!isCompleted && currentCard ? (
         <div
           onClick={() => setIsFlipped((prev) => !prev)}
-          className="group relative flex-1 w-full cursor-pointer [perspective:1200px]"
+          className="group relative flex-1 w-full cursor-pointer [perspective:2000px] p-2 sm:p-3 overflow-visible"
           title="Nhấp để lật thẻ (hoặc bấm Space)"
           role="button"
           tabIndex={0}
@@ -140,7 +140,7 @@ export function SpringDockFlashcards({
 
           {/* Tầng điều khiển cố định (HUD Controls - Không bị xoay theo thẻ) */}
           {/* Top-left: Card index badge */}
-          <span className="absolute top-3.5 left-4 text-[11px] font-mono font-bold text-[var(--muted-strong)] z-20 pointer-events-none">
+          <span className="absolute top-4.5 left-5 sm:top-5.5 sm:left-6 text-[11px] font-mono font-bold text-[var(--muted-strong)] z-20 pointer-events-none">
             {currentIndex + 1} / {deck.length}
           </span>
 
@@ -153,7 +153,7 @@ export function SpringDockFlashcards({
             }}
             title="Nghe phát âm tiếng Anh"
             aria-label="Nghe phát âm tiếng Anh"
-            className={`absolute top-3 right-3 p-1.5 rounded-lg border transition-all cursor-pointer z-20 ${
+            className={`absolute top-4 right-4 sm:top-5 sm:right-5 p-1.5 rounded-lg border transition-all cursor-pointer z-20 ${
               isSpeaking(isFlipped ? currentCard.answerEn : currentCard.questionEn)
                 ? "bg-emerald-600 text-white border-emerald-600 animate-pulse"
                 : "border-[var(--border)] bg-[var(--surface)]/80 text-[var(--muted-strong)] hover:text-emerald-500 hover:border-emerald-500/40"
@@ -173,7 +173,7 @@ export function SpringDockFlashcards({
               }}
               title="Thẻ trước (←)"
               aria-label="Thẻ trước"
-              className="absolute left-2.5 top-1/2 -translate-y-1/2 p-2 rounded-full border border-[var(--border)] bg-[var(--surface)]/90 text-[var(--foreground)] hover:bg-emerald-500/20 hover:border-emerald-500 hover:text-emerald-500 transition-all cursor-pointer shadow-sm z-20"
+              className="absolute left-3.5 sm:left-4.5 top-1/2 -translate-y-1/2 p-2 rounded-full border border-[var(--border)] bg-[var(--surface)]/90 text-[var(--foreground)] hover:bg-emerald-500/20 hover:border-emerald-500 hover:text-emerald-500 transition-all cursor-pointer shadow-sm z-20"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
@@ -189,7 +189,7 @@ export function SpringDockFlashcards({
             }}
             title={currentIndex === deck.length - 1 ? "Xem kết quả (→)" : "Thẻ tiếp theo (→)"}
             aria-label="Thẻ tiếp theo"
-            className="absolute right-2.5 top-1/2 -translate-y-1/2 p-2 rounded-full border border-[var(--border)] bg-[var(--surface)]/90 text-[var(--foreground)] hover:bg-emerald-500/20 hover:border-emerald-500 hover:text-emerald-500 transition-all cursor-pointer shadow-sm z-20"
+            className="absolute right-3.5 sm:right-4.5 top-1/2 -translate-y-1/2 p-2 rounded-full border border-[var(--border)] bg-[var(--surface)]/90 text-[var(--foreground)] hover:bg-emerald-500/20 hover:border-emerald-500 hover:text-emerald-500 transition-all cursor-pointer shadow-sm z-20"
           >
             <ChevronRight className="h-4 w-4" />
           </button>
