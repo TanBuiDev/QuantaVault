@@ -21,7 +21,8 @@ import {
   Search,
   Navigation,
   MoreVertical,
-  Sparkles
+  Sparkles,
+  Play
 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { MarkdownContent } from "@/features/practice/MarkdownContent";
@@ -406,8 +407,19 @@ export function CourseLessonView({
                   />
                 </div>
               ) : (
-                <div className="rounded-3xl border border-dashed border-[var(--border)] bg-[var(--surface)] p-8 text-center text-sm text-[var(--muted)]">
-                  Chưa có video bài giảng trực tuyến.
+                <div className="relative aspect-video w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-[var(--border)] bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 flex flex-col items-center justify-center p-6 text-center shadow-xl">
+                  <div className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-2xl sm:rounded-3xl bg-emerald-500/15 text-emerald-500 mb-3 sm:mb-4 border border-emerald-500/30 shadow-inner">
+                    <Play className="h-8 w-8 sm:h-10 sm:w-10 ml-1 fill-emerald-500/20 text-emerald-500" />
+                  </div>
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 mb-2">
+                    {lesson.tags?.[0] || "Spring Video"}
+                  </span>
+                  <h3 className="text-sm sm:text-base lg:text-lg font-bold text-white max-w-md line-clamp-2 px-2">
+                    {lesson.title}
+                  </h3>
+                  <p className="mt-1.5 text-xs text-slate-400 max-w-sm">
+                    Video bài giảng trực tuyến đang chờ cập nhật liên kết. Bạn có thể học trước qua phần Thẻ Flashcard và Transcript bên cạnh.
+                  </p>
                 </div>
               )}
             </div>

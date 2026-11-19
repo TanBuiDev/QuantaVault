@@ -13,16 +13,16 @@ describe("Spring Framework for Java Course", () => {
     expect(course).toBeDefined();
     expect(course?.slug).toBe("spring-framework-for-java");
     expect(course?.title).toBe("Spring Framework for Java Development");
-    expect(course?.totalLessons).toBe(3);
+    expect(course?.totalLessons).toBe(14);
     expect(course?.chapters).toHaveLength(1);
-    expect(course?.lessons).toHaveLength(3);
+    expect(course?.lessons).toHaveLength(14);
   });
 
   it("keeps both source and website course manifests byte-for-byte identical", () => {
     expect(readFileSync(webManifestPath, "utf8")).toBe(readFileSync(sourceManifestPath, "utf8"));
   });
 
-  it("ensures all 3 lessons have complete metadata, video IDs, flashcards and transcripts", () => {
+  it("ensures all lessons have complete metadata, video IDs, flashcards and transcripts", () => {
     expect(course?.lessons).toBeDefined();
     const lessons = course!.lessons;
 
@@ -38,7 +38,7 @@ describe("Spring Framework for Java Course", () => {
     expect(lessons[1].videoId).toBe("-PAN_jBSMLk");
     expect(lessons[1].flashcards?.length).toBeGreaterThanOrEqual(10);
     expect(lessons[1].transcript?.length).toBeGreaterThanOrEqual(50);
-    expect(lessons[1].contentMarkdown).toContain("Bảng so sánh chuyên sâu: EJB (Cũ) vs Spring Framework (Mới)");
+    expect(lessons[1].contentMarkdown).toContain("So sánh trực diện qua Code thực tế");
 
     // Lesson 3
     expect(lessons[2].id).toBe("lesson-03");
@@ -46,6 +46,23 @@ describe("Spring Framework for Java Course", () => {
     expect(lessons[2].flashcards?.length).toBeGreaterThanOrEqual(8);
     expect(lessons[2].transcript?.length).toBeGreaterThanOrEqual(50);
     expect(lessons[2].contentMarkdown).toContain("Inversion of Control (IoC) và Dependency Injection (DI)");
+
+    // Lesson 4
+    expect(lessons[3].id).toBe("lesson-04");
+    expect(lessons[3].flashcards?.length).toBeGreaterThanOrEqual(8);
+    expect(lessons[3].transcript?.length).toBeGreaterThanOrEqual(50);
+
+    // Lesson 5 (Practice Quiz)
+    expect(lessons[4].id).toBe("lesson-05");
+    expect(lessons[4].flashcards?.length).toBeGreaterThanOrEqual(30);
+
+    // Lesson 10 (Practice Quiz Fundamentals)
+    expect(lessons[9].id).toBe("lesson-10");
+    expect(lessons[9].flashcards?.length).toBeGreaterThanOrEqual(70);
+
+    // Lesson 14 (Graded Quiz)
+    expect(lessons[13].id).toBe("lesson-14");
+    expect(lessons[13].flashcards?.length).toBeGreaterThanOrEqual(70);
   });
 
   it("correctly resolves previous and next lesson navigation", () => {
@@ -59,6 +76,10 @@ describe("Spring Framework for Java Course", () => {
 
     const l3 = getCourseLesson("spring-framework-for-java", "lesson-03");
     expect(l3?.prevLesson?.id).toBe("lesson-02");
-    expect(l3?.nextLesson).toBeUndefined();
+    expect(l3?.nextLesson?.id).toBe("lesson-04");
+
+    const l14 = getCourseLesson("spring-framework-for-java", "lesson-14");
+    expect(l14?.prevLesson?.id).toBe("lesson-13");
+    expect(l14?.nextLesson).toBeUndefined();
   });
 });

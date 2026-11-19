@@ -3,9 +3,10 @@
 import { useState, memo } from "react";
 import {
   Layers,
-  BookOpen
+  BookOpen,
+  Languages
 } from "lucide-react";
-import { MarkdownContent } from "@/features/practice/MarkdownContent";
+import { MarkdownContent, type LanguageMode } from "@/features/practice/MarkdownContent";
 import type { CourseLesson, CourseManifest } from "@/lib/courses";
 import { getUrlParams, updateUrlParams } from "@/lib/utils/urlParams";
 import { SpringTranscriptPanel } from "./SpringTranscriptPanel";
@@ -50,14 +51,28 @@ export const SpringLessonContent = memo(function SpringLessonContent({
     return defaultTab;
   });
 
+  // 2. Language mode state synchronized with URL search params (Tier 1 state persistence)
+  const [langMode, setLangMode] = useState<LanguageMode>(() => {
+    if (typeof window !== "undefined") {
+      const param = getUrlParams().get("lang");
+      if (param === "bilingual" || param === "en" || param === "vi") return param;
+    }
+    return "bilingual";
+  });
+
   const handleTabChange = (tab: SpringTabMode) => {
     setActiveTab(tab);
     updateUrlParams({ tab }, { tab: defaultTab });
   };
 
+  const handleLangModeChange = (mode: LanguageMode) => {
+    setLangMode(mode);
+    updateUrlParams({ lang: mode }, { lang: "bilingual" });
+  };
+
   return (
     <div className="space-y-6 animate-fade-in" style={{ fontSize: `${textScale}%` }}>
-      {/* 1. Lower Workspace Mode Switcher Tabs */}
+      {/* 1. Lower Workspace Mode Switcher Tabs + Language Mode Selector */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border)] pb-3">
         <div className="flex flex-wrap items-center gap-2">
           {/* Blueprint tab (Primary for lower workspace) */}
@@ -90,6 +105,57 @@ export const SpringLessonContent = memo(function SpringLessonContent({
             </button>
           )}
         </div>
+
+        {/* Language Mode Selector: Song ngữ | Tiếng Việt | Tiếng Anh */}
+        {activeTab === "blueprint" && (
+          <div
+            role="group"
+            aria-label="Chọn chế độ ngôn ngữ bài học"
+            className="flex items-center rounded-xl border border-[var(--border)] bg-[var(--surface-hover)]/60 p-1 text-xs font-semibold shrink-0"
+          >
+            <button
+              type="button"
+              onClick={() => handleLangModeChange("bilingual")}
+              className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 transition-all cursor-pointer ${
+                langMode === "bilingual"
+                  ? "bg-[var(--surface)] text-[var(--foreground)] shadow-2xs border border-[var(--border)] font-bold"
+                  : "text-[var(--muted-strong)] hover:text-[var(--foreground)]"
+              }`}
+              title="Hiển thị song ngữ Anh - Việt"
+            >
+              <Languages className="h-3.5 w-3.5 text-indigo-500" />
+              <span>Song ngữ</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleLangModeChange("vi")}
+              className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 transition-all cursor-pointer ${
+                langMode === "vi"
+                  ? "bg-[var(--surface)] text-[var(--foreground)] shadow-2xs border border-[var(--border)] font-bold"
+                  : "text-[var(--muted-strong)] hover:text-[var(--foreground)]"
+              }`}
+              title="Chỉ hiển thị Tiếng Việt"
+            >
+              <span className="rounded bg-rose-500/10 px-1 py-0.2 text-[10px] font-bold text-rose-600 dark:text-rose-400">VI</span>
+              <span>Tiếng Việt</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleLangModeChange("en")}
+              className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 transition-all cursor-pointer ${
+                langMode === "en"
+                  ? "bg-[var(--surface)] text-[var(--foreground)] shadow-2xs border border-[var(--border)] font-bold"
+                  : "text-[var(--muted-strong)] hover:text-[var(--foreground)]"
+              }`}
+              title="Chỉ hiển thị Tiếng Anh"
+            >
+              <span className="rounded bg-indigo-500/10 px-1 py-0.2 text-[10px] font-bold text-indigo-600 dark:text-indigo-400">EN</span>
+              <span>Tiếng Anh</span>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* 2. TAB: ARCHITECTURE & DEEP DIVE MARKDOWN */}
@@ -101,6 +167,7 @@ export const SpringLessonContent = memo(function SpringLessonContent({
           >
             <MarkdownContent
               markdown={lesson.contentMarkdown}
+              languageMode={langMode}
               fullWidth
               textScale={textScale}
             />
