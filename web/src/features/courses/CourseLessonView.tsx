@@ -36,6 +36,8 @@ import { EnglishLessonContent } from "./EnglishLessonContent";
 import { SpringLessonContent } from "./SpringLessonContent";
 import { SpringTranscriptPanel } from "./SpringTranscriptPanel";
 import { SpringDockFlashcards } from "./SpringDockFlashcards";
+import { SpringQuizStudio } from "./SpringQuizStudio";
+import { getLessonQuiz } from "./quizData";
 import {
   SpringQuizStage,
   SpringAudioStage,
@@ -126,6 +128,7 @@ export function CourseLessonView({
   const { speak, isSpeaking } = useEnglishSpeech();
   const isEnglish = course.slug === "english-job-interview";
   const isSpring = course.slug === "spring-framework-for-java";
+  const quizQuestions = isSpring ? getLessonQuiz(lesson.id) : null;
   const visibleMarkdown = isEnglish
     ? lesson.contentMarkdown.replace(/^# Lesson [^\n]*\n\n\*\*Tiếng Việt:\*\*[^\n]*\n\n---\n\n/, "")
     : lesson.contentMarkdown;
@@ -784,6 +787,14 @@ export function CourseLessonView({
                 onToggleAutoScroll={() => setTranscriptAutoScroll((prev) => !prev)}
                 initialTab="blueprint"
               />
+            ) : lesson.lessonType === "quiz" && quizQuestions && quizQuestions.length > 0 ? (
+              <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-10 shadow-xs">
+                <SpringQuizStudio
+                  questions={quizQuestions}
+                  lessonTitle={lesson.title}
+                  textScale={textScale}
+                />
+              </div>
             ) : (
               <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-10 shadow-xs">
                 <div

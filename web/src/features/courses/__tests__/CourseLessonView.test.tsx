@@ -228,9 +228,11 @@ describe("CourseLessonView", () => {
     expect(screen.queryByText(/Video bài giảng trực tuyến đang chờ cập nhật/i)).not.toBeInTheDocument();
 
     // Should render Quiz Stage & Flashcards
-    expect(screen.getByText("Bài 05: Bài tập trắc nghiệm - Khám phá Spring Framework")).toBeInTheDocument();
+    expect(screen.getAllByText("Bài 05: Bài tập trắc nghiệm - Khám phá Spring Framework").length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText("What is Spring IoC?").length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText("Spring IoC là gì?").length).toBeGreaterThanOrEqual(1);
+    // Should render interactive Quiz Studio below
+    expect(screen.getByText(/Bài tập trắc nghiệm tương tác/i)).toBeInTheDocument();
 
     // Right rail should NOT duplicate the Flashcard tab on quiz lessons (to avoid 2 flashcard areas)
     expect(screen.queryByRole("button", { name: /Flashcard \(1\)/i })).not.toBeInTheDocument();

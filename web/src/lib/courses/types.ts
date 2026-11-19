@@ -17,6 +17,27 @@ export interface CourseTranscriptSentence {
   end?: number;
 }
 
+export interface CourseQuizOption {
+  id: string;
+  textEn: string;
+  textVi: string;
+  isCorrect: boolean;
+}
+
+export interface CourseQuizQuestion {
+  id: string;
+  number: number;
+  title?: string;
+  questionEn: string;
+  questionVi: string;
+  options: CourseQuizOption[];
+  explanationEn?: string;
+  explanationVi?: string;
+  feedbackEn?: string;
+  feedbackVi?: string;
+  score?: string;
+}
+
 export type CourseLessonType =
   | "video"
   | "quiz"
@@ -47,6 +68,8 @@ export interface CourseLesson {
   flashcards?: CourseFlashcard[];
   /** Optional structured bilingual transcript sentences */
   transcript?: CourseTranscriptSentence[];
+  /** Optional structured multiple-choice quiz questions */
+  quiz?: CourseQuizQuestion[];
 }
 
 export interface CourseChapter {
