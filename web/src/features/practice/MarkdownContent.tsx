@@ -304,7 +304,14 @@ export const MarkdownContent = memo(function MarkdownContent({
           ol({ node, ...props }) { return <ol {...props} {...sourceAttrs(node)} />; },
           li({ node, ...props }) { return <li {...props} {...sourceAttrs(node)} />; },
           blockquote({ node, ...props }) { return <blockquote {...props} {...sourceAttrs(node)} />; },
-          table({ node, ...props }) { return <table {...props} {...sourceAttrs(node)} />; },
+          table({ node, ...props }) {
+            const attrs = sourceAttrs(node);
+            return (
+              <div className="my-4 max-w-full overflow-x-auto" {...attrs}>
+                <table {...props} />
+              </div>
+            );
+          },
           th({ node, ...props }) { return <th {...props} {...sourceAttrs(node)} />; },
           td({ node, ...props }) { return <td {...props} {...sourceAttrs(node)} />; },
           hr({ node, ...props }) { return <hr {...props} {...sourceAttrs(node)} />; },

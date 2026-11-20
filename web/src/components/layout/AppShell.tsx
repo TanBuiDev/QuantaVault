@@ -69,7 +69,7 @@ function AppShellContent({ children, courses }: { children: ReactNode; courses: 
       >
         <main
           id="main-content"
-          className="mx-auto w-full max-w-[1800px] px-3 py-4 sm:px-5 sm:py-6 lg:px-6 lg:py-6"
+          className="mx-auto w-full max-w-[1800px] px-3 py-4 sm:px-5 sm:py-6 lg:px-6 lg:py-6 overflow-x-clip"
         >
           {children}
         </main>

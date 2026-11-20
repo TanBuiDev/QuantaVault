@@ -307,7 +307,7 @@ export function CourseLessonView({
   };
 
   return (
-    <div className="mx-auto w-full max-w-5xl xl:max-w-7xl 2xl:max-w-[1720px] space-y-6 lg:space-y-8 animate-fade-in">
+    <div className="mx-auto w-full max-w-5xl xl:max-w-7xl 2xl:max-w-[1720px] space-y-6 lg:space-y-8 animate-fade-in overflow-x-clip min-w-0">
       {/* Mobile Syllabus Drawer Overlay */}
       {mobileSyllabusOpen && (
         <div className="fixed inset-0 z-50 lg:hidden flex">
@@ -436,7 +436,7 @@ export function CourseLessonView({
           {/* HÀNG 1: THEATER DOCK (Video + Tiêu đề + Toolbar bên trái 60% : Transcript/Flashcard/Mục lục bên phải 40%) */}
           <div className="lg:grid lg:grid-cols-12 lg:gap-6 items-start">
             {/* Cột 1: Stage Player + Title & Speech Header + Action Toolbar (Chiếm 7/12 = ~58.3% -> 60%) */}
-            <div ref={leftColRef} className="lg:col-span-7 2xl:col-span-7 flex flex-col space-y-4">
+            <div ref={leftColRef} className="lg:col-span-7 2xl:col-span-7 flex flex-col space-y-4 min-w-0 w-full">
               {/* 1.1 Khung Stage chính theo loại bài học */}
               {lesson.lessonType === "quiz" ? (
                 <SpringQuizStage lesson={lesson} textScale={textScale} />
@@ -785,7 +785,7 @@ export function CourseLessonView({
           </div>
 
           {/* HÀNG 3: KHÔNG GIAN HỌC CHUYÊN SÂU (Full-width Lower Workspace) */}
-          <section aria-label="Nội dung bài học Spring Framework" className="pt-2">
+          <section aria-label="Nội dung bài học Spring Framework" className="pt-2 min-w-0 w-full overflow-hidden">
             {!lesson.lessonType || lesson.lessonType === "video" ? (
               <SpringLessonContent
                 course={course}

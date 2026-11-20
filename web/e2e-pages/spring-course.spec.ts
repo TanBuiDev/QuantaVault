@@ -22,7 +22,7 @@ test("exports the three Spring lessons with video, transcript, flashcards and ar
     await expect(page.getByText("Flashcard", { exact: false }).first()).toBeVisible();
     // 4. Mobile viewport fits without horizontal overflow
     await page.setViewportSize({ width: 390, height: 840 });
-    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+    await expect.poll(async () => page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
     await page.setViewportSize({ width: 1280, height: 800 });
   }
 });

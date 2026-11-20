@@ -72,7 +72,7 @@ export const SpringLessonContent = memo(function SpringLessonContent({
   };
 
   return (
-    <div className="space-y-6 animate-fade-in" style={{ fontSize: `${textScale}%` }}>
+    <div className="space-y-6 animate-fade-in min-w-0 max-w-full overflow-hidden" style={{ fontSize: `${textScale}%` }}>
       {/* 1. Lower Workspace Mode Switcher Tabs + Language Mode Selector */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border)] pb-3">
         <div className="flex flex-wrap items-center gap-2">
@@ -112,7 +112,7 @@ export const SpringLessonContent = memo(function SpringLessonContent({
           <div
             role="group"
             aria-label="Chọn chế độ ngôn ngữ bài học"
-            className="flex items-center rounded-xl border border-[var(--border)] bg-[var(--surface-hover)]/60 p-1 text-xs font-semibold shrink-0"
+            className="flex items-center rounded-xl border border-[var(--border)] bg-[var(--surface-hover)]/60 p-1 text-xs font-semibold max-w-full overflow-x-auto"
           >
             <button
               type="button"
