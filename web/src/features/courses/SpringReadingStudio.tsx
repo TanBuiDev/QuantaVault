@@ -21,7 +21,8 @@ import {
   Volume2
 } from "lucide-react";
 import { LanguageModeToggle, type LanguageMode } from "@/components/ui/LanguageModeToggle";
-import { MarkdownContent } from "@/features/practice/MarkdownContent";
+import { SpringStudyMarkdown, getSpringStudySections } from "./SpringStudyMarkdown";
+export { transformBilingualMarkdown } from "./SpringStudyMarkdown";
 import type { CourseLesson, CourseQuizQuestion } from "@/lib/courses";
 import { useEnglishSpeech } from "@/lib/courses/speech";
 
@@ -32,74 +33,6 @@ interface SpringReadingStudioProps {
   currentTime?: number;
   isPlaying?: boolean;
   onSeek?: (seconds: number) => void;
-}
-
-/**
- * Transforms raw bilingual markdown into tailored presentation based on the selected LanguageMode:
- * - "vi": Filters out EN lines, strips VI markers, produces 100% fluent Vietnamese reading text.
- * - "en": Filters out VI lines, strips EN markers, produces 100% original English reading text.
- * - "bilingual": Elegantly formats EN and VI pairs into card-like blockquotes, removes noisy '---' dividers.
- */
-export function transformBilingualMarkdown(raw: string, mode: LanguageMode): string {
-  if (!raw) return "";
-
-  // 1. Temporarily isolate code blocks to avoid regex corruption
-  const codeBlocks: string[] = [];
-  let text = raw.replace(/```[\s\S]*?```/g, (match) => {
-    codeBlocks.push(match);
-    return `___CODE_BLOCK_${codeBlocks.length - 1}___`;
-  });
-
-  if (mode === "vi") {
-    // 1. Headings: '## EN / VI' -> '## VI'
-    text = text.replace(/^(#{1,6}\s+)(.*?)\s*\/\s*(.*)$/gm, "$1$3");
-    // 2. Headings with VI (Tiêu đề):
-    text = text.replace(/^(#{1,6}\s+.*)\n\*\*VI(?:\s*\(Tiêu đề\))?:?\*\*\s*(.*)$/gm, "$1 — $2");
-    // 3. Convert bullet pairs '- **EN:** en\n  **VI:** vi' -> '- vi'
-    text = text.replace(/^(\s*)-\s*(?:\*\*)?EN:?\*?\*?\s*(.*?)\s*\n\s*(?:\*\*)?VI(?:\s*\(Tiêu đề\)|(?:\s*Dịch))?:?\*?\*?\s*(.*)$/gm, "$1- $3");
-    // 4. Remove EN lines
-    text = text.replace(/^\s*(?:\*\*)?EN:?\*?\*?\s*.*$/gm, "");
-    // 5. Clean VI markers
-    text = text.replace(/^\s*(?:\*\*)?VI(?:\s*\(Tiêu đề\)|(?:\s*Dịch))?:?\*?\*?\s*/gm, "");
-    text = text.replace(/^(\s*)-\s*(?:\*\*)?VI(?:\s*\(Tiêu đề\)|(?:\s*Dịch))?:?\*?\*?\s*/gm, "$1- ");
-    // 6. Remove isolated --- dividers
-    text = text.replace(/\n\s*---\s*\n/g, "\n\n");
-  } else if (mode === "en") {
-    // 1. Headings: '## EN / VI' -> '## EN'
-    text = text.replace(/^(#{1,6}\s+)(.*?)\s*\/\s*(.*)$/gm, "$1$2");
-    // 2. Remove VI subtitles on headings
-    text = text.replace(/^(#{1,6}\s+.*)\n\*\*VI(?:\s*\(Tiêu đề\))?:?\*\*\s*.*$/gm, "$1");
-    // 3. Convert bullet pairs '- **EN:** en\n  **VI:** vi' -> '- en'
-    text = text.replace(/^(\s*)-\s*(?:\*\*)?EN:?\*?\*?\s*(.*?)\s*\n\s*(?:\*\*)?VI(?:\s*\(Tiêu đề\)|(?:\s*Dịch))?:?\*?\*?\s*.*$/gm, "$1- $2");
-    // 4. Remove VI lines
-    text = text.replace(/^\s*(?:\*\*)?VI(?:\s*\(Tiêu đề\)|(?:\s*Dịch))?:?\*?\*?\s*.*$/gm, "");
-    // 5. Clean EN markers
-    text = text.replace(/^\s*(?:\*\*)?EN:?\*?\*?\s*/gm, "");
-    text = text.replace(/^(\s*)-\s*(?:\*\*)?EN:?\*?\*?\s*/gm, "$1- ");
-    // 6. Remove isolated --- dividers
-    text = text.replace(/\n\s*---\s*\n/g, "\n\n");
-  } else {
-    // Bilingual mode: Format EN and VI pairs into elegant presentation
-    // Remove standalone --- dividers
-    text = text.replace(/\n\s*---\s*\n/g, "\n\n");
-    // Convert headings '## Title EN / Title VI'
-    text = text.replace(/^(#{1,6}\s+)(.*?)\s*\/\s*(.*)$/gm, "$1$2\n*Bản dịch:* $3");
-    // Handle bullet list pairs
-    text = text.replace(/^(\s*)-\s*(?:\*\*)?EN:?\*?\*?\s*(.*?)\s*\n\s*(?:\*\*)?VI(?:\s*\(Tiêu đề\)|(?:\s*Dịch))?:?\*?\*?\s*(.*)$/gm, (_m, indent, enPart, viPart) => {
-      return `${indent}- **EN:** ${enPart.trim()}\n${indent}  > 🇻🇳 **Dịch:** ${viPart.trim()}`;
-    });
-    // Convert block pairs of EN: and VI: into clean blockquotes
-    text = text.replace(/(?:\*\*)?EN:?\*?\*?\s*([\s\S]*?)\s*\n+\s*(?:\*\*)?VI(?:\s*\(Tiêu đề\)|(?:\s*Dịch))?:?\*?\*?\s*([\s\S]*?)(?=\n\n|$)/g, (_m, en, vi) => {
-      return `**EN:** ${en.trim()}\n\n> 🇻🇳 **Dịch:** ${vi.trim()}`;
-    });
-  }
-
-  // Restore code blocks
-  text = text.replace(/___CODE_BLOCK_(\d+)___/g, (_, i) => codeBlocks[Number(i)]);
-
-  // Clean excessive empty lines
-  text = text.replace(/\n{3,}/g, "\n\n");
-  return text.trim();
 }
 
 /**
@@ -215,44 +148,15 @@ export function SpringReadingStudio({
 
   const Icon = typeConfig.icon;
 
-  // Transformed markdown based on active language mode
-  const displayMarkdown = useMemo(() => {
-    let md = transformBilingualMarkdown(lesson.contentMarkdown, langMode);
-
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase().trim();
-      const lines = md.split("\n");
-      const matched = lines.filter((line) => {
-        if (line.startsWith("#")) return true;
-        return line.toLowerCase().includes(q);
-      });
-      md = matched.join("\n");
-    }
-
-    return md;
-  }, [lesson.contentMarkdown, langMode, searchQuery]);
-
-  // Extract quick section headings for Table of Contents jump
+  // Stable section anchors are generated from source headings, independent of the language view.
   const sections = useMemo(() => {
     if (hasQuizQuestions && quizQuestions) {
       return quizQuestions.map((q) => ({
-        id: `quiz-q-${q.number}`,
-        title: `Câu ${q.number}: ${q.title || `Câu hỏi ${q.number}`}`
+        id: "quiz-q-" + q.number,
+        title: "Câu " + q.number + ": " + (q.title || "Câu hỏi " + q.number)
       }));
     }
-
-    const rawHeadings = lesson.contentMarkdown.match(/^##\s+(.+)$/gm) || [];
-    return rawHeadings.map((h, index) => {
-      const rawTitle = h.replace(/^##\s+/, "").trim();
-      const parts = rawTitle.split("/");
-      let title = rawTitle;
-      if (langMode === "vi" && parts.length > 1) {
-        title = parts[1].trim();
-      } else if (langMode === "en" && parts.length > 1) {
-        title = parts[0].trim();
-      }
-      return { id: `sec-${index}`, title };
-    }).slice(0, 8); // limit top 8
+    return getSpringStudySections(lesson.contentMarkdown, langMode).slice(0, 8);
   }, [hasQuizQuestions, quizQuestions, lesson.contentMarkdown, langMode]);
 
   // Filter quiz questions based on search query
@@ -367,26 +271,15 @@ export function SpringReadingStudio({
               <span>Chuyển nhanh đến phần chính:</span>
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              {sections.map((sec, idx) => (
+              {sections.map((sec) => (
                 <button
                   key={sec.id}
                   type="button"
                   onClick={() => {
-                    if (sec.id.startsWith("quiz-q-")) {
-                      const el = document.getElementById(sec.id);
-                      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-                      return;
-                    }
-                    const headingEl = Array.from(document.querySelectorAll("h2, h3")).find((el) =>
-                      el.textContent?.toLowerCase().includes(sec.title.toLowerCase().slice(0, 15))
-                    );
-                    if (headingEl) {
-                      headingEl.scrollIntoView({ behavior: "smooth", block: "start" });
-                    }
+                    document.getElementById(sec.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
                   }}
                   className="rounded-xl border border-[var(--border)] bg-[var(--surface-hover)]/40 px-3 py-1.5 text-xs font-semibold text-[var(--muted-strong)] hover:border-emerald-500/40 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all cursor-pointer truncate max-w-[260px]"
                 >
-                  <span className="mr-1 text-[10px] font-bold text-emerald-500">#{idx + 1}</span>
                   {sec.title}
                 </button>
               ))}
@@ -692,8 +585,8 @@ export function SpringReadingStudio({
           )}
 
           {/* Render markdown content (for all lessons, or additional notes on quiz) */}
-          {displayMarkdown && (
-            <MarkdownContent markdown={displayMarkdown} />
+          {lesson.contentMarkdown && (
+            <SpringStudyMarkdown markdown={lesson.contentMarkdown} mode={langMode} query={searchQuery} />
           )}
         </section>
       </div>

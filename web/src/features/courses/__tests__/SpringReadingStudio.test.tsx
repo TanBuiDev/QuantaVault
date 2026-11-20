@@ -55,7 +55,12 @@ describe("transformBilingualMarkdown", () => {
   it("formats into elegant bilingual cards in bilingual mode", () => {
     const biText = transformBilingualMarkdown(mockLesson.contentMarkdown, "bilingual");
     expect(biText).toContain("Congratulations! You have completed this module.");
-    expect(biText).toContain("> 🇻🇳 **Dịch:** Chúc mừng! Bạn đã hoàn thành mô-đun này.");
+    expect(biText).toContain("Chúc mừng! Bạn đã hoàn thành mô-đun này.");
+    expect(biText).not.toContain("**EN:**");
+    expect(biText).not.toContain("**VI:**");
+    expect(biText).not.toContain("🇻🇳");
+    expect(biText).not.toContain("**Dịch:**");
+    expect(biText).not.toContain("> ");
   });
 });
 
