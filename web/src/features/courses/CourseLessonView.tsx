@@ -49,6 +49,7 @@ interface YouTubePlayerInstance {
   seekTo?: (seconds: number, allowSeekAhead?: boolean) => void;
   playVideo?: () => void;
   pauseVideo?: () => void;
+  destroy?: () => void;
 }
 
 declare global {
