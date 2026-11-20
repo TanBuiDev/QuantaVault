@@ -8,7 +8,6 @@ import {
   VolumeX,
   FastForward,
   Rewind,
-  RotateCcw,
   Code2,
   Terminal,
   BookOpen,

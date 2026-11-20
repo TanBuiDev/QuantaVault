@@ -7,14 +7,11 @@ import {
   Headphones,
   Terminal,
   Clock,
-  Sparkles,
   Search,
   X,
   Copy,
   Check,
-  Layers,
-  ChevronDown,
-  Info
+  Layers
 } from "lucide-react";
 import { LanguageModeToggle, type LanguageMode } from "@/components/ui/LanguageModeToggle";
 import { MarkdownContent } from "@/features/practice/MarkdownContent";

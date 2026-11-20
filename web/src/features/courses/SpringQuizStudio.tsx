@@ -6,23 +6,20 @@ import {
   XCircle,
   Volume2,
   RotateCcw,
-  Languages,
   Award,
   Sparkles,
-  HelpCircle,
   Check,
   X
 } from "lucide-react";
 import type { CourseQuizQuestion } from "@/lib/courses";
 import { useEnglishSpeech } from "@/lib/courses/speech";
+import { LanguageModeToggle, type LanguageMode } from "@/components/ui/LanguageModeToggle";
 
 interface SpringQuizStudioProps {
   questions: CourseQuizQuestion[];
   lessonTitle: string;
   textScale?: number;
 }
-
-import { LanguageModeToggle, type LanguageMode } from "@/components/ui/LanguageModeToggle";
 
 export function SpringQuizStudio({
   questions,
@@ -118,7 +115,6 @@ export function SpringQuizStudio({
           const isAnswered = Boolean(selectedOptionId);
           const selectedOption = isAnswered ? q.options.find((o) => o.id === selectedOptionId) : null;
           const isCorrect = selectedOption?.isCorrect ?? false;
-          const correctOption = q.options.find((o) => o.isCorrect);
 
           return (
             <div

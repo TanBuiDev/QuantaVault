@@ -28,7 +28,6 @@ interface SpringLessonContentProps {
 type SpringTabMode = "blueprint" | "transcript";
 
 export const SpringLessonContent = memo(function SpringLessonContent({
-  course,
   lesson,
   textScale = 100,
   currentTime,

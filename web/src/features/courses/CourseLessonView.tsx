@@ -19,7 +19,6 @@ import {
   ExternalLink,
   Layers,
   Search,
-  Navigation,
   MoreVertical,
   Sparkles,
   Play
@@ -45,9 +44,25 @@ import {
   SpringDocumentStage
 } from "./SpringStageCards";
 
+interface YouTubePlayerInstance {
+  getCurrentTime?: () => number;
+  seekTo?: (seconds: number, allowSeekAhead?: boolean) => void;
+  playVideo?: () => void;
+  pauseVideo?: () => void;
+}
+
 declare global {
   interface Window {
-    YT?: any;
+    YT?: {
+      Player: new (
+        element: HTMLElement | string,
+        config: {
+          events?: {
+            onStateChange?: (e: { data: number }) => void;
+          };
+        }
+      ) => YouTubePlayerInstance;
+    };
     onYouTubeIframeAPIReady?: () => void;
   }
 }
@@ -77,21 +92,17 @@ export function CourseLessonView({
   // Vì vậy ở Dock bên phải, không lặp lại Flashcard để tránh hiển thị 2 bộ thẻ trùng lặp.
   const hasFlashcards = Boolean(!isQuizLesson && lesson.flashcards && lesson.flashcards.length > 0);
 
+  const [prevLessonId, setPrevLessonId] = useState(lesson.id);
   const [rightRailTab, setRightRailTab] = useState<"transcript" | "flashcards" | "syllabus">(() => {
     if (hasTranscript) return "transcript";
     if (hasFlashcards) return "flashcards";
     return "syllabus";
   });
 
-  useEffect(() => {
-    if (hasTranscript) {
-      setRightRailTab("transcript");
-    } else if (hasFlashcards) {
-      setRightRailTab("flashcards");
-    } else {
-      setRightRailTab("syllabus");
-    }
-  }, [lesson.id, hasTranscript, hasFlashcards]);
+  if (prevLessonId !== lesson.id) {
+    setPrevLessonId(lesson.id);
+    setRightRailTab(hasTranscript ? "transcript" : hasFlashcards ? "flashcards" : "syllabus");
+  }
 
   const [transcriptSearchQuery, setTranscriptSearchQuery] = useState("");
   const [transcriptAutoScroll, setTranscriptAutoScroll] = useState(true);
@@ -122,7 +133,7 @@ export function CourseLessonView({
   const [leftColHeight, setLeftColHeight] = useState<number | null>(null);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const ytPlayerRef = useRef<any>(null);
+  const ytPlayerRef = useRef<YouTubePlayerInstance | null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const { textScale, changeTextScale } = useCourseTextSize();
@@ -195,7 +206,7 @@ export function CourseLessonView({
       try {
         ytPlayerRef.current = new window.YT.Player("spring-youtube-iframe", {
           events: {
-            onStateChange: (e: any) => {
+            onStateChange: (e: { data: number }) => {
               if (destroyed) return;
               const playing = e.data === 1;
               setIsPlaying(playing);

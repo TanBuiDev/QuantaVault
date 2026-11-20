@@ -17,17 +17,19 @@ export function SpringDockFlashcards({
   className = ""
 }: SpringDockFlashcardsProps) {
   // Giữ thứ tự bài học gốc theo mặc định, hỗ trợ nút xáo trộn tùy chọn
+  const [prevFlashcards, setPrevFlashcards] = useState(flashcards);
   const [deck, setDeck] = useState<CourseFlashcard[]>(() => [...flashcards]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const { speak, isSpeaking } = useEnglishSpeech();
 
   // Reset when flashcards change
-  useEffect(() => {
+  if (prevFlashcards !== flashcards) {
+    setPrevFlashcards(flashcards);
     setDeck([...flashcards]);
     setCurrentIndex(0);
     setIsFlipped(false);
-  }, [flashcards]);
+  }
 
   // Keyboard navigation: Space to flip, ArrowLeft/ArrowRight to navigate
   useEffect(() => {
