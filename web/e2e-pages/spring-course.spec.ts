@@ -5,7 +5,6 @@ const videoIds = ["X4Pho7r5sDg", "-PAN_jBSMLk", "hFuleFszKcA"];
 
 test("exports the three Spring lessons with video, transcript, flashcards and architecture", async ({ page }) => {
   await page.route("https://www.youtube-nocookie.com/**", route => route.fulfill({ body: "" }));
-  await page.setViewportSize({ width: 390, height: 840 });
   await page.goto("/courses/");
   await expect(page.getByText("Spring Framework for Java Development", { exact: true }).first()).toBeVisible();
 
@@ -19,10 +18,12 @@ test("exports the three Spring lessons with video, transcript, flashcards and ar
     );
     // 2. Blueprint (Kiến trúc & Phân tích chuyên sâu) is rendered
     await expect(page.getByRole("region", { name: "Nội dung phân tích kiến trúc bài học" })).toBeVisible();
-    // 3. Right dock or lower workspace has Flashcards
+    // 3. Right dock has Flashcards on desktop
     await expect(page.getByText("Flashcard", { exact: false }).first()).toBeVisible();
     // 4. Mobile viewport fits without horizontal overflow
+    await page.setViewportSize({ width: 390, height: 840 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+    await page.setViewportSize({ width: 1280, height: 800 });
   }
 });
 

@@ -39,8 +39,8 @@ test("Back and Forward restore explicitly selected interview difficulty", async 
   await page.goBack();
   await expect(page.getByRole("button", { name: "Junior (Cơ bản)" })).toHaveClass(/(?:^|\s)bg-emerald-500(?:\s|$)/);
   // Wait for the intermediate page before traversing the next history entry.
-  await page.evaluate(() => history.forward());
+  await page.goForward();
   await expect(page).toHaveURL(/\/courses\/?$/);
-  await page.evaluate(() => history.forward());
+  await page.goForward();
   await expect(page.getByRole("button", { name: "Middle (Trung cấp)" })).toHaveClass(/(?:^|\s)bg-amber-500(?:\s|$)/);
 });
