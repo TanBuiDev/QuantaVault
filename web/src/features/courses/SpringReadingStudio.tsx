@@ -14,6 +14,9 @@ import {
   Layers,
   Award,
   CheckCircle2,
+  XCircle,
+  HelpCircle,
+  RotateCcw,
   Sparkles,
   Volume2
 } from "lucide-react";
@@ -134,6 +137,39 @@ export function SpringReadingStudio({
 
   const isQuiz = lesson.lessonType === "quiz";
   const hasQuizQuestions = Boolean(isQuiz && quizQuestions && quizQuestions.length > 0);
+
+  // Interactive state for quiz questions
+  const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
+  const [revealedAnswers, setRevealedAnswers] = useState<Record<string, boolean>>({});
+
+  const handleSelectOption = (questionId: string, optionId: string) => {
+    if (userAnswers[questionId] || revealedAnswers[questionId]) return;
+    setUserAnswers((prev) => ({
+      ...prev,
+      [questionId]: optionId
+    }));
+  };
+
+  const handleReveal = (questionId: string) => {
+    setRevealedAnswers((prev) => ({
+      ...prev,
+      [questionId]: true
+    }));
+  };
+
+  const handleResetQuiz = () => {
+    setUserAnswers({});
+    setRevealedAnswers({});
+  };
+
+  const totalQuestions = quizQuestions?.length || 0;
+  const answeredCount = Object.keys(userAnswers).length;
+  const correctCount = useMemo(() => {
+    if (!quizQuestions) return 0;
+    return quizQuestions.filter(
+      (q) => userAnswers[q.id] && q.options.find((o) => o.id === userAnswers[q.id])?.isCorrect
+    ).length;
+  }, [quizQuestions, userAnswers]);
 
   // Badge configuration based on lesson type
   const typeConfig = useMemo(() => {
@@ -383,22 +419,61 @@ export function SpringReadingStudio({
           )}
         </div>
 
+        {/* 3.1 Quiz Progress & Reset Toolbar */}
+        {hasQuizQuestions && (
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)]/30 px-4 py-2.5 text-xs">
+            <div className="flex items-center gap-3">
+              <span className="font-medium text-[var(--muted-strong)]">
+                Tiến độ: <strong className="text-[var(--foreground)]">{answeredCount}</strong> / {totalQuestions} câu
+              </span>
+              {answeredCount > 0 && (
+                <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+                  Đúng: {correctCount} / {answeredCount} ({Math.round((correctCount / answeredCount) * 100)}%)
+                </span>
+              )}
+            </div>
+
+            {(answeredCount > 0 || Object.keys(revealedAnswers).length > 0) && (
+              <button
+                type="button"
+                onClick={handleResetQuiz}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-xs font-semibold text-[var(--muted-strong)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)] transition-all cursor-pointer"
+                title="Làm lại tất cả câu hỏi trắc nghiệm"
+              >
+                <RotateCcw className="h-3.5 w-3.5 text-emerald-500" />
+                <span>Làm lại bài tập</span>
+              </button>
+            )}
+          </div>
+        )}
+
         {/* 4. MAIN READING CONTENT AREA */}
         <section
           aria-label="Nội dung phân tích kiến trúc bài học"
           className="prose dark:prose-invert max-w-none [contain:content] pt-2 space-y-6"
           style={{ fontSize: `${textScale}%` }}
         >
-          {/* For Quiz lessons: render question analysis & answer key cards */}
+          {/* For Quiz lessons: render interactive questions & answer evaluation */}
           {hasQuizQuestions && (
             <div className="not-prose space-y-5">
               {filteredQuizQuestions.map((q) => {
-                const correctOption = q.options.find((o) => o.isCorrect);
+                const selectedOptionId = userAnswers[q.id];
+                const isRevealed = Boolean(selectedOptionId || revealedAnswers[q.id]);
+                const isAnswered = Boolean(selectedOptionId);
+                const selectedOption = isAnswered ? q.options.find((o) => o.id === selectedOptionId) : null;
+                const isCorrect = selectedOption?.isCorrect ?? false;
+
                 return (
                   <div
                     key={q.id}
                     id={`quiz-q-${q.number}`}
-                    className="rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)]/30 p-4 sm:p-6 space-y-3.5 transition-all hover:border-emerald-500/30"
+                    className={`rounded-2xl border transition-all p-4 sm:p-6 space-y-4 ${
+                      !isRevealed
+                        ? "border-[var(--border)] bg-[var(--surface-hover)]/30 hover:border-emerald-500/30"
+                        : isCorrect
+                        ? "border-emerald-500/40 bg-emerald-500/[0.02]"
+                        : "border-rose-500/30 bg-rose-500/[0.02]"
+                    }`}
                   >
                     <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--border)] pb-2.5">
                       <div className="flex items-center gap-2">
@@ -411,17 +486,43 @@ export function SpringReadingStudio({
                           </span>
                         )}
                       </div>
-                      {q.questionEn && (
-                        <button
-                          type="button"
-                          onClick={() => speak(q.questionEn)}
-                          title="Nghe phát âm câu hỏi tiếng Anh"
-                          className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/10 transition-colors cursor-pointer"
-                        >
-                          <Volume2 className="h-3.5 w-3.5" />
-                          <span className="text-[11px] font-semibold">Nghe</span>
-                        </button>
-                      )}
+
+                      <div className="flex items-center gap-2">
+                        {/* Result badge after answering */}
+                        {isAnswered && (
+                          <span
+                            className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-0.5 text-xs font-bold border transition-all ${
+                              isCorrect
+                                ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
+                                : "bg-rose-500/15 text-rose-600 dark:text-rose-400 border-rose-500/30"
+                            }`}
+                          >
+                            {isCorrect ? (
+                              <>
+                                <CheckCircle2 className="h-3.5 w-3.5" />
+                                <span>Chính xác (+1)</span>
+                              </>
+                            ) : (
+                              <>
+                                <XCircle className="h-3.5 w-3.5" />
+                                <span>Chưa chính xác</span>
+                              </>
+                            )}
+                          </span>
+                        )}
+
+                        {q.questionEn && (
+                          <button
+                            type="button"
+                            onClick={() => speak(q.questionEn)}
+                            title="Nghe phát âm câu hỏi tiếng Anh"
+                            className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs text-indigo-600 dark:text-indigo-400 hover:bg-indigo-500/10 transition-colors cursor-pointer"
+                          >
+                            <Volume2 className="h-3.5 w-3.5" />
+                            <span className="text-[11px] font-semibold">Nghe</span>
+                          </button>
+                        )}
+                      </div>
                     </div>
 
                     {/* Question text */}
@@ -444,36 +545,144 @@ export function SpringReadingStudio({
                       )}
                     </div>
 
-                    {/* Correct Option Highlight Box */}
-                    {correctOption && (
-                      <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 sm:p-4 space-y-1">
-                        <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-600 dark:text-emerald-400">
-                          <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
-                          <span>Đáp án chính xác: ({correctOption.id})</span>
-                        </div>
-                        <div className="pl-5.5 space-y-0.5">
-                          {langMode !== "vi" && correctOption.textEn && (
-                            <p className="text-xs sm:text-sm font-semibold text-[var(--foreground)]">
-                              {correctOption.textEn}
-                            </p>
-                          )}
-                          {langMode !== "en" && correctOption.textVi && (
-                            <p className="text-xs text-emerald-700 dark:text-emerald-300 font-medium">
-                              {correctOption.textVi}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    )}
+                    {/* Options list A, B, C, D */}
+                    <div className="grid grid-cols-1 gap-2.5 pt-1">
+                      {q.options.map((opt) => {
+                        const isThisSelected = selectedOptionId === opt.id;
+                        const isThisCorrect = opt.isCorrect;
 
-                    {/* Explanation / Key takeaway */}
-                    {(q.explanationVi || q.explanationEn || q.feedbackVi || q.feedbackEn) && (
-                      <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 text-xs leading-relaxed space-y-1 text-[var(--muted-strong)]">
-                        <span className="font-bold text-[var(--foreground)] flex items-center gap-1">
-                          <Sparkles className="h-3.5 w-3.5 text-amber-500" />
-                          <span>Phân tích & Điểm mấu chốt:</span>
-                        </span>
-                        <p>{q.explanationVi || q.explanationEn || q.feedbackVi || q.feedbackEn}</p>
+                        let cardStyle =
+                          "border-[var(--border)] bg-[var(--surface)] hover:border-emerald-500/50 hover:bg-[var(--surface-hover)] cursor-pointer text-[var(--foreground)]";
+                        let badgeStyle =
+                          "border border-[var(--border)] bg-[var(--surface-hover)] text-[var(--muted-strong)]";
+
+                        if (isRevealed) {
+                          if (isThisSelected) {
+                            if (isThisCorrect) {
+                              cardStyle =
+                                "border-2 border-emerald-500 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 font-semibold shadow-xs";
+                              badgeStyle = "bg-emerald-500 text-white font-bold border-emerald-500";
+                            } else {
+                              cardStyle =
+                                "border-2 border-rose-500 bg-rose-500/10 text-rose-700 dark:text-rose-300 font-semibold shadow-xs";
+                              badgeStyle = "bg-rose-500 text-white font-bold border-rose-500";
+                            }
+                          } else if (isThisCorrect) {
+                            cardStyle =
+                              "border-2 border-emerald-500/70 bg-emerald-500/5 text-emerald-700 dark:text-emerald-300 font-medium";
+                            badgeStyle = "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold border-emerald-500/40";
+                          } else {
+                            cardStyle = "opacity-40 border-[var(--border)] text-[var(--muted)] pointer-events-none";
+                          }
+                        }
+
+                        return (
+                          <button
+                            key={opt.id}
+                            type="button"
+                            disabled={isRevealed}
+                            onClick={() => handleSelectOption(q.id, opt.id)}
+                            className={`group relative flex items-start gap-3 rounded-2xl border p-3.5 sm:p-4 text-left transition-all ${cardStyle}`}
+                          >
+                            <span
+                              className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg text-xs font-bold transition-all mt-0.5 ${badgeStyle}`}
+                            >
+                              {isRevealed && isThisSelected ? (
+                                isThisCorrect ? (
+                                  <Check className="h-3.5 w-3.5 stroke-[3]" />
+                                ) : (
+                                  <X className="h-3.5 w-3.5 stroke-[3]" />
+                                )
+                              ) : isRevealed && isThisCorrect ? (
+                                <Check className="h-3.5 w-3.5 stroke-[3]" />
+                              ) : (
+                                opt.id
+                              )}
+                            </span>
+
+                            <div className="flex-1 min-w-0 space-y-0.5">
+                              {langMode !== "vi" && opt.textEn && (
+                                <p className="text-xs sm:text-sm font-semibold leading-relaxed">
+                                  {opt.textEn}
+                                </p>
+                              )}
+                              {langMode !== "en" && opt.textVi && (
+                                <p
+                                  className={`text-xs leading-relaxed ${
+                                    langMode === "bilingual"
+                                      ? "text-[var(--muted-strong)]"
+                                      : "font-semibold"
+                                  }`}
+                                >
+                                  {opt.textVi}
+                                </p>
+                              )}
+                            </div>
+
+                            {isRevealed && isThisCorrect && (
+                              <span className="shrink-0 self-center rounded-md bg-emerald-500/15 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
+                                Đáp án đúng
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* If not yet revealed, show button to reveal answer & explanation */}
+                    {!isRevealed ? (
+                      <div className="flex justify-end pt-1">
+                        <button
+                          type="button"
+                          onClick={() => handleReveal(q.id)}
+                          className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--muted-strong)] hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer"
+                        >
+                          <HelpCircle className="h-3.5 w-3.5 text-emerald-500" />
+                          <span>Xem đáp án & giải thích</span>
+                        </button>
+                      </div>
+                    ) : (
+                      /* Explanation & Feedback block */
+                      <div
+                        className={`rounded-2xl border p-4 sm:p-5 transition-all animate-fade-in space-y-2 mt-2 ${
+                          isCorrect
+                            ? "border-emerald-500/25 bg-emerald-500/[0.04]"
+                            : "border-amber-500/25 bg-amber-500/[0.04]"
+                        }`}
+                      >
+                        {(q.feedbackEn || q.feedbackVi) && (
+                          <div className="flex items-center gap-2">
+                            <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                              <Sparkles className="h-3.5 w-3.5" />
+                              <span>Phản hồi:</span>
+                            </span>
+                            <span className="text-xs font-semibold text-[var(--foreground)]">
+                              {langMode === "en"
+                                ? q.feedbackEn
+                                : langMode === "vi"
+                                ? q.feedbackVi
+                                : `${q.feedbackEn} — ${q.feedbackVi}`}
+                            </span>
+                          </div>
+                        )}
+
+                        {(q.explanationVi || q.explanationEn) && (
+                          <div className="space-y-1 text-xs leading-relaxed text-[var(--foreground)]">
+                            <div className="font-bold text-[11px] text-[var(--muted-strong)] uppercase tracking-wider">
+                              Phân tích & Điểm mấu chốt:
+                            </div>
+                            {langMode !== "vi" && q.explanationEn && (
+                              <p className="font-medium text-[var(--foreground)]">
+                                {q.explanationEn}
+                              </p>
+                            )}
+                            {langMode !== "en" && q.explanationVi && (
+                              <p className="text-[var(--muted-strong)] whitespace-pre-line pt-0.5">
+                                {q.explanationVi}
+                              </p>
+                            )}
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>

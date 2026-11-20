@@ -101,4 +101,71 @@ describe("SpringReadingStudio", () => {
     expect(screen.getByText(/Spring Boot automates configuration/i)).toBeInTheDocument();
     expect(screen.queryByText(/Congratulations/i)).not.toBeInTheDocument();
   });
+
+  it("renders interactive quiz questions without spoiling the answer upfront, and reveals upon selection", () => {
+    const quizLesson: CourseLesson = {
+      ...mockLesson,
+      id: "lesson-21",
+      lessonType: "quiz",
+      title: "Bài 21: Trắc nghiệm Spring Boot"
+    };
+
+    const mockQuizQuestions = [
+      {
+        id: "q-1",
+        number: 1,
+        title: "Mục đích chính của Spring Boot",
+        questionEn: "What is the primary purpose of Spring Boot?",
+        questionVi: "Mục đích chính của Spring Boot là gì?",
+        options: [
+          {
+            id: "A",
+            textEn: "To provide a new language",
+            textVi: "Cung cấp ngôn ngữ mới",
+            isCorrect: false
+          },
+          {
+            id: "B",
+            textEn: "To simplify Java app development by automating configuration",
+            textVi: "Đơn giản hóa việc phát triển ứng dụng Java bằng cách tự động hóa cấu hình",
+            isCorrect: true
+          }
+        ],
+        explanationVi: "Spring Boot tự động hóa cấu hình.",
+        explanationEn: "Spring Boot automates configuration."
+      }
+    ];
+
+    render(
+      <SpringReadingStudio
+        lesson={quizLesson}
+        quizQuestions={mockQuizQuestions}
+      />
+    );
+
+    // 1. Question and options A and B are rendered
+    expect(screen.getByText("What is the primary purpose of Spring Boot?")).toBeInTheDocument();
+    expect(screen.getByText(/To provide a new language/i)).toBeInTheDocument();
+    expect(screen.getByText(/To simplify Java app development/i)).toBeInTheDocument();
+
+    // 2. Crucial: The explanation and "Đáp án đúng" badge are NOT shown initially!
+    expect(screen.queryByText(/Phân tích & Điểm mấu chốt/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Chính xác \(\+1\)/i)).not.toBeInTheDocument();
+    expect(screen.getByText("Xem đáp án & giải thích")).toBeInTheDocument();
+
+    // 3. User clicks Option B (correct)
+    const optionB = screen.getByText(/To simplify Java app development/i);
+    fireEvent.click(optionB);
+
+    // 4. Now the result is revealed with correct badge and explanation!
+    expect(screen.getByText(/Chính xác \(\+1\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/Đáp án đúng/i)).toBeInTheDocument();
+    expect(screen.getByText(/Phân tích & Điểm mấu chốt/i)).toBeInTheDocument();
+    expect(screen.getByText("Làm lại bài tập")).toBeInTheDocument();
+
+    // 5. Clicking "Làm lại bài tập" resets the quiz
+    fireEvent.click(screen.getByText("Làm lại bài tập"));
+    expect(screen.queryByText(/Chính xác \(\+1\)/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Phân tích & Điểm mấu chốt/i)).not.toBeInTheDocument();
+  });
 });
