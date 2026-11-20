@@ -51,8 +51,9 @@ describe("SpringStudyMarkdown", () => {
 
   it("uses the normal foreground color for Vietnamese-only reading", () => {
     const { container } = render(<SpringStudyMarkdown markdown={example} mode="vi" />);
-    expect(container.querySelector('[data-study-language="vi"]')).toBeNull();
-    expect(container.querySelector('[data-study-language="en"]')).not.toBeNull();
+    expect(container.querySelector('[data-study-language="vi"]')).not.toBeNull();
+    expect(container.querySelector('[data-study-language="vi"]')).not.toHaveClass("dark:text-[#7DD3E8]");
+    expect(container.querySelector('[data-study-language="en"]')).toBeNull();
     expect(container.textContent).not.toContain("Spring Boot provides sensible defaults.");
     expect(container.textContent).toContain("Spring Boot cung cấp những thiết lập mặc định hợp lý.");
     expect(container.querySelectorAll("[data-study-bullets] > li")).toHaveLength(2);

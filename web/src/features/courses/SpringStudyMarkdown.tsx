@@ -168,10 +168,14 @@ const VI_STYLE = "!text-inherit [&_p]:!my-0 [&_p]:!max-w-none [&_p]:!text-inheri
 const HEADING_STYLE = "[&_h1]:!my-0 [&_h2]:!my-0 [&_h3]:!my-0 [&_h4]:!my-0 [&_h5]:!my-0 [&_h6]:!my-0";
 const VI_COLOR = "text-[#0E7490] dark:text-[#7DD3E8]";
 
-function StudyLanguageText({ text, translation }: { text: string; translation?: boolean }) {
+function StudyLanguageText({ text, language, highlight = false }: {
+  text: string;
+  language: "vi" | "en";
+  highlight?: boolean;
+}) {
   return (
-    <div data-study-language={translation ? "vi" : "en"} className={translation ? VI_COLOR : "text-[var(--foreground)]"}>
-      <MarkdownContent markdown={text} fullWidth className={translation ? VI_STYLE : EN_STYLE} />
+    <div lang={language} data-study-language={language} className={highlight ? VI_COLOR : "text-[var(--foreground)]"}>
+      <MarkdownContent markdown={text} fullWidth className={highlight ? VI_STYLE : EN_STYLE} />
     </div>
   );
 }
@@ -213,8 +217,8 @@ export function SpringStudyMarkdown({ markdown, mode, query = "" }: SpringStudyM
         if (block.type === "pair") {
           return (
             <div key={"pair-" + index} data-study-pair className="space-y-1.5">
-              {mode !== "vi" && <StudyLanguageText text={block.en} />}
-              {mode !== "en" && <StudyLanguageText text={block.vi} translation={mode === "bilingual"} />}
+              {mode !== "vi" && <StudyLanguageText text={block.en} language="en" />}
+              {mode !== "en" && <StudyLanguageText text={block.vi} language="vi" highlight={mode === "bilingual"} />}
             </div>
           );
         }
@@ -227,8 +231,8 @@ export function SpringStudyMarkdown({ markdown, mode, query = "" }: SpringStudyM
               {items.map((item, itemIndex) => (
                 <li key={itemIndex} className="pl-1">
                   <div className="space-y-1.5">
-                    {mode !== "vi" && <StudyLanguageText text={item.en} />}
-                    {mode !== "en" && <StudyLanguageText text={item.vi} translation={mode === "bilingual"} />}
+                    {mode !== "vi" && <StudyLanguageText text={item.en} language="en" />}
+                    {mode !== "en" && <StudyLanguageText text={item.vi} language="vi" highlight={mode === "bilingual"} />}
                   </div>
                 </li>
               ))}
