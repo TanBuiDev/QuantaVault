@@ -37,6 +37,7 @@ import { SpringLessonContent } from "./SpringLessonContent";
 import { SpringTranscriptPanel } from "./SpringTranscriptPanel";
 import { SpringDockFlashcards } from "./SpringDockFlashcards";
 import { SpringQuizStudio } from "./SpringQuizStudio";
+import { SpringReadingStudio } from "./SpringReadingStudio";
 import { getLessonQuiz } from "./quizData";
 import {
   SpringQuizStage,
@@ -796,14 +797,7 @@ export function CourseLessonView({
                 />
               </div>
             ) : (
-              <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-10 shadow-xs">
-                <div
-                  className="prose dark:prose-invert max-w-none [contain:content]"
-                  style={{ fontSize: `${textScale}%` }}
-                >
-                  <MarkdownContent markdown={lesson.contentMarkdown} />
-                </div>
-              </div>
+              <SpringReadingStudio lesson={lesson} textScale={textScale} />
             )}
           </section>
 

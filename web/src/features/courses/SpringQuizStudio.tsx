@@ -22,7 +22,7 @@ interface SpringQuizStudioProps {
   textScale?: number;
 }
 
-type LanguageMode = "bilingual" | "vi" | "en";
+import { LanguageModeToggle, type LanguageMode } from "@/components/ui/LanguageModeToggle";
 
 export function SpringQuizStudio({
   questions,
@@ -81,42 +81,8 @@ export function SpringQuizStudio({
 
         {/* Cụm công cụ bên phải: Tabs ngôn ngữ + Nút Reset */}
         <div className="flex flex-wrap items-center gap-2">
-          {/* Tabs ngôn ngữ: Song ngữ | Tiếng Việt | Tiếng Anh */}
-          <div className="flex items-center rounded-xl border border-[var(--border)] bg-[var(--surface)] p-1 shadow-2xs">
-            <button
-              type="button"
-              onClick={() => setLangMode("bilingual")}
-              className={`rounded-lg px-2.5 py-1 text-xs font-bold transition-all cursor-pointer ${
-                langMode === "bilingual"
-                  ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-2xs"
-                  : "text-[var(--muted-strong)] hover:text-[var(--foreground)]"
-              }`}
-            >
-              Song ngữ
-            </button>
-            <button
-              type="button"
-              onClick={() => setLangMode("vi")}
-              className={`rounded-lg px-2.5 py-1 text-xs font-bold transition-all cursor-pointer ${
-                langMode === "vi"
-                  ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-2xs"
-                  : "text-[var(--muted-strong)] hover:text-[var(--foreground)]"
-              }`}
-            >
-              Tiếng Việt
-            </button>
-            <button
-              type="button"
-              onClick={() => setLangMode("en")}
-              className={`rounded-lg px-2.5 py-1 text-xs font-bold transition-all cursor-pointer ${
-                langMode === "en"
-                  ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-2xs"
-                  : "text-[var(--muted-strong)] hover:text-[var(--foreground)]"
-              }`}
-            >
-              Tiếng Anh
-            </button>
-          </div>
+          {/* Tabs ngôn ngữ dùng chung: Song ngữ | Tiếng Việt | Tiếng Anh */}
+          <LanguageModeToggle value={langMode} onChange={setLangMode} />
 
           {/* Điểm số & Nút làm lại */}
           {answeredCount > 0 && (

@@ -265,7 +265,7 @@ describe("CourseLessonView", () => {
     expect(screen.queryByText(/Video bài giảng trực tuyến đang chờ cập nhật/i)).not.toBeInTheDocument();
 
     // Should render Audio badge and Audio controls
-    expect(screen.getByText(/Bài đọc kết hợp Audio Lecture/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Bài đọc kết hợp Audio Lecture/i).length).toBeGreaterThanOrEqual(1);
     expect(screen.getByLabelText(/Phát audio/i)).toBeInTheDocument();
 
     // Right rail should have Syllabus tab
