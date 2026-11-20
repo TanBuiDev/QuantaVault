@@ -12306,7 +12306,7 @@
         "th:text",
         "Dynamic UI"
       ],
-      "videoId": "tWvNfFB9bO0",
+      "videoId": "",
       "flashcards": [
         {
           "id": "card-1",
@@ -12818,7 +12818,7 @@
         "@Valid",
         "BindingResult"
       ],
-      "videoId": "PfvXP-OKcRA",
+      "videoId": "",
       "flashcards": [
         {
           "id": "card-1",
@@ -13733,7 +13733,7 @@
         "CSRF",
         "Security Architecture"
       ],
-      "videoId": "u3wYmNGXd9k",
+      "videoId": "",
       "flashcards": [
         {
           "id": "card-1",
@@ -14285,7 +14285,7 @@
         "PasswordEncoder",
         "BCrypt"
       ],
-      "videoId": "BZgeX4o1_5Q",
+      "videoId": "",
       "flashcards": [
         {
           "id": "card-1",
@@ -14851,7 +14851,7 @@
         "SecurityFilterChain",
         "Session Management"
       ],
-      "videoId": "5buj1yut_gc",
+      "videoId": "",
       "flashcards": [
         {
           "id": "card-1",
