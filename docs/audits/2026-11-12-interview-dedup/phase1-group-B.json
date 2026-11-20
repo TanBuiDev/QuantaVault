@@ -1,0 +1,308 @@
+{
+  "schema": "quantavault-interview-merge-phase1-v1",
+  "baselineMainCommit": "2c56c4bf02015961f0e9bd7979c8f8e1cce34f68",
+  "sourceFile": "data/interview-questions.json",
+  "stage": "content-review-only",
+  "groups": [
+    {
+      "group": "B01",
+      "keptId": "q-044",
+      "mergedIds": [
+        "q-043"
+      ],
+      "question": {
+        "id": "q-044",
+        "title": "Bytecode là gì? Java được biên dịch và thực thi qua JVM như thế nào?",
+        "category": "java-core",
+        "difficulty": "junior",
+        "tags": [
+          "JavaCore",
+          "JVM",
+          "JDK",
+          "Bytecode",
+          "Primitive",
+          "Autoboxing"
+        ],
+        "companies": [
+          "Tiki",
+          "Momo",
+          "NAB Innovation"
+        ],
+        "summary": "`javac` biên dịch mã nguồn `.java` thành **Bytecode (`.class`)**, mã trung gian không gắn với một hệ điều hành. Khi chạy, JVM nạp, kiểm tra và thực thi Bytecode bằng Interpreter/JIT. Muốn đa nền tảng phải có JVM tương thích; Java 17 dùng class file version 61, Java 21 dùng version 65, do đó chạy bytecode Java 21 trên Java 17 có thể gây `UnsupportedClassVersionError`.",
+        "answerMarkdown": "### 1. Giai đoạn biên dịch (Compilation)\n\nLập trình viên viết mã nguồn Java trong file `.java`.\n\nVí dụ:\n\n```java\npublic class Hello {\n    public static void main(String[] args) {\n        System.out.println(\"Hello Java\");\n    }\n}\n```\n\nSử dụng trình biên dịch `javac`:\n\n```bash\njavac Hello.java\n```\n\nKết quả tạo ra file `Hello.class` chứa **Bytecode**, là mã trung gian được JVM hiểu và thực thi.\n\n### 2. Giai đoạn thực thi (Execution)\n\nChạy chương trình bằng lệnh:\n\n```bash\njava Hello\n```\n\nJVM thực hiện các công việc chính:\n\n1. **Class Loading:** ClassLoader nạp các class cần thiết vào JVM.\n2. **Bytecode Verification:** JVM kiểm tra tính hợp lệ của Bytecode trước khi thực thi.\n3. **Class Initialization:** JVM khởi tạo các class theo yêu cầu, bao gồm thực thi các thành phần khởi tạo tĩnh.\n4. **Execution:** JVM bắt đầu thực thi chương trình thông qua phương thức `main()`.\n\nTrong quá trình thực thi:\n\n- **Interpreter:** Thông dịch các lệnh Bytecode.\n- **JIT Compiler (Just-In-Time):** Biên dịch Bytecode thành mã máy để tối ưu hiệu năng, đặc biệt đối với những đoạn code được thực thi thường xuyên (hot code).\n- **Heap Memory:** Lưu trữ các đối tượng được tạo trong quá trình chạy chương trình.\n- **Garbage Collector (GC):** Tự động thu hồi bộ nhớ của những đối tượng không còn được sử dụng.\n\nNhờ đó, lập trình viên không cần tự quản lý việc giải phóng bộ nhớ của từng đối tượng như trong một số ngôn ngữ lập trình khác.\n\n### 3. Ví dụ thực tế với Spring Boot và Maven\n\nTrong dự án Java Backend sử dụng Spring Boot, quá trình build và chạy ứng dụng thường diễn ra như sau:\n\n**Bước 1: Build ứng dụng bằng Maven**\n\n```bash\nmvn clean package\n```\n\nMaven sử dụng cấu hình trong `pom.xml` để quản lý dependency, thực hiện các bước build như biên dịch mã nguồn, chạy test và đóng gói ứng dụng.\n\nNếu được cấu hình với Spring Boot Maven Plugin, kết quả có thể là một **executable JAR** chứa các class của ứng dụng và những dependency cần thiết.\n\n**Bước 2: Chạy ứng dụng**\n\n```bash\njava -jar target/covie.jar\n```\n\n(Tên file JAR thực tế phụ thuộc vào cấu hình build của dự án.)\n\nKhi chạy:\n\n1. JVM khởi động và nạp các class cần thiết từ ứng dụng.\n2. Phương thức `main()` của ứng dụng Spring Boot được gọi.\n3. Trong phương thức `main()`, lệnh `SpringApplication.run(...)` khởi động Spring Boot.\n4. Spring Boot tạo và cấu hình **ApplicationContext**, khởi tạo các Spring Bean cần thiết.\n5. Nếu là ứng dụng web sử dụng embedded server, Spring Boot khởi động web server (ví dụ Tomcat) để tiếp nhận HTTP request.\n\n**Phân biệt Maven và JVM:**\n\n- **Maven:** Công cụ quản lý dependency và tự động hóa quá trình build, test, đóng gói ứng dụng.\n- **JVM:** Môi trường thực thi Bytecode và quản lý quá trình chạy chương trình Java.\n\nVì vậy, Maven hỗ trợ tạo ra file JAR để triển khai, còn JVM mới là thành phần thực sự thực thi ứng dụng Java.\n### 4. Bytecode, JVM và tương thích Java\n\nFile `.class` chứa mã trung gian cùng metadata về class, method, field. Bytecode **không phải** mã máy của Windows hoặc Linux; JVM trên từng nền tảng thực thi mã đó. Tuy nhiên Java có native library hay API gắn hệ điều hành vẫn có thể phụ thuộc nền tảng.\n\n- Java 17 tạo Class File version **61** theo mặc định.\n- Java 21 tạo Class File version **65** theo mặc định.\n- JVM Java 17 không chạy được Class File 65, nên có thể ném `UnsupportedClassVersionError`.\n- Khi compiler hỗ trợ, `javac --release 17 Hello.java` tạo class file và giới hạn API mục tiêu tương thích Java 17.\n\nMaven phối hợp dependency, test và build; JVM mới thực thi Bytecode."
+      }
+    },
+    {
+      "group": "B02",
+      "keptId": "q-069",
+      "mergedIds": [
+        "q-070"
+      ],
+      "question": {
+        "id": "q-069",
+        "title": "Interface Java có những loại method nào? Abstract, default, static và private khác gì nhau?",
+        "category": "design-patterns",
+        "difficulty": "middle",
+        "tags": [
+          "OOP",
+          "SOLID",
+          "DesignPatterns",
+          "Factory",
+          "Strategy",
+          "Observer",
+          "Singleton"
+        ],
+        "companies": [
+          "Viettel",
+          "Shopee",
+          "Sea Group",
+          "FPT Software"
+        ],
+        "summary": "Interface khai báo **abstract method** cần implementation, **default method** có phần thân từ Java 8, **static method** thuộc chính interface từ Java 8 và **private method** dùng logic nội bộ từ Java 9. Default method có thể được class override; static method gọi qua tên interface, không được override như instance method. Khi hai default method cùng chữ ký gây xung đột, class phải giải quyết bằng override.",
+        "answerMarkdown": "## 1. Bốn loại method trong Interface\n\n| Loại | Cách sử dụng |\n|---|---|\n| Abstract | Định nghĩa hợp đồng để class triển khai |\n| Default (Java 8) | Có phần thân, class có thể override |\n| Static (Java 8) | Có phần thân và gọi qua `InterfaceName.method()` |\n| Private (Java 9) | Dùng chung code nội bộ giữa các method trong interface |\n\n## 2. Ví dụ Java\n\n```java\ninterface DiscountPolicy {\n    long calculate(long price); // Abstract.\n    default boolean isApplicable(long price) {\n        return price > 0; // Default, class có thể override.\n    }\n    static long nonNegative(long value) {\n        return Math.max(value, 0); // Gọi DiscountPolicy.nonNegative(...).\n    }\n    private boolean positive(long value) {\n        return value > 0; // Chỉ gọi bên trong interface.\n    }\n}\n```\n\nVí dụ private method chỉ minh họa cú pháp Java 9+, có thể được gọi từ default method nếu cần. `static` không tham gia dynamic dispatch/override; khác với default method được gọi trên instance. Abstract method của interface không cần từ khóa `abstract` khi khai báo thông thường.\n\n## 3. Khi nào dùng?\n\nDefault method giúp mở rộng interface có implementation sẵn nhưng phải giữ đúng contract; static method phù hợp tiện ích/factory gắn trực tiếp với interface. Nếu hai interface có default method trùng chữ ký và không có phương thức ưu tiên rõ, class phải override. Logic Spring Service có nhiều dependency không nên được dồn vào interface.\n\n**Trả lời phỏng vấn:** Từ Java 8 interface có default/static method; Java 9 thêm private. Chỉ default/abstract method liên quan đến instance implementation, còn static thuộc interface."
+      }
+    },
+    {
+      "group": "B03",
+      "keptId": "q-097",
+      "mergedIds": [
+        "q-098"
+      ],
+      "question": {
+        "id": "q-097",
+        "title": "Enum là gì? Vì sao dùng Enum thay String cho trạng thái Order?",
+        "category": "java-core",
+        "difficulty": "middle",
+        "tags": [
+          "String",
+          "Immutability",
+          "StringPool",
+          "EqualsHashCode",
+          "Enum",
+          "Record"
+        ],
+        "companies": [
+          "VNG",
+          "Grab"
+        ],
+        "summary": "`enum` định nghĩa tập hằng số cố định, kiểm tra kiểu tại compile time, tránh lỗi String như `PADI` thay cho `PAID`. Với trạng thái Order, enum giúp biểu diễn `PENDING`, `CONFIRMED`, `CANCELLED`,... rõ ràng; trong JPA thường ưu tiên `EnumType.STRING`, vẫn cần migration khi đổi tên. **Enum không thay thế state machine**: Service phải xác thực actor và phép chuyển trạng thái hợp lệ.",
+        "answerMarkdown": "## 1. Enum là gì?\n\n`enum` (enumeration) là kiểu dữ liệu Java dành cho **một tập hằng số xác định trước**. Ví dụ một đơn hàng có thể ở trạng thái `PENDING`, `PAID` hoặc `CANCELLED`.\n\n**So với String:** dùng `\"PAID\"` dễ gõ nhầm thành `\"PADI\"` mà trình biên dịch không phát hiện; `OrderStatus.PAID` được kiểm tra kiểu ngay khi biên dịch.\n\n## 2. Ví dụ Java hoàn chỉnh\n\n```java\npublic class EnumDemo {\n    enum OrderStatus { PENDING, PAID, CANCELLED } // Tập trạng thái cố định.\n\n    public static void main(String[] args) {\n        OrderStatus status = OrderStatus.PENDING; // Giá trị enum ban đầu.\n\n        if (status == OrderStatus.PENDING) { // Enum so sánh bằng ==.\n            status = OrderStatus.PAID;      // Chuyển sang đã thanh toán.\n        }\n\n        System.out.println(status); // PAID\n    }\n}\n```\n\n**Giải thích:**\n\n- `enum OrderStatus`: Khai báo một **kiểu** mới, không phải một `String`.\n- `OrderStatus.PENDING`: Một hằng enum; mỗi hằng thuộc cùng kiểu là một instance duy nhất.\n- `==`: Cách so sánh enum thường dùng và an toàn khi hai vế cùng kiểu; `status` vẫn có thể `null`, nên không gọi method trên nó khi chưa kiểm tra.\n- `OrderStatus.valueOf(\"PAID\")`: Chuyển tên hằng sang enum; **ném `IllegalArgumentException`** nếu chuỗi không hợp lệ, nên đầu vào API cần validation.\n\n## 3. Enum và String khác nhau thế nào?\n\n| Tiêu chí | String | Enum |\n|---|---|---|\n| Kiểm tra giá trị | Có thể sai chính tả khi chạy | Tên hằng được compiler kiểm tra khi dùng trong code |\n| Tập giá trị | Mở, thay đổi tự do | Định nghĩa rõ trước |\n| So sánh | Dùng `equals()` cho nội dung | Thường dùng `==` |\n| Phù hợp | Tên, mô tả, dữ liệu không giới hạn | Trạng thái hoặc loại nghiệp vụ cố định |\n\n## 4. Dùng Enum trong Spring Boot / JPA\n\n```java\n@Enumerated(EnumType.STRING) // Lưu tên enum, ví dụ \"PAID\".\nprivate OrderStatus status;    // Field trong một JPA Entity.\n```\n\nVới JPA, thường ưu tiên `EnumType.STRING` hơn `ORDINAL` vì đổi thứ tự hằng enum có thể khiến số thứ tự cũ mang ý nghĩa sai. **Nhưng đổi tên hằng cũng cần migration dữ liệu** nếu database đã lưu tên cũ.\n\nEnum **không tự ngăn** chuyển `PAID -> PENDING` không hợp lệ: Service vẫn phải kiểm tra quy tắc chuyển trạng thái. Nếu tập giá trị thay đổi tùy người dùng hoặc liên tục cấu hình từ database, enum có thể không phù hợp.\n\n## 5. Câu trả lời phỏng vấn (30–45 giây)\n\n> Enum là một kiểu Java biểu diễn tập hằng số xác định trước. Em sử dụng enum thay cho String khi dữ liệu thuộc một tập giá trị cố định, như trạng thái đơn hàng, để tránh lỗi gõ nhầm và tận dụng kiểm tra kiểu của compiler. Với JPA em thường lưu bằng `EnumType.STRING` thay vì `ORDINAL`; còn quy tắc chuyển trạng thái vẫn cần được Service kiểm tra.\n\n\n**Tài liệu:** [Oracle — Enum Types](https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html).\n## 6. Vì sao Order cần cả Enum và business validation?\n\nEnum hạn chế tập giá trị đầu vào nhưng không ngăn `COMPLETED -> PENDING` hoặc các chuyển trạng thái bất hợp lệ. Trong CoVie, request thay trạng thái Order phải đi qua Service hoặc domain policy kiểm tra **trạng thái hiện tại, actor, quyền và transition** trước khi lưu, không đơn giản nhận String/Enum từ client rồi `save()`.\n\nVí dụ `PENDING -> CONFIRMED` hoặc `PENDING -> CANCELLED` có thể hợp lệ theo chính sách, nhưng `COMPLETED -> PENDING` thường không. Đây là ví dụ quy tắc để học, không khẳng định workflow production cụ thể.\n",
+        "relatedProblems": [
+          383,
+          242,
+          3
+        ]
+      }
+    },
+    {
+      "group": "B04",
+      "keptId": "q-132",
+      "mergedIds": [
+        "q-133"
+      ],
+      "question": {
+        "id": "q-132",
+        "title": "Stream API là gì? Stream khác Collection như thế nào?",
+        "category": "collections",
+        "difficulty": "middle",
+        "tags": [
+          "StreamAPI",
+          "Lambda",
+          "FunctionalInterface",
+          "Optional",
+          "Collectors"
+        ],
+        "companies": [
+          "Momo",
+          "NAB Innovation",
+          "Samsung R&D",
+          "VNPay"
+        ],
+        "summary": "**Collection** (List/Set) là cấu trúc **lưu** phần tử; **Stream** là pipeline **xử lý** phần tử từ Collection, array hoặc nguồn khác. Stream có intermediate operations như `filter`, `map`, `sorted` thường lazy, terminal operations như `toList`, `count`. Collection có thể duyệt lại, Stream đã tiêu thụ thì không dùng lại; Stream không tự lưu hoặc tự chỉnh Collection nguồn.",
+        "answerMarkdown": "## 1. Khác biệt cốt lõi\n\n| Collection | Stream |\n|---|---|\n| Lưu trữ phần tử (`List`, `Set`) | Mô tả pipeline tính toán |\n| Có thể lấy iterator mới nhiều lần | Tiêu thụ một lần |\n| Có thể add/remove theo contract | filter/map/collect/toList, không trực tiếp lưu dữ liệu |\n\n## 2. Ví dụ Java\n\n```java\nList<String> products = List.of(\"Book\", \"Pen\", \"Bag\");\nList<String> result = products.stream()\n        .filter(name -> name.length() > 3) // Intermediate, lazy.\n        .map(String::toUpperCase) // Intermediate.\n        .toList(); // Terminal chạy pipeline.\nSystem.out.println(result); // [BOOK]\n```\n\n`products` không đổi. `toList()` trả List kết quả và không đảm bảo List có thể chỉnh sửa. `filter`/`map` không tự biến đổi Collection nguồn, trừ side effect mà nên tránh.\n\n## 3. Lazy evaluation và lựa chọn công cụ\n\nIntermediate operation thường chưa chạy khi tạo pipeline, chỉ khởi động khi có terminal operation. Stream không được reuse sau khi đã tiêu thụ. Với dữ liệu từ PostgreSQL, đừng lấy hết bảng lớn về RAM chỉ để filter bằng Stream khi có thể truy vấn/lọc tại database. Stream hợp cho mapping Entity sang DTO, tổng hợp dữ liệu trong bộ nhớ với quy mô phù hợp.\n\n**Trả lời phỏng vấn:** Collection là nơi chứa dữ liệu; Stream là cách xử lý dữ liệu. Stream lazy, tiêu thụ một lần và không thay thế Collection hay truy vấn SQL."
+      }
+    },
+    {
+      "group": "B05",
+      "keptId": "q-211",
+      "mergedIds": [
+        "q-212"
+      ],
+      "question": {
+        "id": "q-211",
+        "title": "GET, POST, PUT, PATCH, DELETE khác nhau thế nào? PUT và PATCH khi nào dùng?",
+        "category": "spring",
+        "difficulty": "middle",
+        "tags": [
+          "SpringMVC",
+          "RESTAPI",
+          "HTTP",
+          "ControllerAdvice",
+          "Pagination",
+          "CORS",
+          "OpenAPI"
+        ],
+        "companies": [
+          "VNPay",
+          "Axon"
+        ],
+        "summary": "`GET` đọc tài nguyên, `POST` gửi dữ liệu để tạo hoặc xử lý, `PUT` thay thế representation của tài nguyên tại URI, `PATCH` áp dụng thay đổi một phần và `DELETE` yêu cầu xóa. GET là safe; GET, PUT và DELETE idempotent theo HTTP semantics khi thiết kế đúng. POST không mặc định idempotent, PATCH phụ thuộc phép cập nhật. PUT/PATCH phải xác định rõ cách hiểu field thiếu, `null`, validation và authorization.",
+        "answerMarkdown": "## 1. Ý nghĩa các phương thức HTTP\n\n| Method | Ý nghĩa | Safe? | Idempotent semantics? |\n|---|---|---|\n| GET | Lấy tài nguyên | Có | Có |\n| POST | Tạo tài nguyên hoặc xử lý tác vụ | Không | Không mặc định |\n| PUT | Thay thế trạng thái representation tại URI | Không | Có |\n| PATCH | Áp dụng cập nhật một phần | Không | Tùy phép thay đổi |\n| DELETE | Yêu cầu xóa | Không | Có |\n\nIdempotent không có nghĩa mọi lần trả HTTP response/status giống hệt nhau. GET không nên gây thay đổi trạng thái nghiệp vụ như trừ tồn kho.\n\n## 2. PUT và PATCH với Product\n\n```http\nPUT /products/42\nContent-Type: application/json\n\n{\"name\":\"Book\",\"priceMinor\":12000,\"description\":\"Intro\"}\n```\n\nTheo API contract minh họa, PUT gửi biểu diễn mới với đủ các field được phép thay thế.\n\n```http\nPATCH /products/42\nContent-Type: application/json\n\n{\"priceMinor\":13000}\n```\n\nPATCH chỉ thay giá, không tự xóa `name` hoặc `description`. Backend phải nêu rõ field thiếu khác field `null`, phân quyền sửa giá và tránh sửa những field nhạy cảm. PATCH gán giá cố định có thể idempotent; PATCH tăng quantity thêm một đơn vị mỗi lần gọi thường không idempotent.\n\n**Trả lời phỏng vấn:** PUT thiên về thay thế representation, PATCH thiên về một tập thay đổi; khác biệt cốt lõi là contract và semantics, không phải request có dùng JSON hay không."
+      }
+    },
+    {
+      "group": "B06",
+      "keptId": "q-258",
+      "mergedIds": [
+        "q-268"
+      ],
+      "question": {
+        "id": "q-258",
+        "title": "JWT được ký và xác minh chữ ký như thế nào? HS256 và RS256 khác nhau gì?",
+        "category": "security-auth",
+        "difficulty": "senior",
+        "tags": [
+          "JWT",
+          "Cookie",
+          "HttpOnly",
+          "SameSite",
+          "RefreshTokenRotation",
+          "ActiveSession"
+        ],
+        "companies": [
+          "NAB Innovation",
+          "Samsung R&D",
+          "VNPay",
+          "Axon"
+        ],
+        "summary": "JWT dạng JWS compact gồm các đoạn Base64URL của header, payload và signature. Bên phát hành ký chuỗi **encoded header.payload**; HS256 dùng secret HMAC chung, RS256 dùng RSA private key để ký và public key để xác minh. Bên nhận không tin tùy ý thuật toán từ `alg`/URL trong token, phải xác minh chữ ký và claims như `exp`, `iss`, `aud`; sau đó vẫn kiểm tra quyền nghiệp vụ.",
+        "answerMarkdown": "## 1. Cấu trúc JWT ký theo JWS\n\n```text\nbase64url(header).base64url(payload).base64url(signature)\n```\n\nBên ký tạo chữ ký/MAC trên **đúng hai đoạn encoded** `header.payload`, không parse JSON rồi ký lại theo thứ tự key tùy ý. Base64URL là encoding, không mã hóa bí mật nội dung payload.\n\n## 2. HS256 vs RS256\n\n| Thuật toán | Tạo chữ ký | Xác minh |\n|---|---|---|\n| HS256 | HMAC-SHA256 dùng secret | Cùng secret |\n| RS256 | RSA private key | Public key tương ứng |\n\nVới RS256, dịch vụ chỉ kiểm tra token không cần giữ private key; với HS256 bên xác minh phải bảo vệ secret dùng chung.\n\n## 3. Verifier phải kiểm tra những gì?\n\n1. Parse JWT bằng thư viện đáng tin cậy, từ chối thuật toán không được cho phép, đặc biệt `alg=none` khi bắt buộc có chữ ký.\n2. Chọn key từ cấu hình/trust store tin cậy, không tải khóa từ URL do JWT header tùy ý chỉ định; tránh nhầm RSA public key thành HMAC secret.\n3. Kiểm tra signature trên signing input gốc. Nếu attacker sửa `sub`, `exp` mà không có khóa, xác minh phải thất bại.\n4. Kiểm tra `exp`, `nbf` (nếu có), `iss`, `aud`, token type và session khi ứng dụng quản lý trạng thái.\n5. Dù chữ ký hợp lệ, Spring Security/Service vẫn phải kiểm tra role và ownership của Order cụ thể.\n\n**Trả lời phỏng vấn:** Chữ ký chứng minh tính toàn vẹn và khóa ký hợp lệ; authorization cần thêm kiểm tra claims và quyền với tài nguyên, không thể chỉ nhìn JWT có ba đoạn."
+      }
+    },
+    {
+      "group": "B07",
+      "keptId": "q-007",
+      "mergedIds": [
+        "q-189"
+      ],
+      "question": {
+        "id": "q-007",
+        "title": "Spring Framework và Spring Boot là gì, khác nhau thế nào? IoC và DI có vai trò gì?",
+        "category": "project-covie",
+        "difficulty": "junior",
+        "tags": [
+          "Java",
+          "Spring Framework",
+          "Spring Boot",
+          "AutoConfiguration",
+          "IoC",
+          "Dependency Injection",
+          "CoVie",
+          "Backend",
+          "Spring",
+          "SpringCore",
+          "DependencyInjection",
+          "BeanLifecycle",
+          "AOPProxy",
+          "Transactional"
+        ],
+        "companies": [
+          "FPT Software",
+          "Viettel",
+          "VNG",
+          "One Mount",
+          "Tiki",
+          "Shopee",
+          "MB Bank",
+          "Sea Group"
+        ],
+        "summary": "**Spring Framework** cung cấp IoC Container, DI, AOP, transaction và Spring MVC cho Java Backend. **Spring Boot** dựa trên Framework, giảm cấu hình nhờ starter/BOM, auto-configuration và embedded server. IoC chuyển quyền quản lý vòng đời object cho container; DI là cách container cung cấp dependency cho object, ví dụ inject `OrderRepository` vào `OrderService`. Boot không thay thế Spring Framework.",
+        "answerMarkdown": "### 1. Spring Framework là gì?\n\nSpring Framework là framework phát triển ứng dụng Java, cung cấp:\n\n- **IoC Container:** Quản lý việc tạo và vòng đời các đối tượng (Bean).\n- **Dependency Injection:** Cung cấp dependency cho các class thay vì để chúng tự tạo.\n- **AOP:** Tách các xử lý dùng chung như Transaction và Logging khỏi nghiệp vụ chính.\n- **Spring MVC:** Xây dựng ứng dụng web và REST API.\n\nVí dụ:\n\n```java\n@Service\npublic class OrderService {\n\n    private final OrderRepository repository;\n\n    public OrderService(OrderRepository repository) {\n        this.repository = repository;\n    }\n}\n```\n\nỞ đây, Spring quản lý `OrderService` và cung cấp `OrderRepository` thông qua constructor.\n\n**Lưu ý:** Các annotation như `@Service`, `@Component`, `@Autowired` thuộc hệ sinh thái Spring Framework, không phải tính năng riêng của Spring Boot.\n\n### 2. Spring Boot là gì?\n\nSpring Boot giúp đơn giản hóa việc cấu hình và khởi chạy ứng dụng sử dụng Spring Framework.\n\nCó ba cơ chế quan trọng:\n\n#### **A. Starter Dependencies**\n\nThay vì tự chọn và quản lý nhiều thư viện, Spring Boot cung cấp các nhóm dependency được cấu hình sẵn.\n\nVí dụ với Spring Boot 4:\n\n```xml\n<dependency>\n    <groupId>org.springframework.boot</groupId>\n    <artifactId>spring-boot-starter-webmvc</artifactId>\n</dependency>\n```\n\nStarter này cung cấp những thành phần cần thiết để xây dựng REST API với Spring MVC và Tomcat nhúng theo cấu hình mặc định.\n\nSpring Boot còn sử dụng BOM (Bill of Materials) để quản lý các phiên bản thư viện tương thích.\n\n#### **B. Auto-configuration**\n\nSpring Boot tự động cấu hình ứng dụng dựa trên các dependency, property và Bean hiện có.\n\nVí dụ:\n\n- Khi có Spring MVC và các điều kiện phù hợp, Boot cấu hình các thành phần phục vụ REST API.\n- Khi cấu hình kết nối Database phù hợp, Boot có thể tự động tạo `DataSource`.\n- Nếu lập trình viên cung cấp Bean tùy chỉnh, một số cấu hình mặc định tương ứng sẽ không được áp dụng.\n\nCơ chế này sử dụng các annotation như:\n\n- `@ConditionalOnClass`: Kiểm tra class có tồn tại hay không.\n- `@ConditionalOnMissingBean`: Chỉ áp dụng cấu hình khi chưa có Bean tương ứng.\n- `@ConditionalOnProperty`: Kiểm tra giá trị cấu hình.\n\n`@SpringBootApplication` kết hợp ba annotation chính:\n\n- `@SpringBootConfiguration`\n- `@EnableAutoConfiguration`\n- `@ComponentScan`\n\n#### **C. Embedded Server**\n\nTrong ứng dụng Spring MVC truyền thống, một cách triển khai phổ biến là đóng gói WAR và chạy trên Tomcat bên ngoài.\n\nSpring Boot đơn giản hóa việc này bằng máy chủ nhúng.\n\n```java\n@SpringBootApplication\npublic class CoVieApplication {\n\n    public static void main(String[] args) {\n        SpringApplication.run(CoVieApplication.class, args);\n    }\n}\n```\n\nVới cấu hình web phù hợp, Spring Boot khởi tạo Spring Context và Tomcat nhúng.\n\nỨng dụng có thể được đóng gói thành Executable JAR và chạy bằng:\n\n```bash\njava -jar app.jar\n```\n\n**Lưu ý:** Spring Boot vẫn hỗ trợ WAR và Tomcat bên ngoài khi cần.\n\n### 3. Bảng so sánh\n\n| Tiêu chí | Spring Framework | Spring Boot |\n|---|---|---|\n| Bản chất | Framework nền tảng | Công cụ đơn giản hóa phát triển ứng dụng Spring |\n| IoC, DI, AOP | Cung cấp trực tiếp | Sử dụng từ Spring Framework |\n| Cấu hình | Thường cần cấu hình tường minh hơn | Hỗ trợ Auto-configuration |\n| Dependency | Tự lựa chọn và quản lý | Có Starter và BOM |\n| Web Server | Có thể cấu hình server ngoài hoặc nhúng | Hỗ trợ Embedded Server thuận tiện |\n| Đóng gói | Phụ thuộc cách triển khai | Thường dùng Executable JAR |\n| Giám sát | Cần tích hợp thêm | Có Spring Boot Actuator |\n\n### 4. Ứng dụng trong dự án\n\nSử dụng Spring Boot để xây dựng Backend theo kiến trúc Modular Monolith.\n\nCác lợi ích chính:\n\n- **Dependency Injection:** Quản lý Controller, Service và Repository giữa các module.\n- **Auto-configuration:** Giảm công việc cấu hình Spring MVC, Database và các thành phần hạ tầng.\n- **Embedded Server:** Dễ đóng gói ứng dụng thành JAR và chạy trong Docker.\n- **Actuator:** Hỗ trợ giám sát sức khỏe và số liệu vận hành khi được tích hợp.\n\n### 5. Câu hỏi phỏng vấn mở rộng\n\n**Spring Boot có thay thế Spring Framework không?**\n\nKhông. Spring Boot sử dụng Spring Framework làm nền tảng và bổ sung các cơ chế tự động hóa cấu hình, quản lý dependency và khởi chạy ứng dụng.\n\n**Auto-configuration có nghĩa là không cần cấu hình gì nữa?**\n\nKhông. Spring Boot cung cấp cấu hình mặc định khi phù hợp. Những thông tin đặc thù như Database URL, Credentials, Security hoặc nghiệp vụ riêng vẫn cần được cấu hình.\n\n**Spring Boot có bắt buộc dùng Tomcat không?**\n\nKhông. Tomcat là lựa chọn mặc định phổ biến với Spring MVC, nhưng có thể sử dụng server khác hoặc xây dựng ứng dụng không cần web server.\n\n**Spring Boot có bắt buộc đóng gói JAR không?**\n\nKhông. Spring Boot hỗ trợ cả Executable JAR và WAR.\n\n**Spring Boot Actuator có tự động giám sát toàn bộ hệ thống không?**\n\nKhông. Cần thêm dependency Actuator và cấu hình những endpoint, quyền truy cập và hệ thống thu thập dữ liệu phù hợp.\n\n## Kết luận\n\nSpring Framework cung cấp các chức năng nền tảng như IoC, DI, AOP và Spring MVC.\n\nSpring Boot xây dựng trên Spring Framework, giúp phát triển ứng dụng nhanh hơn nhờ Starter Dependencies, Auto-configuration và Embedded Server.\n\nSpring Boot giúp giảm cấu hình hạ tầng ứng dụng, thuận tiện đóng gói Docker và tập trung vào các nghiệp vụ Java Backend.\n### 6. Spring Framework, IoC và DI không phải ba khái niệm đồng nghĩa\n\n- **Spring Framework:** Nền tảng Bean, IoC/DI, transaction, AOP, MVC; có hệ sinh thái Spring Data, Spring Security.\n- **IoC:** Nguyên lý đảo quyền điều khiển: Container thay application code đảm nhiệm việc tạo và kết nối các Bean.\n- **DI:** Cơ chế cung cấp dependency (như repository qua constructor) thay vì Service tự `new` mọi phụ thuộc. DI là một cách triển khai IoC.\n- **Spring Boot:** Giúp dùng Spring Framework nhanh hơn bằng cấu hình tự động, starter, quản lý phiên bản và đóng gói/chạy thuận tiện.\n\nKhi trả lời về CoVie, hãy phân biệt **nền tảng Spring** với **lớp tối ưu developer experience Spring Boot**. Annotation như `@Service`/`@Autowired` và cơ chế transaction không phải do Boot tự phát minh."
+      }
+    },
+    {
+      "group": "B08",
+      "keptId": "q-022",
+      "mergedIds": [
+        "q-023",
+        "q-024"
+      ],
+      "question": {
+        "id": "q-022",
+        "title": "Controller, Service và Repository khác nhau thế nào? Vai trò của từng tầng trong Spring Boot là gì?",
+        "category": "project-covie",
+        "difficulty": "middle",
+        "tags": [
+          "ModularMonolith",
+          "LayeredArchitecture",
+          "DTO",
+          "SOLID",
+          "CleanArchitecture"
+        ],
+        "companies": [
+          "VNG",
+          "Grab"
+        ],
+        "summary": "**Controller** nhận request, validate DTO và trả HTTP response; **Service** kiểm tra nghiệp vụ, điều phối transaction; **Repository** truy vấn và lưu dữ liệu bằng JPA/SQL. Luồng chuẩn là Client → Controller → Service → Repository → Database và trả ngược kết quả. Controller không nên xử lý tồn kho phức tạp, Repository không chịu trách nhiệm toàn bộ quyền buyer/seller.",
+        "answerMarkdown": "## 1. Vai trò từng tầng\n\n| Tầng | Trách nhiệm | Ví dụ |\n|---|---|---|\n| Controller | Route, input validation, DTO, HTTP status | `POST /orders` |\n| Service | Business policy, transaction, điều phối | Kiểm tra giá và tồn kho, tạo Order |\n| Repository | Query/CRUD và persistence mapping | Lưu Order xuống PostgreSQL |\n\n## 2. Sơ đồ luồng request\n\n```mermaid\nflowchart LR\n    Client --> Controller\n    Controller --> Service\n    Service --> Repository\n    Repository --> DB[(PostgreSQL)]\n    DB --> Repository\n    Repository --> Service\n    Service --> Controller\n    Controller --> Client\n```\n\n## 3. Tình huống tạo Order trong CoVie\n\n1. Controller nhận `CreateOrderRequest` từ client và kích hoạt validation; lỗi input được chuyển thành HTTP 4xx phù hợp.\n2. Controller gọi `OrderService.createOrder(...)`, không tự viết quy tắc giá, quyền, tồn kho.\n3. Service kiểm tra actor, trạng thái sản phẩm, giá và tồn kho; điều phối các Repository trong transaction để tạo Order, reservation và dữ liệu liên quan.\n4. Repository chịu trách nhiệm truy vấn/lưu entity qua Spring Data JPA hoặc SQL; Service xử lý kết quả và quy tắc nghiệp vụ.\n5. Controller chuyển thành `OrderResponse` và trả `201 Created` khi thành công, hoặc lỗi đúng contract khi thất bại.\n\n```java\n@RestController\nclass OrderController {\n    private final OrderService orderService;\n    OrderController(OrderService service) { this.orderService = service; }\n    @PostMapping(\"/orders\")\n    ResponseEntity<OrderResponse> create(@Valid @RequestBody CreateOrderRequest request) {\n        return ResponseEntity.status(201).body(orderService.createOrder(request));\n    }\n}\n```\n\n**Snippet minh họa**, không phải file Java độc lập: cần có `OrderService`, các DTO, imports và cấu hình Spring. Annotation `@Service` đánh dấu class nghiệp vụ là Bean, `@Repository`/`JpaRepository` giúp nhận diện và trừu tượng hóa tầng dữ liệu.\n\n**Trả lời phỏng vấn:** Controller xử lý giao tiếp HTTP, Service chịu trách nhiệm nghiệp vụ/transaction, Repository truy cập database. Tách tầng để dễ test và thay đổi mà không trộn concern."
+      }
+    },
+    {
+      "group": "B09",
+      "keptId": "q-487",
+      "mergedIds": [
+        "q-488"
+      ],
+      "question": {
+        "id": "q-487",
+        "title": "Docker Compose là gì? Vì sao dùng để chạy PostgreSQL, Redis và MinIO cho Java Backend?",
+        "category": "testing-devops",
+        "difficulty": "senior",
+        "tags": [
+          "Docker",
+          "MultiStageBuild",
+          "Linux",
+          "Nginx",
+          "Prometheus",
+          "Grafana",
+          "CICD",
+          "Actuator"
+        ],
+        "companies": [
+          "VNG",
+          "Grab"
+        ],
+        "summary": "Docker Compose mô tả và khởi chạy stack nhiều container qua YAML, giúp developer dựng môi trường nhất quán. Với CoVie, PostgreSQL phục vụ dữ liệu/transaction, Redis hỗ trợ cache hoặc rate limiting tùy cấu hình, MinIO cung cấp object storage tương thích S3 cho presigned upload. Compose hỗ trợ network, volume và healthcheck; `depends_on` không tự bảo đảm DB đã migration hoặc ứng dụng đã sẵn sàng.",
+        "answerMarkdown": "## 1. Lợi ích của Docker Compose\n\nTheo mô tả CoVie, các Compose file được tổ chức tại `infra/compose` cho môi trường local, runtime, observability và production. Đây là thông tin từ câu hỏi nguồn, không phải kết quả kiểm tra trực tiếp repository CoVie.\n\nMột file YAML mô tả version image, service, network, volume, environment, healthcheck và dependency. Developer dùng `docker compose up` thay vì cài từng PostgreSQL/Redis/MinIO lên host, giảm sai khác môi trường khi tích hợp Java Backend.\n\n## 2. Vai trò của các service\n\n| Container | Công dụng |\n|---|---|\n| PostgreSQL | Dữ liệu quan hệ, transaction, constraint; PostGIS nếu cần |\n| Redis | Cache, rate limiting hoặc dữ liệu tạm theo cấu hình |\n| MinIO | Object storage S3-compatible, thử upload qua presigned URL |\n\n```yaml\nservices:\n  postgres:\n    image: postgres:17\n    environment:\n      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}\n    volumes:\n      - pg_data:/var/lib/postgresql/data\n  redis:\n    image: redis:7\n  minio:\n    image: minio/minio:latest\n    command: server /data\n    environment:\n      MINIO_ROOT_USER: ${MINIO_ROOT_USER}\n      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}\n    volumes:\n      - minio_data:/data\nvolumes:\n  pg_data:\n  minio_data:\n```\n\nYAML trên chỉ **minh họa**, không phải cấu hình CoVie thực tế. Triển khai thật phải pin image, bổ sung healthcheck, secrets, network, backup và phân quyền. Không commit mật khẩu dev vào Git hoặc dùng tài nguyên production để chạy test.\n\n## 3. Điều dễ nhầm\n\n- Trong Docker network, hostname của DB thường là service name như `postgres`, còn `localhost` bên trong container là **chính container đó**.\n- `depends_on` chỉ xử lý quan hệ start/order theo cấu hình; không thay thế migration, healthcheck và retry hợp lý.\n- Volume giữ dữ liệu khi recreate container nhưng không thay thế backup.\n- Compose tiện cho local/integration test, không tự đảm bảo mọi yêu cầu orchestration hoặc production security.\n\n**Trả lời phỏng vấn:** Compose giúp dựng stack PostgreSQL/Redis/MinIO nhất quán, giảm cài đặt thủ công và hỗ trợ kiểm thử backend bằng hạ tầng thật."
+      }
+    },
+    {
+      "group": "B10",
+      "keptId": "q-410",
+      "mergedIds": [
+        "q-411"
+      ],
+      "question": {
+        "id": "q-410",
+        "title": "Idempotency là gì? Vì sao Checkout API phải chống xử lý request trùng?",
+        "category": "microservices",
+        "difficulty": "middle",
+        "tags": [
+          "Idempotency",
+          "Redis",
+          "TokenBucket",
+          "TransactionalOutbox",
+          "SSE",
+          "DistributedLock"
+        ],
+        "companies": [
+          "Viettel",
+          "Shopee",
+          "Sea Group"
+        ],
+        "summary": "**Idempotency** nghĩa là thực hiện lặp lại cùng một yêu cầu logic không tạo thêm hiệu ứng nghiệp vụ so với một lần. Checkout cần chống trùng vì double click, retry sau timeout hoặc mất response dù DB đã commit. Backend phải tránh tạo hai Order, trừ tồn kho và phát Outbox trùng, kết hợp session/idempotency key, unique constraint, transaction và quy tắc phản hồi retry.",
+        "answerMarkdown": "## 1. Idempotency trong Checkout\n\nNếu frontend gửi `POST /checkout/commit`, backend commit Order rồi mạng bị ngắt trước khi trả `Order ID`, client có thể retry. Nếu mỗi lần POST tạo một operation mới, buyer có thể bị tạo hai đơn và reserve tồn kho hai lần. POST không mặc định idempotent nhưng có thể thiết kế idempotency theo logic nghiệp vụ.\n\n## 2. Cơ chế bảo đảm ở Backend\n\n1. Xác định operation identity bằng checkout session/token hoặc idempotency key gắn với user, endpoint và payload.\n2. Trong transaction, dùng unique constraint hoặc kỹ thuật khóa/atomic operation để hai request đồng thời không cùng xử lý thành công.\n3. Lưu kết quả hoặc receipt/consumed status để request retry không tạo Order, Reservation hay Outbox mới.\n4. Xác định rõ API trả kết quả đã lưu, báo trạng thái đã xử lý hay yêu cầu tải lại; phải test failure sau DB commit nhưng trước HTTP response.\n\nTrong mô tả CoVie, Checkout Session được khóa và consume ở Commit, đồng thời có `OrderCommandIdempotencyService` cho lệnh Order. Không mặc nhiên áp dụng một kiểu key cho tất cả endpoint.\n\n## 3. Tránh những lỗi phổ biến\n\n- Chỉ disable nút trên giao diện: không chặn request retry, reverse proxy hoặc concurrency.\n- Check `SELECT` bên ngoài transaction rồi `INSERT`: dễ race.\n- Tái sử dụng key cho payload khác mà không kiểm tra: có thể trả kết quả sai operation.\n- Chặn tạo Order trùng nhưng vẫn phát sự kiện/thông báo lặp: phải bảo vệ cả hiệu ứng downstream.\n\n**Trả lời phỏng vấn:** Idempotency giúp xử lý mạng không đáng tin và retry an toàn. Backend phải bảo vệ hiệu ứng cuối bằng định danh operation và ràng buộc ở database, không chỉ UX.\n\n**Học tiếp:** `q-412` giải thích thiết kế Idempotency Key."
+      }
+    }
+  ]
+}

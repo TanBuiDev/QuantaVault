@@ -25,33 +25,32 @@ import type {
   InterviewQuestion,
 } from "@/lib/interview/types";
 import { filterInterviewQuestions } from "@/lib/interview";
+import { formatQuestionBadge } from "@/lib/interview/types";
 import { useInterviewProgress } from "@/lib/interview/progress";
+import { useAccount } from "@/lib/auth/AccountProvider";
 import {
   useInterviewDrafts,
   mergeQuestionsWithDrafts,
 } from "@/lib/interview/draftStore";
 import { InterviewStatsCard } from "./InterviewStatsCard";
-import { InterviewCloudSync } from "./InterviewCloudSync";
+
+
+import { InterviewMergeRecovery } from "./InterviewMergeRecovery";
+import { isRetiredInterviewId } from "@/lib/interview/questionIdMerge";
 import { InterviewFilterBar } from "./InterviewFilterBar";
 import { InterviewQuestionCard } from "./InterviewQuestionCard";
 import { InterviewEditModal } from "./InterviewEditModal";
 import { PublishDrawer } from "./PublishDrawer";
+import { PublishedConflictReview } from "./PublishedConflictReview";
 import { InterviewRightRail } from "./InterviewRightRail";
 import { InterviewPresentationModal } from "./InterviewPresentationModal";
 import { getUrlParams, updateUrlParams } from "@/lib/utils/urlParams";
+import { clearInterviewViewState, DEFAULT_INTERVIEW_FILTER, getInterviewViewState, saveInterviewViewState } from "@/lib/interview/viewState";
 import { useScrollRestoration } from "@/hooks/useScrollRestoration";
 
 export interface InterviewListViewProps {
   initialQuestions: InterviewQuestion[];
 }
-
-const DEFAULT_FILTER: InterviewFilterState = {
-  search: "",
-  category: "all",
-  difficulty: "all",
-  status: "all",
-  company: "all",
-};
 
 export type RecallMode = "summaries" | "answers";
 
@@ -72,60 +71,54 @@ function getPageList(currentPage: number, totalPages: number): (number | "...")[
 
 export function InterviewListView({ initialQuestions }: InterviewListViewProps) {
   const confirm = useConfirm();
+  const { user, loading: accountLoading, requestLogin } = useAccount();
+  const canEdit = user?.role === "admin";
   const { textScale, changeTextScale } = useInterviewTextSize();
-  const [filter, setFilter] = useState<InterviewFilterState>(() => {
-    if (typeof window === "undefined") return DEFAULT_FILTER;
-    const params = getUrlParams();
-    return {
-      search: params.get("search") || params.get("q") || "",
-      category: (params.get("category") as InterviewCategory) || "all",
-      difficulty: (params.get("difficulty") as InterviewFilterState["difficulty"]) || "all",
-      status: (params.get("status") as InterviewFilterState["status"]) || "all",
-      company: params.get("company") || "all",
-    };
-  });
-  const [recallMode, setRecallMode] = useState<RecallMode>(() => {
-    if (typeof window === "undefined") return "summaries";
-    const params = getUrlParams();
-    const mode = params.get("recall");
-    if (mode === "answers") return "answers";
-    return "summaries";
-  });
-  const [pageSize, setPageSize] = useState<number | "all">(() => {
-    if (typeof window === "undefined") return 15;
-    const params = getUrlParams();
-    const size = params.get("size");
-    if (size === "all") return "all";
-    if (size) {
-      const num = parseInt(size, 10);
-      if (!isNaN(num) && [15, 30, 50].includes(num)) return num;
-    }
-    return 15;
-  });
-  const [currentPage, setCurrentPage] = useState<number>(() => {
-    if (typeof window === "undefined") return 1;
-    const params = getUrlParams();
-    const p = params.get("page");
-    if (p) {
-      const num = parseInt(p, 10);
-      if (!isNaN(num) && num > 0) return num;
-    }
-    return 1;
-  });
+  // Explicit URL view params win over remembered settings from this browser tab.
+  const [initialView] = useState(getInterviewViewState);
+  const [filter, setFilter] = useState<InterviewFilterState>(initialView.filter);
+  const [recallMode, setRecallMode] = useState<RecallMode>(initialView.recallMode);
+  const [pageSize, setPageSize] = useState<number | "all">(initialView.pageSize);
+  const [currentPage, setCurrentPage] = useState<number>(initialView.currentPage);
+  const [directQuestionId, setDirectQuestionId] = useState<string | null>(() => getUrlParams().get("questionId"));
 
   const listTopRef = useRef<HTMLDivElement>(null);
 
-  const currentFilterKey = `${filter.search}|${filter.category}|${filter.difficulty}|${filter.status}|${filter.company}|${pageSize}`;
-  const [prevFilterKey, setPrevFilterKey] = useState(currentFilterKey);
-  if (prevFilterKey !== currentFilterKey) {
-    setPrevFilterKey(currentFilterKey);
+  // Browser Back/Forward can update the URL without remounting this component.
+  useEffect(() => {
+    const restoreFromHistory = () => {
+      const next = getInterviewViewState();
+      setFilter(next.filter);
+      setCurrentPage(next.currentPage);
+      setPageSize(next.pageSize);
+      setRecallMode(next.recallMode);
+      setDirectQuestionId(getUrlParams().get("questionId"));
+    };
+    window.addEventListener("popstate", restoreFromHistory);
+    return () => window.removeEventListener("popstate", restoreFromHistory);
+  }, []);
+
+  const leaveDirectQuestion = () => {
+    if (!directQuestionId) return;
+    const url = new URL(window.location.href);
+    url.searchParams.delete("questionId");
+    window.history.pushState(window.history.state, "", url.pathname + url.search + url.hash);
+    setDirectQuestionId(null);
+  };
+
+  const handleFilterChange = (next: InterviewFilterState) => {
+    leaveDirectQuestion();
+    setFilter(next);
     setCurrentPage(1);
-  }
+  };
 
   // Synchronize URL search params with filter, pagination, and recall mode (debounced 250ms)
   useEffect(() => {
+    // Persist immediately, before the debounced URL update or a quick navigation away.
+    saveInterviewViewState({ filter, currentPage, pageSize, recallMode });
     const timer = setTimeout(() => {
       updateUrlParams({
+        q: null, // drop legacy search alias
         search: filter.search || null,
         category: filter.category !== "all" ? filter.category : null,
         difficulty: filter.difficulty !== "all" ? filter.difficulty : null,
@@ -177,10 +170,11 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
 
   // Sync URL on initial mount if already in edit mode
   useEffect(() => {
-    if (isEditMode) {
-      syncEditUrl(true);
-    }
-  }, [isEditMode]);
+    if (isEditMode && canEdit) syncEditUrl(true);
+    else if (!accountLoading && !canEdit) syncEditUrl(false);
+  }, [isEditMode, canEdit, accountLoading]);
+  // URL and localStorage merely store UI preferences; they never grant admin rights.
+  const activeEditMode = canEdit && isEditMode;
 
   // Shortcut Ctrl + Shift + E to toggle edit mode, and P to toggle presentation mode
   useEffect(() => {
@@ -193,7 +187,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
         return;
       }
 
-      if (e.ctrlKey && e.shiftKey && (e.key === "E" || e.key === "e")) {
+      if (canEdit && e.ctrlKey && e.shiftKey && (e.key === "E" || e.key === "e")) {
         e.preventDefault();
         setIsEditMode((prev) => {
           const next = !prev;
@@ -214,9 +208,10 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
     }
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [canEdit]);
 
   const handleToggleEditMode = () => {
+    if (!canEdit) return;
     setIsEditMode((prev) => {
       const next = !prev;
       try {
@@ -276,12 +271,16 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
 
   // Merge canonical initialQuestions with user drafts and published cache
   const mergedQuestions = useMemo(() => {
+    // Saved drafts and unpublished cache must never alter what ordinary learners
+    // see, even when another account previously used the same browser.
+    // Preserve all local drafts without deleting them.
+    if (!canEdit) return initialQuestions;
     return mergeQuestionsWithDrafts(initialQuestions, drafts, publishedCache);
-  }, [initialQuestions, drafts, publishedCache]);
+  }, [initialQuestions, drafts, publishedCache, canEdit]);
 
   const effectiveEditingId = editingQuestion?.id ?? restoredEditingId;
   const effectiveEditingQuestion = draftsHydrated ? mergedQuestions.find(q => q.id === effectiveEditingId) ??
-    (effectiveEditingId && !drafts[effectiveEditingId]?.isDeleted && !publishedCache[effectiveEditingId]?.question.isDeleted ? editingQuestion : null) : null;
+    (effectiveEditingId && !isRetiredInterviewId(effectiveEditingId) && !drafts[effectiveEditingId]?.isDeleted && !publishedCache[effectiveEditingId]?.question.isDeleted ? editingQuestion : null) : null;
 
   const canonicalQuestion = useMemo(() => {
     return initialQuestions.find((q) => q.id === effectiveEditingId);
@@ -290,6 +289,8 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
   const {
     state: progress,
     hydrated,
+    canTrackProgress,
+    storageError,
     isLearned,
     isReview,
     isBookmarked,
@@ -297,6 +298,8 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
     toggleReview,
     toggleBookmark,
   } = useInterviewProgress();
+
+  const canMarkProgress = !accountLoading && Boolean(user) && canTrackProgress;
 
   // Restore scroll position after progress is hydrated
   useScrollRestoration("interview_list_scroll", hydrated);
@@ -326,16 +329,34 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
     return filterInterviewQuestions(mergedQuestions, filter, progress);
   }, [mergedQuestions, filter, progress]);
 
-  // Calculate pagination with boundary safeguards
-  const totalPages = pageSize === "all" ? 1 : Math.max(1, Math.ceil(filteredQuestions.length / Number(pageSize)));
-  const safeCurrentPage = Math.min(currentPage, totalPages);
+  // The URL target takes priority over persisted filters, without mutating them.
+  const directQuestion = directQuestionId
+    ? mergedQuestions.find((q) => q.id === directQuestionId)
+    : undefined;
+  const visibleQuestions = directQuestionId
+    ? (directQuestion ? [directQuestion] : [])
+    : filteredQuestions;
+
+  const totalPages = pageSize === "all" ? 1 : Math.max(1, Math.ceil(visibleQuestions.length / Number(pageSize)));
+  const safeCurrentPage = directQuestionId ? 1 : Math.min(currentPage, totalPages);
 
   const pagedQuestions = useMemo(() => {
-    if (pageSize === "all") return filteredQuestions;
+    if (pageSize === "all") return visibleQuestions;
     const size = Number(pageSize);
     const start = (safeCurrentPage - 1) * size;
-    return filteredQuestions.slice(start, start + size);
-  }, [filteredQuestions, safeCurrentPage, pageSize]);
+    return visibleQuestions.slice(start, start + size);
+  }, [visibleQuestions, safeCurrentPage, pageSize]);
+
+  // The target must exist in the mounted page before scrolling.
+  useEffect(() => {
+    if (!directQuestionId || !directQuestion || !hydrated) return;
+    const timer = window.setTimeout(() => {
+      document.getElementById(`question-${directQuestionId}`)?.scrollIntoView?.({
+        behavior: "smooth", block: "center",
+      });
+    }, 80);
+    return () => window.clearTimeout(timer);
+  }, [directQuestionId, directQuestion, hydrated]);
 
   const handlePageChange = (newPage: number) => {
     const page = Math.max(1, Math.min(totalPages, newPage));
@@ -344,25 +365,27 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
   };
 
   const handleResetFilter = () => {
-    setFilter(DEFAULT_FILTER);
+    leaveDirectQuestion();
+    clearInterviewViewState();
+    setFilter(DEFAULT_INTERVIEW_FILTER);
+    setCurrentPage(1);
+    // Also clear stale URL filters before navigation can interrupt the debounce.
+    updateUrlParams({
+      q: null, search: null, category: null, difficulty: null,
+      status: null, company: null, page: null,
+    });
   };
 
   const handleSelectStatusFilter = (status: InterviewFilterState["status"]) => {
-    setFilter((prev) => ({ ...prev, status }));
+    handleFilterChange({ ...filter, status });
   };
 
   const handleJumpToQuestion = (id: string) => {
-    const el = document.getElementById(`question-${id}`);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "center" });
-      el.classList.add("ring-2", "ring-indigo-500", "shadow-xl");
-      try {
-        window.history.replaceState(window.history.state, "", `#question-${id}`);
-      } catch {}
-      setTimeout(() => {
-        el.classList.remove("ring-2", "ring-indigo-500", "shadow-xl");
-      }, 2000);
-    }
+    // Keep edit=true and existing filters, and make this selection navigable via Back.
+    const url = new URL(window.location.href);
+    url.searchParams.set("questionId", id);
+    window.history.pushState(window.history.state, "", url.pathname + url.search + url.hash);
+    setDirectQuestionId(id);
   };
 
   return (
@@ -415,7 +438,13 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
             <span>Trình chiếu (P)</span>
           </button>
 
-          {isEditMode ? (
+          {canEdit && !activeEditMode && (
+            <button type="button" onClick={handleToggleEditMode}
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-indigo-500/40 bg-indigo-500/10 px-4 text-xs sm:text-sm font-semibold text-indigo-600 dark:text-indigo-400">
+              <Edit3 className="h-4 w-4" /> Vào chế độ biên tập
+            </button>
+          )}
+          {activeEditMode ? (
             <>
               <div className="inline-flex min-h-11 items-center gap-2 rounded-2xl border border-indigo-500/30 bg-indigo-500/10 px-3.5 text-xs sm:text-sm font-semibold text-indigo-600 dark:text-indigo-400">
                 <Edit3 className="h-4 w-4" />
@@ -463,30 +492,43 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
         </div>
       </header>
 
-      {/* 2. Progress Overview Stats Card */}
-      {publishedConflicts.length > 0 && (
-        <div role="status" className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-[var(--foreground)]">
-          Dữ liệu website khác nội dung vừa xuất bản ở {publishedConflicts.length} câu hỏi. Bản đã xuất bản vẫn được giữ trên máy để bạn đối chiếu; hãy sao lưu trước khi xử lý xung đột.
+      {!accountLoading && !canMarkProgress && (
+        <div role="note" className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-sm">
+          <p className="text-[var(--muted-strong)]">Đăng nhập Google để đánh dấu đã hiểu, cần ôn lại hoặc lưu câu hỏi.</p>
+          <button type="button" onClick={requestLogin} className="font-semibold text-[var(--primary-strong)] hover:underline">Đăng nhập Google</button>
         </div>
       )}
+      {storageError && <div role="alert" className="rounded-xl border border-amber-500/40 p-3 text-sm text-amber-600">
+        Trình duyệt chưa lưu được đánh dấu tiến độ. Hãy kiểm tra dung lượng/quyền lưu trữ và thử lại; thao tác này chưa được đồng bộ.
+      </div>}
+      {/* 2. Progress Overview Stats Card */}
+      {canEdit && <PublishedConflictReview
+        canonicalQuestions={initialQuestions}
+        drafts={drafts}
+        publishedCache={publishedCache}
+        conflictingIds={publishedConflicts}
+      />}
       <section aria-label="Thống kê tiến độ ôn luyện">
         <InterviewStatsCard
           questions={initialQuestions}
           progress={progress}
           hydrated={hydrated}
+          canTrackProgress={canMarkProgress}
           activeStatusFilter={filter.status}
           onSelectStatusFilter={handleSelectStatusFilter}
         />
       </section>
 
-      <InterviewCloudSync />
+      {canMarkProgress && <InterviewMergeRecovery progress={progress} drafts={drafts} publishedCache={publishedCache} />}
+
+
 
       {/* 3. Filter Controls */}
       <section aria-label="Bộ lọc câu hỏi">
         <InterviewFilterBar
           questions={initialQuestions}
           filter={filter}
-          onFilterChange={setFilter}
+          onFilterChange={handleFilterChange}
           onResetFilter={handleResetFilter}
         />
       </section>
@@ -505,16 +547,16 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
                 <span>
                   Hiển thị{" "}
                   <strong>
-                    {filteredQuestions.length === 0
+                    {visibleQuestions.length === 0
                       ? 0
                       : pageSize === "all"
-                      ? `1 - ${filteredQuestions.length}`
-                      : `${(currentPage - 1) * Number(pageSize) + 1} - ${Math.min(
-                          currentPage * Number(pageSize),
-                          filteredQuestions.length
+                      ? `1 - ${visibleQuestions.length}`
+                      : `${(safeCurrentPage - 1) * Number(pageSize) + 1} - ${Math.min(
+                          safeCurrentPage * Number(pageSize),
+                          visibleQuestions.length
                         )}`}
                   </strong>{" "}
-                  / {filteredQuestions.length} câu hỏi
+                  / {visibleQuestions.length} câu hỏi
                 </span>
 
                 {filter.status !== "all" && (
@@ -530,9 +572,10 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
                   <span>Hiển thị:</span>
                   <select
                     value={pageSize}
-                    onChange={(e) =>
-                      setPageSize(e.target.value === "all" ? "all" : Number(e.target.value))
-                    }
+                    onChange={(e) => {
+                      setPageSize(e.target.value === "all" ? "all" : Number(e.target.value));
+                      setCurrentPage(1);
+                    }}
                     className="rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] px-2 py-1 text-xs font-semibold text-[var(--foreground)] cursor-pointer"
                     aria-label="Số câu hỏi mỗi trang"
                   >
@@ -540,7 +583,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
                     <option value={30}>30 / trang</option>
                     <option value={50}>50 / trang</option>
                     <option value={100}>100 / trang</option>
-                    <option value="all">Tất cả ({filteredQuestions.length})</option>
+                    <option value="all">Tất cả ({visibleQuestions.length})</option>
                   </select>
                 </div>
 
@@ -579,6 +622,17 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
               </div>
             </div>
 
+            {directQuestionId && (
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-indigo-500/30 bg-indigo-500/5 p-3 text-sm">
+                <span>
+                  Đang mở liên kết câu hỏi <strong className="font-mono">{formatQuestionBadge(directQuestionId)}</strong>
+                </span>
+                <button type="button" onClick={leaveDirectQuestion} className="font-semibold text-indigo-600 hover:underline">
+                  Quay lại danh sách
+                </button>
+              </div>
+            )}
+
             {/* Cards or Empty State */}
             {!hydrated && (filter.status === "learned" || filter.status === "review" || filter.status === "bookmarked") ? (
               <div className="space-y-4">
@@ -591,30 +645,26 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
               </div>
             ) : pagedQuestions.length > 0 ? (
               <div className="space-y-4">
-                {pagedQuestions.map((question, idx) => {
-                  const globalIndex =
-                    pageSize === "all"
-                      ? idx
-                      : (currentPage - 1) * Number(pageSize) + idx;
+                {pagedQuestions.map((question) => {
                   const isQuestionDraft = Boolean(drafts[question.id]);
 
                   return (
                     <InterviewQuestionCard
                       key={`${question.id}-${recallMode}`}
                       question={question}
-                      index={globalIndex}
                       textScale={textScale}
+                      canMarkProgress={canMarkProgress}
                       isLearned={isLearned(question.id)}
                       isReview={isReview(question.id)}
                       isBookmarked={isBookmarked(question.id)}
                       isDraft={isQuestionDraft}
                       onEdit={
-                        isEditMode
+                        activeEditMode
                           ? () => handleOpenEdit(question)
                           : undefined
                       }
                       onDiscardDraft={
-                        isEditMode && isQuestionDraft
+                        activeEditMode && isQuestionDraft
                           ? async () => {
                               const isConfirmed = await confirm({
                                 title: "Hủy bản nháp?",
@@ -629,9 +679,9 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
                             }
                           : undefined
                       }
-                      onToggleLearned={() => toggleLearned(question.id)}
-                      onToggleReview={() => toggleReview(question.id)}
-                      onToggleBookmark={() => toggleBookmark(question.id)}
+                      onToggleLearned={() => canMarkProgress ? toggleLearned(question.id) : requestLogin()}
+                      onToggleReview={() => canMarkProgress ? toggleReview(question.id) : requestLogin()}
+                      onToggleBookmark={() => canMarkProgress ? toggleBookmark(question.id) : requestLogin()}
                       defaultExpanded={recallMode === "answers"}
                       defaultShowSummary={true}
                     />
@@ -645,7 +695,9 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
                   Không tìm thấy câu hỏi phù hợp
                 </h3>
                 <p className="mx-auto mt-2 max-w-md text-xs sm:text-sm text-[var(--muted)]">
-                  Không có câu hỏi nào khớp với từ khóa tìm kiếm hoặc các bộ lọc bạn đã chọn.
+                  {directQuestionId
+                    ? `Không tồn tại Question ID "${directQuestionId}". Không tự động chuyển đến một câu đã gộp khác.`
+                    : "Không có câu hỏi nào khớp với từ khóa tìm kiếm hoặc các bộ lọc bạn đã chọn."}
                 </p>
                 <div className="mt-5">
                   <button
@@ -664,7 +716,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
             {totalPages > 1 && pageSize !== "all" && (
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-[var(--border)] text-xs">
                 <div className="text-[var(--muted)] font-medium">
-                  Trang <strong>{currentPage}</strong> / <strong>{totalPages}</strong> ({filteredQuestions.length} câu hỏi)
+                  Trang <strong>{safeCurrentPage}</strong> / <strong>{totalPages}</strong> ({visibleQuestions.length} câu hỏi)
                 </div>
 
                 <div className="flex items-center gap-1.5">
@@ -727,11 +779,11 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
               <div className="flex items-center gap-2">
                 <Sparkles className="h-4 w-4 text-indigo-500 shrink-0" />
                 <span className="font-semibold text-[var(--foreground)]">
-                  {isEditMode ? "Chế độ Biên tập đang bật" : "Phương pháp ôn tập gợi nhớ chủ động (Active Recall)"}
+                  {activeEditMode ? "Chế độ Biên tập đang bật" : "Phương pháp ôn tập gợi nhớ chủ động (Active Recall)"}
                 </span>
               </div>
               <span>
-                {isEditMode ? (
+                {activeEditMode ? (
                   <>
                     Bạn có thể sửa câu hỏi trực tiếp hoặc thêm câu mới, sau đó xuất bản 1 commit lên GitHub khi kết thúc buổi làm việc.
                   </>
@@ -755,7 +807,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
             progress={progress}
             activeCategory={filter.category}
             onSelectCategory={(cat) =>
-              setFilter((prev) => ({ ...prev, category: cat as InterviewCategory | "all" }))
+              handleFilterChange({ ...filter, category: cat as InterviewCategory | "all" })
             }
             onOpenPresentation={() => {
               setPresentationStartIndex(0);
@@ -767,7 +819,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
       </div>
 
       {/* 6. Interview Edit Modal (Only active in Edit Mode) */}
-      {isEditMode && draftsHydrated && (
+      {activeEditMode && draftsHydrated && (
         <InterviewEditModal
           isOpen={isEditModalOpen}
           onClose={handleCloseEdit}
@@ -785,7 +837,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
       )}
 
       {/* 7. Floating Bottom Publish Drawer (Only visible in Edit Mode) */}
-      {isEditMode && (
+      {activeEditMode && (
         <PublishDrawer
           drafts={drafts}
           publishedCache={publishedCache}
@@ -799,14 +851,15 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
       <InterviewPresentationModal
         isOpen={isPresentationOpen}
         onClose={() => setIsPresentationOpen(false)}
-        questions={filteredQuestions.length > 0 ? filteredQuestions : mergedQuestions}
+        questions={visibleQuestions.length > 0 ? visibleQuestions : mergedQuestions}
         initialIndex={presentationStartIndex}
         isLearned={isLearned}
         isReview={isReview}
         isBookmarked={isBookmarked}
-        onToggleLearned={toggleLearned}
-        onToggleReview={toggleReview}
-        onToggleBookmark={toggleBookmark}
+        onToggleLearned={(id) => canMarkProgress ? toggleLearned(id) : requestLogin()}
+        onToggleReview={(id) => canMarkProgress ? toggleReview(id) : requestLogin()}
+        onToggleBookmark={(id) => canMarkProgress ? toggleBookmark(id) : requestLogin()}
+        canMarkProgress={canMarkProgress}
       />
     </div>
   );

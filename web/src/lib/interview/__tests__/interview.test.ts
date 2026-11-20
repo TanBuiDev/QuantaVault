@@ -96,6 +96,35 @@ describe("Interview Data Access and Filtering", () => {
     expect(byUnpaddedBadge[0].id).toBe("q-087");
   });
 
+  it.each(["010", "#010", "q-010", "Q-010"])("finds only canonical q-010 for %s", search => {
+    const all = getAllInterviewQuestions();
+    const result = filterInterviewQuestions(all, {
+      search, category: "all", difficulty: "all", status: "all", company: "all",
+    });
+    expect(result.map(q => q.id)).toEqual(["q-010"]);
+    expect(result[0].title).toMatch(/MinIO/i);
+  });
+
+  it("never falls back to a substring match for an unknown numeric ID", () => {
+    const all = getAllInterviewQuestions();
+    expect(filterInterviewQuestions(all, {
+      search: "#99999", category: "all", difficulty: "all", status: "all", company: "all",
+    })).toEqual([]);
+  });
+
+  it("keeps progress keyed by existing IDs during filtering", () => {
+    const all = getAllInterviewQuestions();
+    const progress = {
+      learned: { "q-010": true }, review: { "q-011": true }, bookmarks: { "q-010": true },
+    };
+    const original = JSON.stringify(progress);
+    const result = filterInterviewQuestions(all, {
+      search: "010", category: "all", difficulty: "all", status: "learned", company: "all",
+    }, progress);
+    expect(result.map(q => q.id)).toEqual(["q-010"]);
+    expect(JSON.stringify(progress)).toBe(original);
+  });
+
   it("filters questions by category", () => {
     const all = getAllInterviewQuestions();
     const filter: InterviewFilterState = {

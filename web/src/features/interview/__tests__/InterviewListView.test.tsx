@@ -1,10 +1,14 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, beforeEach, vi } from "vitest";
 import { InterviewListView } from "../InterviewListView";
 import type { InterviewQuestion } from "@/lib/interview/types";
 import { saveDraft } from "@/lib/interview/draftStore";
 
 vi.mock("@/components/ui/MermaidRenderer", () => ({ MermaidRenderer: () => null }));
+const accountMock = vi.hoisted(() => ({ role: "admin" as "admin" | "user", requestLogin: vi.fn() }));
+vi.mock("@/lib/auth/AccountProvider", () => ({
+  useAccount: () => ({ user: { id: "test-user", name: "Admin", email: "admin@example.com", role: accountMock.role }, loading: false, requestLogin: accountMock.requestLogin }),
+}));
 
 const mockQuestions: InterviewQuestion[] = [
   {
@@ -34,9 +38,52 @@ const mockQuestions: InterviewQuestion[] = [
 
 describe("InterviewListView Component", () => {
   beforeEach(() => {
+    accountMock.role = "admin";
+    accountMock.requestLogin.mockClear();
     window.localStorage.clear();
     window.sessionStorage.clear();
     window.history.replaceState({}, "", "/interview");
+  });
+
+  it("does not open the editor for ordinary users even if URL requests edit=true", () => {
+    accountMock.role = "user";
+    window.history.replaceState({}, "", "/interview/?edit=true&editQuestion=test-001");
+    render(<InterviewListView initialQuestions={mockQuestions} />);
+    expect(screen.queryByRole("button", { name: "Thêm câu hỏi" })).toBeNull();
+    expect(screen.queryByRole("button", { name: /Vào chế độ biên tập/ })).toBeNull();
+    expect(screen.queryByRole("dialog", { name: /Chỉnh sửa/ })).toBeNull();
+  });
+
+  it("does not expose unpublished local drafts to a different signed-in ordinary user", async () => {
+    accountMock.role = "user";
+    saveDraft({ ...mockQuestions[0], title: "Unpublished admin draft" }, mockQuestions[0]);
+    render(<InterviewListView initialQuestions={mockQuestions} />);
+    await waitFor(() => expect(screen.getByText(mockQuestions[0].title)).toBeInTheDocument());
+    expect(screen.queryByText("Unpublished admin draft")).toBeNull();
+  });
+
+  it("guest progress action shows contextual login instead of a dead disabled button", () => {
+    accountMock.role = "user";
+    render(<InterviewListView initialQuestions={mockQuestions} />);
+    const button = screen.getAllByRole("button", { name: "Đánh dấu đã hiểu" })[0];
+    expect(button).not.toBeDisabled();
+    fireEvent.click(button);
+    expect(accountMock.requestLogin).toHaveBeenCalledTimes(1);
+  });
+
+  it("keeps the tab filter when switching from admin to a regular account", async () => {
+    const first = render(<InterviewListView initialQuestions={mockQuestions} />);
+    fireEvent.click(screen.getByRole("button", { name: "Junior (Cơ bản)" }));
+    await waitFor(() => expect(sessionStorage.getItem("interview_view_state_v1")).toContain("difficulty=junior"));
+    first.unmount();
+
+    accountMock.role = "user";
+    window.history.replaceState({}, "", "/interview?auth=connected");
+    render(<InterviewListView initialQuestions={mockQuestions} />);
+
+    expect(screen.getByRole("button", { name: "Junior (Cơ bản)" })).toHaveClass("bg-emerald-500");
+    expect(screen.queryByRole("button", { name: "Thêm câu hỏi" })).toBeNull();
+    expect(screen.queryByText("Từ khóa volatile và JMM trong Java?")).toBeNull();
   });
 
   it("renders the main heading and question count", () => {
@@ -73,6 +120,56 @@ describe("InterviewListView Component", () => {
 
     expect(screen.getByText("Từ khóa volatile và JMM trong Java?")).toBeDefined();
     expect(screen.queryByText("Sự khác biệt giữa equals() và hashCode()?")).toBeNull();
+  });
+
+  it("never renumbers q-010 to #001 when a search leaves one question", () => {
+    accountMock.role = "user";
+    const questions = [
+      { ...mockQuestions[0], id: "q-010", title: "MinIO là gì? Vì sao dùng MinIO?" },
+      { ...mockQuestions[1], id: "q-020" },
+    ];
+    const { container } = render(<InterviewListView initialQuestions={questions} />);
+    fireEvent.change(screen.getByPlaceholderText(/Tìm theo câu hỏi/i), { target: { value: "010" } });
+    const cards = container.querySelectorAll("article[id^='question-']");
+    expect(cards).toHaveLength(1);
+    expect(cards[0]).toHaveAttribute("id", "question-q-010");
+    expect(cards[0]).toHaveTextContent("#010");
+    expect(cards[0]).not.toHaveTextContent("#001");
+  });
+
+  it("opens the exact deep-linked question despite filters and supports Back/Forward", () => {
+    accountMock.role = "admin";
+    const questions = [
+      { ...mockQuestions[0], id: "q-010", title: "MinIO là gì?", difficulty: "senior" as const },
+      { ...mockQuestions[1], id: "q-020" },
+    ];
+    window.history.replaceState({}, "", "/interview/?questionId=q-010&difficulty=junior&edit=true");
+    const { container } = render(<InterviewListView initialQuestions={questions} />);
+    expect(container.querySelector("#question-q-010")).toBeInTheDocument();
+    expect(container.querySelector("#question-q-020")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Quay lại danh sách" }));
+    expect(window.location.search).toContain("edit=true");
+    expect(window.location.search).not.toContain("questionId");
+    expect(container.querySelector("#question-q-010")).not.toBeInTheDocument();
+    window.history.pushState({}, "", "/interview/?questionId=q-010&difficulty=junior&edit=true");
+    fireEvent.popState(window);
+    expect(container.querySelector("#question-q-010")).toBeInTheDocument();
+  });
+
+  it("copies a clean canonical question URL without auth or filter values", async () => {
+    const questions = [{ ...mockQuestions[0], id: "q-010" }];
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, "clipboard", { configurable: true, value: { writeText } });
+    window.history.replaceState({}, "", "/interview/?auth=connected&edit=true&difficulty=junior");
+    render(<InterviewListView initialQuestions={questions} />);
+    fireEvent.click(screen.getByRole("button", { name: "Sao chép liên kết câu hỏi" }));
+    await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
+    const url = new URL(writeText.mock.calls[0][0] as string);
+    expect(url.pathname).toBe("/interview/");
+    expect(url.searchParams.get("questionId")).toBe("q-010");
+    expect(url.searchParams.has("auth")).toBe(false);
+    expect(url.searchParams.has("difficulty")).toBe(false);
+    expect(window.location.search).toContain("edit=true");
   });
 
   it("shows summary by default and allows toggling full answers", () => {

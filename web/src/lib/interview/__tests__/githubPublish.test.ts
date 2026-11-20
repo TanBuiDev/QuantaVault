@@ -31,6 +31,14 @@ describe("safe GitHub publish", () => {
     expect(await executePublishToGithub({ ...await payload(), baseVersions: {} }, env)).toMatchObject({ code: "INVALID_PAYLOAD" });
     expect(fetchMock).not.toHaveBeenCalled();
   });
+  it("rejects retired canonical IDs before any GitHub write", async () => {
+    const data = await payload();
+    const retired = { ...data.modifiedQuestions[0], id: "q-194" };
+    const attempted = { ...data, modifiedQuestions: [retired], baseVersions: { "q-194": originalVersion } };
+    expect(await executePublishToGithub(attempted, env)).toMatchObject({ success: false, code: "RETIRED_QUESTION_ID", status: 409 });
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   it("rejects duplicate IDs", async () => {
     const data = await payload(); data.modifiedQuestions.push(data.modifiedQuestions[0]);
     expect(await executePublishToGithub(data, env)).toMatchObject({ code: "INVALID_PAYLOAD" });

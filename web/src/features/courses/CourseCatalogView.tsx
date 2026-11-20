@@ -23,13 +23,14 @@ import { ProgressBar } from "@/components/ui/ProgressBar";
 import { CourseIcon } from "@/components/ui/CourseIcon";
 import type { CourseManifest } from "@/lib/courses";
 import { useCourseProgress } from "@/lib/courses/useCourseProgress";
+import { googleLoginHref } from "@/lib/auth/loginReturn";
 
 interface CourseCatalogViewProps {
   courses: CourseManifest[];
 }
 
 export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
-  const { hydrated, getCourseCompletion, getCourseRecord } = useCourseProgress();
+  const { hydrated, canTrackProgress, getCourseCompletion, getCourseRecord } = useCourseProgress();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | "studying" | "completed" | "not-started">("all");
 
@@ -38,7 +39,7 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
     const found = !query || [course.title, course.tagline, course.level, ...course.chapters.flatMap((ch) => [ch.title, ch.titleEn || ""]), ...course.lessons.map((lesson) => lesson.titleEn || "")]
       .some((part) => part.toLocaleLowerCase("vi").includes(query));
     if (!found) return false;
-    if (statusFilter === "all" || !hydrated) return true;
+    if (statusFilter === "all" || !hydrated || !canTrackProgress) return true;
     const record = getCourseRecord(course.id);
     const { completedCount, totalLessons } = getCourseCompletion(course.id, course.totalLessons);
     const completed = totalLessons > 0 && completedCount >= totalLessons;
@@ -51,7 +52,7 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
   // Aggregate stats across all courses
   const totalAllLessons = courses.reduce((acc, c) => acc + c.totalLessons, 0);
   const totalCompletedLessons = courses.reduce((acc, c) => {
-    if (!hydrated) return acc;
+    if (!hydrated || !canTrackProgress) return acc;
     const { completedCount } = getCourseCompletion(c.id, c.totalLessons);
     return acc + completedCount;
   }, 0);
@@ -59,7 +60,7 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
     totalAllLessons > 0 ? Math.round((totalCompletedLessons / totalAllLessons) * 100) : 0;
 
   // Resume the most recently visited course instead of always PostgreSQL.
-  const recentCourse = hydrated
+  const recentCourse = hydrated && canTrackProgress
     ? [...courses]
         .filter((course) => {
           const id = getCourseRecord(course.id).lastAccessedLessonId;
@@ -128,7 +129,8 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
                 <span>Trạng thái</span>
                 <select
                   aria-label="Lọc trạng thái khóa học"
-                  value={statusFilter}
+                  disabled={!canTrackProgress}
+                  value={canTrackProgress ? statusFilter : "all"}
                   onChange={(event) => setStatusFilter(event.target.value as typeof statusFilter)}
                   className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-sm text-[var(--foreground)] outline-none focus:border-indigo-500"
                 >
@@ -152,6 +154,10 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
               </div>
             )}
 
+            {!canTrackProgress && <div role="status" className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
+              <span className="text-sm text-[var(--muted-strong)]">Bạn vẫn có thể học toàn bộ nội dung. Đăng nhập Google để xem và đồng bộ tiến độ cá nhân; tiến độ cũ không bị xóa.</span>
+              <button type="button" className="rounded-lg bg-[var(--primary)] px-4 py-2 text-xs font-semibold text-white" onClick={()=>window.location.assign(googleLoginHref())}>Tiếp tục với Google</button>
+            </div>}
             {/* Courses Showcase */}
             {courses.length === 1 && matchingCourses.length === 1 && primaryCourse ? (
               // Featured Hero Course Card for single primary course
@@ -268,13 +274,13 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
                     <div className="pt-4 border-t border-[var(--border)] space-y-2">
                       <div className="flex items-center justify-between text-xs">
                         <span className="font-semibold text-[var(--muted-strong)]">
-                          Tiến độ của bạn
+                          {canTrackProgress ? "Tiến độ của bạn" : "Tiến độ sau đăng nhập"}
                         </span>
                         <span className="font-bold text-[var(--foreground)]">
-                          {completedCount}/{totalLessons} bài ({percentage}%)
+                          {canTrackProgress ? `${completedCount}/${totalLessons} bài (${percentage}%)` : `Tổng ${totalLessons} bài`}
                         </span>
                       </div>
-                      <ProgressBar value={percentage} max={100} />
+                      {canTrackProgress && <ProgressBar value={percentage} max={100} />}
                     </div>
                   </div>
                 );
@@ -344,10 +350,10 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
                           <div className="flex items-center justify-between text-xs">
                             <span className="font-medium text-[var(--muted-strong)]">Tiến độ hoàn thành</span>
                             <span className="font-bold text-[var(--foreground)]">
-                              {completedCount}/{totalLessons} ({percentage}%)
+                              {canTrackProgress ? `${completedCount}/${totalLessons} (${percentage}%)` : `Tổng ${totalLessons} bài`}
                             </span>
                           </div>
-                          <ProgressBar value={percentage} max={100} />
+                          {canTrackProgress && <ProgressBar value={percentage} max={100} />}
                         </div>
 
                         <Link
@@ -435,7 +441,7 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
                 </h3>
               </div>
               <span className="text-xs font-black text-indigo-600 dark:text-indigo-400">
-                {overallPercentage}%
+                {canTrackProgress ? `${overallPercentage}%` : "—"}
               </span>
             </div>
 
@@ -443,10 +449,10 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
               <div className="flex items-center justify-between text-xs text-[var(--muted)]">
                 <span>Số bài đã hoàn thành</span>
                 <span className="font-bold text-[var(--foreground)]">
-                  {totalCompletedLessons} / {totalAllLessons} bài
+                  {canTrackProgress ? `${totalCompletedLessons} / ${totalAllLessons} bài` : `Tổng ${totalAllLessons} bài`}
                 </span>
               </div>
-              <ProgressBar value={overallPercentage} max={100} />
+              {canTrackProgress && <ProgressBar value={overallPercentage} max={100} />}
             </div>
 
             {/* Quick Resume Card */}
@@ -493,14 +499,14 @@ export function CourseCatalogView({ courses }: CourseCatalogViewProps) {
                     <div className="flex items-start justify-between gap-2">
                       <span className="min-w-0 text-xs font-semibold leading-relaxed text-[var(--foreground)]">{course.title}</span>
                       <span className="shrink-0 text-[10px] font-semibold text-indigo-600 dark:text-indigo-400">
-                        {completed ? "Hoàn thành" : started ? "Đang học" : "Chưa học"}
+                        {!canTrackProgress ? "Đăng nhập để xem" : completed ? "Hoàn thành" : started ? "Đang học" : "Chưa học"}
                       </span>
                     </div>
                     <div className="flex items-center justify-between text-[11px] text-[var(--muted)]">
-                      <span>{completedCount}/{totalLessons} bài</span>
-                      <span>{percentage}%</span>
+                      <span>{canTrackProgress ? `${completedCount}/${totalLessons} bài` : `${totalLessons} bài`}</span>
+                      <span>{canTrackProgress ? `${percentage}%` : "—"}</span>
                     </div>
-                    <ProgressBar value={percentage} max={100} />
+                    {canTrackProgress && <ProgressBar value={percentage} max={100} />}
                   </Link>
                 );
               })}

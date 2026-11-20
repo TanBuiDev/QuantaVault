@@ -101,6 +101,14 @@ describe("versioned learner progress", () => {
     });
   });
 
+  it("can reset to not-started without losing notes or bookmarked history", () => {
+    const first = upsertProblemProgress(emptyState(), 121, {status: "solved", notes: "Do not erase", bookmarked: true});
+    const reset = upsertProblemProgress(first, 121, {status: "not-started"});
+    expect(getProblemProgress(reset, 121)).toMatchObject({status: "not-started", notes: "Do not erase", bookmarked: true});
+    writeProgress(reset);
+    expect(readProgress()).toEqual(reset);
+  });
+
   it("removes a problem record so absence means not-started", () => {
     const state = upsertProblemProgress(emptyState(), 121, { status: "solved" });
     const removed = removeProblemProgress(state, 121);

@@ -8,59 +8,80 @@ import { getDrafts, saveDraft } from "@/lib/interview/draftStore";
 
 const original: InterviewQuestion = { id: "q-test", title: "Original", category: "java-core", difficulty: "junior", tags: [], summary: "Summary", answerMarkdown: "Answer" };
 const draft = { ...original, title: "Edited", baseVersion: questionVersion(original) };
-afterEach(() => { vi.unstubAllGlobals(); localStorage.clear(); });
-describe("publish authentication and snapshot", () => {
-  it("requires both fields and sends independent PIN, OTP and baseline without legacy header", async () => {
-    const fetch = vi.fn().mockResolvedValue(new Response(JSON.stringify({ success: true, commitSha: "a".repeat(40) })));
-    vi.stubGlobal("fetch", fetch);
-    const onSuccess = vi.fn();
-    render(<ConfirmProvider><PublishDrawer drafts={{ [draft.id]: draft }} canonicalQuestions={[original]} onClearAll={vi.fn()} onPublishSuccess={onSuccess} /></ConfirmProvider>);
-    fireEvent.click(screen.getByRole("button", { name: "Xuất bản (1)" }));
-    fireEvent.change(screen.getByLabelText("Mã PIN quản trị"), { target: { value: "test-pin" } });
-    fireEvent.click(screen.getByRole("button", { name: "Xác nhận & Xuất bản" }));
-    expect(fetch).not.toHaveBeenCalled();
-    fireEvent.change(screen.getByLabelText("Mã Google Authenticator"), { target: { value: "123456" } });
-    fireEvent.click(screen.getByRole("button", { name: "Xác nhận & Xuất bản" }));
-    await waitFor(() => expect(onSuccess).toHaveBeenCalledWith({ [draft.id]: draft }));
-    const init = fetch.mock.calls[0][1];
-    expect(init.headers).toEqual({ "Content-Type": "application/json" });
-    expect(JSON.parse(init.body)).toMatchObject({ pin: "test-pin", otp: "123456", baseVersions: { [draft.id]: questionVersion(original) } });
-    expect(JSON.parse(init.body).modifiedQuestions[0]).not.toHaveProperty("baseVersion");
+
+function mockRequests(publish: { status: number; json: Record<string, unknown> }, stepUpOk = true) {
+  const fetch = vi.fn(async (url: string, init?: RequestInit) => {
+    if (url === "/api/admin/status") return Response.json({ ok: true, elevated: false });
+    if (url === "/api/admin/step-up") return Response.json(stepUpOk ? { ok: true, expiresAt: 12345 } : { ok: false, code: "INVALID_CREDENTIALS" }, { status: stepUpOk ? 200 : 401 });
+    if (url === "/api/publish") return Response.json(publish.json, { status: publish.status });
+    throw new Error("Unexpected request " + url + " " + init?.method);
   });
-  it("keeps drafts on conflict", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify({ success: false, code: "CONFLICT", error: "Có xung đột" }), { status: 409 })));
-    const onSuccess = vi.fn();
-    render(<ConfirmProvider><PublishDrawer drafts={{ [draft.id]: draft }} canonicalQuestions={[original]} onClearAll={vi.fn()} onPublishSuccess={onSuccess} /></ConfirmProvider>);
-    fireEvent.click(screen.getByRole("button", { name: "Xuất bản (1)" }));
-    fireEvent.change(screen.getByLabelText("Mã PIN quản trị"), { target: { value: "test-pin" } });
-    fireEvent.change(screen.getByLabelText("Mã Google Authenticator"), { target: { value: "123456" } });
+  vi.stubGlobal("fetch", fetch);
+  return fetch;
+}
+function mount(onSuccess = vi.fn()) {
+  render(<ConfirmProvider><PublishDrawer drafts={{ [draft.id]: draft }} canonicalQuestions={[original]} onClearAll={vi.fn()} onPublishSuccess={onSuccess} /></ConfirmProvider>);
+  fireEvent.click(screen.getByRole("button", { name: "Xuất bản (1)" }));
+  return onSuccess;
+}
+async function enterPasswordAndPublish() {
+  fireEvent.change(screen.getByLabelText("Mật khẩu quản trị QuantaVault"), { target: { value: "test-pin" } });
+  fireEvent.click(screen.getByRole("button", { name: "Xác nhận & Xuất bản" }));
+}
+
+afterEach(() => { vi.unstubAllGlobals(); localStorage.clear(); });
+describe("admin session-backed publishing and draft snapshots", () => {
+  it("requires admin password once and sends only the canonical version data to publishing", async () => {
+    const fetch = mockRequests({ status: 200, json: { success: true, commitSha: "a".repeat(40) } });
+    const onSuccess = mount();
     fireEvent.click(screen.getByRole("button", { name: "Xác nhận & Xuất bản" }));
-    await screen.findByText("Có xung đột");
+    expect(fetch.mock.calls.some(c => c[0] === "/api/publish")).toBe(false);
+    await enterPasswordAndPublish();
+    await waitFor(() => expect(onSuccess).toHaveBeenCalledWith({ [draft.id]: draft }));
+    const auth = fetch.mock.calls.find(c => c[0] === "/api/admin/step-up");
+    expect(JSON.parse(auth![1]!.body as string)).toEqual({ password: "test-pin" });
+    const write = fetch.mock.calls.find(c => c[0] === "/api/publish");
+    expect(write).toBeDefined();
+    const data = JSON.parse(write![1]!.body as string);
+    expect(data).toMatchObject({ pin: "", otp: "", baseVersions: { [draft.id]: questionVersion(original) } });
+    expect(data.modifiedQuestions[0]).not.toHaveProperty("baseVersion");
+    expect(screen.queryByLabelText("Mã Google Authenticator")).toBeNull();
+  });
+
+  it("refuses publishing when password step-up is rejected, preserving drafts", async () => {
+    const fetch = mockRequests({ status: 200, json: { success: true } }, false);
+    const onSuccess = mount();
+    await enterPasswordAndPublish();
+    await screen.findByText(/Mật khẩu quản trị không đúng/);
+    expect(fetch.mock.calls.some(c => c[0] === "/api/publish")).toBe(false);
     expect(onSuccess).not.toHaveBeenCalled();
   });
-  it("reports remote success separately when browser persistence fails", async () => {
-    const fetch = vi.fn().mockResolvedValue(new Response(JSON.stringify({ success: true, commitSha: "a".repeat(40) })));
-    vi.stubGlobal("fetch", fetch);
+
+  it("keeps local edits on GitHub conflict", async () => {
+    const fetch = mockRequests({ status: 409, json: { success: false, code: "CONFLICT", error: "Có xung đột" } });
+    const onSuccess = mount();
+    await enterPasswordAndPublish();
+    await screen.findByText("Có xung đột");
+    expect(fetch.mock.calls.some(c => c[0] === "/api/publish")).toBe(true);
+    expect(onSuccess).not.toHaveBeenCalled();
+  });
+
+  it("reports successful GitHub write separately if browser persistence fails", async () => {
+    const fetch = mockRequests({ status: 200, json: { success: true, commitSha: "a".repeat(40) } });
     const onSuccess = vi.fn(() => { throw new Error("quota"); });
-    render(<ConfirmProvider><PublishDrawer drafts={{ [draft.id]: draft }} canonicalQuestions={[original]} onClearAll={vi.fn()} onPublishSuccess={onSuccess} /></ConfirmProvider>);
-    fireEvent.click(screen.getByRole("button", { name: "Xuất bản (1)" }));
-    fireEvent.change(screen.getByLabelText("Mã PIN quản trị"), { target: { value: "test-pin" } });
-    fireEvent.change(screen.getByLabelText("Mã Google Authenticator"), { target: { value: "123456" } });
-    fireEvent.click(screen.getByRole("button", { name: "Xác nhận & Xuất bản" }));
+    mount(onSuccess);
+    await enterPasswordAndPublish();
     await screen.findByText(/GitHub đã ghi thành công nhưng không thể cập nhật bộ nhớ/);
     expect(screen.queryByRole("button", { name: "Xác nhận & Xuất bản" })).toBeNull();
-    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch.mock.calls.filter(c => c[0] === "/api/publish")).toHaveLength(1);
   });
-  it("lets users review and explicitly rebase conflicts without replacing edited content", async () => {
+
+  it("allows explicit rebase after a conflict, never replacing edited content", async () => {
     const remote = { ...original, title: "Updated remotely", answerMarkdown: "Remote answer" };
-    const fetch = vi.fn().mockResolvedValue(new Response(JSON.stringify({ success: false, code: "CONFLICT", error: "Có xung đột", conflicts: [{ id: original.id, current: remote }] }), { status: 409 }));
-    vi.stubGlobal("fetch", fetch);
+    const fetch = mockRequests({ status: 409, json: { success: false, code: "CONFLICT", error: "Có xung đột", conflicts: [{ id: original.id, current: remote }] } });
     saveDraft(draft, original);
-    render(<ConfirmProvider><PublishDrawer drafts={{ [draft.id]: draft }} canonicalQuestions={[original]} onClearAll={vi.fn()} onPublishSuccess={vi.fn()} /></ConfirmProvider>);
-    fireEvent.click(screen.getByRole("button", { name: "Xuất bản (1)" }));
-    fireEvent.change(screen.getByLabelText("Mã PIN quản trị"), { target: { value: "test-pin" } });
-    fireEvent.change(screen.getByLabelText("Mã Google Authenticator"), { target: { value: "123456" } });
-    fireEvent.click(screen.getByRole("button", { name: "Xác nhận & Xuất bản" }));
+    mount();
+    await enterPasswordAndPublish();
     await screen.findByText("Remote answer");
     expect(getDrafts()[draft.id].baseVersion).toBe(questionVersion(original));
     fireEvent.click(screen.getByRole("button", { name: "Đã đối chiếu, dùng nền mới" }));
@@ -69,6 +90,6 @@ describe("publish authentication and snapshot", () => {
     fireEvent.click(screen.getByRole("button", { name: "Dùng phiên bản mới làm nền" }));
     await waitFor(() => expect(getDrafts()[draft.id].baseVersion).toBe(questionVersion(remote)));
     expect(getDrafts()[draft.id].title).toBe(draft.title);
-    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch.mock.calls.filter(c => c[0] === "/api/publish")).toHaveLength(1);
   });
 });

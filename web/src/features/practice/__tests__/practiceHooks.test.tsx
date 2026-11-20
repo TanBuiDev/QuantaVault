@@ -73,7 +73,10 @@ describe("draft compatibility", () => {
     localStorage.setItem("preferred_lang_mode", "vi");
     localStorage.setItem("preferred_layout_mode", "classic");
     const { result, unmount } = renderHook(() => usePracticeDraft(121, "starter"));
-    await waitFor(() => expect(result.current.userCode).toBe(""));
+    await waitFor(() => expect(result.current.legacyDraftAvailable).toBe(true));
+    expect(result.current.userCode).toBe("starter");
+    act(() => result.current.importLegacyDraft());
+    expect(result.current.userCode).toBe("");
     expect(result.current.wordWrap).toBe(false);
     expect(result.current.langMode).toBe("vi");
     expect(result.current.layoutMode).toBe("classic");
@@ -81,6 +84,28 @@ describe("draft compatibility", () => {
     unmount();
     const remounted = renderHook(() => usePracticeDraft(121, "starter"));
     await waitFor(() => expect(remounted.result.current.userCode).toBe("my draft"));
+    expect(localStorage.getItem("user_code_121")).toBe("");
+  });
+});
+
+describe("account-scoped code draft isolation", () => {
+  it("never reveals A code to B or a guest, and restores A after login", async () => {
+    const { result, rerender } = renderHook(({ user }) => usePracticeDraft(121, "starter", user), { initialProps: { user: "account-A" as string | null } });
+    await waitFor(() => expect(result.current.draftReady).toBe(true));
+    expect(result.current.userCode).toBe("starter");
+    act(() => result.current.handleCodeChange("secret from A"));
+    expect(result.current.userCode).toBe("secret from A");
+    rerender({ user: "account-B" });
+    expect(result.current.userCode).not.toBe("secret from A");
+    await waitFor(() => expect(result.current.draftReady).toBe(true));
+    expect(result.current.userCode).toBe("starter");
+    act(() => result.current.handleCodeChange("code B"));
+    rerender({ user: null });
+    expect(result.current.userCode).not.toBe("code B");
+    rerender({ user: "account-A" });
+    await waitFor(() => expect(result.current.draftReady).toBe(true));
+    await waitFor(() => expect(result.current.userCode).toBe("secret from A"));
+    expect(localStorage.getItem("quantavault-user-code-v2:account-B:121")).toBe("code B");
   });
 });
 

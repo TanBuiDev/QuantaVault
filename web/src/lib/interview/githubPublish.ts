@@ -2,6 +2,7 @@ import { INTERVIEW_CATEGORIES, type InterviewQuestion } from "./types";
 import { verifyTOTP } from "./totp";
 import { fromBase32 } from "./base32";
 import { canonicalQuestion, questionVersion } from "./questionVersion";
+import { isRetiredInterviewId } from "./questionIdMerge";
 
 export interface PublishEnv {
   GITHUB_PAT?: string; GITHUB_OWNER?: string; GITHUB_REPO?: string;
@@ -36,14 +37,17 @@ export function validQuestion(v: unknown): v is PublishQuestionItem {
     && (v.relatedProblems === undefined || (Array.isArray(v.relatedProblems) && v.relatedProblems.length <= 200 && v.relatedProblems.every(n => Number.isSafeInteger(n) && n > 0)))
     && (v.isDeleted === undefined || typeof v.isDeleted === "boolean");
 }
-export function validatePublishPayload(value: unknown): PublishPayload {
-  if (!record(value) || !text(value.pin, 256, true) || !text(value.otp, 32, true)
+export function validatePublishPayload(value: unknown, verifiedAdmin = false): PublishPayload {
+  if (!record(value) || (!verifiedAdmin && (!text(value.pin, 256, true) || !text(value.otp, 32, true)))
     || !Array.isArray(value.modifiedQuestions) || value.modifiedQuestions.length === 0 || value.modifiedQuestions.length > 1000
     || !value.modifiedQuestions.every(validQuestion) || !record(value.baseVersions)
     || (value.commitMessage !== undefined && !text(value.commitMessage, 2000))) {
     throw new PublishError(400, "INVALID_PAYLOAD", "Dữ liệu xuất bản không hợp lệ hoặc thiếu phiên bản nền. Hãy cập nhật trang và kiểm tra bản nháp.");
   }
   const ids = value.modifiedQuestions.map(q => q.id);
+  if (ids.some(isRetiredInterviewId)) {
+    throw new PublishError(409, "RETIRED_QUESTION_ID", "Câu hỏi này đã được hợp nhất. Bản cũ vẫn được giữ để sao lưu; vui lòng chỉnh sửa câu hỏi chính.");
+  }
   if (new Set(ids).size !== ids.length || ids.some(id => !Object.hasOwn(value.baseVersions as object, id) || !text((value.baseVersions as Record<string, unknown>)[id], 600000, true))) {
     throw new PublishError(400, "INVALID_PAYLOAD", "ID bị trùng hoặc thiếu phiên bản nền của câu hỏi.");
   }
@@ -92,15 +96,17 @@ function sha(value: unknown): string {
   return value;
 }
 
-export async function executePublishToGithub(value: unknown, env: PublishEnv): Promise<PublishResult> {
+export async function executePublishToGithub(value: unknown, env: PublishEnv, verifiedAdmin = false): Promise<PublishResult> {
   try {
     validatePublishConfig(env);
-    const payload = validatePublishPayload(value);
-    const [pinValid, otpValid] = await Promise.all([
-      constantTimeEqual(payload.pin.trim(), env.ADMIN_PIN!.trim()),
-      /^\d{6}$/.test(payload.otp.trim()) ? verifyTOTP(payload.otp.trim(), env.TOTP_SECRET!.trim(), { window: 1 }) : Promise.resolve(false),
-    ]);
-    if (!pinValid || !otpValid) return failure(401, "AUTHENTICATION_FAILED", "Mã PIN hoặc OTP không hợp lệ. Cần xác thực cả hai yếu tố.");
+    const payload = validatePublishPayload(value, verifiedAdmin);
+    if (!verifiedAdmin) {
+      const [pinValid, otpValid] = await Promise.all([
+        constantTimeEqual(payload.pin.trim(), env.ADMIN_PIN!.trim()),
+        /^\d{6}$/.test(payload.otp.trim()) ? verifyTOTP(payload.otp.trim(), env.TOTP_SECRET!.trim(), { window: 1 }) : Promise.resolve(false),
+      ]);
+      if (!pinValid || !otpValid) return failure(401, "AUTHENTICATION_FAILED", "Mã PIN hoặc OTP không hợp lệ. Cần xác thực cả hai yếu tố.");
+    }
 
     const owner = env.GITHUB_OWNER || "TanBuiDev", repo = env.GITHUB_REPO || "QuantaVault";
     const api = `https://api.github.com/repos/${owner}/${repo}`;

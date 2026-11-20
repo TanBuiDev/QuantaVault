@@ -7,6 +7,7 @@ import { PracticeView } from "@/features/practice/PracticeView";
 import type { ProblemContent } from "@/lib/content";
 import { ProgressProvider } from "@/lib/progress/provider";
 
+vi.mock("@/lib/auth/AccountProvider", () => ({ useAccount: () => ({ requestLogin: vi.fn() }) }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: vi.fn(), push: vi.fn() }) }));
 
 const content: ProblemContent = {

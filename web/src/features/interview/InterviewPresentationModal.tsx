@@ -19,7 +19,7 @@ import {
   HelpCircle,
 } from "lucide-react";
 import type { InterviewQuestion } from "@/lib/interview/types";
-import { INTERVIEW_CATEGORIES, formatQuestionNumber } from "@/lib/interview/types";
+import { INTERVIEW_CATEGORIES, formatQuestionBadge } from "@/lib/interview/types";
 import { MarkdownContent } from "@/features/practice/MarkdownContent";
 
 export type PresentationFontSize = "normal" | "large" | "huge";
@@ -29,6 +29,7 @@ export interface InterviewPresentationModalProps {
   onClose: () => void;
   questions: InterviewQuestion[];
   initialIndex?: number;
+  canMarkProgress?: boolean;
   isLearned: (id: string) => boolean;
   isReview: (id: string) => boolean;
   isBookmarked: (id: string) => boolean;
@@ -45,6 +46,7 @@ export function InterviewPresentationModal({
   isLearned,
   isReview,
   isBookmarked,
+  canMarkProgress = true,
   onToggleLearned,
   onToggleReview,
   onToggleBookmark,
@@ -267,7 +269,7 @@ export function InterviewPresentationModal({
               </span>
             </div>
             <p className="truncate text-xs font-semibold text-[var(--muted)]">
-              Câu hỏi <strong className="text-[var(--foreground)]">{currentIndex + 1}</strong> /{" "}
+              Slide <strong className="text-[var(--foreground)]">{currentIndex + 1}</strong> /{" "}
               {questions.length} ({Math.round(((currentIndex + 1) / questions.length) * 100)}%)
             </p>
           </div>
@@ -358,7 +360,7 @@ export function InterviewPresentationModal({
           {/* Metadata Badges */}
           <div className="flex flex-wrap items-center gap-2.5">
             <span className="font-mono text-sm sm:text-base font-extrabold text-[var(--muted)] bg-[var(--surface-hover)] px-2.5 py-1 rounded-xl border border-[var(--border)]">
-              {formatQuestionNumber(currentIndex + 1, questions.length)}
+              {formatQuestionBadge(currentQ.id)}
             </span>
 
             {/* Category */}
@@ -501,7 +503,7 @@ export function InterviewPresentationModal({
                   ? "border-emerald-500/50 bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 shadow-xs"
                   : "border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)]"
               }`}
-              title="Phím tắt: 1"
+              title={!canMarkProgress ? "Đăng nhập Google để lưu tiến độ" : "Phím tắt: 1"}
             >
               <CheckCircle2 className="h-3.5 w-3.5" />
               <span>Nắm vững (1)</span>
@@ -515,7 +517,7 @@ export function InterviewPresentationModal({
                   ? "border-amber-500/50 bg-amber-500/20 text-amber-600 dark:text-amber-400 shadow-xs"
                   : "border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)]"
               }`}
-              title="Phím tắt: 2"
+              title={!canMarkProgress ? "Đăng nhập Google để lưu tiến độ" : "Phím tắt: 2"}
             >
               <RotateCcw className="h-3.5 w-3.5" />
               <span>Cần ôn (2)</span>
@@ -529,7 +531,7 @@ export function InterviewPresentationModal({
                   ? "border-indigo-500/50 bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 shadow-xs"
                   : "border-[var(--border)] bg-[var(--surface)] text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-hover)]"
               }`}
-              title="Phím tắt: 3"
+              title={!canMarkProgress ? "Đăng nhập Google để lưu tiến độ" : "Phím tắt: 3"}
             >
               <Bookmark className="h-3.5 w-3.5" />
               <span>Đánh dấu (3)</span>

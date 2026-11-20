@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback, useSyncExternalStore } from "react";
+import { useCallback, useState, useSyncExternalStore } from "react";
 import type { AllCoursesProgressState, CourseProgressRecord } from "./types";
+import { canWriteLearningProgress, useLearningSession } from "../auth/progressAccess";
 
 const STORAGE_KEY = "quantavault-course-progress:v1";
 const LOCAL_CHANGE_EVENT = "quantavault-course-progress:change";
@@ -70,21 +71,40 @@ function subscribe(callback: () => void): () => void {
   };
 }
 
-function emitChange(nextState: AllCoursesProgressState) {
-  if (typeof window === "undefined") return;
+function emitChange(nextState: AllCoursesProgressState): boolean {
+  if (typeof window === "undefined") return false;
   try {
     const serialized = JSON.stringify(nextState);
     window.localStorage.setItem(STORAGE_KEY, serialized);
     cachedRaw = serialized;
     cachedState = nextState;
     window.dispatchEvent(new Event(LOCAL_CHANGE_EVENT));
+    return true;
   } catch {
-    // Ignore quota issues
+    // Do not silently claim a successful local save.
+    return false;
   }
 }
 
+/** Used by account-level sync; broadcasts changes to every course subscriber. */
+export function readCourseProgress(): AllCoursesProgressState {
+  return getSnapshot();
+}
+export function replaceCourseProgress(state: AllCoursesProgressState): void {
+  if (typeof window === "undefined") throw new Error("Browser storage unavailable");
+  if (state.version !== 1 || !state.courses || typeof state.courses !== "object") throw new Error("Invalid course progress");
+  const raw = JSON.stringify(state);
+  window.localStorage.setItem(STORAGE_KEY, raw);
+  cachedRaw = raw;
+  cachedState = state;
+  window.dispatchEvent(new Event(LOCAL_CHANGE_EVENT));
+}
+
 export function useCourseProgress() {
-  const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const storedState = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const [storageError, setStorageError] = useState(false);
+  const canTrackProgress = useLearningSession();
+  const state = canTrackProgress ? storedState : SERVER_SNAPSHOT;
   const hydrated = typeof window !== "undefined";
 
   const getCourseRecord = useCallback(
@@ -104,6 +124,7 @@ export function useCourseProgress() {
 
   const toggleLessonCompleted = useCallback(
     (courseId: string, lessonId: string) => {
+      if (!canWriteLearningProgress()) return;
       const currentState = getSnapshot();
       const curRecord = currentState.courses[courseId] || {
         completedLessonIds: [],
@@ -127,19 +148,22 @@ export function useCourseProgress() {
           }
         }
       };
-      emitChange(nextState);
+      const saved = emitChange(nextState);
+      setStorageError(!saved);
+      return saved;
     },
     []
   );
 
   const recordLastAccessed = useCallback(
     (courseId: string, lessonId: string) => {
+      if (!canWriteLearningProgress()) return;
       const currentState = getSnapshot();
       const curRecord = currentState.courses[courseId] || {
         completedLessonIds: [],
         updatedAt: new Date().toISOString()
       };
-      if (curRecord.lastAccessedLessonId === lessonId) return;
+      if (curRecord.lastAccessedLessonId === lessonId) return true;
 
       const nextState: AllCoursesProgressState = {
         ...currentState,
@@ -174,6 +198,8 @@ export function useCourseProgress() {
 
   return {
     hydrated,
+    canTrackProgress,
+    storageError,
     getCourseRecord,
     isLessonCompleted,
     toggleLessonCompleted,

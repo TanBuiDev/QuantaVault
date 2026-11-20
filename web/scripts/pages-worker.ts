@@ -1,10 +1,18 @@
 import { onRequestPost, onRequestOptions } from "../functions/api/publish";
 import { handleInterviewProgress, type ProgressEnv } from "../functions/api/interview-progress";
+import { handleGoogleAuth, type OAuthEnv } from "../src/lib/auth/googleOAuth";
+import { handleGoogleProgress } from "../src/lib/auth/googleProgress";
+import { handleGoogleLearningProgress } from "../src/lib/auth/googleLearningProgress";
+import { handleAccountAdmin } from "../src/lib/auth/adminAccess";
 
 export default {
-  async fetch(request: Request, env: Parameters<typeof onRequestPost>[0]["env"] & ProgressEnv) {
+  async fetch(request: Request, env: Parameters<typeof onRequestPost>[0]["env"] & ProgressEnv & OAuthEnv) {
     const pathname = new URL(request.url).pathname.replace(/\/$/, "");
     if (pathname === "/api/interview-progress") return handleInterviewProgress({ request, env });
+    if (pathname.startsWith("/api/auth/")) return handleGoogleAuth(request, env);
+    if (pathname === "/api/google-progress") return handleGoogleProgress(request, env);
+    if (pathname === "/api/learning-progress") return handleGoogleLearningProgress(request, env);
+    if (pathname.startsWith("/api/admin/")) return handleAccountAdmin(request, env);
     if (pathname === "/api/publish") {
       if (request.method === "OPTIONS") return onRequestOptions({ request, env });
       if (request.method === "POST") return onRequestPost({ request, env });

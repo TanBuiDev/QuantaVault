@@ -33,11 +33,12 @@ export const metadata: Metadata = {
   description: "QuantaVault – Kho kiến thức kiến trúc phần mềm và luyện thuật toán Java. Củng cố Java Backend, Distributed Systems và kỹ năng phỏng vấn qua bài học, lời giải và workspace cục bộ.",
   icons: {
     icon: [
-      { url: "/brand-logo.png", sizes: "any" },
-      { url: "/favicon.ico" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
     ],
-    apple: "/brand-logo.png",
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {

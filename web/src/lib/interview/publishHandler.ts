@@ -1,5 +1,7 @@
 import { executePublishToGithub, PublishError, readBoundedJson, validatePublishConfig, type PublishEnv } from "./githubPublish";
 import { globalRateLimiter } from "./rateLimiter";
+import { authorizedAdmin } from "../auth/adminAccess";
+import type { OAuthEnv } from "../auth/googleOAuth";
 
 const MAX_BYTES = 8 * 1024 * 1024;
 function allowedOrigin(request: Request, env: PublishEnv): string {
@@ -14,13 +16,15 @@ function allowedOrigin(request: Request, env: PublishEnv): string {
 function json(value: unknown, status: number, extra: HeadersInit = {}): Response {
   return Response.json(value, { status, headers: { "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff", ...extra } });
 }
-export async function handlePublishRequest(request: Request, env: PublishEnv): Promise<Response> {
+export async function handlePublishRequest(request: Request, env: PublishEnv & OAuthEnv): Promise<Response> {
   try {
     validatePublishConfig(env);
     const origin = allowedOrigin(request, env);
     const cors = { "Access-Control-Allow-Origin": origin, Vary: "Origin" };
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: { ...cors, "Access-Control-Allow-Methods": "POST, OPTIONS", "Access-Control-Allow-Headers": "Content-Type" } });
     if (request.method !== "POST") return json({ success: false, code: "METHOD_NOT_ALLOWED", error: "Chỉ hỗ trợ POST." }, 405, { Allow: "POST, OPTIONS" });
+    const admin = await authorizedAdmin(request, env, true);
+    if (!admin) return json({ success: false, code: "ADMIN_AUTH_REQUIRED", error: "Cần đăng nhập tài khoản admin và xác thực mật khẩu quản trị." }, 403);
     if (request.headers.get("Content-Type")?.split(";")[0].trim().toLowerCase() !== "application/json") return json({ success: false, code: "INVALID_PAYLOAD", error: "Content-Type phải là application/json." }, 415);
     if (Number(request.headers.get("Content-Length")) > MAX_BYTES) throw new PublishError(413, "BODY_TOO_LARGE", "Dữ liệu vượt giới hạn cho phép.");
     const ip = request.headers.get("CF-Connecting-IP") || request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
@@ -32,7 +36,7 @@ export async function handlePublishRequest(request: Request, env: PublishEnv): P
       if (error instanceof PublishError) throw error;
       throw new PublishError(400, "INVALID_PAYLOAD", "JSON không hợp lệ.");
     }
-    const result = await executePublishToGithub(value, env);
+    const result = await executePublishToGithub(value, env, true);
     if (result.code === "AUTHENTICATION_FAILED") {
       const fail = globalRateLimiter.recordFailure(ip);
       return json({ ...result, locked: fail.locked, retryAfterSeconds: fail.retryAfterSeconds }, fail.locked ? 429 : 401, { ...cors, ...(fail.locked ? { "Retry-After": String(fail.retryAfterSeconds) } : {}) });
