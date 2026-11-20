@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import {
   ChevronDown,
@@ -28,7 +28,7 @@ export function CourseSyllabusSidebar({
   onLessonSelect,
   className
 }: CourseSyllabusSidebarProps) {
-  const { hydrated, canTrackProgress, isLessonCompleted, getCourseCompletion } = useCourseProgress();
+  const { hydrated, isLessonCompleted, getCourseCompletion } = useCourseProgress();
   const { completedCount, totalLessons, percentage } = hydrated
     ? getCourseCompletion(course.id, course.totalLessons)
     : { completedCount: 0, totalLessons: course.totalLessons, percentage: 0 };
@@ -51,6 +51,17 @@ export function CourseSyllabusSidebar({
       [chapterId]: !prev[chapterId]
     }));
   };
+
+  // Auto-scroll to current active lesson in syllabus
+  const currentItemRef = useRef<HTMLAnchorElement | null>(null);
+  useEffect(() => {
+    if (typeof currentItemRef.current?.scrollIntoView === "function") {
+      currentItemRef.current.scrollIntoView({
+        block: "center",
+        behavior: "smooth"
+      });
+    }
+  }, [currentLessonId]);
 
   return (
     <aside
@@ -85,10 +96,10 @@ export function CourseSyllabusSidebar({
           <div className="flex items-center justify-between text-[11px]">
             <span className="text-[var(--muted)]">Tiến độ khóa học</span>
             <span className="font-bold text-[var(--foreground)]">
-              {canTrackProgress ? `${completedCount}/${totalLessons} (${percentage}%)` : `Tổng ${totalLessons} bài`}
+              {completedCount}/{totalLessons} ({percentage}%)
             </span>
           </div>
-          {canTrackProgress && <ProgressBar value={percentage} max={100} />}
+          <ProgressBar value={percentage} max={100} />
         </div>
       </div>
 
@@ -105,7 +116,6 @@ export function CourseSyllabusSidebar({
             </span>
           </div>
 
-          {!canTrackProgress && <p className="text-xs text-[var(--muted)]">Đăng nhập Google để xem tiến độ từng bài. Bạn vẫn có thể đọc nội dung như bình thường.</p>}
           {/* Status Legend */}
           <div className="flex items-center gap-2.5 text-[10px] text-[var(--muted)]">
             <span className="flex items-center gap-1">
@@ -157,7 +167,7 @@ export function CourseSyllabusSidebar({
           </div>
 
           {course.chapters.map((chapter) => {
-            const isOpen = openChapters[chapter.id] !== false;
+            const isOpen = openChapters[chapter.id] !== false || chapter.lessonIds.includes(currentLessonId);
             const chapterLessons = course.lessons.filter((l) =>
               chapter.lessonIds.includes(l.id)
             );
@@ -203,6 +213,7 @@ export function CourseSyllabusSidebar({
                       return (
                         <Link
                           key={l.id}
+                          ref={isCurrent ? currentItemRef : null}
                           href={`/courses/${course.slug}/${l.id}`}
                           onClick={onLessonSelect}
                           className={`group flex items-start gap-2 rounded-xl px-2.5 py-2 text-xs transition-all ${

@@ -32,10 +32,8 @@ import { useCourseProgress } from "@/lib/courses/useCourseProgress";
 import { useEnglishSpeech } from "@/lib/courses/speech";
 import { CourseSyllabusSidebar } from "./CourseSyllabusSidebar";
 import { EnglishLessonContent } from "./EnglishLessonContent";
-import { SpringLessonContent } from "./SpringLessonContent";
 import { SpringTranscriptPanel } from "./SpringTranscriptPanel";
 import { SpringDockFlashcards } from "./SpringDockFlashcards";
-import { SpringQuizStudio } from "./SpringQuizStudio";
 import { SpringReadingStudio } from "./SpringReadingStudio";
 import { getLessonQuiz } from "./quizData";
 import {
@@ -95,14 +93,29 @@ export function CourseLessonView({
 
   const [prevLessonId, setPrevLessonId] = useState(lesson.id);
   const [rightRailTab, setRightRailTab] = useState<"transcript" | "flashcards" | "syllabus">(() => {
-    if (hasTranscript) return "transcript";
-    if (hasFlashcards) return "flashcards";
+    if (typeof window !== "undefined") {
+      const saved = window.sessionStorage.getItem("spring_dock_tab");
+      if (saved === "transcript" && hasTranscript) return "transcript";
+      if (saved === "flashcards" && hasFlashcards) return "flashcards";
+    }
+    // Mặc định chuẩn UX cho toàn bộ khóa học là Mục lục
     return "syllabus";
   });
 
+  const handleRightRailTabChange = useCallback((tab: "transcript" | "flashcards" | "syllabus") => {
+    setRightRailTab(tab);
+    if (typeof window !== "undefined") {
+      window.sessionStorage.setItem("spring_dock_tab", tab);
+    }
+  }, []);
+
   if (prevLessonId !== lesson.id) {
     setPrevLessonId(lesson.id);
-    setRightRailTab(hasTranscript ? "transcript" : hasFlashcards ? "flashcards" : "syllabus");
+    if (rightRailTab === "transcript" && !hasTranscript) {
+      setRightRailTab("syllabus");
+    } else if (rightRailTab === "flashcards" && !hasFlashcards) {
+      setRightRailTab("syllabus");
+    }
   }
 
   const [transcriptSearchQuery, setTranscriptSearchQuery] = useState("");
@@ -579,7 +592,7 @@ export function CourseLessonView({
                   {hasTranscript && (
                     <button
                       type="button"
-                      onClick={() => setRightRailTab("transcript")}
+                      onClick={() => handleRightRailTabChange("transcript")}
                       className={`inline-flex items-center gap-1.5 rounded-xl px-2 py-1.5 text-xs font-bold transition-all cursor-pointer shrink-0 ${
                         rightRailTab === "transcript"
                           ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-2xs"
@@ -594,7 +607,7 @@ export function CourseLessonView({
                   {hasFlashcards && lesson.flashcards && lesson.flashcards.length > 0 && (
                     <button
                       type="button"
-                      onClick={() => setRightRailTab("flashcards")}
+                      onClick={() => handleRightRailTabChange("flashcards")}
                       className={`inline-flex items-center gap-1.5 rounded-xl px-2 py-1.5 text-xs font-bold transition-all cursor-pointer shrink-0 ${
                         rightRailTab === "flashcards"
                           ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-2xs"
@@ -608,7 +621,7 @@ export function CourseLessonView({
 
                   <button
                     type="button"
-                    onClick={() => setRightRailTab("syllabus")}
+                    onClick={() => handleRightRailTabChange("syllabus")}
                     className={`inline-flex items-center gap-1.5 rounded-xl px-2 py-1.5 text-xs font-bold transition-all cursor-pointer shrink-0 ${
                       rightRailTab === "syllabus"
                         ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-2xs"
@@ -784,34 +797,17 @@ export function CourseLessonView({
             </div>
           </div>
 
-          {/* HÀNG 3: KHÔNG GIAN HỌC CHUYÊN SÂU (Full-width Lower Workspace) */}
-          <section aria-label="Nội dung bài học Spring Framework" className="pt-2 min-w-0 w-full overflow-hidden">
-            {!lesson.lessonType || lesson.lessonType === "video" ? (
-              <SpringLessonContent
-                course={course}
-                lesson={lesson}
-                textScale={textScale}
-                currentTime={currentTime}
-                isPlaying={isPlaying}
-                onSeek={handleSeek}
-                searchQuery={transcriptSearchQuery}
-                onSearchChange={setTranscriptSearchQuery}
-                autoScroll={transcriptAutoScroll}
-                onToggleAutoScroll={() => setTranscriptAutoScroll((prev) => !prev)}
-                initialTab="blueprint"
-              />
-            ) : lesson.lessonType === "quiz" && quizQuestions && quizQuestions.length > 0 ? (
-              <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-10 shadow-xs">
-                <SpringQuizStudio
-                  questions={quizQuestions}
-                  lessonTitle={lesson.title}
-                  textScale={textScale}
-                />
-              </div>
-            ) : (
-              <SpringReadingStudio lesson={lesson} textScale={textScale} />
-            )}
-          </section>
+          {/* HÀNG 3: KHÔNG GIAN HỌC CHUYÊN SÂU (Unified Reading Workspace) */}
+          <div className="pt-2 min-w-0 w-full overflow-hidden">
+            <SpringReadingStudio
+              lesson={lesson}
+              textScale={textScale}
+              quizQuestions={quizQuestions}
+              currentTime={currentTime}
+              isPlaying={isPlaying}
+              onSeek={handleSeek}
+            />
+          </div>
 
           {/* Footer Navigation Bar */}
           <footer className="pt-6 border-t border-[var(--border)]">
