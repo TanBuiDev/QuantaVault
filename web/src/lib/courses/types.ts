@@ -13,7 +13,38 @@ export interface CourseTranscriptSentence {
   en: string;
   vi: string;
   time?: string;
+  start?: number;
+  end?: number;
 }
+
+export interface CourseQuizOption {
+  id: string;
+  textEn: string;
+  textVi: string;
+  isCorrect: boolean;
+}
+
+export interface CourseQuizQuestion {
+  id: string;
+  number: number;
+  title?: string;
+  questionEn: string;
+  questionVi: string;
+  options: CourseQuizOption[];
+  explanationEn?: string;
+  explanationVi?: string;
+  feedbackEn?: string;
+  feedbackVi?: string;
+  score?: string;
+}
+
+export type CourseLessonType =
+  | "video"
+  | "quiz"
+  | "reading-audio"
+  | "reading"
+  | "cheatsheet"
+  | "practice";
 
 export interface CourseLesson {
   id: string;
@@ -27,9 +58,18 @@ export interface CourseLesson {
   durationMinutes: number;
   tags?: string[];
   contentMarkdown: string;
+  /** Optional lesson archetype: video, quiz, reading-audio, reading, cheatsheet, practice */
+  lessonType?: CourseLessonType;
+  /** Optional audio file URL for reading with audio or summary */
+  audioUrl?: string;
+  /** Optional YouTube video ID (e.g. "X4Pho7r5sDg") */
   videoId?: string;
+  /** Optional bilingual flashcards for interactive deck */
   flashcards?: CourseFlashcard[];
+  /** Optional structured bilingual transcript sentences */
   transcript?: CourseTranscriptSentence[];
+  /** Optional structured multiple-choice quiz questions */
+  quiz?: CourseQuizQuestion[];
 }
 
 export interface CourseChapter {

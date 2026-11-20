@@ -10,7 +10,7 @@ const ALL_COURSES: CourseManifest[] = [
   postgresCourseData as unknown as CourseManifest,
   redisCourseData as unknown as CourseManifest,
   englishCourseData as unknown as CourseManifest,
-  springCourseData as CourseManifest
+  springCourseData as unknown as CourseManifest
 ];
 
 export function getAllCourses(): CourseManifest[] {

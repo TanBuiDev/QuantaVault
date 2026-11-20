@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom/vitest";
 import { describe, expect, it, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { SpringLessonContent } from "../SpringLessonContent";
 import type { CourseManifest } from "@/lib/courses";
 
@@ -73,82 +73,58 @@ describe("SpringLessonContent", () => {
     window.history.replaceState(null, "", "/");
   });
 
-  it("renders tabs and displays video and transcript by default", () => {
+  it("renders workspace tabs and displays architecture blueprint by default", () => {
     render(
       <SpringLessonContent
+        course={mockSpringCourse}
         lesson={mockSpringCourse.lessons[0]}
       />
     );
 
-    expect(screen.getByRole("button", { name: /Bài giảng & Transcript/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Thẻ Flashcard/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Kiến trúc & Phân tích chuyên sâu/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Transcript/i })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Thẻ Flashcard/i })).not.toBeInTheDocument();
 
-    // Verify YouTube iframe
-    const iframe = screen.getByTitle("Bài 1: Tổng quan Spring");
-    expect(iframe).toBeInTheDocument();
-    expect(iframe).toHaveAttribute("src", expect.stringContaining("X4Pho7r5sDg"));
-
-    // Verify Transcript
-    expect(screen.getByText("Welcome to the Spring course.")).toBeInTheDocument();
-    expect(screen.getByText("Chào mừng đến với khóa học Spring.")).toBeInTheDocument();
-  });
-
-  it("switches to Flashcards tab and supports flipping and self-assessment", async () => {
-    render(
-      <SpringLessonContent
-        lesson={mockSpringCourse.lessons[0]}
-      />
-    );
-
-    const flashcardsTab = screen.getByRole("button", { name: /Thẻ Flashcard/i });
-    fireEvent.click(flashcardsTab);
-
-    // Front of card 1
-    expect(screen.getByText("What is Spring?")).toBeInTheDocument();
-    expect(screen.getByText("Spring là gì?")).toBeInTheDocument();
-    expect(screen.queryByText("A Java framework.")).not.toBeInTheDocument();
-
-    // Click to flip card
-    fireEvent.click(screen.getByText("What is Spring?"));
-    expect(screen.getByText("A Java framework.")).toBeInTheDocument();
-    expect(screen.getByText("Một framework Java.")).toBeInTheDocument();
-
-    // Mark as remembered
-    const rememberBtn = screen.getByRole("button", { name: /Đã ghi nhớ/i });
-    await waitFor(() => expect(rememberBtn).toBeEnabled());
-    fireEvent.click(rememberBtn);
-
-    // Should score in localStorage
-    const saved = localStorage.getItem("quantavault-spring-flashcards:v1:lesson-01");
-    expect(saved).toContain("remembered");
-  });
-
-  it("switches to Architecture Blueprint tab and renders markdown content", () => {
-    render(
-      <SpringLessonContent
-        lesson={mockSpringCourse.lessons[0]}
-      />
-    );
-
-    const blueprintTab = screen.getByRole("button", { name: /Kiến trúc & Phân tích chuyên sâu/i });
-    fireEvent.click(blueprintTab);
-
+    // Default tab is Blueprint (Markdown content)
     expect(screen.getByText("Phân tích kiến trúc Spring")).toBeInTheDocument();
     expect(screen.getByText("Nội dung Markdown chuyên sâu.")).toBeInTheDocument();
   });
 
-  it("filters transcript by search query", () => {
+  it("switches to mobile transcript fallback and filters sentences by search query", () => {
     render(
       <SpringLessonContent
+        course={mockSpringCourse}
         lesson={mockSpringCourse.lessons[0]}
       />
     );
+
+    const transcriptTab = screen.getByRole("button", { name: /Transcript/i });
+    fireEvent.click(transcriptTab);
+
+    expect(screen.getByText("Welcome to the Spring course.")).toBeInTheDocument();
+    expect(screen.getByText("Chào mừng đến với khóa học Spring.")).toBeInTheDocument();
 
     const searchInput = screen.getByPlaceholderText("Tìm trong bài...");
     fireEvent.change(searchInput, { target: { value: "injection" } });
 
     expect(screen.queryByText("Welcome to the Spring course.")).not.toBeInTheDocument();
     expect(screen.getByText("Spring provides dependency injection.")).toBeInTheDocument();
+  });
+
+  it("supports switching back to blueprint tab from transcript tab", () => {
+    render(
+      <SpringLessonContent
+        course={mockSpringCourse}
+        lesson={mockSpringCourse.lessons[0]}
+      />
+    );
+
+    const transcriptTab = screen.getByRole("button", { name: /Transcript/i });
+    fireEvent.click(transcriptTab);
+    expect(screen.getByText("Welcome to the Spring course.")).toBeInTheDocument();
+
+    const blueprintTab = screen.getByRole("button", { name: /Kiến trúc & Phân tích chuyên sâu/i });
+    fireEvent.click(blueprintTab);
+    expect(screen.getByText("Phân tích kiến trúc Spring")).toBeInTheDocument();
   });
 });

@@ -4,8 +4,8 @@ const COURSE_ICONS: Record<string, LucideIcon> = {
   Database,
   Server,
   Languages,
-  Leaf,
-  BookOpen
+  BookOpen,
+  Leaf
 };
 
 /** Shared course icon mapping. Keep metadata-to-icon decisions in one place. */

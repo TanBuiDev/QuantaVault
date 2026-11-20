@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type KeyboardEvent, type MouseEvent } from "react";
+import { useMemo, useState, memo, type KeyboardEvent, type MouseEvent } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
@@ -224,7 +224,7 @@ function filterMarkdownByLanguage(text: string, mode: LanguageMode): string {
 
 
 
-export function MarkdownContent({
+export const MarkdownContent = memo(function MarkdownContent({
   markdown,
   languageMode = "bilingual",
   wordWrap = true,
@@ -378,7 +378,7 @@ export function MarkdownContent({
       </ReactMarkdown>
     </div>
   );
-}
+});
 
 
 

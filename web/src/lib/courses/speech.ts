@@ -93,3 +93,4 @@ export function useEnglishSpeech() {
     isSpeaking: (text: string) => activeText !== null && activeText === cleanTextForSpeech(text)
   };
 }
+
