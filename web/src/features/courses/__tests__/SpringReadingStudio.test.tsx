@@ -134,6 +134,18 @@ describe("SpringReadingStudio", () => {
             textEn: "To simplify Java app development by automating configuration",
             textVi: "Đơn giản hóa việc phát triển ứng dụng Java bằng cách tự động hóa cấu hình",
             isCorrect: true
+          },
+          {
+            id: "C",
+            textEn: "To replace relational databases",
+            textVi: "Thay thế cơ sở dữ liệu quan hệ",
+            isCorrect: false
+          },
+          {
+            id: "D",
+            textEn: "To remove the need for HTTP APIs",
+            textVi: "Loại bỏ nhu cầu sử dụng HTTP API",
+            isCorrect: false
           }
         ],
         explanationVi: "Spring Boot tự động hóa cấu hình.",

@@ -69,7 +69,15 @@ export function SpringReadingStudio({
   const { speak } = useEnglishSpeech();
 
   const isQuiz = lesson.lessonType === "quiz";
-  const hasQuizQuestions = Boolean(isQuiz && quizQuestions && quizQuestions.length > 0);
+  // Never grade malformed or ambiguously keyed quiz data.
+  const hasInvalidQuizData = Boolean(isQuiz && quizQuestions?.some((q) =>
+    !q.questionEn.trim() || !q.questionVi.trim() ||
+    q.options.length !== 4 ||
+    q.options.map((o) => o.id).join("") !== "ABCD" ||
+    q.options.filter((o) => o.isCorrect).length !== 1 ||
+    q.options.some((o) => !o.textEn.trim() || !o.textVi.trim())
+  ));
+  const hasQuizQuestions = Boolean(isQuiz && !hasInvalidQuizData && quizQuestions && quizQuestions.length > 0);
 
   // Interactive state for quiz questions
   const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
@@ -312,6 +320,11 @@ export function SpringReadingStudio({
           )}
         </div>
 
+        {hasInvalidQuizData && (
+          <p role="alert" className="rounded-xl border border-amber-500/40 p-4 text-sm text-amber-700 dark:text-amber-300">
+            Dữ liệu trắc nghiệm chưa hợp lệ. Chấm điểm đã được tạm tắt để tránh báo kết quả sai.
+          </p>
+        )}
         {/* 3.1 Quiz Progress & Reset Toolbar */}
         {hasQuizQuestions && (
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)]/30 px-4 py-2.5 text-xs">
@@ -429,11 +442,11 @@ export function SpringReadingStudio({
                         <p
                           className={`text-xs sm:text-sm leading-relaxed ${
                             langMode === "bilingual"
-                              ? "text-[var(--muted-strong)] italic"
+                              ? "text-cyan-700 dark:text-cyan-300"
                               : "text-[var(--foreground)] font-semibold"
                           }`}
                         >
-                          {langMode === "bilingual" ? `🇻🇳 ${q.questionVi}` : q.questionVi}
+                          {q.questionVi}
                         </p>
                       )}
                     </div>
@@ -503,7 +516,7 @@ export function SpringReadingStudio({
                                 <p
                                   className={`text-xs leading-relaxed ${
                                     langMode === "bilingual"
-                                      ? "text-[var(--muted-strong)]"
+                                      ? "text-cyan-700 dark:text-cyan-300"
                                       : "font-semibold"
                                   }`}
                                 >
@@ -514,7 +527,7 @@ export function SpringReadingStudio({
 
                             {isRevealed && isThisCorrect && (
                               <span className="shrink-0 self-center rounded-md bg-emerald-500/15 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
-                                Đáp án đúng
+                                {q.answerProvenance === "study-analysis" ? "Đáp án tham khảo" : "Đáp án đúng"}
                               </span>
                             )}
                           </button>
@@ -543,7 +556,7 @@ export function SpringReadingStudio({
                             : "border-amber-500/25 bg-amber-500/[0.04]"
                         }`}
                       >
-                        {(q.feedbackEn || q.feedbackVi) && (
+                        {(isAnswered && isCorrect && (q.feedbackEn || q.feedbackVi)) && (
                           <div className="flex items-center gap-2">
                             <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 dark:text-emerald-400">
                               <Sparkles className="h-3.5 w-3.5" />
@@ -559,6 +572,11 @@ export function SpringReadingStudio({
                           </div>
                         )}
 
+                        {q.answerProvenance === "study-analysis" && (
+                          <p className="text-xs text-amber-700 dark:text-amber-300">
+                            Đáp án tham khảo dựa trên phân tích kiến thức; chưa được Coursera xác nhận riêng cho câu này.
+                          </p>
+                        )}
                         {(q.explanationVi || q.explanationEn) && (
                           <div className="space-y-1 text-xs leading-relaxed text-[var(--foreground)]">
                             <div className="font-bold text-[11px] text-[var(--muted-strong)] uppercase tracking-wider">
@@ -584,8 +602,8 @@ export function SpringReadingStudio({
             </div>
           )}
 
-          {/* Render markdown content (for all lessons, or additional notes on quiz) */}
-          {lesson.contentMarkdown && (
+          {/* Prevent leaking the Markdown answer key beneath structured quiz questions. */}
+          {lesson.contentMarkdown && !hasQuizQuestions && (
             <SpringStudyMarkdown markdown={lesson.contentMarkdown} mode={langMode} query={searchQuery} />
           )}
         </section>
