@@ -295,7 +295,7 @@ export function SpringQuizStudio({
                       {/* Nhãn phụ khi câu này là đáp án đúng */}
                       {isAnswered && isThisCorrect && !isThisSelected && (
                         <span className="shrink-0 self-center rounded-md bg-emerald-500/15 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
-                          Đáp án đúng
+                          {q.answerProvenance === "study-analysis" ? "Đáp án tham khảo" : "Đáp án đúng"}
                         </span>
                       )}
                     </button>
@@ -313,7 +313,7 @@ export function SpringQuizStudio({
                   }`}
                 >
                   {/* Phản hồi Coursera */}
-                  {(q.feedbackEn || q.feedbackVi) && (
+                  {(isAnswered && isCorrect && (q.feedbackEn || q.feedbackVi)) && (
                     <div className="flex items-center gap-2">
                       <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 dark:text-emerald-400">
                         <Sparkles className="h-3.5 w-3.5" />
@@ -325,6 +325,11 @@ export function SpringQuizStudio({
                     </div>
                   )}
 
+                  {q.answerProvenance === "study-analysis" && (
+                    <p className="text-xs text-amber-700 dark:text-amber-300">
+                      Đáp án tham khảo theo kiến thức; chưa được Coursera xác nhận riêng cho câu này.
+                    </p>
+                  )}
                   {/* Phân tích giải thích chi tiết */}
                   {(q.explanationVi || q.explanationEn) && (
                     <div className="space-y-1 text-xs leading-relaxed text-[var(--foreground)]">
