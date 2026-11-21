@@ -55,9 +55,22 @@ describe("generated Spring quiz integrity", () => {
     expect(springQuizRegistry[id].map(q => q.options.find(o => o.isCorrect)?.id).join("")).toBe(answers);
   });
 
+  it("links lesson 38 graded evidence to 100% Coursera feedback without claiming a clicked choice", () => {
+    const lesson = getCourseBySlug("spring-framework-for-java")!.lessons.find(l => l.id === "lesson-38")!;
+    expect(lesson.contentMarkdown).toMatch(/Your grade: 100%/);
+    expect((lesson.contentMarkdown.match(/\*\*EN:\*\* Nice work/g) || [])).toHaveLength(5);
+    expect(springQuizRegistry["lesson-38"].map(q => q.answerProvenance)).toEqual(Array(5).fill("graded-evidence"));
+    expect(springQuizRegistry["lesson-38"].map(q => q.options.find(o => o.isCorrect)?.id).join("")).toBe("DCDCB");
+  });
+
+  it("keeps question 5 of lesson 28 and lesson 14 as study analysis", () => {
+    expect(springQuizRegistry["lesson-28"][4].answerProvenance).toBe("study-analysis");
+    expect(springQuizRegistry["lesson-14"].every(q => q.answerProvenance === "study-analysis")).toBe(true);
+  });
+
   it("retains answer provenance instead of claiming every answer is Coursera-confirmed", () => {
     expect(springQuizRegistry["lesson-14"].every(q => q.answerProvenance === "study-analysis")).toBe(true);
-    expect(springQuizRegistry["lesson-38"].every(q => q.answerProvenance === "study-analysis")).toBe(true);
+    expect(springQuizRegistry["lesson-38"].every(q => q.answerProvenance === "graded-evidence")).toBe(true);
     expect(springQuizRegistry["lesson-30"].every(q => q.answerProvenance === "coursera")).toBe(true);
     expect(springQuizRegistry["lesson-28"][4].answerProvenance).toBe("study-analysis");
   });
@@ -80,7 +93,9 @@ describe("real quiz rendering and grading", () => {
     fireEvent.click(within(card).getByText(q.options[0].textEn).closest("button")!);
     expect(within(card).getByText("Chưa chính xác")).toBeInTheDocument();
     expect(screen.queryByText("Nice work")).not.toBeInTheDocument();
-    expect(within(card).getByText(/Đáp án tham khảo dựa trên phân tích/)).toBeInTheDocument();
+    expect(screen.getByText(/Nguồn bài quiz: kết quả Coursera 100%/)).toBeInTheDocument();
+    expect(within(card).getByText("Đáp án đúng")).toBeInTheDocument();
+    expect(screen.queryByText(/chưa được Coursera xác nhận riêng cho câu này/)).not.toBeInTheDocument();
     fireEvent.click(screen.getByText("Làm lại bài tập"));
     expect(screen.queryByText("Chưa chính xác")).not.toBeInTheDocument();
   });

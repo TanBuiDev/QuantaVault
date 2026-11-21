@@ -36,8 +36,8 @@ export interface CourseQuizQuestion {
   feedbackEn?: string;
   feedbackVi?: string;
   score?: string;
-  /** Provenance of locally evaluated answer, not necessarily an official Coursera key. */
-  answerProvenance?: "coursera" | "study-analysis" | "flashcard";
+  /** "graded-evidence": 100% graded result + per-question feedback, but no clicked option preserved. */
+  answerProvenance?: "coursera" | "graded-evidence" | "study-analysis" | "flashcard";
 }
 
 export type CourseLessonType =

@@ -1952,7 +1952,7 @@ export const springQuizRegistry: Record<string, CourseQuizQuestion[]> = {
       "feedbackVi": "Làm tốt lắm!",
       "explanationEn": "This approach reduces the need for manual configuration and external servers in Java applications.",
       "explanationVi": "Cách tiếp cận này giảm nhu cầu cấu hình thủ công và sử dụng máy chủ bên ngoài trong ứng dụng Java.",
-      "answerProvenance": "study-analysis"
+      "answerProvenance": "graded-evidence"
     },
     {
       "id": "l38-q2",
@@ -1990,7 +1990,7 @@ export const springQuizRegistry: Record<string, CourseQuizQuestion[]> = {
       "feedbackVi": "Làm tốt lắm!",
       "explanationEn": "This pattern organizes code by assigning different responsibilities to different components.",
       "explanationVi": "Mô hình này tổ chức mã nguồn bằng cách giao các trách nhiệm khác nhau cho những thành phần khác nhau.",
-      "answerProvenance": "study-analysis"
+      "answerProvenance": "graded-evidence"
     },
     {
       "id": "l38-q3",
@@ -2028,7 +2028,7 @@ export const springQuizRegistry: Record<string, CourseQuizQuestion[]> = {
       "feedbackVi": "Làm tốt lắm!",
       "explanationEn": "This tool is used to generate and display web content dynamically.",
       "explanationVi": "Công cụ này được sử dụng để tạo và hiển thị nội dung web một cách động.",
-      "answerProvenance": "study-analysis"
+      "answerProvenance": "graded-evidence"
     },
     {
       "id": "l38-q4",
@@ -2066,7 +2066,7 @@ export const springQuizRegistry: Record<string, CourseQuizQuestion[]> = {
       "feedbackVi": "Làm tốt lắm!",
       "explanationEn": "This annotation helps direct web requests to specific methods within a controller.",
       "explanationVi": "Annotation này giúp định tuyến các yêu cầu web đến các phương thức cụ thể trong Controller.",
-      "answerProvenance": "study-analysis"
+      "answerProvenance": "graded-evidence"
     },
     {
       "id": "l38-q5",
@@ -2104,7 +2104,7 @@ export const springQuizRegistry: Record<string, CourseQuizQuestion[]> = {
       "feedbackVi": "Làm tốt lắm!",
       "explanationEn": "This component handles and processes data within the application.",
       "explanationVi": "Thành phần này xử lý và quản lý dữ liệu trong ứng dụng.",
-      "answerProvenance": "study-analysis"
+      "answerProvenance": "graded-evidence"
     }
   ],
   "lesson-43": [
