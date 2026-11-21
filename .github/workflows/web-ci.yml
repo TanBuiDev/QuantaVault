@@ -54,6 +54,10 @@ jobs:
         working-directory: web
         run: npm audit --omit=dev --audit-level=high
 
+      - name: Verify generated Spring quiz data
+        working-directory: web
+        run: node scripts/generate-quiz-data.mjs --check
+
       - name: Lint
         working-directory: web
         run: npm run lint

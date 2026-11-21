@@ -36,6 +36,8 @@ export interface CourseQuizQuestion {
   feedbackEn?: string;
   feedbackVi?: string;
   score?: string;
+  /** Provenance of locally evaluated answer, not necessarily an official Coursera key. */
+  answerProvenance?: "coursera" | "study-analysis" | "flashcard";
 }
 
 export type CourseLessonType =
