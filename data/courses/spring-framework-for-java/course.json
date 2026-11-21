@@ -10914,14 +10914,14 @@
           "id": "sent-9",
           "start": 33.0,
           "time": "00:33",
-          "en": "Consider the case of an organization that",
+          "en": "Consider the case of an organization that wants to develop a web application With data management and reporting capabilities",
           "vi": "Hãy xét trường hợp một tổ chức muốn phát triển ứng dụng web có khả năng quản lý dữ liệu và lập báo cáo."
         },
         {
           "id": "sent-10",
           "start": 40.5,
           "time": "00:40",
-          "en": "The organization wants to follow a structured",
+          "en": "The organization wants to follow a structured approach for building the application And handle presentation and navigation logic separately",
           "vi": "Tổ chức muốn tuân theo một cách tiếp cận có cấu trúc để xây dựng ứng dụng và xử lý riêng logic hiển thị và điều hướng."
         },
         {
@@ -10942,28 +10942,28 @@
           "id": "sent-13",
           "start": 57.0,
           "time": "00:57",
-          "en": "It's a web application framework the developers",
+          "en": "It's a web application framework the developers can use to build robust and scalable applications",
           "vi": "Đó là một framework ứng dụng web mà các lập trình viên có thể dùng để xây dựng những ứng dụng mạnh mẽ và có khả năng mở rộng."
         },
         {
           "id": "sent-14",
           "start": 63.5,
           "time": "01:03",
-          "en": "Much like the working of a restaurant, the",
+          "en": "Much like the working of a restaurant, the MVC pattern splits the application code Into three main components, Model, View, and Controller",
           "vi": "Tương tự cách một nhà hàng vận hành, mô hình MVC chia mã nguồn ứng dụng thành ba thành phần chính: Model, View và Controller."
         },
         {
           "id": "sent-15",
           "start": 72.5,
           "time": "01:12",
-          "en": "Splitting the code allows you to organize",
+          "en": "Splitting the code allows you to organize it based on its distinct functions",
           "vi": "Việc chia tách mã nguồn cho phép bạn tổ chức nó theo từng chức năng riêng biệt."
         },
         {
           "id": "sent-16",
           "start": 77.0,
           "time": "01:17",
-          "en": "And simplifies the process of building,",
+          "en": "And simplifies the process of building, maintaining, and updating the application",
           "vi": "Và đơn giản hóa quá trình xây dựng, bảo trì và cập nhật ứng dụng."
         },
         {
@@ -10977,7 +10977,7 @@
           "id": "sent-18",
           "start": 85.0,
           "time": "01:25",
-          "en": "The first component, the Model, is like a",
+          "en": "The first component, the Model, is like a chef's kitchen where all the work is done",
           "vi": "Thành phần đầu tiên, Model, giống như nhà bếp của một nhà hàng, nơi mọi công việc được thực hiện."
         },
         {
@@ -10998,7 +10998,7 @@
           "id": "sent-21",
           "start": 95.0,
           "time": "01:35",
-          "en": "If you're building an online bookstore,",
+          "en": "If you're building an online bookstore, the Model would handle tasks such as",
           "vi": "Nếu bạn đang xây dựng một cửa hàng sách trực tuyến, Model sẽ xử lý những tác vụ như:"
         },
         {
@@ -11033,7 +11033,7 @@
           "id": "sent-26",
           "start": 111.0,
           "time": "01:51",
-          "en": "The second component, the View, is like the",
+          "en": "The second component, the View, is like the final presentation of a dish at a restaurant",
           "vi": "Thành phần thứ hai, View, giống như cách một món ăn được trình bày hoàn chỉnh tại nhà hàng."
         },
         {
@@ -11047,14 +11047,14 @@
           "id": "sent-28",
           "start": 121.5,
           "time": "02:01",
-          "en": "It comprises HTML pages with dynamic content and can",
+          "en": "It comprises HTML pages with dynamic content and can be created using templates such as JSP and Thymeleaf",
           "vi": "View bao gồm những trang HTML có nội dung động và có thể được tạo bằng các template như JSP và Thymeleaf."
         },
         {
           "id": "sent-29",
           "start": 130.0,
           "time": "02:10",
-          "en": "In web applications, Views are typically HTML pages,",
+          "en": "In web applications, Views are typically HTML pages, Java server or JSP pages, and Thymeleaf templates",
           "vi": "Trong ứng dụng web, View thường là các trang HTML, các trang Java server hoặc JSP và các template Thymeleaf."
         },
         {
@@ -11068,7 +11068,7 @@
           "id": "sent-31",
           "start": 143.0,
           "time": "02:23",
-          "en": "The third component, the Controller, is like a restaurant manager",
+          "en": "The third component, the Controller, is like a restaurant manager who coordinates between customers and the kitchen staff to",
           "vi": "Thành phần thứ ba, Controller, giống như người quản lý nhà hàng, phối hợp giữa khách hàng và nhân viên bếp để:"
         },
         {
@@ -11103,7 +11103,7 @@
           "id": "sent-36",
           "start": 163.5,
           "time": "02:43",
-          "en": "Let's take an example to understand how Spring MVC",
+          "en": "Let's take an example to understand how Spring MVC processes requests such as searching for a book",
           "vi": "Hãy xem một ví dụ để hiểu cách Spring MVC xử lý các yêu cầu, chẳng hạn như tìm kiếm một cuốn sách."
         },
         {
@@ -11124,21 +11124,21 @@
           "id": "sent-39",
           "start": 181.0,
           "time": "03:01",
-          "en": "DispatcherServlet works like a restaurant's",
+          "en": "DispatcherServlet works like a restaurant's reception desk, and all guests must first go through it",
           "vi": "DispatcherServlet hoạt động giống như quầy lễ tân của nhà hàng, nơi mọi vị khách đều phải đi qua trước tiên."
         },
         {
           "id": "sent-40",
           "start": 186.5,
           "time": "03:06",
-          "en": "The DispatcherServlet is the main entry point for all web",
+          "en": "The DispatcherServlet is the main entry point for all web requests in an application, and it serves the following purpose",
           "vi": "DispatcherServlet là điểm tiếp nhận chính của mọi yêu cầu web trong một ứng dụng và có các nhiệm vụ sau:"
         },
         {
           "id": "sent-41",
           "start": 193.0,
           "time": "03:13",
-          "en": "Receives all incoming requests, such as I want",
+          "en": "Receives all incoming requests, such as I want to view my profile or I want to add a product",
           "vi": "Nhận tất cả yêu cầu gửi đến, chẳng hạn như “Tôi muốn xem hồ sơ của mình” hoặc “Tôi muốn thêm một sản phẩm”."
         },
         {
@@ -11180,14 +11180,14 @@
           "id": "sent-47",
           "start": 216.5,
           "time": "03:36",
-          "en": "For example, “/books/*” requests go to the BookController,",
+          "en": "For example, “/books/*” requests go to the BookController, and “/users/*” requests go to the UserController",
           "vi": "Ví dụ, các yêu cầu “/books/*” được chuyển đến BookController và các yêu cầu “/users/*” được chuyển đến UserController."
         },
         {
           "id": "sent-48",
           "start": 226.0,
           "time": "03:46",
-          "en": "The ControllerExecution works like a",
+          "en": "The ControllerExecution works like a manager's decision to process requests",
           "vi": "ControllerExecution giống như quyết định của người quản lý khi xử lý yêu cầu."
         },
         {
@@ -11222,7 +11222,7 @@
           "id": "sent-53",
           "start": 242.0,
           "time": "04:02",
-          "en": "The ViewResolver works like a presentation guide to",
+          "en": "The ViewResolver works like a presentation guide to determine which template to use and how to present the data",
           "vi": "ViewResolver giống như người hướng dẫn trình bày, giúp xác định template nào sẽ được dùng và dữ liệu sẽ được trình bày như thế nào."
         },
         {
@@ -11236,7 +11236,7 @@
           "id": "sent-55",
           "start": 256.0,
           "time": "04:16",
-          "en": "ViewRendering works like the final presentation",
+          "en": "ViewRendering works like the final presentation to receive model data and render it into HTML",
           "vi": "ViewRendering giống như bước trình bày cuối cùng, nhận dữ liệu từ Model và kết xuất thành HTML."
         },
         {
@@ -11250,7 +11250,7 @@
           "id": "sent-57",
           "start": 266.0,
           "time": "04:26",
-          "en": "The main benefits of Spring MVC include the",
+          "en": "The main benefits of Spring MVC include the separation of concerns, its flexibility, and its testability",
           "vi": "Những lợi ích chính của Spring MVC gồm sự phân tách trách nhiệm, tính linh hoạt và khả năng kiểm thử."
         },
         {
@@ -11411,14 +11411,14 @@
           "id": "sent-80",
           "start": 362.0,
           "time": "06:02",
-          "en": "In this video, you learned that Spring MVC is",
+          "en": "In this video, you learned that Spring MVC is a framework used to build web applications",
           "vi": "Trong video này, bạn đã học rằng Spring MVC là một framework dùng để xây dựng các ứng dụng web."
         },
         {
           "id": "sent-81",
           "start": 369.0,
           "time": "06:09",
-          "en": "The MVC pattern splits an application",
+          "en": "The MVC pattern splits an application code into model, view, and controller",
           "vi": "Mô hình MVC chia mã nguồn ứng dụng thành Model, View và Controller."
         },
         {
@@ -11439,7 +11439,7 @@
           "id": "sent-84",
           "start": 383.0,
           "time": "06:23",
-          "en": "The controller processes user requests using the model",
+          "en": "The controller processes user requests using the model and selects the appropriate view to display the results",
           "vi": "Controller xử lý yêu cầu người dùng bằng Model và chọn View phù hợp để hiển thị kết quả."
         },
         {

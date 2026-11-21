@@ -1,0 +1,1116 @@
+{
+  "description": "Independent source transcripts from user uploads, whitespace normalized; exact EN and VI words.",
+  "lessons": {
+    "lesson-32": [
+      {
+        "id": "sent-1",
+        "en": "Welcome to this video about Introduction to Spring MVC.",
+        "vi": "Chào mừng bạn đến với video giới thiệu về Spring MVC."
+      },
+      {
+        "id": "sent-2",
+        "en": "After watching this video, you will be able to",
+        "vi": "Sau khi xem video này, bạn sẽ có thể:"
+      },
+      {
+        "id": "sent-3",
+        "en": "Define Spring MVC",
+        "vi": "Định nghĩa Spring MVC."
+      },
+      {
+        "id": "sent-4",
+        "en": "Identify the roles of the MVC pattern components",
+        "vi": "Xác định vai trò của các thành phần trong mô hình MVC."
+      },
+      {
+        "id": "sent-5",
+        "en": "Describe how Spring MVC processes requests",
+        "vi": "Mô tả cách Spring MVC xử lý các yêu cầu."
+      },
+      {
+        "id": "sent-6",
+        "en": "Explain the benefits of Spring MVC",
+        "vi": "Giải thích những lợi ích của Spring MVC."
+      },
+      {
+        "id": "sent-7",
+        "en": "List the areas where Spring MVC is used",
+        "vi": "Liệt kê các lĩnh vực sử dụng Spring MVC."
+      },
+      {
+        "id": "sent-8",
+        "en": "And identify the aspects that make Spring MVC popular",
+        "vi": "Và xác định những yếu tố khiến Spring MVC trở nên phổ biến."
+      },
+      {
+        "id": "sent-9",
+        "en": "Consider the case of an organization that wants to develop a web application With data management and reporting capabilities",
+        "vi": "Hãy xét trường hợp một tổ chức muốn phát triển ứng dụng web có khả năng quản lý dữ liệu và lập báo cáo."
+      },
+      {
+        "id": "sent-10",
+        "en": "The organization wants to follow a structured approach for building the application And handle presentation and navigation logic separately",
+        "vi": "Tổ chức muốn tuân theo một cách tiếp cận có cấu trúc để xây dựng ứng dụng và xử lý riêng logic hiển thị và điều hướng."
+      },
+      {
+        "id": "sent-11",
+        "en": "They have selected Spring MVC, or Model View Controller, for this purpose",
+        "vi": "Họ đã chọn Spring MVC, hay Model View Controller, cho mục đích này."
+      },
+      {
+        "id": "sent-12",
+        "en": "So, what is Spring MVC?",
+        "vi": "Vậy Spring MVC là gì?"
+      },
+      {
+        "id": "sent-13",
+        "en": "It's a web application framework the developers can use to build robust and scalable applications",
+        "vi": "Đó là một framework ứng dụng web mà các lập trình viên có thể dùng để xây dựng những ứng dụng mạnh mẽ và có khả năng mở rộng."
+      },
+      {
+        "id": "sent-14",
+        "en": "Much like the working of a restaurant, the MVC pattern splits the application code Into three main components, Model, View, and Controller",
+        "vi": "Tương tự cách một nhà hàng vận hành, mô hình MVC chia mã nguồn ứng dụng thành ba thành phần chính: Model, View và Controller."
+      },
+      {
+        "id": "sent-15",
+        "en": "Splitting the code allows you to organize it based on its distinct functions",
+        "vi": "Việc chia tách mã nguồn cho phép bạn tổ chức nó theo từng chức năng riêng biệt."
+      },
+      {
+        "id": "sent-16",
+        "en": "And simplifies the process of building, maintaining, and updating the application",
+        "vi": "Và đơn giản hóa quá trình xây dựng, bảo trì và cập nhật ứng dụng."
+      },
+      {
+        "id": "sent-17",
+        "en": "Let's go over the components in detail",
+        "vi": "Hãy tìm hiểu chi tiết từng thành phần."
+      },
+      {
+        "id": "sent-18",
+        "en": "The first component, the Model, is like a chef's kitchen where all the work is done",
+        "vi": "Thành phần đầu tiên, Model, giống như nhà bếp của một nhà hàng, nơi mọi công việc được thực hiện."
+      },
+      {
+        "id": "sent-19",
+        "en": "It contains data and business logic",
+        "vi": "Nó chứa dữ liệu và logic nghiệp vụ."
+      },
+      {
+        "id": "sent-20",
+        "en": "Let's consider an example",
+        "vi": "Hãy xem một ví dụ."
+      },
+      {
+        "id": "sent-21",
+        "en": "If you're building an online bookstore, the Model would handle tasks such as",
+        "vi": "Nếu bạn đang xây dựng một cửa hàng sách trực tuyến, Model sẽ xử lý những tác vụ như:"
+      },
+      {
+        "id": "sent-22",
+        "en": "Storing book information such as title, author, and pricing",
+        "vi": "Lưu thông tin sách như tên sách, tác giả và giá bán."
+      },
+      {
+        "id": "sent-23",
+        "en": "Managing inventory",
+        "vi": "Quản lý hàng tồn kho."
+      },
+      {
+        "id": "sent-24",
+        "en": "Processing orders",
+        "vi": "Xử lý đơn hàng."
+      },
+      {
+        "id": "sent-25",
+        "en": "Take a moment to view the example code displayed on the screen",
+        "vi": "Hãy dành một chút thời gian xem đoạn mã ví dụ được hiển thị trên màn hình."
+      },
+      {
+        "id": "sent-26",
+        "en": "The second component, the View, is like the final presentation of a dish at a restaurant",
+        "vi": "Thành phần thứ hai, View, giống như cách một món ăn được trình bày hoàn chỉnh tại nhà hàng."
+      },
+      {
+        "id": "sent-27",
+        "en": "The View represents the content that is displayed for the user in the browser",
+        "vi": "View thể hiện nội dung hiển thị cho người dùng trong trình duyệt."
+      },
+      {
+        "id": "sent-28",
+        "en": "It comprises HTML pages with dynamic content and can be created using templates such as JSP and Thymeleaf",
+        "vi": "View bao gồm những trang HTML có nội dung động và có thể được tạo bằng các template như JSP và Thymeleaf."
+      },
+      {
+        "id": "sent-29",
+        "en": "In web applications, Views are typically HTML pages, Java server or JSP pages, and Thymeleaf templates",
+        "vi": "Trong ứng dụng web, View thường là các trang HTML, các trang Java server hoặc JSP và các template Thymeleaf."
+      },
+      {
+        "id": "sent-30",
+        "en": "Take a moment to view the example code displayed on the screen",
+        "vi": "Hãy dành một chút thời gian xem đoạn mã ví dụ được hiển thị trên màn hình."
+      },
+      {
+        "id": "sent-31",
+        "en": "The third component, the Controller, is like a restaurant manager who coordinates between customers and the kitchen staff to",
+        "vi": "Thành phần thứ ba, Controller, giống như người quản lý nhà hàng, phối hợp giữa khách hàng và nhân viên bếp để:"
+      },
+      {
+        "id": "sent-32",
+        "en": "Receive requests from users",
+        "vi": "Tiếp nhận yêu cầu từ người dùng."
+      },
+      {
+        "id": "sent-33",
+        "en": "Process user requests using the Model",
+        "vi": "Xử lý yêu cầu của người dùng bằng Model."
+      },
+      {
+        "id": "sent-34",
+        "en": "Select the appropriate View to display the results",
+        "vi": "Chọn View phù hợp để hiển thị kết quả."
+      },
+      {
+        "id": "sent-35",
+        "en": "Take a moment to view the example code displayed on the screen",
+        "vi": "Hãy dành một chút thời gian xem đoạn mã ví dụ được hiển thị trên màn hình."
+      },
+      {
+        "id": "sent-36",
+        "en": "Let's take an example to understand how Spring MVC processes requests such as searching for a book",
+        "vi": "Hãy xem một ví dụ để hiểu cách Spring MVC xử lý các yêu cầu, chẳng hạn như tìm kiếm một cuốn sách."
+      },
+      {
+        "id": "sent-37",
+        "en": "This involves components such as DispatcherServlet, HandlerMapping, ControllerExecution, ViewResolver, and ViewRendering",
+        "vi": "Quá trình này gồm các thành phần như DispatcherServlet, HandlerMapping, ControllerExecution, ViewResolver và ViewRendering."
+      },
+      {
+        "id": "sent-38",
+        "en": "Let's explore the functions of each of these",
+        "vi": "Hãy tìm hiểu chức năng của từng thành phần."
+      },
+      {
+        "id": "sent-39",
+        "en": "DispatcherServlet works like a restaurant's reception desk, and all guests must first go through it",
+        "vi": "DispatcherServlet hoạt động giống như quầy lễ tân của nhà hàng, nơi mọi vị khách đều phải đi qua trước tiên."
+      },
+      {
+        "id": "sent-40",
+        "en": "The DispatcherServlet is the main entry point for all web requests in an application, and it serves the following purpose",
+        "vi": "DispatcherServlet là điểm tiếp nhận chính của mọi yêu cầu web trong một ứng dụng và có các nhiệm vụ sau:"
+      },
+      {
+        "id": "sent-41",
+        "en": "Receives all incoming requests, such as I want to view my profile or I want to add a product",
+        "vi": "Nhận tất cả yêu cầu gửi đến, chẳng hạn như “Tôi muốn xem hồ sơ của mình” hoặc “Tôi muốn thêm một sản phẩm”."
+      },
+      {
+        "id": "sent-42",
+        "en": "Determines which controller handles the specific request",
+        "vi": "Xác định controller nào xử lý yêu cầu cụ thể."
+      },
+      {
+        "id": "sent-43",
+        "en": "Ensures the user receives a response",
+        "vi": "Đảm bảo người dùng nhận được phản hồi."
+      },
+      {
+        "id": "sent-44",
+        "en": "HandlerMapping works like the directory of a restaurant",
+        "vi": "HandlerMapping giống như bảng chỉ dẫn của nhà hàng."
+      },
+      {
+        "id": "sent-45",
+        "en": "It helps identify the function of a specific section",
+        "vi": "Nó giúp xác định chức năng của một khu vực cụ thể."
+      },
+      {
+        "id": "sent-46",
+        "en": "Map URLs to appropriate controllers",
+        "vi": "Ánh xạ URL đến các controller tương ứng."
+      },
+      {
+        "id": "sent-47",
+        "en": "For example, “/books/*” requests go to the BookController, and “/users/*” requests go to the UserController",
+        "vi": "Ví dụ, các yêu cầu “/books/*” được chuyển đến BookController và các yêu cầu “/users/*” được chuyển đến UserController."
+      },
+      {
+        "id": "sent-48",
+        "en": "The ControllerExecution works like a manager's decision to process requests",
+        "vi": "ControllerExecution giống như quyết định của người quản lý khi xử lý yêu cầu."
+      },
+      {
+        "id": "sent-49",
+        "en": "Interact with the Model",
+        "vi": "Tương tác với Model."
+      },
+      {
+        "id": "sent-50",
+        "en": "Prepare data for display",
+        "vi": "Chuẩn bị dữ liệu để hiển thị."
+      },
+      {
+        "id": "sent-51",
+        "en": "Choose which View to use",
+        "vi": "Chọn View sẽ được sử dụng."
+      },
+      {
+        "id": "sent-52",
+        "en": "Take a moment to view the SearchController code displayed on the screen",
+        "vi": "Hãy dành một chút thời gian xem mã SearchController được hiển thị trên màn hình."
+      },
+      {
+        "id": "sent-53",
+        "en": "The ViewResolver works like a presentation guide to determine which template to use and how to present the data",
+        "vi": "ViewResolver giống như người hướng dẫn trình bày, giúp xác định template nào sẽ được dùng và dữ liệu sẽ được trình bày như thế nào."
+      },
+      {
+        "id": "sent-54",
+        "en": "Map ViewNames to actual view templates, for example searchResults might map to searchResults.html",
+        "vi": "Ánh xạ ViewNames tới các template View thực tế; ví dụ, searchResults có thể được ánh xạ tới searchResults.html."
+      },
+      {
+        "id": "sent-55",
+        "en": "ViewRendering works like the final presentation to receive model data and render it into HTML",
+        "vi": "ViewRendering giống như bước trình bày cuối cùng, nhận dữ liệu từ Model và kết xuất thành HTML."
+      },
+      {
+        "id": "sent-56",
+        "en": "Send back the data to the user's browsers",
+        "vi": "Gửi dữ liệu trở lại trình duyệt của người dùng."
+      },
+      {
+        "id": "sent-57",
+        "en": "The main benefits of Spring MVC include the separation of concerns, its flexibility, and its testability",
+        "vi": "Những lợi ích chính của Spring MVC gồm sự phân tách trách nhiệm, tính linh hoạt và khả năng kiểm thử."
+      },
+      {
+        "id": "sent-58",
+        "en": "Let's examine each of these in detail",
+        "vi": "Hãy xem xét chi tiết từng lợi ích."
+      },
+      {
+        "id": "sent-59",
+        "en": "Separation of concerns enables",
+        "vi": "Sự phân tách trách nhiệm cho phép:"
+      },
+      {
+        "id": "sent-60",
+        "en": "Developers to work independently on the business logic",
+        "vi": "Lập trình viên làm việc độc lập trên logic nghiệp vụ."
+      },
+      {
+        "id": "sent-61",
+        "en": "Designers to focus on the user interface",
+        "vi": "Nhà thiết kế tập trung vào giao diện người dùng."
+      },
+      {
+        "id": "sent-62",
+        "en": "And controllers to manage the flow of data",
+        "vi": "Và các controller quản lý luồng dữ liệu."
+      },
+      {
+        "id": "sent-63",
+        "en": "Spring MVC's flexibility enables",
+        "vi": "Tính linh hoạt của Spring MVC cho phép:"
+      },
+      {
+        "id": "sent-64",
+        "en": "Support for different types of views, such as JSP, Thymeleaf, and FreeMarker",
+        "vi": "Hỗ trợ nhiều loại View như JSP, Thymeleaf và FreeMarker."
+      },
+      {
+        "id": "sent-65",
+        "en": "Return of different kinds of responses, such as HTML, JSON, and XML",
+        "vi": "Trả về nhiều loại phản hồi như HTML, JSON và XML."
+      },
+      {
+        "id": "sent-66",
+        "en": "And integration with other Spring frameworks",
+        "vi": "Và tích hợp với các framework Spring khác."
+      },
+      {
+        "id": "sent-67",
+        "en": "And its testability allows",
+        "vi": "Và khả năng kiểm thử của nó cho phép:"
+      },
+      {
+        "id": "sent-68",
+        "en": "Controllers to be tested independently",
+        "vi": "Kiểm thử các Controller một cách độc lập."
+      },
+      {
+        "id": "sent-69",
+        "en": "Mock objects to be used to simulate model behavior",
+        "vi": "Sử dụng mock objects để mô phỏng hành vi của Model."
+      },
+      {
+        "id": "sent-70",
+        "en": "And separate verification of views",
+        "vi": "Và kiểm tra riêng các View."
+      },
+      {
+        "id": "sent-71",
+        "en": "Spring MVC is used for creating applications for e-commerce sites, financial services, healthcare systems, educational platforms, and travel and hospitality businesses",
+        "vi": "Spring MVC được sử dụng để tạo ứng dụng cho các trang thương mại điện tử, dịch vụ tài chính, hệ thống chăm sóc sức khỏe, nền tảng giáo dục và doanh nghiệp du lịch, khách sạn."
+      },
+      {
+        "id": "sent-72",
+        "en": "It is also used in content management systems, ERP or Enterprise Resource Planning, CRM or Customer Relationship Management, social media features, and government and public services",
+        "vi": "Nó cũng được sử dụng trong các hệ thống quản lý nội dung, ERP hay Enterprise Resource Planning (hoạch định nguồn lực doanh nghiệp), CRM hay Customer Relationship Management (quản lý quan hệ khách hàng), các tính năng mạng xã hội, cùng các dịch vụ công và chính phủ."
+      },
+      {
+        "id": "sent-73",
+        "en": "Spring MVC is popular because it offers",
+        "vi": "Spring MVC phổ biến vì nó cung cấp:"
+      },
+      {
+        "id": "sent-74",
+        "en": "Robust security features for sensitive data",
+        "vi": "Các tính năng bảo mật mạnh mẽ dành cho dữ liệu nhạy cảm."
+      },
+      {
+        "id": "sent-75",
+        "en": "High scalability for large user bases",
+        "vi": "Khả năng mở rộng cao cho lượng người dùng lớn."
+      },
+      {
+        "id": "sent-76",
+        "en": "Easy integration with other systems",
+        "vi": "Dễ dàng tích hợp với các hệ thống khác."
+      },
+      {
+        "id": "sent-77",
+        "en": "Reliable performance for critical operations",
+        "vi": "Hiệu năng đáng tin cậy cho các hoạt động quan trọng."
+      },
+      {
+        "id": "sent-78",
+        "en": "Flexible architecture for complex business requirements",
+        "vi": "Kiến trúc linh hoạt đáp ứng yêu cầu nghiệp vụ phức tạp."
+      },
+      {
+        "id": "sent-79",
+        "en": "And strong support for database operations",
+        "vi": "Và khả năng hỗ trợ mạnh mẽ cho các thao tác cơ sở dữ liệu."
+      },
+      {
+        "id": "sent-80",
+        "en": "In this video, you learned that Spring MVC is a framework used to build web applications",
+        "vi": "Trong video này, bạn đã học rằng Spring MVC là một framework dùng để xây dựng các ứng dụng web."
+      },
+      {
+        "id": "sent-81",
+        "en": "The MVC pattern splits an application code into model, view, and controller",
+        "vi": "Mô hình MVC chia mã nguồn ứng dụng thành Model, View và Controller."
+      },
+      {
+        "id": "sent-82",
+        "en": "The model contains data and business logic",
+        "vi": "Model chứa dữ liệu và logic nghiệp vụ."
+      },
+      {
+        "id": "sent-83",
+        "en": "The view comprises HTML pages with dynamic content",
+        "vi": "View bao gồm các trang HTML có nội dung động."
+      },
+      {
+        "id": "sent-84",
+        "en": "The controller processes user requests using the model and selects the appropriate view to display the results",
+        "vi": "Controller xử lý yêu cầu người dùng bằng Model và chọn View phù hợp để hiển thị kết quả."
+      },
+      {
+        "id": "sent-85",
+        "en": "Spring MVC offers Robust security",
+        "vi": "Spring MVC cung cấp tính bảo mật mạnh mẽ."
+      },
+      {
+        "id": "sent-86",
+        "en": "High scalability",
+        "vi": "Khả năng mở rộng cao."
+      },
+      {
+        "id": "sent-87",
+        "en": "Easy integration with other systems",
+        "vi": "Dễ dàng tích hợp với các hệ thống khác."
+      },
+      {
+        "id": "sent-88",
+        "en": "Reliable performance",
+        "vi": "Hiệu năng đáng tin cậy."
+      },
+      {
+        "id": "sent-89",
+        "en": "Flexible architecture",
+        "vi": "Kiến trúc linh hoạt."
+      },
+      {
+        "id": "sent-90",
+        "en": "And strong support for database operations",
+        "vi": "Và khả năng hỗ trợ mạnh mẽ cho các thao tác cơ sở dữ liệu."
+      }
+    ],
+    "lesson-33": [
+      {
+        "id": "sent-1",
+        "en": "Welcome to the Getting Started with Spring MVC using Spring Boot video.",
+        "vi": "Chào mừng bạn đến với video Bắt đầu với Spring MVC bằng Spring Boot."
+      },
+      {
+        "id": "sent-2",
+        "en": "After watching this video, you will be able to construct a Spring Boot web application by implementing the model, controller, and view layers, differentiate between the model, controller, and view roles in the Spring MVC architecture, and execute a Spring Boot application and verify its functionality by accessing the employee management system in a web browser.",
+        "vi": "Sau khi xem video này, bạn sẽ có thể xây dựng một ứng dụng web Spring Boot bằng cách triển khai các lớp model, controller và view; phân biệt vai trò của model, controller và view trong kiến trúc Spring MVC; đồng thời chạy một ứng dụng Spring Boot và xác minh chức năng của nó bằng cách truy cập hệ thống quản lý nhân viên trong trình duyệt web."
+      },
+      {
+        "id": "sent-3",
+        "en": "Have you ever wondered how web applications handle user requests and deliver dynamic content?",
+        "vi": "Bạn đã bao giờ tự hỏi các ứng dụng web xử lý yêu cầu của người dùng và cung cấp nội dung động như thế nào chưa?"
+      },
+      {
+        "id": "sent-4",
+        "en": "With Spring MVC and Spring Boot, you can simplify development and effortlessly build powerful Java-based web apps.",
+        "vi": "Với Spring MVC và Spring Boot, bạn có thể đơn giản hóa quá trình phát triển và dễ dàng xây dựng các ứng dụng web mạnh mẽ dựa trên Java."
+      },
+      {
+        "id": "sent-5",
+        "en": "Go to Spring Initializr via the start.spring.io link to create a Spring MVC project with Spring Boot.",
+        "vi": "Truy cập Spring Initializr qua liên kết start.spring.io để tạo một dự án Spring MVC với Spring Boot."
+      },
+      {
+        "id": "sent-6",
+        "en": "This tool generates the project structure and configurations.",
+        "vi": "Công cụ này tạo cấu trúc và các cấu hình của dự án."
+      },
+      {
+        "id": "sent-7",
+        "en": "Set up the project with these details.",
+        "vi": "Thiết lập dự án với các thông tin sau."
+      },
+      {
+        "id": "sent-8",
+        "en": "Set the group as com.example.",
+        "vi": "Đặt group là com.example."
+      },
+      {
+        "id": "sent-9",
+        "en": "Set the artifact as employee-management.",
+        "vi": "Đặt artifact là employee-management."
+      },
+      {
+        "id": "sent-10",
+        "en": "Set the Java version to 17.",
+        "vi": "Đặt phiên bản Java là 17."
+      },
+      {
+        "id": "sent-11",
+        "en": "Add these dependencies, spring-web for web application support, spring-dev-tools for development enhancements, and Thymeleaf for server-side templating.",
+        "vi": "Thêm các dependency sau: spring-web để hỗ trợ ứng dụng web, spring-dev-tools để nâng cao khả năng hỗ trợ phát triển và Thymeleaf để tạo template phía máy chủ."
+      },
+      {
+        "id": "sent-12",
+        "en": "This setup provides a structured foundation for building a Spring MVC application.",
+        "vi": "Thiết lập này cung cấp một nền tảng có cấu trúc rõ ràng để xây dựng ứng dụng Spring MVC."
+      },
+      {
+        "id": "sent-13",
+        "en": "Your pom.xml should include the Spring Web Starter for RESTful capabilities, Thymeleaf for dynamic HTML templates, and dev tools to enhance your development experience with auto-reload features.",
+        "vi": "Tệp pom.xml của bạn nên bao gồm Spring Web Starter để hỗ trợ các khả năng RESTful, Thymeleaf để tạo các mẫu HTML động và dev tools để cải thiện trải nghiệm phát triển nhờ tính năng tự động tải lại."
+      },
+      {
+        "id": "sent-14",
+        "en": "Create an application.properties file in the source, main, resources directory to set up your server port and enable hot reload functionality for smoother development.",
+        "vi": "Tạo tệp application.properties trong thư mục source, main, resources để thiết lập cổng máy chủ và bật chức năng tải lại nóng (hot reload), giúp quá trình phát triển thuận tiện hơn."
+      },
+      {
+        "id": "sent-15",
+        "en": "Building a Spring MVC application involves three key steps.",
+        "vi": "Việc xây dựng một ứng dụng Spring MVC bao gồm ba bước chính."
+      },
+      {
+        "id": "sent-16",
+        "en": "Creating the model layer defines the structure of the application's data.",
+        "vi": "Tạo lớp model để xác định cấu trúc dữ liệu của ứng dụng."
+      },
+      {
+        "id": "sent-17",
+        "en": "Creating the controller layer manages user requests and controls the workflow.",
+        "vi": "Tạo lớp controller để quản lý các yêu cầu của người dùng và điều khiển luồng xử lý."
+      },
+      {
+        "id": "sent-18",
+        "en": "Creating the view layer displays the user interface using Java Server Pages, JSP.",
+        "vi": "Tạo lớp view để hiển thị giao diện người dùng bằng Java Server Pages, JSP."
+      },
+      {
+        "id": "sent-19",
+        "en": "Each step is crucial in handling data, processing logic, and presenting information to users.",
+        "vi": "Mỗi bước đều quan trọng đối với việc xử lý dữ liệu, thực thi logic và trình bày thông tin cho người dùng."
+      },
+      {
+        "id": "sent-20",
+        "en": "Let's go through them one by one.",
+        "vi": "Hãy lần lượt tìm hiểu từng bước."
+      },
+      {
+        "id": "sent-21",
+        "en": "Start by creating the Employee.java class in the source, main, java, com, example, model directory.",
+        "vi": "Bắt đầu bằng cách tạo lớp Employee.java trong thư mục source, main, java, com, example, model."
+      },
+      {
+        "id": "sent-22",
+        "en": "This class defines the application's data structure and ensures proper encapsulation.",
+        "vi": "Lớp này xác định cấu trúc dữ liệu của ứng dụng và bảo đảm tính đóng gói phù hợp."
+      },
+      {
+        "id": "sent-23",
+        "en": "It includes fields like id, name, department, salary, and email to store employee details.",
+        "vi": "Nó bao gồm các trường như id, name, department, salary và email để lưu thông tin nhân viên."
+      },
+      {
+        "id": "sent-24",
+        "en": "The class has a default constructor for form binding and a parameterized constructor to initialize employee objects.",
+        "vi": "Lớp có một constructor mặc định để liên kết dữ liệu biểu mẫu (form binding) và một constructor có tham số để khởi tạo các đối tượng employee."
+      },
+      {
+        "id": "sent-25",
+        "en": "Getters and setters allow controlled access to fields, ensuring validation where needed.",
+        "vi": "Các getter và setter cho phép truy cập các trường theo cách có kiểm soát, bảo đảm việc xác thực khi cần thiết."
+      },
+      {
+        "id": "sent-26",
+        "en": "Create an EmployeeController.java class in source, main, java, com, example, controller directory.",
+        "vi": "Tạo lớp EmployeeController.java trong thư mục source, main, java, com, example, controller."
+      },
+      {
+        "id": "sent-27",
+        "en": "Define the EmployeeController class.",
+        "vi": "Định nghĩa lớp EmployeeController."
+      },
+      {
+        "id": "sent-28",
+        "en": "This class is part of the MVC architecture and handles HTTP requests.",
+        "vi": "Lớp này là một phần của kiến trúc MVC và xử lý các yêu cầu HTTP."
+      },
+      {
+        "id": "sent-29",
+        "en": "The @Controller, this class has a Spring MVC controller.",
+        "vi": "@Controller đánh dấu lớp này là một controller của Spring MVC."
+      },
+      {
+        "id": "sent-30",
+        "en": "At request mapping, slash employees maps all methods to URLs, starting with slash employees.",
+        "vi": "Ở request mapping, slash employees ánh xạ tất cả các phương thức tới những URL bắt đầu bằng slash employees."
+      },
+      {
+        "id": "sent-31",
+        "en": "Define an in-memory list to store employees using ArrayList of employee.",
+        "vi": "Định nghĩa một danh sách lưu trong bộ nhớ để chứa nhân viên bằng ArrayList của employee."
+      },
+      {
+        "id": "sent-32",
+        "en": "This simulates a database, though a real application would use an actual database.",
+        "vi": "Điều này mô phỏng một cơ sở dữ liệu, mặc dù ứng dụng thực tế sẽ sử dụng cơ sở dữ liệu thật."
+      },
+      {
+        "id": "sent-33",
+        "en": "The constructor initializes sample data.",
+        "vi": "Constructor khởi tạo dữ liệu mẫu."
+      },
+      {
+        "id": "sent-34",
+        "en": "Implement a method to list employees, retrieve data, and send it to the view.",
+        "vi": "Triển khai một phương thức để liệt kê nhân viên, truy xuất dữ liệu và gửi dữ liệu đó tới view."
+      },
+      {
+        "id": "sent-35",
+        "en": "The @GetMapping, HTTP get requests for retrieving pages.",
+        "vi": "@GetMapping dành cho các yêu cầu HTTP GET để truy xuất trang."
+      },
+      {
+        "id": "sent-36",
+        "en": "Model allows data to be added for use in the view.",
+        "vi": "Model cho phép bổ sung dữ liệu để sử dụng trong view."
+      },
+      {
+        "id": "sent-37",
+        "en": "model.addAttribute(\"employees\", employees) passes the employee list to the view template.",
+        "vi": "model.addAttribute(\"employees\", employees) chuyển danh sách nhân viên tới template của view."
+      },
+      {
+        "id": "sent-38",
+        "en": "Return employees slash list specifies the template to render.",
+        "vi": "Lệnh Return employees slash list chỉ định template cần được hiển thị."
+      },
+      {
+        "id": "sent-39",
+        "en": "Implement a method to display the addEmployee form for user input.",
+        "vi": "Triển khai một phương thức để hiển thị biểu mẫu addEmployee cho người dùng nhập dữ liệu."
+      },
+      {
+        "id": "sent-40",
+        "en": "At get mapping slash add handles, get requests for the form page.",
+        "vi": "Ở get mapping slash add, các yêu cầu GET dành cho trang biểu mẫu được xử lý."
+      },
+      {
+        "id": "sent-41",
+        "en": "Model.addAttribute Employee new Employee creates a blank employee object for form binding.",
+        "vi": "Model.addAttribute Employee new Employee tạo một đối tượng employee trống để liên kết dữ liệu biểu mẫu."
+      },
+      {
+        "id": "sent-42",
+        "en": "The method returns employees slash add to display the form.",
+        "vi": "Phương thức trả về employees slash add để hiển thị biểu mẫu."
+      },
+      {
+        "id": "sent-43",
+        "en": "Create a method to process form submissions, assign an id, save the employee, and redirect to the list.",
+        "vi": "Tạo một phương thức để xử lý việc gửi biểu mẫu, gán id, lưu nhân viên và chuyển hướng về danh sách."
+      },
+      {
+        "id": "sent-44",
+        "en": "@PostMapping('/add') handles, HTTP post requests for form submission.",
+        "vi": "@PostMapping('/add') xử lý các yêu cầu HTTP POST để gửi biểu mẫu."
+      },
+      {
+        "id": "sent-45",
+        "en": "At model.attribute.Employee.Employee automatically binds form data to the employee object.",
+        "vi": "At model.attribute.Employee.Employee tự động liên kết dữ liệu biểu mẫu với đối tượng employee."
+      },
+      {
+        "id": "sent-46",
+        "en": "Return redirect:/employees prevents duplicate form submissions by redirecting the user.",
+        "vi": "Lệnh Return redirect:/employees ngăn việc gửi biểu mẫu trùng lặp bằng cách chuyển hướng người dùng."
+      },
+      {
+        "id": "sent-47",
+        "en": "Create a list dot html in the source, main, resources, templates, employees directory.",
+        "vi": "Tạo tệp list dot html trong thư mục source, main, resources, templates, employees."
+      },
+      {
+        "id": "sent-48",
+        "en": "This page displays all employees in a table format.",
+        "vi": "Trang này hiển thị tất cả nhân viên dưới dạng bảng."
+      },
+      {
+        "id": "sent-49",
+        "en": "The table structure includes columns for employee details like id, name, department, salary, and email.",
+        "vi": "Cấu trúc bảng gồm các cột chứa thông tin nhân viên như id, name, department, salary và email."
+      },
+      {
+        "id": "sent-50",
+        "en": "The table body is where employee data will be dynamically inserted using Thymeleaf in future lessons.",
+        "vi": "Phần thân bảng là nơi dữ liệu nhân viên sẽ được chèn động bằng Thymeleaf trong các bài học sau."
+      },
+      {
+        "id": "sent-51",
+        "en": "A link lets users add a new employee, directing them to the addEmployee form.",
+        "vi": "Một liên kết cho phép người dùng thêm nhân viên mới bằng cách dẫn họ đến biểu mẫu addEmployee."
+      },
+      {
+        "id": "sent-52",
+        "en": "Create the add dot html file in the source, main, resources, templates, employees directory.",
+        "vi": "Tạo tệp add dot html trong thư mục source, main, resources, templates, employees."
+      },
+      {
+        "id": "sent-53",
+        "en": "Following the MVC architecture, this page provides a form for adding a new employee.",
+        "vi": "Theo kiến trúc MVC, trang này cung cấp một biểu mẫu để thêm nhân viên mới."
+      },
+      {
+        "id": "sent-54",
+        "en": "The form includes input fields for name, department, salary, and email using standard html form controls for data input.",
+        "vi": "Biểu mẫu bao gồm các trường nhập name, department, salary và email, sử dụng các điều khiển biểu mẫu HTML tiêu chuẩn để nhập dữ liệu."
+      },
+      {
+        "id": "sent-55",
+        "en": "The submit button saves the employee details and redirects to the employee list.",
+        "vi": "Nút submit lưu thông tin nhân viên và chuyển hướng đến danh sách nhân viên."
+      },
+      {
+        "id": "sent-56",
+        "en": "These view templates follow MVC principles.",
+        "vi": "Các view template này tuân theo những nguyên tắc MVC."
+      },
+      {
+        "id": "sent-57",
+        "en": "The list view displays all employees in a table.",
+        "vi": "View list hiển thị tất cả nhân viên trong một bảng."
+      },
+      {
+        "id": "sent-58",
+        "en": "The add view provides a form for entering new employee details.",
+        "vi": "View add cung cấp biểu mẫu để nhập thông tin nhân viên mới."
+      },
+      {
+        "id": "sent-59",
+        "en": "Basic CSS styling ensures the form is well formatted.",
+        "vi": "Kiểu dáng CSS cơ bản giúp biểu mẫu được trình bày gọn gàng."
+      },
+      {
+        "id": "sent-60",
+        "en": "The templates currently use plain html.",
+        "vi": "Các template hiện tại sử dụng HTML thuần."
+      },
+      {
+        "id": "sent-61",
+        "en": "Thymeleaf will be introduced in future lessons.",
+        "vi": "Thymeleaf sẽ được giới thiệu trong các bài học sau."
+      },
+      {
+        "id": "sent-62",
+        "en": "Create the EmployeeManagementApplication.java class inside the source, main, java, com, example directory.",
+        "vi": "Tạo lớp EmployeeManagementApplication.java bên trong thư mục source, main, java, com, example."
+      },
+      {
+        "id": "sent-63",
+        "en": "Define the EmployeeManagementApplication.java class.",
+        "vi": "Định nghĩa lớp EmployeeManagementApplication.java."
+      },
+      {
+        "id": "sent-64",
+        "en": "The Spring Boot application enables auto-configuration.",
+        "vi": "Ứng dụng Spring Boot cho phép tự động cấu hình."
+      },
+      {
+        "id": "sent-65",
+        "en": "The main method starts the application using SpringApplication.run.",
+        "vi": "Phương thức main khởi động ứng dụng bằng SpringApplication.run."
+      },
+      {
+        "id": "sent-66",
+        "en": "Run the application by executing the main method inside EmployeeManagementApplication from your IDE.",
+        "vi": "Chạy ứng dụng bằng cách thực thi phương thức main bên trong EmployeeManagementApplication từ IDE của bạn."
+      },
+      {
+        "id": "sent-67",
+        "en": "Open a web browser and navigate to http://localhost:8080/employees to access the application.",
+        "vi": "Mở trình duyệt web và truy cập http://localhost:8080/employees để vào ứng dụng."
+      },
+      {
+        "id": "sent-68",
+        "en": "The Employee Listing page should be visible.",
+        "vi": "Trang Employee Listing sẽ hiển thị."
+      },
+      {
+        "id": "sent-69",
+        "en": "Click Add New Employee to test the form submission.",
+        "vi": "Nhấp vào Add New Employee để kiểm tra việc gửi biểu mẫu."
+      },
+      {
+        "id": "sent-70",
+        "en": "If the application doesn't start, check for common issues.",
+        "vi": "Nếu ứng dụng không khởi động, hãy kiểm tra các vấn đề thường gặp."
+      },
+      {
+        "id": "sent-71",
+        "en": "Ensure port 8080 is available.",
+        "vi": "Bảo đảm cổng 8080 đang khả dụng."
+      },
+      {
+        "id": "sent-72",
+        "en": "Verify that the project structure matches package paths.",
+        "vi": "Xác minh rằng cấu trúc dự án khớp với các đường dẫn package."
+      },
+      {
+        "id": "sent-73",
+        "en": "Verify that pom.xml dependencies are correctly defined.",
+        "vi": "Xác minh rằng các dependency trong pom.xml đã được khai báo đúng."
+      },
+      {
+        "id": "sent-74",
+        "en": "In this video, you learned how to set up and run a Spring MVC application using Spring Boot.",
+        "vi": "Trong video này, bạn đã học cách thiết lập và chạy một ứng dụng Spring MVC bằng Spring Boot."
+      },
+      {
+        "id": "sent-75",
+        "en": "The Model layer defines the Employee class, which represents employee details and includes constructors, getters, and setters for data management.",
+        "vi": "Lớp Model định nghĩa lớp Employee, đại diện cho thông tin nhân viên và bao gồm constructor, getter và setter để quản lý dữ liệu."
+      },
+      {
+        "id": "sent-76",
+        "en": "The Controller layer processes user requests using EmployeeController, maps URLs, retrieves employee data, and handles form submissions.",
+        "vi": "Lớp Controller xử lý yêu cầu của người dùng bằng EmployeeController, ánh xạ URL, truy xuất dữ liệu nhân viên và xử lý việc gửi biểu mẫu."
+      },
+      {
+        "id": "sent-77",
+        "en": "The View layer consists of HTML templates that display employee information and provide input fields for adding new employees.",
+        "vi": "Lớp View gồm các template HTML hiển thị thông tin nhân viên và cung cấp các trường nhập để thêm nhân viên mới."
+      },
+      {
+        "id": "sent-78",
+        "en": "Running the application starts the server, allowing access to the Employee Management System.",
+        "vi": "Việc chạy ứng dụng sẽ khởi động máy chủ, cho phép truy cập Hệ thống Quản lý Nhân viên."
+      }
+    ],
+    "lesson-34": [
+      {
+        "id": "sent-1",
+        "en": "Welcome to the templating using Thymeleaf video.",
+        "vi": "Chào mừng bạn đến với video về việc tạo mẫu giao diện bằng Thymeleaf."
+      },
+      {
+        "id": "sent-2",
+        "en": "After watching this video, you will be able to explain the role of Thymeleaf in dynamic web content generation, set up Thymeleaf in a Spring Boot project, create and use Thymeleaf templates for dynamic data rendering, develop a Spring MVC controller to handle requests and pass data to templates, and enhance Thymeleaf templates with CSS for improved UI styling.",
+        "vi": "Sau khi xem video này, bạn sẽ có thể giải thích vai trò của Thymeleaf trong việc tạo nội dung web động, thiết lập Thymeleaf trong một dự án Spring Boot, tạo và sử dụng các template Thymeleaf để hiển thị dữ liệu động, phát triển một Spring MVC controller để xử lý các yêu cầu và chuyển dữ liệu cho template, cũng như cải thiện template Thymeleaf bằng CSS để giao diện được trình bày đẹp hơn."
+      },
+      {
+        "id": "sent-3",
+        "en": "How do web applications dynamically display content while keeping the code clean?",
+        "vi": "Các ứng dụng web hiển thị nội dung động như thế nào mà vẫn giữ mã nguồn gọn gàng?"
+      },
+      {
+        "id": "sent-4",
+        "en": "Thymeleaf simplifies this by integrating seamlessly with Spring Boot.",
+        "vi": "Thymeleaf đơn giản hóa việc này nhờ tích hợp liền mạch với Spring Boot."
+      },
+      {
+        "id": "sent-5",
+        "en": "Thymeleaf is a Java-based templating engine that simplifies creating dynamic web content.",
+        "vi": "Thymeleaf là một công cụ tạo template dựa trên Java, giúp đơn giản hóa việc tạo nội dung web động."
+      },
+      {
+        "id": "sent-6",
+        "en": "It processes HTML, XML, JavaScript, CSS, and plain text, making it highly versatile.",
+        "vi": "Nó xử lý HTML, XML, JavaScript, CSS và văn bản thuần, nên rất linh hoạt."
+      },
+      {
+        "id": "sent-7",
+        "en": "With seamless integration into Spring Model View Controller, Spring MVC, Thymeleaf helps build maintainable and readable web applications.",
+        "vi": "Nhờ tích hợp liền mạch với Spring Model View Controller (Spring MVC), Thymeleaf giúp xây dựng các ứng dụng web dễ bảo trì và dễ đọc."
+      },
+      {
+        "id": "sent-8",
+        "en": "This video demonstrates Thymeleaf implementation through an online bookstore example that displays books available for purchase.",
+        "vi": "Video này minh họa cách triển khai Thymeleaf qua ví dụ một hiệu sách trực tuyến hiển thị những cuốn sách có sẵn để mua."
+      },
+      {
+        "id": "sent-9",
+        "en": "The process includes setting up Thymeleaf, creating templates, configuring a controller, creating a book class, and running the application.",
+        "vi": "Quy trình bao gồm thiết lập Thymeleaf, tạo các template, cấu hình một controller, tạo một class Book và chạy ứng dụng."
+      },
+      {
+        "id": "sent-10",
+        "en": "The first step in implementing Thymeleaf is setting it up in a Spring Boot project.",
+        "vi": "Bước đầu tiên khi triển khai Thymeleaf là thiết lập nó trong một dự án Spring Boot."
+      },
+      {
+        "id": "sent-11",
+        "en": "Start by generating a new project using Spring Initializr.",
+        "vi": "Hãy bắt đầu bằng cách tạo một dự án mới bằng Spring Initializr."
+      },
+      {
+        "id": "sent-12",
+        "en": "Then, add the Thymeleaf dependency in the pom.xml file.",
+        "vi": "Sau đó, thêm dependency Thymeleaf vào file pom.xml."
+      },
+      {
+        "id": "sent-13",
+        "en": "This dependency automatically configures Thymeleaf, eliminating the need for manual setup steps.",
+        "vi": "Dependency này tự động cấu hình Thymeleaf, loại bỏ nhu cầu thực hiện các bước thiết lập thủ công."
+      },
+      {
+        "id": "sent-14",
+        "en": "The next step is creating a Thymeleaf template.",
+        "vi": "Bước tiếp theo là tạo một template Thymeleaf."
+      },
+      {
+        "id": "sent-15",
+        "en": "Create a file named books.html and place it in the source, main, resources, templates directory.",
+        "vi": "Tạo file có tên books.html và đặt nó trong thư mục source, main, resources, templates."
+      },
+      {
+        "id": "sent-16",
+        "en": "This template defines the structure for displaying book details dynamically.",
+        "vi": "Template này xác định cấu trúc để hiển thị thông tin chi tiết về sách một cách động."
+      },
+      {
+        "id": "sent-17",
+        "en": "Share the Thymeleaf namespace using xml namespace th=\"http://www.thymeleaf.org\", ensuring that Thymeleaf features are available in the template.",
+        "vi": "Chia sẻ không gian tên Thymeleaf bằng cách sử dụng không gian tên XML th=\"http://www.thymeleaf.org\", bảo đảm các tính năng Thymeleaf có thể được sử dụng trong template."
+      },
+      {
+        "id": "sent-18",
+        "en": "Use th:each to iterate over the list of books, allowing the template to loop through and display each book from the controller.",
+        "vi": "Sử dụng th:each để duyệt qua danh sách sách, cho phép template lặp qua và hiển thị từng cuốn sách do controller cung cấp."
+      },
+      {
+        "id": "sent-19",
+        "en": "Use th:text to dynamically display book properties, such as title, author, and price, ensuring that each book's information is rendered correctly.",
+        "vi": "Sử dụng th:text để hiển thị động các thuộc tính của sách như tiêu đề, tác giả và giá, bảo đảm thông tin của từng cuốn sách được hiển thị chính xác."
+      },
+      {
+        "id": "sent-20",
+        "en": "The next step is to create a Spring MVC controller that handles requests and passes book data to the template.",
+        "vi": "Bước tiếp theo là tạo một Spring MVC controller để xử lý các yêu cầu và chuyển dữ liệu sách tới template."
+      },
+      {
+        "id": "sent-21",
+        "en": "Define a new Java class named BookController.",
+        "vi": "Định nghĩa một Java class mới có tên BookController."
+      },
+      {
+        "id": "sent-22",
+        "en": "Annotate the class with @Controller, allowing Spring to recognize it as a web controller.",
+        "vi": "Gắn annotation @Controller cho class, cho phép Spring nhận diện nó là một web controller."
+      },
+      {
+        "id": "sent-23",
+        "en": "Define a method to handle GET requests using @GetMapping(\"/books\").",
+        "vi": "Định nghĩa một method để xử lý các yêu cầu GET bằng @GetMapping(\"/books\")."
+      },
+      {
+        "id": "sent-24",
+        "en": "This method processes requests to the /books URL.",
+        "vi": "Method này xử lý các yêu cầu gửi tới URL /books."
+      },
+      {
+        "id": "sent-25",
+        "en": "Create a list of book objects inside the method.",
+        "vi": "Tạo một danh sách các đối tượng Book bên trong method."
+      },
+      {
+        "id": "sent-26",
+        "en": "The list contains books with a title, author, and price.",
+        "vi": "Danh sách chứa các cuốn sách với tiêu đề, tác giả và giá."
+      },
+      {
+        "id": "sent-27",
+        "en": "Add the book list to the model using model.addAttribute(\"books\", books), making it available for the view.",
+        "vi": "Thêm danh sách sách vào model bằng model.addAttribute(\"books\", books), để danh sách có thể được sử dụng trong view."
+      },
+      {
+        "id": "sent-28",
+        "en": "Return the template name books, ensuring Spring renders the corresponding books.html file.",
+        "vi": "Trả về tên template là books, bảo đảm Spring render file books.html tương ứng."
+      },
+      {
+        "id": "sent-29",
+        "en": "The next step is to define a book class to represent book data.",
+        "vi": "Bước tiếp theo là định nghĩa một class Book để biểu diễn dữ liệu sách."
+      },
+      {
+        "id": "sent-30",
+        "en": "This class will store each book's title, author, and price.",
+        "vi": "Class này sẽ lưu trữ tiêu đề, tác giả và giá của từng cuốn sách."
+      },
+      {
+        "id": "sent-31",
+        "en": "Declare private fields for title, author, and price to ensure encapsulation.",
+        "vi": "Khai báo các field private cho tiêu đề, tác giả và giá để bảo đảm tính đóng gói."
+      },
+      {
+        "id": "sent-32",
+        "en": "Create a constructor to initialize these fields when creating a new book object.",
+        "vi": "Tạo một constructor để khởi tạo các field này khi tạo một đối tượng Book mới."
+      },
+      {
+        "id": "sent-33",
+        "en": "Define getter methods to retrieve book details.",
+        "vi": "Định nghĩa các getter method để lấy thông tin chi tiết của sách."
+      },
+      {
+        "id": "sent-34",
+        "en": "Define setter methods to modify book properties when needed.",
+        "vi": "Định nghĩa các setter method để thay đổi thuộc tính của sách khi cần."
+      },
+      {
+        "id": "sent-35",
+        "en": "Create the Spring Boot application to test the functionality.",
+        "vi": "Tạo ứng dụng Spring Boot để kiểm tra chức năng."
+      },
+      {
+        "id": "sent-36",
+        "en": "Open a web browser and navigate to http://localhost://8080/books/.",
+        "vi": "Mở trình duyệt web và truy cập http://localhost:8080/books/."
+      },
+      {
+        "id": "sent-37",
+        "en": "The page should display a list of available books, retrieved from the controller and rendered using Thymeleaf.",
+        "vi": "Trang web sẽ hiển thị danh sách các cuốn sách có sẵn, được lấy từ controller và render bằng Thymeleaf."
+      },
+      {
+        "id": "sent-38",
+        "en": "Understanding how the Thymeleaf Spring Boot integration works involves following the request response cycle.",
+        "vi": "Để hiểu cách tích hợp Thymeleaf với Spring Boot hoạt động, cần theo dõi chu trình request–response."
+      },
+      {
+        "id": "sent-39",
+        "en": "First, when a browser accesses slash books, the book controller handles the request.",
+        "vi": "Đầu tiên, khi trình duyệt truy cập đường dẫn /books, BookController xử lý yêu cầu."
+      },
+      {
+        "id": "sent-40",
+        "en": "Second, the getBooks method adds the model with a list of books.",
+        "vi": "Thứ hai, method getBooks thêm danh sách sách vào model."
+      },
+      {
+        "id": "sent-41",
+        "en": "Third, the controller returns the string books that maps to the books.html template.",
+        "vi": "Thứ ba, controller trả về chuỗi books, chuỗi này ánh xạ tới template books.html."
+      },
+      {
+        "id": "sent-42",
+        "en": "Finally, Thymeleaf processes the template, iterates the list, and displays each book's details.",
+        "vi": "Cuối cùng, Thymeleaf xử lý template, duyệt qua danh sách và hiển thị thông tin chi tiết của từng cuốn sách."
+      },
+      {
+        "id": "sent-43",
+        "en": "To enhance the appearance of your Thymeleaf page for the online bookstore, you can use both external CSS and inline CSS styling.",
+        "vi": "Để cải thiện giao diện trang Thymeleaf cho hiệu sách trực tuyến, bạn có thể sử dụng cả CSS bên ngoài và kiểu CSS nội tuyến."
+      },
+      {
+        "id": "sent-44",
+        "en": "First, create an external CSS file named styles.css inside src/main/resources/static/css/.",
+        "vi": "Đầu tiên, tạo một file CSS bên ngoài có tên styles.css trong src/main/resources/static/css/."
+      },
+      {
+        "id": "sent-45",
+        "en": "This file defines the page's overall look, including fonts, colors, and layout.",
+        "vi": "File này xác định giao diện tổng thể của trang, bao gồm phông chữ, màu sắc và bố cục."
+      },
+      {
+        "id": "sent-46",
+        "en": "Next, update books.html to link to styles.css and apply inline styles using Thymeleaf.",
+        "vi": "Tiếp theo, cập nhật books.html để liên kết với styles.css và áp dụng các kiểu nội tuyến bằng Thymeleaf."
+      },
+      {
+        "id": "sent-47",
+        "en": "The th:style attribute allows you to change styles based on conditions dynamically.",
+        "vi": "Thuộc tính th:style cho phép bạn thay đổi kiểu hiển thị một cách động dựa trên các điều kiện."
+      },
+      {
+        "id": "sent-48",
+        "en": "For example, books priced above $45 have different background color.",
+        "vi": "Ví dụ, những cuốn sách có giá trên 45 USD có màu nền khác."
+      },
+      {
+        "id": "sent-49",
+        "en": "Additionally, book titles longer than 15 characters appear in bold.",
+        "vi": "Ngoài ra, tiêu đề sách dài hơn 15 ký tự sẽ được hiển thị bằng chữ đậm."
+      },
+      {
+        "id": "sent-50",
+        "en": "In this video, you learned that Thymeleaf integrates with Spring Boot to create dynamic web pages.",
+        "vi": "Trong video này, bạn đã học được rằng Thymeleaf tích hợp với Spring Boot để tạo các trang web động."
+      },
+      {
+        "id": "sent-51",
+        "en": "The online bookstore example demonstrated the step-by-step process of setting up Thymeleaf, creating templates, configuring a controller, defining a book class, and running the application.",
+        "vi": "Ví dụ hiệu sách trực tuyến đã minh họa quy trình từng bước để thiết lập Thymeleaf, tạo template, cấu hình controller, định nghĩa class Book và chạy ứng dụng."
+      },
+      {
+        "id": "sent-52",
+        "en": "The request response flow follows four steps, handling user requests in the controller, populating the model with data, resolving the view, and rendering the template with Thymeleaf.",
+        "vi": "Luồng request–response gồm bốn bước: xử lý yêu cầu của người dùng trong controller, đưa dữ liệu vào model, phân giải view và render template bằng Thymeleaf."
+      },
+      {
+        "id": "sent-53",
+        "en": "CSS styling enhances the visual presentation, incorporating external and inline styles.",
+        "vi": "Việc tạo kiểu bằng CSS cải thiện cách trình bày trực quan, kết hợp kiểu bên ngoài và kiểu nội tuyến."
+      }
+    ]
+  }
+}
