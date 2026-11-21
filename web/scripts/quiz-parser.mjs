@@ -65,7 +65,16 @@ export function buildQuizRegistry(course) {
    const norm=s=>s.replace(/[\x60*_]/g,"").replace(/\s+/g," ").trim().toLowerCase().replace(/[.]$/,"");
    pos=opts.findIndex(o=>norm(o.textEn)===norm(val));
   }
-  if(id==="lesson-38"){pos=Number(grab(b,[/\*\*Đáp án phù hợp theo nội dung:\*\*\s*Lựa chọn\s*(\d)/]))-1;prov="study-analysis";}
+  if(id==="lesson-38"){
+    pos=Number(grab(b,[/\*\*Đáp án phù hợp theo nội dung:\*\*\s*Lựa chọn\s*(\d)/]))-1;
+    // The source records a 100% graded result and "Nice work" for all five questions,
+    // but does not preserve the exact clicked option. Keep that distinction explicit.
+    const source=course.lessons.find(l=>l.id===id)?.contentMarkdown||"";
+    const hasGradedEvidence=/\*\*EN:\*\* Your grade: 100%/.test(source) &&
+      (source.match(/^\*\*EN:\*\* Nice work$/gm)||[]).length===expected[id] &&
+      /\*\*Đáp án phù hợp theo nội dung:\*\*/.test(b);
+    prov=hasGradedEvidence?"graded-evidence":"study-analysis";
+  }
   if(id==="lesson-43")pos=ABC.indexOf(grab(b,[/\*\*Đáp án đúng:\*\*\s*([A-D])\./]));
   if(id==="lesson-45")pos=Number(grab(b,[/\*\*Đáp án đúng \/ Correct answer:\*\*\s*(\d)\./]))-1;
   assert(pos>=0&&pos<4,id+" missing/ambiguous answer "+b.slice(0,140));

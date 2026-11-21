@@ -108,6 +108,17 @@ export function SpringQuizStudio({
         )}
       </div>
 
+      {questions.some((q) => q.answerProvenance === "graded-evidence") && (
+        <p className="text-xs leading-relaxed text-[var(--muted-strong)]">
+          Nguồn bài quiz: kết quả Coursera 100% và phản hồi “Nice work” ở từng câu; đáp án được đối chiếu với phần giải thích. Tài liệu không lưu lựa chọn đã nhấp.
+        </p>
+      )}
+      {questions.some((q) => q.answerProvenance === "study-analysis") && (
+        <p className="text-xs leading-relaxed text-[var(--muted-strong)]">
+          Một số đáp án được phân tích từ kiến thức bài học vì tài liệu chưa có phản hồi chấm riêng cho các câu đó.
+        </p>
+      )}
+
       {/* 3. Danh sách các câu hỏi trắc nghiệm */}
       <div className="space-y-6">
         {questions.map((q) => {
@@ -325,11 +336,6 @@ export function SpringQuizStudio({
                     </div>
                   )}
 
-                  {q.answerProvenance === "study-analysis" && (
-                    <p className="text-xs text-amber-700 dark:text-amber-300">
-                      Đáp án tham khảo theo kiến thức; chưa được Coursera xác nhận riêng cho câu này.
-                    </p>
-                  )}
                   {/* Phân tích giải thích chi tiết */}
                   {(q.explanationVi || q.explanationEn) && (
                     <div className="space-y-1 text-xs leading-relaxed text-[var(--foreground)]">

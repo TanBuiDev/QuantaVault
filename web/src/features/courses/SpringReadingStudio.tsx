@@ -353,6 +353,17 @@ export function SpringReadingStudio({
           </div>
         )}
 
+          {hasQuizQuestions && quizQuestions?.some((q) => q.answerProvenance === "graded-evidence") && (
+            <p className="text-xs leading-relaxed text-[var(--muted-strong)]">
+              Nguồn bài quiz: kết quả Coursera 100% và phản hồi “Nice work” ở từng câu; đáp án được đối chiếu với phần giải thích. Tài liệu không lưu lựa chọn đã nhấp.
+            </p>
+          )}
+          {hasQuizQuestions && quizQuestions?.some((q) => q.answerProvenance === "study-analysis") && (
+            <p className="text-xs leading-relaxed text-[var(--muted-strong)]">
+              Một số đáp án được phân tích từ kiến thức bài học vì tài liệu chưa có phản hồi chấm riêng cho các câu đó.
+            </p>
+          )}
+
         {/* 4. MAIN READING CONTENT AREA */}
         <section
           aria-label="Nội dung phân tích kiến trúc bài học"
@@ -572,11 +583,6 @@ export function SpringReadingStudio({
                           </div>
                         )}
 
-                        {q.answerProvenance === "study-analysis" && (
-                          <p className="text-xs text-amber-700 dark:text-amber-300">
-                            Đáp án tham khảo dựa trên phân tích kiến thức; chưa được Coursera xác nhận riêng cho câu này.
-                          </p>
-                        )}
                         {(q.explanationVi || q.explanationEn) && (
                           <div className="space-y-1 text-xs leading-relaxed text-[var(--foreground)]">
                             <div className="font-bold text-[11px] text-[var(--muted-strong)] uppercase tracking-wider">
