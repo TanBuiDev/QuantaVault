@@ -58,7 +58,7 @@ describe("generated Spring quiz integrity", () => {
   it("links lesson 38 graded evidence to 100% Coursera feedback without claiming a clicked choice", () => {
     const lesson = getCourseBySlug("spring-framework-for-java")!.lessons.find(l => l.id === "lesson-38")!;
     expect(lesson.contentMarkdown).toMatch(/Your grade: 100%/);
-    expect((lesson.contentMarkdown.match(/\\*\\*EN:\\*\\* Nice work/g) || [])).toHaveLength(5);
+    expect((lesson.contentMarkdown.match(/\*\*EN:\*\* Nice work/g) || [])).toHaveLength(5);
     expect(springQuizRegistry["lesson-38"].map(q => q.answerProvenance)).toEqual(Array(5).fill("graded-evidence"));
     expect(springQuizRegistry["lesson-38"].map(q => q.options.find(o => o.isCorrect)?.id).join("")).toBe("DCDCB");
   });
