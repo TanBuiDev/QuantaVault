@@ -80,6 +80,24 @@ describe("Spring Framework for Java Course", () => {
     expect(lessons[31].flashcards?.length).toBeGreaterThanOrEqual(8);
     expect(lessons[31].transcript?.length).toBeGreaterThanOrEqual(80);
 
+    // The supplied bilingual transcripts for lessons 39–41 stay aligned with their videos.
+    for (const [id, count, keyTerms] of [
+      ["lesson-39", 64, ["Authentication", "CSRF", "OAuth 2.0"]],
+      ["lesson-40", 66, ["Spring Initializr", "RBAC", "@PreAuthorize"]],
+      ["lesson-41", 71, ["Form-Based", "PasswordEncoder", "BCrypt"]]
+    ] as const) {
+      const lesson = lessons.find((item) => item.id === id);
+      expect(lesson?.lessonType).toBe("video");
+      expect(lesson?.transcript).toHaveLength(count);
+      expect(lesson?.videoId).toBeTruthy();
+      expect(lesson?.contentMarkdown).toContain("## 1. Overview & Learning Goals /");
+      expect(lesson?.contentMarkdown).toContain("Key Takeaways /");
+      expect(lesson?.contentMarkdown).not.toContain("are being updated");
+      for (const term of keyTerms) expect(lesson?.contentMarkdown, id).toContain(term);
+      expect((lesson?.contentMarkdown.match(/^\*\*EN:\*\*/gm) || []).length)
+        .toBe((lesson?.contentMarkdown.match(/^\*\*VI:\*\*/gm) || []).length);
+    }
+
     // Module 3: Lesson 45 (Graded Quiz MVC & Security)
     expect(lessons[44].id).toBe("lesson-45");
     expect(lessons[44].flashcards?.length).toBeGreaterThanOrEqual(68);
