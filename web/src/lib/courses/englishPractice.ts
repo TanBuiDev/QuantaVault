@@ -3,6 +3,7 @@
 import { useSyncExternalStore } from "react";
 
 import rawPractice from "@/data/courses/english-job-interview/practice.json";
+import { personalizedEnglishLessons, personalizedEnglishLessonIds } from "./englishPersonalized";
 
 export type PracticeKind = "question" | "answer";
 export type PracticeDirection = "vi-en" | "en-vi";
@@ -20,6 +21,8 @@ export interface PracticeQuestion {
   lessonId: string;
   questionEn: string;
   questionVi: string;
+  questionEnAlternative?: string;
+  questionViAlternative?: string;
   answers: PracticeAnswer[];
 }
 
@@ -34,7 +37,12 @@ export interface PracticeCard {
   sampleNumber?: number;
 }
 
-export const practiceQuestions: PracticeQuestion[] = rawPractice.questions;
+// Replace the approved lessons at display/practice time without mutating the PDF source corpus.
+// Keeping the lesson IDs preserves the existing lesson completion and navigation state.
+export const practiceQuestions: PracticeQuestion[] = [
+  ...personalizedEnglishLessons.flatMap((lesson) => lesson.questions),
+  ...rawPractice.questions.filter((question) => !personalizedEnglishLessonIds.has(question.lessonId))
+];
 
 export function getPracticeCards(lessonId: string, kind: PracticeKind): PracticeCard[] {
   const relevant = practiceQuestions.filter((q) => lessonId === "all" || q.lessonId === lessonId);

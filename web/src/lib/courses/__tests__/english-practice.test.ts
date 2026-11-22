@@ -19,11 +19,26 @@ const manifest = getCourseBySlug("english-job-interview")!;
 describe("English interview practice: canonical source, bilingual UX and safe progress", () => {
   beforeEach(() => localStorage.clear());
 
-  it("preserves 155 unique questions, 348 answer samples and both duplicate source numbers", () => {
-    expect(practiceQuestions).toHaveLength(155);
-    expect(new Set(practiceQuestions.map((q) => q.id)).size).toBe(155);
-    expect(getPracticeCards("all", "question")).toHaveLength(155);
-    expect(getPracticeCards("all", "answer")).toHaveLength(348);
+  it("publishes the 24 approved questions in lessons 01–06 while preserving all later source questions", () => {
+    // Original source remains at 155 questions and 348 answers; practice overlays only the first six lessons.
+    expect(practiceQuestions).toHaveLength(134);
+    expect(new Set(practiceQuestions.map((q) => q.id)).size).toBe(134);
+    expect(getPracticeCards("all", "question")).toHaveLength(134);
+    expect(getPracticeCards("all", "answer")).toHaveLength(238);
+    for (const [lessonId, count] of Object.entries({
+      "lesson-01": 7, "lesson-02": 6, "lesson-03": 2,
+      "lesson-04": 2, "lesson-05": 3, "lesson-06": 4
+    })) {
+      const questions = practiceQuestions.filter((q) => q.lessonId === lessonId);
+      expect(questions).toHaveLength(count);
+      for (const question of questions) {
+        expect(question.id).toMatch(/^personal-lesson-0[1-6]-\d{2}$/);
+        expect(question.answers).toHaveLength(1);
+        expect(question.answers[0].en.split(/\n\s*\n/).length).toBe(
+          question.answers[0].vi.split(/\n\s*\n/).length
+        );
+      }
+    }
     expect(practiceQuestions.filter((q) => q.id.includes("-052"))).toEqual(
       expect.arrayContaining([expect.objectContaining({ id: "interview-en-i-052a" }),
         expect.objectContaining({ id: "interview-en-i-052b" })])
@@ -50,7 +65,11 @@ describe("English interview practice: canonical source, bilingual UX and safe pr
     expect(manifest.lessons).toHaveLength(18);
     for (const lesson of manifest.lessons) {
       expect(lesson.titleEn?.length).toBeGreaterThan(10);
-      expect(lesson.contentMarkdown).toContain("**Tiếng Việt:** " + lesson.title);
+      if (lesson.number <= 6) {
+        expect(lesson.contentMarkdown).toContain(" / " + lesson.title);
+      } else {
+        expect(lesson.contentMarkdown).toContain("**Tiếng Việt:** " + lesson.title);
+      }
       expect(lesson.contentMarkdown).toContain(lesson.titleEn);
       expect(lesson.contentMarkdown).not.toMatch(/PDF|Nguồn: PDF|Nội dung gồm .*mục câu hỏi từ/);
     }

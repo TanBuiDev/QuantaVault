@@ -257,6 +257,17 @@ export function EnglishLessonContent({
                   {q.questionEn}
                 </h3>
 
+                {q.questionEnAlternative && (
+                  <div className="space-y-1 text-xs sm:text-sm text-[var(--muted-strong)]">
+                    <p><span className="font-semibold">Alternative question:</span> {q.questionEnAlternative}</p>
+                    {showViQuestion && q.questionViAlternative && (
+                      <p className="text-indigo-600 dark:text-indigo-400">
+                        <span className="font-semibold">Cách hỏi tương đương:</span> {q.questionViAlternative}
+                      </p>
+                    )}
+                  </div>
+                )}
+
                 {/* Question Vietnamese Translation */}
                 {displayMode === "mask-vi" && !isQRevealed && (
                   <button
@@ -368,6 +379,33 @@ export function EnglishLessonContent({
                             </div>
                           </div>
 
+                          {q.id.startsWith("personal-") ? (
+                            <div className="space-y-4">
+                              {ans.en.split(/\n\s*\n/).map((paragraph, paragraphIndex) => (
+                                <div key={paragraphIndex} className="space-y-2">
+                                  <p className={`${answerEnSize} font-medium text-[var(--foreground)] leading-relaxed select-text`}>
+                                    {paragraph}
+                                  </p>
+                                  {showViAns && (
+                                    <p className="text-sm sm:text-base text-indigo-600 dark:text-indigo-300 leading-relaxed select-text">
+                                      {ans.vi.split(/\n\s*\n/)[paragraphIndex]}
+                                    </p>
+                                  )}
+                                </div>
+                              ))}
+                              {displayMode === "mask-vi" && !isAnsRevealed && (
+                                <button
+                                  type="button"
+                                  onClick={() => toggleReveal(ans.id)}
+                                  className="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-xs font-semibold text-[var(--muted-strong)] hover:border-amber-500/50 hover:text-amber-600 transition-all cursor-pointer"
+                                >
+                                  <Eye className="h-3 w-3 text-amber-500" />
+                                  <span>Xem bản dịch tiếng Việt</span>
+                                </button>
+                              )}
+                            </div>
+                          ) : (
+                            <>
                           {/* English Sample Text */}
                           <p className={`${answerEnSize} font-medium text-[var(--foreground)] leading-relaxed select-text`}>
                             {ans.en}
@@ -392,6 +430,8 @@ export function EnglishLessonContent({
                               </span>
                               <p className="leading-relaxed">{ans.vi}</p>
                             </div>
+                          )}
+                            </>
                           )}
                         </div>
                       );

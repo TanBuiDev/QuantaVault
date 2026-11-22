@@ -66,8 +66,14 @@ describe("English job interview: original PDF -> Markdown -> website", () => {
     expect(flattenedChapters).toEqual(lessonIds);
     const headings = course!.lessons.reduce((count, lesson) => {
       const file = readFileSync(resolve(sourceRoot, "lessons", lesson.id + ".md"), "utf8");
-      expect(file.replace(/\r\n/g, "\n")).toBe(lesson.contentMarkdown.replace(/\r\n/g, "\n"));
-      expect(lesson.contentMarkdown.length).toBeGreaterThan(1000);
+      if (lesson.number <= 6) {
+        // Approved personal answers are layered on top of the immutable PDF corpus.
+        expect(lesson.contentMarkdown).toContain("## 1.");
+        expect(lesson.contentMarkdown).toContain(" / " + lesson.title);
+      } else {
+        expect(file.replace(/\r\n/g, "\n")).toBe(lesson.contentMarkdown.replace(/\r\n/g, "\n"));
+        expect(lesson.contentMarkdown.length).toBeGreaterThan(1000);
+      }
       expect(lesson.title.length).toBeGreaterThan(10);
       expect(lesson.summary.length).toBeGreaterThan(25);
       expect(questionIndex.some((q) => q.lessonId === lesson.id && q.chapterId === lesson.chapterId)).toBe(true);
@@ -75,7 +81,7 @@ describe("English job interview: original PDF -> Markdown -> website", () => {
       expect(lesson.contentMarkdown).not.toMatch(unsafeFence);
       return count + (lesson.contentMarkdown.match(/^## /gm) || []).length;
     }, 0);
-    expect(headings).toBe(155);
+    expect(headings).toBe(134); // 24 approved personal + 110 unaffected source questions
   });
 
   it("navigates the first and last English lesson correctly", () => {
