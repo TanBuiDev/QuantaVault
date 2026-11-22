@@ -1,0 +1,63 @@
+{
+  "lessonId": "lesson-06",
+  "title": "Bài 06: Lựa chọn nghề nghiệp và thực tập",
+  "titleEn": "Career Choices and Internships",
+  "questions": [
+    {
+      "id": "personal-lesson-06-01",
+      "lessonId": "lesson-06",
+      "questionEn": "Why are you applying for a job outside your field of study?",
+      "questionVi": "Tại sao bạn ứng tuyển vào một công việc không đúng chuyên ngành?",
+      "questionEnAlternative": "Why aren't you pursuing a career in the field you studied?",
+      "questionViAlternative": "Tại sao bạn không tiếp tục theo đuổi công việc đúng chuyên ngành đã học?",
+      "answers": [
+        {
+          "id": "personal-lesson-06-01:answer:1",
+          "en": "I graduated with a degree in Software Engineering, and my original career plan was to work in the information technology industry. However, while searching for a job, I noticed that the IT job market had become increasingly competitive, particularly for recent graduates, and that suitable opportunities were becoming more limited for someone in my position.\n\nAs a result, I began exploring alternative career paths rather than limiting myself to a single industry. I decided to consider opportunities in construction because it's also a technical field that requires logical thinking, problem-solving abilities, effective planning, and teamwork.\n\nAlthough my academic background isn't directly related to construction, I believe that my analytical skills, technological knowledge, and ability to learn independently can still bring value to a new working environment.\n\nI understand that the construction industry has its own technical requirements and specialized knowledge that I would need to acquire. That's why I'm willing to start with responsibilities that match my current abilities, learn from experienced professionals, and gradually develop the skills necessary to succeed in this field.\n\nFor me, building a meaningful career isn't necessarily about staying within the exact field I studied. It's about finding a path where I can continue learning, approach my work with dedication, and make a valuable contribution.",
+          "vi": "Tôi tốt nghiệp chuyên ngành Công nghệ phần mềm và ban đầu định hướng phát triển sự nghiệp trong lĩnh vực công nghệ thông tin. Tuy nhiên, trong quá trình tìm kiếm việc làm, tôi nhận thấy thị trường tuyển dụng IT ngày càng cạnh tranh, đặc biệt đối với những người mới tốt nghiệp, và cơ hội phù hợp với tôi có phần hạn chế.\n\nVì vậy, tôi bắt đầu cân nhắc những hướng đi khác thay vì chỉ giới hạn bản thân trong một lĩnh vực. Tôi quyết định tìm kiếm cơ hội trong ngành xây dựng vì đây cũng là một lĩnh vực kỹ thuật, đòi hỏi tư duy logic, khả năng giải quyết vấn đề, lập kế hoạch và phối hợp trong công việc.\n\nMặc dù chuyên ngành đã học không trực tiếp liên quan đến xây dựng, tôi tin rằng những kỹ năng như tư duy phân tích, sử dụng công nghệ và khả năng tự học vẫn có thể mang lại giá trị trong môi trường mới.\n\nTôi hiểu rằng ngành xây dựng có những yêu cầu chuyên môn riêng mà bản thân cần tiếp tục học hỏi. Vì vậy, tôi sẵn sàng bắt đầu từ những nhiệm vụ phù hợp với năng lực hiện tại, tiếp thu kiến thức từ những người có kinh nghiệm và từng bước phát triển các kỹ năng cần thiết.\n\nĐối với tôi, điều quan trọng không chỉ là làm việc đúng chuyên ngành đã học, mà còn là tìm được một hướng phát triển phù hợp, nơi tôi có thể học hỏi, làm việc nghiêm túc và tạo ra giá trị thực tế."
+        }
+      ]
+    },
+    {
+      "id": "personal-lesson-06-02",
+      "lessonId": "lesson-06",
+      "questionEn": "What did you learn from your internship?",
+      "questionVi": "Bạn đã học được những gì trong kỳ thực tập?",
+      "answers": [
+        {
+          "id": "personal-lesson-06-02:answer:1",
+          "en": "During my three-month internship at a company in the education sector, I had the opportunity to participate in software development activities and assist with technical infrastructure-related tasks.\n\nI gained hands-on experience working on a real-world project, from understanding requirements and developing features to testing and improving the system. This experience helped me understand how the concepts I had learned at university could be applied in a professional environment. It also gave me practical exposure to tools used in software development and deployment.\n\nBeyond technical knowledge, I learned the importance of taking responsibility for my work, managing my time effectively, and prioritizing tasks when dealing with multiple responsibilities. I also realized how valuable it is to communicate proactively when facing difficulties, remain open to feedback, and collaborate with colleagues to achieve common goals.\n\nAlthough the internship lasted only three months, it was an incredibly valuable experience. It gave me a better understanding of a professional working environment, helped me recognize areas where I needed to improve, and provided a clearer direction for my personal and professional development.",
+          "vi": "Trong kỳ thực tập kéo dài khoảng ba tháng tại một công ty hoạt động trong lĩnh vực giáo dục, tôi có cơ hội tham gia vào quá trình phát triển phần mềm và hỗ trợ các công việc liên quan đến hạ tầng kỹ thuật.\n\nTôi được tiếp cận với một dự án thực tế, từ việc tìm hiểu yêu cầu, phát triển các chức năng đến kiểm tra và cải thiện hệ thống. Quá trình này giúp tôi hiểu rõ hơn cách những kiến thức đã học ở trường được áp dụng vào công việc, đồng thời có thêm kinh nghiệm sử dụng các công cụ hỗ trợ phát triển và triển khai phần mềm.\n\nBên cạnh kiến thức chuyên môn, tôi còn học được cách làm việc có trách nhiệm, quản lý thời gian và sắp xếp thứ tự ưu tiên khi phải xử lý nhiều nhiệm vụ. Tôi cũng nhận ra tầm quan trọng của việc chủ động trao đổi khi gặp khó khăn, lắng nghe góp ý và phối hợp với đồng nghiệp để hoàn thành công việc.\n\nMặc dù thời gian thực tập không quá dài, đây vẫn là một trải nghiệm có giá trị, giúp tôi hiểu rõ hơn về môi trường làm việc chuyên nghiệp, nhận ra những kỹ năng mình còn thiếu và có định hướng rõ ràng hơn trong việc phát triển bản thân."
+        }
+      ]
+    },
+    {
+      "id": "personal-lesson-06-03",
+      "lessonId": "lesson-06",
+      "questionEn": "Have you completed any internships?",
+      "questionVi": "Bạn đã từng tham gia kỳ thực tập nào chưa?",
+      "answers": [
+        {
+          "id": "personal-lesson-06-03:answer:1",
+          "en": "Yes, I completed an internship at a company in the education sector, where my role involved supporting software development and technical infrastructure activities.\n\nDuring the internship, I contributed to the development of a curriculum management system. My responsibilities included developing and improving features such as data management, advanced search, importing information from DOCX documents, and comparing different versions of academic curricula.\n\nIn addition to software development, I gained experience working with tools and technologies such as Git, Docker, and Ubuntu Linux. I also assisted with configuring development environments and deploying applications.\n\nThrough this internship, I not only strengthened my technical skills but also gained a better understanding of real-world software development workflows, task organization, and the responsibilities that come with being part of a project team.\n\nI consider this experience an important first step in my transition from an academic environment to the professional world.",
+          "vi": "Có. Tôi đã tham gia một kỳ thực tập tại một công ty trong lĩnh vực giáo dục, với vai trò hỗ trợ phát triển phần mềm và hạ tầng kỹ thuật.\n\nTrong thời gian đó, tôi tham gia phát triển một hệ thống quản lý chương trình đào tạo. Công việc của tôi bao gồm xây dựng và cải thiện các chức năng như quản lý dữ liệu, tìm kiếm nâng cao, nhập thông tin từ tài liệu DOCX và so sánh các phiên bản của chương trình đào tạo.\n\nNgoài việc phát triển phần mềm, tôi còn có cơ hội làm việc với những công cụ như Git, Docker và hệ điều hành Ubuntu, đồng thời hỗ trợ cấu hình môi trường và triển khai ứng dụng.\n\nThông qua kỳ thực tập, tôi không chỉ tích lũy thêm kinh nghiệm kỹ thuật mà còn hiểu rõ hơn về quy trình phát triển phần mềm trong thực tế, cách tổ chức công việc và trách nhiệm của một thành viên trong dự án.\n\nTôi xem đây là bước khởi đầu quan trọng giúp mình chuyển từ môi trường học tập sang môi trường làm việc chuyên nghiệp."
+        }
+      ]
+    },
+    {
+      "id": "personal-lesson-06-04",
+      "lessonId": "lesson-06",
+      "questionEn": "If you could learn a new skill, what would it be?",
+      "questionVi": "Nếu có thể học thêm một kỹ năng mới, bạn muốn học gì?",
+      "questionEnAlternative": "What's the next thing you'd like to learn?",
+      "questionViAlternative": "Điều tiếp theo bạn muốn học là gì?",
+      "answers": [
+        {
+          "id": "personal-lesson-06-04:answer:1",
+          "en": "If I had the opportunity to develop new skills, I would like to focus on learning Japanese and Mandarin Chinese.\n\nI believe both languages have significant practical value, especially in international working environments. Learning additional languages would not only allow me to communicate with a wider range of people but also open up opportunities to access new knowledge, resources, and professional environments.\n\nI'm also genuinely interested in the cultures and working practices of these countries. To me, learning a language goes far beyond memorizing vocabulary and grammar. It's also an opportunity to understand different cultures, perspectives, and ways of thinking.\n\nI understand that becoming proficient in a new language requires time, consistency, and dedication. That's why I'd like to establish a regular study routine and gradually improve my listening, speaking, reading, and writing skills until I can use these languages confidently in real-life situations.",
+          "vi": "Nếu có cơ hội học thêm những kỹ năng mới, tôi muốn tập trung vào việc học tiếng Nhật và tiếng Trung.\n\nTôi nhận thấy đây là hai ngôn ngữ có tính ứng dụng cao, đặc biệt trong môi trường làm việc quốc tế. Việc biết thêm ngoại ngữ không chỉ giúp tôi giao tiếp với nhiều người hơn mà còn mở rộng cơ hội tiếp cận kiến thức, tài liệu và những môi trường làm việc khác nhau.\n\nBên cạnh đó, tôi cũng rất quan tâm đến văn hóa và cách làm việc của các quốc gia này. Tôi nghĩ việc học một ngôn ngữ mới không đơn thuần là ghi nhớ từ vựng hay ngữ pháp, mà còn là cơ hội để hiểu thêm về con người, văn hóa và những cách suy nghĩ khác nhau.\n\nTôi hiểu rằng việc học ngoại ngữ đòi hỏi thời gian và sự kiên trì. Vì vậy, tôi muốn xây dựng thói quen học tập đều đặn, từng bước cải thiện khả năng nghe, nói, đọc và viết để có thể sử dụng những ngôn ngữ này trong thực tế."
+        }
+      ]
+    }
+  ]
+}

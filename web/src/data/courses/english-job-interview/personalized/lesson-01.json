@@ -1,0 +1,98 @@
+{
+  "lessonId": "lesson-01",
+  "title": "Bài 01: Bản thân, điểm mạnh và điểm yếu",
+  "titleEn": "About Yourself, Strengths and Weaknesses",
+  "questions": [
+    {
+      "id": "personal-lesson-01-01",
+      "lessonId": "lesson-01",
+      "questionEn": "Tell me a little about yourself.",
+      "questionVi": "Hãy giới thiệu đôi nét về bản thân.",
+      "answers": [
+        {
+          "id": "personal-lesson-01-01:answer:1",
+          "en": "I was born and raised in Long An Province, which is now part of Tay Ninh Province. I graduated from university with a degree in Software Engineering. I would describe myself as friendly, approachable, and someone who enjoys interacting and working with others. I'm always eager to learn, take on new challenges, and continuously improve myself.\n\nI also place a lot of importance on maintaining a healthy work-life balance. When I'm at work, I make an effort to stay focused and fulfill my responsibilities to the best of my ability. Outside of work, I enjoy playing badminton, billiards, and video games, as well as catching up with friends over coffee.",
+          "vi": "Tôi sinh ra và lớn lên ở tỉnh Long An, nay thuộc tỉnh Tây Ninh. Tôi tốt nghiệp đại học chuyên ngành Công nghệ phần mềm. Tôi là người hòa đồng, dễ gần và thích giao tiếp, làm việc với mọi người. Tôi luôn sẵn sàng học hỏi những điều mới, đón nhận thử thách và không ngừng cải thiện bản thân.\n\nTôi cũng coi trọng việc duy trì sự cân bằng giữa công việc và cuộc sống. Khi làm việc, tôi luôn cố gắng tập trung và hoàn thành tốt trách nhiệm của mình. Trong thời gian rảnh, tôi thích chơi cầu lông, bida, chơi game và đi cà phê cùng bạn bè."
+        }
+      ]
+    },
+    {
+      "id": "personal-lesson-01-02",
+      "lessonId": "lesson-01",
+      "questionEn": "What are your strengths?",
+      "questionVi": "Điểm mạnh của bạn là gì?",
+      "answers": [
+        {
+          "id": "personal-lesson-01-02:answer:1",
+          "en": "I would say my main strengths are attention to detail, active listening, and the ability to work well with others. I make a conscious effort to pay attention to the finer details of my work to minimize mistakes and maintain high standards. I also value other people's perspectives and enjoy collaborating toward shared goals.\n\nI previously worked at a convenience store, where I interacted with and assisted a wide variety of customers. That experience strengthened my communication and listening skills and taught me the importance of understanding people's needs and responding to them thoughtfully.\n\nI believe these are transferable skills that are just as valuable when collaborating with colleagues in a professional environment.",
+          "vi": "Tôi nghĩ điểm mạnh của mình là sự cẩn thận, khả năng lắng nghe và tinh thần hợp tác. Trong công việc, tôi luôn cố gắng chú ý đến các chi tiết nhỏ để hạn chế sai sót và đảm bảo chất lượng. Tôi cũng thích lắng nghe ý kiến của mọi người và phối hợp để đạt được mục tiêu chung.\n\nTrước đây, tôi từng làm việc tại một cửa hàng tiện lợi, nơi tôi có cơ hội phục vụ nhiều khách hàng khác nhau. Công việc này giúp tôi cải thiện kỹ năng giao tiếp, khả năng lắng nghe và hiểu được tầm quan trọng của việc đáp ứng nhu cầu của người khác.\n\nTôi tin rằng những kỹ năng này cũng rất hữu ích khi làm việc cùng đồng nghiệp trong môi trường chuyên nghiệp."
+        }
+      ]
+    },
+    {
+      "id": "personal-lesson-01-03",
+      "lessonId": "lesson-01",
+      "questionEn": "What are your weaknesses?",
+      "questionVi": "Điểm yếu của bạn là gì?",
+      "answers": [
+        {
+          "id": "personal-lesson-01-03:answer:1",
+          "en": "One area I'm working on is my tendency to take on too many tasks within a limited period. Sometimes, I try to accomplish more than I can realistically manage, which can make it difficult to allocate my time effectively and may affect the quality of my work.\n\nTo address this, I've been developing better planning habits, setting clearer priorities, and making sure I leave enough time to review my work before considering a task complete.\n\nAnother area I want to improve is my spoken English. Although I'm still building my confidence in communicating in English, I'm actively working on it through regular study and practice. My goal is to become more comfortable expressing myself and communicating effectively in different situations.",
+          "vi": "Một điểm yếu của tôi là đôi khi muốn hoàn thành quá nhiều công việc cùng một lúc. Điều này có thể khiến tôi khó quản lý thời gian hiệu quả và ảnh hưởng đến chất lượng công việc.\n\nTôi đang cải thiện điều này bằng cách lập kế hoạch, xác định thứ tự ưu tiên và dành thời gian kiểm tra lại công việc trước khi hoàn thành.\n\nMột điểm yếu khác là khả năng giao tiếp tiếng Anh của tôi vẫn cần được cải thiện. Vì vậy, tôi đang chủ động học tập và luyện tập để trở nên tự tin hơn và giao tiếp hiệu quả hơn."
+        }
+      ]
+    },
+    {
+      "id": "personal-lesson-01-04",
+      "lessonId": "lesson-01",
+      "questionEn": "What are your short-term goals?",
+      "questionVi": "Mục tiêu ngắn hạn của bạn là gì?",
+      "answers": [
+        {
+          "id": "personal-lesson-01-04:answer:1",
+          "en": "In the short term, my goal is to secure a position in software development where I can put my knowledge into practice and continue strengthening my technical expertise.\n\nI'm particularly interested in gaining hands-on experience through real-world projects, learning from more experienced colleagues, and exploring technologies that can improve productivity and the way we work.\n\nUltimately, I want to grow into a developer who can take ownership of tasks, work independently when needed, collaborate effectively with a team, and make meaningful contributions to the company's success.",
+          "vi": "Mục tiêu ngắn hạn của tôi là tìm được một vị trí phù hợp trong lĩnh vực phát triển phần mềm, nơi tôi có thể áp dụng những kiến thức đã học và tiếp tục nâng cao kỹ năng chuyên môn.\n\nTôi mong muốn được tham gia các dự án thực tế, học hỏi kinh nghiệm từ những đồng nghiệp có chuyên môn và tìm hiểu các công nghệ mới giúp nâng cao hiệu quả công việc.\n\nTôi hy vọng có thể từng bước trở thành một lập trình viên có khả năng làm việc độc lập, phối hợp tốt với nhóm và đóng góp những giá trị thiết thực cho công ty."
+        }
+      ]
+    },
+    {
+      "id": "personal-lesson-01-05",
+      "lessonId": "lesson-01",
+      "questionEn": "What are your long-term goals?",
+      "questionVi": "Mục tiêu dài hạn của bạn là gì?",
+      "answers": [
+        {
+          "id": "personal-lesson-01-05:answer:1",
+          "en": "My long-term ambition is to become a university lecturer specializing in Information Technology.\n\nI recognize that achieving this requires a strong technical foundation, extensive practical experience, and a long-term commitment to learning. That's why my immediate focus is on building a solid career in software development, gaining meaningful industry experience, and pursuing further education to deepen my expertise.\n\nIn the future, I hope to bring together my technical knowledge and professional experience to teach students and share the insights I've gained throughout my career. To me, that would be a meaningful and fulfilling profession, and one I could genuinely take pride in.",
+          "vi": "Mục tiêu dài hạn của tôi là trở thành một giảng viên đại học trong lĩnh vực công nghệ thông tin.\n\nTôi hiểu rằng để đạt được mục tiêu này, tôi cần có kiến thức chuyên môn vững chắc, kinh nghiệm thực tế và sự kiên trì. Vì vậy, trước mắt tôi muốn tập trung phát triển sự nghiệp trong lĩnh vực phần mềm, tích lũy kinh nghiệm thực tế và tiếp tục học tập để nâng cao trình độ.\n\nTrong tương lai, tôi hy vọng có thể kết hợp kiến thức chuyên môn với kinh nghiệm thực tế để giảng dạy và chia sẻ những điều mình đã học được với sinh viên. Đối với tôi, đó sẽ là một sự nghiệp ý nghĩa mà tôi có thể tự hào."
+        }
+      ]
+    },
+    {
+      "id": "personal-lesson-01-06",
+      "lessonId": "lesson-01",
+      "questionEn": "What does success mean to you?",
+      "questionVi": "Theo bạn, thành công có nghĩa là gì?",
+      "answers": [
+        {
+          "id": "personal-lesson-01-06:answer:1",
+          "en": "To me, success is about setting a clear goal, developing a realistic plan, staying committed to it, and ultimately achieving what I set out to accomplish.\n\nHowever, I don't believe success should be measured solely by the final outcome. The knowledge we acquire, the experience we gain, and the personal growth we undergo along the way are equally important.\n\nEvery achievement, regardless of its size, represents progress and gives me the motivation to keep learning, improving, and setting new goals for myself.",
+          "vi": "Đối với tôi, thành công là khi bản thân đặt ra một mục tiêu rõ ràng, xây dựng kế hoạch, nỗ lực thực hiện và cuối cùng đạt được điều mình mong muốn.\n\nTuy nhiên, tôi tin rằng thành công không chỉ nằm ở kết quả cuối cùng mà còn ở những kiến thức, kinh nghiệm và sự trưởng thành mà chúng ta có được trong suốt quá trình thực hiện.\n\nMỗi mục tiêu tôi đạt được, dù lớn hay nhỏ, đều mang lại động lực để tôi tiếp tục học hỏi và phát triển bản thân."
+        }
+      ]
+    },
+    {
+      "id": "personal-lesson-01-07",
+      "lessonId": "lesson-01",
+      "questionEn": "What does failure mean to you?",
+      "questionVi": "Theo bạn, thất bại có nghĩa là gì?",
+      "answers": [
+        {
+          "id": "personal-lesson-01-07:answer:1",
+          "en": "To me, failure can mean falling short of a goal I've set for myself. However, I believe the greater failure is making mistakes without taking the time to understand them or learn anything from the experience.\n\nWhenever I face a setback, I try to reflect on what happened, identify the underlying causes, and consider what I could have done differently. I then use those lessons to improve my approach and avoid repeating the same mistakes.\n\nI see failure as an inevitable part of learning and personal growth. What matters most is being willing to take responsibility, learn from the experience, and keep moving forward.",
+          "vi": "Đối với tôi, thất bại là khi bản thân không đạt được mục tiêu đã đặt ra. Tuy nhiên, tôi tin rằng thất bại thực sự là khi mắc sai lầm nhưng không rút ra được bài học nào từ chúng.\n\nKhi gặp thất bại, tôi cố gắng nhìn nhận lại những gì đã xảy ra, tìm hiểu nguyên nhân và tìm cách cải thiện để không lặp lại những sai lầm tương tự.\n\nTôi xem thất bại là một phần tự nhiên của quá trình học hỏi và trưởng thành, miễn là bản thân sẵn sàng rút kinh nghiệm từ những sai lầm và tiếp tục cố gắng."
+        }
+      ]
+    }
+  ]
+}

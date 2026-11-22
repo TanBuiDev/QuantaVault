@@ -1,0 +1,89 @@
+{
+  "lessonId": "lesson-02",
+  "title": "Bài 02: Thói quen làm việc và định hướng",
+  "titleEn": "Work Habits and Career Direction",
+  "questions": [
+    {
+      "id": "personal-lesson-02-01",
+      "lessonId": "lesson-02",
+      "questionEn": "Do you manage your time well?",
+      "questionVi": "Anh/chị quản lý thời gian của mình có tốt không?",
+      "questionEnAlternative": "How do you manage your time?",
+      "questionViAlternative": "Anh/chị quản lý thời gian của mình theo những cách nào?",
+      "answers": [
+        {
+          "id": "personal-lesson-02-01:answer:1",
+          "en": "I would say I manage my time fairly well. I usually begin each week by outlining the tasks I need to accomplish, then organize them according to their priorities and deadlines.\n\nThroughout the week, I keep track of my progress so I have a clear picture of what's been completed and what still requires my attention. If unexpected tasks arise, I reassess my priorities and adjust my schedule accordingly.\n\nThis approach helps me make better use of my time, stay on top of my responsibilities, and deliver quality work without overlooking important details.",
+          "vi": "Tôi nghĩ mình có khả năng quản lý thời gian khá tốt. Tôi thường bắt đầu bằng việc lập kế hoạch cho những công việc cần thực hiện trong tuần, sau đó sắp xếp chúng theo mức độ ưu tiên và thời hạn hoàn thành.\n\nTrong quá trình làm việc, tôi cố gắng theo dõi tiến độ để biết mình đã hoàn thành những gì và cần tập trung vào nhiệm vụ nào tiếp theo. Nếu có công việc phát sinh, tôi sẽ điều chỉnh kế hoạch sao cho phù hợp.\n\nCách làm này giúp tôi sử dụng thời gian hiệu quả hơn, hạn chế bỏ sót công việc và đảm bảo chất lượng kết quả."
+        }
+      ]
+    },
+    {
+      "id": "personal-lesson-02-02",
+      "lessonId": "lesson-02",
+      "questionEn": "How do you handle change?",
+      "questionVi": "Anh/chị đối phó với sự thay đổi như thế nào?",
+      "questionEnAlternative": "How well do you adapt to change?",
+      "questionViAlternative": "Anh/chị có giỏi trong việc thích nghi với sự thay đổi không?",
+      "answers": [
+        {
+          "id": "personal-lesson-02-02:answer:1",
+          "en": "I consider myself fairly adaptable. Whenever I encounter a new or unfamiliar situation, I try to remain calm, understand what's changing and why, and gather the information I need to respond effectively.\n\nI'm comfortable stepping outside my comfort zone and learning new things, even when they seem challenging at first. Rather than dwelling on the uncertainty that comes with change, I prefer to focus on what I can do to adjust and move forward.\n\nI believe that staying open to learning, being flexible in how I approach my work, and maintaining a constructive attitude are essential to navigating change successfully.",
+          "vi": "Tôi nghĩ mình có khả năng thích nghi khá tốt với những thay đổi. Khi đối mặt với một tình huống mới, tôi thường cố gắng giữ bình tĩnh, tìm hiểu nguyên nhân và nhanh chóng nắm bắt những thông tin cần thiết.\n\nTôi không ngại học hỏi những điều mới, kể cả khi chúng có thể khó khăn hoặc nằm ngoài những gì tôi đã quen thuộc. Thay vì lo lắng quá nhiều về sự thay đổi, tôi cố gắng tập trung vào những việc mình có thể làm để thích nghi.\n\nTôi tin rằng việc chủ động học hỏi, linh hoạt điều chỉnh cách làm việc và duy trì thái độ tích cực sẽ giúp quá trình thích nghi diễn ra thuận lợi hơn."
+        }
+      ]
+    },
+    {
+      "id": "personal-lesson-02-03",
+      "lessonId": "lesson-02",
+      "questionEn": "How do you make important decisions?",
+      "questionVi": "Anh/chị đưa ra những quyết định quan trọng như thế nào?",
+      "answers": [
+        {
+          "id": "personal-lesson-02-03:answer:1",
+          "en": "When faced with an important decision, my first step is to gather as much relevant information as possible so I can develop a clear understanding of the situation.\n\nOnce I have enough information, I evaluate the available options, weighing their advantages, disadvantages, and potential risks. I also draw on my existing knowledge and past experience to determine which approach is most appropriate under the circumstances.\n\nI understand that no decision comes with a guarantee of a perfect outcome. However, I believe that taking the time to evaluate the facts and consider different perspectives allows me to make more informed, reasonable, and responsible decisions.",
+          "vi": "Khi cần đưa ra một quyết định quan trọng, tôi thường bắt đầu bằng việc thu thập những thông tin cần thiết để hiểu rõ vấn đề.\n\nSau đó, tôi phân tích các phương án có thể lựa chọn, cân nhắc ưu điểm, nhược điểm và những rủi ro có thể xảy ra. Tôi cũng cố gắng vận dụng kiến thức và kinh nghiệm của bản thân để đánh giá phương án nào phù hợp nhất với tình huống hiện tại.\n\nTôi hiểu rằng không phải quyết định nào cũng có thể đảm bảo kết quả hoàn toàn chính xác. Tuy nhiên, tôi tin rằng việc tìm hiểu kỹ thông tin và cân nhắc các lựa chọn sẽ giúp mình đưa ra quyết định hợp lý và có trách nhiệm hơn."
+        }
+      ]
+    },
+    {
+      "id": "personal-lesson-02-04",
+      "lessonId": "lesson-02",
+      "questionEn": "Do you work well under pressure?",
+      "questionVi": "Anh/chị có làm việc tốt dưới áp lực không?",
+      "answers": [
+        {
+          "id": "personal-lesson-02-04:answer:1",
+          "en": "I believe I can perform well under pressure, particularly when I have a clear plan and a good understanding of what needs to be prioritized.\n\nWhen I'm dealing with a heavy workload or tight deadlines, I make an effort to stay composed, identify the most urgent responsibilities, and tackle challenges one at a time rather than becoming overwhelmed by everything at once.\n\nI also pay close attention to time management and monitor my progress regularly, which helps me stay on track and minimize avoidable mistakes.\n\nI recognize that pressure is an unavoidable part of professional life. What matters is how we respond to it: staying focused, managing our reactions, and approaching each situation with a practical, solution-oriented mindset.",
+          "vi": "Tôi nghĩ mình có thể làm việc khá tốt dưới áp lực, đặc biệt khi có kế hoạch và biết cách sắp xếp thứ tự ưu tiên.\n\nKhi phải đối mặt với khối lượng công việc lớn hoặc thời hạn gấp, tôi cố gắng giữ bình tĩnh, xác định những nhiệm vụ quan trọng và tập trung giải quyết từng vấn đề thay vì lo lắng về tất cả mọi việc cùng lúc.\n\nTôi cũng cố gắng quản lý thời gian hợp lý và thường xuyên kiểm tra tiến độ để hạn chế những sai sót không cần thiết.\n\nĐối với tôi, áp lực là điều khó tránh khỏi trong công việc. Điều quan trọng là biết cách kiểm soát bản thân, duy trì sự tập trung và tìm ra phương án giải quyết phù hợp."
+        }
+      ]
+    },
+    {
+      "id": "personal-lesson-02-05",
+      "lessonId": "lesson-02",
+      "questionEn": "Are you better at anticipating problems or responding to them?",
+      "questionVi": "Anh/chị là người giỏi lường trước vấn đề hay giỏi phản ứng khi vấn đề xảy ra?",
+      "answers": [
+        {
+          "id": "personal-lesson-02-05:answer:1",
+          "en": "I tend to take a proactive approach, so I naturally prefer to anticipate potential problems rather than wait until they occur.\n\nWhenever I'm working on a task, I try to identify possible challenges and risks early so I can prepare appropriate solutions in advance. I believe that recognizing and addressing issues before they escalate can save time and effort while minimizing unnecessary disruptions.\n\nThat said, I understand that not every problem can be anticipated. When something unexpected happens, I try to remain calm, assess the situation, identify the root cause, and respond with an appropriate solution as quickly as possible.\n\nUltimately, I believe that being proactive about preventing problems and being adaptable when responding to them are equally valuable skills in any workplace.",
+          "vi": "Tôi nghĩ mình là người có xu hướng chủ động lường trước những vấn đề có thể xảy ra.\n\nKhi thực hiện một công việc, tôi thường cố gắng xem xét những khó khăn hoặc rủi ro tiềm ẩn để có thể chuẩn bị phương án xử lý từ sớm. Tôi tin rằng việc phát hiện và giải quyết vấn đề trước khi nó trở nên nghiêm trọng sẽ giúp tiết kiệm thời gian, công sức và hạn chế những ảnh hưởng không cần thiết.\n\nTuy nhiên, tôi cũng hiểu rằng không phải vấn đề nào cũng có thể dự đoán trước. Vì vậy, khi có tình huống bất ngờ xảy ra, tôi cố gắng giữ bình tĩnh, tìm hiểu nguyên nhân và nhanh chóng tìm cách giải quyết.\n\nĐối với tôi, chủ động phòng ngừa và linh hoạt xử lý đều là những kỹ năng quan trọng trong công việc."
+        }
+      ]
+    },
+    {
+      "id": "personal-lesson-02-06",
+      "lessonId": "lesson-02",
+      "questionEn": "Why should we hire you?",
+      "questionVi": "Tại sao chúng tôi nên tuyển dụng bạn?",
+      "answers": [
+        {
+          "id": "personal-lesson-02-06:answer:1",
+          "en": "I believe I would be a strong fit for this position because I have a solid foundation of technical knowledge, a strong sense of responsibility, and a genuine commitment to doing my work well.\n\nI'm proactive about learning and take an organized approach to managing my tasks and time. I also value teamwork and open communication. I enjoy exchanging ideas, listening to different perspectives, and working collaboratively toward shared objectives.\n\nBeyond my technical abilities, I'm genuinely passionate about the field I've chosen to pursue. I'm motivated by opportunities to take on new challenges, gain practical experience, and continually develop both personally and professionally.\n\nI recognize that I still have a great deal to learn, but I'm committed to putting in the effort, continuously improving my skills, and building a long-term career with an organization that offers opportunities for mutual growth.\n\nIf given the opportunity, I would do my best to apply my knowledge and abilities, fulfill my responsibilities effectively, and make a meaningful contribution to the company's continued success.",
+          "vi": "Tôi tin rằng mình là một ứng viên phù hợp với vị trí này vì tôi có nền tảng kiến thức chuyên môn, tinh thần trách nhiệm và thái độ nghiêm túc đối với công việc.\n\nTôi là người chủ động học hỏi, có khả năng tổ chức công việc và quản lý thời gian. Tôi cũng thích làm việc cùng mọi người, sẵn sàng lắng nghe, tiếp thu ý kiến và phối hợp với đồng nghiệp để đạt được mục tiêu chung.\n\nBên cạnh đó, tôi thực sự yêu thích lĩnh vực mình đang theo đuổi và luôn mong muốn phát triển bản thân thông qua những thử thách và kinh nghiệm thực tế.\n\nTôi hiểu rằng bản thân vẫn còn nhiều điều cần học hỏi, nhưng tôi sẵn sàng nỗ lực, không ngừng cải thiện kỹ năng và gắn bó lâu dài nếu có cơ hội phát triển phù hợp.\n\nTôi hy vọng có thể vận dụng những kiến thức và khả năng của mình để hoàn thành tốt công việc, đồng thời đóng góp tích cực vào sự phát triển của công ty."
+        }
+      ]
+    }
+  ]
+}

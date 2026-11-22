@@ -1,0 +1,33 @@
+{
+  "lessonId": "lesson-04",
+  "title": "Bài 04: Thành tích và bài học từ công việc",
+  "titleEn": "Achievements and Lessons Learned at Work",
+  "questions": [
+    {
+      "id": "personal-lesson-04-01",
+      "lessonId": "lesson-04",
+      "questionEn": "Tell me about a time you aimed too high.",
+      "questionVi": "Hãy kể về một lần bạn đã đặt mục tiêu quá cao so với khả năng của mình.",
+      "answers": [
+        {
+          "id": "personal-lesson-04-01:answer:1",
+          "en": "Once, my team had a new project that I was really interested in. Although I already had quite a few tasks to complete, I volunteered to take part because I wanted to challenge myself and gain more experience.\n\nHowever, I underestimated the workload and the time required to complete my responsibilities. As a result, I ended up working much more than I had expected. Although I eventually completed the project, I felt exhausted and was close to burning out.\n\nThis experience taught me that being willing to take on challenges is important, but it's equally important to recognize my own capabilities and limitations. Instead of taking on too many tasks at once, I should focus on completing my existing responsibilities well and carefully consider my available time and resources before accepting additional work.\n\nI've learned that working effectively isn't just about completing as many tasks as possible. It's also about maintaining the quality of my work and being able to perform consistently over the long term.",
+          "vi": "Một lần, nhóm của tôi có một dự án mới mà tôi rất quan tâm. Mặc dù lúc đó đã có khá nhiều công việc cần hoàn thành, tôi vẫn chủ động tình nguyện tham gia vì muốn thử thách bản thân và học hỏi thêm kinh nghiệm.\n\nTuy nhiên, tôi đã đánh giá chưa chính xác khối lượng công việc và thời gian cần thiết để hoàn thành các nhiệm vụ. Kết quả là tôi phải làm việc nhiều hơn dự kiến. Mặc dù cuối cùng vẫn hoàn thành dự án, tôi cảm thấy rất mệt mỏi và gần như kiệt sức.\n\nQua trải nghiệm này, tôi nhận ra rằng việc sẵn sàng đón nhận thử thách là điều tốt, nhưng cũng cần biết đánh giá năng lực và giới hạn của bản thân. Thay vì nhận quá nhiều nhiệm vụ cùng lúc, tôi nên tập trung hoàn thành tốt những công việc hiện tại, đồng thời cân nhắc kỹ thời gian và nguồn lực trước khi nhận thêm trách nhiệm.\n\nTôi hiểu rằng làm việc hiệu quả không chỉ là hoàn thành được nhiều nhiệm vụ, mà còn phải đảm bảo chất lượng công việc và duy trì khả năng làm việc ổn định trong thời gian dài."
+        }
+      ]
+    },
+    {
+      "id": "personal-lesson-04-02",
+      "lessonId": "lesson-04",
+      "questionEn": "Tell me about a time you aimed too low.",
+      "questionVi": "Hãy kể về một lần bạn đã đặt mục tiêu quá thấp so với khả năng của mình.",
+      "answers": [
+        {
+          "id": "personal-lesson-04-02:answer:1",
+          "en": "There was a new project that I was genuinely interested in and wanted to be part of. However, since I already had other responsibilities at the time, I decided not to volunteer for the assignment.\n\nIn reality, my workload wasn't particularly heavy, but I was worried that I wouldn't have enough time to complete the project by the deadline. I was overly cautious and lacked confidence in my own abilities, so I ended up passing up the opportunity.\n\nLooking back, I realized that I had missed a valuable opportunity to learn, gain practical experience, and develop my skills.\n\nThis experience helped me understand that being too afraid of failure can sometimes hold me back from growing. Instead of immediately turning down a new challenge, I should objectively assess my abilities, available time, and resources.\n\nI believe that being willing to step outside my comfort zone, while carefully considering the potential risks, will help me make the most of future opportunities.",
+          "vi": "Một lần, có một dự án mới mà tôi rất quan tâm và muốn tham gia. Tuy nhiên, vì lúc đó tôi đang có những trách nhiệm khác, tôi đã quyết định không tình nguyện nhận thêm nhiệm vụ.\n\nThực tế, khối lượng công việc của tôi khi ấy không quá lớn, nhưng tôi lại lo lắng rằng mình sẽ không đủ thời gian để hoàn thành dự án đúng hạn. Vì quá thận trọng và thiếu tự tin vào khả năng của bản thân, tôi đã bỏ qua cơ hội đó.\n\nSau này, khi nhìn lại, tôi nhận ra rằng mình đã bỏ lỡ một cơ hội tốt để học hỏi, tích lũy kinh nghiệm và phát triển kỹ năng.\n\nTrải nghiệm này giúp tôi hiểu rằng đôi khi việc quá lo sợ thất bại cũng có thể hạn chế sự phát triển của bản thân. Thay vì từ chối ngay một thử thách mới, tôi cần đánh giá khách quan khả năng, thời gian và những nguồn lực mình có.\n\nTôi tin rằng việc sẵn sàng bước ra khỏi vùng an toàn, đồng thời biết cân nhắc những rủi ro thực tế, sẽ giúp tôi tận dụng tốt hơn những cơ hội trong tương lai."
+        }
+      ]
+    }
+  ]
+}

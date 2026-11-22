@@ -1,0 +1,33 @@
+{
+  "lessonId": "lesson-03",
+  "title": "Bài 03: Kể chuyện kinh nghiệm và quyết định",
+  "titleEn": "Sharing Experiences and Making Decisions",
+  "questions": [
+    {
+      "id": "personal-lesson-03-01",
+      "lessonId": "lesson-03",
+      "questionEn": "Tell me about a time you made a mistake at work.",
+      "questionVi": "Hãy kể về một lần bạn mắc sai lầm trong công việc.",
+      "answers": [
+        {
+          "id": "personal-lesson-03-01:answer:1",
+          "en": "I was once assigned a project that needed to be completed within a week. At first, I thought I fully understood the requirements, so I started working without asking for further clarification. However, I had misunderstood one part of the project requirements.\n\nAfter I finished the project, my manager pointed out that part of my work didn't meet the requirements. I realized that my mistake was making assumptions instead of asking questions to clarify the details I was unsure about.\n\nThat experience taught me how important it is to understand the requirements correctly from the beginning. Whenever something is unclear, I should communicate proactively and confirm my understanding rather than make assumptions. This helps prevent mistakes, reduce unnecessary rework, and improve the overall quality of my work.",
+          "vi": "Một lần, tôi được giao thực hiện một dự án cần hoàn thành trong vòng một tuần. Ban đầu, tôi nghĩ mình đã hiểu rõ các yêu cầu nên bắt tay vào thực hiện mà không trao đổi thêm. Tuy nhiên, tôi đã hiểu sai một phần yêu cầu của dự án.\n\nSau khi hoàn thành, người quản lý đã chỉ ra rằng phần công việc đó chưa đáp ứng đúng yêu cầu. Tôi nhận ra sai lầm của mình là đã tự đưa ra giả định thay vì chủ động hỏi lại để làm rõ những điểm chưa chắc chắn.\n\nTừ trải nghiệm này, tôi học được rằng việc hiểu đúng yêu cầu ngay từ đầu rất quan trọng. Khi gặp điều gì chưa rõ, tôi cần chủ động trao đổi và xác nhận lại thông tin thay vì tự suy đoán. Điều này giúp hạn chế sai sót, tránh mất thời gian sửa chữa và nâng cao chất lượng công việc."
+        }
+      ]
+    },
+    {
+      "id": "personal-lesson-03-02",
+      "lessonId": "lesson-03",
+      "questionEn": "Tell me about a time you failed to meet a deadline.",
+      "questionVi": "Hãy kể về một lần bạn không hoàn thành công việc được giao đúng hạn.",
+      "answers": [
+        {
+          "id": "personal-lesson-03-02:answer:1",
+          "en": "I was once working on a project with a deadline on Tuesday. The previous Friday, I reviewed our progress and realized that everything was going smoothly. In fact, we were even ahead of schedule. So I assumed I wouldn't need to work over the weekend to finish my tasks on time.\n\nHowever, on Monday, one of my teammates unexpectedly fell ill, and I had to take over their responsibilities. This disrupted my original schedule, and I wasn't able to finish my own tasks until Wednesday, one day past the deadline.\n\nThat experience made me realize that even when everything seems to be going according to plan, unexpected situations can still arise. I learned that I needed to build some extra time into my schedule instead of relying entirely on my current progress.\n\nSince then, I've made an effort to complete my tasks at least half a day to a full day ahead of the deadline. I also prioritize my work more carefully so I can adapt when unexpected responsibilities come up.",
+          "vi": "Một lần, tôi được giao một dự án có thời hạn hoàn thành vào thứ Ba. Vào thứ Sáu tuần trước đó, sau khi kiểm tra tiến độ, tôi nhận thấy công việc đang diễn ra thuận lợi và thậm chí còn nhanh hơn kế hoạch. Vì vậy, tôi nghĩ mình không cần làm thêm vào cuối tuần mà vẫn có thể hoàn thành đúng hạn.\n\nTuy nhiên, đến thứ Hai, một đồng đội của tôi bất ngờ bị ốm nên tôi phải đảm nhận thêm phần công việc của bạn ấy. Điều này khiến kế hoạch ban đầu bị ảnh hưởng và tôi đã không thể hoàn thành nhiệm vụ của mình cho đến thứ Tư, muộn hơn thời hạn một ngày.\n\nQua trải nghiệm này, tôi nhận ra rằng việc công việc đang tiến triển thuận lợi không có nghĩa là mọi thứ sẽ luôn diễn ra đúng kế hoạch. Tôi cần chủ động dự phòng thời gian cho những tình huống bất ngờ, thay vì chỉ dựa vào tiến độ hiện tại.\n\nKể từ đó, tôi luôn cố gắng hoàn thành công việc sớm hơn thời hạn khoảng nửa ngày đến một ngày, đồng thời sắp xếp thứ tự ưu tiên hợp lý để có thể linh hoạt xử lý khi phát sinh nhiệm vụ mới."
+        }
+      ]
+    }
+  ]
+}

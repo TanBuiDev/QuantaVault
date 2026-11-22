@@ -1,0 +1,48 @@
+{
+  "lessonId": "lesson-05",
+  "title": "Bài 05: Học vấn và môn học",
+  "titleEn": "Education and Academic Subjects",
+  "questions": [
+    {
+      "id": "personal-lesson-05-01",
+      "lessonId": "lesson-05",
+      "questionEn": "Why did you choose your major?",
+      "questionVi": "Tại sao bạn chọn chuyên ngành này?",
+      "answers": [
+        {
+          "id": "personal-lesson-05-01:answer:1",
+          "en": "I chose to major in Software Engineering because I've always been interested in technology and curious about how software applications and systems are designed, developed, and operated.\n\nI believe technology plays an increasingly important role in our daily lives. It's used in almost every industry and has the potential to solve a wide range of real-world problems. That's what motivated me to explore the field more deeply—not just to understand how to use technology, but also how to create practical solutions that make a difference.\n\nI'm also passionate about exploring new technologies and finding ways to apply them to improve efficiency. Throughout my studies, I've developed my logical thinking and problem-solving abilities, while also learning how to collaborate with people who have different perspectives and experiences.\n\nI believe Software Engineering is a field that aligns well with my interests and strengths, while offering plenty of opportunities for continuous learning and professional growth.",
+          "vi": "Tôi lựa chọn chuyên ngành Công nghệ phần mềm vì bản thân có niềm yêu thích với công nghệ và luôn tò mò về cách các hệ thống, ứng dụng phần mềm được xây dựng và hoạt động.\n\nTôi nhận thấy công nghệ ngày càng đóng vai trò quan trọng trong cuộc sống, được ứng dụng trong hầu hết các lĩnh vực và có khả năng giải quyết nhiều vấn đề thực tế. Điều đó khiến tôi muốn tìm hiểu sâu hơn, không chỉ về cách sử dụng công nghệ mà còn về cách tạo ra những giải pháp hữu ích.\n\nBên cạnh đó, tôi cũng thích khám phá và áp dụng những công nghệ mới để cải thiện hiệu quả công việc. Quá trình học tập giúp tôi rèn luyện tư duy logic, khả năng giải quyết vấn đề và học cách phối hợp với những người có góc nhìn, kinh nghiệm khác nhau.\n\nTôi tin rằng đây là một lĩnh vực phù hợp với sở thích và khả năng của mình, đồng thời mang lại nhiều cơ hội để tôi tiếp tục học hỏi và phát triển trong tương lai."
+        }
+      ]
+    },
+    {
+      "id": "personal-lesson-05-02",
+      "lessonId": "lesson-05",
+      "questionEn": "If you could go back to university, what would you major in?",
+      "questionVi": "Nếu được học lại đại học, bạn sẽ lựa chọn chuyên ngành nào?",
+      "answers": [
+        {
+          "id": "personal-lesson-05-02:answer:1",
+          "en": "If I had the opportunity to go back to university and choose a different major, I would probably consider an engineering discipline related to machinery, such as Mechanical Engineering.\n\nI've always been fascinated by machines, especially how different components are designed, assembled, and made to work together as a complete system. I think studying this field in greater depth would be both intellectually rewarding and an exciting learning experience.\n\nThat said, it doesn't mean I regret choosing Software Engineering. I genuinely enjoy my current field, and I value the knowledge and skills I've gained throughout my studies.\n\nI believe both fields have their own unique appeal. If the opportunity arises in the future, I'd also love to explore how software and mechanical systems can be integrated to develop smarter and more useful technologies.",
+          "vi": "Nếu có cơ hội học lại đại học và được lựa chọn một chuyên ngành khác, tôi có lẽ sẽ cân nhắc một ngành kỹ thuật liên quan đến máy móc, chẳng hạn như Kỹ thuật cơ khí.\n\nTôi vốn có sự yêu thích và tò mò đối với máy móc, đặc biệt là cách các bộ phận được thiết kế, kết hợp và vận hành để tạo thành một hệ thống hoàn chỉnh. Tôi nghĩ việc được tìm hiểu sâu hơn về lĩnh vực này sẽ mang lại cho mình nhiều kiến thức và trải nghiệm thú vị.\n\nTuy nhiên, điều đó không có nghĩa là tôi hối tiếc vì đã lựa chọn Công nghệ phần mềm. Tôi vẫn yêu thích ngành học hiện tại và trân trọng những kiến thức, kỹ năng mà mình đã tích lũy được.\n\nTôi nghĩ cả hai lĩnh vực đều có những điểm thú vị riêng. Nếu có cơ hội trong tương lai, tôi cũng muốn tìm hiểu thêm về cách kết hợp phần mềm với máy móc để tạo ra những hệ thống thông minh và hữu ích."
+        }
+      ]
+    },
+    {
+      "id": "personal-lesson-05-03",
+      "lessonId": "lesson-05",
+      "questionEn": "What was your least favorite subject?",
+      "questionVi": "Bạn không thích môn học nào nhất?",
+      "questionEnAlternative": "Which subject did you struggle with the most?",
+      "questionViAlternative": "Bạn gặp nhiều khó khăn nhất với môn học nào?",
+      "answers": [
+        {
+          "id": "personal-lesson-05-03:answer:1",
+          "en": "If I had to choose my least favorite subject, it would probably be Geography. Not because I found it particularly difficult, but simply because it never really captured my interest.\n\nOne amusing reason is that I've never had a great sense of direction. I often joke with my friends that I'm terrible at finding my way around because whenever I visit an unfamiliar place, I almost always rely on Google Maps to navigate.\n\nHowever, I understand that not enjoying a particular subject doesn't make it any less important. I still made an effort to complete my coursework and find ways to improve in areas where I wasn't particularly strong.\n\nTo me, using tools like Google Maps is also a practical example of how technology can help us overcome everyday challenges.",
+          "vi": "Nếu phải chọn một môn học mà tôi ít yêu thích nhất, có lẽ đó là Địa lý. Không phải vì môn học này quá khó, mà đơn giản là tôi chưa thực sự cảm thấy hứng thú với nó.\n\nMột phần lý do khá thú vị là khả năng định hướng của tôi không được tốt. Tôi thường nói đùa với bạn bè rằng mình là người \"mù đường\", vì mỗi khi đến một địa điểm không quen thuộc, tôi gần như luôn phải sử dụng Google Maps để tìm đường.\n\nTuy nhiên, tôi hiểu rằng việc không yêu thích một môn học không có nghĩa là môn học đó không quan trọng. Tôi vẫn cố gắng hoàn thành những yêu cầu học tập và tìm cách khắc phục những điểm chưa tốt của bản thân.\n\nĐối với tôi, việc sử dụng những công cụ hỗ trợ như Google Maps cũng là một cách tận dụng công nghệ để giải quyết những khó khăn trong cuộc sống hằng ngày."
+        }
+      ]
+    }
+  ]
+}
