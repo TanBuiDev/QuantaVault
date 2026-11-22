@@ -48,7 +48,7 @@ describe("EnglishPracticeView", () => {
   it("hides the translation until requested, supports self-assessment and resets text on next card", () => {
     render(<EnglishPracticeView lessons={lessons} />);
     expect(screen.getByRole("heading", { name: "Luyện dịch hai chiều" })).toBeInTheDocument();
-    expect(screen.getByText("Hãy nói sơ qua cho tôi nghe về bản thân của anh/chị.")).toBeInTheDocument();
+    expect(screen.getByText("Hãy giới thiệu đôi nét về bản thân.")).toBeInTheDocument();
     expect(screen.queryByText("Tell me a little about yourself.")).not.toBeInTheDocument();
     fireEvent.change(screen.getByRole("textbox", { name: "Bản dịch của bạn" }), { target: { value: "My answer" } });
     fireEvent.click(screen.getByRole("button", { name: "Hiện bản dịch tham khảo" }));
@@ -124,7 +124,7 @@ describe("EnglishPracticeView", () => {
 
     // Reset back to all
     fireEvent.click(screen.getByRole("button", { name: /Xem tất cả/ }));
-    expect(screen.getByText(/Thẻ 1\/155/)).toBeInTheDocument();
+    expect(screen.getByText(/Thẻ 1\/134/)).toBeInTheDocument();
   });
 
   it("displays Session Summary Card when reaching the final card with an assessment", () => {
