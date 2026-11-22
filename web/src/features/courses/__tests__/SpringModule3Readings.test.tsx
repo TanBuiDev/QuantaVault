@@ -51,6 +51,7 @@ describe("Spring Module 3 bilingual readings", () => {
     expect(md).toContain("SecurityFilterChain");
     expect(md).toContain("javax.persistence.*");
     expect(md).toContain("Các đoạn mã giữ nguyên nội dung gốc");
-    expect(parseSpringStudyMarkdown(md).filter(b => b.type === "vi-only")).toHaveLength(40);
+    expect(md).toContain("2025-02-15 · 0.1 · Rashi Kapur · Template created");
+    expect(parseSpringStudyMarkdown(md).filter(b => b.type === "vi-only")).toHaveLength(41);
   });
 });
