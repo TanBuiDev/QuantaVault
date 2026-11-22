@@ -83,7 +83,7 @@ describe("Spring Framework for Java Course", () => {
     // The supplied bilingual transcripts for lessons 39–41 stay aligned with their videos.
     for (const [id, count, keyTerms] of [
       ["lesson-39", 64, ["Authentication", "CSRF", "OAuth 2.0"]],
-      ["lesson-40", 66, ["In-Memory", "Roles", "@PreAuthorize"]],
+      ["lesson-40", 66, ["Spring Initializr", "RBAC", "@PreAuthorize"]],
       ["lesson-41", 71, ["Form-Based", "PasswordEncoder", "BCrypt"]]
     ] as const) {
       const lesson = lessons.find((item) => item.id === id);
