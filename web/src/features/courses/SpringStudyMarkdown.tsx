@@ -8,11 +8,13 @@ type StudyBlock =
   | { type: "heading"; level: number; en: string; vi?: string; number?: string; id?: string }
   | { type: "pair"; en: string; vi: string }
   | { type: "bullets"; items: Array<{ en: string; vi: string }> }
-  | { type: "raw"; markdown: string };
+  | { type: "raw"; markdown: string }
+  | { type: "vi-only"; vi: string };
 
 const HEADING = /^(#{1,6})[ \t]+(.+)$/;
 const EN_PARAGRAPH = /^\*\*EN:\*\*\s*(.*)$/;
 const VI_PARAGRAPH = /^\*\*VI:\*\*\s*(.*)$/;
+const VI_ONLY = /^\*\*(?:VI-NOTE|Giải thích \(VI\)|Ghi chú):\*\*\s*(.+)$/;
 const EN_BULLET = /^[ \t]*[-*+][ \t]+\*\*EN:\*\*\s*(.*)$/;
 const VI_BULLET = /^[ \t]+\*\*VI:\*\*\s*(.*)$/;
 const NUMBER_PREFIX = /^(\d+(?:\.\d+)*\.)\s+/;
@@ -95,6 +97,14 @@ export function parseSpringStudyMarkdown(markdown: string): StudyBlock[] {
       continue;
     }
 
+    const viOnly = line.match(VI_ONLY);
+    if (viOnly) {
+      flushRaw();
+      blocks.push({ type: "vi-only", vi: viOnly[1] });
+      i++;
+      continue;
+    }
+
     const en = line.match(EN_PARAGRAPH);
     if (en) {
       let next = i + 1;
@@ -151,6 +161,8 @@ export function transformBilingualMarkdown(raw: string, mode: LanguageMode): str
         return block.items.map((item) => mode === "en" ? "- " + item.en
           : mode === "vi" ? "- " + item.vi
           : "- " + item.en + "\n  " + item.vi).join("\n");
+      case "vi-only":
+        return mode === "en" ? "" : block.vi;
       case "raw":
         return block.markdown;
     }
@@ -189,11 +201,12 @@ export function SpringStudyMarkdown({ markdown, mode, query = "" }: SpringStudyM
     return blocks.filter((block) => {
       if (block.type === "heading") return true;
       if (block.type === "raw") return block.markdown.toLocaleLowerCase().includes(q);
+      if (block.type === "vi-only") return mode !== "en" && block.vi.toLocaleLowerCase().includes(q);
       if (block.type === "pair") return (block.en + " " + block.vi).toLocaleLowerCase().includes(q);
       return block.items.some((item) =>
         (item.en + " " + item.vi).toLocaleLowerCase().includes(q));
     });
-  }, [blocks, query]);
+  }, [blocks, query, mode]);
 
   return (
     <div data-spring-study-content className="mx-auto w-full max-w-[880px] min-w-0 space-y-6">
@@ -211,6 +224,13 @@ export function SpringStudyMarkdown({ markdown, mode, query = "" }: SpringStudyM
                   <MarkdownContent markdown={block.vi} fullWidth className={VI_STYLE + " !leading-6"} />
                 </div>
               )}
+            </div>
+          );
+        }
+        if (block.type === "vi-only") {
+          return mode === "en" ? null : (
+            <div key={"vi-note-" + index} data-study-vi-note>
+              <StudyLanguageText text={block.vi} language="vi" highlight={mode === "bilingual"} />
             </div>
           );
         }

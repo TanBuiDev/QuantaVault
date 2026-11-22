@@ -93,6 +93,34 @@ describe("SpringStudyMarkdown", () => {
     expect(container.querySelectorAll("[data-study-bullets] > li")).toHaveLength(0);
   });
 
+
+  it("renders original code and shows supplementary Vietnamese notes only in appropriate language modes", () => {
+    const markdown = [
+      "## 1. Code example / Ví dụ mã nguồn",
+      "",
+      "**EN:** Example (EN — original code):",
+      "",
+      "**VI:** Ví dụ mã nguồn gốc:",
+      "",
+      "~~~java",
+      'System.out.println("hello");',
+      "~~~",
+      "",
+      "**Giải thích (VI):** Mã ví dụ được giữ nguyên để đối chiếu với bài học.",
+      "",
+      "**VI-NOTE:** Lưu ý kỹ thuật bổ sung."
+    ].join("\n");
+    expect(parseSpringStudyMarkdown(markdown).filter(b => b.type === "vi-only")).toHaveLength(2);
+    const { container, rerender } = render(<SpringStudyMarkdown markdown={markdown} mode="en" />);
+    expect(container.querySelector("pre")?.textContent).toContain("System.out.println");
+    expect(container.textContent).not.toContain("Mã ví dụ được giữ nguyên");
+    rerender(<SpringStudyMarkdown markdown={markdown} mode="bilingual" />);
+    expect(container.querySelectorAll("[data-study-vi-note]")).toHaveLength(2);
+    expect(container.textContent).toContain("Mã ví dụ được giữ nguyên");
+    expect(transformBilingualMarkdown(markdown, "en")).not.toContain("Lưu ý kỹ thuật bổ sung.");
+    expect(transformBilingualMarkdown(markdown, "vi")).toContain("Lưu ý kỹ thuật bổ sung.");
+  });
+
   it("projects source into clean Markdown in all three modes", () => {
     const vi = transformBilingualMarkdown(example, "vi");
     const en = transformBilingualMarkdown(example, "en");
