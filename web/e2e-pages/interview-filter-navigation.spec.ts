@@ -44,3 +44,14 @@ test("Back and Forward restore explicitly selected interview difficulty", async 
   await page.goForward();
   await expect(page.getByRole("button", { name: "Middle (Trung cấp)" })).toHaveClass(/(?:^|\s)bg-amber-500(?:\s|$)/);
 });
+
+test("supports Fresher, Priority P1, and Learning Path view mode", async ({ page }) => {
+  await page.goto("/interview/");
+  await page.getByRole("button", { name: "Lộ trình học (Fresher → Junior)" }).click();
+  await expect(page).toHaveURL(/view=path/);
+  await expect(page.getByText("Lộ trình ôn tập theo Chủ đề & Mức độ P1")).toBeVisible();
+
+  await page.getByRole("button", { name: /Ôn P1/i }).first().click();
+  await expect(page).toHaveURL(/priority=p1/);
+  await expect(page.locator("article[id^='question-']").first()).toBeVisible();
+});
