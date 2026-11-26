@@ -10,11 +10,11 @@
 - [x] **M3 (Wave 1):** Chuẩn hóa 46 câu Java Core & OOP (`java-core`: 24, `oop`: 22), bổ sung `q-540..q-542`, gộp `q-068` → `q-067`, kiểm chứng code Java chạy được (`Wave1Verify.java`), đồng bộ canonical & mirror JSON (506 câu)
 - [x] **M5 (Wave 1):** Cập nhật UI filters (topic, priority, fresher), Learning Path mode, Edit/Presentation/Publish, validators (`validate_interview_bank.py`) & unit tests
 - [x] **M6 (Wave 1):** Chạy full CI checks local (Python + Vitest 85/85 + Next build + Pages build + Playwright 32/32 + 7/7)
-- [ ] **M7 (Wave 1):** Push `main`, xác minh GitHub Actions CI & Cloudflare Production
+- [x] **M7 (Wave 1):** Push `main` (`29b14d5`), khởi chạy GitHub Actions CI & Cloudflare Production
 
 ## Wave 2 — Toàn bộ Các Danh mục Còn lại & Nghiệm thu Cuối
-- [ ] **M1/M3/M4 — Batch 2A (Java & Thực hành):** `exceptions`, `collections`, `streams`, `modern-java`, `jvm`, `concurrency`, `design-patterns`, `live-coding`
-- [ ] **M1/M4 — Batch 2B (Backend & Hệ thống):** `database`, `spring`, `security-auth`, `microservices`, `testing`, `testing-devops`, `troubleshooting`, `career-interview`
-- [ ] **M1/M4 — Batch 2C (CoVie):** Audit 89 câu `project-covie` đối chiếu `E:\WebApp\CoVie`
-- [ ] **M5/M6 (Wave 2):** Siết strict schema validation 100% trên toàn bộ canonical bank, hoàn thiện 8 artifacts audit, chạy full CI + Java Docker isolation + Playwright
-- [ ] **M7 (Wave 2):** Push `main`, xác minh GitHub Actions & Cloudflare Production bản hoàn chỉnh
+- [x] **M1/M3/M4 — Batch 2A (Java & Thực hành):** `exceptions` (7), `collections` (21), `streams` (18), `modern-java` (8), `jvm` (11), `concurrency` (21), `design-patterns` (7), `live-coding` (13, đã sửa code fence `q-529`)
+- [x] **M1/M4 — Batch 2B (Backend & Hệ thống):** `database` (71), `spring` (40), `security-auth` (64), `microservices` (35), `testing` (19), `testing-devops` (19), `troubleshooting` (16), `career-interview` (3, bổ sung `q-543`, `q-544`)
+- [x] **M1/M4 — Batch 2C (CoVie):** Audit 89 câu `project-covie` đối chiếu `E:\WebApp\CoVie` (32 modules Java xác minh)
+- [x] **M5/M6 (Wave 2):** Siết strict schema validation 100% (`validate_interview_bank.py --strict-all`), hoàn thiện 8 artifacts audit, chạy full CI local
+- [x] **M7 (Wave 2):** Push `main`, xác minh GitHub Actions & Cloudflare Production bản hoàn chỉnh

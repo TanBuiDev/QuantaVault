@@ -33,7 +33,7 @@ jobs:
         run: python tools/validate_interview_merge_staging.py
 
       - name: Validate interview bank schema
-        run: python tools/validate_interview_bank.py
+        run: python tools/validate_interview_bank.py --strict-all
 
       - name: Audit Java WHY comments
         run: python tools/audit_java_solution_comments.py
