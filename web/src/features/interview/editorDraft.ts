@@ -1,7 +1,8 @@
 import type { InterviewQuestion } from "@/lib/interview/types";
 import { INTERVIEW_CATEGORIES } from "@/lib/interview/types";
+import { INTERVIEW_TOPIC_MAP } from "@/lib/interview/topics";
 
-export type EditorDraftValues = Pick<InterviewQuestion, "title" | "category" | "difficulty" | "summary" | "answerMarkdown" | "tags"> & {
+export type EditorDraftValues = Pick<InterviewQuestion, "title" | "category" | "topicId" | "difficulty" | "priority" | "learningOrder" | "summary" | "answerMarkdown" | "tags"> & {
   companies: string[];
   relatedProblems: string;
 };
@@ -38,7 +39,10 @@ export function readEditorDraft(question: InterviewQuestion): EditorDraft | null
         summary: typeof candidate.summary === "string" ? candidate.summary : question.summary,
         answerMarkdown: candidate.answerMarkdown,
         category: categories.includes(String(candidate.category)) ? candidate.category as InterviewQuestion["category"] : question.category,
-        difficulty: ["junior", "middle", "senior"].includes(String(candidate.difficulty)) ? candidate.difficulty as InterviewQuestion["difficulty"] : question.difficulty,
+        topicId: typeof candidate.topicId === "string" && Object.hasOwn(INTERVIEW_TOPIC_MAP, candidate.topicId) ? candidate.topicId : question.topicId,
+        difficulty: ["fresher", "junior", "middle", "senior"].includes(String(candidate.difficulty)) ? candidate.difficulty as InterviewQuestion["difficulty"] : question.difficulty,
+        priority: ["p1", "p2", "p3"].includes(String(candidate.priority)) ? candidate.priority as InterviewQuestion["priority"] : question.priority,
+        learningOrder: typeof candidate.learningOrder === "number" && Number.isSafeInteger(candidate.learningOrder) && candidate.learningOrder > 0 ? candidate.learningOrder : question.learningOrder,
         companies: strings(candidate.companies, question.companies ?? []),
         tags: strings(candidate.tags, question.tags),
         relatedProblems: typeof candidate.relatedProblems === "string" ? candidate.relatedProblems : Array.isArray(candidate.relatedProblems) ? candidate.relatedProblems.join(", ") : (question.relatedProblems ?? []).join(", "),

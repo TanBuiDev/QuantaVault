@@ -21,6 +21,7 @@ import { MarkdownContent } from "@/features/practice/MarkdownContent";
 import { InterviewSummaryMarkdown } from "./InterviewSummaryMarkdown";
 import type { InterviewQuestion } from "@/lib/interview/types";
 import { INTERVIEW_CATEGORIES, formatQuestionBadge } from "@/lib/interview/types";
+import { getTopicMeta } from "@/lib/interview/topics";
 
 export interface InterviewQuestionCardProps {
   question: InterviewQuestion;
@@ -66,16 +67,28 @@ export function InterviewQuestionCard({
   };
 
   const difficultyColors = {
+    fresher: "bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/20",
     junior: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
     middle: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
     senior: "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20",
   }[question.difficulty];
 
   const difficultyLabel = {
+    fresher: "Fresher",
     junior: "Junior",
     middle: "Middle",
     senior: "Senior",
   }[question.difficulty];
+
+  const topicMeta = getTopicMeta(question.topicId);
+
+  const priorityBadge = question.priority
+    ? {
+        p1: { label: "P1 · Bắt buộc", cls: "border-indigo-500/30 bg-indigo-500/10 text-indigo-700 dark:text-indigo-300" },
+        p2: { label: "P2 · Quan trọng", cls: "border-violet-500/30 bg-violet-500/10 text-violet-700 dark:text-violet-300" },
+        p3: { label: "P3 · Nâng cao", cls: "border-slate-500/30 bg-slate-500/10 text-slate-700 dark:text-slate-300" },
+      }[question.priority]
+    : null;
 
   const handleCopy = () => {
     const textToCopy = `Câu hỏi phỏng vấn Java: ${question.title}\n\nTóm tắt:\n${question.summary}\n\nChi tiết:\n${question.answerMarkdown}`;
@@ -140,6 +153,20 @@ export function InterviewQuestionCard({
               <span className={`rounded-md border px-2 py-0.5 font-bold ${difficultyColors}`}>
                 {difficultyLabel}
               </span>
+
+              {/* Priority */}
+              {priorityBadge && (
+                <span className={`rounded-md border px-2 py-0.5 font-bold ${priorityBadge.cls}`}>
+                  {priorityBadge.label}
+                </span>
+              )}
+
+              {/* Topic */}
+              {topicMeta && (
+                <span className="rounded-md border border-[var(--border)] bg-[var(--surface)] px-2 py-0.5 font-medium text-[var(--muted-strong)]">
+                  {topicMeta.label}
+                </span>
+              )}
 
               {/* Companies */}
               {question.companies?.map((comp) => (

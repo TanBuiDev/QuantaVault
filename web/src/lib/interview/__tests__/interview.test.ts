@@ -5,6 +5,7 @@ import {
   getAllCategories,
   getAllCompanies,
   filterInterviewQuestions,
+  sortInterviewQuestionsPedagogically,
 } from "../index";
 import type { InterviewFilterState, InterviewProgressState } from "../types";
 
@@ -17,7 +18,7 @@ describe("Interview Data Access and Filtering", () => {
       expect(q.id).toBeDefined();
       expect(q.title.trim().length).toBeGreaterThan(5);
       expect(q.category).toBeDefined();
-      expect(q.difficulty).toMatch(/junior|middle|senior/);
+      expect(q.difficulty).toMatch(/fresher|junior|middle|senior/);
       expect(q.summary.trim().length).toBeGreaterThan(10);
       expect(q.answerMarkdown.trim().length).toBeGreaterThan(20);
       expect(Array.isArray(q.tags)).toBe(true);
@@ -190,5 +191,25 @@ describe("Interview Data Access and Filtering", () => {
       mockProgress
     );
     expect(bookmarkResults.map((q) => q.id)).toEqual([q3.id]);
+  });
+
+  it("filters by Wave 1 fresher, priority, topicId, and sorts pedagogically", () => {
+    const all = getAllInterviewQuestions();
+    const p1Java = filterInterviewQuestions(all, {
+      search: "",
+      category: "java-core",
+      topic: "java-fundamentals",
+      difficulty: "fresher",
+      priority: "p1",
+      status: "all",
+      company: "all",
+    });
+    expect(p1Java.length).toBeGreaterThanOrEqual(10);
+    expect(p1Java.every((q) => q.priority === "p1" && q.topicId === "java-fundamentals")).toBe(true);
+
+    const sorted = sortInterviewQuestionsPedagogically(p1Java);
+    for (let i = 1; i < sorted.length; i++) {
+      expect((sorted[i].learningOrder ?? 0) >= (sorted[i - 1].learningOrder ?? 0)).toBe(true);
+    }
   });
 });

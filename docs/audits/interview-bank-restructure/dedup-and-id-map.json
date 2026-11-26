@@ -1,0 +1,55 @@
+{
+  "wave1Merges": [
+    {
+      "retiredId": "q-068",
+      "keptId": "q-067",
+      "reason": "Gop tieu chi chon Interface & tranh lam dung IService vao q-067; loai bo ghi chu bien tap khoi tieu de.",
+      "snapshot": {
+        "id": "q-068",
+        "title": "Khi nào nên dùng Interface? \\-\\> Có thể bỏ vì trùng câu 67",
+        "category": "design-patterns",
+        "difficulty": "middle",
+        "tags": [
+          "OOP",
+          "SOLID",
+          "DesignPatterns",
+          "Factory",
+          "Strategy",
+          "Observer",
+          "Singleton"
+        ],
+        "companies": [
+          "MB Bank",
+          "Tiki",
+          "Momo"
+        ],
+        "summary": "Em dùng Interface khi muốn định nghĩa một hợp đồng ổn định và có khả năng có nhiều implementation, hoặc muốn code nghiệp vụ độc lập với hạ tầng cụ thể.",
+        "answerMarkdown": "Em dùng Interface khi muốn định nghĩa một hợp đồng ổn định và có khả năng có nhiều implementation, hoặc muốn code nghiệp vụ độc lập với hạ tầng cụ thể. Ví dụ, trong CoVie, interface ObjectStorage mô tả khả năng thao tác với file, trong khi implementation có thể dùng MinIO hoặc dịch vụ S3-compatible khác. Interface còn giúp test: em có thể truyền fake hoặc mock thay vì phải kết nối storage thật trong một unit test. Tuy nhiên, không nên tạo interface chỉ vì mọi Service đều phải có I trước tên class; nếu chỉ có một implementation đơn giản và không có ranh giới rõ, điều đó có thể làm dự án khó đọc hơn. Em ưu tiên interface ở nơi có business capability, khả năng thay đổi công nghệ hoặc một module muốn che giấu chi tiết triển khai.",
+        "relatedProblems": [
+          26,
+          80
+        ]
+      }
+    }
+  ],
+  "wave1NewIds": [
+    {
+      "id": "q-540",
+      "category": "java-core",
+      "topicId": "java-fundamentals",
+      "title": "4 Access Modifiers trong Java (public, protected, default, private) khác nhau thế nào?"
+    },
+    {
+      "id": "q-541",
+      "category": "java-core",
+      "topicId": "java-fundamentals",
+      "title": "Mảng (Array) trong Java hoạt động thế nào? Khác gì ArrayList và cần lưu ý gì về tràn số (Overflow)?"
+    },
+    {
+      "id": "q-542",
+      "category": "oop",
+      "topicId": "oop-core",
+      "title": "Từ khóa this và super trong Java khác nhau thế nào?"
+    }
+  ]
+}

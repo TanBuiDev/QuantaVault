@@ -24,7 +24,8 @@ import type {
   InterviewFilterState,
   InterviewQuestion,
 } from "@/lib/interview/types";
-import { filterInterviewQuestions } from "@/lib/interview";
+import { filterInterviewQuestions, sortInterviewQuestionsPedagogically } from "@/lib/interview";
+import { INTERVIEW_TOPICS } from "@/lib/interview/topics";
 import { formatQuestionBadge } from "@/lib/interview/types";
 import { useInterviewProgress } from "@/lib/interview/progress";
 import { useAccount } from "@/lib/auth/AccountProvider";
@@ -78,6 +79,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
   const [initialView] = useState(getInterviewViewState);
   const [filter, setFilter] = useState<InterviewFilterState>(initialView.filter);
   const [recallMode, setRecallMode] = useState<RecallMode>(initialView.recallMode);
+  const [viewMode, setViewMode] = useState<"list" | "path">(initialView.viewMode);
   const [pageSize, setPageSize] = useState<number | "all">(initialView.pageSize);
   const [currentPage, setCurrentPage] = useState<number>(initialView.currentPage);
   const [directQuestionId, setDirectQuestionId] = useState<string | null>(() => getUrlParams().get("questionId"));
@@ -92,6 +94,7 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
       setCurrentPage(next.currentPage);
       setPageSize(next.pageSize);
       setRecallMode(next.recallMode);
+      setViewMode(next.viewMode);
       setDirectQuestionId(getUrlParams().get("questionId"));
     };
     window.addEventListener("popstate", restoreFromHistory);
@@ -115,23 +118,26 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
   // Synchronize URL search params with filter, pagination, and recall mode (debounced 250ms)
   useEffect(() => {
     // Persist immediately, before the debounced URL update or a quick navigation away.
-    saveInterviewViewState({ filter, currentPage, pageSize, recallMode });
+    saveInterviewViewState({ filter, currentPage, pageSize, recallMode, viewMode });
     const timer = setTimeout(() => {
       updateUrlParams({
         q: null, // drop legacy search alias
         search: filter.search || null,
         category: filter.category !== "all" ? filter.category : null,
+        topic: filter.topic && filter.topic !== "all" ? filter.topic : null,
         difficulty: filter.difficulty !== "all" ? filter.difficulty : null,
+        priority: filter.priority && filter.priority !== "all" ? filter.priority : null,
         status: filter.status !== "all" ? filter.status : null,
         company: filter.company !== "all" ? filter.company : null,
         page: currentPage > 1 ? currentPage : null,
         size: pageSize !== 15 ? pageSize : null,
         recall: recallMode !== "summaries" ? recallMode : null,
+        view: viewMode !== "list" ? viewMode : null,
       });
     }, 250);
 
     return () => clearTimeout(timer);
-  }, [filter, currentPage, pageSize, recallMode]);
+  }, [filter, currentPage, pageSize, recallMode, viewMode]);
 
   // Reader Mode by default, Editor Mode on demand (?edit=true or Ctrl+Shift+E)
   const [isEditMode, setIsEditMode] = useState<boolean>(() => {
@@ -324,18 +330,28 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
 
 
 
-  // Filter questions dynamically
+  // Filter questions dynamically (pedagogical sort when topic/priority or Wave 1 Java/OOP is active)
   const filteredQuestions = useMemo(() => {
-    return filterInterviewQuestions(mergedQuestions, filter, progress);
+    const matched = filterInterviewQuestions(mergedQuestions, filter, progress);
+    if (
+      (filter.topic && filter.topic !== "all") ||
+      (filter.priority && filter.priority !== "all") ||
+      filter.category === "java-core" ||
+      filter.category === "oop"
+    ) {
+      return sortInterviewQuestionsPedagogically(matched);
+    }
+    return matched;
   }, [mergedQuestions, filter, progress]);
 
   // The URL target takes priority over persisted filters, without mutating them.
   const directQuestion = directQuestionId
     ? mergedQuestions.find((q) => q.id === directQuestionId)
     : undefined;
-  const visibleQuestions = directQuestionId
-    ? (directQuestion ? [directQuestion] : [])
-    : filteredQuestions;
+  const visibleQuestions = useMemo(() => {
+    if (!directQuestionId) return filteredQuestions;
+    return directQuestion ? [directQuestion] : [];
+  }, [directQuestionId, directQuestion, filteredQuestions]);
 
   const totalPages = pageSize === "all" ? 1 : Math.max(1, Math.ceil(visibleQuestions.length / Number(pageSize)));
   const safeCurrentPage = directQuestionId ? 1 : Math.min(currentPage, totalPages);
@@ -523,8 +539,108 @@ export function InterviewListView({ initialQuestions }: InterviewListViewProps) 
 
 
 
-      {/* 3. Filter Controls */}
-      <section aria-label="Bộ lọc câu hỏi">
+      {/* 3. Filter Controls & Learning Path Switcher */}
+      <section aria-label="Bộ lọc câu hỏi" className="space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="inline-flex rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1 shadow-2xs">
+            <button
+              type="button"
+              onClick={() => setViewMode("list")}
+              className={`rounded-xl px-3 py-1.5 text-xs font-bold transition-all ${
+                viewMode === "list"
+                  ? "bg-[var(--primary)] text-white shadow-xs"
+                  : "text-[var(--muted-strong)] hover:text-[var(--foreground)]"
+              }`}
+            >
+              Danh sách câu hỏi
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode("path")}
+              className={`rounded-xl px-3 py-1.5 text-xs font-bold transition-all ${
+                viewMode === "path"
+                  ? "bg-[var(--primary)] text-white shadow-xs"
+                  : "text-[var(--muted-strong)] hover:text-[var(--foreground)]"
+              }`}
+            >
+              Lộ trình học (Fresher → Junior)
+            </button>
+          </div>
+        </div>
+
+        {viewMode === "path" && (
+          <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-4 sm:p-5 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+              <div>
+                <h2 className="text-base font-bold text-[var(--foreground)]">Lộ trình ôn tập theo Chủ đề & Mức độ P1</h2>
+                <p className="text-xs text-[var(--muted)]">
+                  Bắt đầu từ Java Fundamentals → OOP → String/Object. Tập trung P1 (Bắt buộc) trước khi mở rộng P2/P3.
+                </p>
+              </div>
+            </div>
+            <div className="grid gap-3 md:grid-cols-2">
+              {INTERVIEW_TOPICS.filter((topic) => initialQuestions.some((q) => q.topicId === topic.id)).map((topic) => {
+                const topicQuestions = initialQuestions.filter((q) => q.topicId === topic.id);
+                const p1Questions = topicQuestions.filter((q) => q.priority === "p1");
+                const p1Learned = p1Questions.filter((q) => progress.learned[q.id]).length;
+                const totalLearned = topicQuestions.filter((q) => progress.learned[q.id]).length;
+                return (
+                  <div
+                    key={topic.id}
+                    className="rounded-2xl border border-[var(--border)] bg-[var(--surface-hover)] p-4 flex flex-col justify-between gap-3"
+                  >
+                    <div className="space-y-1.5">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+                          Bước {topic.roadmapOrder}
+                        </span>
+                        <span className="text-xs font-semibold text-[var(--muted-strong)]">
+                          P1: {p1Learned}/{p1Questions.length} · Tổng: {totalLearned}/{topicQuestions.length}
+                        </span>
+                      </div>
+                      <h3 className="text-sm font-bold text-[var(--foreground)]">{topic.label}</h3>
+                      <p className="text-xs text-[var(--muted)] leading-relaxed">{topic.goal}</p>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      {p1Questions.length > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            handleFilterChange({
+                              ...DEFAULT_INTERVIEW_FILTER,
+                              category: topic.category,
+                              topic: topic.id,
+                              priority: "p1",
+                            });
+                            setViewMode("list");
+                          }}
+                          className="rounded-xl bg-indigo-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-indigo-700 transition-colors"
+                        >
+                          Ôn P1 ({p1Questions.length} câu)
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          handleFilterChange({
+                            ...DEFAULT_INTERVIEW_FILTER,
+                            category: topic.category,
+                            topic: topic.id,
+                          });
+                          setViewMode("list");
+                        }}
+                        className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-xs font-semibold text-[var(--foreground)] hover:bg-[var(--surface-hover)] transition-colors"
+                      >
+                        Xem tất cả ({topicQuestions.length})
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         <InterviewFilterBar
           questions={initialQuestions}
           filter={filter}

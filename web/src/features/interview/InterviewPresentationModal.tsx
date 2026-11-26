@@ -211,12 +211,14 @@ export function InterviewPresentationModal({
   };
 
   const difficultyColors = {
+    fresher: "border-sky-500/30 bg-sky-500/10 text-sky-600 dark:text-sky-400",
     junior: "border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
     middle: "border-amber-500/30 bg-amber-500/10 text-amber-600 dark:text-amber-400",
     senior: "border-rose-500/30 bg-rose-500/10 text-rose-600 dark:text-rose-400",
   }[currentQ.difficulty];
 
   const difficultyLabel = {
+    fresher: "Fresher (Nền tảng)",
     junior: "Junior (Cơ bản)",
     middle: "Middle (Trung cấp)",
     senior: "Senior (Nâng cao)",

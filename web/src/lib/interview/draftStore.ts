@@ -43,7 +43,10 @@ export function areQuestionsEqual(a: InterviewQuestion, b: InterviewQuestion): b
   if (a.id !== b.id) return false;
   if ((a.title || "").trim() !== (b.title || "").trim()) return false;
   if (a.category !== b.category) return false;
+  if ((a.topicId || "") !== (b.topicId || "")) return false;
   if (a.difficulty !== b.difficulty) return false;
+  if ((a.priority || "") !== (b.priority || "")) return false;
+  if ((a.learningOrder ?? null) !== (b.learningOrder ?? null)) return false;
   if ((a.summary || "").trim() !== (b.summary || "").trim()) return false;
   if ((a.answerMarkdown || "").trim() !== (b.answerMarkdown || "").trim()) return false;
 

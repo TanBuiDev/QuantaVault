@@ -1,0 +1,686 @@
+{
+  "wave": 1,
+  "baselineCount": 504,
+  "finalCount": 506,
+  "added": 3,
+  "retired": 1,
+  "auditedWave1Count": 46,
+  "reclassifiedToWave2Count": 23,
+  "records": [
+    {
+      "id": "q-041",
+      "oldCategory": "java-core",
+      "newCategory": "java-core",
+      "topicId": "java-fundamentals",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 10,
+      "disposition": "keep",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-042",
+      "oldCategory": "java-core",
+      "newCategory": "java-core",
+      "topicId": "java-fundamentals",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 20,
+      "disposition": "keep",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-044",
+      "oldCategory": "java-core",
+      "newCategory": "java-core",
+      "topicId": "java-fundamentals",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 30,
+      "disposition": "keep",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-045",
+      "oldCategory": "java-core",
+      "newCategory": "java-core",
+      "topicId": "java-fundamentals",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 40,
+      "disposition": "keep",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-046",
+      "oldCategory": "java-core",
+      "newCategory": "java-core",
+      "topicId": "java-fundamentals",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 50,
+      "disposition": "keep",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-049",
+      "oldCategory": "java-core",
+      "newCategory": "java-core",
+      "topicId": "java-fundamentals",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 60,
+      "disposition": "keep",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-050",
+      "oldCategory": "java-core",
+      "newCategory": "java-core",
+      "topicId": "java-fundamentals",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 70,
+      "disposition": "keep",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-051",
+      "oldCategory": "java-core",
+      "newCategory": "java-core",
+      "topicId": "java-fundamentals",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 80,
+      "disposition": "keep",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-052",
+      "oldCategory": "java-core",
+      "newCategory": "java-core",
+      "topicId": "java-fundamentals",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 90,
+      "disposition": "keep",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-053",
+      "oldCategory": "java-core",
+      "newCategory": "java-core",
+      "topicId": "java-fundamentals",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 100,
+      "disposition": "keep",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-054",
+      "oldCategory": "java-core",
+      "newCategory": "java-core",
+      "topicId": "java-fundamentals",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 110,
+      "disposition": "keep",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-055",
+      "oldCategory": "java-core",
+      "newCategory": "java-core",
+      "topicId": "java-fundamentals",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 120,
+      "disposition": "keep",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-056",
+      "oldCategory": "java-core",
+      "newCategory": "java-core",
+      "topicId": "java-fundamentals",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 130,
+      "disposition": "keep",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-057",
+      "oldCategory": "java-core",
+      "newCategory": "oop",
+      "topicId": "oop-core",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 70,
+      "disposition": "reclassify",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-058",
+      "oldCategory": "java-core",
+      "newCategory": "oop",
+      "topicId": "oop-core",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 90,
+      "disposition": "reclassify",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-059",
+      "oldCategory": "java-core",
+      "newCategory": "java-core",
+      "topicId": "java-fundamentals",
+      "difficulty": "junior",
+      "priority": "p2",
+      "learningOrder": 140,
+      "disposition": "keep",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-060",
+      "oldCategory": "java-core",
+      "newCategory": "oop",
+      "topicId": "oop-core",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 50,
+      "disposition": "reclassify",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-061",
+      "oldCategory": "design-patterns",
+      "newCategory": "oop",
+      "topicId": "oop-core",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 10,
+      "disposition": "reclassify",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-062",
+      "oldCategory": "design-patterns",
+      "newCategory": "oop",
+      "topicId": "oop-core",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 20,
+      "disposition": "reclassify+revise",
+      "reason": "Chuan hoa tieu de/Markdown/vi du Java chay duoc va gan metadata Wave 1."
+    },
+    {
+      "id": "q-063",
+      "oldCategory": "design-patterns",
+      "newCategory": "oop",
+      "topicId": "oop-core",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 30,
+      "disposition": "reclassify",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-064",
+      "oldCategory": "design-patterns",
+      "newCategory": "oop",
+      "topicId": "oop-core",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 40,
+      "disposition": "reclassify",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-065",
+      "oldCategory": "design-patterns",
+      "newCategory": "oop",
+      "topicId": "oop-core",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 60,
+      "disposition": "reclassify",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-066",
+      "oldCategory": "design-patterns",
+      "newCategory": "oop",
+      "topicId": "oop-core",
+      "difficulty": "junior",
+      "priority": "p1",
+      "learningOrder": 80,
+      "disposition": "reclassify",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-067",
+      "oldCategory": "design-patterns",
+      "newCategory": "oop",
+      "topicId": "oop-polymorphism-design",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 10,
+      "disposition": "reclassify+revise",
+      "reason": "Chuan hoa tieu de/Markdown/vi du Java chay duoc va gan metadata Wave 1."
+    },
+    {
+      "id": "q-068",
+      "oldCategory": "design-patterns",
+      "newCategory": "oop",
+      "disposition": "merge",
+      "targetId": "q-067",
+      "reason": "Trung chu de quyet dinh chon Interface; da gop y tranh lam dung IService vao q-067 va retire q-068."
+    },
+    {
+      "id": "q-069",
+      "oldCategory": "design-patterns",
+      "newCategory": "oop",
+      "topicId": "oop-polymorphism-design",
+      "difficulty": "junior",
+      "priority": "p2",
+      "learningOrder": 20,
+      "disposition": "reclassify",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-071",
+      "oldCategory": "design-patterns",
+      "newCategory": "oop",
+      "topicId": "oop-polymorphism-design",
+      "difficulty": "junior",
+      "priority": "p2",
+      "learningOrder": 30,
+      "disposition": "reclassify+revise",
+      "reason": "Chuan hoa tieu de/Markdown/vi du Java chay duoc va gan metadata Wave 1."
+    },
+    {
+      "id": "q-072",
+      "oldCategory": "design-patterns",
+      "newCategory": "oop",
+      "topicId": "oop-core",
+      "difficulty": "junior",
+      "priority": "p2",
+      "learningOrder": 100,
+      "disposition": "reclassify+revise",
+      "reason": "Chuan hoa tieu de/Markdown/vi du Java chay duoc va gan metadata Wave 1."
+    },
+    {
+      "id": "q-073",
+      "oldCategory": "design-patterns",
+      "newCategory": "oop",
+      "topicId": "oop-polymorphism-design",
+      "difficulty": "junior",
+      "priority": "p2",
+      "learningOrder": 40,
+      "disposition": "reclassify+revise",
+      "reason": "Chuan hoa tieu de/Markdown/vi du Java chay duoc va gan metadata Wave 1."
+    },
+    {
+      "id": "q-074",
+      "oldCategory": "design-patterns",
+      "newCategory": "oop",
+      "topicId": "oop-polymorphism-design",
+      "difficulty": "junior",
+      "priority": "p2",
+      "learningOrder": 50,
+      "disposition": "reclassify+revise",
+      "reason": "Chuan hoa tieu de/Markdown/vi du Java chay duoc va gan metadata Wave 1."
+    },
+    {
+      "id": "q-075",
+      "oldCategory": "design-patterns",
+      "newCategory": "oop",
+      "topicId": "oop-polymorphism-design",
+      "difficulty": "junior",
+      "priority": "p1",
+      "learningOrder": 60,
+      "disposition": "reclassify+revise",
+      "reason": "Chuan hoa tieu de/Markdown/vi du Java chay duoc va gan metadata Wave 1."
+    },
+    {
+      "id": "q-076",
+      "oldCategory": "design-patterns",
+      "newCategory": "oop",
+      "topicId": "oop-polymorphism-design",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 70,
+      "disposition": "reclassify+revise",
+      "reason": "Chuan hoa tieu de/Markdown/vi du Java chay duoc va gan metadata Wave 1."
+    },
+    {
+      "id": "q-077",
+      "oldCategory": "design-patterns",
+      "newCategory": "oop",
+      "topicId": "oop-polymorphism-design",
+      "difficulty": "junior",
+      "priority": "p1",
+      "learningOrder": 80,
+      "disposition": "reclassify",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-078",
+      "oldCategory": "design-patterns",
+      "newCategory": "oop",
+      "topicId": "oop-polymorphism-design",
+      "difficulty": "junior",
+      "priority": "p2",
+      "learningOrder": 90,
+      "disposition": "reclassify",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-079",
+      "oldCategory": "design-patterns",
+      "newCategory": "oop",
+      "topicId": "oop-polymorphism-design",
+      "difficulty": "junior",
+      "priority": "p2",
+      "learningOrder": 100,
+      "disposition": "reclassify",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-080",
+      "oldCategory": "design-patterns",
+      "newCategory": "oop",
+      "topicId": "oop-polymorphism-design",
+      "difficulty": "junior",
+      "priority": "p2",
+      "learningOrder": 110,
+      "disposition": "reclassify",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-087",
+      "oldCategory": "java-core",
+      "newCategory": "java-core",
+      "topicId": "java-string-object",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 10,
+      "disposition": "keep",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-088",
+      "oldCategory": "design-patterns",
+      "newCategory": "java-core",
+      "topicId": "java-string-object",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 20,
+      "disposition": "reclassify+revise",
+      "reason": "Chuan hoa tieu de/Markdown/vi du Java chay duoc va gan metadata Wave 1."
+    },
+    {
+      "id": "q-089",
+      "oldCategory": "java-core",
+      "newCategory": "java-core",
+      "topicId": "java-string-object",
+      "difficulty": "junior",
+      "priority": "p1",
+      "learningOrder": 30,
+      "disposition": "keep",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-091",
+      "oldCategory": "java-core",
+      "newCategory": "java-core",
+      "topicId": "java-string-object",
+      "difficulty": "junior",
+      "priority": "p1",
+      "learningOrder": 40,
+      "disposition": "keep",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-093",
+      "oldCategory": "java-core",
+      "newCategory": "java-core",
+      "topicId": "java-string-object",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 50,
+      "disposition": "revise",
+      "reason": "Chuan hoa tieu de/Markdown/vi du Java chay duoc va gan metadata Wave 1."
+    },
+    {
+      "id": "q-094",
+      "oldCategory": "java-core",
+      "newCategory": "java-core",
+      "topicId": "java-string-object",
+      "difficulty": "junior",
+      "priority": "p1",
+      "learningOrder": 80,
+      "disposition": "keep",
+      "reason": "Da dat chuan noi dung; gan metadata topic/priority/difficulty/learningOrder."
+    },
+    {
+      "id": "q-095",
+      "oldCategory": "java-core",
+      "newCategory": "java-core",
+      "topicId": "java-string-object",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 60,
+      "disposition": "revise",
+      "reason": "Chuan hoa tieu de/Markdown/vi du Java chay duoc va gan metadata Wave 1."
+    },
+    {
+      "id": "q-096",
+      "oldCategory": "java-core",
+      "newCategory": "java-core",
+      "topicId": "java-string-object",
+      "difficulty": "junior",
+      "priority": "p1",
+      "learningOrder": 70,
+      "disposition": "revise",
+      "reason": "Chuan hoa tieu de/Markdown/vi du Java chay duoc va gan metadata Wave 1."
+    },
+    {
+      "id": "q-097",
+      "oldCategory": "java-core",
+      "newCategory": "modern-java",
+      "disposition": "reclassify",
+      "reason": "Tach khoi java-core sang modern-java; cho Wave 2 audit topic/priority/order."
+    },
+    {
+      "id": "q-099",
+      "oldCategory": "java-core",
+      "newCategory": "modern-java",
+      "disposition": "reclassify",
+      "reason": "Tach khoi java-core sang modern-java; cho Wave 2 audit topic/priority/order."
+    },
+    {
+      "id": "q-101",
+      "oldCategory": "java-core",
+      "newCategory": "modern-java",
+      "disposition": "reclassify",
+      "reason": "Tach khoi java-core sang modern-java; cho Wave 2 audit topic/priority/order."
+    },
+    {
+      "id": "q-102",
+      "oldCategory": "java-core",
+      "newCategory": "modern-java",
+      "disposition": "reclassify",
+      "reason": "Tach khoi java-core sang modern-java; cho Wave 2 audit topic/priority/order."
+    },
+    {
+      "id": "q-104",
+      "oldCategory": "java-core",
+      "newCategory": "modern-java",
+      "disposition": "reclassify",
+      "reason": "Tach khoi java-core sang modern-java; cho Wave 2 audit topic/priority/order."
+    },
+    {
+      "id": "q-105",
+      "oldCategory": "java-core",
+      "newCategory": "modern-java",
+      "disposition": "reclassify",
+      "reason": "Tach khoi java-core sang modern-java; cho Wave 2 audit topic/priority/order."
+    },
+    {
+      "id": "q-106",
+      "oldCategory": "java-core",
+      "newCategory": "modern-java",
+      "disposition": "reclassify",
+      "reason": "Tach khoi java-core sang modern-java; cho Wave 2 audit topic/priority/order."
+    },
+    {
+      "id": "q-518",
+      "oldCategory": "java-core",
+      "newCategory": "live-coding",
+      "disposition": "reclassify",
+      "reason": "Tach khoi java-core sang live-coding; cho Wave 2 audit topic/priority/order."
+    },
+    {
+      "id": "q-519",
+      "oldCategory": "java-core",
+      "newCategory": "live-coding",
+      "disposition": "reclassify",
+      "reason": "Tach khoi java-core sang live-coding; cho Wave 2 audit topic/priority/order."
+    },
+    {
+      "id": "q-520",
+      "oldCategory": "java-core",
+      "newCategory": "live-coding",
+      "disposition": "reclassify",
+      "reason": "Tach khoi java-core sang live-coding; cho Wave 2 audit topic/priority/order."
+    },
+    {
+      "id": "q-521",
+      "oldCategory": "java-core",
+      "newCategory": "live-coding",
+      "disposition": "reclassify",
+      "reason": "Tach khoi java-core sang live-coding; cho Wave 2 audit topic/priority/order."
+    },
+    {
+      "id": "q-522",
+      "oldCategory": "java-core",
+      "newCategory": "live-coding",
+      "disposition": "reclassify",
+      "reason": "Tach khoi java-core sang live-coding; cho Wave 2 audit topic/priority/order."
+    },
+    {
+      "id": "q-523",
+      "oldCategory": "java-core",
+      "newCategory": "live-coding",
+      "disposition": "reclassify",
+      "reason": "Tach khoi java-core sang live-coding; cho Wave 2 audit topic/priority/order."
+    },
+    {
+      "id": "q-524",
+      "oldCategory": "java-core",
+      "newCategory": "live-coding",
+      "disposition": "reclassify",
+      "reason": "Tach khoi java-core sang live-coding; cho Wave 2 audit topic/priority/order."
+    },
+    {
+      "id": "q-525",
+      "oldCategory": "java-core",
+      "newCategory": "live-coding",
+      "disposition": "reclassify",
+      "reason": "Tach khoi java-core sang live-coding; cho Wave 2 audit topic/priority/order."
+    },
+    {
+      "id": "q-526",
+      "oldCategory": "java-core",
+      "newCategory": "live-coding",
+      "disposition": "reclassify",
+      "reason": "Tach khoi java-core sang live-coding; cho Wave 2 audit topic/priority/order."
+    },
+    {
+      "id": "q-527",
+      "oldCategory": "java-core",
+      "newCategory": "live-coding",
+      "disposition": "reclassify",
+      "reason": "Tach khoi java-core sang live-coding; cho Wave 2 audit topic/priority/order."
+    },
+    {
+      "id": "q-528",
+      "oldCategory": "java-core",
+      "newCategory": "live-coding",
+      "disposition": "reclassify",
+      "reason": "Tach khoi java-core sang live-coding; cho Wave 2 audit topic/priority/order."
+    },
+    {
+      "id": "q-529",
+      "oldCategory": "java-core",
+      "newCategory": "live-coding",
+      "disposition": "reclassify",
+      "reason": "Tach khoi java-core sang live-coding; cho Wave 2 audit topic/priority/order."
+    },
+    {
+      "id": "q-530",
+      "oldCategory": "java-core",
+      "newCategory": "live-coding",
+      "disposition": "reclassify",
+      "reason": "Tach khoi java-core sang live-coding; cho Wave 2 audit topic/priority/order."
+    },
+    {
+      "id": "q-531",
+      "oldCategory": "java-core",
+      "newCategory": "microservices",
+      "disposition": "reclassify",
+      "reason": "Tach khoi java-core sang microservices; cho Wave 2 audit topic/priority/order."
+    },
+    {
+      "id": "q-537",
+      "oldCategory": "java-core",
+      "newCategory": "career-interview",
+      "disposition": "reclassify",
+      "reason": "Tach khoi java-core sang career-interview; cho Wave 2 audit topic/priority/order."
+    },
+    {
+      "id": "q-538",
+      "oldCategory": "java-core",
+      "newCategory": "troubleshooting",
+      "disposition": "reclassify",
+      "reason": "Tach khoi java-core sang troubleshooting; cho Wave 2 audit topic/priority/order."
+    },
+    {
+      "id": "q-540",
+      "oldCategory": null,
+      "newCategory": "java-core",
+      "topicId": "java-fundamentals",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 105,
+      "disposition": "add",
+      "reason": "Bo sung lo hong kien thuc P1 trong ma tran Java Fundamentals / OOP."
+    },
+    {
+      "id": "q-541",
+      "oldCategory": null,
+      "newCategory": "java-core",
+      "topicId": "java-fundamentals",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 55,
+      "disposition": "add",
+      "reason": "Bo sung lo hong kien thuc P1 trong ma tran Java Fundamentals / OOP."
+    },
+    {
+      "id": "q-542",
+      "oldCategory": null,
+      "newCategory": "oop",
+      "topicId": "oop-core",
+      "difficulty": "fresher",
+      "priority": "p1",
+      "learningOrder": 15,
+      "disposition": "add",
+      "reason": "Bo sung lo hong kien thuc P1 trong ma tran Java Fundamentals / OOP."
+    }
+  ]
+}

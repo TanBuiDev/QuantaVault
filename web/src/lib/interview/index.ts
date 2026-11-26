@@ -8,8 +8,10 @@ import type {
   InterviewQuestion,
 } from "./types";
 import { INTERVIEW_CATEGORIES } from "./types";
+import { INTERVIEW_TOPIC_MAP } from "./topics";
 
 export * from "./types";
+export * from "./topics";
 
 export function getAllInterviewQuestions(): InterviewQuestion[] {
   return rawQuestions as InterviewQuestion[];
@@ -43,6 +45,34 @@ export function getAllCompanies(questions = getAllInterviewQuestions()): string[
   return Array.from(companies).sort();
 }
 
+const PRIORITY_RANK: Record<string, number> = { p1: 1, p2: 2, p3: 3 };
+
+function compareCanonicalId(a: string, b: string): number {
+  const ma = /^q-(\d+)$/i.exec(a);
+  const mb = /^q-(\d+)$/i.exec(b);
+  if (ma && mb) return Number(ma[1]) - Number(mb[1]);
+  return a.localeCompare(b);
+}
+
+/** Deterministic pedagogical sort: topic roadmapOrder -> priority -> learningOrder -> canonical ID. */
+export function sortInterviewQuestionsPedagogically(questions: InterviewQuestion[]): InterviewQuestion[] {
+  return [...questions].sort((a, b) => {
+    const topicA = a.topicId ? INTERVIEW_TOPIC_MAP[a.topicId]?.roadmapOrder ?? 999 : 999;
+    const topicB = b.topicId ? INTERVIEW_TOPIC_MAP[b.topicId]?.roadmapOrder ?? 999 : 999;
+    if (topicA !== topicB) return topicA - topicB;
+
+    const prioA = a.priority ? PRIORITY_RANK[a.priority] ?? 9 : 9;
+    const prioB = b.priority ? PRIORITY_RANK[b.priority] ?? 9 : 9;
+    if (prioA !== prioB) return prioA - prioB;
+
+    const orderA = a.learningOrder ?? Number.MAX_SAFE_INTEGER;
+    const orderB = b.learningOrder ?? Number.MAX_SAFE_INTEGER;
+    if (orderA !== orderB) return orderA - orderB;
+
+    return compareCanonicalId(a.id, b.id);
+  });
+}
+
 export function filterInterviewQuestions(
   questions: InterviewQuestion[],
   filter: InterviewFilterState,
@@ -52,6 +82,8 @@ export function filterInterviewQuestions(
   // Numeric queries are exact IDs, never substring or ambiguous merged-ID matches.
   const numericQuery = /^(?:#|q-)?(\d+)$/i.exec(term);
   const requestedId = numericQuery ? `q-${numericQuery[1].padStart(3, "0")}`.toLowerCase() : null;
+  const targetTopic = filter.topic ?? "all";
+  const targetPriority = filter.priority ?? "all";
 
   return questions.filter((q) => {
     if (requestedId) {
@@ -71,17 +103,27 @@ export function filterInterviewQuestions(
       return false;
     }
 
-    // 3. Difficulty
+    // 3. Topic
+    if (targetTopic !== "all" && q.topicId !== targetTopic) {
+      return false;
+    }
+
+    // 4. Priority
+    if (targetPriority !== "all" && q.priority !== targetPriority) {
+      return false;
+    }
+
+    // 5. Difficulty
     if (filter.difficulty !== "all" && q.difficulty !== filter.difficulty) {
       return false;
     }
 
-    // 4. Company
+    // 6. Company
     if (filter.company !== "all" && (!q.companies || !q.companies.includes(filter.company))) {
       return false;
     }
 
-    // 5. Progress Status
+    // 7. Progress Status
     if (filter.status !== "all" && progress) {
       const isLearned = Boolean(progress.learned[q.id]);
       const isReview = Boolean(progress.review[q.id]);
@@ -95,5 +137,4 @@ export function filterInterviewQuestions(
 
     return true;
   });
-
 }

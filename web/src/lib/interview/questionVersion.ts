@@ -3,9 +3,16 @@ import type { InterviewQuestion } from "./types";
 /** Public content only. Deliberately excludes draft flags and storage metadata. */
 export function canonicalQuestion(question: InterviewQuestion): InterviewQuestion {
   return {
-    id: question.id, title: question.title, category: question.category,
-    difficulty: question.difficulty, tags: [...question.tags],
-    companies: question.companies ? [...question.companies] : undefined, summary: question.summary,
+    id: question.id,
+    title: question.title,
+    category: question.category,
+    ...(question.topicId !== undefined ? { topicId: question.topicId } : {}),
+    difficulty: question.difficulty,
+    ...(question.priority !== undefined ? { priority: question.priority } : {}),
+    ...(question.learningOrder !== undefined ? { learningOrder: question.learningOrder } : {}),
+    tags: [...question.tags],
+    companies: question.companies ? [...question.companies] : undefined,
+    summary: question.summary,
     answerMarkdown: question.answerMarkdown,
     keyTakeaways: question.keyTakeaways ? [...question.keyTakeaways] : undefined,
     relatedProblems: question.relatedProblems ? [...question.relatedProblems] : undefined,

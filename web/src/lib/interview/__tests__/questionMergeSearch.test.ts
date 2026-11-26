@@ -9,11 +9,13 @@ const filters: InterviewFilterState = {
 describe("published 504-question bank with preserved historic links", () => {
   const questions = getAllInterviewQuestions();
 
-  it("contains exactly 504 unique canonical questions", () => {
-    expect(questions).toHaveLength(504);
-    expect(new Set(questions.map(q => q.id)).size).toBe(504);
+  it("contains unique canonical questions with retired IDs excluded", () => {
+    expect(questions.length).toBeGreaterThanOrEqual(504);
+    expect(new Set(questions.map(q => q.id)).size).toBe(questions.length);
     expect(questions.some(q => q.id === "q-194")).toBe(false);
+    expect(questions.some(q => q.id === "q-068")).toBe(false);
     expect(questions.some(q => q.id === "q-193")).toBe(true);
+    expect(questions.some(q => q.id === "q-067")).toBe(true);
   });
 
   it("does not guess a destination for retired or ambiguous IDs", () => {

@@ -27,9 +27,11 @@ import {
 import type {
   InterviewCategory,
   InterviewDifficulty,
+  InterviewPriority,
   InterviewQuestion,
 } from "@/lib/interview/types";
 import { INTERVIEW_CATEGORIES, formatQuestionBadge } from "@/lib/interview/types";
+import { getTopicsByCategory } from "@/lib/interview/topics";
 import { MarkdownContent } from "@/features/practice/MarkdownContent";
 import { MarkdownEditorToolbar } from "./MarkdownEditorToolbar";
 import { formatMarkdownTextarea } from "./markdownFormatting";
@@ -97,8 +99,13 @@ function InterviewEditModalForm({
   const [category, setCategory] = useState<InterviewCategory>(
     question.category ?? "java-core"
   );
+  const [topicId, setTopicId] = useState<string>(question.topicId ?? "");
   const [difficulty, setDifficulty] = useState<InterviewDifficulty>(
     question.difficulty ?? "junior"
+  );
+  const [priority, setPriority] = useState<InterviewPriority | "">(question.priority ?? "");
+  const [learningOrder, setLearningOrder] = useState<string>(
+    question.learningOrder !== undefined ? String(question.learningOrder) : ""
   );
   const [summary, setSummary] = useState(question.summary ?? "");
   const [answerMarkdown, setAnswerMarkdown] = useState(
@@ -157,8 +164,35 @@ function InterviewEditModalForm({
   const [openedQuestion] = useState(question);
   const baseVersion = questionVersion(openedQuestion);
   const externalChanged = questionVersion(question) !== baseVersion;
-  const values: EditorDraftValues = { title, category, difficulty, summary, answerMarkdown, companies, tags, relatedProblems };
-  const initialValues = JSON.stringify({ title: openedQuestion.title ?? "", category: openedQuestion.category ?? "java-core", difficulty: openedQuestion.difficulty ?? "junior", summary: openedQuestion.summary ?? "", answerMarkdown: openedQuestion.answerMarkdown ?? "", companies: openedQuestion.companies ?? [], tags: openedQuestion.tags ?? [], relatedProblems: (openedQuestion.relatedProblems ?? []).join(", ") });
+  const parsedLearningOrder = /^\d+$/.test(learningOrder.trim()) && Number(learningOrder.trim()) > 0
+    ? Number(learningOrder.trim())
+    : undefined;
+  const values: EditorDraftValues = {
+    title,
+    category,
+    topicId: topicId || undefined,
+    difficulty,
+    priority: priority || undefined,
+    learningOrder: parsedLearningOrder,
+    summary,
+    answerMarkdown,
+    companies,
+    tags,
+    relatedProblems,
+  };
+  const initialValues = JSON.stringify({
+    title: openedQuestion.title ?? "",
+    category: openedQuestion.category ?? "java-core",
+    topicId: openedQuestion.topicId,
+    difficulty: openedQuestion.difficulty ?? "junior",
+    priority: openedQuestion.priority,
+    learningOrder: openedQuestion.learningOrder,
+    summary: openedQuestion.summary ?? "",
+    answerMarkdown: openedQuestion.answerMarkdown ?? "",
+    companies: openedQuestion.companies ?? [],
+    tags: openedQuestion.tags ?? [],
+    relatedProblems: (openedQuestion.relatedProblems ?? []).join(", "),
+  });
   const dirty = JSON.stringify(values) !== initialValues;
   const suppressed = useRef(false);
   const latest = useRef({ values, dirty });
@@ -175,7 +209,7 @@ function InterviewEditModalForm({
     if (!dirty || suppressed.current || pendingDraft) return;
     const timer = setTimeout(() => saveSessionRef.current(), 400);
     return () => clearTimeout(timer);
-  }, [title, category, difficulty, summary, answerMarkdown, companies, tags, relatedProblems, dirty, pendingDraft]);
+  }, [title, category, topicId, difficulty, priority, learningOrder, summary, answerMarkdown, companies, tags, relatedProblems, dirty, pendingDraft]);
   useEffect(() => {
     const flush = () => { if (!pendingDraft) saveSessionRef.current(); };
     window.addEventListener("pagehide", flush);
@@ -201,7 +235,9 @@ function InterviewEditModalForm({
     if (!pendingDraft?.values) return;
     if (pendingDraft.baseVersion !== baseVersion && !await confirm({ title: "Bản nháp khác phiên bản hiện tại", message: "Dữ liệu nền đã thay đổi hoặc bản nháp cũ thiếu thông tin phiên bản. Bạn có muốn thay nội dung trong form bằng bản nháp này không?", confirmText: "Dùng bản nháp", cancelText: "Giữ nội dung hiện tại", variant: "warning" })) return;
     const draft = pendingDraft.values;
-    setTitle(draft.title); setCategory(draft.category); setDifficulty(draft.difficulty);
+    setTitle(draft.title); setCategory(draft.category); setTopicId(draft.topicId ?? "");
+    setDifficulty(draft.difficulty); setPriority(draft.priority ?? "");
+    setLearningOrder(draft.learningOrder !== undefined ? String(draft.learningOrder) : "");
     setSummary(draft.summary); setAnswerMarkdown(draft.answerMarkdown);
     setCompanies(draft.companies); setTags(draft.tags); setRelatedProblems(draft.relatedProblems);
     setPendingDraft(null);
@@ -240,7 +276,10 @@ function InterviewEditModalForm({
       ...question,
       title: title.trim() || question.title,
       category,
+      ...(topicId ? { topicId } : { topicId: undefined }),
       difficulty,
+      ...(priority ? { priority } : { priority: undefined }),
+      ...(parsedLearningOrder !== undefined ? { learningOrder: parsedLearningOrder } : { learningOrder: undefined }),
       summary: summary.trim(),
       answerMarkdown: answerMarkdown.trim(),
       companies: companies.length > 0 ? companies : undefined,
@@ -541,14 +580,16 @@ function InterviewEditModalForm({
                   Cấp độ (Difficulty)
                 </label>
                 <div className="flex items-center rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] p-1 text-xs">
-                  {(["junior", "middle", "senior"] as const).map((lvl) => (
+                  {(["fresher", "junior", "middle", "senior"] as const).map((lvl) => (
                     <button
                       key={lvl}
                       type="button"
                       onClick={() => setDifficulty(lvl)}
                       className={`flex-1 rounded-lg py-1.5 text-xs font-bold capitalize transition-all ${
                         difficulty === lvl
-                          ? lvl === "junior"
+                          ? lvl === "fresher"
+                            ? "bg-sky-500 text-white shadow-xs"
+                            : lvl === "junior"
                             ? "bg-emerald-500 text-white shadow-xs"
                             : lvl === "middle"
                             ? "bg-amber-500 text-white shadow-xs"
@@ -560,6 +601,57 @@ function InterviewEditModalForm({
                     </button>
                   ))}
                 </div>
+              </div>
+            </div>
+
+            {/* Topic, Priority & Learning Order */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
+                  Chủ đề con (Topic)
+                </label>
+                <select
+                  value={topicId}
+                  onChange={(e) => setTopicId(e.target.value)}
+                  className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] px-3 py-2.5 text-xs sm:text-sm font-semibold text-[var(--foreground)] outline-none cursor-pointer focus:border-[var(--focus)]"
+                >
+                  <option value="">Chưa phân loại</option>
+                  {getTopicsByCategory(category).map((t) => (
+                    <option key={t.id} value={t.id}>
+                      {t.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
+                  Độ ưu tiên (Priority)
+                </label>
+                <select
+                  value={priority}
+                  onChange={(e) => setPriority(e.target.value as InterviewPriority | "")}
+                  className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] px-3 py-2.5 text-xs sm:text-sm font-semibold text-[var(--foreground)] outline-none cursor-pointer focus:border-[var(--focus)]"
+                >
+                  <option value="">Chưa phân loại</option>
+                  <option value="p1">P1 (Bắt buộc)</option>
+                  <option value="p2">P2 (Quan trọng)</option>
+                  <option value="p3">P3 (Nâng cao)</option>
+                </select>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold uppercase tracking-wider text-[var(--muted)]">
+                  Thứ tự học (Order)
+                </label>
+                <input
+                  type="number"
+                  min={1}
+                  value={learningOrder}
+                  onChange={(e) => setLearningOrder(e.target.value)}
+                  placeholder="VD: 10"
+                  className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface-hover)] px-3 py-2.5 text-xs sm:text-sm font-semibold text-[var(--foreground)] outline-none focus:border-[var(--focus)]"
+                />
               </div>
             </div>
 

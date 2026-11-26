@@ -1,4 +1,5 @@
 import { INTERVIEW_CATEGORIES, type InterviewQuestion } from "./types";
+import { INTERVIEW_TOPIC_MAP } from "./topics";
 import { verifyTOTP } from "./totp";
 import { fromBase32 } from "./base32";
 import { canonicalQuestion, questionVersion } from "./questionVersion";
@@ -30,7 +31,10 @@ export function validQuestion(v: unknown): v is PublishQuestionItem {
   if (!record(v)) return false;
   return text(v.id, 100, true) && /^[a-zA-Z0-9][a-zA-Z0-9_-]*$/.test(v.id)
     && text(v.title, 2000, true) && typeof v.category === "string" && Object.hasOwn(INTERVIEW_CATEGORIES, v.category)
-    && ["junior", "middle", "senior"].includes(v.difficulty as string)
+    && (v.topicId === undefined || (typeof v.topicId === "string" && Object.hasOwn(INTERVIEW_TOPIC_MAP, v.topicId)))
+    && ["fresher", "junior", "middle", "senior"].includes(v.difficulty as string)
+    && (v.priority === undefined || ["p1", "p2", "p3"].includes(v.priority as string))
+    && (v.learningOrder === undefined || (Number.isSafeInteger(v.learningOrder) && (v.learningOrder as number) > 0))
     && strings(v.tags) && (v.companies === undefined || strings(v.companies))
     && text(v.summary, 20000) && text(v.answerMarkdown, 500000)
     && (v.keyTakeaways === undefined || strings(v.keyTakeaways))
