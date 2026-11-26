@@ -50,7 +50,11 @@ test("Spring completion follows the existing account scope", async ({ page }) =>
   } }));
   await page.route("https://www.youtube-nocookie.com/**", route => route.fulfill({ body: "" }));
 
+  const initialProgress = page.waitForResponse(
+    (res) => res.url().includes("/api/learning-progress") && res.request().method() === "GET"
+  );
   await page.goto(course + "/lesson-01/");
+  await initialProgress;
   await page.getByRole("button", { name: "Đánh dấu đã học", exact: true }).click();
   await expect(page.getByRole("button", { name: "Đã học xong", exact: true })).toBeVisible();
   await expect.poll(() => stored.get(userId)?.state.courses["spring-framework-for-java"]?.completedLessonIds).toEqual(["lesson-01"]);
@@ -58,7 +62,11 @@ test("Spring completion follows the existing account scope", async ({ page }) =>
   await expect(page.getByRole("button", { name: "Đã học xong", exact: true })).toBeVisible();
 
   userId = "spring-learner-b";
+  const switchedProgress = page.waitForResponse(
+    (res) => res.url().includes("/api/learning-progress") && res.request().method() === "GET"
+  );
   await page.reload();
+  await switchedProgress;
   await expect(page.getByRole("button", { name: "Đánh dấu đã học", exact: true })).toBeVisible();
   await page.getByRole("link", { name: /Bài tiếp theo/i }).click();
   await expect(page).toHaveURL(/lesson-02\/?$/);
