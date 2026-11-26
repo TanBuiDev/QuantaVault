@@ -19,3 +19,5 @@
 ## 2. Production & GitHub Verification
 - Single branch policy: `main` only on both local and remote (`origin`).
 - Cloudflare Pages project: `quantavault` (`https://quantavault.pages.dev/interview/`), deployed via GitHub Actions `Web CI` on push to `main`.
+- **Wave 1 (`29b14d5`):** `Web CI` (`45857926833`) = `success` | `Java Docker isolation` (`45857927239`) = `success` (deployed to `https://quantavault.pages.dev/interview/`).
+- **Wave 2 (`3d012dc`, `0f0510d`):** `Java Docker isolation` (`45859443787`, `45860673685`) = `success`; `Web CI` steps 1–21 (`--strict-all`, lint, 589 vitest, Next build, Pages build, isolation, regular Playwright E2E) = `success`. Step 22 (`Static Pages end-to-end tests`) hit an intermittent static-SSG hydration race in `e2e-pages/spring-course.spec.ts:54-55` (unrelated to Interview, passed 32/32 on re-run locally).
